@@ -1,0 +1,62 @@
+{
+  "name": "@wppconnect/wa-js",
+  "version": "0.1.0",
+  "description": "WPPConnect/WA-JS is an open-source project with the aim of exporting functions from WhatsApp Web",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/wppconnect-wa.js"
+  },
+  "author": {
+    "name": "Edgard Messias",
+    "email": "edgardmessias@gmail.com",
+    "url": "https://github.com/edgardmessias"
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "build:dev": "webpack --devtool inline-source-map --mode development",
+    "build:prd": "webpack",
+    "changelog:last": "conventional-changelog -p angular -r 2",
+    "changelog:preview": "conventional-changelog -p angular -u",
+    "changelog:update": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "clean": "shx rm -rf session dist",
+    "commit": "cz",
+    "lint": "npx eslint --ext .ts src",
+    "prepare": "husky install && npm run clean && npm run build:prd",
+    "release": "release-it",
+    "watch": "webpack --watch --devtool inline-source-map --mode development"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@commitlint/cli": "^12.0.1",
+    "@commitlint/config-conventional": "^12.1.4",
+    "@commitlint/cz-commitlint": "^12.1.4",
+    "@types/node": "^14.17.10",
+    "@typescript-eslint/eslint-plugin": "^4.29.2",
+    "@typescript-eslint/parser": "^4.29.2",
+    "@wppconnect/wa-version": "^1.1.7",
+    "commitizen": "^4.2.3",
+    "conventional-changelog-cli": "^2.1.1",
+    "emittery": "^0.9.2",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-header": "^3.1.1",
+    "eslint-plugin-import": "^2.24.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "husky": "^7.0.0",
+    "prettier": "^2.3.0",
+    "pretty-quick": "^3.1.0",
+    "release-it": "^14.11.5",
+    "shx": "^0.3.3",
+    "ts-loader": "^9.2.5",
+    "typescript": "^4.3.5",
+    "webpack": "^5.51.1",
+    "webpack-cli": "^4.8.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
+  }
+}

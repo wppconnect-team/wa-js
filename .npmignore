@@ -1,0 +1,7 @@
+.*
+*.tgz
+*.zip
+license-checker-config.json
+LICENSE.header
+src
+tsconfig.json
