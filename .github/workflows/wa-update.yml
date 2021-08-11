@@ -1,0 +1,73 @@
+name: wa-update
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+
+jobs:
+  wa-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.PERSONAL_TOKEN }}
+
+      - name: Setup GIT
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: Get npm cache directory
+        id: npm-cache
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      - name: Setup npm cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Dependencies
+        run: npm ci || npm install
+
+      - name: Check Updates
+        id: update
+        run: npm run wa-update
+        env:
+          WA_COMMIT: true
+
+      - name: Discord Notification (Outdated)
+        uses: sarisia/actions-status-discord@v1
+        if: ${{ steps.update.outputs.hasOutdated == 'true' }}
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          nodetail: true
+          color: 0xCB2431
+          title: Versões sem mais suporte
+          description: |
+            Algumas versões do WhatsApp foram desativadas, assim não funcionando mais.
+            Versões sem Suporte: `${{ join(fromJSON(steps.update.outputs.outdated), '`, `') }}`
+
+      - name: Discord Notification (New)
+        uses: sarisia/actions-status-discord@v1
+        if: ${{ steps.update.outputs.hasNewVersion == 'true' }}
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          nodetail: true
+          color: 0x28A745
+          title: Nova versão do WhatsApp WEB!
+          description: |
+            Acabou de sair uma nova versão do WhatsApp WEB.
+            Número da Versão: `${{ fromJSON(steps.update.outputs.version) }}`
+
+      - name: Release
+        if: ${{ steps.update.outputs.hasChanges == 'true' }}
+        run: npm run release -- --ci -i patch
