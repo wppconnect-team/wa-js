@@ -14,73 +14,8 @@
  * limitations under the License.
  */
 
-import * as webpack from '../webpack';
-
 export * from './collections';
 export * as functions from './functions';
 export * from './misc';
+export * from './models';
 export * from './stores';
-
-/**
- * WhatsApp Module Map
- *
- * Not Necessary for Collections and Models
- */
-function getModuleByName(name: string) {
-  // Search export module with the same name of collection
-  if (/\w+Collection$/.test(name)) {
-    const value = webpack.search((m) => m[name]);
-    if (value) {
-      return value[name];
-    }
-  }
-
-  // Search export module with proxyName equals model name (ChatModel => proxyName="chat")
-  if (/\w+Model$/.test(name)) {
-    const proxyName = name
-      .replace(/Model$/, '')
-      .replace(/^(\w)/, (l) => l.toLowerCase());
-
-    const value = webpack.search(
-      (m) => m.default.prototype.proxyName === proxyName
-    );
-    if (value) {
-      return value.default;
-    }
-  }
-
-  // Search export module with the same name of collection and default global collection
-  if (/\w+Store$/.test(name)) {
-    const storeName = name.replace(/Store$/, 'Collection');
-
-    const value = webpack.search((m) => m['default'] instanceof m[storeName]);
-    if (value) {
-      return value.default;
-    }
-  }
-  return undefined;
-}
-
-const cache: { [key: string]: any } = {};
-
-module.exports = new Proxy(exports, {
-  get: (target, name) => {
-    let value: any = Reflect.get(cache, name);
-
-    if (value) {
-      return value;
-    }
-
-    value = target[name];
-
-    if (!value && typeof name === 'string') {
-      value = getModuleByName(name);
-    }
-
-    if (value) {
-      Reflect.set(cache, name, value);
-    }
-
-    return value;
-  },
-});

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { CallModel } from '../models';
 import { Collection } from './Collection';
 
@@ -30,3 +31,8 @@ export declare class CallCollection extends Collection<CallModel> {
   cleanupPendingOffer(e?: any): any;
   setActiveCall(e?: any): any;
 }
+exportModule(
+  exports,
+  { CallCollection: 'CallCollection' },
+  (m) => m.CallCollection
+);

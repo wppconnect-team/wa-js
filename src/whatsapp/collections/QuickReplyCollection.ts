@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { QuickReplyModel } from '../models';
 import { Collection } from './Collection';
 
@@ -36,3 +37,8 @@ export declare class QuickReplyCollection extends Collection<QuickReplyModel> {
   getAllPendingCounts(): any;
   flushCounts(): any;
 }
+exportModule(
+  exports,
+  { QuickReplyCollection: 'QuickReplyCollection' },
+  (m) => m.QuickReplyCollection
+);

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { ProductImageModel } from '../models';
 import { Collection } from './Collection';
 
@@ -24,3 +25,8 @@ import { Collection } from './Collection';
 export declare class ProductImageCollection extends Collection<ProductImageModel> {
   static model: ProductImageModel;
 }
+exportModule(
+  exports,
+  { ProductImageCollection: 'ProductImageCollection' },
+  (m) => m.ProductImageCollection
+);

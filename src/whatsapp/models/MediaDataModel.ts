@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportProxyModel } from '../exportModule';
 import {
   Model,
   ModelOptions,
@@ -102,3 +103,5 @@ export declare class MediaDataModel extends Model {
   isStreamableType(): boolean;
   isDownloadable(): boolean;
 }
+
+exportProxyModel(exports, 'MediaDataModel');

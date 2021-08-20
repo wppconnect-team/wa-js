@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { CartItemModel } from '../models';
 import { Collection } from './Collection';
 
@@ -24,3 +25,8 @@ import { Collection } from './Collection';
 export declare class CartItemCollection extends Collection<CartItemModel> {
   static model: CartItemModel;
 }
+exportModule(
+  exports,
+  { CartItemCollection: 'CartItemCollection' },
+  (m) => m.CartItemCollection
+);

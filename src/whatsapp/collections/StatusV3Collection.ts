@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { StatusV3Model } from '../models';
 import { Collection } from './Collection';
 
@@ -34,3 +35,8 @@ export declare class StatusV3Collection extends Collection<StatusV3Model> {
   getMyStatus(): any;
   static comparator(): any;
 }
+exportModule(
+  exports,
+  { StatusV3Collection: 'StatusV3Collection' },
+  (m) => m.StatusV3Collection
+);

@@ -15,6 +15,7 @@
  */
 
 import { MuteCollection } from '../collections';
+import { exportProxyModel } from '../exportModule';
 import { Wid } from '../misc';
 import {
   Model,
@@ -69,3 +70,5 @@ export declare class MuteModel extends Model<MuteCollection> {
   unmute(e?: any, t?: any): any;
   getCollection(): MuteCollection;
 }
+
+exportProxyModel(exports, 'MuteModel');

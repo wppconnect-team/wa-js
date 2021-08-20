@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportProxyModel } from '../exportModule';
 import {
   Model,
   ModelOptions,
@@ -94,3 +95,5 @@ export declare class AttachMediaModel extends Model {
   updateFullPreview(e?: any): any;
   updateCaption(e?: any): any;
 }
+
+exportProxyModel(exports, 'AttachMediaModel');

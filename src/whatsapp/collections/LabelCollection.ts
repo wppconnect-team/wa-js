@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { LabelModel } from '../models';
 import { Collection } from './Collection';
 
@@ -41,3 +42,8 @@ export declare class LabelCollection extends Collection<LabelModel> {
   updateChecksum(e?: any): any;
   getLabelsForModel(e?: any, t?: any): any;
 }
+exportModule(
+  exports,
+  { LabelCollection: 'LabelCollection' },
+  (m) => m.LabelCollection
+);

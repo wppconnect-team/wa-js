@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { Wid } from '../misc';
 import { StatusModel } from '../models';
 import { Collection } from './Collection';
@@ -29,3 +30,8 @@ export declare class StatusCollection extends Collection<StatusModel> {
   static resumeOnAvailable?: any;
   onResume(): any;
 }
+exportModule(
+  exports,
+  { StatusCollection: 'StatusCollection' },
+  (m) => m.StatusCollection
+);

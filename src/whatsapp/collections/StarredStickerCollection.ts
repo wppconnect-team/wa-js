@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { StickerModel } from '../models';
 import { Collection } from './Collection';
 
@@ -30,3 +31,8 @@ export declare class StarredStickerCollection extends Collection<StickerModel> {
   getRemaining(): any;
   static comparator(): any;
 }
+exportModule(
+  exports,
+  { StarredStickerCollection: 'StarredStickerCollection' },
+  (m) => m.StarredStickerCollection
+);

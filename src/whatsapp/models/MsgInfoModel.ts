@@ -15,6 +15,7 @@
  */
 
 import { MsgInfoCollection } from '../collections';
+import { exportProxyModel } from '../exportModule';
 import { MsgKey } from '../misc';
 import {
   Model,
@@ -67,3 +68,5 @@ export declare class MsgInfoModel extends Model<MsgInfoCollection> {
   );
   getCollection(): MsgInfoCollection;
 }
+
+exportProxyModel(exports, 'MsgInfoModel');

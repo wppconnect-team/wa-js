@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { BlocklistModel } from '../models';
 import { Collection } from './Collection';
 
@@ -26,3 +27,8 @@ export declare class BlocklistCollection extends Collection<BlocklistModel> {
   blockContact(e?: any): any;
   unblockContact(e?: any): any;
 }
+exportModule(
+  exports,
+  { BlocklistCollection: 'BlocklistCollection' },
+  (m) => m.BlocklistCollection
+);

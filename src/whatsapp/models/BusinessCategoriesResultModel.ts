@@ -15,6 +15,7 @@
  */
 
 import { BusinessCategoriesResultCollection } from '../collections';
+import { exportProxyModel } from '../exportModule';
 import { Wid } from '../misc';
 import {
   Model,
@@ -61,3 +62,5 @@ export declare class BusinessCategoriesResultModel extends Model<BusinessCategor
   );
   getCollection(): BusinessCategoriesResultCollection;
 }
+
+exportProxyModel(exports, 'BusinessCategoriesResultModel');

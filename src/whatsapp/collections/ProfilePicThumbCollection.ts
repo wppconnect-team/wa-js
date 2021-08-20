@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { ProfilePicThumbModel } from '../models';
 import { Collection } from './Collection';
 
@@ -32,3 +33,8 @@ export declare class ProfilePicThumbCollection extends Collection<ProfilePicThum
   findThumbnailWid(e?: any): any;
   getThumbnailWidFromVcard(e?: any): any;
 }
+exportModule(
+  exports,
+  { ProfilePicThumbCollection: 'ProfilePicThumbCollection' },
+  (m) => m.ProfilePicThumbCollection
+);

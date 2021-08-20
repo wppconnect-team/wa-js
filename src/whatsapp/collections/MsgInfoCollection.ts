@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { MsgInfoModel } from '../models';
 import { Collection } from './Collection';
 
@@ -26,3 +27,8 @@ export declare class MsgInfoCollection extends Collection<MsgInfoModel> {
   static staleCollection?: any;
   updateInfo(e?: any, t?: any, r?: any, a?: any, i?: any, n?: any): any;
 }
+exportModule(
+  exports,
+  { MsgInfoCollection: 'MsgInfoCollection' },
+  (m) => m.MsgInfoCollection
+);

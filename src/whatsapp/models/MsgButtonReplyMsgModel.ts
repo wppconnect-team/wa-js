@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportProxyModel } from '../exportModule';
 import { MsgKey } from '../misc';
 import {
   Model,
@@ -59,3 +60,5 @@ export declare class MsgButtonReplyMsgModel extends Model {
     options?: ModelOptions
   );
 }
+
+exportProxyModel(exports, 'MsgButtonReplyMsgModel');

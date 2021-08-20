@@ -15,6 +15,7 @@
  */
 
 import { QuickReplyCollection } from '../collections';
+import { exportProxyModel } from '../exportModule';
 import {
   Model,
   ModelOptions,
@@ -66,3 +67,5 @@ export declare class QuickReplyModel extends Model<QuickReplyCollection> {
   useOnce(): any;
   getCollection(): QuickReplyCollection;
 }
+
+exportProxyModel(exports, 'QuickReplyModel');

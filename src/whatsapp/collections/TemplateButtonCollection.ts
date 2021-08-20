@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { TemplateButtonModel } from '../models';
 import { Collection } from './Collection';
 
@@ -25,3 +26,10 @@ export declare class TemplateButtonCollection extends Collection<TemplateButtonM
   static model: TemplateButtonModel;
   static comparator(): any;
 }
+exportModule(
+  exports,
+  {
+    TemplateButtonCollection: 'TemplateButtonCollection',
+  },
+  (m) => m.TemplateButtonCollection
+);

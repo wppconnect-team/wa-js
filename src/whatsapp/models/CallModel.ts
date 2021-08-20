@@ -15,6 +15,7 @@
  */
 
 import { CallCollection } from '../collections';
+import { exportProxyModel } from '../exportModule';
 import {
   Model,
   ModelOptions,
@@ -70,3 +71,5 @@ export declare class CallModel extends Model<CallCollection> {
   handleNotification(): any;
   getCollection(): CallCollection;
 }
+
+exportProxyModel(exports, 'CallModel');

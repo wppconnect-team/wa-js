@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportProxyModel } from '../exportModule';
 import { Wid } from '../misc';
 import {
   Model,
@@ -62,3 +63,5 @@ export declare class ParticipantModel extends Model {
     options?: ModelOptions
   );
 }
+
+exportProxyModel(exports, 'ParticipantModel');

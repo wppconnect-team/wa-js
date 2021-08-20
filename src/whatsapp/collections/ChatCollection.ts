@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { ChatModel } from '../models';
 import { CollectionCache } from './CollectionCache';
 
@@ -36,3 +37,9 @@ export declare class ChatCollection extends CollectionCache<ChatModel> {
   unstarAllMessages(e?: any, t?: any): any;
   forwardMessagesToChats(e?: any, t?: any): any;
 }
+
+exportModule(
+  exports,
+  { ChatCollection: 'ChatCollection' },
+  (m) => m.ChatCollection
+);

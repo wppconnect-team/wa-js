@@ -81,3 +81,27 @@ export function exportModule(
     });
   }
 }
+
+export function exportProxyModel(exports: any, name: string) {
+  const baseName = name.replace(/Model$/, '');
+
+  const names: string[] = [];
+
+  // ChatModel => "chat"
+  names.push(baseName.replace(/^(\w)/, (l) => l.toLowerCase()));
+
+  // CartItemModel => "cart-item"
+  // ProductListModel => "product_list"
+  const parts = baseName.split(/(?=[A-Z])/);
+
+  names.push(parts.join('-').toLowerCase());
+  names.push(parts.join('_').toLowerCase());
+
+  exportModule(
+    exports,
+    {
+      [name]: 'default',
+    },
+    (m) => names.includes(m.default.prototype.proxyName)
+  );
+}

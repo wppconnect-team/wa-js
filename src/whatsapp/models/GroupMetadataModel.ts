@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportProxyModel } from '../exportModule';
 import { Wid } from '../misc';
 import {
   Model,
@@ -89,3 +90,5 @@ export declare class GroupMetadataModel extends Model {
   queryGroupV4PendingInvite(): any;
   getCollection(): any;
 }
+
+exportProxyModel(exports, 'GroupMetadataModel');

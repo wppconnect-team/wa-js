@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { StickerModel } from '../models';
 import { Collection } from './Collection';
 
@@ -30,3 +31,8 @@ export declare class StickerSearchCollection extends Collection<StickerModel> {
   search(e?: any): any;
   searchMood(e?: any): any;
 }
+exportModule(
+  exports,
+  { StickerSearchCollection: 'StickerSearchCollection' },
+  (m) => m.StickerSearchCollection
+);

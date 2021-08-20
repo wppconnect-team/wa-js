@@ -15,6 +15,7 @@
  */
 
 import { OrderCollection } from '../collections';
+import { exportProxyModel } from '../exportModule';
 import {
   Model,
   ModelOptions,
@@ -65,3 +66,5 @@ export declare class OrderItemModel extends Model<OrderCollection> {
   );
   getCollection(): OrderCollection;
 }
+
+exportProxyModel(exports, 'OrderItemModel');

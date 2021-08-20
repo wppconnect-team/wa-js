@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { CartModel } from '../models';
 import { Collection } from './Collection';
 
@@ -28,3 +29,8 @@ export declare class CartCollection extends Collection<CartModel> {
   imageHeight?: any;
   findCart(e?: any): any;
 }
+exportModule(
+  exports,
+  { CartCollection: 'CartCollection' },
+  (m) => m.CartCollection
+);

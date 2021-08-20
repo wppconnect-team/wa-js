@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportProxyModel } from '../exportModule';
 import {
   Model,
   ModelOptions,
@@ -62,3 +63,5 @@ export declare class TemplateButtonModel extends Model {
     options?: ModelOptions
   );
 }
+
+exportProxyModel(exports, 'TemplateButtonModel');

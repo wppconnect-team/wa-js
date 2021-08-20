@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { MsgModel } from '../models';
 import { Collection } from './Collection';
 
@@ -30,3 +31,8 @@ export declare class StarredMsgCollection extends Collection<MsgModel> {
   updateMsgs(e?: any, t?: any, r?: any): any;
   static comparator(): any;
 }
+exportModule(
+  exports,
+  { StarredMsgCollection: 'StarredMsgCollection' },
+  (m) => m.StarredMsgCollection
+);

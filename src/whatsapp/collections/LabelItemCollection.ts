@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { LabelItemModel } from '../models';
 import { Collection } from './Collection';
 
@@ -24,3 +25,8 @@ import { Collection } from './Collection';
 export declare class LabelItemCollection extends Collection<LabelItemModel> {
   static model: LabelItemModel;
 }
+exportModule(
+  exports,
+  { LabelItemCollection: 'LabelItemCollection' },
+  (m) => m.LabelItemCollection
+);

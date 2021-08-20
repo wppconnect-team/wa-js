@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { StickerPackModel } from '../models';
 import { Collection } from './Collection';
 
@@ -35,3 +36,8 @@ export declare class StickerPackCollection extends Collection<StickerPackModel> 
   setChecksum(e?: any, t?: any): any;
   static comparator(): any;
 }
+exportModule(
+  exports,
+  { StickerPackCollection: 'StickerPackCollection' },
+  (m) => m.StickerPackCollection
+);

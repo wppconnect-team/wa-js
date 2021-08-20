@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { StickerModel } from '../models';
 import { Collection } from './Collection';
 
@@ -28,3 +29,8 @@ export declare class RecentStickerCollection extends Collection<StickerModel> {
   sync(e?: any): any;
   isSynced(): boolean;
 }
+exportModule(
+  exports,
+  { RecentStickerCollection: 'RecentStickerCollection' },
+  (m) => m.RecentStickerCollection
+);

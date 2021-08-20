@@ -15,6 +15,7 @@
  */
 
 import { CartCollection } from '../collections';
+import { exportProxyModel } from '../exportModule';
 import {
   Model,
   ModelOptions,
@@ -64,3 +65,5 @@ export declare class CartModel extends Model<CartCollection> {
   countTotals(): any;
   getCollection(): CartCollection;
 }
+
+exportProxyModel(exports, 'CartModel');

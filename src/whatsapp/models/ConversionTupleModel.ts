@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportProxyModel } from '../exportModule';
 import { Wid } from '../misc';
 import {
   Model,
@@ -65,3 +66,5 @@ export declare class ConversionTupleModel extends Model {
   formatTuple(): any;
   getCollection(): any;
 }
+
+exportProxyModel(exports, 'ConversionTupleModel');

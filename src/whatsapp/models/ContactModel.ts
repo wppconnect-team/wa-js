@@ -15,6 +15,7 @@
  */
 
 import { ContactCollection } from '../collections';
+import { exportProxyModel } from '../exportModule';
 import { Wid } from '../misc';
 import {
   Model,
@@ -116,3 +117,5 @@ export declare class ContactModel extends Model<ContactCollection> {
   getCollection(): ContactCollection;
   setNotMyContact(): any;
 }
+
+exportProxyModel(exports, 'ContactModel');

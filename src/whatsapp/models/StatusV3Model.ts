@@ -15,6 +15,7 @@
  */
 
 import { StatusV3Collection } from '../collections';
+import { exportProxyModel } from '../exportModule';
 import { Wid } from '../misc';
 import {
   Model,
@@ -84,3 +85,5 @@ export declare class StatusV3Model extends Model<StatusV3Collection> {
   removeMsgsCollection(e?: any): any;
   notifyMsgCollectionMerge(e?: any, t?: any, r?: any, a?: any): any;
 }
+
+exportProxyModel(exports, 'StatusV3Model');

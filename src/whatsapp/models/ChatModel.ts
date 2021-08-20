@@ -15,6 +15,7 @@
  */
 
 import { ChatCollection } from '../collections';
+import { exportProxyModel } from '../exportModule';
 import { MsgKey, Wid } from '../misc';
 import { ModelOptions, ModelPropertiesContructor, ModelProxy } from './Model';
 import { ModelChatBase, PropsChatBase, SessionChatBase } from './ModelChatBase';
@@ -214,3 +215,5 @@ export declare class ChatModel extends ModelChatBase {
   removeMsgsCollection(e?: any): any;
   notifyMsgCollectionMerge(e?: any, t?: any, r?: any, a?: any): any;
 }
+
+exportProxyModel(exports, 'ChatModel');

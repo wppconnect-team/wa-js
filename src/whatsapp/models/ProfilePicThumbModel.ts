@@ -15,6 +15,7 @@
  */
 
 import { ProfilePicThumbCollection } from '../collections';
+import { exportProxyModel } from '../exportModule';
 import { Wid } from '../misc';
 import {
   Model,
@@ -76,3 +77,5 @@ export declare class ProfilePicThumbModel extends Model<ProfilePicThumbCollectio
   canDelete(): boolean;
   getCollection(): ProfilePicThumbCollection;
 }
+
+exportProxyModel(exports, 'ProfilePicThumbModel');

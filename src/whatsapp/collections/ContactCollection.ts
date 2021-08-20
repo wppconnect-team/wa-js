@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { ContactModel } from '../models';
 import { Collection } from './Collection';
 
@@ -39,3 +40,8 @@ export declare class ContactCollection extends Collection<ContactModel> {
   resolveWidsFromHash(e?: any): any;
   static comparator(): any;
 }
+exportModule(
+  exports,
+  { ContactCollection: 'ContactCollection' },
+  (m) => m.ContactCollection
+);

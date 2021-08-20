@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportProxyModel } from '../exportModule';
 import {
   Model,
   ModelOptions,
@@ -87,3 +88,5 @@ export declare class ProductModel extends Model {
   evictImagesFromCache(): any;
   getPreviewImage(): any;
 }
+
+exportProxyModel(exports, 'ProductModel');

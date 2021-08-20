@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportProxyModel } from '../exportModule';
 import {
   Model,
   ModelOptions,
@@ -74,3 +75,5 @@ export declare class StickerModel extends Model {
   sendToChat(e?: any, t?: any): any;
   static getPlaceholder(): StickerModel;
 }
+
+exportProxyModel(exports, 'StickerModel');

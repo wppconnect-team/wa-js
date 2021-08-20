@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { BusinessCategoriesResultModel } from '../models';
 import { Collection } from './Collection';
 
@@ -25,3 +26,8 @@ export declare class BusinessCategoriesResultCollection extends Collection<Busin
   static model: BusinessCategoriesResultModel;
   static staleCollection?: any;
 }
+exportModule(
+  exports,
+  { BusinessCategoriesResultCollection: 'BusinessCategoriesResultCollection' },
+  (m) => m.BusinessCategoriesResultCollection
+);

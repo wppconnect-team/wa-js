@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportProxyModel } from '../exportModule';
 import {
   Model,
   ModelOptions,
@@ -77,3 +78,5 @@ export declare class StickerPackModel extends Model {
   static createPlaceholder(): any;
   static isPlaceholderId(): boolean;
 }
+
+exportProxyModel(exports, 'StickerPackModel');

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { OrderModel } from '../models';
 import { Collection } from './Collection';
 
@@ -28,3 +29,8 @@ export declare class OrderCollection extends Collection<OrderModel> {
   height?: any;
   findOrder(e?: any, t?: any, a?: any): any;
 }
+exportModule(
+  exports,
+  { OrderCollection: 'OrderCollection' },
+  (m) => m.OrderCollection
+);

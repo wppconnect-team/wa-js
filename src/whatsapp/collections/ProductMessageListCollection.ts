@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { Product_listModel } from '../models';
 import { Collection } from './Collection';
 
@@ -26,3 +27,8 @@ export declare class ProductMessageListCollection extends Collection<Product_lis
   static staleCollection?: any;
   getOrAdd(e?: any, t?: any, r?: any, a?: any): any;
 }
+exportModule(
+  exports,
+  { ProductMessageListCollection: 'ProductMessageListCollection' },
+  (m) => m.ProductMessageListCollection
+);

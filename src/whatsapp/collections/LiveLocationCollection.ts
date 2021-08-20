@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { LiveLocationModel } from '../models';
 import { Collection } from './Collection';
 
@@ -30,3 +31,8 @@ export declare class LiveLocationCollection extends Collection<LiveLocationModel
   processMsg(e?: any, t?: boolean): any;
   removeMsg(e?: any): any;
 }
+exportModule(
+  exports,
+  { LiveLocationCollection: 'LiveLocationCollection' },
+  (m) => m.LiveLocationCollection
+);

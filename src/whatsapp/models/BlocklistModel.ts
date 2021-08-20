@@ -15,6 +15,7 @@
  */
 
 import { BlocklistCollection } from '../collections';
+import { exportProxyModel } from '../exportModule';
 import { Wid } from '../misc';
 import {
   Model,
@@ -61,3 +62,5 @@ export declare class BlocklistModel extends Model<BlocklistCollection> {
   contact(): any;
   getCollection(): BlocklistCollection;
 }
+
+exportProxyModel(exports, 'BlocklistModel');

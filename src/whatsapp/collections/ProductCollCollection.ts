@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { ProductCollModel } from '../models';
 import { Collection } from './Collection';
 
@@ -28,3 +29,8 @@ export declare class ProductCollCollection extends Collection<ProductCollModel> 
   getCollectionModels(e?: any): any;
   findCollectionProducts(e?: any, t?: any): any;
 }
+exportModule(
+  exports,
+  { ProductCollCollection: 'ProductCollCollection' },
+  (m) => m.ProductCollCollection
+);

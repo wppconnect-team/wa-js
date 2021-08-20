@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { MuteModel } from '../models';
 import { Collection } from './Collection';
 
@@ -36,3 +37,8 @@ export declare class MuteCollection extends Collection<MuteModel> {
   getOutgoingMessageSound(): any;
   setOutgoingMessageSound(e?: any): any;
 }
+exportModule(
+  exports,
+  { MuteCollection: 'MuteCollection' },
+  (m) => m.MuteCollection
+);

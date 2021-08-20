@@ -15,6 +15,7 @@
  */
 
 import { CartCollection } from '../collections';
+import { exportProxyModel } from '../exportModule';
 import {
   Model,
   ModelOptions,
@@ -63,3 +64,5 @@ export declare class CartItemModel extends Model<CartCollection> {
   );
   getCollection(): CartCollection;
 }
+
+exportProxyModel(exports, 'CartItemModel');

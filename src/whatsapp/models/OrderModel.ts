@@ -15,6 +15,7 @@
  */
 
 import { OrderCollection } from '../collections';
+import { exportProxyModel } from '../exportModule';
 import {
   Model,
   ModelOptions,
@@ -69,3 +70,5 @@ export declare class OrderModel extends Model<OrderCollection> {
   triggerItemCollectionUpdate(): any;
   getCollection(): OrderCollection;
 }
+
+exportProxyModel(exports, 'OrderModel');

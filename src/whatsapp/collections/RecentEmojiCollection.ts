@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { RecentEmojiModel } from '../models';
 import { Collection } from './Collection';
 
@@ -30,3 +31,8 @@ export declare class RecentEmojiCollection extends Collection<RecentEmojiModel> 
   increment(e?: any): any;
   static comparator(): any;
 }
+exportModule(
+  exports,
+  { RecentEmojiCollection: 'RecentEmojiCollection' },
+  (m) => m.RecentEmojiCollection
+);

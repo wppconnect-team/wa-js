@@ -15,6 +15,7 @@
  */
 
 import { BusinessProfileCollection } from '../collections';
+import { exportProxyModel } from '../exportModule';
 import { Wid } from '../misc';
 import {
   Model,
@@ -74,3 +75,5 @@ export declare class BusinessProfileModel extends Model<BusinessProfileCollectio
   getCollection(): BusinessProfileCollection;
   isValid(): boolean;
 }
+
+exportProxyModel(exports, 'BusinessProfileModel');

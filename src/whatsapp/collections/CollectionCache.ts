@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { exportModule } from '../exportModule';
 import { Stringable } from '../misc';
 import { Collection } from './Collection';
 
@@ -60,11 +59,3 @@ export declare class CollectionCache<C, A = C | C[]> extends Collection<C> {
 
   isStateStale(id: Stringable): boolean;
 }
-
-exportModule(
-  exports,
-  {
-    CollectionCache: 'default',
-  },
-  (m) => m.CACHE_POLICY
-);

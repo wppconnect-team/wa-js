@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { BusinessProfileModel } from '../models';
 import { Collection } from './Collection';
 
@@ -28,3 +29,8 @@ export declare class BusinessProfileCollection extends Collection<BusinessProfil
   onResume(): any;
   getValid(e?: any): any;
 }
+exportModule(
+  exports,
+  { BusinessProfileCollection: 'BusinessProfileCollection' },
+  (m) => m.BusinessProfileCollection
+);

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportProxyModel } from '../exportModule';
 import { MsgKey } from '../misc';
 import {
   Model,
@@ -72,3 +73,5 @@ export declare class Product_listModel extends Model {
   getSectionsCount(): any;
   isFetching(): boolean;
 }
+
+exportProxyModel(exports, 'Product_listModel');

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { ProductModel } from '../models';
 import { Collection } from './Collection';
 
@@ -27,3 +28,8 @@ export declare class ProductCollection extends Collection<ProductModel> {
   evictImagesFromCache(e?: any): any;
   static comparator(): any;
 }
+exportModule(
+  exports,
+  { ProductCollection: 'ProductCollection' },
+  (m) => m.ProductCollection
+);

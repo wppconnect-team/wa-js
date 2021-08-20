@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { MsgModel } from '../models';
 import { CollectionCache } from './CollectionCache';
 
@@ -46,3 +47,9 @@ export declare class MsgCollection extends CollectionCache<MsgModel> {
   processMultipleMessages(e?: any, t?: any, r?: any, a?: any): any;
   markAllAsStale(): any;
 }
+
+exportModule(
+  exports,
+  { MsgCollection: 'MsgCollection' },
+  (m) => m.MsgCollection
+);

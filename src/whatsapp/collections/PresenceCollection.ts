@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { ChatstateModel } from '../models';
 import { Collection } from './Collection';
 
@@ -26,3 +27,8 @@ export declare class PresenceCollection extends Collection<ChatstateModel> {
   static staleCollection?: any;
   clearAllPresence(): any;
 }
+exportModule(
+  exports,
+  { PresenceCollection: 'PresenceCollection' },
+  (m) => m.PresenceCollection
+);

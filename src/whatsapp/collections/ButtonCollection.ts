@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { ReplyButtonModel } from '../models';
 import { Collection } from './Collection';
 
-export declare class ButtonCollection {
+/**
+ * @moduleID 67549
+ * @whatsapp 2.2126.14
+ */
+export declare class ButtonCollection extends Collection<ReplyButtonModel> {
   static model: ReplyButtonModel;
-  constructor(parameters?: string);
-
-  alpha(): any;
+  static comparator(): any;
 }
+
+exportModule(
+  exports,
+  { ButtonCollection: 'ButtonCollection' },
+  (m) => m.ButtonCollection
+);

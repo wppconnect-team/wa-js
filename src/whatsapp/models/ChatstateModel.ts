@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportProxyModel } from '../exportModule';
 import { Wid } from '../misc';
 import {
   Model,
@@ -64,3 +65,5 @@ export declare class ChatstateModel extends Model {
   );
   getCollection(): any;
 }
+
+exportProxyModel(exports, 'ChatstateModel');

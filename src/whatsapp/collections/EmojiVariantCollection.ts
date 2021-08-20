@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { EmojiVariantModel } from '../models';
 import { Collection } from './Collection';
 
@@ -28,3 +29,8 @@ export declare class EmojiVariantCollection extends Collection<EmojiVariantModel
   getVariant(e?: any): any;
   getVariantIfExists(e?: any): any;
 }
+exportModule(
+  exports,
+  { EmojiVariantCollection: 'EmojiVariantCollection' },
+  (m) => m.EmojiVariantCollection
+);

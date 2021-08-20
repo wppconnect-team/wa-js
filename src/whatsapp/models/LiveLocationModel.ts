@@ -15,6 +15,7 @@
  */
 
 import { LiveLocationCollection } from '../collections';
+import { exportProxyModel } from '../exportModule';
 import { Wid } from '../misc';
 import {
   Model,
@@ -70,3 +71,5 @@ export declare class LiveLocationModel extends Model<LiveLocationCollection> {
   stopMyLiveLocation(e?: any): any;
   getCollection(): LiveLocationCollection;
 }
+
+exportProxyModel(exports, 'LiveLocationModel');

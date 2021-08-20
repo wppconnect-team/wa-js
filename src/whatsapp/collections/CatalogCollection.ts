@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { exportModule } from '../exportModule';
 import { CatalogModel } from '../models';
 import { Collection } from './Collection';
 
@@ -34,3 +35,8 @@ export declare class CatalogCollection extends Collection<CatalogModel> {
   findNextProductPage(e?: any): any;
   findCollectionMembership(e?: any, t?: any): any;
 }
+exportModule(
+  exports,
+  { CatalogCollection: 'CatalogCollection' },
+  (m) => m.CatalogCollection
+);

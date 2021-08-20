@@ -18,6 +18,7 @@
  * @whatsapp 2.2126.14
  */
 import { MsgCollection } from '../collections';
+import { exportProxyModel } from '../exportModule';
 import { MsgKey } from '../misc';
 import {
   Model,
@@ -339,3 +340,5 @@ export declare class MsgModel extends Model {
   safe(): any;
   unsafe(): any;
 }
+
+exportProxyModel(exports, 'MsgModel');
