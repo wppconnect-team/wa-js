@@ -15,6 +15,7 @@
  */
 
 export * from './ClockSkew';
+export * from './Constants';
 export * from './EventEmitter';
 export * from './ImageUtils';
 export * from './MediaUtils';
