@@ -1,0 +1,12 @@
+{
+  "disableSources": false,
+  "entryPoints": ["src/index.ts"],
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "includeVersion": true,
+  "out": "docs",
+  "theme": "pages-plugin",
+  "gaID": "G-LTZL26963K",
+  "pages": {}
+}

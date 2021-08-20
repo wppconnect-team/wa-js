@@ -1,4 +1,5 @@
 *.tgz
 /debug.log
-dist/
-node_modules
+/dist/
+/docs
+/node_modules
