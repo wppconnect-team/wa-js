@@ -30,6 +30,7 @@ export * from './ContactCollection';
 export * from './ContactCollection';
 export * from './ContactCollection';
 export * from './EmojiVariantCollection';
+export * from './GroupMetadataCollection';
 export * from './LabelCollection';
 export * from './LabelItemCollection';
 export * from './LiveLocationCollection';

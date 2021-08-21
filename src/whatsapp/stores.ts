@@ -14,66 +14,38 @@
  * limitations under the License.
  */
 
-import type {
-  BlocklistCollection,
-  BusinessCategoriesResultCollection,
-  BusinessProfileCollection,
-  CallCollection,
-  CartCollection,
-  CatalogCollection,
-  ChatCollection,
-  ContactCollection,
-  EmojiVariantCollection,
-  LabelCollection,
-  LiveLocationCollection,
-  MsgCollection,
-  MsgInfoCollection,
-  MuteCollection,
-  OrderCollection,
-  PresenceCollection,
-  ProductMessageListCollection,
-  ProfilePicThumbCollection,
-  QuickReplyCollection,
-  RecentEmojiCollection,
-  RecentStickerCollection,
-  StarredMsgCollection,
-  StarredStickerCollection,
-  StatusCollection,
-  StatusV3Collection,
-  StickerCollection,
-  StickerPackCollection,
-  StickerSearchCollection,
-} from './collections';
+import * as collections from './collections';
 import { exportModule } from './exportModule';
 
-export declare const BlocklistStore: BlocklistCollection;
-export declare const BusinessCategoriesResultStore: BusinessCategoriesResultCollection;
-export declare const BusinessProfileStore: BusinessProfileCollection;
-export declare const CallStore: CallCollection;
-export declare const CartStore: CartCollection;
-export declare const CatalogStore: CatalogCollection;
-export declare const ChatStore: ChatCollection;
-export declare const ContactStore: ContactCollection;
-export declare const EmojiVariantStore: EmojiVariantCollection;
-export declare const LabelStore: LabelCollection;
-export declare const LiveLocationStore: LiveLocationCollection;
-export declare const MsgStore: MsgCollection;
-export declare const MsgInfoStore: MsgInfoCollection;
-export declare const MuteStore: MuteCollection;
-export declare const OrderStore: OrderCollection;
-export declare const PresenceStore: PresenceCollection;
-export declare const ProductMessageListStore: ProductMessageListCollection;
-export declare const ProfilePicThumbStore: ProfilePicThumbCollection;
-export declare const QuickReplyStore: QuickReplyCollection;
-export declare const RecentEmojiStore: RecentEmojiCollection;
-export declare const RecentStickerStore: RecentStickerCollection;
-export declare const StarredMsgStore: StarredMsgCollection;
-export declare const StarredStickerStore: StarredStickerCollection;
-export declare const StatusStore: StatusCollection;
-export declare const StatusV3Store: StatusV3Collection;
-export declare const StickerStore: StickerCollection;
-export declare const StickerPackStore: StickerPackCollection;
-export declare const StickerSearchStore: StickerSearchCollection;
+export declare const BlocklistStore: collections.BlocklistCollection;
+export declare const BusinessCategoriesResultStore: collections.BusinessCategoriesResultCollection;
+export declare const BusinessProfileStore: collections.BusinessProfileCollection;
+export declare const CallStore: collections.CallCollection;
+export declare const CartStore: collections.CartCollection;
+export declare const CatalogStore: collections.CatalogCollection;
+export declare const ChatStore: collections.ChatCollection;
+export declare const ContactStore: collections.ContactCollection;
+export declare const EmojiVariantStore: collections.EmojiVariantCollection;
+export declare const GroupMetadataStore: collections.GroupMetadataCollection;
+export declare const LabelStore: collections.LabelCollection;
+export declare const LiveLocationStore: collections.LiveLocationCollection;
+export declare const MsgStore: collections.MsgCollection;
+export declare const MsgInfoStore: collections.MsgInfoCollection;
+export declare const MuteStore: collections.MuteCollection;
+export declare const OrderStore: collections.OrderCollection;
+export declare const PresenceStore: collections.PresenceCollection;
+export declare const ProductMessageListStore: collections.ProductMessageListCollection;
+export declare const ProfilePicThumbStore: collections.ProfilePicThumbCollection;
+export declare const QuickReplyStore: collections.QuickReplyCollection;
+export declare const RecentEmojiStore: collections.RecentEmojiCollection;
+export declare const RecentStickerStore: collections.RecentStickerCollection;
+export declare const StarredMsgStore: collections.StarredMsgCollection;
+export declare const StarredStickerStore: collections.StarredStickerCollection;
+export declare const StatusStore: collections.StatusCollection;
+export declare const StatusV3Store: collections.StatusV3Collection;
+export declare const StickerStore: collections.StickerCollection;
+export declare const StickerPackStore: collections.StickerPackCollection;
+export declare const StickerSearchStore: collections.StickerSearchCollection;
 
 const storeNames = [
   'BlocklistStore',
@@ -85,6 +57,7 @@ const storeNames = [
   'ChatStore',
   'ContactStore',
   'EmojiVariantStore',
+  'GroupMetadataStore',
   'LabelStore',
   'LiveLocationStore',
   'MsgStore',
@@ -113,6 +86,6 @@ for (const name of storeNames) {
     {
       [name]: 'default',
     },
-    (m) => m.default instanceof m[collectionName]
+    (m) => m.default instanceof (collections as any)[collectionName]
   );
 }
