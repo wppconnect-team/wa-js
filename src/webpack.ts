@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
+import Debug from 'debug';
 import Emittery from 'emittery';
+
+const debug = Debug('WPP:webpack');
 
 interface WebpackEvents {
   injected: undefined;
@@ -23,10 +26,24 @@ interface WebpackEvents {
 
 const emitter = new Emittery<WebpackEvents>();
 
+/**
+ * Is setted true when the loader is injected
+ */
 export let isInjected = false;
+
+/**
+ * Is setted true when the all webpack modules are fully loaded
+ */
+export let isReady = false;
 
 emitter.once('injected').then(() => {
   isInjected = true;
+  debug('injected');
+});
+
+emitter.once('ready').then(() => {
+  isReady = true;
+  debug('ready to use');
 });
 
 export function onInjected(listener: () => void): void {
@@ -104,12 +121,14 @@ export function searchId(
       const module = webpackRequire(moduleId);
 
       if (condition(module, moduleId)) {
+        debug(`Module found: ${moduleId} - ${condition.toString()}`);
         return moduleId;
       }
     } catch (error) {
       continue;
     }
   }
+  debug(`Module not found: ${condition.toString()}`);
   return null;
 }
 
@@ -157,5 +176,11 @@ export function modules(
       continue;
     }
   }
+  debug(
+    `${
+      Object.keys(modules).length
+    } modules found with: ${condition?.toString()}`
+  );
+
   return modules;
 }

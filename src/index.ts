@@ -20,20 +20,7 @@ import * as webpack from './webpack';
 
 export { webpack };
 export * as chat from './chat';
+export { isInjected, isReady } from './webpack';
 export * as whatsapp from './whatsapp';
-
-/**
- * Is setted true when the all webpack modules are fully loaded
- */
-export let isReady = false;
-
-webpack.onInjected(() => {
-  console.log('injected');
-});
-
-webpack.onReady(() => {
-  console.log('ready');
-  isReady = true;
-});
 
 webpack.injectLoader();
