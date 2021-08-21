@@ -36,16 +36,6 @@ export let isInjected = false;
  */
 export let isReady = false;
 
-emitter.once('injected').then(() => {
-  isInjected = true;
-  debug('injected');
-});
-
-emitter.once('ready').then(() => {
-  isReady = true;
-  debug('ready to use');
-});
-
 export function onInjected(listener: () => void): void {
   emitter.on('injected', listener);
 }
@@ -88,7 +78,9 @@ export function injectLoader(): void {
     async (__webpack_require__: any) => {
       webpackRequire = __webpack_require__;
 
-      await emitter.emit('injected');
+      isInjected = true;
+      debug('injected');
+      await emitter.emitSerial('injected').catch(() => null);
 
       const availablesRuntimes = new Array(10000)
         .fill(1)
@@ -97,7 +89,9 @@ export function injectLoader(): void {
 
       await Promise.all(availablesRuntimes.map((v) => webpackRequire.e(v)));
 
-      await emitter.emit('ready');
+      isReady = true;
+      debug('ready to use');
+      await emitter.emitSerial('ready').catch(() => null);
     },
   ]);
 }
