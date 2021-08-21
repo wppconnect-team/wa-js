@@ -39,7 +39,10 @@ interface Props {
   to?: any;
   author?: any;
   self?: any;
-  ack?: any;
+  /**
+   * See {@link Constants}
+   */
+  ack?: number;
   invis?: any;
   isNewMsg: boolean;
   star?: any;
@@ -202,7 +205,7 @@ interface Props {
 interface Session {
   stale?: any;
   sendDeferred?: any;
-  local?: any;
+  local?: true;
   search?: any;
   msgChunk?: any;
   phoneUploading?: any;
@@ -285,7 +288,7 @@ export declare interface MsgModel extends ModelProxy<Props, Session, Derived> {}
 export declare class MsgModel extends Model {
   idClass: typeof MsgKey;
   constructor(
-    proterties?: ModelPropertiesContructor<MsgModel>,
+    proterties: ModelPropertiesContructor<MsgModel, 'id'>,
     options?: ModelOptions
   );
   getLinks(e?: number): any;

@@ -15,10 +15,19 @@
  */
 
 import * as util from '../util';
-import { ChatStore, ClockSkew, MsgKey, UserPrefs } from '../whatsapp';
+import {
+  ChatModel,
+  ChatStore,
+  ClockSkew,
+  Constants,
+  ModelPropertiesContructor,
+  MsgKey,
+  MsgModel,
+  UserPrefs,
+} from '../whatsapp';
 import { addAndSendMsgToChat, randomMessageId } from '../whatsapp/functions';
 
-export function get(chatId: string): any {
+export function get(chatId: string): ChatModel | undefined {
   const wid = util.createWid(chatId);
 
   if (!wid) {
@@ -37,6 +46,10 @@ export async function sendMessage(
 
   const chat = get(chatId);
 
+  if (!chat) {
+    return null;
+  }
+
   const newMsgId = new MsgKey({
     from: UserPrefs.getMaybeMeUser(),
     to: chat.id,
@@ -44,7 +57,7 @@ export async function sendMessage(
     selfDir: 'out',
   });
 
-  const message = {
+  const message: ModelPropertiesContructor<MsgModel, 'id'> = {
     id: newMsgId,
     body: content,
     type: 'chat',
@@ -55,7 +68,7 @@ export async function sendMessage(
     self: 'out',
     isNewMsg: true,
     local: true,
-    ack: 0,
+    ack: Constants.ACK.CLOCK,
     urlText: null,
     urlNumber: null,
   };

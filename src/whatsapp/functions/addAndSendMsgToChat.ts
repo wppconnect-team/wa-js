@@ -15,10 +15,11 @@
  */
 
 import { exportModule } from '../exportModule';
+import { ChatModel, ModelPropertiesContructor, MsgModel } from '../models';
 
 export declare function addAndSendMsgToChat(
-  chat: any,
-  message: any
+  chat: ChatModel,
+  message: ModelPropertiesContructor<MsgModel>
 ): Promise<string>;
 
 exportModule(

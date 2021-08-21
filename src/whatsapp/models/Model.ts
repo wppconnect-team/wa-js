@@ -42,9 +42,11 @@ export type ModelProxy<P, S, D> = P &
  * @moduleID 40798
  * @whatsapp 2.2126.14
  */
-export type ModelPropertiesContructor<Model> = Partial<
-  WritableProperties<Model>
->;
+export type ModelPropertiesContructor<
+  Model,
+  K extends keyof Model = any
+> = Partial<WritableProperties<Model>> &
+  Required<WritableProperties<Pick<Model, K>>>;
 
 export interface ModelOptions {
   _internalInitializationDoNotUse?: any;
