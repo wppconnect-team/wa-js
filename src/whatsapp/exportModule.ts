@@ -17,7 +17,11 @@
 import * as webpack from '../webpack';
 
 /**
- * Create a file export using webpack seach
+ * The object of this function is to override the exports to create getters.
+ *
+ * You can export a single module or specific functions
+ *
+ * Note: To create a documented type, you can use `export declare` to define types only
  *
  * @param exports The exports variable
  * @param properties A single name or a map of exported data

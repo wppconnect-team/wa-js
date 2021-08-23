@@ -17,6 +17,31 @@
 [![WhatsApp Group](https://img.shields.io/badge/WhatsApp-Group-25D366?logo=whatsapp)](https://chat.whatsapp.com/C1ChjyShl5cA7KvmtecF3L)
 [![YouTube](https://img.shields.io/youtube/channel/subscribers/UCD7J9LG08PmGQrF5IS7Yv9A?label=YouTube)](https://www.youtube.com/c/wppconnect)
 
+## How does it work
+
+This project extract some functions of WhatsApp sources, that uses webpack.
+
+After build, this project generate a file `dist/wppconnect-wa.js` to be used for injection in WhatsApp Web. When injected, it will explose a global variable named `WPP`.
+
+Some parts of `WPP` variable:
+
+- `WPP.webpack` - Scripts to exports WhatsApp functions.
+- `WPP.whatsapp` - Only exported WhatsApp functions.
+- `WPP.chat` - Chat functions and events.
+- ...
+
+## Exported WhatsApp modules
+
+There are a convection name for some exported modules:
+
+- `...Model` - Class for data structure (`ClassModel`, `MsgModel`)
+- `...Collection` - Class for collection of models (`ChatCollection`, `MsgCollection`)
+- `...Store` - Default and global instance of a collection (`ChatStore`, `MsgStore`)
+
+## Development
+
+`npm run build:prd`
+
 ## License
 
 Copyright 2021 WPPConnect Team
