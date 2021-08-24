@@ -14,7 +14,17 @@
  * limitations under the License.
  */
 
-export * from './addAndSendMsgToChat';
-export * from './getOrGenerate';
-export * from './randomId';
-export * from './sendTextMsgToChat';
+import { exportModule } from '../exportModule';
+
+/** @moduleID 83051
+ * @whatsapp 2.2132.6
+ */
+export declare function getOrGenerate(): string;
+
+exportModule(
+  exports,
+  {
+    getOrGenerate: 'getOrGenerate',
+  },
+  (m) => m.getOrGenerate
+);
