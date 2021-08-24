@@ -54,6 +54,7 @@ export * from './ProfilePicThumbModel';
 export * from './QuickReplyModel';
 export * from './RecentEmojiModel';
 export * from './ReplyButtonModel';
+export * from './StateModel';
 export * from './StatusModel';
 export * from './StatusV3Model';
 export * from './StickerModel';

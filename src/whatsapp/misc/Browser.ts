@@ -14,17 +14,30 @@
  * limitations under the License.
  */
 
-export * from './Browser';
-export * from './ClockSkew';
-export * from './Conn';
-export * from './Constants';
-export * from './EventEmitter';
-export * from './ImageUtils';
-export * from './MediaUtils';
-export * from './MsgKey';
-export * from './MsgLoadState';
-export * from './State';
-export * from './Stringable';
-export * from './UserPrefs';
-export * from './Wid';
-export * from './WidFactory';
+import { exportModule } from '../exportModule';
+
+/**
+ * @moduleID 92018
+ * @whatsapp 2.2132.6
+ */
+export declare const Browser: {
+  promptUnloadGuards: number;
+  id(): string;
+  info(): {
+    os: string;
+    version: string;
+    name: string;
+    ua: string;
+  };
+  hardRefresh(): never;
+  startDownloading(): void;
+  clearDownloading(): void;
+  isDownloading(): boolean;
+  open(e: any): void;
+};
+
+exportModule(
+  exports,
+  { Browser: 'default' },
+  (m) => m.default.id && m.default.startDownloading
+);
