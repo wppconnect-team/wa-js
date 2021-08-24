@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-export * from './ClockSkew';
-export * from './Conn';
-export * from './Constants';
-export * from './EventEmitter';
-export * from './ImageUtils';
-export * from './MediaUtils';
-export * from './MsgKey';
-export * from './MsgLoadState';
-export * from './Stringable';
-export * from './UserPrefs';
-export * from './Wid';
-export * from './WidFactory';
+import { exportModule } from '../exportModule';
+import { ConnModel } from '../models';
+
+/**
+ * @moduleID 12371
+ * @whatsapp 2.2126.14
+ */
+export declare const Conn: ConnModel;
+
+exportModule(exports, { Conn: 'default' }, (m) => m.Conn && m.default);

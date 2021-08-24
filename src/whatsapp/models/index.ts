@@ -26,6 +26,7 @@ export * from './CatalogModel';
 export * from './ChatModel';
 export * from './ChatPreferenceModel';
 export * from './ChatstateModel';
+export * from './ConnModel';
 export * from './ContactModel';
 export * from './ConversionTupleModel';
 export * from './EmojiVariantModel';
