@@ -43,7 +43,7 @@
     "simple-import-sort/exports": "error",
     "simple-import-sort/imports": "error"
   },
-  "ignorePatterns": ["webpack.config.js", "dist/*"],
+  "ignorePatterns": ["webpack.config.js", "dist/*", "wa-source/*"],
   "overrides": [
     {
       "files": ["src/whatsapp/**/*.ts"],
