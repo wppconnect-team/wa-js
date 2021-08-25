@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-import * as waVersion from '@wppconnect/wa-version';
 import * as fs from 'fs';
-import * as jsbeautify from 'js-beautify';
 import * as path from 'path';
-import * as playwright from 'playwright';
-import * as prettier from 'prettier';
+
+import { getPage, WA_DIR } from './browser';
 
 declare global {
   interface Window {
@@ -27,34 +25,12 @@ declare global {
   }
 }
 
-const URL = 'https://web.whatsapp.com/';
-
-const WA_DIR = path.resolve(__dirname, '../../wa-source');
-
 async function start() {
   if (!fs.existsSync(WA_DIR)) {
     fs.mkdirSync(WA_DIR);
   }
 
-  const browser = await playwright.chromium.launchPersistentContext(
-    path.resolve(__dirname, '../../userDataDir')
-  );
-
-  const page = browser.pages().length
-    ? browser.pages()[0]
-    : await browser.newPage();
-
-  page.route('**', (route, request) => {
-    if (request.url() === URL) {
-      return route.fulfill({
-        status: 200,
-        contentType: 'text/html',
-        body: waVersion.getPageContent(),
-      });
-    }
-
-    return route.continue();
-  });
+  const { browser, page } = await getPage();
 
   page.on('response', async (response) => {
     const contentType = response.headers()['content-type'] || '';
@@ -75,34 +51,6 @@ async function start() {
     const body = await response.body();
 
     fs.writeFileSync(filePath, body, { encoding: 'utf8' });
-  });
-
-  page.addInitScript(() => {
-    // Remove existent service worker
-    navigator.serviceWorker
-      .getRegistrations()
-      .then((registrations) => {
-        for (const registration of registrations) {
-          registration.unregister();
-        }
-      })
-      .catch(() => null);
-
-    // Disable service worker registration
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    navigator.serviceWorker.register = new Promise(() => {});
-  });
-
-  page.on('domcontentloaded', async () => {
-    await page.addScriptTag({
-      path: path.resolve(__dirname, '../../dist/wppconnect-wa.js'),
-    });
-  });
-
-  await page.goto(URL, {
-    waitUntil: 'domcontentloaded',
   });
 
   await page.waitForFunction(() => window.WPP?.isReady, null, {

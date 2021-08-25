@@ -14,63 +14,12 @@
  * limitations under the License.
  */
 
-import * as waVersion from '@wppconnect/wa-version';
-import * as path from 'path';
-import * as playwright from 'playwright';
-
-const URL = 'https://web.whatsapp.com/';
+import { getPage } from './browser';
 
 async function start() {
-  const browser = await playwright.chromium.launchPersistentContext(
-    path.resolve(__dirname, '../../userDataDir'),
-    {
-      headless: false,
-      devtools: true,
-    }
-  );
-
-  const page = browser.pages().length
-    ? browser.pages()[0]
-    : await browser.newPage();
-
-  page.route('**', (route, request) => {
-    if (request.url() === URL) {
-      return route.fulfill({
-        status: 200,
-        contentType: 'text/html',
-        body: waVersion.getPageContent(),
-      });
-    }
-
-    return route.continue();
-  });
-
-  page.addInitScript(() => {
-    // Remove existent service worker
-    navigator.serviceWorker
-      .getRegistrations()
-      .then((registrations) => {
-        for (const registration of registrations) {
-          registration.unregister();
-        }
-      })
-      .catch(() => null);
-
-    // Disable service worker registration
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    navigator.serviceWorker.register = new Promise(() => {});
-  });
-
-  page.on('domcontentloaded', async () => {
-    await page.addScriptTag({
-      path: path.resolve(__dirname, '../../dist/wppconnect-wa.js'),
-    });
-  });
-
-  await page.goto(URL, {
-    waitUntil: 'domcontentloaded',
+  await getPage({
+    headless: false,
+    devtools: true,
   });
 }
 start();

@@ -24,7 +24,7 @@
     "docs:build": "npm run docs:clean && npm run docs:fix && typedoc",
     "docs:clean": "shx rm -rf docs",
     "docs:fix": "ts-node ./docs-source/layouts/fix-docs.ts",
-    "launch:local": "ts-node ./src/tools/launchLocal",
+    "launch:local": "ts-node ./src/tools/launchLocal.ts",
     "lint": "npx eslint --ext .ts src",
     "prepare": "husky install && npm run clean && npm run build:prd",
     "release": "release-it",
