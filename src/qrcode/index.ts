@@ -17,7 +17,7 @@
 import Emittery from 'emittery';
 
 import * as webpack from '../webpack';
-import { Browser, Conn, Constants, State } from '../whatsapp';
+import { Browser, Conn, Constants, State, UserPrefs } from '../whatsapp';
 import { getOrGenerate } from '../whatsapp/functions';
 
 interface AuthCode {
@@ -54,7 +54,7 @@ class QRCode extends Emittery<EventTypes> {
   }
 
   async getAuthCode(): Promise<AuthCode | null> {
-    if (!Conn.ref || Conn.connected) {
+    if (!Conn.ref || UserPrefs.knowsPhone()) {
       return null;
     }
 
