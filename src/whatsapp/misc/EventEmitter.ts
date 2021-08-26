@@ -27,8 +27,8 @@ type Event = string | symbol;
 type Listener = (...args: any[]) => void;
 
 /**
- * @moduleID 54783
- * @whatsapp 2.2126.14
+ * @moduleID 14090
+ * @whatsapp 2.2132.6
  */
 export declare class EventEmitter {
   /**

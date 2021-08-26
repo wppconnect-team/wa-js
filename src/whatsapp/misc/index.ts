@@ -19,6 +19,7 @@ export * from './ClockSkew';
 export * from './Conn';
 export * from './Constants';
 export * from './EventEmitter';
+export * from './Features';
 export * from './ImageUtils';
 export * from './MediaUtils';
 export * from './MsgKey';
