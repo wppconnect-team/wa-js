@@ -19,7 +19,7 @@ import './deviceName';
 import * as webpack from './webpack';
 
 export { webpack };
-export * as auth from './auth';
+export { default as auth } from './auth';
 export * as chat from './chat';
 export { isInjected, isReady } from './webpack';
 export * as whatsapp from './whatsapp';

@@ -68,15 +68,22 @@ class QRCode extends Emittery<EventTypes> {
     });
 
     State.on('change:state', async () => {
-      const isIdle = await this.isIdle().catch(() => false);
+      const isIdle = this.isIdle();
       if (isIdle) {
         this.emit('idle');
       }
     });
   }
 
+  /**
+   * [getAuthCode description]
+   *
+   * @moduleID 57241
+   * @whatsapp 2.2132.6
+   * @return  {Promise<AuthCode>}[return description]
+   */
   async getAuthCode(): Promise<AuthCode | null> {
-    if (!Conn.ref || UserPrefs.knowsPhone()) {
+    if (!Conn.ref || Conn.connected || UserPrefs.knowsPhone()) {
       return null;
     }
 
@@ -120,12 +127,12 @@ class QRCode extends Emittery<EventTypes> {
     };
   }
 
-  public async isIdle(): Promise<boolean> {
+  public isIdle(): boolean {
     return State.state === Constants.SOCKET_STATE.UNPAIRED_IDLE;
   }
 
-  public async poke(): Promise<void> {
-    return State.poke();
+  public poke(): void {
+    State.poke();
   }
 }
 

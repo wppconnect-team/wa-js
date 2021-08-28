@@ -94,7 +94,7 @@ export declare class StateModel extends Model {
   shortTag(): any;
   tag(e?: any): any;
   launch(e?: any, t?: number): any;
-  poke(): any;
+  poke(): void;
   takeover(): any;
   exitLoop(e?: any): any;
   clearCredentialsAndStoredData(): any;
