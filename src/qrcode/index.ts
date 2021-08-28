@@ -17,15 +17,37 @@
 import Emittery from 'emittery';
 
 import * as webpack from '../webpack';
-import { Browser, Conn, Constants, State, UserPrefs } from '../whatsapp';
+import {
+  Base64,
+  Browser,
+  Conn,
+  Constants,
+  Features,
+  State,
+  UserPrefs,
+} from '../whatsapp';
 import { getOrGenerate } from '../whatsapp/functions';
+import { adv, waNoiseInfo, waSignalStore } from '../whatsapp/multidevice';
 
-interface AuthCode {
+interface AuthCodeSingleDevice {
+  multidevice: false;
   ref: string;
   keyPair: string;
   browserId: string;
   fullCode: string;
 }
+
+interface AuthCodeMultiDevice {
+  multidevice: true;
+  ref: string;
+  staticKeyPair: string;
+  identityKeyPair: string;
+  secretKey: string;
+  fullCode: string;
+}
+
+type AuthCode = AuthCodeSingleDevice | AuthCodeMultiDevice;
+
 interface EventTypes {
   change: AuthCode;
   idle: undefined;
@@ -59,12 +81,38 @@ class QRCode extends Emittery<EventTypes> {
     }
 
     const ref = Conn.ref;
+
+    if (Features.supportsFeature('MD_BACKEND')) {
+      const registrationInfo = await waSignalStore.getRegistrationInfo();
+      const noiseInfo = await waNoiseInfo.get();
+
+      const staticKeyPair = Base64.encodeB64(noiseInfo.staticKeyPair.pubKey);
+      const identityKeyPair = Base64.encodeB64(
+        registrationInfo.identityKeyPair.pubKey
+      );
+      const secretKey = adv.getADVSecretKey();
+
+      const fullCode = [ref, staticKeyPair, identityKeyPair, secretKey].join(
+        ','
+      );
+
+      return {
+        multidevice: true,
+        ref,
+        staticKeyPair,
+        identityKeyPair,
+        secretKey,
+        fullCode,
+      };
+    }
+
     const keyPair = getOrGenerate();
     const browserId = Browser.id();
 
-    const fullCode = ref + ',' + keyPair + ',' + browserId;
+    const fullCode = [ref, keyPair, browserId].join(',');
 
     return {
+      multidevice: false,
       ref,
       keyPair,
       browserId,

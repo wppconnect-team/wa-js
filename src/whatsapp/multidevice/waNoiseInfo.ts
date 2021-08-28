@@ -14,9 +14,29 @@
  * limitations under the License.
  */
 
-export * from './collections';
-export * as functions from './functions';
-export * from './misc';
-export * from './models';
-export * as multidevice from './multidevice';
-export * from './stores';
+import { exportModule } from '../exportModule';
+
+interface NoiseInfoData {
+  recoveryToken: ArrayBuffer;
+  staticKeyPair: {
+    privKey: ArrayBuffer;
+    pubKey: ArrayBuffer;
+  };
+}
+
+/**
+ * @moduleID 64468
+ * @whatsapp 2.2132.6
+ */
+declare class NoiseInfo {
+  get(): Promise<NoiseInfoData>;
+  set(info: Promise<NoiseInfoData>): any;
+}
+
+/**
+ * @moduleID 64468
+ * @whatsapp 2.2132.6
+ */
+export declare const waNoiseInfo: NoiseInfo;
+
+exportModule(exports, { waNoiseInfo: 'waNoiseInfo' }, (m) => m.waNoiseInfo);
