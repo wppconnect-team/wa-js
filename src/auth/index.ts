@@ -26,7 +26,7 @@ import {
   State,
   UserPrefs,
 } from '../whatsapp';
-import { getOrGenerate } from '../whatsapp/functions';
+import { getOrGenerate, isAuthenticated } from '../whatsapp/functions';
 import { adv, waNoiseInfo, waSignalStore } from '../whatsapp/multidevice';
 
 interface AuthCodeSingleDevice {
@@ -125,6 +125,10 @@ class QRCode extends Emittery<EventTypes> {
       browserId,
       fullCode,
     };
+  }
+
+  public isAuthenticated(): boolean {
+    return isAuthenticated();
   }
 
   public isIdle(): boolean {

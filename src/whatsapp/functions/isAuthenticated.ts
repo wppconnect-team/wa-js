@@ -14,8 +14,16 @@
  * limitations under the License.
  */
 
-export * from './addAndSendMsgToChat';
-export * from './getOrGenerate';
-export * from './isAuthenticated';
-export * from './randomId';
-export * from './sendTextMsgToChat';
+import { exportModule } from '../exportModule';
+
+export declare function isAuthenticated(): boolean;
+
+exportModule(
+  exports,
+  {
+    isAuthenticated: 'Z',
+  },
+  (m) =>
+    m.Z.toString().includes('isRegistered') &&
+    m.Z.toString().includes('getLoginTokens')
+);
