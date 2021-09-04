@@ -1,0 +1,37 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "watch",
+      "group": "build",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "Webpack (Dev, Continuous)",
+        "severity": "error",
+        "fileLocation": "absolute",
+        "source": "webpack-typescript",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "assets by path|building|sealing",
+          "endsPattern": "webpack [\\d.]+ compiled"
+        },
+        "pattern": [
+          {
+            "regexp": "ERROR in ([^\\(]*)\\((\\d+),(\\d+)\\):",
+            "file": 1,
+            "line": 2,
+            "column": 2
+          },
+          {
+            "regexp": "([A-Za-z0-9-]+):(.*)",
+            "message": 2,
+            "code": 1
+          }
+        ]
+      },
+      "label": "npm: watch",
+      "detail": "webpack watch"
+    }
+  ]
+}

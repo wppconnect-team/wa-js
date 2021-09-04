@@ -18,12 +18,15 @@ import * as waVersion from '@wppconnect/wa-version';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as playwright from 'playwright';
-import { LaunchOptions } from 'playwright';
 
 export const URL = 'https://web.whatsapp.com/';
 export const WA_DIR = path.resolve(__dirname, '../../wa-source');
 
-export async function getPage(options?: LaunchOptions) {
+type LaunchArguments = Parameters<
+  typeof playwright.chromium.launchPersistentContext
+>;
+
+export async function getPage(options?: LaunchArguments[1]) {
   const browser = await playwright.chromium.launchPersistentContext(
     path.resolve(__dirname, '../../userDataDir'),
     options
@@ -43,13 +46,26 @@ export async function getPage(options?: LaunchOptions) {
     }
 
     const fileName = path.basename(request.url());
-    const filePath = path.join(WA_DIR, fileName);
+    const filePathDist = path.join(
+      path.resolve(__dirname, '../../dist/'),
+      fileName
+    );
 
-    if (fs.existsSync(filePath)) {
+    if (request.url().includes('dist') && fs.existsSync(filePathDist)) {
       return route.fulfill({
         status: 200,
         contentType: 'text/javascript; charset=UTF-8',
-        body: fs.readFileSync(filePath, { encoding: 'utf8' }),
+        body: fs.readFileSync(filePathDist, { encoding: 'utf8' }),
+      });
+    }
+
+    const filePathSource = path.join(WA_DIR, fileName);
+
+    if (fs.existsSync(filePathSource)) {
+      return route.fulfill({
+        status: 200,
+        contentType: 'text/javascript; charset=UTF-8',
+        body: fs.readFileSync(filePathSource, { encoding: 'utf8' }),
       });
     }
 
@@ -76,7 +92,7 @@ export async function getPage(options?: LaunchOptions) {
 
   page.on('domcontentloaded', async () => {
     await page.addScriptTag({
-      path: path.resolve(__dirname, '../../dist/wppconnect-wa.js'),
+      url: `${URL}dist/wppconnect-wa.js`,
     });
   });
 

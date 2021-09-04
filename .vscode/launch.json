@@ -1,0 +1,26 @@
+{
+  // Use o IntelliSense para saber mais sobre os atributos possíveis.
+  // Focalizar para exibir as descrições dos atributos existentes.
+  // Para obter mais informações, acesse: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "pwa-chrome",
+      "request": "attach",
+      "name": "Launch local",
+      "address": "127.0.0.1",
+      "port": 9222,
+      "webRoot": "${workspaceFolder}",
+      "pathMapping": {
+        "/dist": "${workspaceFolder}/dist",
+        "/": "${workspaceFolder}/wa-source"
+      },
+      "preLaunchTask": "npm: watch",
+      "timeout": 30000,
+      "restart": true,
+      "server": {
+        "command": "npm run launch:local \"--\" \"--remote-debugging-port=9222\""
+      }
+    }
+  ]
+}

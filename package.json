@@ -32,7 +32,7 @@
     "wa-source:download": "ts-node ./src/tools/extractWhatsappSource.ts",
     "wa-source:format": "prettier --write ./wa-source",
     "wa-source": "npm run wa-source:clean && npm run wa-source:download && npm run wa-source:format",
-    "watch": "webpack --watch --devtool inline-source-map --mode development"
+    "watch": "webpack watch --devtool inline-source-map --mode development --progress"
   },
   "dependencies": {},
   "devDependencies": {

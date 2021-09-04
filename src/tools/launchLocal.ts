@@ -17,9 +17,13 @@
 import { getPage } from './browser';
 
 async function start() {
+  const args = process.argv.slice(2);
+
   await getPage({
     headless: false,
-    devtools: true,
+    devtools: !args.some((m) => m.includes('--remote-debugging-port')),
+    viewport: null,
+    args,
   });
 }
 start();
