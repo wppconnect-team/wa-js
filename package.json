@@ -21,7 +21,7 @@
     "changelog:update": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "clean": "shx rm -rf dist",
     "commit": "cz",
-    "docs:build": "npm run docs:clean && npm run docs:fix && typedoc",
+    "docs:build": "npm run docs:clean && npm run docs:fix && typedoc --gitRevision main",
     "docs:clean": "shx rm -rf docs",
     "docs:fix": "ts-node ./docs-source/layouts/fix-docs.ts",
     "launch:local": "ts-node ./src/tools/launchLocal.ts",
