@@ -14,9 +14,26 @@
  * limitations under the License.
  */
 
-import { Auth } from './Auth';
+export interface AuthCodeSingleDevice {
+  type: 'single';
+  ref: string;
+  keyPair: string;
+  browserId: string;
+  fullCode: string;
+}
 
-export * from './Auth';
-export * from './types';
+export interface AuthCodeMultiDevice {
+  type: 'multidevice';
+  ref: string;
+  staticKeyPair: string;
+  identityKeyPair: string;
+  secretKey: string;
+  fullCode: string;
+}
 
-export default new Auth();
+export type AuthCode = AuthCodeSingleDevice | AuthCodeMultiDevice;
+
+export interface AuthEventTypes {
+  change: AuthCode;
+  idle: undefined;
+}
