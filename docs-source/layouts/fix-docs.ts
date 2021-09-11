@@ -33,11 +33,12 @@ const defaultTheme = path.resolve(
 // Fix Theme
 // shell.cp(path.resolve(defaultTheme, './partials/type.hbs'), path.resolve(pagesThemeDir, './partials/'));
 shell.cp(
+  '-L',
   path.resolve(defaultTheme, './partials/*'),
   path.resolve(pagesThemeDir, './partials/')
 );
 shell.cp(
-  '-R',
+  '-RL',
   path.resolve(defaultTheme, './assets/*'),
   path.resolve(pagesThemeDir, './assets/')
 );
