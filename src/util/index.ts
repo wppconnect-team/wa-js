@@ -15,4 +15,5 @@
  */
 
 export * from './createWid';
+export * from './errors';
 export * from './types';

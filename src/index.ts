@@ -20,7 +20,7 @@ import * as webpack from './webpack';
 
 export { webpack };
 export { default as auth } from './auth';
-export * as chat from './chat';
+export { default as chat } from './chat';
 export { isInjected, isReady } from './webpack';
 export * as whatsapp from './whatsapp';
 

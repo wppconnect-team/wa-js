@@ -186,19 +186,19 @@ export declare const Constants: {
   CONTACT_US_MIN_DESC_LENGTH: number;
   CONTACT_US_MAX_DESC_LENGTH: number;
   ACK: {
-    MD_DOWNGRADE: number;
-    INACTIVE: number;
-    CONTENT_UNUPLOADABLE: number;
-    CONTENT_TOO_BIG: number;
-    CONTENT_GONE: number;
-    EXPIRED: number;
-    FAILED: number;
-    CLOCK: number;
-    SENT: number;
-    RECEIVED: number;
-    READ: number;
-    PLAYED: number;
-    PEER: number;
+    MD_DOWNGRADE: -7;
+    INACTIVE: -6;
+    CONTENT_UNUPLOADABLE: -5;
+    CONTENT_TOO_BIG: -4;
+    CONTENT_GONE: -3;
+    EXPIRED: -2;
+    FAILED: -1;
+    CLOCK: 0;
+    SENT: 1;
+    RECEIVED: 2;
+    READ: 3;
+    PLAYED: 4;
+    PEER: 5;
   };
   ACK_STRING: {
     SENDER: string;

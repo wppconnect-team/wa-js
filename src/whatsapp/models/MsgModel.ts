@@ -19,7 +19,7 @@
  */
 import { MsgCollection } from '../collections';
 import { exportProxyModel } from '../exportModule';
-import { MsgKey } from '../misc';
+import { MsgKey, Wid } from '../misc';
 import {
   Model,
   ModelOptions,
@@ -30,15 +30,15 @@ import {
 interface Props {
   id: MsgKey;
   rowId?: any;
-  body?: any;
-  type?: any;
-  subtype?: any;
-  t?: any;
+  body?: string;
+  type?: string;
+  subtype?: string | null;
+  t?: number;
   notifyName?: any;
-  from?: any;
-  to?: any;
+  from?: Wid;
+  to?: Wid;
   author?: any;
-  self?: any;
+  self?: string;
   /**
    * See {@link Constants}
    */
@@ -129,8 +129,8 @@ interface Props {
   selectedId?: any;
   selectedIndex?: any;
   multicast?: any;
-  urlText?: any;
-  urlNumber?: any;
+  urlText?: string | null;
+  urlNumber?: string | null;
   clearMedia?: any;
   isVcardOverMmsDocument: boolean;
   vcardList?: any;

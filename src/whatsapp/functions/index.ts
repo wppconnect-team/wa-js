@@ -15,6 +15,7 @@
  */
 
 export * from './addAndSendMsgToChat';
+export * from './findChat';
 export * from './getOrGenerate';
 export * from './isAuthenticated';
 export * from './randomId';

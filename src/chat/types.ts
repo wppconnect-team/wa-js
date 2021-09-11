@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-import { exportModule } from '../exportModule';
-import { ChatModel, ModelPropertiesContructor, MsgModel } from '../models';
+import { ModelPropertiesContructor, MsgModel } from '../whatsapp';
 
-export declare function addAndSendMsgToChat(
-  chat: ChatModel,
-  message: ModelPropertiesContructor<MsgModel>
-): Promise<[Promise<MsgModel>, Promise<string>]>;
+export interface ChatEventTypes {
+  change: string;
+  idle: undefined;
+}
 
-exportModule(
-  exports,
-  {
-    addAndSendMsgToChat: 'addAndSendMsgToChat',
-  },
-  (m) => m.addAndSendMsgToChat
-);
+export interface ChatSendMessageOptions {
+  waitForAck?: boolean;
+  createChat?: boolean;
+}
+
+export type ChatRawMessage = ModelPropertiesContructor<MsgModel>;

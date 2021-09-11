@@ -14,18 +14,21 @@
  * limitations under the License.
  */
 
-import { exportModule } from '../exportModule';
-import { ChatModel, ModelPropertiesContructor, MsgModel } from '../models';
+import { createWid, WPPError } from '../util';
+import { Wid } from '../whatsapp';
 
-export declare function addAndSendMsgToChat(
-  chat: ChatModel,
-  message: ModelPropertiesContructor<MsgModel>
-): Promise<[Promise<MsgModel>, Promise<string>]>;
+export class InvalidWid extends WPPError {
+  constructor(readonly id: string | { _serialized: string }) {
+    super('invalid_wid', `Invalid WID value for ${id}`);
+  }
+}
 
-exportModule(
-  exports,
-  {
-    addAndSendMsgToChat: 'addAndSendMsgToChat',
-  },
-  (m) => m.addAndSendMsgToChat
-);
+export function assertWid(id: string | { _serialized: string }): Wid {
+  const wid = createWid(id);
+
+  if (!wid) {
+    throw new InvalidWid(id);
+  }
+
+  return wid;
+}

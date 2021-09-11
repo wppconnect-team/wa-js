@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
+import { Wid } from '..';
 import { exportModule } from '../exportModule';
-import { ChatModel, ModelPropertiesContructor, MsgModel } from '../models';
+import { ChatModel } from '../models';
 
-export declare function addAndSendMsgToChat(
-  chat: ChatModel,
-  message: ModelPropertiesContructor<MsgModel>
-): Promise<[Promise<MsgModel>, Promise<string>]>;
+export declare function findChat(wid: Wid): Promise<ChatModel>;
 
 exportModule(
   exports,
   {
-    addAndSendMsgToChat: 'addAndSendMsgToChat',
+    findChat: 'findChat',
   },
-  (m) => m.addAndSendMsgToChat
+  (m) => m.findChat
 );

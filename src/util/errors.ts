@@ -14,18 +14,8 @@
  * limitations under the License.
  */
 
-import { exportModule } from '../exportModule';
-import { ChatModel, ModelPropertiesContructor, MsgModel } from '../models';
-
-export declare function addAndSendMsgToChat(
-  chat: ChatModel,
-  message: ModelPropertiesContructor<MsgModel>
-): Promise<[Promise<MsgModel>, Promise<string>]>;
-
-exportModule(
-  exports,
-  {
-    addAndSendMsgToChat: 'addAndSendMsgToChat',
-  },
-  (m) => m.addAndSendMsgToChat
-);
+export class WPPError extends Error {
+  constructor(readonly code: string, message: string) {
+    super(message);
+  }
+}
