@@ -14,19 +14,24 @@
  * limitations under the License.
  */
 
-import { SendMsgResult } from '../enums';
 import { exportModule } from '../exportModule';
-import { ChatModel, ModelPropertiesContructor, MsgModel } from '../models';
 
-export declare function addAndSendMsgToChat(
-  chat: ChatModel,
-  message: ModelPropertiesContructor<MsgModel>
-): Promise<[Promise<MsgModel>, Promise<SendMsgResult>]>;
+/** @moduleID 88300
+ * @whatsapp 2.2134.10
+ */
+export declare enum SendMsgResult {
+  OK = 'OK',
+  ERROR_NETWORK = 'ERROR_NETWORK',
+  ERROR_EXPIRED = 'ERROR_EXPIRED',
+  ERROR_CANCELLED = 'ERROR_CANCELLED',
+  ERROR_UPLOAD = 'ERROR_UPLOAD',
+  ERROR_UNKNOWN = 'ERROR_UNKNOWN',
+}
 
 exportModule(
   exports,
   {
-    addAndSendMsgToChat: 'addAndSendMsgToChat',
+    SendMsgResult: 'SendMsgResult',
   },
-  (m) => m.addAndSendMsgToChat
+  (m) => m.SendMsgResult
 );

@@ -104,9 +104,11 @@ export class Chat extends Emittery<ChatEventTypes> {
     if (options.waitForAck) {
       debugMessage(`waiting ack for ${message.id}`);
 
-      await result[1];
+      const sendResult = await result[1];
 
-      debugMessage(`ack received for ${message.id} (ACK: ${finalMessage.ack})`);
+      debugMessage(
+        `ack received for ${message.id} (ACK: ${finalMessage.ack}, SendResult: ${sendResult})`
+      );
     }
 
     return {

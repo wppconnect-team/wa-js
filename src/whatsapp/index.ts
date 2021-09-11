@@ -15,6 +15,7 @@
  */
 
 export * from './collections';
+export * as enums from './enums';
 export * as functions from './functions';
 export * from './misc';
 export * from './models';

@@ -14,19 +14,4 @@
  * limitations under the License.
  */
 
-import { SendMsgResult } from '../enums';
-import { exportModule } from '../exportModule';
-import { ChatModel, ModelPropertiesContructor, MsgModel } from '../models';
-
-export declare function addAndSendMsgToChat(
-  chat: ChatModel,
-  message: ModelPropertiesContructor<MsgModel>
-): Promise<[Promise<MsgModel>, Promise<SendMsgResult>]>;
-
-exportModule(
-  exports,
-  {
-    addAndSendMsgToChat: 'addAndSendMsgToChat',
-  },
-  (m) => m.addAndSendMsgToChat
-);
+export * from './SendMsgResult';
