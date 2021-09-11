@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>SessionChatBase | @wppconnect/wa-js - v0.1.0</title>
+	<title>AuthCodeMultiDevice | @wppconnect/wa-js - v0.1.0</title>
 	<meta name="description" content="Documentation for @wppconnect/wa-js - v0.1.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -65,13 +65,13 @@
 					<a href="../modules.html">@wppconnect/wa-js - v0.1.0</a>
 				</li>
 				<li>
-					<a href="../modules/whatsapp.html">whatsapp</a>
+					<a href="../modules/typesOnly.html">typesOnly</a>
 				</li>
 				<li>
-					<a href="whatsapp.SessionChatBase.html">SessionChatBase</a>
+					<a href="typesOnly.AuthCodeMultiDevice.html">AuthCodeMultiDevice</a>
 				</li>
 			</ul>
-			<h1>Interface SessionChatBase</h1>
+			<h1>Interface AuthCodeMultiDevice</h1>
 		</div>
 	</div>
 </header>
@@ -82,7 +82,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">SessionChatBase</span>
+						<span class="target">AuthCodeMultiDevice</span>
 					</li>
 				</ul>
 			</section>
@@ -93,12 +93,12 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="whatsapp.SessionChatBase.html#disableUnreadAnchor" class="tsd-kind-icon">disable<wbr>Unread<wbr>Anchor</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="whatsapp.SessionChatBase.html#lastReceivedKey" class="tsd-kind-icon">last<wbr>Received<wbr>Key</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="whatsapp.SessionChatBase.html#msgChunks" class="tsd-kind-icon">msg<wbr>Chunks</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="whatsapp.SessionChatBase.html#msgsChanged" class="tsd-kind-icon">msgs<wbr>Changed</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="whatsapp.SessionChatBase.html#msgsLength" class="tsd-kind-icon">msgs<wbr>Length</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="whatsapp.SessionChatBase.html#unreadMsgAnchor" class="tsd-kind-icon">unread<wbr>Msg<wbr>Anchor</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="typesOnly.AuthCodeMultiDevice.html#fullCode" class="tsd-kind-icon">full<wbr>Code</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="typesOnly.AuthCodeMultiDevice.html#identityKeyPair" class="tsd-kind-icon">identity<wbr>Key<wbr>Pair</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="typesOnly.AuthCodeMultiDevice.html#ref" class="tsd-kind-icon">ref</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="typesOnly.AuthCodeMultiDevice.html#secretKey" class="tsd-kind-icon">secret<wbr>Key</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="typesOnly.AuthCodeMultiDevice.html#staticKeyPair" class="tsd-kind-icon">static<wbr>Key<wbr>Pair</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="typesOnly.AuthCodeMultiDevice.html#type" class="tsd-kind-icon">type</a></li>
 							</ul>
 						</section>
 					</div>
@@ -107,62 +107,62 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="disableUnreadAnchor" class="tsd-anchor"></a>
-					<h3>disable<wbr>Unread<wbr>Anchor</h3>
-					<div class="tsd-signature tsd-kind-icon">disable<wbr>Unread<wbr>Anchor<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<a name="fullCode" class="tsd-anchor"></a>
+					<h3>full<wbr>Code</h3>
+					<div class="tsd-signature tsd-kind-icon">full<wbr>Code<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/whatsapp/models/ModelChatBase.ts#L40">src/whatsapp/models/ModelChatBase.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/auth/types.ts#L31">src/auth/types.ts:31</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="lastReceivedKey" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> last<wbr>Received<wbr>Key</h3>
-					<div class="tsd-signature tsd-kind-icon">last<wbr>Received<wbr>Key<span class="tsd-signature-symbol">:</span> <a href="../classes/whatsapp.MsgKey.html" class="tsd-signature-type" data-tsd-kind="Class">MsgKey</a></div>
+					<a name="identityKeyPair" class="tsd-anchor"></a>
+					<h3>identity<wbr>Key<wbr>Pair</h3>
+					<div class="tsd-signature tsd-kind-icon">identity<wbr>Key<wbr>Pair<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/whatsapp/models/ModelChatBase.ts#L38">src/whatsapp/models/ModelChatBase.ts:38</a></li>
+							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/auth/types.ts#L29">src/auth/types.ts:29</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="msgChunks" class="tsd-anchor"></a>
-					<h3>msg<wbr>Chunks</h3>
-					<div class="tsd-signature tsd-kind-icon">msg<wbr>Chunks<span class="tsd-signature-symbol">:</span> <a href="../classes/whatsapp.MsgLoad.html" class="tsd-signature-type" data-tsd-kind="Class">MsgLoad</a><span class="tsd-signature-symbol">[]</span></div>
+					<a name="ref" class="tsd-anchor"></a>
+					<h3>ref</h3>
+					<div class="tsd-signature tsd-kind-icon">ref<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/whatsapp/models/ModelChatBase.ts#L37">src/whatsapp/models/ModelChatBase.ts:37</a></li>
+							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/auth/types.ts#L27">src/auth/types.ts:27</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="msgsChanged" class="tsd-anchor"></a>
-					<h3>msgs<wbr>Changed</h3>
-					<div class="tsd-signature tsd-kind-icon">msgs<wbr>Changed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="secretKey" class="tsd-anchor"></a>
+					<h3>secret<wbr>Key</h3>
+					<div class="tsd-signature tsd-kind-icon">secret<wbr>Key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/whatsapp/models/ModelChatBase.ts#L42">src/whatsapp/models/ModelChatBase.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/auth/types.ts#L30">src/auth/types.ts:30</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="msgsLength" class="tsd-anchor"></a>
-					<h3>msgs<wbr>Length</h3>
-					<div class="tsd-signature tsd-kind-icon">msgs<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="staticKeyPair" class="tsd-anchor"></a>
+					<h3>static<wbr>Key<wbr>Pair</h3>
+					<div class="tsd-signature tsd-kind-icon">static<wbr>Key<wbr>Pair<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/whatsapp/models/ModelChatBase.ts#L41">src/whatsapp/models/ModelChatBase.ts:41</a></li>
+							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/auth/types.ts#L28">src/auth/types.ts:28</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="unreadMsgAnchor" class="tsd-anchor"></a>
-					<h3>unread<wbr>Msg<wbr>Anchor</h3>
-					<div class="tsd-signature tsd-kind-icon">unread<wbr>Msg<wbr>Anchor<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<a name="type" class="tsd-anchor"></a>
+					<h3>type</h3>
+					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;multidevice&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/whatsapp/models/ModelChatBase.ts#L39">src/whatsapp/models/ModelChatBase.ts:39</a></li>
+							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/auth/types.ts#L26">src/auth/types.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -177,13 +177,13 @@
 					<li class=" ">
 						<a href="../modules.html">Exports</a>
 					</li>
-					<li class=" tsd-kind-namespace">
+					<li class="current tsd-kind-namespace">
 						<a href="../modules/typesOnly.html">types<wbr>Only</a>
 					</li>
 					<li class=" tsd-kind-namespace">
 						<a href="../modules/webpack.html">webpack</a>
 					</li>
-					<li class="current tsd-kind-namespace">
+					<li class=" tsd-kind-namespace">
 						<a href="../modules/whatsapp.html">whatsapp</a>
 					</li>
 					<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
@@ -199,33 +199,57 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-parent-kind-namespace">
+						<a href="../classes/typesOnly.Auth.html" class="tsd-kind-icon">Auth</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace">
+						<a href="../classes/typesOnly.Chat.html" class="tsd-kind-icon">Chat</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="whatsapp.SessionChatBase.html" class="tsd-kind-icon">Session<wbr>Chat<wbr>Base</a>
+						<a href="typesOnly.AuthCodeMultiDevice.html" class="tsd-kind-icon">Auth<wbr>Code<wbr>Multi<wbr>Device</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="whatsapp.SessionChatBase.html#disableUnreadAnchor" class="tsd-kind-icon">disable<wbr>Unread<wbr>Anchor</a>
+								<a href="typesOnly.AuthCodeMultiDevice.html#fullCode" class="tsd-kind-icon">full<wbr>Code</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="whatsapp.SessionChatBase.html#lastReceivedKey" class="tsd-kind-icon">last<wbr>Received<wbr>Key</a>
+								<a href="typesOnly.AuthCodeMultiDevice.html#identityKeyPair" class="tsd-kind-icon">identity<wbr>Key<wbr>Pair</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="whatsapp.SessionChatBase.html#msgChunks" class="tsd-kind-icon">msg<wbr>Chunks</a>
+								<a href="typesOnly.AuthCodeMultiDevice.html#ref" class="tsd-kind-icon">ref</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="whatsapp.SessionChatBase.html#msgsChanged" class="tsd-kind-icon">msgs<wbr>Changed</a>
+								<a href="typesOnly.AuthCodeMultiDevice.html#secretKey" class="tsd-kind-icon">secret<wbr>Key</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="whatsapp.SessionChatBase.html#msgsLength" class="tsd-kind-icon">msgs<wbr>Length</a>
+								<a href="typesOnly.AuthCodeMultiDevice.html#staticKeyPair" class="tsd-kind-icon">static<wbr>Key<wbr>Pair</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="whatsapp.SessionChatBase.html#unreadMsgAnchor" class="tsd-kind-icon">unread<wbr>Msg<wbr>Anchor</a>
+								<a href="typesOnly.AuthCodeMultiDevice.html#type" class="tsd-kind-icon">type</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="typesOnly.AuthCodeSingleDevice.html" class="tsd-kind-icon">Auth<wbr>Code<wbr>Single<wbr>Device</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="typesOnly.AuthEventTypes.html" class="tsd-kind-icon">Auth<wbr>Event<wbr>Types</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="typesOnly.ChatEventTypes.html" class="tsd-kind-icon">Chat<wbr>Event<wbr>Types</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="typesOnly.ChatSendMessageOptions.html" class="tsd-kind-icon">Chat<wbr>Send<wbr>Message<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+						<a href="../modules/typesOnly.html#AuthCode" class="tsd-kind-icon">Auth<wbr>Code</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+						<a href="../modules/typesOnly.html#ChatRawMessage" class="tsd-kind-icon">Chat<wbr>Raw<wbr>Message</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
