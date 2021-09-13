@@ -115,14 +115,14 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="typesOnly.Chat.html#anyEvent" class="tsd-kind-icon">any<wbr>Event</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="typesOnly.Chat.html#bindMethods" class="tsd-kind-icon">bind<wbr>Methods</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="typesOnly.Chat.html#clearListeners" class="tsd-kind-icon">clear<wbr>Listeners</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external"><a href="typesOnly.Chat.html#clearListeners" class="tsd-kind-icon">clear<wbr>Listeners</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external"><a href="typesOnly.Chat.html#emit" class="tsd-kind-icon">emit</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external"><a href="typesOnly.Chat.html#emitSerial" class="tsd-kind-icon">emit<wbr>Serial</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external"><a href="typesOnly.Chat.html#events" class="tsd-kind-icon">events</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="typesOnly.Chat.html#find" class="tsd-kind-icon">find</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="typesOnly.Chat.html#get" class="tsd-kind-icon">get</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="typesOnly.Chat.html#initialize" class="tsd-kind-icon">initialize</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="typesOnly.Chat.html#listenerCount" class="tsd-kind-icon">listener<wbr>Count</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external"><a href="typesOnly.Chat.html#listenerCount" class="tsd-kind-icon">listener<wbr>Count</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external"><a href="typesOnly.Chat.html#off" class="tsd-kind-icon">off</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="typesOnly.Chat.html#offAny" class="tsd-kind-icon">off<wbr>Any</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external"><a href="typesOnly.Chat.html#on" class="tsd-kind-icon">on</a></li>
@@ -395,11 +395,11 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external">
 					<a name="clearListeners" class="tsd-anchor"></a>
 					<h3>clear<wbr>Listeners</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">clear<wbr>Listeners<span class="tsd-signature-symbol">(</span>eventName<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">keyof </span><a href="../interfaces/typesOnly.ChatEventTypes.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatEventTypes</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">clear<wbr>Listeners&lt;Name&gt;<span class="tsd-signature-symbol">(</span>eventName<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -415,10 +415,16 @@
 								</div>
 								<p>If <code>eventName</code> is given, only the listeners for that event are cleared.</p>
 							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>Name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="../interfaces/typesOnly.ChatEventTypes.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatEventTypes</a></h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> eventName: <span class="tsd-signature-symbol">keyof </span><a href="../interfaces/typesOnly.ChatEventTypes.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatEventTypes</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> eventName: <span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -722,11 +728,11 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external">
 					<a name="listenerCount" class="tsd-anchor"></a>
 					<h3>listener<wbr>Count</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">listener<wbr>Count<span class="tsd-signature-symbol">(</span>eventName<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">keyof </span><a href="../interfaces/typesOnly.ChatEventTypes.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatEventTypes</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">listener<wbr>Count&lt;Name&gt;<span class="tsd-signature-symbol">(</span>eventName<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -741,10 +747,16 @@
 									<p>The number of listeners for the <code>eventName</code> or all events if not specified.</p>
 								</div>
 							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>Name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><a href="../interfaces/typesOnly.ChatEventTypes.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatEventTypes</a></h4>
+								</li>
+							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> eventName: <span class="tsd-signature-symbol">keyof </span><a href="../interfaces/typesOnly.ChatEventTypes.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatEventTypes</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> eventName: <span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -755,7 +767,7 @@
 					<a name="off" class="tsd-anchor"></a>
 					<h3>off</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">off&lt;Name&gt;<span class="tsd-signature-symbol">(</span>eventName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Name</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>eventData<span class="tsd-signature-symbol">: </span><a href="../interfaces/typesOnly.ChatEventTypes.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatEventTypes</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">OmnipresentEventData</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">off&lt;Name&gt;<span class="tsd-signature-symbol">(</span>eventName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">[]</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>eventData<span class="tsd-signature-symbol">: </span><a href="../interfaces/typesOnly.ChatEventTypes.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatEventTypes</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">OmnipresentEventData</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -800,7 +812,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>eventName: <span class="tsd-signature-type">Name</span></h5>
+									<h5>eventName: <span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
 									<h5>listener: <span class="tsd-signature-symbol">(</span>eventData<span class="tsd-signature-symbol">: </span><a href="../interfaces/typesOnly.ChatEventTypes.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatEventTypes</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">OmnipresentEventData</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h5>
@@ -882,7 +894,7 @@
 					<a name="on" class="tsd-anchor"></a>
 					<h3>on</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">on&lt;Name&gt;<span class="tsd-signature-symbol">(</span>eventName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Name</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>eventData<span class="tsd-signature-symbol">: </span><a href="../interfaces/typesOnly.ChatEventTypes.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatEventTypes</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">OmnipresentEventData</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">UnsubscribeFn</span></li>
+						<li class="tsd-signature tsd-kind-icon">on&lt;Name&gt;<span class="tsd-signature-symbol">(</span>eventName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">[]</span>, listener<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>eventData<span class="tsd-signature-symbol">: </span><a href="../interfaces/typesOnly.ChatEventTypes.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatEventTypes</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">OmnipresentEventData</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">UnsubscribeFn</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -926,7 +938,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>eventName: <span class="tsd-signature-type">Name</span></h5>
+									<h5>eventName: <span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
 									<h5>listener: <span class="tsd-signature-symbol">(</span>eventData<span class="tsd-signature-symbol">: </span><a href="../interfaces/typesOnly.ChatEventTypes.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatEventTypes</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">OmnipresentEventData</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h5>
@@ -1010,7 +1022,7 @@
 					<a name="once" class="tsd-anchor"></a>
 					<h3>once</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">once&lt;Name&gt;<span class="tsd-signature-symbol">(</span>eventName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/typesOnly.ChatEventTypes.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatEventTypes</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">OmnipresentEventData</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">once&lt;Name&gt;<span class="tsd-signature-symbol">(</span>eventName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/typesOnly.ChatEventTypes.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatEventTypes</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">OmnipresentEventData</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -1055,7 +1067,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>eventName: <span class="tsd-signature-type">Name</span></h5>
+									<h5>eventName: <span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/typesOnly.ChatEventTypes.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatEventTypes</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">OmnipresentEventData</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">Name</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1270,7 +1282,7 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="typesOnly.Chat.html#bindMethods" class="tsd-kind-icon">bind<wbr>Methods</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external">
 								<a href="typesOnly.Chat.html#clearListeners" class="tsd-kind-icon">clear<wbr>Listeners</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external">
@@ -1291,7 +1303,7 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="typesOnly.Chat.html#initialize" class="tsd-kind-icon">initialize</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external">
 								<a href="typesOnly.Chat.html#listenerCount" class="tsd-kind-icon">listener<wbr>Count</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external">
