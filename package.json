@@ -48,7 +48,7 @@
     "commitizen": "^4.2.4",
     "conventional-changelog-cli": "^2.1.1",
     "debug": "^4.3.2",
-    "emittery": "^0.9.2",
+    "emittery": "^0.10.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-header": "^3.1.1",
