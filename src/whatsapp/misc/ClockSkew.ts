@@ -17,8 +17,7 @@
 import { exportModule } from '../exportModule';
 
 /**
- * @moduleID 56656
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:56656
  */
 export declare const ClockSkew: {
   is24h: boolean;

@@ -20,8 +20,7 @@ import { MsgKey, Wid } from '../misc';
 import { ModelOptions, ModelPropertiesContructor, ModelProxy } from './Model';
 import { ModelChatBase, PropsChatBase, SessionChatBase } from './ModelChatBase';
 
-/** @moduleID 6653
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:6653
  */
 interface Props extends PropsChatBase {
   lastReceivedKey?: MsgKey;
@@ -44,8 +43,7 @@ interface Props extends PropsChatBase {
   endOfHistoryTransferType?: any;
 }
 
-/** @moduleID 6653
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:6653
  */
 interface Session extends SessionChatBase {
   stale?: any;
@@ -87,8 +85,7 @@ interface Session extends SessionChatBase {
   pendingInitialLoading?: any;
 }
 
-/** @moduleID 6653
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:6653
  */
 interface Derived {
   kind?: any;
@@ -106,15 +103,13 @@ interface Derived {
   shouldShowUnreadInTitle?: any;
 }
 
-/** @moduleID 6653
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:6653
  */
 export declare interface ChatModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 6653
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:6653
  */
 export declare class ChatModel extends ModelChatBase {
   idClass: typeof Wid;

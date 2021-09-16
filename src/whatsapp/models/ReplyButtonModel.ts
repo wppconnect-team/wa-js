@@ -22,36 +22,31 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 83065
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:83065
  */
 interface Props {
   id?: any;
   displayText?: any;
 }
 
-/** @moduleID 83065
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:83065
  */
 interface Session {
   stale?: any;
   selected?: any;
 }
 
-/** @moduleID 83065
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:83065
  */
 interface Derived {}
 
-/** @moduleID 83065
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:83065
  */
 export declare interface ReplyButtonModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 83065
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:83065
  */
 export declare class ReplyButtonModel extends Model {
   constructor(

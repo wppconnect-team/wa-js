@@ -19,8 +19,7 @@ import { MuteModel } from '../models';
 import { Collection } from './Collection';
 
 /**
- * @moduleID 1340
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:1340
  */
 export declare class MuteCollection extends Collection<MuteModel> {
   static model: MuteModel;

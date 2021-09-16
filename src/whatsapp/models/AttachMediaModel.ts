@@ -22,8 +22,7 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 23491
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:23491
  */
 interface Props {
   id?: any;
@@ -33,8 +32,7 @@ interface Props {
   isVcardOverMmsDocument: boolean;
 }
 
-/** @moduleID 23491
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:23491
  */
 interface Session {
   stale?: any;
@@ -57,8 +55,7 @@ interface Session {
   gifAttribution?: any;
 }
 
-/** @moduleID 23491
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:23491
  */
 interface Derived {
   previewable?: any;
@@ -66,15 +63,13 @@ interface Derived {
   fileExt?: any;
 }
 
-/** @moduleID 23491
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:23491
  */
 export declare interface AttachMediaModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 23491
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:23491
  */
 export declare class AttachMediaModel extends Model {
   constructor(

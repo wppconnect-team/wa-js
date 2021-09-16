@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-/** @moduleID 94490
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:94490
  */
 import { MsgCollection } from '../collections';
 import { exportProxyModel } from '../exportModule';
@@ -199,8 +198,7 @@ interface Props {
   isMdHistoryMsg: boolean;
 }
 
-/** @moduleID 94490
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:94490
  */
 interface Session {
   stale?: any;
@@ -218,8 +216,7 @@ interface Session {
   linksIndexParsed?: any;
 }
 
-/** @moduleID 94490
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:94490
  */
 interface Derived {
   chat?: any;
@@ -276,14 +273,12 @@ interface Derived {
   productListHeaderImage?: any;
 }
 
-/** @moduleID 94490
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:94490
  */
 export declare interface MsgModel extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 94490
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:94490
  */
 export declare class MsgModel extends Model {
   idClass: typeof MsgKey;

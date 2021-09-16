@@ -23,8 +23,7 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 78608
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:78608
  */
 interface Props {
   id: Wid;
@@ -33,28 +32,24 @@ interface Props {
   deny?: any;
 }
 
-/** @moduleID 78608
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:78608
  */
 interface Session {
   updateTime?: any;
   expireTimerId?: any;
 }
 
-/** @moduleID 78608
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:78608
  */
 interface Derived {}
 
-/** @moduleID 78608
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:78608
  */
 export declare interface ChatstateModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 78608
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:78608
  */
 export declare class ChatstateModel extends Model {
   idClass: typeof Wid;

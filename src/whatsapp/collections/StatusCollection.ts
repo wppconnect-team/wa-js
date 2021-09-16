@@ -20,8 +20,7 @@ import { StatusModel } from '../models';
 import { Collection } from './Collection';
 
 /**
- * @moduleID 43351
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:43351
  */
 export declare class StatusCollection extends Collection<StatusModel> {
   static model: StatusModel;

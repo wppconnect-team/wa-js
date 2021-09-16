@@ -24,8 +24,7 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 72796
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:72796
  */
 interface Props {
   id: Wid;
@@ -43,27 +42,23 @@ interface Props {
   structuredAddress?: any;
 }
 
-/** @moduleID 72796
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:72796
  */
 interface Session {
   stale?: any;
 }
 
-/** @moduleID 72796
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:72796
  */
 interface Derived {}
 
-/** @moduleID 72796
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:72796
  */
 export declare interface BusinessProfileModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 72796
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:72796
  */
 export declare class BusinessProfileModel extends Model<BusinessProfileCollection> {
   idClass: typeof Wid;

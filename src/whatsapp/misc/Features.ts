@@ -108,8 +108,7 @@ type FeaturesNames =
   | 'RICH_TEXT';
 
 /**
- * @moduleID 77188
- * @whatsapp 2.2132.6
+ * @whatsapp 2.2132.6:77188
  */
 declare class FeatureClass extends EventEmitter {
   FEATURE_CHANGE_EVENT: string;
@@ -150,8 +149,7 @@ declare class FeatureClass extends EventEmitter {
 }
 
 /**
- * @moduleID 77188
- * @whatsapp 2.2132.6
+ * @whatsapp 2.2132.6:77188
  */
 export declare const Features: FeatureClass;
 

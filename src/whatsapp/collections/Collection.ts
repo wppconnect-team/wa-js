@@ -39,8 +39,7 @@ export declare interface Collection<M>
     > {}
 
 /**
- * @moduleID 64770
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:64770
  */
 export declare class Collection<M, A = M | M[]> extends EventEmitter {
   static model: any;

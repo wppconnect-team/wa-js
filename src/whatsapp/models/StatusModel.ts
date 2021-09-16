@@ -24,35 +24,30 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 86018
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:86018
  */
 interface Props {
   id: Wid;
   status?: any;
 }
 
-/** @moduleID 86018
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:86018
  */
 interface Session {
   stale?: any;
 }
 
-/** @moduleID 86018
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:86018
  */
 interface Derived {}
 
-/** @moduleID 86018
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:86018
  */
 export declare interface StatusModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 86018
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:86018
  */
 export declare class StatusModel extends Model<StatusCollection> {
   idClass: typeof Wid;

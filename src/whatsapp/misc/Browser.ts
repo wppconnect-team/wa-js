@@ -17,8 +17,7 @@
 import { exportModule } from '../exportModule';
 
 /**
- * @moduleID 92018
- * @whatsapp 2.2132.6
+ * @whatsapp 2.2132.6:92018
  */
 export declare const Browser: {
   promptUnloadGuards: number;

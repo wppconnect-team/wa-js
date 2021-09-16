@@ -19,8 +19,7 @@ import { ChatModel } from '../models';
 import { CollectionCache } from './CollectionCache';
 
 /**
- * @moduleID 18917
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:18917
  */
 export declare class ChatCollection extends CollectionCache<ChatModel> {
   static model: ChatModel;

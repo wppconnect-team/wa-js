@@ -23,8 +23,7 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 59706
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:59706
  */
 interface Props {
   id?: any;
@@ -35,27 +34,23 @@ interface Props {
   imageCdnUrl?: any;
 }
 
-/** @moduleID 59706
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:59706
  */
 interface Session {
   stale?: any;
 }
 
-/** @moduleID 59706
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:59706
  */
 interface Derived {}
 
-/** @moduleID 59706
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:59706
  */
 export declare interface CartItemModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 59706
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:59706
  */
 export declare class CartItemModel extends Model<CartCollection> {
   constructor(

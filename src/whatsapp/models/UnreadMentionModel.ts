@@ -22,35 +22,30 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 58792
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:58792
  */
 interface Props {
   id?: any;
   timestamp?: any;
 }
 
-/** @moduleID 58792
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:58792
  */
 interface Session {
   stale?: any;
 }
 
-/** @moduleID 58792
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:58792
  */
 interface Derived {}
 
-/** @moduleID 58792
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:58792
  */
 export declare interface UnreadMentionModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 58792
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:58792
  */
 export declare class UnreadMentionModel extends Model {
   constructor(

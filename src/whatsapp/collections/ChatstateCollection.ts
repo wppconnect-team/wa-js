@@ -19,8 +19,7 @@ import { ChatstateModel } from '../models';
 import { Collection } from './Collection';
 
 /**
- * @moduleID 78608
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:78608
  */
 export declare class ChatstateCollection extends Collection<ChatstateModel> {
   static model: ChatstateModel;

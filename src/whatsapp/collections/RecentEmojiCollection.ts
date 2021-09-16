@@ -19,8 +19,7 @@ import { RecentEmojiModel } from '../models';
 import { Collection } from './Collection';
 
 /**
- * @moduleID 75011
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:75011
  */
 export declare class RecentEmojiCollection extends Collection<RecentEmojiModel> {
   static cachePolicy?: any;

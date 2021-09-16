@@ -25,8 +25,7 @@ interface NoiseInfoData {
 }
 
 /**
- * @moduleID 64468
- * @whatsapp 2.2132.6
+ * @whatsapp 2.2132.6:64468
  */
 declare class NoiseInfo {
   get(): Promise<NoiseInfoData>;
@@ -34,8 +33,7 @@ declare class NoiseInfo {
 }
 
 /**
- * @moduleID 64468
- * @whatsapp 2.2132.6
+ * @whatsapp 2.2132.6:64468
  */
 export declare const waNoiseInfo: NoiseInfo;
 

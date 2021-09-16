@@ -24,8 +24,7 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 49549
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:49549
  */
 interface Props {
   id: Wid;
@@ -44,8 +43,7 @@ interface Props {
   disappearingModeSettingTimestamp?: any;
 }
 
-/** @moduleID 49549
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:49549
  */
 interface Session {
   stale?: any;
@@ -63,8 +61,7 @@ interface Session {
   locale?: any;
 }
 
-/** @moduleID 49549
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:49549
  */
 interface Derived {
   notifyName?: any;
@@ -90,15 +87,13 @@ interface Derived {
   showBusinessCheckmarkAsSecondary?: any;
 }
 
-/** @moduleID 49549
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:49549
  */
 export declare interface ContactModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 49549
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:49549
  */
 export declare class ContactModel extends Model<ContactCollection> {
   idClass: typeof Wid;

@@ -22,8 +22,7 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 98020
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:98020
  */
 interface Props {
   id?: any;
@@ -32,27 +31,23 @@ interface Props {
   labelId?: any;
 }
 
-/** @moduleID 98020
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:98020
  */
 interface Session {
   stale?: any;
 }
 
-/** @moduleID 98020
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:98020
  */
 interface Derived {}
 
-/** @moduleID 98020
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:98020
  */
 export declare interface LabelItemModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 98020
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:98020
  */
 export declare class LabelItemModel extends Model {
   constructor(

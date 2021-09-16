@@ -17,8 +17,7 @@
 import { exportModule } from '../exportModule';
 
 /**
- * @moduleID 12371
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:12371
  */
 export declare const MediaUtils: {
   getImageWidthHeight(): Promise<{ width: number; height: number }>;

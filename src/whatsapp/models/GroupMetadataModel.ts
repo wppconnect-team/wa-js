@@ -23,8 +23,7 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 22770
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:22770
  */
 interface Props {
   id: Wid;
@@ -43,8 +42,7 @@ interface Props {
   uniqueShortNameMap?: any;
 }
 
-/** @moduleID 22770
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:22770
  */
 interface Session {
   stale?: any;
@@ -55,22 +53,19 @@ interface Session {
   revokeGroupV4AddInvitePromise?: any;
 }
 
-/** @moduleID 22770
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:22770
  */
 interface Derived {
   groupInviteLink?: any;
 }
 
-/** @moduleID 22770
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:22770
  */
 export declare interface GroupMetadataModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 22770
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:22770
  */
 export declare class GroupMetadataModel extends Model {
   idClass: typeof Wid;

@@ -18,8 +18,7 @@ import { exportModule } from '../exportModule';
 import { StateModel } from '../models';
 
 /**
- * @moduleID 13353
- * @whatsapp 2.2132.6
+ * @whatsapp 2.2132.6:13353
  */
 export declare const State: StateModel;
 

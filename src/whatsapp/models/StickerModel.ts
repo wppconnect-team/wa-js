@@ -22,8 +22,7 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 84572
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:84572
  */
 interface Props {
   id?: any;
@@ -43,28 +42,24 @@ interface Props {
   isPlaceholder: boolean;
 }
 
-/** @moduleID 84572
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:84572
  */
 interface Session {
   stale?: any;
   mediaData?: any;
 }
 
-/** @moduleID 84572
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:84572
  */
 interface Derived {}
 
-/** @moduleID 84572
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:84572
  */
 export declare interface StickerModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 84572
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:84572
  */
 export declare class StickerModel extends Model {
   constructor(

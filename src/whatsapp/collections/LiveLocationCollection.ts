@@ -19,8 +19,7 @@ import { LiveLocationModel } from '../models';
 import { Collection } from './Collection';
 
 /**
- * @moduleID 49397
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:49397
  */
 export declare class LiveLocationCollection extends Collection<LiveLocationModel> {
   static model: LiveLocationModel;

@@ -19,8 +19,7 @@ import { BusinessProfileModel } from '../models';
 import { Collection } from './Collection';
 
 /**
- * @moduleID 99420
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:99420
  */
 export declare class BusinessProfileCollection extends Collection<BusinessProfileModel> {
   static model: BusinessProfileModel;

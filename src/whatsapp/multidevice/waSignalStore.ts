@@ -25,8 +25,7 @@ interface RegistrationInfo {
 }
 
 /**
- * @moduleID 40362
- * @whatsapp 2.2132.6
+ * @whatsapp 2.2132.6:40362
  */
 declare class SignalStore {
   getMeta(e?: any): any;
@@ -78,8 +77,7 @@ declare class SignalStore {
 }
 
 /**
- * @moduleID 77188
- * @whatsapp 2.2132.6
+ * @whatsapp 2.2132.6:77188
  */
 export declare const waSignalStore: SignalStore;
 

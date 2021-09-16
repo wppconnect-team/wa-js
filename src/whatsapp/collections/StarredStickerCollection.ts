@@ -19,8 +19,7 @@ import { StickerModel } from '../models';
 import { Collection } from './Collection';
 
 /**
- * @moduleID 71004
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:71004
  */
 export declare class StarredStickerCollection extends Collection<StickerModel> {
   static model: StickerModel;

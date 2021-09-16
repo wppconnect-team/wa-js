@@ -19,8 +19,7 @@ import { Product_listModel } from '../models';
 import { Collection } from './Collection';
 
 /**
- * @moduleID 78656
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:78656
  */
 export declare class ProductMessageListCollection extends Collection<Product_listModel> {
   static model: Product_listModel;

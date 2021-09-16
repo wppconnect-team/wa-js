@@ -24,35 +24,30 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 75787
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:75787
  */
 interface Props {
   id: Wid;
   categories?: any;
 }
 
-/** @moduleID 75787
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:75787
  */
 interface Session {
   stale?: any;
 }
 
-/** @moduleID 75787
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:75787
  */
 interface Derived {}
 
-/** @moduleID 75787
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:75787
  */
 export declare interface BusinessCategoriesResultModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 75787
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:75787
  */
 export declare class BusinessCategoriesResultModel extends Model<BusinessCategoriesResultCollection> {
   idClass: typeof Wid;

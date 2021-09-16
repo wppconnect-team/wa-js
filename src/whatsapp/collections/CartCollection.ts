@@ -19,8 +19,7 @@ import { CartModel } from '../models';
 import { Collection } from './Collection';
 
 /**
- * @moduleID 66281
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:66281
  */
 export declare class CartCollection extends Collection<CartModel> {
   static model: CartModel;

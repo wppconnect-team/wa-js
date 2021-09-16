@@ -22,35 +22,30 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 82781
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:82781
  */
 interface Props {
   id?: any;
   variant?: any;
 }
 
-/** @moduleID 82781
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:82781
  */
 interface Session {
   stale?: any;
 }
 
-/** @moduleID 82781
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:82781
  */
 interface Derived {}
 
-/** @moduleID 82781
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:82781
  */
 export declare interface EmojiVariantModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 82781
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:82781
  */
 export declare class EmojiVariantModel extends Model {
   constructor(

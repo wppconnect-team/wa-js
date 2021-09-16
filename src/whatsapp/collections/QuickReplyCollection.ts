@@ -19,8 +19,7 @@ import { QuickReplyModel } from '../models';
 import { Collection } from './Collection';
 
 /**
- * @moduleID 55165
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:55165
  */
 export declare class QuickReplyCollection extends Collection<QuickReplyModel> {
   static model: QuickReplyModel;

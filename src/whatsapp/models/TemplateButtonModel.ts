@@ -22,8 +22,7 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 61522
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:61522
  */
 interface Props {
   id?: any;
@@ -34,28 +33,24 @@ interface Props {
   selectionId?: any;
 }
 
-/** @moduleID 61522
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:61522
  */
 interface Session {
   stale?: any;
   selected?: any;
 }
 
-/** @moduleID 61522
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:61522
  */
 interface Derived {}
 
-/** @moduleID 61522
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:61522
  */
 export declare interface TemplateButtonModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 61522
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:61522
  */
 export declare class TemplateButtonModel extends Model {
   constructor(

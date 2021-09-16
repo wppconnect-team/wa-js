@@ -19,8 +19,7 @@ import { exportModule } from '../exportModule';
 import { EventEmitter, Stringable } from '../misc';
 
 /**
- * @moduleID 78682
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:78682
  */
 export type ModelProxy<P, S, D> = P &
   S &
@@ -39,8 +38,7 @@ export type ModelProxy<P, S, D> = P &
   };
 
 /**
- * @moduleID 40798
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:40798
  */
 export type ModelPropertiesContructor<
   Model,
@@ -57,8 +55,7 @@ export interface ModelOptions {
 }
 
 /**
- * @moduleID 40798
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:40798
  */
 export declare class Model<Collection = undefined> extends EventEmitter {
   static Proxy: string;

@@ -17,8 +17,7 @@
 import { exportModule } from '../exportModule';
 
 /**
- * @moduleID 22009
- * @whatsapp 2.2132.6
+ * @whatsapp 2.2132.6:22009
  */
 export declare const adv: {
   generateADVSecretKey(): string;

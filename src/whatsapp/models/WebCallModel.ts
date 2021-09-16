@@ -22,8 +22,7 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 4828
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:4828
  */
 interface Props {
   callId?: any;
@@ -34,27 +33,23 @@ interface Props {
   stream?: any;
 }
 
-/** @moduleID 4828
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:4828
  */
 interface Session {
   stale?: any;
 }
 
-/** @moduleID 4828
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:4828
  */
 interface Derived {}
 
-/** @moduleID 4828
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:4828
  */
 export declare interface WebCallModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 4828
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:4828
  */
 export declare class WebCallModel extends Model {
   constructor(

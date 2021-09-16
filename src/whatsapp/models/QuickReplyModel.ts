@@ -23,8 +23,7 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 46445
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:46445
  */
 interface Props {
   id?: any;
@@ -34,30 +33,26 @@ interface Props {
   keywords?: any;
 }
 
-/** @moduleID 46445
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:46445
  */
 interface Session {
   stale?: any;
   pendingCount?: any;
 }
 
-/** @moduleID 46445
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:46445
  */
 interface Derived {
   totalCount?: any;
 }
 
-/** @moduleID 46445
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:46445
  */
 export declare interface QuickReplyModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 46445
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:46445
  */
 export declare class QuickReplyModel extends Model<QuickReplyCollection> {
   constructor(

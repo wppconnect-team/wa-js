@@ -20,8 +20,7 @@ import { Model } from './Model';
 import { MsgModel } from './MsgModel';
 
 /**
- * @moduleID 60425
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:60425
  */
 export interface PropsChatBase {
   id: Wid;
@@ -30,8 +29,7 @@ export interface PropsChatBase {
 }
 
 /**
- * @moduleID 60425
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:60425
  */
 export interface SessionChatBase {
   msgChunks: MsgLoad[];
@@ -43,8 +41,7 @@ export interface SessionChatBase {
 }
 
 /**
- * @moduleID 60425
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:60425
  */
 export declare class ModelChatBase extends Model<ChatCollection> {
   msgs: MsgLoad;

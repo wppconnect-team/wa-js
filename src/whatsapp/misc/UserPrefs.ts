@@ -18,8 +18,7 @@ import { exportModule } from '../exportModule';
 import { Wid } from './Wid';
 
 /**
- * @moduleID 26226
- * @whatsapp 2.2132.6
+ * @whatsapp 2.2132.6:26226
  */
 export declare const UserPrefs: {
   setMe(wid: Wid): void;

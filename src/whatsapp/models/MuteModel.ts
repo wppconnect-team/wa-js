@@ -24,38 +24,33 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 44744
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:44744
  */
 interface Props {
   id: Wid;
   expiration?: any;
 }
 
-/** @moduleID 44744
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:44744
  */
 interface Session {
   stale?: any;
   promises?: any;
 }
 
-/** @moduleID 44744
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:44744
  */
 interface Derived {
   isMuted: boolean;
 }
 
-/** @moduleID 44744
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:44744
  */
 export declare interface MuteModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 44744
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:44744
  */
 export declare class MuteModel extends Model<MuteCollection> {
   idClass: typeof Wid;

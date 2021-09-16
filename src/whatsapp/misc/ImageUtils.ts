@@ -17,8 +17,7 @@
 import { exportModule } from '../exportModule';
 
 /**
- * @moduleID 28518
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:28518
  */
 export declare const ImageUtils: {
   rotateAndResize(

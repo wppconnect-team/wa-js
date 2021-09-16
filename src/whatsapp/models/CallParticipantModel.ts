@@ -22,8 +22,7 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 82531
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:82531
  */
 interface Props {
   id?: any;
@@ -41,27 +40,23 @@ interface Props {
   isOfferingVideoUpgrade: boolean;
 }
 
-/** @moduleID 82531
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:82531
  */
 interface Session {
   stale?: any;
 }
 
-/** @moduleID 82531
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:82531
  */
 interface Derived {}
 
-/** @moduleID 82531
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:82531
  */
 export declare interface CallParticipantModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 82531
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:82531
  */
 export declare class CallParticipantModel extends Model {
   constructor(

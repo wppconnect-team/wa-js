@@ -19,8 +19,7 @@ import { GroupMetadataModel } from '../models';
 import { Collection } from './Collection';
 
 /**
- * @moduleID 28936
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:28936
  */
 export declare class GroupMetadataCollection extends Collection<GroupMetadataModel> {
   static model: GroupMetadataModel;

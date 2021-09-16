@@ -24,34 +24,29 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 40841
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:40841
  */
 interface Props {
   id: Wid;
 }
 
-/** @moduleID 40841
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:40841
  */
 interface Session {
   stale?: any;
 }
 
-/** @moduleID 40841
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:40841
  */
 interface Derived {}
 
-/** @moduleID 40841
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:40841
  */
 export declare interface BlocklistModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 40841
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:40841
  */
 export declare class BlocklistModel extends Model<BlocklistCollection> {
   idClass: typeof Wid;

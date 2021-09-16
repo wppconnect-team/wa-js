@@ -18,8 +18,7 @@ import { exportModule } from '../exportModule';
 import { Wid } from './Wid';
 
 /**
- * @moduleID 32991
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:32991
  */
 export declare const WidFactory: {
   createDeviceWid(wid: string): Wid;

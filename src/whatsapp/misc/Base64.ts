@@ -17,8 +17,7 @@
 import { exportModule } from '../exportModule';
 
 /**
- * @moduleID 45792
- * @whatsapp 2.2132.6
+ * @whatsapp 2.2132.6:45792
  */
 export declare const Base64: {
   BASE64_DATA_URL_SCHEME: 'data:image/jpeg;base64,';

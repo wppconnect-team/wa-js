@@ -55,8 +55,7 @@ export class Auth extends Emittery<AuthEventTypes> {
   /**
    * Return the current auth code
    *
-   * @moduleID 57241
-   * @whatsapp 2.2132.6
+   * @whatsapp 2.2132.6:57241
    * @return  {Promise<AuthCode>}[return description]
    */
   async getAuthCode(): Promise<AuthCode | null> {

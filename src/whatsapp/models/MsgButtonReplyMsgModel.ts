@@ -23,35 +23,30 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 15379
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:15379
  */
 interface Props {
   id: MsgKey;
   unsyncedButtonReplies?: any;
 }
 
-/** @moduleID 15379
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:15379
  */
 interface Session {
   stale?: any;
 }
 
-/** @moduleID 15379
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:15379
  */
 interface Derived {}
 
-/** @moduleID 15379
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:15379
  */
 export declare interface MsgButtonReplyMsgModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 15379
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:15379
  */
 export declare class MsgButtonReplyMsgModel extends Model {
   idClass: typeof MsgKey;

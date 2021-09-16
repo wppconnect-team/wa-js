@@ -19,8 +19,7 @@ import { OrderItemModel } from '../models';
 import { Collection } from './Collection';
 
 /**
- * @moduleID 16701
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:16701
  */
 export declare class OrderItemCollection extends Collection<OrderItemModel> {
   static model: OrderItemModel;

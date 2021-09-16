@@ -22,8 +22,7 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 23119
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:23119
  */
 interface Props {
   id?: any;
@@ -32,27 +31,23 @@ interface Props {
   msgId?: any;
 }
 
-/** @moduleID 23119
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:23119
  */
 interface Session {
   stale?: any;
 }
 
-/** @moduleID 23119
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:23119
  */
 interface Derived {}
 
-/** @moduleID 23119
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:23119
  */
 export declare interface RecentStickerModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 23119
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:23119
  */
 export declare class RecentStickerModel extends Model {
   constructor(

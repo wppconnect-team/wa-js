@@ -19,8 +19,7 @@ import { CallModel } from '../models';
 import { Collection } from './Collection';
 
 /**
- * @moduleID 74692
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:74692
  */
 export declare class CallCollection extends Collection<CallModel> {
   static model: CallModel;

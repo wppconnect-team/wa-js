@@ -23,8 +23,7 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 3243
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:3243
  */
 interface Props {
   id: string;
@@ -51,16 +50,14 @@ interface Props {
   pushname?: string;
 }
 
-/** @moduleID 3243
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:3243
  */
 interface Session {
   blockStoreAdds?: any;
   isVoipInitialized?: boolean;
 }
 
-/** @moduleID 3243
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:3243
  */
 interface Derived {
   refExpiry?: number;
@@ -73,15 +70,13 @@ interface Derived {
   isSMB?: boolean;
 }
 
-/** @moduleID 3243
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:3243
  */
 export declare interface ConnModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 3243
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:3243
  */
 export declare class ConnModel extends Model {
   constructor(

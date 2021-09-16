@@ -23,8 +23,7 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 12439
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:12439
  */
 interface Props {
   id: MsgKey;
@@ -32,27 +31,23 @@ interface Props {
   title?: any;
 }
 
-/** @moduleID 12439
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:12439
  */
 interface Session {
   stale?: any;
 }
 
-/** @moduleID 12439
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:12439
  */
 interface Derived {}
 
-/** @moduleID 12439
- * @whatsapp 2.2126.14
+/** @whatsapp 2.2126.14:12439
  */
 export declare interface Product_listModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 12439
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:12439
  */
 export declare class Product_listModel extends Model {
   idClass: typeof MsgKey;

@@ -19,8 +19,7 @@ import { BlocklistModel } from '../models';
 import { Collection } from './Collection';
 
 /**
- * @moduleID 20333
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:20333
  */
 export declare class BlocklistCollection extends Collection<BlocklistModel> {
   static model: BlocklistModel;

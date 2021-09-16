@@ -22,13 +22,11 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @moduleID 13353
- * @whatsapp 2.2132.6
+/** @whatsapp 2.2132.6:13353
  */
 interface Props {}
 
-/** @moduleID 13353
- * @whatsapp 2.2132.6
+/** @whatsapp 2.2132.6:13353
  */
 interface Session {
   socketPreload?: any;
@@ -66,20 +64,17 @@ interface Session {
   shouldUpgradeToMDPord: boolean;
 }
 
-/** @moduleID 13353
- * @whatsapp 2.2132.6
+/** @whatsapp 2.2132.6:13353
  */
 interface Derived {}
 
-/** @moduleID 13353
- * @whatsapp 2.2132.6
+/** @whatsapp 2.2132.6:13353
  */
 export declare interface StateModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @moduleID 13353
- * @whatsapp 2.2132.6
+ * @whatsapp 2.2132.6:13353
  */
 export declare class StateModel extends Model {
   constructor(

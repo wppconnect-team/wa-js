@@ -19,8 +19,7 @@ import { exportModule } from '../exportModule';
 import { Model, MsgModel } from '../models';
 
 /**
- * @moduleID 72150
- * @whatsapp 2.2126.14
+ * @whatsapp 2.2126.14:72150
  */
 export declare class MsgLoadState extends Model {
   noEarlierMsgs: any;
