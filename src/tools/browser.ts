@@ -36,7 +36,11 @@ export async function getPage(options?: LaunchArguments[1]) {
     ? browser.pages()[0]
     : await browser.newPage();
 
-  page.route('**', (route, request) => {
+  page.route('https://crashlogs.whatsapp.net/**', (route) => {
+    route.abort();
+  });
+
+  page.route('https://web.whatsapp.com/**', (route, request) => {
     if (request.url() === URL) {
       return route.fulfill({
         status: 200,
@@ -90,7 +94,7 @@ export async function getPage(options?: LaunchArguments[1]) {
     navigator.serviceWorker.register = new Promise(() => {});
   });
 
-  page.on('domcontentloaded', async () => {
+  page.on('domcontentloaded', async (page) => {
     await page.addScriptTag({
       url: `${URL}dist/wppconnect-wa.js`,
     });
