@@ -22,7 +22,8 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @whatsapp 2.2126.14:23223
+/**
+ * @whatsapp 2.2126.14:23223
  */
 interface Props {
   type?: any;
@@ -67,19 +68,22 @@ interface Props {
   subtype?: any;
 }
 
-/** @whatsapp 2.2126.14:23223
+/**
+ * @whatsapp 2.2126.14:23223
  */
 interface Session {
   stale?: any;
 }
 
-/** @whatsapp 2.2126.14:23223
+/**
+ * @whatsapp 2.2126.14:23223
  */
 interface Derived {
   streamable?: any;
 }
 
-/** @whatsapp 2.2126.14:23223
+/**
+ * @whatsapp 2.2126.14:23223
  */
 export declare interface MediaDataModel
   extends ModelProxy<Props, Session, Derived> {}

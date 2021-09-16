@@ -24,7 +24,8 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @whatsapp 2.2126.14:16971
+/**
+ * @whatsapp 2.2126.14:16971
  */
 interface Props {
   id: Wid;
@@ -35,7 +36,8 @@ interface Props {
   previewEurl?: any;
 }
 
-/** @whatsapp 2.2126.14:16971
+/**
+ * @whatsapp 2.2126.14:16971
  */
 interface Session {
   stale?: any;
@@ -43,7 +45,8 @@ interface Session {
   pendingPic?: any;
 }
 
-/** @whatsapp 2.2126.14:16971
+/**
+ * @whatsapp 2.2126.14:16971
  */
 interface Derived {
   img?: any;
@@ -51,7 +54,8 @@ interface Derived {
   fallbackType?: any;
 }
 
-/** @whatsapp 2.2126.14:16971
+/**
+ * @whatsapp 2.2126.14:16971
  */
 export declare interface ProfilePicThumbModel
   extends ModelProxy<Props, Session, Derived> {}

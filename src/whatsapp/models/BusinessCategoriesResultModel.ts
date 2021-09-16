@@ -24,24 +24,28 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @whatsapp 2.2126.14:75787
+/**
+ * @whatsapp 2.2126.14:75787
  */
 interface Props {
   id: Wid;
   categories?: any;
 }
 
-/** @whatsapp 2.2126.14:75787
+/**
+ * @whatsapp 2.2126.14:75787
  */
 interface Session {
   stale?: any;
 }
 
-/** @whatsapp 2.2126.14:75787
+/**
+ * @whatsapp 2.2126.14:75787
  */
 interface Derived {}
 
-/** @whatsapp 2.2126.14:75787
+/**
+ * @whatsapp 2.2126.14:75787
  */
 export declare interface BusinessCategoriesResultModel
   extends ModelProxy<Props, Session, Derived> {}

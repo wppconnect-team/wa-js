@@ -24,7 +24,8 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @whatsapp 2.2126.14:59962
+/**
+ * @whatsapp 2.2126.14:59962
  */
 interface Props {
   id: Wid;
@@ -32,18 +33,21 @@ interface Props {
   index?: any;
 }
 
-/** @whatsapp 2.2126.14:59962
+/**
+ * @whatsapp 2.2126.14:59962
  */
 interface Session {
   stale?: any;
   fetchedFromServer?: any;
 }
 
-/** @whatsapp 2.2126.14:59962
+/**
+ * @whatsapp 2.2126.14:59962
  */
 interface Derived {}
 
-/** @whatsapp 2.2126.14:59962
+/**
+ * @whatsapp 2.2126.14:59962
  */
 export declare interface CatalogModel
   extends ModelProxy<Props, Session, Derived> {}

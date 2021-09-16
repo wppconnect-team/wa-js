@@ -22,24 +22,28 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @whatsapp 2.2126.14:18125
+/**
+ * @whatsapp 2.2126.14:18125
  */
 interface Props {
   id?: any;
   weight?: any;
 }
 
-/** @whatsapp 2.2126.14:18125
+/**
+ * @whatsapp 2.2126.14:18125
  */
 interface Session {
   stale?: any;
 }
 
-/** @whatsapp 2.2126.14:18125
+/**
+ * @whatsapp 2.2126.14:18125
  */
 interface Derived {}
 
-/** @whatsapp 2.2126.14:18125
+/**
+ * @whatsapp 2.2126.14:18125
  */
 export declare interface RecentEmojiModel
   extends ModelProxy<Props, Session, Derived> {}

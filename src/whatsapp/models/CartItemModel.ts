@@ -23,7 +23,8 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @whatsapp 2.2126.14:59706
+/**
+ * @whatsapp 2.2126.14:59706
  */
 interface Props {
   id?: any;
@@ -34,17 +35,20 @@ interface Props {
   imageCdnUrl?: any;
 }
 
-/** @whatsapp 2.2126.14:59706
+/**
+ * @whatsapp 2.2126.14:59706
  */
 interface Session {
   stale?: any;
 }
 
-/** @whatsapp 2.2126.14:59706
+/**
+ * @whatsapp 2.2126.14:59706
  */
 interface Derived {}
 
-/** @whatsapp 2.2126.14:59706
+/**
+ * @whatsapp 2.2126.14:59706
  */
 export declare interface CartItemModel
   extends ModelProxy<Props, Session, Derived> {}

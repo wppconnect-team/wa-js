@@ -24,7 +24,8 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @whatsapp 2.2126.14:24479
+/**
+ * @whatsapp 2.2126.14:24479
  */
 interface Props {
   id: MsgKey;
@@ -35,19 +36,22 @@ interface Props {
   deliveryPrivacyMode?: any;
 }
 
-/** @whatsapp 2.2126.14:24479
+/**
+ * @whatsapp 2.2126.14:24479
  */
 interface Session {
   stale?: any;
 }
 
-/** @whatsapp 2.2126.14:24479
+/**
+ * @whatsapp 2.2126.14:24479
  */
 interface Derived {
   settled?: any;
 }
 
-/** @whatsapp 2.2126.14:24479
+/**
+ * @whatsapp 2.2126.14:24479
  */
 export declare interface MsgInfoModel
   extends ModelProxy<Props, Session, Derived> {}

@@ -22,7 +22,8 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @whatsapp 2.2126.14:45569
+/**
+ * @whatsapp 2.2126.14:45569
  */
 interface Props {
   id?: any;
@@ -40,14 +41,16 @@ interface Props {
   encFilehash?: any;
 }
 
-/** @whatsapp 2.2126.14:45569
+/**
+ * @whatsapp 2.2126.14:45569
  */
 interface Session {
   stale?: any;
   mediaData?: any;
 }
 
-/** @whatsapp 2.2126.14:45569
+/**
+ * @whatsapp 2.2126.14:45569
  */
 interface Derived {
   deprecatedMms3Url?: any;
@@ -56,7 +59,8 @@ interface Derived {
   isFirstParty: boolean;
 }
 
-/** @whatsapp 2.2126.14:45569
+/**
+ * @whatsapp 2.2126.14:45569
  */
 export declare interface StickerPackModel
   extends ModelProxy<Props, Session, Derived> {}

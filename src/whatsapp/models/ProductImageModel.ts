@@ -22,7 +22,8 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @whatsapp 2.2126.14:88091
+/**
+ * @whatsapp 2.2126.14:88091
  */
 interface Props {
   id?: any;
@@ -31,7 +32,8 @@ interface Props {
   fetchedFromServer?: any;
 }
 
-/** @whatsapp 2.2126.14:88091
+/**
+ * @whatsapp 2.2126.14:88091
  */
 interface Session {
   stale?: any;
@@ -40,11 +42,13 @@ interface Session {
   old?: any;
 }
 
-/** @whatsapp 2.2126.14:88091
+/**
+ * @whatsapp 2.2126.14:88091
  */
 interface Derived {}
 
-/** @whatsapp 2.2126.14:88091
+/**
+ * @whatsapp 2.2126.14:88091
  */
 export declare interface ProductImageModel
   extends ModelProxy<Props, Session, Derived> {}

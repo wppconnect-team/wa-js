@@ -23,7 +23,8 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @whatsapp 2.2126.14:38959
+/**
+ * @whatsapp 2.2126.14:38959
  */
 interface Props {
   id: Wid;
@@ -39,7 +40,8 @@ interface Props {
   lastUpdated?: any;
 }
 
-/** @whatsapp 2.2126.14:38959
+/**
+ * @whatsapp 2.2126.14:38959
  */
 interface Session {
   stale?: any;
@@ -48,14 +50,16 @@ interface Session {
   disabled?: any;
 }
 
-/** @whatsapp 2.2126.14:38959
+/**
+ * @whatsapp 2.2126.14:38959
  */
 interface Derived {
   isMe: boolean;
   valid?: any;
 }
 
-/** @whatsapp 2.2126.14:38959
+/**
+ * @whatsapp 2.2126.14:38959
  */
 export declare interface LiveLocationParticipantModel
   extends ModelProxy<Props, Session, Derived> {}

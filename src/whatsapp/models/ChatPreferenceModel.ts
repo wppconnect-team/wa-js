@@ -23,7 +23,8 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @whatsapp 2.2126.14:33502
+/**
+ * @whatsapp 2.2126.14:33502
  */
 interface Props {
   id: Wid;
@@ -32,17 +33,20 @@ interface Props {
   showDoodle?: any;
 }
 
-/** @whatsapp 2.2126.14:33502
+/**
+ * @whatsapp 2.2126.14:33502
  */
 interface Session {
   stale?: any;
 }
 
-/** @whatsapp 2.2126.14:33502
+/**
+ * @whatsapp 2.2126.14:33502
  */
 interface Derived {}
 
-/** @whatsapp 2.2126.14:33502
+/**
+ * @whatsapp 2.2126.14:33502
  */
 export declare interface ChatPreferenceModel
   extends ModelProxy<Props, Session, Derived> {}

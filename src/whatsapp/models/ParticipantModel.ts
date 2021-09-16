@@ -23,7 +23,8 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @whatsapp 2.2126.14:9379
+/**
+ * @whatsapp 2.2126.14:9379
  */
 interface Props {
   id: Wid;
@@ -31,7 +32,8 @@ interface Props {
   isSuperAdmin: boolean;
 }
 
-/** @whatsapp 2.2126.14:9379
+/**
+ * @whatsapp 2.2126.14:9379
  */
 interface Session {
   stale?: any;
@@ -39,11 +41,13 @@ interface Session {
   hasSenderKey: boolean;
 }
 
-/** @whatsapp 2.2126.14:9379
+/**
+ * @whatsapp 2.2126.14:9379
  */
 interface Derived {}
 
-/** @whatsapp 2.2126.14:9379
+/**
+ * @whatsapp 2.2126.14:9379
  */
 export declare interface ParticipantModel
   extends ModelProxy<Props, Session, Derived> {}

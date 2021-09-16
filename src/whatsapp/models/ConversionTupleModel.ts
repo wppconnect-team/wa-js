@@ -23,7 +23,8 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @whatsapp 2.2126.14:8243
+/**
+ * @whatsapp 2.2126.14:8243
  */
 interface Props {
   id: Wid;
@@ -32,18 +33,21 @@ interface Props {
   timestamp?: any;
 }
 
-/** @whatsapp 2.2126.14:8243
+/**
+ * @whatsapp 2.2126.14:8243
  */
 interface Session {
   stale?: any;
   alarmId?: any;
 }
 
-/** @whatsapp 2.2126.14:8243
+/**
+ * @whatsapp 2.2126.14:8243
  */
 interface Derived {}
 
-/** @whatsapp 2.2126.14:8243
+/**
+ * @whatsapp 2.2126.14:8243
  */
 export declare interface ConversionTupleModel
   extends ModelProxy<Props, Session, Derived> {}

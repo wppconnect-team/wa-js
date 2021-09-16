@@ -22,7 +22,8 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @whatsapp 2.2126.14:84572
+/**
+ * @whatsapp 2.2126.14:84572
  */
 interface Props {
   id?: any;
@@ -42,18 +43,21 @@ interface Props {
   isPlaceholder: boolean;
 }
 
-/** @whatsapp 2.2126.14:84572
+/**
+ * @whatsapp 2.2126.14:84572
  */
 interface Session {
   stale?: any;
   mediaData?: any;
 }
 
-/** @whatsapp 2.2126.14:84572
+/**
+ * @whatsapp 2.2126.14:84572
  */
 interface Derived {}
 
-/** @whatsapp 2.2126.14:84572
+/**
+ * @whatsapp 2.2126.14:84572
  */
 export declare interface StickerModel
   extends ModelProxy<Props, Session, Derived> {}

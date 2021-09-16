@@ -22,25 +22,29 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @whatsapp 2.2126.14:83065
+/**
+ * @whatsapp 2.2126.14:83065
  */
 interface Props {
   id?: any;
   displayText?: any;
 }
 
-/** @whatsapp 2.2126.14:83065
+/**
+ * @whatsapp 2.2126.14:83065
  */
 interface Session {
   stale?: any;
   selected?: any;
 }
 
-/** @whatsapp 2.2126.14:83065
+/**
+ * @whatsapp 2.2126.14:83065
  */
 interface Derived {}
 
-/** @whatsapp 2.2126.14:83065
+/**
+ * @whatsapp 2.2126.14:83065
  */
 export declare interface ReplyButtonModel
   extends ModelProxy<Props, Session, Derived> {}

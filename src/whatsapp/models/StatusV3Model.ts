@@ -25,7 +25,8 @@ import {
 } from './Model';
 import { PropsChatBase, SessionChatBase } from './ModelChatBase';
 
-/** @whatsapp 2.2126.14:72672
+/**
+ * @whatsapp 2.2126.14:72672
  */
 interface Props extends PropsChatBase {
   t?: any;
@@ -34,7 +35,8 @@ interface Props extends PropsChatBase {
   pic?: any;
 }
 
-/** @whatsapp 2.2126.14:72672
+/**
+ * @whatsapp 2.2126.14:72672
  */
 interface Session extends SessionChatBase {
   stale?: any;
@@ -44,7 +46,8 @@ interface Session extends SessionChatBase {
   expireTs?: any;
 }
 
-/** @whatsapp 2.2126.14:72672
+/**
+ * @whatsapp 2.2126.14:72672
  */
 interface Derived {
   hasUnread: boolean;
@@ -52,7 +55,8 @@ interface Derived {
   lastStatus?: any;
 }
 
-/** @whatsapp 2.2126.14:72672
+/**
+ * @whatsapp 2.2126.14:72672
  */
 export declare interface StatusV3Model
   extends ModelProxy<Props, Session, Derived> {}

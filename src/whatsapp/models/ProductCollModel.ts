@@ -22,7 +22,8 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @whatsapp 2.2126.14:30859
+/**
+ * @whatsapp 2.2126.14:30859
  */
 interface Props {
   id?: any;
@@ -32,17 +33,20 @@ interface Props {
   afterCursor?: any;
 }
 
-/** @whatsapp 2.2126.14:30859
+/**
+ * @whatsapp 2.2126.14:30859
  */
 interface Session {
   stale?: any;
 }
 
-/** @whatsapp 2.2126.14:30859
+/**
+ * @whatsapp 2.2126.14:30859
  */
 interface Derived {}
 
-/** @whatsapp 2.2126.14:30859
+/**
+ * @whatsapp 2.2126.14:30859
  */
 export declare interface ProductCollModel
   extends ModelProxy<Props, Session, Derived> {}

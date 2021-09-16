@@ -23,7 +23,8 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @whatsapp 2.2126.14:7637
+/**
+ * @whatsapp 2.2126.14:7637
  */
 interface Props {
   id?: any;
@@ -34,19 +35,22 @@ interface Props {
   thumbnailUrl?: any;
 }
 
-/** @whatsapp 2.2126.14:7637
+/**
+ * @whatsapp 2.2126.14:7637
  */
 interface Session {
   stale?: any;
 }
 
-/** @whatsapp 2.2126.14:7637
+/**
+ * @whatsapp 2.2126.14:7637
  */
 interface Derived {
   mediaData?: any;
 }
 
-/** @whatsapp 2.2126.14:7637
+/**
+ * @whatsapp 2.2126.14:7637
  */
 export declare interface OrderItemModel
   extends ModelProxy<Props, Session, Derived> {}

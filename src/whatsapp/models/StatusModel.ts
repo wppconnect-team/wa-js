@@ -24,24 +24,28 @@ import {
   ModelProxy,
 } from './Model';
 
-/** @whatsapp 2.2126.14:86018
+/**
+ * @whatsapp 2.2126.14:86018
  */
 interface Props {
   id: Wid;
   status?: any;
 }
 
-/** @whatsapp 2.2126.14:86018
+/**
+ * @whatsapp 2.2126.14:86018
  */
 interface Session {
   stale?: any;
 }
 
-/** @whatsapp 2.2126.14:86018
+/**
+ * @whatsapp 2.2126.14:86018
  */
 interface Derived {}
 
-/** @whatsapp 2.2126.14:86018
+/**
+ * @whatsapp 2.2126.14:86018
  */
 export declare interface StatusModel
   extends ModelProxy<Props, Session, Derived> {}
