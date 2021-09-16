@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { count } from 'console';
 import Debug from 'debug';
 import Emittery from 'emittery';
 
