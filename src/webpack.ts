@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { count } from 'console';
 import Debug from 'debug';
 import Emittery from 'emittery';
 
@@ -85,7 +86,18 @@ export function injectLoader(): void {
       const availablesRuntimes = new Array(10000)
         .fill(1)
         .map((v, k) => v + k)
-        .filter((v) => !/undefined|locales/.test(webpackRequire.u(v)));
+        .filter((v) => {
+          const filename = webpackRequire.u(v);
+          if (filename.includes('undefined')) {
+            return false;
+          }
+          if (filename.includes('locales')) {
+            return navigator.languages.some((lang) =>
+              filename.includes(`locales/${lang}`)
+            );
+          }
+          return true;
+        });
 
       await Promise.all(availablesRuntimes.map((v) => webpackRequire.e(v)));
 
@@ -110,7 +122,15 @@ export function searchId(
   if (reverse) {
     ids = ids.reverse();
   }
+
+  const ignoreRE = /\w+\.PureComponent\s*\{/;
+
   for (const moduleId of ids) {
+    const source = webpackRequire.m[moduleId].toString();
+    if (ignoreRE.test(source)) {
+      continue;
+    }
+
     try {
       const module = webpackRequire(moduleId);
 
