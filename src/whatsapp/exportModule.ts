@@ -50,11 +50,13 @@ export function exportModule(
       configurable: true,
       get: () => {
         let value = undefined;
-        const module = webpack.search(condition);
+        const moduleId = webpack.searchId(condition);
 
-        if (!module) {
+        if (!moduleId) {
           throw `Module ${name} not found with ${condition.toString()}`;
         }
+
+        const module = webpack.webpackRequire(moduleId);
 
         switch (typeof property) {
           case 'function':
@@ -77,6 +79,12 @@ export function exportModule(
         if (value) {
           Object.defineProperty(exports, name, {
             value,
+          });
+
+          // Hidden property to get ID
+          Object.defineProperty(value, '__wa_id', {
+            get: () => moduleId,
+            enumerable: false,
           });
         }
 
