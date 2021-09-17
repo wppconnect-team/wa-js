@@ -36,6 +36,7 @@ interface Derived {}
 /**
  * @whatsapp 2.2126.14:58792
  * @whatsapp 2.2136.9:85739
+ * @whatsapp 2.2136.10:85739
  */
 export declare interface UnreadMentionModel
   extends ModelProxy<Props, Session, Derived> {}
@@ -43,6 +44,7 @@ export declare interface UnreadMentionModel
 /**
  * @whatsapp 2.2126.14:58792
  * @whatsapp 2.2136.9:85739
+ * @whatsapp 2.2136.10:85739
  */
 export declare class UnreadMentionModel extends Model {
   constructor(

@@ -41,6 +41,7 @@ interface Derived {}
 /**
  * @whatsapp 2.2126.14:59706
  * @whatsapp 2.2136.9:53685
+ * @whatsapp 2.2136.10:53685
  */
 export declare interface CartItemModel
   extends ModelProxy<Props, Session, Derived> {}
@@ -48,6 +49,7 @@ export declare interface CartItemModel
 /**
  * @whatsapp 2.2126.14:59706
  * @whatsapp 2.2136.9:53685
+ * @whatsapp 2.2136.10:53685
  */
 export declare class CartItemModel extends Model<CartCollection> {
   constructor(

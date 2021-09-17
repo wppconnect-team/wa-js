@@ -21,6 +21,7 @@ import { Collection } from './Collection';
 /**
  * @whatsapp 2.2126.14:67549
  * @whatsapp 2.2136.9:95411
+ * @whatsapp 2.2136.10:95411
  */
 export declare class TemplateButtonCollection extends Collection<TemplateButtonModel> {
   static model: TemplateButtonModel;

@@ -37,6 +37,7 @@ interface Derived {}
 /**
  * @whatsapp 2.2126.14:40841
  * @whatsapp 2.2136.9:43123
+ * @whatsapp 2.2136.10:43123
  */
 export declare interface BlocklistModel
   extends ModelProxy<Props, Session, Derived> {}
@@ -44,6 +45,7 @@ export declare interface BlocklistModel
 /**
  * @whatsapp 2.2126.14:40841
  * @whatsapp 2.2136.9:43123
+ * @whatsapp 2.2136.10:43123
  */
 export declare class BlocklistModel extends Model<BlocklistCollection> {
   idClass: typeof Wid;

@@ -21,6 +21,7 @@ import { Collection } from './Collection';
 /**
  * @whatsapp 2.2126.14:54161
  * @whatsapp 2.2136.9:3165
+ * @whatsapp 2.2136.10:3165
  */
 export declare class ProfilePicThumbCollection extends Collection<ProfilePicThumbModel> {
   static model: ProfilePicThumbModel;

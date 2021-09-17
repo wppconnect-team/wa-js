@@ -43,6 +43,7 @@ interface Derived {
 /**
  * @whatsapp 2.2126.14:46445
  * @whatsapp 2.2136.9:16156
+ * @whatsapp 2.2136.10:16156
  */
 export declare interface QuickReplyModel
   extends ModelProxy<Props, Session, Derived> {}
@@ -50,6 +51,7 @@ export declare interface QuickReplyModel
 /**
  * @whatsapp 2.2126.14:46445
  * @whatsapp 2.2136.9:16156
+ * @whatsapp 2.2136.10:16156
  */
 export declare class QuickReplyModel extends Model<QuickReplyCollection> {
   constructor(

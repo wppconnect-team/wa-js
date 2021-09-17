@@ -21,6 +21,7 @@ import { CollectionCache } from './CollectionCache';
 /**
  * @whatsapp 2.2126.14:67549
  * @whatsapp 2.2136.9:84142
+ * @whatsapp 2.2136.10:84142
  */
 export declare class ButtonCollection extends CollectionCache<ReplyButtonModel> {
   static model: ReplyButtonModel;

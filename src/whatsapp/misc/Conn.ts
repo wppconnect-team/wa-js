@@ -20,6 +20,7 @@ import { ConnModel } from '../models';
 /**
  * @whatsapp 2.2126.14:12371
  * @whatsapp 2.2136.9:9322
+ * @whatsapp 2.2136.10:9322
  */
 export declare const Conn: ConnModel;
 

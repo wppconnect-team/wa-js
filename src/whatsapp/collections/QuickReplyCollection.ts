@@ -21,6 +21,7 @@ import { Collection } from './Collection';
 /**
  * @whatsapp 2.2126.14:55165
  * @whatsapp 2.2136.9:65963
+ * @whatsapp 2.2136.10:65963
  */
 export declare class QuickReplyCollection extends Collection<QuickReplyModel> {
   static model: QuickReplyModel;

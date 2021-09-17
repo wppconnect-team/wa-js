@@ -41,6 +41,7 @@ interface Derived {
 /**
  * @whatsapp 2.2126.14:44744
  * @whatsapp 2.2136.9:43376
+ * @whatsapp 2.2136.10:43376
  */
 export declare interface MuteModel
   extends ModelProxy<Props, Session, Derived> {}
@@ -48,6 +49,7 @@ export declare interface MuteModel
 /**
  * @whatsapp 2.2126.14:44744
  * @whatsapp 2.2136.9:43376
+ * @whatsapp 2.2136.10:43376
  */
 export declare class MuteModel extends Model<MuteCollection> {
   idClass: typeof Wid;

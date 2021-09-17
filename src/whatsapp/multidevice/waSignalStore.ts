@@ -79,6 +79,7 @@ declare class SignalStore {
 /**
  * @whatsapp 2.2132.6:77188
  * @whatsapp 2.2136.9:93381
+ * @whatsapp 2.2136.10:93381
  */
 export declare const waSignalStore: SignalStore;
 

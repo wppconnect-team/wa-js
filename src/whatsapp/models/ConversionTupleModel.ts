@@ -40,6 +40,7 @@ interface Derived {}
 /**
  * @whatsapp 2.2126.14:8243
  * @whatsapp 2.2136.9:71815
+ * @whatsapp 2.2136.10:71815
  */
 export declare interface ConversionTupleModel
   extends ModelProxy<Props, Session, Derived> {}
@@ -47,6 +48,7 @@ export declare interface ConversionTupleModel
 /**
  * @whatsapp 2.2126.14:8243
  * @whatsapp 2.2136.9:71815
+ * @whatsapp 2.2136.10:71815
  */
 export declare class ConversionTupleModel extends Model {
   idClass: typeof Wid;

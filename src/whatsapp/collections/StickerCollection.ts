@@ -21,6 +21,7 @@ import { Collection } from './Collection';
 /**
  * @whatsapp 2.2126.14:38118
  * @whatsapp 2.2136.9:16482
+ * @whatsapp 2.2136.10:16482
  */
 export declare class StickerCollection extends Collection<StickerModel> {
   static model: StickerModel;

@@ -21,6 +21,7 @@ import { CollectionCache } from './CollectionCache';
 /**
  * @whatsapp 2.2126.14:94558
  * @whatsapp 2.2136.9:45472
+ * @whatsapp 2.2136.10:45472
  */
 export declare class MsgCollection extends CollectionCache<MsgModel> {
   static model: MsgModel;
