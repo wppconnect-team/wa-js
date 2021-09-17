@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AuthCodeMultiDevice | @wppconnect/wa-js - v0.1.0</title>
+	<title>ListMessageOptions | @wppconnect/wa-js - v0.1.0</title>
 	<meta name="description" content="Documentation for @wppconnect/wa-js - v0.1.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -68,10 +68,10 @@
 					<a href="../modules/typesOnly.html">typesOnly</a>
 				</li>
 				<li>
-					<a href="typesOnly.AuthCodeMultiDevice.html">AuthCodeMultiDevice</a>
+					<a href="typesOnly.ListMessageOptions.html">ListMessageOptions</a>
 				</li>
 			</ul>
-			<h1>Interface AuthCodeMultiDevice</h1>
+			<h1>Interface ListMessageOptions</h1>
 		</div>
 	</div>
 </header>
@@ -82,7 +82,12 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">AuthCodeMultiDevice</span>
+						<a href="typesOnly.SendMessageOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">SendMessageOptions</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">ListMessageOptions</span>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -93,12 +98,11 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="typesOnly.AuthCodeMultiDevice.html#fullCode" class="tsd-kind-icon">full<wbr>Code</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="typesOnly.AuthCodeMultiDevice.html#identityKeyPair" class="tsd-kind-icon">identity<wbr>Key<wbr>Pair</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="typesOnly.AuthCodeMultiDevice.html#ref" class="tsd-kind-icon">ref</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="typesOnly.AuthCodeMultiDevice.html#secretKey" class="tsd-kind-icon">secret<wbr>Key</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="typesOnly.AuthCodeMultiDevice.html#staticKeyPair" class="tsd-kind-icon">static<wbr>Key<wbr>Pair</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="typesOnly.AuthCodeMultiDevice.html#type" class="tsd-kind-icon">type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="typesOnly.ListMessageOptions.html#buttonText" class="tsd-kind-icon">button<wbr>Text</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="typesOnly.ListMessageOptions.html#createChat" class="tsd-kind-icon">create<wbr>Chat</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="typesOnly.ListMessageOptions.html#description" class="tsd-kind-icon">description</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="typesOnly.ListMessageOptions.html#sections" class="tsd-kind-icon">sections</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="typesOnly.ListMessageOptions.html#waitForAck" class="tsd-kind-icon">wait<wbr>For<wbr>Ack</a></li>
 							</ul>
 						</section>
 					</div>
@@ -107,62 +111,54 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="fullCode" class="tsd-anchor"></a>
-					<h3>full<wbr>Code</h3>
-					<div class="tsd-signature tsd-kind-icon">full<wbr>Code<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="buttonText" class="tsd-anchor"></a>
+					<h3>button<wbr>Text</h3>
+					<div class="tsd-signature tsd-kind-icon">button<wbr>Text<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/auth/types.ts#L31">src/auth/types.ts:31</a></li>
+							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L39">src/chat/types.ts:39</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="createChat" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> create<wbr>Chat</h3>
+					<div class="tsd-signature tsd-kind-icon">create<wbr>Chat<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="typesOnly.SendMessageOptions.html">SendMessageOptions</a>.<a href="typesOnly.SendMessageOptions.html#createChat">createChat</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L26">src/chat/types.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="identityKeyPair" class="tsd-anchor"></a>
-					<h3>identity<wbr>Key<wbr>Pair</h3>
-					<div class="tsd-signature tsd-kind-icon">identity<wbr>Key<wbr>Pair<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="description" class="tsd-anchor"></a>
+					<h3>description</h3>
+					<div class="tsd-signature tsd-kind-icon">description<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/auth/types.ts#L29">src/auth/types.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L40">src/chat/types.ts:40</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="ref" class="tsd-anchor"></a>
-					<h3>ref</h3>
-					<div class="tsd-signature tsd-kind-icon">ref<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="sections" class="tsd-anchor"></a>
+					<h3>sections</h3>
+					<div class="tsd-signature tsd-kind-icon">sections<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>rows<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>description<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>rowId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/auth/types.ts#L27">src/auth/types.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L41">src/chat/types.ts:41</a></li>
 						</ul>
 					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="secretKey" class="tsd-anchor"></a>
-					<h3>secret<wbr>Key</h3>
-					<div class="tsd-signature tsd-kind-icon">secret<wbr>Key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="waitForAck" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> wait<wbr>For<wbr>Ack</h3>
+					<div class="tsd-signature tsd-kind-icon">wait<wbr>For<wbr>Ack<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="typesOnly.SendMessageOptions.html">SendMessageOptions</a>.<a href="typesOnly.SendMessageOptions.html#waitForAck">waitForAck</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/auth/types.ts#L30">src/auth/types.ts:30</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="staticKeyPair" class="tsd-anchor"></a>
-					<h3>static<wbr>Key<wbr>Pair</h3>
-					<div class="tsd-signature tsd-kind-icon">static<wbr>Key<wbr>Pair<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/auth/types.ts#L28">src/auth/types.ts:28</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="type" class="tsd-anchor"></a>
-					<h3>type</h3>
-					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;multidevice&quot;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/auth/types.ts#L26">src/auth/types.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L25">src/chat/types.ts:25</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -196,33 +192,9 @@
 					<li class=" tsd-kind-class tsd-parent-kind-namespace">
 						<a href="../classes/typesOnly.Chat.html" class="tsd-kind-icon">Chat</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="typesOnly.AuthCodeMultiDevice.html" class="tsd-kind-icon">Auth<wbr>Code<wbr>Multi<wbr>Device</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="typesOnly.AuthCodeMultiDevice.html#fullCode" class="tsd-kind-icon">full<wbr>Code</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="typesOnly.AuthCodeMultiDevice.html#identityKeyPair" class="tsd-kind-icon">identity<wbr>Key<wbr>Pair</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="typesOnly.AuthCodeMultiDevice.html#ref" class="tsd-kind-icon">ref</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="typesOnly.AuthCodeMultiDevice.html#secretKey" class="tsd-kind-icon">secret<wbr>Key</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="typesOnly.AuthCodeMultiDevice.html#staticKeyPair" class="tsd-kind-icon">static<wbr>Key<wbr>Pair</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="typesOnly.AuthCodeMultiDevice.html#type" class="tsd-kind-icon">type</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="typesOnly.AuthCodeSingleDevice.html" class="tsd-kind-icon">Auth<wbr>Code<wbr>Single<wbr>Device</a>
 					</li>
@@ -232,9 +204,30 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="typesOnly.ChatEventTypes.html" class="tsd-kind-icon">Chat<wbr>Event<wbr>Types</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="typesOnly.ListMessageOptions.html" class="tsd-kind-icon">List<wbr>Message<wbr>Options</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="typesOnly.ListMessageOptions.html#buttonText" class="tsd-kind-icon">button<wbr>Text</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="typesOnly.ListMessageOptions.html#createChat" class="tsd-kind-icon">create<wbr>Chat</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="typesOnly.ListMessageOptions.html#description" class="tsd-kind-icon">description</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="typesOnly.ListMessageOptions.html#sections" class="tsd-kind-icon">sections</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="typesOnly.ListMessageOptions.html#waitForAck" class="tsd-kind-icon">wait<wbr>For<wbr>Ack</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="typesOnly.MessageButtonsOptions.html" class="tsd-kind-icon">Message<wbr>Buttons<wbr>Options</a>
 					</li>
