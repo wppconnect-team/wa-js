@@ -18,6 +18,7 @@ import Debug from 'debug';
 import Emittery from 'emittery';
 
 import { assertFindChat, assertGetChat, assertWid } from '../assert';
+import { WPPError } from '../util';
 import * as webpack from '../webpack';
 import {
   ButtonCollection,
@@ -35,7 +36,12 @@ import {
   findChat,
   randomMessageId,
 } from '../whatsapp/functions';
-import { MessageButtonsOptions, RawMessage, TextMessageOptions } from '.';
+import {
+  ListMessageOptions,
+  MessageButtonsOptions,
+  RawMessage,
+  TextMessageOptions,
+} from '.';
 import { ChatEventTypes, SendMessageOptions } from './types';
 
 const debugChat = Debug('WPP:chat');
@@ -183,8 +189,66 @@ export class Chat extends Emittery<ChatEventTypes> {
 
     message = this.prepareMessageButtons(message, options);
 
-    const result = await this.sendRawMessage(chatId, message, options);
+    return await this.sendRawMessage(chatId, message, options);
+  }
 
-    return result;
+  /**
+   * Send a list message
+   *
+   * @example
+   * ```javascript
+   * WPP.chat.sendListMessage('<number>@c.us', {
+   *   buttonText: 'Click Me!',
+   *   description: "Hello it's list message",
+   *   sections: [{
+   *     title: 'Section 1',
+   *     rows: [{
+   *       rowId: 'rowid1',
+   *       title: 'Row 1',
+   *       description: "Hello it's description 1",
+   *     },{
+   *       rowId: 'rowid2',
+   *       title: 'Row 2',
+   *       description: "Hello it's description 2",
+   *     }]
+   *   }]
+   * });
+   * ```
+   */
+  async sendListMessage(
+    chatId: any,
+    options: ListMessageOptions
+  ): Promise<any> {
+    options = {
+      ...this.defaultSendMessageOptions,
+      ...options,
+    };
+
+    const sections = options.sections;
+
+    if (!Array.isArray(sections)) {
+      throw new WPPError('invalid_list_type', 'Sections must be an array');
+    }
+
+    if (sections.length === 0 || sections.length > 10) {
+      throw new WPPError(
+        'invalid_list_size',
+        'Sections options must have between 1 and 10 options'
+      );
+    }
+
+    const list: RawMessage['list'] = {
+      buttonText: options.buttonText,
+      description: options.description,
+      listType: 1,
+      sections,
+    };
+
+    const message: RawMessage = {
+      type: 'list',
+      list,
+    };
+
+    return await this.sendRawMessage(chatId, message, options);
   }
 }

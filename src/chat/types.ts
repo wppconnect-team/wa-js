@@ -35,8 +35,23 @@ export interface MessageButtonsOptions {
   footer?: string;
 }
 
+export interface ListMessageOptions extends SendMessageOptions {
+  buttonText: string;
+  description: string;
+  sections: Array<{
+    title: string;
+    rows: Array<{
+      rowId: string;
+      title: string;
+      description: string;
+    }>;
+  }>;
+}
+
 export type TextMessageOptions = SendMessageOptions & MessageButtonsOptions;
 
-export type AllMessageOptions = SendMessageOptions & MessageButtonsOptions;
+export type AllMessageOptions = SendMessageOptions &
+  MessageButtonsOptions &
+  Partial<ListMessageOptions>;
 
 export type RawMessage = ModelPropertiesContructor<MsgModel>;

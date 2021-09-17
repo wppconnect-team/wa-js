@@ -186,7 +186,19 @@ interface Props {
   broadcastEphSettings?: any;
   broadcastId?: any;
   ctwaContext?: any;
-  list?: any;
+  list?: {
+    buttonText: string;
+    description: string;
+    sections: Array<{
+      title: string;
+      rows: Array<{
+        title: string;
+        description: string;
+        rowId: string;
+      }>;
+    }>;
+    listType: number;
+  };
   listResponse?: any;
   productListItemCount?: any;
   productHeaderImageRejected?: any;
