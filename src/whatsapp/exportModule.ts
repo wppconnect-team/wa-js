@@ -81,11 +81,13 @@ export function exportModule(
             value,
           });
 
-          // Hidden property to get ID
-          Object.defineProperty(value, '__wa_id', {
-            get: () => moduleId,
-            enumerable: false,
-          });
+          try {
+            // Hidden property to get ID
+            Object.defineProperty(value, '__wa_id', {
+              get: () => moduleId,
+              enumerable: false,
+            });
+          } catch (error) {}
         }
 
         return value;
