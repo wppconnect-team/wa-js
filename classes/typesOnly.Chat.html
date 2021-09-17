@@ -101,10 +101,11 @@
 								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite"><a href="typesOnly.Chat.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited tsd-is-external">
+						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="typesOnly.Chat.html#debug" class="tsd-kind-icon">debug</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="typesOnly.Chat.html#defaultSendMessageOptions" class="tsd-kind-icon">default<wbr>Send<wbr>Message<wbr>Options</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external"><a href="typesOnly.Chat.html#isDebugEnabled" class="tsd-kind-icon">is<wbr>Debug<wbr>Enabled</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external"><a href="typesOnly.Chat.html#listenerAdded" class="tsd-kind-icon">listener<wbr>Added</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external"><a href="typesOnly.Chat.html#listenerRemoved" class="tsd-kind-icon">listener<wbr>Removed</a></li>
@@ -128,6 +129,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external"><a href="typesOnly.Chat.html#on" class="tsd-kind-icon">on</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="typesOnly.Chat.html#onAny" class="tsd-kind-icon">on<wbr>Any</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external"><a href="typesOnly.Chat.html#once" class="tsd-kind-icon">once</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="typesOnly.Chat.html#prepareMessageButtons" class="tsd-kind-icon">prepare<wbr>Message<wbr>Buttons</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="typesOnly.Chat.html#sendRawMessage" class="tsd-kind-icon">send<wbr>Raw<wbr>Message</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="typesOnly.Chat.html#sendTextMessage" class="tsd-kind-icon">send<wbr>Text<wbr>Message</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external"><a href="typesOnly.Chat.html#mixin" class="tsd-kind-icon">mixin</a></li>
@@ -149,7 +151,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Emittery&lt;ChatEventTypes&gt;.constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/Chat.ts#L43">src/chat/Chat.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/Chat.ts#L50">src/chat/Chat.ts:50</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="typesOnly.Chat.html" class="tsd-signature-type" data-tsd-kind="Class">Chat</a></h4>
@@ -157,7 +159,7 @@
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-external">
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="debug" class="tsd-anchor"></a>
@@ -174,6 +176,16 @@
 							<p>Debugging options for the current instance.</p>
 						</div>
 					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="defaultSendMessageOptions" class="tsd-anchor"></a>
+					<h3>default<wbr>Send<wbr>Message<wbr>Options</h3>
+					<div class="tsd-signature tsd-kind-icon">default<wbr>Send<wbr>Message<wbr>Options<span class="tsd-signature-symbol">:</span> <a href="../interfaces/typesOnly.SendMessageOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">SendMessageOptions</a><span class="tsd-signature-symbol"> = ...</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/Chat.ts#L45">src/chat/Chat.ts:45</a></li>
+						</ul>
+					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
 					<a name="isDebugEnabled" class="tsd-anchor"></a>
@@ -675,7 +687,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/Chat.ts#L56">src/chat/Chat.ts:56</a></li>
+									<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/Chat.ts#L63">src/chat/Chat.ts:63</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -698,7 +710,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/Chat.ts#L61">src/chat/Chat.ts:61</a></li>
+									<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/Chat.ts#L68">src/chat/Chat.ts:68</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -721,7 +733,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/Chat.ts#L48">src/chat/Chat.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/Chat.ts#L55">src/chat/Chat.ts:55</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1076,39 +1088,36 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="sendRawMessage" class="tsd-anchor"></a>
-					<h3>send<wbr>Raw<wbr>Message</h3>
+					<a name="prepareMessageButtons" class="tsd-anchor"></a>
+					<h3>prepare<wbr>Message<wbr>Buttons</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">send<wbr>Raw<wbr>Message<span class="tsd-signature-symbol">(</span>chatId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, message<span class="tsd-signature-symbol">: </span><a href="../modules/typesOnly.html#ChatRawMessage" class="tsd-signature-type" data-tsd-kind="Type alias">ChatRawMessage</a>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/typesOnly.ChatSendMessageOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatSendMessageOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">prepare<wbr>Message<wbr>Buttons<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><a href="../modules/typesOnly.html#RawMessage" class="tsd-signature-type" data-tsd-kind="Type alias">RawMessage</a>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/typesOnly.MessageButtonsOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">MessageButtonsOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/typesOnly.html#RawMessage" class="tsd-signature-type" data-tsd-kind="Type alias">RawMessage</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/Chat.ts#L66">src/chat/Chat.ts:66</a></li>
+									<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/Chat.ts#L73">src/chat/Chat.ts:73</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>chatId: <span class="tsd-signature-type">any</span></h5>
+									<h5>message: <a href="../modules/typesOnly.html#RawMessage" class="tsd-signature-type" data-tsd-kind="Type alias">RawMessage</a></h5>
 								</li>
 								<li>
-									<h5>message: <a href="../modules/typesOnly.html#ChatRawMessage" class="tsd-signature-type" data-tsd-kind="Type alias">ChatRawMessage</a></h5>
-								</li>
-								<li>
-									<h5>options: <a href="../interfaces/typesOnly.ChatSendMessageOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatSendMessageOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
+									<h5>options: <a href="../interfaces/typesOnly.MessageButtonsOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">MessageButtonsOptions</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/typesOnly.html#RawMessage" class="tsd-signature-type" data-tsd-kind="Type alias">RawMessage</a></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="sendTextMessage" class="tsd-anchor"></a>
-					<h3>send<wbr>Text<wbr>Message</h3>
+					<a name="sendRawMessage" class="tsd-anchor"></a>
+					<h3>send<wbr>Raw<wbr>Message</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">send<wbr>Text<wbr>Message<span class="tsd-signature-symbol">(</span>chatId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/typesOnly.ChatSendMessageOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatSendMessageOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">send<wbr>Raw<wbr>Message<span class="tsd-signature-symbol">(</span>chatId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, message<span class="tsd-signature-symbol">: </span><a href="../modules/typesOnly.html#RawMessage" class="tsd-signature-type" data-tsd-kind="Type alias">RawMessage</a>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/typesOnly.SendMessageOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">SendMessageOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -1123,10 +1132,39 @@
 									<h5>chatId: <span class="tsd-signature-type">any</span></h5>
 								</li>
 								<li>
+									<h5>message: <a href="../modules/typesOnly.html#RawMessage" class="tsd-signature-type" data-tsd-kind="Type alias">RawMessage</a></h5>
+								</li>
+								<li>
+									<h5>options: <a href="../interfaces/typesOnly.SendMessageOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">SendMessageOptions</a><span class="tsd-signature-symbol"> = ...</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="sendTextMessage" class="tsd-anchor"></a>
+					<h3>send<wbr>Text<wbr>Message</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">send<wbr>Text<wbr>Message<span class="tsd-signature-symbol">(</span>chatId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, options<span class="tsd-signature-symbol">?: </span><a href="../modules/typesOnly.html#TextMessageOptions" class="tsd-signature-type" data-tsd-kind="Type alias">TextMessageOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/Chat.ts#L171">src/chat/Chat.ts:171</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>chatId: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
 									<h5>content: <span class="tsd-signature-type">any</span></h5>
 								</li>
 								<li>
-									<h5>options: <a href="../interfaces/typesOnly.ChatSendMessageOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">ChatSendMessageOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
+									<h5>options: <a href="../modules/typesOnly.html#TextMessageOptions" class="tsd-signature-type" data-tsd-kind="Type alias">TextMessageOptions</a><span class="tsd-signature-symbol"> = ...</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -1267,6 +1305,9 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="typesOnly.Chat.html#debug" class="tsd-kind-icon">debug</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="typesOnly.Chat.html#defaultSendMessageOptions" class="tsd-kind-icon">default<wbr>Send<wbr>Message<wbr>Options</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static tsd-is-external">
 								<a href="typesOnly.Chat.html#isDebugEnabled" class="tsd-kind-icon">is<wbr>Debug<wbr>Enabled</a>
 							</li>
@@ -1322,6 +1363,9 @@
 								<a href="typesOnly.Chat.html#once" class="tsd-kind-icon">once</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="typesOnly.Chat.html#prepareMessageButtons" class="tsd-kind-icon">prepare<wbr>Message<wbr>Buttons</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="typesOnly.Chat.html#sendRawMessage" class="tsd-kind-icon">send<wbr>Raw<wbr>Message</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -1347,13 +1391,22 @@
 						<a href="../interfaces/typesOnly.ChatEventTypes.html" class="tsd-kind-icon">Chat<wbr>Event<wbr>Types</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="../interfaces/typesOnly.ChatSendMessageOptions.html" class="tsd-kind-icon">Chat<wbr>Send<wbr>Message<wbr>Options</a>
+						<a href="../interfaces/typesOnly.MessageButtonsOptions.html" class="tsd-kind-icon">Message<wbr>Buttons<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="../interfaces/typesOnly.SendMessageOptions.html" class="tsd-kind-icon">Send<wbr>Message<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+						<a href="../modules/typesOnly.html#AllMessageOptions" class="tsd-kind-icon">All<wbr>Message<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
 						<a href="../modules/typesOnly.html#AuthCode" class="tsd-kind-icon">Auth<wbr>Code</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
-						<a href="../modules/typesOnly.html#ChatRawMessage" class="tsd-kind-icon">Chat<wbr>Raw<wbr>Message</a>
+						<a href="../modules/typesOnly.html#RawMessage" class="tsd-kind-icon">Raw<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+						<a href="../modules/typesOnly.html#TextMessageOptions" class="tsd-kind-icon">Text<wbr>Message<wbr>Options</a>
 					</li>
 				</ul>
 			</nav>
@@ -1366,6 +1419,7 @@
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 		</div>

@@ -93,14 +93,17 @@
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/typesOnly.AuthCodeSingleDevice.html" class="tsd-kind-icon">Auth<wbr>Code<wbr>Single<wbr>Device</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/typesOnly.AuthEventTypes.html" class="tsd-kind-icon">Auth<wbr>Event<wbr>Types</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/typesOnly.ChatEventTypes.html" class="tsd-kind-icon">Chat<wbr>Event<wbr>Types</a></li>
-								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/typesOnly.ChatSendMessageOptions.html" class="tsd-kind-icon">Chat<wbr>Send<wbr>Message<wbr>Options</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/typesOnly.MessageButtonsOptions.html" class="tsd-kind-icon">Message<wbr>Buttons<wbr>Options</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/typesOnly.SendMessageOptions.html" class="tsd-kind-icon">Send<wbr>Message<wbr>Options</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-type-alias tsd-parent-kind-namespace"><a href="typesOnly.html#AllMessageOptions" class="tsd-kind-icon">All<wbr>Message<wbr>Options</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-namespace"><a href="typesOnly.html#AuthCode" class="tsd-kind-icon">Auth<wbr>Code</a></li>
-								<li class="tsd-kind-type-alias tsd-parent-kind-namespace"><a href="typesOnly.html#ChatRawMessage" class="tsd-kind-icon">Chat<wbr>Raw<wbr>Message</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-namespace"><a href="typesOnly.html#RawMessage" class="tsd-kind-icon">Raw<wbr>Message</a></li>
+								<li class="tsd-kind-type-alias tsd-parent-kind-namespace"><a href="typesOnly.html#TextMessageOptions" class="tsd-kind-icon">Text<wbr>Message<wbr>Options</a></li>
 							</ul>
 						</section>
 					</div>
@@ -108,6 +111,16 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Type aliases</h2>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace">
+					<a name="AllMessageOptions" class="tsd-anchor"></a>
+					<h3>All<wbr>Message<wbr>Options</h3>
+					<div class="tsd-signature tsd-kind-icon">All<wbr>Message<wbr>Options<span class="tsd-signature-symbol">:</span> <a href="../interfaces/typesOnly.SendMessageOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">SendMessageOptions</a><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/typesOnly.MessageButtonsOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">MessageButtonsOptions</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L40">src/chat/types.ts:40</a></li>
+						</ul>
+					</aside>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace">
 					<a name="AuthCode" class="tsd-anchor"></a>
 					<h3>Auth<wbr>Code</h3>
@@ -119,12 +132,22 @@
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace">
-					<a name="ChatRawMessage" class="tsd-anchor"></a>
-					<h3>Chat<wbr>Raw<wbr>Message</h3>
-					<div class="tsd-signature tsd-kind-icon">Chat<wbr>Raw<wbr>Message<span class="tsd-signature-symbol">:</span> <a href="whatsapp.html#ModelPropertiesContructor" class="tsd-signature-type" data-tsd-kind="Type alias">ModelPropertiesContructor</a><span class="tsd-signature-symbol">&lt;</span><a href="../classes/whatsapp.MsgModel.html" class="tsd-signature-type" data-tsd-kind="Class">MsgModel</a><span class="tsd-signature-symbol">&gt;</span></div>
+					<a name="RawMessage" class="tsd-anchor"></a>
+					<h3>Raw<wbr>Message</h3>
+					<div class="tsd-signature tsd-kind-icon">Raw<wbr>Message<span class="tsd-signature-symbol">:</span> <a href="whatsapp.html#ModelPropertiesContructor" class="tsd-signature-type" data-tsd-kind="Type alias">ModelPropertiesContructor</a><span class="tsd-signature-symbol">&lt;</span><a href="../classes/whatsapp.MsgModel.html" class="tsd-signature-type" data-tsd-kind="Class">MsgModel</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L29">src/chat/types.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L42">src/chat/types.ts:42</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace">
+					<a name="TextMessageOptions" class="tsd-anchor"></a>
+					<h3>Text<wbr>Message<wbr>Options</h3>
+					<div class="tsd-signature tsd-kind-icon">Text<wbr>Message<wbr>Options<span class="tsd-signature-symbol">:</span> <a href="../interfaces/typesOnly.SendMessageOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">SendMessageOptions</a><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/typesOnly.MessageButtonsOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">MessageButtonsOptions</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L38">src/chat/types.ts:38</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -180,13 +203,22 @@
 						<a href="../interfaces/typesOnly.ChatEventTypes.html" class="tsd-kind-icon">Chat<wbr>Event<wbr>Types</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="../interfaces/typesOnly.ChatSendMessageOptions.html" class="tsd-kind-icon">Chat<wbr>Send<wbr>Message<wbr>Options</a>
+						<a href="../interfaces/typesOnly.MessageButtonsOptions.html" class="tsd-kind-icon">Message<wbr>Buttons<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="../interfaces/typesOnly.SendMessageOptions.html" class="tsd-kind-icon">Send<wbr>Message<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+						<a href="typesOnly.html#AllMessageOptions" class="tsd-kind-icon">All<wbr>Message<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
 						<a href="typesOnly.html#AuthCode" class="tsd-kind-icon">Auth<wbr>Code</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
-						<a href="typesOnly.html#ChatRawMessage" class="tsd-kind-icon">Chat<wbr>Raw<wbr>Message</a>
+						<a href="typesOnly.html#RawMessage" class="tsd-kind-icon">Raw<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+						<a href="typesOnly.html#TextMessageOptions" class="tsd-kind-icon">Text<wbr>Message<wbr>Options</a>
 					</li>
 				</ul>
 			</nav>
