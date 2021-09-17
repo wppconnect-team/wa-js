@@ -40,12 +40,14 @@ interface Derived {}
 
 /**
  * @whatsapp 2.2126.14:23241
+ * @whatsapp 2.2136.9:82600
  */
 export declare interface LiveLocationModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
  * @whatsapp 2.2126.14:23241
+ * @whatsapp 2.2136.9:82600
  */
 export declare class LiveLocationModel extends Model<LiveLocationCollection> {
   idClass: typeof Wid;

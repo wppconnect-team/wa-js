@@ -52,12 +52,14 @@ interface Derived {
 
 /**
  * @whatsapp 2.2126.14:45569
+ * @whatsapp 2.2136.9:86668
  */
 export declare interface StickerPackModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
  * @whatsapp 2.2126.14:45569
+ * @whatsapp 2.2136.9:86668
  */
 export declare class StickerPackModel extends Model {
   constructor(

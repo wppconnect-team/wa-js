@@ -75,12 +75,14 @@ interface Derived {
 
 /**
  * @whatsapp 2.2126.14:23223
+ * @whatsapp 2.2136.9:49694
  */
 export declare interface MediaDataModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
  * @whatsapp 2.2126.14:23223
+ * @whatsapp 2.2136.9:49694
  */
 export declare class MediaDataModel extends Model {
   static TYPE?: any;

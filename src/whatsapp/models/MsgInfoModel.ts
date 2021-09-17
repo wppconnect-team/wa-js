@@ -43,12 +43,14 @@ interface Derived {
 
 /**
  * @whatsapp 2.2126.14:24479
+ * @whatsapp 2.2136.9:63463
  */
 export declare interface MsgInfoModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
  * @whatsapp 2.2126.14:24479
+ * @whatsapp 2.2136.9:63463
  */
 export declare class MsgInfoModel extends Model<MsgInfoCollection> {
   idClass: typeof MsgKey;

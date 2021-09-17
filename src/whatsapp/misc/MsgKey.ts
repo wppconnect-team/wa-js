@@ -19,6 +19,7 @@ import { Wid } from './Wid';
 
 /**
  * @whatsapp 2.2126.14:4765
+ * @whatsapp 2.2136.9:77043
  */
 export declare class MsgKey {
   constructor(

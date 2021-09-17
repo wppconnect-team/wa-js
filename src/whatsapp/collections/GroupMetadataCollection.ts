@@ -20,6 +20,7 @@ import { Collection } from './Collection';
 
 /**
  * @whatsapp 2.2126.14:28936
+ * @whatsapp 2.2136.9:75798
  */
 export declare class GroupMetadataCollection extends Collection<GroupMetadataModel> {
   static model: GroupMetadataModel;

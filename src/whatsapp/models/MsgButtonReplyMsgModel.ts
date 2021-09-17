@@ -36,12 +36,14 @@ interface Derived {}
 
 /**
  * @whatsapp 2.2126.14:15379
+ * @whatsapp 2.2136.9:81750
  */
 export declare interface MsgButtonReplyMsgModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
  * @whatsapp 2.2126.14:15379
+ * @whatsapp 2.2136.9:81750
  */
 export declare class MsgButtonReplyMsgModel extends Model {
   idClass: typeof MsgKey;

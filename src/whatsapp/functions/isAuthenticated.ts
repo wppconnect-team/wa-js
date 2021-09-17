@@ -16,6 +16,9 @@
 
 import { exportModule } from '../exportModule';
 
+/**
+ * @whatsapp 2.2136.9:54930
+ */
 export declare function isAuthenticated(): boolean;
 
 exportModule(

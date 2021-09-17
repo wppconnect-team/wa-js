@@ -20,6 +20,7 @@ import { Collection } from './Collection';
 
 /**
  * @whatsapp 2.2126.14:87170
+ * @whatsapp 2.2136.9:42745
  */
 export declare class LabelItemCollection extends Collection<LabelItemModel> {
   static model: LabelItemModel;

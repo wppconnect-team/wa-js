@@ -20,6 +20,7 @@ import { Collection } from './Collection';
 
 /**
  * @whatsapp 2.2126.14:74692
+ * @whatsapp 2.2136.9:15971
  */
 export declare class CallCollection extends Collection<CallModel> {
   static model: CallModel;

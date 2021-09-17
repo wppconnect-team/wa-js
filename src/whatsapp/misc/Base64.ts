@@ -18,6 +18,7 @@ import { exportModule } from '../exportModule';
 
 /**
  * @whatsapp 2.2132.6:45792
+ * @whatsapp 2.2136.9:42977
  */
 export declare namespace Base64 {
   const BASE64_DATA_URL_SCHEME: 'data:image/jpeg;base64,';

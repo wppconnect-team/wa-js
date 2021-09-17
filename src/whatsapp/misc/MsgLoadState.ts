@@ -20,6 +20,7 @@ import { Model, MsgModel } from '../models';
 
 /**
  * @whatsapp 2.2126.14:72150
+ * @whatsapp 2.2136.9:97490
  */
 export declare class MsgLoadState extends Model {
   noEarlierMsgs: any;
@@ -29,6 +30,9 @@ export declare class MsgLoadState extends Model {
   contextLoaded: any;
 }
 
+/**
+ * @whatsapp 2.2136.9:97490
+ */
 export declare class MsgLoad extends CollectionCache<MsgModel> {
   msgLoadState: MsgLoadState;
 }
