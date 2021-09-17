@@ -23,27 +23,18 @@ import {
   ModelProxy,
 } from './Model';
 
-/**
- * @whatsapp 2.2126.14:9379
- */
 interface Props {
   id: Wid;
   isAdmin: boolean;
   isSuperAdmin: boolean;
 }
 
-/**
- * @whatsapp 2.2126.14:9379
- */
 interface Session {
   stale?: any;
   contact?: any;
   hasSenderKey: boolean;
 }
 
-/**
- * @whatsapp 2.2126.14:9379
- */
 interface Derived {}
 
 /**

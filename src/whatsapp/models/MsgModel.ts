@@ -16,7 +16,6 @@
 
 /**
  * @whatsapp 2.2126.14:94490
- * @whatsapp 2.2136.9:92954
  */
 import { ButtonCollection, MsgCollection } from '../collections';
 import { exportProxyModel } from '../exportModule';
@@ -206,9 +205,6 @@ interface Props {
   isMdHistoryMsg: boolean;
 }
 
-/**
- * @whatsapp 2.2126.14:94490
- */
 interface Session {
   stale?: any;
   sendDeferred?: any;
@@ -225,9 +221,6 @@ interface Session {
   linksIndexParsed?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:94490
- */
 interface Derived {
   chat?: any;
   hasTemplateButtons: boolean;

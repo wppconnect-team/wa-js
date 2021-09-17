@@ -23,9 +23,6 @@ import {
   ModelProxy,
 } from './Model';
 
-/**
- * @whatsapp 2.2126.14:33502
- */
 interface Props {
   id: Wid;
   wallpaperColor?: any;
@@ -33,16 +30,10 @@ interface Props {
   showDoodle?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:33502
- */
 interface Session {
   stale?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:33502
- */
 interface Derived {}
 
 /**

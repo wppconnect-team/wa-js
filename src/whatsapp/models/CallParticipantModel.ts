@@ -22,9 +22,6 @@ import {
   ModelProxy,
 } from './Model';
 
-/**
- * @whatsapp 2.2126.14:82531
- */
 interface Props {
   id?: any;
   callId?: any;
@@ -41,16 +38,10 @@ interface Props {
   isOfferingVideoUpgrade: boolean;
 }
 
-/**
- * @whatsapp 2.2126.14:82531
- */
 interface Session {
   stale?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:82531
- */
 interface Derived {}
 
 /**

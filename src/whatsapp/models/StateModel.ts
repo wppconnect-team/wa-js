@@ -22,14 +22,8 @@ import {
   ModelProxy,
 } from './Model';
 
-/**
- * @whatsapp 2.2132.6:13353
- */
 interface Props {}
 
-/**
- * @whatsapp 2.2132.6:13353
- */
 interface Session {
   socketPreload?: any;
   socket?: any;
@@ -66,9 +60,6 @@ interface Session {
   shouldUpgradeToMDPord: boolean;
 }
 
-/**
- * @whatsapp 2.2132.6:13353
- */
 interface Derived {}
 
 /**

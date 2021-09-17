@@ -22,24 +22,15 @@ import {
   ModelProxy,
 } from './Model';
 
-/**
- * @whatsapp 2.2126.14:82781
- */
 interface Props {
   id?: any;
   variant?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:82781
- */
 interface Session {
   stale?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:82781
- */
 interface Derived {}
 
 /**

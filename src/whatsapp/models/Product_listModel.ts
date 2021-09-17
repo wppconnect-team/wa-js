@@ -23,25 +23,16 @@ import {
   ModelProxy,
 } from './Model';
 
-/**
- * @whatsapp 2.2126.14:12439
- */
 interface Props {
   id: MsgKey;
   catalogId?: any;
   title?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:12439
- */
 interface Session {
   stale?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:12439
- */
 interface Derived {}
 
 /**

@@ -24,9 +24,6 @@ import {
   ModelProxy,
 } from './Model';
 
-/**
- * @whatsapp 2.2126.14:49549
- */
 interface Props {
   id: Wid;
   shortName?: any;
@@ -44,9 +41,6 @@ interface Props {
   disappearingModeSettingTimestamp?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:49549
- */
 interface Session {
   stale?: any;
   isContactBlocked: boolean;
@@ -63,9 +57,6 @@ interface Session {
   locale?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:49549
- */
 interface Derived {
   notifyName?: any;
   mentionName?: any;

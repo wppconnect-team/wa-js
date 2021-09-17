@@ -20,9 +20,6 @@ import { MsgKey, Wid } from '../misc';
 import { ModelOptions, ModelPropertiesContructor, ModelProxy } from './Model';
 import { ModelChatBase, PropsChatBase, SessionChatBase } from './ModelChatBase';
 
-/**
- * @whatsapp 2.2126.14:6653
- */
 interface Props extends PropsChatBase {
   lastReceivedKey?: MsgKey;
   t?: any;
@@ -44,9 +41,6 @@ interface Props extends PropsChatBase {
   endOfHistoryTransferType?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:6653
- */
 interface Session extends SessionChatBase {
   stale?: any;
   createdLocally?: any;
@@ -87,9 +81,6 @@ interface Session extends SessionChatBase {
   pendingInitialLoading?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:6653
- */
 interface Derived {
   kind?: any;
   isUser: boolean;

@@ -22,9 +22,6 @@ import {
   ModelProxy,
 } from './Model';
 
-/**
- * @whatsapp 2.2126.14:23491
- */
 interface Props {
   id?: any;
   file?: any;
@@ -33,9 +30,6 @@ interface Props {
   isVcardOverMmsDocument: boolean;
 }
 
-/**
- * @whatsapp 2.2126.14:23491
- */
 interface Session {
   stale?: any;
   state?: any;
@@ -57,9 +51,6 @@ interface Session {
   gifAttribution?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:23491
- */
 interface Derived {
   previewable?: any;
   filesize?: any;

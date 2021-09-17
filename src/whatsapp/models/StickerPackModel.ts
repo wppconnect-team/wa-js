@@ -22,9 +22,6 @@ import {
   ModelProxy,
 } from './Model';
 
-/**
- * @whatsapp 2.2126.14:45569
- */
 interface Props {
   id?: any;
   index?: any;
@@ -41,17 +38,11 @@ interface Props {
   encFilehash?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:45569
- */
 interface Session {
   stale?: any;
   mediaData?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:45569
- */
 interface Derived {
   deprecatedMms3Url?: any;
   stickers?: any;

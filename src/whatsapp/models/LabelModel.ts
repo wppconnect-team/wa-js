@@ -22,9 +22,6 @@ import {
   ModelProxy,
 } from './Model';
 
-/**
- * @whatsapp 2.2126.14:13960
- */
 interface Props {
   id?: any;
   colorIndex?: any;
@@ -32,16 +29,10 @@ interface Props {
   count?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:13960
- */
 interface Session {
   stale?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:13960
- */
 interface Derived {
   hexColor?: any;
 }

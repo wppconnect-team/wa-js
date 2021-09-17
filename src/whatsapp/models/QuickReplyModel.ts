@@ -23,9 +23,6 @@ import {
   ModelProxy,
 } from './Model';
 
-/**
- * @whatsapp 2.2126.14:46445
- */
 interface Props {
   id?: any;
   shortcut?: any;
@@ -34,17 +31,11 @@ interface Props {
   keywords?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:46445
- */
 interface Session {
   stale?: any;
   pendingCount?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:46445
- */
 interface Derived {
   totalCount?: any;
 }

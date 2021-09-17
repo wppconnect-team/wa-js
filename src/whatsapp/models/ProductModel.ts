@@ -22,9 +22,6 @@ import {
   ModelProxy,
 } from './Model';
 
-/**
- * @whatsapp 2.2126.14:53965
- */
 interface Props {
   id?: any;
   isHidden: boolean;
@@ -49,9 +46,6 @@ interface Props {
   t?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:53965
- */
 interface Session {
   stale?: any;
   old?: any;
@@ -61,9 +55,6 @@ interface Session {
   fetchedFromServer?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:53965
- */
 interface Derived {}
 
 /**

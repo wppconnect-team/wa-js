@@ -23,9 +23,6 @@ import {
   ModelProxy,
 } from './Model';
 
-/**
- * @whatsapp 2.2126.14:22770
- */
 interface Props {
   id: Wid;
   creation?: any;
@@ -43,9 +40,6 @@ interface Props {
   uniqueShortNameMap?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:22770
- */
 interface Session {
   stale?: any;
   trusted?: any;
@@ -55,9 +49,6 @@ interface Session {
   revokeGroupV4AddInvitePromise?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:22770
- */
 interface Derived {
   groupInviteLink?: any;
 }

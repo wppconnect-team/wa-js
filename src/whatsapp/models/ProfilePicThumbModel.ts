@@ -24,9 +24,6 @@ import {
   ModelProxy,
 } from './Model';
 
-/**
- * @whatsapp 2.2126.14:16971
- */
 interface Props {
   id: Wid;
   token?: any;
@@ -36,18 +33,12 @@ interface Props {
   previewEurl?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:16971
- */
 interface Session {
   stale?: any;
   eurlStale?: any;
   pendingPic?: any;
 }
 
-/**
- * @whatsapp 2.2126.14:16971
- */
 interface Derived {
   img?: any;
   imgFull?: any;
