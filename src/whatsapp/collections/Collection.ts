@@ -23,6 +23,10 @@ interface Option {
   remove: boolean;
 }
 
+/**
+ * @whatsapp 2.2126.14:64770
+ * @whatsapp 2.2136.9:85392
+ */
 export declare interface Collection<M>
   extends EventEmitter,
     Pick<
@@ -40,6 +44,7 @@ export declare interface Collection<M>
 
 /**
  * @whatsapp 2.2126.14:64770
+ * @whatsapp 2.2136.9:85392
  */
 export declare class Collection<M, A = M | M[]> extends EventEmitter {
   static model: any;
@@ -47,7 +52,7 @@ export declare class Collection<M, A = M | M[]> extends EventEmitter {
 
   modelClass: M;
 
-  constructor(e: any, t?: { parent: any });
+  constructor(e?: any, t?: { parent: any });
 
   add(value: A, options?: Option): A;
 

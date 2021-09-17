@@ -21,9 +21,22 @@ export interface ChatEventTypes {
   idle: undefined;
 }
 
-export interface ChatSendMessageOptions {
+export interface SendMessageOptions {
   waitForAck?: boolean;
   createChat?: boolean;
 }
 
-export type ChatRawMessage = ModelPropertiesContructor<MsgModel>;
+export interface MessageButtonsOptions {
+  buttons?: Array<{
+    id: string;
+    text: string;
+  }>;
+  title?: string;
+  footer?: string;
+}
+
+export type TextMessageOptions = SendMessageOptions & MessageButtonsOptions;
+
+export type AllMessageOptions = SendMessageOptions & MessageButtonsOptions;
+
+export type RawMessage = ModelPropertiesContructor<MsgModel>;

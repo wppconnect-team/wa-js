@@ -19,6 +19,7 @@ import { Collection } from './Collection';
 
 /**
  * @whatsapp 2.2126.14:53125
+ * @whatsapp 2.2136.9:36513
  */
 export declare class CollectionCache<C, A = C | C[]> extends Collection<C> {
   static cachePolicy: {

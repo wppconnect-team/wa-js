@@ -20,11 +20,13 @@ import Emittery from 'emittery';
 import { assertFindChat, assertGetChat, assertWid } from '../assert';
 import * as webpack from '../webpack';
 import {
+  ButtonCollection,
   ChatModel,
   ChatStore,
   ClockSkew,
   Constants,
   MsgKey,
+  ReplyButtonModel,
   UserPrefs,
   Wid,
 } from '../whatsapp';
@@ -33,13 +35,18 @@ import {
   findChat,
   randomMessageId,
 } from '../whatsapp/functions';
-import { ChatRawMessage } from '.';
-import { ChatEventTypes, ChatSendMessageOptions } from './types';
+import { MessageButtonsOptions, RawMessage, TextMessageOptions } from '.';
+import { ChatEventTypes, SendMessageOptions } from './types';
 
 const debugChat = Debug('WPP:chat');
 const debugMessage = Debug('WPP:message');
 
 export class Chat extends Emittery<ChatEventTypes> {
+  public defaultSendMessageOptions: SendMessageOptions = {
+    createChat: false,
+    waitForAck: true,
+  };
+
   constructor() {
     super();
     webpack.onInjected(() => this.initialize());
@@ -63,28 +70,72 @@ export class Chat extends Emittery<ChatEventTypes> {
     return ChatStore.get(wid);
   }
 
+  prepareMessageButtons(
+    message: RawMessage,
+    options: MessageButtonsOptions
+  ): RawMessage {
+    if (!options.buttons) {
+      return message;
+    }
+
+    if (!Array.isArray(options.buttons)) {
+      throw 'Buttons options is not a array';
+    }
+
+    if (options.buttons.length === 0 || options.buttons.length > 3) {
+      throw 'Buttons options must have between 1 and 3 options';
+    }
+
+    if (message.type === 'chat') {
+      message.contentText = message.body;
+    } else {
+      message.contentText = message.caption;
+    }
+
+    message.title = options.title;
+    message.footer = options.footer;
+    message.isDynamicReplyButtonsMsg = true;
+
+    message.dynamicReplyButtons = options.buttons.map((b) => ({
+      buttonId: b.id,
+      buttonText: { displayText: b.text },
+      type: 1,
+    }));
+
+    // For UI only
+    message.replyButtons = new ButtonCollection();
+    message.replyButtons.add(
+      message.dynamicReplyButtons.map(
+        (b) =>
+          new ReplyButtonModel({
+            id: b.buttonId,
+            displayText: b.buttonText?.displayText || undefined,
+          })
+      )
+    );
+
+    return message;
+  }
+
   async sendRawMessage(
     chatId: any,
-    message: ChatRawMessage,
-    options: ChatSendMessageOptions = {}
+    message: RawMessage,
+    options: SendMessageOptions = this.defaultSendMessageOptions
   ): Promise<any> {
     const chat = options.createChat
       ? await assertFindChat(chatId)
       : assertGetChat(chatId);
 
-    message = Object.assign(
-      {},
-      {
-        t: ClockSkew.globalUnixTime(),
-        from: UserPrefs.getMaybeMeUser(),
-        to: chat.id,
-        self: 'out',
-        isNewMsg: true,
-        local: true,
-        ack: Constants.ACK.CLOCK,
-      },
-      message
-    );
+    message = {
+      t: ClockSkew.globalUnixTime(),
+      from: UserPrefs.getMaybeMeUser(),
+      to: chat.id,
+      self: 'out',
+      isNewMsg: true,
+      local: true,
+      ack: Constants.ACK.CLOCK,
+      ...message,
+    };
 
     if (!message.id) {
       message.id = new MsgKey({
@@ -120,15 +171,17 @@ export class Chat extends Emittery<ChatEventTypes> {
   async sendTextMessage(
     chatId: any,
     content: any,
-    options: ChatSendMessageOptions = {}
+    options: TextMessageOptions = this.defaultSendMessageOptions
   ): Promise<any> {
-    const message: ChatRawMessage = {
+    let message: RawMessage = {
       body: content,
       type: 'chat',
       subtype: null,
       urlText: null,
       urlNumber: null,
     };
+
+    message = this.prepareMessageButtons(message, options);
 
     const result = await this.sendRawMessage(chatId, message, options);
 

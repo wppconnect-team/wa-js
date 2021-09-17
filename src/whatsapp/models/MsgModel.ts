@@ -16,8 +16,9 @@
 
 /**
  * @whatsapp 2.2126.14:94490
+ * @whatsapp 2.2136.9:92954
  */
-import { MsgCollection } from '../collections';
+import { ButtonCollection, MsgCollection } from '../collections';
 import { exportProxyModel } from '../exportModule';
 import { MsgKey, Wid } from '../misc';
 import {
@@ -47,7 +48,7 @@ interface Props {
   isNewMsg: boolean;
   star?: any;
   recvFresh?: any;
-  caption?: any;
+  caption?: string;
   interactiveAnnotations?: any;
   clientUrl?: any;
   loc?: any;
@@ -105,7 +106,7 @@ interface Props {
   thumbnailHQ?: any;
   richPreviewType?: any;
   doNotPlayInline?: any;
-  title?: any;
+  title?: string;
   description?: any;
   businessOwnerJid?: any;
   productId?: any;
@@ -191,10 +192,16 @@ interface Props {
   productListItemCount?: any;
   productHeaderImageRejected?: any;
   isDynamicReplyButtonsMsg: boolean;
-  dynamicReplyButtons?: any;
-  replyButtons?: any;
+  dynamicReplyButtons?: Array<{
+    buttonId: string;
+    buttonText: {
+      displayText: string;
+    };
+    type: number;
+  }>;
+  replyButtons?: ButtonCollection;
   buttonsResponse?: any;
-  selectedButtonId?: any;
+  selectedButtonId?: string;
   interactiveMessage?: any;
   isMdHistoryMsg: boolean;
 }
