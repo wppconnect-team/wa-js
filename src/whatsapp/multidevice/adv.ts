@@ -19,19 +19,19 @@ import { exportModule } from '../exportModule';
 /**
  * @whatsapp 2.2132.6:22009
  */
-export declare const adv: {
-  generateADVSecretKey(): string;
-  getADVSecretKey(): string;
-  setADVSignedIdentity(e: any): string;
-  getADVEncodedIdentity(): any;
-  verifyDeviceIdentityAccountSignature(): any;
-  generateDeviceSignature(e?: any, t?: any, r?: any): any;
-  verifyDeviceSignature(): any;
-  clearADVSecretKey(): void;
-  validateADVwithIdentityKey(): any;
-  validateADVwithEncs(e?: any, t?: any, r?: any, a?: boolean): any;
-  verifyKeyIndexListAccountSignature(e?: any, t?: any): any;
-};
+export declare namespace adv {
+  function generateADVSecretKey(): string;
+  function getADVSecretKey(): string;
+  function setADVSignedIdentity(e: any): string;
+  function getADVEncodedIdentity(): any;
+  function verifyDeviceIdentityAccountSignature(): any;
+  function generateDeviceSignature(e?: any, t?: any, r?: any): any;
+  function verifyDeviceSignature(): any;
+  function clearADVSecretKey(): void;
+  function validateADVwithIdentityKey(): any;
+  function validateADVwithEncs(e?: any, t?: any, r?: any, a?: boolean): any;
+  function verifyKeyIndexListAccountSignature(e?: any, t?: any): any;
+}
 
 exportModule(
   exports,

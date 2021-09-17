@@ -19,33 +19,33 @@ import { exportModule } from '../exportModule';
 /**
  * @whatsapp 2.2126.14:56656
  */
-export declare const ClockSkew: {
-  is24h: boolean;
-  skew: number;
-  skewMS: number;
-  timeZoneHardCode: string;
-  getIs24Hour(): boolean;
-  setIs24Hour(is24h: boolean): void;
-  setSkew(skew: number): void;
-  getSkew(): number;
-  localUnixTime(timestamp?: number): number;
-  globalUnixTime(timestamp?: number): number;
-  relativeStr(timestamp: number): string;
-  relativeDateStr(timestamp: number): string;
-  relativeDateAndTimeStr(timestamp: number): string;
-  timeStr(timestamp: number): string;
-  timestampStr(timestamp: number): string;
-  timestampStrFormat(): string;
-  timestampHour(timestamp: number): number;
-  createdStr(timestamp: number): string;
-  untilStr(timestamp: number): string;
-  lastSeenStr(timestamp: number): string;
-  daysDelta(a: number, b: number): number;
-  durationStr(seconds: number | string): string;
-  paymentTimestampStr(timestamp: number): string;
-  liveLocationLastUpdatedStr(timestamp: number): string;
-  shouldUseIntlDateTimeFormat(): boolean;
-};
+export declare namespace ClockSkew {
+  const is24h: boolean;
+  const skew: number;
+  const skewMS: number;
+  const timeZoneHardCode: string;
+  function getIs24Hour(): boolean;
+  function setIs24Hour(is24h: boolean): void;
+  function setSkew(skew: number): void;
+  function getSkew(): number;
+  function localUnixTime(timestamp?: number): number;
+  function globalUnixTime(timestamp?: number): number;
+  function relativeStr(timestamp: number): string;
+  function relativeDateStr(timestamp: number): string;
+  function relativeDateAndTimeStr(timestamp: number): string;
+  function timeStr(timestamp: number): string;
+  function timestampStr(timestamp: number): string;
+  function timestampStrFormat(): string;
+  function timestampHour(timestamp: number): number;
+  function createdStr(timestamp: number): string;
+  function untilStr(timestamp: number): string;
+  function lastSeenStr(timestamp: number): string;
+  function daysDelta(a: number, b: number): number;
+  function durationStr(seconds: number | string): string;
+  function paymentTimestampStr(timestamp: number): string;
+  function liveLocationLastUpdatedStr(timestamp: number): string;
+  function shouldUseIntlDateTimeFormat(): boolean;
+}
 
 exportModule(
   exports,

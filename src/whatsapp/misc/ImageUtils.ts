@@ -19,12 +19,12 @@ import { exportModule } from '../exportModule';
 /**
  * @whatsapp 2.2126.14:28518
  */
-export declare const ImageUtils: {
-  rotateAndResize(
+export declare namespace ImageUtils {
+  function rotateAndResize(
     e: any,
     t: any,
     r: any
   ): Promise<{ width: number; height: number; images: any }>;
-};
+}
 
 exportModule(exports, 'ImageUtils', (m) => m.rotateAndResize);

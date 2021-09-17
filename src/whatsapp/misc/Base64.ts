@@ -19,17 +19,19 @@ import { exportModule } from '../exportModule';
 /**
  * @whatsapp 2.2132.6:45792
  */
-export declare const Base64: {
-  BASE64_DATA_URL_SCHEME: 'data:image/jpeg;base64,';
-  encodeB64(data: ArrayLike<number> | ArrayBufferLike): string;
-  encodeB64UrlSafe(
+export declare namespace Base64 {
+  const BASE64_DATA_URL_SCHEME: 'data:image/jpeg;base64,';
+  function encodeB64(data: ArrayLike<number> | ArrayBufferLike): string;
+  function encodeB64UrlSafe(
     data: ArrayLike<number> | ArrayBufferLike,
     t?: boolean
   ): string;
-  decodeB64(data: string): ArrayBufferLike;
-  decodeB64UrlSafe(data: string): ArrayBufferLike;
-  decodeB64ToJsArray(data: string): number[];
-  sizeWhenB64Decoded(data: ArrayLike<number> | ArrayBufferLike): number;
-};
+  function decodeB64(data: string): ArrayBufferLike;
+  function decodeB64UrlSafe(data: string): ArrayBufferLike;
+  function decodeB64ToJsArray(data: string): number[];
+  function sizeWhenB64Decoded(
+    data: ArrayLike<number> | ArrayBufferLike
+  ): number;
+}
 
 exportModule(exports, 'Base64', (m) => m.encodeB64 && m.decodeB64);

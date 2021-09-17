@@ -19,8 +19,8 @@ import { exportModule } from '../exportModule';
 /**
  * @whatsapp 2.2126.14:12371
  */
-export declare const MediaUtils: {
-  getImageWidthHeight(): Promise<{ width: number; height: number }>;
-};
+export declare namespace MediaUtils {
+  function getImageWidthHeight(): Promise<{ width: number; height: number }>;
+}
 
 exportModule(exports, 'MediaUtils', (m) => m.getImageWidthHeight);

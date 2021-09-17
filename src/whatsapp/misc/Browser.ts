@@ -19,21 +19,21 @@ import { exportModule } from '../exportModule';
 /**
  * @whatsapp 2.2132.6:92018
  */
-export declare const Browser: {
-  promptUnloadGuards: number;
-  id(): string;
-  info(): {
+export declare namespace Browser {
+  let promptUnloadGuards: number;
+  function id(): string;
+  function info(): {
     os: string;
     version: string;
     name: string;
     ua: string;
   };
-  hardRefresh(): never;
-  startDownloading(): void;
-  clearDownloading(): void;
-  isDownloading(): boolean;
-  open(e: any): void;
-};
+  function hardRefresh(): never;
+  function startDownloading(): void;
+  function clearDownloading(): void;
+  function isDownloading(): boolean;
+  function open(e: any): void;
+}
 
 exportModule(
   exports,

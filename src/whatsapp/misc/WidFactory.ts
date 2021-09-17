@@ -20,24 +20,24 @@ import { Wid } from './Wid';
 /**
  * @whatsapp 2.2126.14:32991
  */
-export declare const WidFactory: {
-  createDeviceWid(wid: string): Wid;
+export declare namespace WidFactory {
+  function createDeviceWid(wid: string): Wid;
 
-  createDeviceWidFromUserAndDevice(user: string, device: string): Wid;
+  function createDeviceWidFromUserAndDevice(user: string, device: string): Wid;
 
-  createUserWid(user: string, server?: string): Wid;
+  function createUserWid(user: string, server?: string): Wid;
 
-  createWid(wid: string): Wid;
+  function createWid(wid: string): Wid;
 
-  createWidFromWidLike(wid: string | { _serialized: string }): Wid;
+  function createWidFromWidLike(wid: string | { _serialized: string }): Wid;
 
-  isWidlike(wid: any): wid is Wid;
+  function isWidlike(wid: any): wid is Wid;
 
-  toChatWid(wid: Wid): Wid;
+  function toChatWid(wid: Wid): Wid;
 
-  toUserWid(wid: Wid): Wid;
+  function toUserWid(wid: Wid): Wid;
 
-  userJidToUserWid(wid: string): Wid;
-};
+  function userJidToUserWid(wid: string): Wid;
+}
 
 exportModule(exports, 'WidFactory', (m) => m.createWid);
