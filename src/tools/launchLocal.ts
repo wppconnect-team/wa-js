@@ -21,7 +21,7 @@ async function start() {
 
   await getPage({
     headless: false,
-    devtools: !args.some((m) => m.includes('--remote-debugging-port')),
+    devtools: true,
     viewport: null,
     args,
   });
