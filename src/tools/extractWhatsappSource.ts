@@ -17,11 +17,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
+import * as wpp from '../';
 import { getPage, WA_DIR } from './browser';
 
 declare global {
   interface Window {
-    WPP: any;
+    WPP: typeof wpp;
   }
 }
 

@@ -108,5 +108,5 @@ exportModule(
   {
     Collection: 'default',
   },
-  (m) => m.default.toString().includes('Collection initialized without model!')
+  (m) => m.default.toString().includes('Collection initialized without model')
 );

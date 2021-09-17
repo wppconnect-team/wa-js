@@ -97,7 +97,7 @@ export function exportModule(
 export function exportProxyModel(exports: any, name: string) {
   const baseName = name.replace(/Model$/, '');
 
-  const names: string[] = [];
+  const names: string[] = [baseName];
 
   // ChatModel => "chat"
   names.push(baseName.replace(/^(\w)/, (l) => l.toLowerCase()));
