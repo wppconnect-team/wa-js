@@ -16,11 +16,14 @@
 
 import './deviceName';
 
+import auth from './auth';
+import chat from './chat';
 import * as webpack from './webpack';
 
-export { webpack };
-export { default as auth } from './auth';
-export { default as chat } from './chat';
+export { auth, chat, webpack };
+
+export * as Auth from './auth';
+export * as Chat from './chat';
 export { isInjected, isReady } from './webpack';
 export * as whatsapp from './whatsapp';
 

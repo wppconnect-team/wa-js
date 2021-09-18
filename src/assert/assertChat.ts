@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import Chat from '../chat';
+import { chat as Chat } from '../';
 import { WPPError } from '../util';
 import { ChatModel, Wid } from '../whatsapp';
 

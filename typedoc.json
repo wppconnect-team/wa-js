@@ -1,6 +1,6 @@
 {
   "disableSources": false,
-  "entryPoints": ["src/typedoc.ts"],
+  "entryPoints": ["src/index.ts"],
   "excludeExternals": false,
   "excludePrivate": true,
   "excludeProtected": true,

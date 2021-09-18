@@ -37,12 +37,13 @@ import {
   randomMessageId,
 } from '../whatsapp/functions';
 import {
+  ChatEventTypes,
   ListMessageOptions,
   MessageButtonsOptions,
   RawMessage,
+  SendMessageOptions,
   TextMessageOptions,
-} from '.';
-import { ChatEventTypes, SendMessageOptions } from './types';
+} from './types';
 
 const debugChat = Debug('WPP:chat');
 const debugMessage = Debug('WPP:message');
