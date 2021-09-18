@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>SendMessageOptions | @wppconnect/wa-js - v0.1.0</title>
+	<title>AuthEventTypes | @wppconnect/wa-js - v0.1.0</title>
 	<meta name="description" content="Documentation for @wppconnect/wa-js - v0.1.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -65,13 +65,13 @@
 					<a href="../modules.html">@wppconnect/wa-js - v0.1.0</a>
 				</li>
 				<li>
-					<a href="../modules/typesOnly.html">typesOnly</a>
+					<a href="../modules/Auth.html">Auth</a>
 				</li>
 				<li>
-					<a href="typesOnly.SendMessageOptions.html">SendMessageOptions</a>
+					<a href="Auth.AuthEventTypes.html">AuthEventTypes</a>
 				</li>
 			</ul>
-			<h1>Interface SendMessageOptions</h1>
+			<h1>Interface AuthEventTypes</h1>
 		</div>
 	</div>
 </header>
@@ -82,12 +82,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">SendMessageOptions</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<a href="typesOnly.ListMessageOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">ListMessageOptions</a>
-							</li>
-						</ul>
+						<span class="target">AuthEventTypes</span>
 					</li>
 				</ul>
 			</section>
@@ -98,8 +93,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="typesOnly.SendMessageOptions.html#createChat" class="tsd-kind-icon">create<wbr>Chat</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="typesOnly.SendMessageOptions.html#waitForAck" class="tsd-kind-icon">wait<wbr>For<wbr>Ack</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Auth.AuthEventTypes.html#change" class="tsd-kind-icon">change</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Auth.AuthEventTypes.html#idle" class="tsd-kind-icon">idle</a></li>
 							</ul>
 						</section>
 					</div>
@@ -108,22 +103,22 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="createChat" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> create<wbr>Chat</h3>
-					<div class="tsd-signature tsd-kind-icon">create<wbr>Chat<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="change" class="tsd-anchor"></a>
+					<h3>change</h3>
+					<div class="tsd-signature tsd-kind-icon">change<span class="tsd-signature-symbol">:</span> <a href="../modules/Auth.html#AuthCode" class="tsd-signature-type" data-tsd-kind="Type alias">AuthCode</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L26">src/chat/types.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/auth/types.ts#L37">src/auth/types.ts:37</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="waitForAck" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> wait<wbr>For<wbr>Ack</h3>
-					<div class="tsd-signature tsd-kind-icon">wait<wbr>For<wbr>Ack<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="idle" class="tsd-anchor"></a>
+					<h3>idle</h3>
+					<div class="tsd-signature tsd-kind-icon">idle<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L25">src/chat/types.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/auth/types.ts#L38">src/auth/types.ts:38</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -139,7 +134,10 @@
 						<a href="../modules.html">Exports</a>
 					</li>
 					<li class="current tsd-kind-namespace">
-						<a href="../modules/typesOnly.html">types<wbr>Only</a>
+						<a href="../modules/Auth.html">Auth</a>
+					</li>
+					<li class=" tsd-kind-namespace">
+						<a href="../modules/Chat.html">Chat</a>
 					</li>
 					<li class=" tsd-kind-namespace">
 						<a href="../modules/webpack.html">webpack</a>
@@ -152,55 +150,31 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class tsd-parent-kind-namespace">
-						<a href="../classes/typesOnly.Auth.html" class="tsd-kind-icon">Auth</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-namespace">
-						<a href="../classes/typesOnly.Chat.html" class="tsd-kind-icon">Chat</a>
+						<a href="../classes/Auth.Auth-1.html" class="tsd-kind-icon">Auth</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="typesOnly.AuthCodeMultiDevice.html" class="tsd-kind-icon">Auth<wbr>Code<wbr>Multi<wbr>Device</a>
+						<a href="Auth.AuthCodeMultiDevice.html" class="tsd-kind-icon">Auth<wbr>Code<wbr>Multi<wbr>Device</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="typesOnly.AuthCodeSingleDevice.html" class="tsd-kind-icon">Auth<wbr>Code<wbr>Single<wbr>Device</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="typesOnly.AuthEventTypes.html" class="tsd-kind-icon">Auth<wbr>Event<wbr>Types</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="typesOnly.ChatEventTypes.html" class="tsd-kind-icon">Chat<wbr>Event<wbr>Types</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="typesOnly.ListMessageOptions.html" class="tsd-kind-icon">List<wbr>Message<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="typesOnly.MessageButtonsOptions.html" class="tsd-kind-icon">Message<wbr>Buttons<wbr>Options</a>
+						<a href="Auth.AuthCodeSingleDevice.html" class="tsd-kind-icon">Auth<wbr>Code<wbr>Single<wbr>Device</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="typesOnly.SendMessageOptions.html" class="tsd-kind-icon">Send<wbr>Message<wbr>Options</a>
+						<a href="Auth.AuthEventTypes.html" class="tsd-kind-icon">Auth<wbr>Event<wbr>Types</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="typesOnly.SendMessageOptions.html#createChat" class="tsd-kind-icon">create<wbr>Chat</a>
+								<a href="Auth.AuthEventTypes.html#change" class="tsd-kind-icon">change</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="typesOnly.SendMessageOptions.html#waitForAck" class="tsd-kind-icon">wait<wbr>For<wbr>Ack</a>
+								<a href="Auth.AuthEventTypes.html#idle" class="tsd-kind-icon">idle</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
-						<a href="../modules/typesOnly.html#AllMessageOptions" class="tsd-kind-icon">All<wbr>Message<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
-						<a href="../modules/typesOnly.html#AuthCode" class="tsd-kind-icon">Auth<wbr>Code</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
-						<a href="../modules/typesOnly.html#RawMessage" class="tsd-kind-icon">Raw<wbr>Message</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
-						<a href="../modules/typesOnly.html#TextMessageOptions" class="tsd-kind-icon">Text<wbr>Message<wbr>Options</a>
+						<a href="../modules/Auth.html#AuthCode" class="tsd-kind-icon">Auth<wbr>Code</a>
 					</li>
 				</ul>
 			</nav>
