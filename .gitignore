@@ -2,6 +2,7 @@
 /debug.log
 /dist/
 /docs
+/docs-source/theme-dist
 /node_modules
 /userDataDir
 /wa-source

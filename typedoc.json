@@ -1,4 +1,5 @@
 {
+  "$schema": "https://typedoc.org/schema.json",
   "disableSources": false,
   "entryPoints": ["src/index.ts"],
   "excludeExternals": false,
@@ -6,7 +7,11 @@
   "excludeProtected": true,
   "includeVersion": true,
   "out": "docs",
-  "theme": "pages-plugin",
-  "gaID": "G-LTZL26963K",
-  "pages": {}
+  "plugin": [
+    "./docs-source/theme-dist",
+    "typedoc-plugin-mdn-links",
+    "typedoc-plugin-missing-exports"
+  ],
+  "theme": "google-tag-manager",
+  "gaID": "G-LTZL26963K"
 }
