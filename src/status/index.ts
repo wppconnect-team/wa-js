@@ -14,20 +14,9 @@
  * limitations under the License.
  */
 
-import './deviceName';
-import './patch';
+import { Status } from './Status';
 
-import auth from './auth';
-import chat from './chat';
-import status from './status';
-import * as webpack from './webpack';
+export * from './Status';
+export * from './types';
 
-export { auth, chat, status, webpack };
-
-export * as Auth from './auth';
-export * as Chat from './chat';
-export * as Status from './status';
-export { isInjected, isReady } from './webpack';
-export * as whatsapp from './whatsapp';
-
-webpack.injectLoader();
+export default new Status();

@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-import './deviceName';
-import './patch';
-
-import auth from './auth';
-import chat from './chat';
-import status from './status';
-import * as webpack from './webpack';
-
-export { auth, chat, status, webpack };
-
-export * as Auth from './auth';
-export * as Chat from './chat';
-export * as Status from './status';
-export { isInjected, isReady } from './webpack';
-export * as whatsapp from './whatsapp';
-
-webpack.injectLoader();
+/**
+ * @whatsapp 2.2136.10:57528
+ */
+export enum TextFontStyle {
+  SANS_SERIF = 0,
+  SERIF = 1,
+  NORICAN_REGULAR = 2,
+  BRYNDAN_WRITE = 3,
+  BEBASNEUE_REGULAR = 4,
+  OSWALD_HEAVY = 5,
+}

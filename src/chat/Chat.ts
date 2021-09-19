@@ -127,8 +127,13 @@ export class Chat extends Emittery<ChatEventTypes> {
   async sendRawMessage(
     chatId: any,
     message: RawMessage,
-    options: SendMessageOptions = this.defaultSendMessageOptions
-  ): Promise<any> {
+    options: SendMessageOptions = {}
+  ) {
+    options = {
+      ...this.defaultSendMessageOptions,
+      ...options,
+    };
+
     const chat = options.createChat
       ? await assertFindChat(chatId)
       : assertGetChat(chatId);
@@ -172,14 +177,21 @@ export class Chat extends Emittery<ChatEventTypes> {
     return {
       id: finalMessage.id.toString(),
       ack: finalMessage.ack,
+      message: result[0],
+      sendMsgResult: result[1],
     };
   }
 
   async sendTextMessage(
     chatId: any,
     content: any,
-    options: TextMessageOptions = this.defaultSendMessageOptions
+    options: TextMessageOptions = {}
   ): Promise<any> {
+    options = {
+      ...this.defaultSendMessageOptions,
+      ...options,
+    };
+
     let message: RawMessage = {
       body: content,
       type: 'chat',

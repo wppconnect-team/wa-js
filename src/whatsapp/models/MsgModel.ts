@@ -18,6 +18,7 @@
  * @whatsapp 2.2126.14:94490
  */
 import { ButtonCollection, MsgCollection } from '../collections';
+import { TextFontStyle } from '../enums';
 import { exportProxyModel } from '../exportModule';
 import { MsgKey, Wid } from '../misc';
 import {
@@ -137,9 +138,9 @@ interface Props {
   vcardFormattedName?: any;
   protocolMessageKey?: any;
   templateParams?: any;
-  textColor?: any;
-  backgroundColor?: any;
-  font?: any;
+  textColor?: number;
+  backgroundColor?: number;
+  font?: TextFontStyle;
   isForwarded: boolean;
   forwardingScore?: any;
   labels?: any;

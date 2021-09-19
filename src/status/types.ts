@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-import './deviceName';
-import './patch';
+import { TextFontStyle } from '../whatsapp/enums';
 
-import auth from './auth';
-import chat from './chat';
-import status from './status';
-import * as webpack from './webpack';
+export interface StatusEventTypes {
+  sync: undefined;
+}
 
-export { auth, chat, status, webpack };
+export interface SendStatusOptions {
+  waitForAck?: boolean;
+}
 
-export * as Auth from './auth';
-export * as Chat from './chat';
-export * as Status from './status';
-export { isInjected, isReady } from './webpack';
-export * as whatsapp from './whatsapp';
+export interface TextStatusOptions extends SendStatusOptions {
+  font?: TextFontStyle;
+  backgroundColor?: string | number;
+  textColor?: string | number; // Work only in APP
+}
 
-webpack.injectLoader();
+export type AllStatusOptions = SendStatusOptions & TextStatusOptions;
