@@ -1,3 +1,12 @@
+## 1.0.1 (2021-09-19)
+
+
+### Bug Fixes
+
+* Added declaration files ([0bac4ed](https://github.com/wppconnect-team/wa-js/commit/0bac4ed0d077a7984dd8d3f63016fdc43d369b39))
+
+
+
 # 1.0.0 (2021-09-19)
 
 
