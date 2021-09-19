@@ -1,7 +1,11 @@
 .*
 *.tgz
 *.zip
-license-checker-config.json
-LICENSE.header
-src
-tsconfig.json
+/docs
+/docs-source
+/src
+/tsconfig.json
+/typedoc.json
+/userDataDir
+/wa-source
+/webpack.config.js
