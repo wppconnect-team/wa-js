@@ -21,6 +21,12 @@ export interface ChatEventTypes {
   idle: undefined;
 }
 
+export interface GetMessagesOptions {
+  count?: number;
+  direction?: 'after' | 'before';
+  id?: string;
+}
+
 export interface SendMessageOptions {
   waitForAck?: boolean;
   createChat?: boolean;

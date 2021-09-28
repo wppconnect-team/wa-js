@@ -18,5 +18,6 @@ export * from './addAndSendMsgToChat';
 export * from './findChat';
 export * from './getOrGenerate';
 export * from './isAuthenticated';
+export * from './msgFindQuery';
 export * from './randomId';
 export * from './sendTextMsgToChat';

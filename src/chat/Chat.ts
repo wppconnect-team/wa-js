@@ -26,6 +26,7 @@ import {
   ChatStore,
   ClockSkew,
   Constants,
+  Features,
   MsgKey,
   ReplyButtonModel,
   UserPrefs,
@@ -34,10 +35,13 @@ import {
 import {
   addAndSendMsgToChat,
   findChat,
+  msgFindQuery,
+  MsgFindQueryParams,
   randomMessageId,
 } from '../whatsapp/functions';
 import {
   ChatEventTypes,
+  GetMessagesOptions,
   ListMessageOptions,
   MessageButtonsOptions,
   RawMessage,
@@ -75,6 +79,60 @@ export class Chat extends Emittery<ChatEventTypes> {
   get(chatId: string | Wid): ChatModel | undefined {
     const wid = assertWid(chatId);
     return ChatStore.get(wid);
+  }
+
+  /**
+   * Fetch messages from a chat
+   *
+   * @example
+   * ```javascript
+   * // Some messages
+   * WPP.chat.getMessages('<number>@c.us', {
+   *   count: 20,
+   * });
+   *
+   * // All messages
+   * WPP.chat.getMessages('<number>@c.us', {
+   *   count: -1,
+   * });
+   *
+   * // 20 messages before specific message
+   * WPP.chat.getMessages('<number>@c.us', {
+   *   count: 20,
+   *   direction: 'before',
+   *   id: '<full message id>'
+   * });
+   * ```
+   *
+   * @return  {RawMessage[]} List of raw messages
+   */
+  getMessages(
+    chatId: string | Wid,
+    options: GetMessagesOptions = {}
+  ): Promise<RawMessage[]> {
+    const chat = assertGetChat(chatId);
+
+    let count = options.count || 20;
+    const direction = options.direction === 'after' ? 'after' : 'before';
+    const id = options.id || chat.lastReceivedKey?.toString();
+
+    let params: MsgFindQueryParams = {
+      remote: chat.id,
+    } as any;
+
+    if (id) {
+      params = MsgKey.fromString(id) as any;
+    }
+
+    // Fix for multidevice
+    if (count === -1 && Features.supportsFeature('MD_BACKEND')) {
+      count = Infinity;
+    }
+
+    params.count = count;
+    params.direction = direction;
+
+    return msgFindQuery(direction, params);
   }
 
   prepareMessageButtons(
