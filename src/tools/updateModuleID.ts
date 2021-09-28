@@ -70,7 +70,7 @@ async function start() {
         }
         const resultName = dir ? `${dir}.${name}` : name;
 
-        result[resultName] = (module as any).__wa_id;
+        result[resultName] = window.WPP.whatsapp._moduleIdMap.get(module);
       }
     }
 

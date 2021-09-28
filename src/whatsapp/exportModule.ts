@@ -16,6 +16,10 @@
 
 import * as webpack from '../webpack';
 
+const moduleIdMap = new WeakMap<any, string>();
+
+export const _moduleIdMap = moduleIdMap;
+
 /**
  * The object of this function is to override the exports to create getters.
  *
@@ -82,11 +86,7 @@ export function exportModule(
           });
 
           try {
-            // Hidden property to get ID
-            Object.defineProperty(value, '__wa_id', {
-              get: () => moduleId,
-              enumerable: false,
-            });
+            moduleIdMap.set(value, moduleId);
           } catch (error) {}
         }
 
