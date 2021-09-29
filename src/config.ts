@@ -14,24 +14,32 @@
  * limitations under the License.
  */
 
-// eslint-disable-next-line simple-import-sort/imports
-import './config';
+/**
+ * Define some global configurations
+ *
+ * @example
+ * ```javascript
+ * // Global variable before injection
+ * WPPConfig = {
+ *   deviceName: 'WPPConnect'
+ * };
+ * ```
+ */
+export interface Config {
+  deviceName: string;
+}
 
-import './deviceName';
-import './patch';
+export const defaultConfig: Config = {
+  deviceName: 'WPPConnect',
+};
 
-import auth from './auth';
-import chat from './chat';
-import status from './status';
-import * as webpack from './webpack';
+export const config: Config = defaultConfig;
 
-export { auth, chat, status, webpack };
+// Init config from global environment;
+const w = window as unknown as { WPPConfig: Config };
 
-export * as Auth from './auth';
-export * as Chat from './chat';
-export * as config from './config';
-export * as Status from './status';
-export { isInjected, isReady } from './webpack';
-export * as whatsapp from './whatsapp';
+w.WPPConfig = w.WPPConfig || defaultConfig;
 
-webpack.injectLoader();
+for (const key of Object.keys(w.WPPConfig)) {
+  (config as any)[key] = (w.WPPConfig as any)[key];
+}
