@@ -38,17 +38,13 @@ interface Derived {
 }
 
 /**
- * @whatsapp 2.2126.14:13960
- * @whatsapp 2.2136.9:14137
- * @whatsapp 2.2136.10:14137
+ * @whatsapp 2.2138.10:14137
  */
 export declare interface LabelModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @whatsapp 2.2126.14:13960
- * @whatsapp 2.2136.9:14137
- * @whatsapp 2.2136.10:14137
+ * @whatsapp 2.2138.10:14137
  */
 export declare class LabelModel extends Model {
   constructor(

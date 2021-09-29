@@ -36,17 +36,13 @@ interface Session {
 interface Derived {}
 
 /**
- * @whatsapp 2.2126.14:75787
- * @whatsapp 2.2136.9:32816
- * @whatsapp 2.2136.10:32816
+ * @whatsapp 2.2138.10:32816
  */
 export declare interface BusinessCategoriesResultModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @whatsapp 2.2126.14:75787
- * @whatsapp 2.2136.9:32816
- * @whatsapp 2.2136.10:32816
+ * @whatsapp 2.2138.10:32816
  */
 export declare class BusinessCategoriesResultModel extends Model<BusinessCategoriesResultCollection> {
   idClass: typeof Wid;

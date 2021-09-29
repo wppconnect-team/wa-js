@@ -58,17 +58,13 @@ interface Derived {
 }
 
 /**
- * @whatsapp 2.2126.14:23491
- * @whatsapp 2.2136.9:73754
- * @whatsapp 2.2136.10:73754
+ * @whatsapp 2.2138.10:73754
  */
 export declare interface AttachMediaModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @whatsapp 2.2126.14:23491
- * @whatsapp 2.2136.9:73754
- * @whatsapp 2.2136.10:73754
+ * @whatsapp 2.2138.10:73754
  */
 export declare class AttachMediaModel extends Model {
   constructor(

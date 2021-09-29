@@ -17,9 +17,7 @@
 import { exportModule } from '../exportModule';
 
 /**
- * @whatsapp 2.2126.14:3746
- * @whatsapp 2.2136.9:55454
- * @whatsapp 2.2136.10:55454
+ * @whatsapp 2.2138.10:55454
  */
 export declare const Constants: {
   ARCHIVE_NUX_MAX_VIEWS: number;

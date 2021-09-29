@@ -65,17 +65,13 @@ interface Derived {
 }
 
 /**
- * @whatsapp 2.2126.14:3243
- * @whatsapp 2.2136.9:9322
- * @whatsapp 2.2136.10:9322
+ * @whatsapp 2.2138.10:9322
  */
 export declare interface ConnModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @whatsapp 2.2126.14:3243
- * @whatsapp 2.2136.9:9322
- * @whatsapp 2.2136.10:9322
+ * @whatsapp 2.2138.10:9322
  */
 export declare class ConnModel extends Model {
   constructor(

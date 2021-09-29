@@ -24,9 +24,7 @@ interface Option {
 }
 
 /**
- * @whatsapp 2.2126.14:64770
- * @whatsapp 2.2136.9:85392
- * @whatsapp 2.2136.10:85392
+ * @whatsapp 2.2138.10:85392
  */
 export declare interface Collection<M>
   extends EventEmitter,
@@ -44,9 +42,7 @@ export declare interface Collection<M>
     > {}
 
 /**
- * @whatsapp 2.2126.14:64770
- * @whatsapp 2.2136.9:85392
- * @whatsapp 2.2136.10:85392
+ * @whatsapp 2.2138.10:85392
  */
 export declare class Collection<M, A = M | M[]> extends EventEmitter {
   static model: any;

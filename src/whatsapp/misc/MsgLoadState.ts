@@ -19,9 +19,7 @@ import { exportModule } from '../exportModule';
 import { Model, MsgModel } from '../models';
 
 /**
- * @whatsapp 2.2126.14:72150
- * @whatsapp 2.2136.9:97490
- * @whatsapp 2.2136.10:97490
+ * @whatsapp 2.2138.10:97490
  */
 export declare class MsgLoadState extends Model {
   noEarlierMsgs: any;
@@ -32,8 +30,7 @@ export declare class MsgLoadState extends Model {
 }
 
 /**
- * @whatsapp 2.2136.9:97490
- * @whatsapp 2.2136.10:97490
+ * @whatsapp 2.2138.10:97490
  */
 export declare class MsgLoad extends CollectionCache<MsgModel> {
   msgLoadState: MsgLoadState;

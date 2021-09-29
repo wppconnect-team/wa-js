@@ -82,17 +82,13 @@ interface Derived {
 }
 
 /**
- * @whatsapp 2.2126.14:49549
- * @whatsapp 2.2136.9:27387
- * @whatsapp 2.2136.10:27387
+ * @whatsapp 2.2138.10:27387
  */
 export declare interface ContactModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @whatsapp 2.2126.14:49549
- * @whatsapp 2.2136.9:27387
- * @whatsapp 2.2136.10:27387
+ * @whatsapp 2.2138.10:27387
  */
 export declare class ContactModel extends Model<ContactCollection> {
   idClass: typeof Wid;

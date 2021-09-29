@@ -54,17 +54,13 @@ interface Derived {
 }
 
 /**
- * @whatsapp 2.2126.14:22770
- * @whatsapp 2.2136.9:28197
- * @whatsapp 2.2136.10:28197
+ * @whatsapp 2.2138.10:28197
  */
 export declare interface GroupMetadataModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @whatsapp 2.2126.14:22770
- * @whatsapp 2.2136.9:28197
- * @whatsapp 2.2136.10:28197
+ * @whatsapp 2.2138.10:28197
  */
 export declare class GroupMetadataModel extends Model {
   idClass: typeof Wid;

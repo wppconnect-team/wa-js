@@ -46,17 +46,13 @@ interface Derived {
 }
 
 /**
- * @whatsapp 2.2126.14:16971
- * @whatsapp 2.2136.9:5924
- * @whatsapp 2.2136.10:5924
+ * @whatsapp 2.2138.10:5924
  */
 export declare interface ProfilePicThumbModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @whatsapp 2.2126.14:16971
- * @whatsapp 2.2136.9:5924
- * @whatsapp 2.2136.10:5924
+ * @whatsapp 2.2138.10:5924
  */
 export declare class ProfilePicThumbModel extends Model<ProfilePicThumbCollection> {
   idClass: typeof Wid;

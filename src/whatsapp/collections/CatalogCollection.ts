@@ -19,9 +19,7 @@ import { CatalogModel } from '../models';
 import { Collection } from './Collection';
 
 /**
- * @whatsapp 2.2126.14:57984
- * @whatsapp 2.2136.9:60028
- * @whatsapp 2.2136.10:60028
+ * @whatsapp 2.2138.10:60028
  */
 export declare class CatalogCollection extends Collection<CatalogModel> {
   static model: CatalogModel;

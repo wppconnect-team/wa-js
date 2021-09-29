@@ -39,17 +39,13 @@ interface Session {
 interface Derived {}
 
 /**
- * @whatsapp 2.2126.14:88091
- * @whatsapp 2.2136.9:569
- * @whatsapp 2.2136.10:569
+ * @whatsapp 2.2138.10:569
  */
 export declare interface ProductImageModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @whatsapp 2.2126.14:88091
- * @whatsapp 2.2136.9:569
- * @whatsapp 2.2136.10:569
+ * @whatsapp 2.2138.10:569
  */
 export declare class ProductImageModel extends Model {
   constructor(

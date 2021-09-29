@@ -47,17 +47,13 @@ interface Derived {
 }
 
 /**
- * @whatsapp 2.2126.14:72672
- * @whatsapp 2.2136.9:96944
- * @whatsapp 2.2136.10:96944
+ * @whatsapp 2.2138.10:96944
  */
 export declare interface StatusV3Model
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @whatsapp 2.2126.14:72672
- * @whatsapp 2.2136.9:96944
- * @whatsapp 2.2136.10:96944
+ * @whatsapp 2.2138.10:96944
  */
 export declare class StatusV3Model extends Model<StatusV3Collection> {
   idClass: typeof Wid;

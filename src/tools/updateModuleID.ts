@@ -136,10 +136,12 @@ async function start() {
         for (const tag of tags) {
           if (moduleID === tag.getCommentText()) {
             hasID = true;
+          } else {
+            tag.remove();
           }
         }
         if (!hasID) {
-          docs[0].insertTag(tags.length, {
+          docs[0].addTag({
             tagName: 'whatsapp',
             text: moduleID,
           });

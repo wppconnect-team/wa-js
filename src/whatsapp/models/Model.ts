@@ -55,9 +55,7 @@ export interface ModelOptions {
 }
 
 /**
- * @whatsapp 2.2126.14:40798
- * @whatsapp 2.2136.9:57283
- * @whatsapp 2.2136.10:57283
+ * @whatsapp 2.2138.10:57283
  */
 export declare class Model<Collection = undefined> extends EventEmitter {
   static Proxy: string;

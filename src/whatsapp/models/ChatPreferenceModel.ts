@@ -37,17 +37,13 @@ interface Session {
 interface Derived {}
 
 /**
- * @whatsapp 2.2126.14:33502
- * @whatsapp 2.2136.9:23821
- * @whatsapp 2.2136.10:23821
+ * @whatsapp 2.2138.10:23821
  */
 export declare interface ChatPreferenceModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @whatsapp 2.2126.14:33502
- * @whatsapp 2.2136.9:23821
- * @whatsapp 2.2136.10:23821
+ * @whatsapp 2.2138.10:23821
  */
 export declare class ChatPreferenceModel extends Model {
   idClass: typeof Wid;

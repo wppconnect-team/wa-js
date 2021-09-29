@@ -20,9 +20,7 @@ import { StatusModel } from '../models';
 import { Collection } from './Collection';
 
 /**
- * @whatsapp 2.2126.14:43351
- * @whatsapp 2.2136.9:22360
- * @whatsapp 2.2136.10:22360
+ * @whatsapp 2.2138.10:22360
  */
 export declare class StatusCollection extends Collection<StatusModel> {
   static model: StatusModel;
