@@ -1,3 +1,12 @@
+## 1.0.2 (2021-09-29)
+
+
+### Features
+
+* Added getMessages for Chat ([4e0f1d3](https://github.com/wppconnect-team/wa-js/commit/4e0f1d3d85a5b4e8b8e848ee019b29b22d370020))
+
+
+
 ## 1.0.1 (2021-09-19)
 
 
