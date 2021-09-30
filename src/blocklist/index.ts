@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-export * from './addAndSendMsgToChat';
-export * from './blockContact';
-export * from './findChat';
-export * from './getOrGenerate';
-export * from './isAuthenticated';
-export * from './msgFindQuery';
-export * from './randomId';
-export * from './sendTextMsgToChat';
+import { Blocklist } from './Blocklist';
+
+export * from './Blocklist';
+export * from './types';
+
+export default new Blocklist();

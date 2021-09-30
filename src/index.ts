@@ -21,11 +21,12 @@ import './deviceName';
 import './patch';
 
 import auth from './auth';
+import blocklist from './blocklist';
 import chat from './chat';
 import status from './status';
 import * as webpack from './webpack';
 
-export { auth, chat, status, webpack };
+export { auth, blocklist, chat, status, webpack };
 
 export * as Auth from './auth';
 export * as Chat from './chat';

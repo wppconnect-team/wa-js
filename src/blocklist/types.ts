@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-export * from './addAndSendMsgToChat';
-export * from './blockContact';
-export * from './findChat';
-export * from './getOrGenerate';
-export * from './isAuthenticated';
-export * from './msgFindQuery';
-export * from './randomId';
-export * from './sendTextMsgToChat';
+import { Wid } from '../whatsapp';
+
+export interface BlocklistEventTypes {
+  sync: undefined;
+}
+
+export interface BlocklistResult {
+  wid: Wid;
+  isBlocked: boolean;
+}

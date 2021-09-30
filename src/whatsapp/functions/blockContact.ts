@@ -14,11 +14,24 @@
  * limitations under the License.
  */
 
-export * from './addAndSendMsgToChat';
-export * from './blockContact';
-export * from './findChat';
-export * from './getOrGenerate';
-export * from './isAuthenticated';
-export * from './msgFindQuery';
-export * from './randomId';
-export * from './sendTextMsgToChat';
+import { exportModule } from '../exportModule';
+import { ContactModel } from '../models';
+
+/**
+ * @whatsapp 2.2138.10:38512
+ */
+export declare function blockContact(contact: ContactModel): Promise<void>;
+
+/**
+ * @whatsapp 2.2138.10:38512
+ */
+export declare function unblockContact(contact: ContactModel): Promise<void>;
+
+exportModule(
+  exports,
+  {
+    blockContact: 'blockContact',
+    unblockContact: 'unblockContact',
+  },
+  (m) => m.blockContact && m.unblockContact
+);
