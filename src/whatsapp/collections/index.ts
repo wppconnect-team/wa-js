@@ -39,6 +39,7 @@ export * from './MsgInfoCollection';
 export * from './MuteCollection';
 export * from './OrderCollection';
 export * from './OrderItemCollection';
+export * from './ParticipantCollection';
 export * from './PresenceCollection';
 export * from './ProductCollCollection';
 export * from './ProductCollection';

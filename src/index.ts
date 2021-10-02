@@ -23,14 +23,16 @@ import './patch';
 import auth from './auth';
 import blocklist from './blocklist';
 import chat from './chat';
+import group from './group';
 import status from './status';
 import * as webpack from './webpack';
 
-export { auth, blocklist, chat, status, webpack };
+export { auth, blocklist, chat, group, status, webpack };
 
 export * as Auth from './auth';
 export * as Chat from './chat';
 export * as config from './config';
+export * as Group from './group';
 export * as Status from './status';
 export { isInjected, isReady } from './webpack';
 export * as whatsapp from './whatsapp';

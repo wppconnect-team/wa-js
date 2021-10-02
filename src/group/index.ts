@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-export * from './addAndSendMsgToChat';
-export * from './blockContact';
-export * from './findChat';
-export * from './getOrGenerate';
-export * from './groupParticipants';
-export * from './isAuthenticated';
-export * from './msgFindQuery';
-export * from './randomId';
-export * from './sendTextMsgToChat';
+import { Group } from './Group';
+
+export * from './Group';
+export * from './types';
+
+export default new Group();

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { ParticipantCollection } from '..';
 import { exportProxyModel } from '../exportModule';
 import { Wid } from '../misc';
 import {
@@ -64,6 +65,7 @@ export declare interface GroupMetadataModel
  */
 export declare class GroupMetadataModel extends Model {
   idClass: typeof Wid;
+  participants: ParticipantCollection;
   constructor(
     proterties?: ModelPropertiesContructor<GroupMetadataModel>,
     options?: ModelOptions
