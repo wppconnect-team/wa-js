@@ -15,6 +15,7 @@
  */
 
 import * as packageJSON from '../package.json';
+import { config } from './config';
 import * as webpack from './webpack';
 
 // Update deviceName connected
@@ -23,7 +24,7 @@ webpack.onInjected(() => {
   if (m) {
     const info = m.default.info();
 
-    info.os = `WPPConnect/WA-JS ${packageJSON.version}`;
+    info.os = config.deviceName;
     info.version = `${packageJSON.version}`;
     info.name = undefined;
     info.ua = undefined;
