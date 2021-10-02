@@ -1,3 +1,12 @@
+## 1.0.3 (2021-10-02)
+
+
+### Features
+
+* Added group management functions ([decae64](https://github.com/wppconnect-team/wa-js/commit/decae64cb60f5b61948956084af3b41dcebf23fe))
+
+
+
 ## 1.0.2 (2021-09-29)
 
 
