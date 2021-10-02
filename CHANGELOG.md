@@ -1,3 +1,12 @@
+## 1.0.4 (2021-10-02)
+
+
+### Features
+
+* Added option to change the deviceName ([841bea8](https://github.com/wppconnect-team/wa-js/commit/841bea8d9d6661186bd17f32b6342e0b3918cf1a))
+
+
+
 ## 1.0.3 (2021-10-02)
 
 
