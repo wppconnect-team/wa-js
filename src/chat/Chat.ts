@@ -28,6 +28,7 @@ import {
   Constants,
   Features,
   MsgKey,
+  MsgStore,
   ReplyButtonModel,
   UserPrefs,
   Wid,
@@ -106,7 +107,7 @@ export class Chat extends Emittery<ChatEventTypes> {
    *
    * @return  {RawMessage[]} List of raw messages
    */
-  getMessages(
+  async getMessages(
     chatId: string | Wid,
     options: GetMessagesOptions = {}
   ): Promise<RawMessage[]> {
@@ -114,25 +115,32 @@ export class Chat extends Emittery<ChatEventTypes> {
 
     let count = options.count || 20;
     const direction = options.direction === 'after' ? 'after' : 'before';
-    const id = options.id || chat.lastReceivedKey?.toString();
-
-    let params: MsgFindQueryParams = {
-      remote: chat.id,
-    } as any;
-
-    if (id) {
-      params = MsgKey.fromString(id) as any;
-    }
+    const id = options.id || chat.lastReceivedKey!.toString();
 
     // Fix for multidevice
     if (count === -1 && Features.supportsFeature('MD_BACKEND')) {
       count = Infinity;
     }
 
+    if (!options.id) {
+      count--;
+    }
+
+    const params: MsgFindQueryParams = MsgKey.fromString(id) as any;
+
     params.count = count;
     params.direction = direction;
 
-    return msgFindQuery(direction, params);
+    const msgs = await msgFindQuery(direction, params);
+
+    if (!options.id) {
+      const msg = MsgStore.get(id);
+      if (msg) {
+        msgs.push(msg.attributes);
+      }
+    }
+
+    return msgs;
   }
 
   prepareMessageButtons(

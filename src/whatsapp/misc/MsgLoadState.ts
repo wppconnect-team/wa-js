@@ -34,6 +34,9 @@ export declare class MsgLoadState extends Model {
  */
 export declare class MsgLoad extends CollectionCache<MsgModel> {
   msgLoadState: MsgLoadState;
+  loadRecentPromise?: Promise<any>;
+  loadEarlierPromise?: Promise<any>;
+  loadAroundPromise?: Promise<any>;
 }
 
 exportModule(

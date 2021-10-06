@@ -16,7 +16,7 @@
 
 import { ChatCollection } from '../collections';
 import { exportProxyModel } from '../exportModule';
-import { MsgKey, Wid } from '../misc';
+import { MsgKey, MsgLoad, Wid } from '../misc';
 import { GroupMetadataModel } from '.';
 import { ModelOptions, ModelPropertiesContructor, ModelProxy } from './Model';
 import { ModelChatBase, PropsChatBase, SessionChatBase } from './ModelChatBase';
@@ -141,7 +141,7 @@ export declare class ChatModel extends ModelChatBase {
   loadEarlierMsgs(e?: any, t?: any): any;
   isMostRecentCMC(e?: any): boolean;
   loadRecentMsgs(e?: any): any;
-  getSearchContext(e?: any, t?: any): any;
+  getSearchContext(e?: any, t?: any): { collection: MsgLoad };
   sendStarMsgs(e?: any, t?: any): any;
   sendRevokeMsgs(e?: any, t?: any): any;
   sendDeleteMsgs(e?: any, t?: any): any;
