@@ -56,7 +56,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-simple-import-sort": "^7.0.0",
     "husky": "^7.0.2",
-    "playwright": "^1.15.1",
+    "playwright": "^1.15.2",
     "prettier": "^2.4.1",
     "pretty-quick": "^3.1.1",
     "release-it": "^14.11.6",
