@@ -111,6 +111,10 @@ export class Auth extends Emittery<AuthEventTypes> {
     return State.state === Constants.SOCKET_STATE.UNPAIRED_IDLE;
   }
 
+  public isMultiDevice(): boolean {
+    return Features.supportsFeature('MD_BACKEND');
+  }
+
   public poke(): void {
     State.poke();
   }
