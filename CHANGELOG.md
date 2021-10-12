@@ -1,3 +1,12 @@
+## 1.0.6 (2021-10-12)
+
+
+### Bug Fixes
+
+* Fixed declaration files export ([2d53d4c](https://github.com/wppconnect-team/wa-js/commit/2d53d4cd106b448680efae2139b762a83b38ba2b))
+
+
+
 ## 1.0.5 (2021-10-12)
 
 
