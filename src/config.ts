@@ -26,7 +26,11 @@
  * ```
  */
 export interface Config {
-  deviceName: string;
+  /**
+   * Set the device name connected, false to disable
+   * @default 'WPPConnect'
+   */
+  deviceName: string | false;
 }
 
 export const defaultConfig: Config = {
