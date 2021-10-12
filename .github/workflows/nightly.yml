@@ -46,9 +46,6 @@ jobs:
       - name: Build NPM package
         run: npm pack && mv wppconnect-wa-js-*.tgz wppconnect-nightly.tgz
 
-      - name: Build API-Docs
-        run: npm run docs:build
-
       - name: Generate Changelog
         id: generate_changelog
         run: |
@@ -79,7 +76,6 @@ jobs:
           prerelease: true
           files: >
             wppconnect-nightly.tgz
-            api-docs/
             dist/wppconnect-wa.js
           gzip: folders
           allow_override: true

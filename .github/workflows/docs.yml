@@ -18,9 +18,6 @@ jobs:
         uses: actions/setup-node@v2.4.1
         with:
           node-version: 14.x
-          registry-url: 'https://registry.npmjs.org'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Get npm cache directory
         id: npm-cache
@@ -38,7 +35,6 @@ jobs:
         run: npm ci || npm install
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build API-Docs
         run: npm run docs:build
