@@ -107,9 +107,6 @@ type FeaturesNames =
   | 'KEY_PARTICIPANT'
   | 'RICH_TEXT';
 
-/**
- * @whatsapp 2.2132.6:77188
- */
 declare class FeatureClass extends EventEmitter {
   FEATURE_CHANGE_EVENT: string;
   F: { [key: string]: string };
@@ -148,9 +145,7 @@ declare class FeatureClass extends EventEmitter {
   isInAppSupportEnabled(): boolean;
 }
 
-/**
- * @whatsapp 2.2138.10:12950
- */
+/** @whatsapp 2.2138.13:12950 */
 export declare const Features: FeatureClass;
 
 exportModule(

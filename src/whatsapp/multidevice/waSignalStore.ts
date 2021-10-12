@@ -24,9 +24,6 @@ interface RegistrationInfo {
   };
 }
 
-/**
- * @whatsapp 2.2132.6:40362
- */
 declare class SignalStore {
   getMeta(e?: any): any;
   putMeta(e?: any): any;
@@ -76,9 +73,7 @@ declare class SignalStore {
   rotateSignedPreKey(e?: any, t?: any): any;
 }
 
-/**
- * @whatsapp 2.2138.10:93381
- */
+/** @whatsapp 2.2138.13:93381 */
 export declare const waSignalStore: SignalStore;
 
 exportModule(

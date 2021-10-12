@@ -18,9 +18,7 @@ import { exportModule } from '../exportModule';
 import { ChatModel } from '../models';
 import { CollectionCache } from './CollectionCache';
 
-/**
- * @whatsapp 2.2138.10:84758
- */
+/** @whatsapp 2.2138.13:84758 */
 export declare class ChatCollection extends CollectionCache<ChatModel> {
   static model: ChatModel;
   static comparator(): any;

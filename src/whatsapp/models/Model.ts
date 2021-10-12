@@ -18,9 +18,6 @@ import { WritableProperties } from '../../util';
 import { exportModule } from '../exportModule';
 import { EventEmitter, Stringable } from '../misc';
 
-/**
- * @whatsapp 2.2126.14:78682
- */
 export type ModelProxy<P, S, D> = P &
   S &
   Readonly<D> & {
@@ -37,9 +34,6 @@ export type ModelProxy<P, S, D> = P &
     serialize(): P;
   };
 
-/**
- * @whatsapp 2.2126.14:40798
- */
 export type ModelPropertiesContructor<
   Model,
   K extends keyof Model = any
@@ -54,9 +48,7 @@ export interface ModelOptions {
   silent?: any;
 }
 
-/**
- * @whatsapp 2.2138.10:57283
- */
+/** @whatsapp 2.2138.13:57283 */
 export declare class Model<Collection = undefined> extends EventEmitter {
   static Proxy: string;
 

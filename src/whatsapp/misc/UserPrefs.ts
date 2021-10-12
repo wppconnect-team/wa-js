@@ -17,9 +17,7 @@
 import { exportModule } from '../exportModule';
 import { Wid } from './Wid';
 
-/**
- * @whatsapp 2.2138.10:86723
- */
+/** @whatsapp 2.2138.13:86723 */
 export declare namespace UserPrefs {
   function setMe(wid: Wid): void;
   function getMe(): Wid;

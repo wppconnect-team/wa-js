@@ -18,9 +18,7 @@ import { exportModule } from '../exportModule';
 import { CartItemModel } from '../models';
 import { Collection } from './Collection';
 
-/**
- * @whatsapp 2.2138.10:29844
- */
+/** @whatsapp 2.2138.13:29844 */
 export declare class CartItemCollection extends Collection<CartItemModel> {
   static model: CartItemModel;
 }

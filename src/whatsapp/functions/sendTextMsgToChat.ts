@@ -16,9 +16,7 @@
 
 import { exportModule } from '../exportModule';
 
-/**
- * @whatsapp 2.2138.10:30239
- */
+/** @whatsapp 2.2138.13:30239 */
 export declare function sendTextMsgToChat(
   chat: any,
   message: any,

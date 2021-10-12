@@ -16,9 +16,7 @@
 
 import { exportModule } from '../exportModule';
 
-/**
- * @whatsapp 2.2138.10:25142
- */
+/** @whatsapp 2.2138.13:25142 */
 export declare namespace ClockSkew {
   const is24h: boolean;
   const skew: number;

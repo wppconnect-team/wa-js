@@ -18,9 +18,7 @@ import { exportModule } from '../exportModule';
 import { MuteModel } from '../models';
 import { Collection } from './Collection';
 
-/**
- * @whatsapp 2.2138.10:80959
- */
+/** @whatsapp 2.2138.13:80959 */
 export declare class MuteCollection extends Collection<MuteModel> {
   static model: MuteModel;
   static cachePolicy?: any;

@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-/**
- * @whatsapp 2.2126.14:94490
- */
 import { ButtonCollection, MsgCollection } from '../collections';
 import { TextFontStyle } from '../enums';
 import { exportProxyModel } from '../exportModule';
@@ -289,14 +286,10 @@ interface Derived {
   productListHeaderImage?: any;
 }
 
-/**
- * @whatsapp 2.2138.10:92954
- */
+/** @whatsapp 2.2138.13:92954 */
 export declare interface MsgModel extends ModelProxy<Props, Session, Derived> {}
 
-/**
- * @whatsapp 2.2138.10:92954
- */
+/** @whatsapp 2.2138.13:92954 */
 export declare class MsgModel extends Model {
   idClass: typeof MsgKey;
   constructor(

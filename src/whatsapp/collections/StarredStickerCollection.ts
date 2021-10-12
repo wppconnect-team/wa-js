@@ -18,9 +18,7 @@ import { exportModule } from '../exportModule';
 import { StickerModel } from '../models';
 import { Collection } from './Collection';
 
-/**
- * @whatsapp 2.2138.10:68477
- */
+/** @whatsapp 2.2138.13:68477 */
 export declare class StarredStickerCollection extends Collection<StickerModel> {
   static model: StickerModel;
   syncNextPage(): any;

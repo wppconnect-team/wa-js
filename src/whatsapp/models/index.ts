@@ -53,6 +53,7 @@ export * from './ProductModel';
 export * from './ProfilePicThumbModel';
 export * from './QuickReplyModel';
 export * from './RecentEmojiModel';
+export * from './RecentStickerModel';
 export * from './ReplyButtonModel';
 export * from './StateModel';
 export * from './StatusModel';

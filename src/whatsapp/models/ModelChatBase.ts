@@ -15,22 +15,17 @@
  */
 
 import { ChatCollection } from '../collections';
+import { exportModule } from '../exportModule';
 import { MsgKey, MsgLoad, Wid } from '../misc';
 import { Model } from './Model';
 import { MsgModel } from './MsgModel';
 
-/**
- * @whatsapp 2.2126.14:60425
- */
 export interface PropsChatBase {
   id: Wid;
   pendingMsgs: boolean;
   labels: any | undefined;
 }
 
-/**
- * @whatsapp 2.2126.14:60425
- */
 export interface SessionChatBase {
   msgChunks: MsgLoad[];
   lastReceivedKey?: MsgKey;
@@ -41,7 +36,7 @@ export interface SessionChatBase {
 }
 
 /**
- * @whatsapp 2.2126.14:60425
+ * @whatsapp 2.2138.13:53362
  */
 export declare class ModelChatBase extends Model<ChatCollection> {
   msgs: MsgLoad;
@@ -53,3 +48,7 @@ export declare class ModelChatBase extends Model<ChatCollection> {
   removeMsgsCollection(collecton: MsgLoad): void;
   notifyMsgCollectionMerge(...args: any[]): void;
 }
+
+exportModule(exports, { ModelChatBase: 'default' }, (m) =>
+  m.default.toString().includes('onEmptyMRM not implemented')
+);

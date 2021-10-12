@@ -27,9 +27,7 @@ export interface MsgFindQueryParams {
   participant?: any;
 }
 
-/**
- * @whatsapp 2.2138.10:2495
- */
+/** @whatsapp 2.2138.13:2495 */
 export declare function msgFindQuery(
   direction: 'after' | 'before',
   params: MsgFindQueryParams

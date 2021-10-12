@@ -38,15 +38,11 @@ interface Session {
 
 interface Derived {}
 
-/**
- * @whatsapp 2.2138.10:53685
- */
+/** @whatsapp 2.2138.13:53685 */
 export declare interface CartItemModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/**
- * @whatsapp 2.2138.10:53685
- */
+/** @whatsapp 2.2138.13:53685 */
 export declare class CartItemModel extends Model<CartCollection> {
   constructor(
     proterties?: ModelPropertiesContructor<CartItemModel>,
