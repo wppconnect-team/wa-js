@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-// eslint-disable-next-line simple-import-sort/imports
+/* eslint-disable simple-import-sort/exports */
+/* eslint-disable simple-import-sort/imports */
 import './config';
 
 import './deviceName';
 import './patch';
 
-import auth from './auth';
-import blocklist from './blocklist';
-import chat from './chat';
-import group from './group';
-import status from './status';
 import * as webpack from './webpack';
 
-export { auth, blocklist, chat, group, status, webpack };
-
-export * as Auth from './auth';
-export * as Chat from './chat';
-export * as config from './config';
-export * as Group from './group';
-export * as Status from './status';
+export { webpack };
 export { isInjected, isReady } from './webpack';
+
+export * as config from './config';
+export * as internal from './internal';
+
+export { default as auth } from './auth';
+export { default as blocklist } from './blocklist';
+export { default as chat } from './chat';
+export { default as group } from './group';
+export { default as status } from './status';
+
 export * as whatsapp from './whatsapp';
 
 webpack.injectLoader();
