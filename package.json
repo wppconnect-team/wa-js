@@ -3,7 +3,7 @@
   "version": "1.0.5",
   "description": "WPPConnect/WA-JS is an open-source project with the aim of exporting functions from WhatsApp Web",
   "main": "dist/wppconnect-wa.js",
-  "types": "dist/src/index.d.ts",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": "./dist/wppconnect-wa.js"
   },
