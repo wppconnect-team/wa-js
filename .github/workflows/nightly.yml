@@ -3,7 +3,7 @@ name: Nightly Release
 on:
   push:
     branches:
-      - 'master'
+      - 'main'
 
 jobs:
   nightly:
