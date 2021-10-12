@@ -40,14 +40,21 @@ There are a convection name for some exported modules:
 
 ## Development
 
-To build:
-`npm run build:prd`
+Steps to run locally:
 
-To test locally:
-`npm run launch:local`
+```bash
+# install the depencencies
+npm install
 
-Download whatsapp source:
-`npm run wa-source`
+# download whatsapp javascript and prettify (optional)
+npm run wa-source
+
+# build javascript files
+npm run build:prd # or build:dev for development
+
+# lauch a local browser with automatic injection
+npm run launch:local
+```
 
 ## License
 
