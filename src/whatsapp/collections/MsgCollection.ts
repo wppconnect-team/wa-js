@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
+import { Wid } from '..';
 import { exportModule } from '../exportModule';
-import { MsgModel } from '../models';
+import { ModelPropertiesContructor, MsgModel } from '../models';
 import { CollectionCache } from './CollectionCache';
 
 /**
@@ -43,7 +44,12 @@ export declare class MsgCollection extends CollectionCache<MsgModel> {
   resyncReceipts(): any;
   updateLastReceipt(e?: any, t?: any): any;
   updateLastTransactionTime(e?: any, t?: any): any;
-  processMultipleMessages(e?: any, t?: any, r?: any, a?: any): any;
+  processMultipleMessages(
+    chatId: Wid,
+    msgs: ModelPropertiesContructor<MsgModel>[],
+    r?: any,
+    a?: any
+  ): Promise<MsgModel[]>;
   markAllAsStale(): any;
 }
 

@@ -14,11 +14,27 @@
  * limitations under the License.
  */
 
-import { ModelPropertiesContructor, MsgModel } from '../whatsapp';
+import { ModelPropertiesContructor, MsgKey, MsgModel, Wid } from '../whatsapp';
 
 export interface ChatEventTypes {
   change: string;
   idle: undefined;
+  msg_revoke: {
+    /**
+     * Author of message, only for groups
+     */
+    author?: Wid;
+    from: Wid;
+    /**
+     * Message id of revoke event
+     */
+    id: MsgKey;
+    /**
+     * Message id of revoked message
+     */
+    refId: MsgKey;
+    to: Wid;
+  };
 }
 
 export interface GetMessagesOptions {

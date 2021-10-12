@@ -69,7 +69,46 @@ export class Chat extends Emittery<ChatEventTypes> {
       debugChat(Constants.COLLECTION_HAS_SYNCED);
     });
 
+    this.registerEvents();
+
     debugChat('initialized');
+  }
+
+  protected registerEvents() {
+    /**
+     * processMultipleMessages receive all msgs events before the screen processing,
+     * so for some events, like revoke, is called here and not in MsgStore,
+     * because the message is not in MsgStore
+     */
+    const processMultipleMessages = MsgStore.processMultipleMessages;
+
+    MsgStore.processMultipleMessages = async (
+      chatId: Wid,
+      msgs: RawMessage[],
+      ...args: any[]
+    ) => {
+      // try...catch to avoid screen block
+      try {
+        for (const msg of msgs) {
+          if (!msg.isNewMsg) {
+            continue;
+          }
+
+          if (msg.type === 'protocol' && msg.subtype === 'revoke') {
+            this.emit('msg_revoke', {
+              author: msg.author,
+              from: msg.from!,
+              id: msg.id!,
+              refId: msg.protocolMessageKey!,
+              to: msg.to!,
+            });
+          }
+        }
+      } catch (error) {}
+
+      // Call the original method
+      return processMultipleMessages.call(MsgStore, chatId, msgs, ...args);
+    };
   }
 
   async find(chatId: string | Wid): Promise<ChatModel> {

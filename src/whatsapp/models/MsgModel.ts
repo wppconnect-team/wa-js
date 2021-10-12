@@ -38,7 +38,7 @@ interface Props {
   notifyName?: any;
   from?: Wid;
   to?: Wid;
-  author?: any;
+  author?: Wid;
   self?: string;
   /**
    * See {@link Constants}
