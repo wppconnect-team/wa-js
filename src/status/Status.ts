@@ -30,7 +30,7 @@ import {
 import { SendStatusOptions, TextStatusOptions } from '.';
 import { StatusEventTypes } from './types';
 
-const debug = Debug('WPP:status');
+const debug = Debug('WA-JS:status');
 
 export class Status extends Emittery<StatusEventTypes> {
   public defaultSendMessageOptions: SendStatusOptions = {

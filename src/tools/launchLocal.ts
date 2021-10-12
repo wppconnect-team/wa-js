@@ -19,11 +19,19 @@ import { getPage } from './browser';
 async function start() {
   const args = process.argv.slice(2);
 
-  await getPage({
+  const { page } = await getPage({
     headless: false,
     devtools: true,
     viewport: null,
     args,
+  });
+
+  page.on('load', (page) => {
+    const debug = process.env['DEBUG'] || '*';
+
+    page.evaluate((debug: string) => {
+      localStorage.setItem('debug', debug);
+    }, debug);
   });
 }
 start();

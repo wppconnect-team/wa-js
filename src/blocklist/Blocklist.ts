@@ -23,7 +23,7 @@ import { BlocklistStore, ContactModel, ContactStore, Wid } from '../whatsapp';
 import { blockContact, unblockContact } from '../whatsapp/functions';
 import { BlocklistEventTypes, BlocklistResult } from '.';
 
-const debug = Debug('WPP:blocklist');
+const debug = Debug('WA-JS:blocklist');
 
 export class Blocklist extends Emittery<BlocklistEventTypes> {
   constructor() {

@@ -50,8 +50,8 @@ import {
   TextMessageOptions,
 } from './types';
 
-const debugChat = Debug('WPP:chat');
-const debugMessage = Debug('WPP:message');
+const debugChat = Debug('WA-JS:chat');
+const debugMessage = Debug('WA-JS:message');
 
 export class Chat extends Emittery<ChatEventTypes> {
   public defaultSendMessageOptions: SendMessageOptions = {

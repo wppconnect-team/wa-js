@@ -17,7 +17,7 @@
 import Debug from 'debug';
 import Emittery from 'emittery';
 
-const debug = Debug('WPP:webpack');
+const debug = Debug('WA-JS:webpack');
 
 interface WebpackEvents {
   injected: undefined;

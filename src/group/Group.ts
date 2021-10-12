@@ -29,7 +29,7 @@ import {
 } from '../whatsapp/functions';
 import { ChatEventTypes as GroupEventTypes } from './types';
 
-const debug = Debug('WPP:group');
+const debug = Debug('WA-JS:group');
 
 export class Group extends Emittery<GroupEventTypes> {
   constructor() {
