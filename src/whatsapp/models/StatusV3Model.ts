@@ -46,11 +46,11 @@ interface Derived {
   lastStatus?: any;
 }
 
-/** @whatsapp 2.2138.13:96944 */
+/** @whatsapp 2.2140.7:96944 */
 export declare interface StatusV3Model
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 2.2138.13:96944 */
+/** @whatsapp 2.2140.7:96944 */
 export declare class StatusV3Model extends Model<StatusV3Collection> {
   idClass: typeof Wid;
   constructor(

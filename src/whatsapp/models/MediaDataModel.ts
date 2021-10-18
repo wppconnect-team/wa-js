@@ -73,11 +73,11 @@ interface Derived {
   streamable?: any;
 }
 
-/** @whatsapp 2.2138.13:49694 */
+/** @whatsapp 2.2140.7:49694 */
 export declare interface MediaDataModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 2.2138.13:49694 */
+/** @whatsapp 2.2140.7:49694 */
 export declare class MediaDataModel extends Model {
   static TYPE?: any;
   constructor(

@@ -19,7 +19,7 @@ import { exportModule } from '../exportModule';
 import { ModelPropertiesContructor, MsgModel } from '../models';
 import { CollectionCache } from './CollectionCache';
 
-/** @whatsapp 2.2138.13:45472 */
+/** @whatsapp 2.2140.7:45472 */
 export declare class MsgCollection extends CollectionCache<MsgModel> {
   static model: MsgModel;
   lastReceivedReceipt?: any;

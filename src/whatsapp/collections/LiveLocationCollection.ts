@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { LiveLocationModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2138.13:31104 */
+/** @whatsapp 2.2140.7:31104 */
 export declare class LiveLocationCollection extends Collection<LiveLocationModel> {
   static model: LiveLocationModel;
   static staleCollection?: any;

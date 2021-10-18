@@ -29,7 +29,7 @@ declare class NoiseInfo {
   set(info: Promise<NoiseInfoData>): any;
 }
 
-/** @whatsapp 2.2138.13:79188 */
+/** @whatsapp 2.2140.7:79188 */
 export declare const waNoiseInfo: NoiseInfo;
 
 exportModule(exports, { waNoiseInfo: 'waNoiseInfo' }, (m) => m.waNoiseInfo);
