@@ -15,7 +15,7 @@
  */
 
 import { exportModule } from '../exportModule';
-import { LabelModel } from '../models';
+import { ChatModel, LabelModel } from '../models';
 import { Collection } from './Collection';
 
 /** @whatsapp 2.2140.7:59606 */
@@ -26,7 +26,7 @@ export declare class LabelCollection extends Collection<LabelModel> {
   checksum?: any;
   initializeAssociationsFromCache(e?: any): any;
   addNewLabel(e?: any, t?: any): any;
-  removeAllLabelsMD(e?: any): any;
+  removeAllLabelsMD(chat: ChatModel): any;
   addOrRemoveLabelsMD(e?: any, t?: any): any;
   addOrRemoveLabels(e?: any, t?: any): any;
   deleteLabel(e?: any): any;

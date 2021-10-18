@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-export * from './addAndSendMsgToChat';
-export * from './blockContact';
-export * from './findChat';
-export * from './getOrGenerate';
-export * from './groupParticipants';
-export * from './isAuthenticated';
-export * from './msgFindQuery';
-export * from './randomId';
-export * from './sendConversationDelete';
-export * from './sendTextMsgToChat';
+import { MsgKey, Wid } from '..';
+import { exportModule } from '../exportModule';
+
+/** @whatsapp 2.2140.7:44568 */
+export declare function sendConversationDelete(
+  chat: Wid,
+  lastMsgKey: MsgKey,
+  r: any
+): Promise<{ status: number; _duplicate: boolean; result: any }>;
+
+exportModule(
+  exports,
+  {
+    sendConversationDelete: 'sendConversationDelete',
+  },
+  (m) => m.sendConversationDelete
+);

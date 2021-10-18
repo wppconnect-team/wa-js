@@ -148,7 +148,7 @@ export declare class ChatModel extends ModelChatBase {
   getFirstMsgWithStatus(): any;
   getLastReceivedMsg(): any;
   getLastReceivedNonExpiredMsg(e?: any): any;
-  getLastMsgKeyForAction(): any;
+  getLastMsgKeyForAction(): MsgKey;
   getLastTimestampMsg(): any;
   getWebcChatType(): any;
   deregisterExpiredViewOnceBulkMessages(e?: any): any;
