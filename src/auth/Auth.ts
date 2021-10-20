@@ -38,12 +38,12 @@ export class Auth extends Emittery<AuthEventTypes> {
   }
 
   async initialize() {
-    // Conn.on('change:ref', async () => {
-    //   const authCode = await this.getAuthCode().catch(() => null);
-    //   if (authCode) {
-    //     this.emit('change', authCode);
-    //   }
-    // });
+    Conn.on('change:ref', async () => {
+      const authCode = await this.getAuthCode().catch(() => null);
+      if (authCode) {
+        this.emit('change', authCode);
+      }
+    });
 
     State.on('change:state', async () => {
       const isIdle = this.isIdle();
@@ -51,8 +51,6 @@ export class Auth extends Emittery<AuthEventTypes> {
         this.emit('idle');
       }
     });
-
-    State.on('all', console.log);
 
     Cmd.on('logout', () => this.emit('logout'));
   }

@@ -53,8 +53,10 @@ async function start() {
 
     let content = body.toString('utf8');
 
-    content = content.replace(/\B!1\b/g, 'false');
-    content = content.replace(/\B!0\b/g, 'true');
+    content = content.replace(/([ ,:;=>(){}[\]|&])!1\b/g, '$1false');
+    content = content.replace(/([ ,:;=>(){}[\]|&])!0\b/g, '$1true');
+    content = content.replace(/\b(return|case)\s*!1\b/g, '$1 false');
+    content = content.replace(/\b(return|case)\s*!0\b/g, '$1 true');
     content = content.replace(/\bvoid 0\b/g, 'undefined');
 
     fs.writeFileSync(filePath, content, { encoding: 'utf8' });
