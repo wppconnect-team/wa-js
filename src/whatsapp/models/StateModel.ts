@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { LogoutReason } from '../enums';
 import { exportModule } from '../exportModule';
 import {
   Model,
@@ -85,7 +86,7 @@ export declare class StateModel extends Model {
   exitLoop(e?: any): any;
   clearCredentialsAndStoredData(): any;
   destroyStorage(): any;
-  logout(e?: any): any;
+  logout(sendLogout?: boolean, reason?: LogoutReason): void;
   summary(): any;
   registerHandler(e?: any): any;
   onStateChange(): any;

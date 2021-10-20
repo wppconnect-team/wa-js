@@ -20,6 +20,7 @@ import * as webpack from '../webpack';
 import {
   Base64,
   Browser,
+  Cmd,
   Conn,
   Constants,
   Features,
@@ -37,12 +38,12 @@ export class Auth extends Emittery<AuthEventTypes> {
   }
 
   async initialize() {
-    Conn.on('change:ref', async () => {
-      const authCode = await this.getAuthCode().catch(() => null);
-      if (authCode) {
-        this.emit('change', authCode);
-      }
-    });
+    // Conn.on('change:ref', async () => {
+    //   const authCode = await this.getAuthCode().catch(() => null);
+    //   if (authCode) {
+    //     this.emit('change', authCode);
+    //   }
+    // });
 
     State.on('change:state', async () => {
       const isIdle = this.isIdle();
@@ -50,6 +51,10 @@ export class Auth extends Emittery<AuthEventTypes> {
         this.emit('idle');
       }
     });
+
+    State.on('all', console.log);
+
+    Cmd.on('logout', () => this.emit('logout'));
   }
 
   /**
@@ -116,5 +121,15 @@ export class Auth extends Emittery<AuthEventTypes> {
 
   public poke(): void {
     State.poke();
+  }
+
+  public async logout(): Promise<any> {
+    State.logout();
+
+    await new Promise((resolve) => {
+      Cmd.once('logout', resolve);
+    });
+
+    return true;
   }
 }

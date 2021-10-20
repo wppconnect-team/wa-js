@@ -17,6 +17,7 @@
 export * from './Base64';
 export * from './Browser';
 export * from './ClockSkew';
+export * from './Cmd';
 export * from './Conn';
 export * from './Constants';
 export * from './EventEmitter';

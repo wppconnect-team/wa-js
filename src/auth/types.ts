@@ -36,4 +36,5 @@ export type AuthCode = AuthCodeSingleDevice | AuthCodeMultiDevice;
 export interface AuthEventTypes {
   change: AuthCode;
   idle: undefined;
+  logout: undefined;
 }
