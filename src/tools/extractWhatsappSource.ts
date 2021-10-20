@@ -51,7 +51,13 @@ async function start() {
 
     const body = await response.body();
 
-    fs.writeFileSync(filePath, body, { encoding: 'utf8' });
+    let content = body.toString('utf8');
+
+    content = content.replace(/\B!1\b/g, 'false');
+    content = content.replace(/\B!0\b/g, 'true');
+    content = content.replace(/\bvoid 0\b/g, 'undefined');
+
+    fs.writeFileSync(filePath, content, { encoding: 'utf8' });
   });
 
   await page.waitForFunction(() => window.WPP?.isReady, null, {
