@@ -27,7 +27,6 @@ import {
   ClockSkew,
   Constants,
   Features,
-  LabelStore,
   MsgKey,
   MsgStore,
   ReplyButtonModel,
@@ -40,7 +39,7 @@ import {
   msgFindQuery,
   MsgFindQueryParams,
   randomMessageId,
-  sendConversationDelete,
+  sendDelete,
 } from '../whatsapp/functions';
 import {
   ChatEventTypes,
@@ -127,21 +126,21 @@ export class Chat extends Emittery<ChatEventTypes> {
     const wid = assertWid(chatId);
 
     const chat = assertGetChat(wid);
-    const lastMsgKey = chat.getLastMsgKeyForAction();
 
-    const result = await sendConversationDelete(
-      wid,
-      lastMsgKey,
-      chat.getLastMsgKeyForAction.bind(chat)
-    );
+    sendDelete(chat);
 
-    if (result.status === 200) {
-      LabelStore.removeAllLabelsMD(chat);
+    let status = 200;
+
+    if (chat.promises.sendDelete) {
+      const result = await chat.promises.sendDelete.catch(() => ({
+        status: 500,
+      }));
+      status = result.status || status;
     }
 
     return {
       wid,
-      status: result.status,
+      status,
     };
   }
 

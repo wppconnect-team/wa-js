@@ -22,5 +22,5 @@ export * from './groupParticipants';
 export * from './isAuthenticated';
 export * from './msgFindQuery';
 export * from './randomId';
-export * from './sendConversationDelete';
+export * from './sendDelete';
 export * from './sendTextMsgToChat';

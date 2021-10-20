@@ -60,7 +60,7 @@ interface Session extends SessionChatBase {
   markedUnread?: any;
   trusted?: any;
   canSend: boolean;
-  promises?: any;
+  promises: { [key: string]: Promise<any> | undefined | null };
   ftsCache?: any;
   composeQuotedMsg?: any;
   composeQuotedMsgRemoteJid?: any;

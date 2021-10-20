@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-import { MsgKey, Wid } from '..';
+import { ChatModel } from '..';
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 2.2140.7:44568 */
-export declare function sendConversationDelete(
-  chat: Wid,
-  lastMsgKey: MsgKey,
-  r: any
-): Promise<{ status: number; _duplicate: boolean; result: any }>;
+/** @whatsapp 2.2140.7:61670 */
+export declare function sendDelete(chat: ChatModel): Promise<void>;
 
 exportModule(
   exports,
   {
-    sendConversationDelete: 'sendConversationDelete',
+    sendDelete: 'sendDelete',
   },
-  (m) => m.sendConversationDelete
+  (m) => m.sendDelete
 );
