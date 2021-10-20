@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-export * from './addAndSendMsgToChat';
-export * from './blockContact';
-export * from './findChat';
-export * from './getOrGenerate';
-export * from './groupParticipants';
-export * from './isAuthenticated';
-export * from './msgFindQuery';
-export * from './randomId';
-export * from './sendClear';
-export * from './sendDelete';
-export * from './sendTextMsgToChat';
+import { ChatModel } from '..';
+import { exportModule } from '../exportModule';
+
+/** @whatsapp 2.2140.7:67357 */
+export declare function sendClear(
+  chat: ChatModel,
+  keepStarred?: boolean
+): Promise<void>;
+
+exportModule(
+  exports,
+  {
+    sendClear: 'sendClear',
+  },
+  (m) => m.sendClear && m.clearMessagesInChatModel
+);

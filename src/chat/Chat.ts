@@ -39,6 +39,7 @@ import {
   msgFindQuery,
   MsgFindQueryParams,
   randomMessageId,
+  sendClear,
   sendDelete,
 } from '../whatsapp/functions';
 import {
@@ -141,6 +142,29 @@ export class Chat extends Emittery<ChatEventTypes> {
     return {
       wid,
       status,
+    };
+  }
+
+  async clear(chatId: string | Wid, keepStarred = true) {
+    const wid = assertWid(chatId);
+
+    const chat = assertGetChat(wid);
+
+    sendClear(chat, keepStarred);
+
+    let status = 200;
+
+    if (chat.promises.sendClear) {
+      const result = await chat.promises.sendClear.catch(() => ({
+        status: 500,
+      }));
+      status = result.status || status;
+    }
+
+    return {
+      wid,
+      status,
+      keepStarred,
     };
   }
 
