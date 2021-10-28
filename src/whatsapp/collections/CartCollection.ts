@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { CartModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2140.7:25523 */
+/** @whatsapp undefined:25523 */
 export declare class CartCollection extends Collection<CartModel> {
   static model: CartModel;
   static cachePolicy?: any;

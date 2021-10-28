@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { CatalogModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2140.7:60028 */
+/** @whatsapp undefined:60028 */
 export declare class CatalogCollection extends Collection<CatalogModel> {
   static model: CatalogModel;
   static staleCollection?: any;

@@ -17,7 +17,7 @@
 import { exportModule } from '../exportModule';
 import { EventEmitter } from '.';
 
-/** @whatsapp 2.2140.12:69162 */
+/** @whatsapp undefined:69162 */
 export declare class CmdClass extends EventEmitter {
   public isMainLoaded: boolean;
   public uiBusy: number;
@@ -148,7 +148,7 @@ export declare class CmdClass extends EventEmitter {
   toggleStickerMaker(): void;
 }
 
-/** @whatsapp 2.2140.12:69162 */
+/** @whatsapp undefined:69162 */
 export declare const Cmd: CmdClass;
 
 export declare const APP_STATE_SYNC_COMPLETED: string;

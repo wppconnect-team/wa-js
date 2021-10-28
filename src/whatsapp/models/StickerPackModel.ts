@@ -50,11 +50,11 @@ interface Derived {
   isFirstParty: boolean;
 }
 
-/** @whatsapp 2.2140.7:86668 */
+/** @whatsapp undefined:86668 */
 export declare interface StickerPackModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 2.2140.7:86668 */
+/** @whatsapp undefined:86668 */
 export declare class StickerPackModel extends Model {
   constructor(
     proterties?: ModelPropertiesContructor<StickerPackModel>,

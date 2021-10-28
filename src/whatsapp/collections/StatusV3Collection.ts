@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { StatusV3Model } from '../models';
 import { CollectionCache } from '.';
 
-/** @whatsapp 2.2140.7:83125 */
+/** @whatsapp undefined:83125 */
 export declare class StatusV3Collection extends CollectionCache<StatusV3Model> {
   static model: StatusV3Model;
   loadMore(e?: any, t?: any, r?: any): any;

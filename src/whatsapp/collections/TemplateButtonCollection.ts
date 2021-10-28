@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { TemplateButtonModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2140.7:95411 */
+/** @whatsapp undefined:95411 */
 export declare class TemplateButtonCollection extends Collection<TemplateButtonModel> {
   static model: TemplateButtonModel;
   static comparator(): any;

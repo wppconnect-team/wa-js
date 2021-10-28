@@ -54,11 +54,11 @@ interface Derived {
   groupInviteLink?: any;
 }
 
-/** @whatsapp 2.2140.7:28197 */
+/** @whatsapp undefined:28197 */
 export declare interface GroupMetadataModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 2.2140.7:28197 */
+/** @whatsapp undefined:28197 */
 export declare class GroupMetadataModel extends Model {
   idClass: typeof Wid;
   participants: ParticipantCollection;

@@ -33,11 +33,11 @@ interface Session {
 
 interface Derived {}
 
-/** @whatsapp 2.2140.7:85739 */
+/** @whatsapp undefined:85739 */
 export declare interface UnreadMentionModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 2.2140.7:85739 */
+/** @whatsapp undefined:85739 */
 export declare class UnreadMentionModel extends Model {
   constructor(
     proterties?: ModelPropertiesContructor<UnreadMentionModel>,
