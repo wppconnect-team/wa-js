@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-export * from './Base64';
-export * from './Browser';
-export * from './ClockSkew';
-export * from './Cmd';
-export * from './Conn';
-export * from './Constants';
-export * from './EventEmitter';
-export * from './Features';
-export * from './ImageUtils';
-export * from './MediaObject';
-export * from './MediaObjectUtil';
-export * from './MediaPrep';
-export * from './MediaUtils';
-export * from './MsgKey';
-export * from './MsgLoadState';
-export * from './OpaqueData';
-export * from './State';
-export * from './Stringable';
-export * from './UserPrefs';
-export * from './Wid';
-export * from './WidFactory';
+import { exportModule } from '../exportModule';
+
+/** @whatsapp 2.2140.12:90672 */
+export declare enum OUTWARD_TYPES {
+  IMAGE = 'image',
+  VIDEO = 'video',
+  AUDIO = 'audio',
+  PTT = 'ptt',
+  STICKER = 'sticker',
+  DOCUMENT = 'document',
+  PRODUCT = 'product',
+  UNKNOWN = 'unknown',
+}
+
+exportModule(
+  exports,
+  {
+    OUTWARD_TYPES: 'OUTWARD_TYPES',
+  },
+  (m) => m.OUTWARD_TYPES
+);

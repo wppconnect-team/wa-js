@@ -15,5 +15,6 @@
  */
 
 export * from './LogoutReason';
+export * from './OUTWARD_TYPES';
 export * from './SendMsgResult';
 export * from './TextFontStyle';

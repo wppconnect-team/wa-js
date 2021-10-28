@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { OpaqueData } from '..';
 import { exportProxyModel } from '../exportModule';
 import {
   Model,
@@ -32,7 +33,7 @@ interface Props {
   size?: any;
   filehash?: any;
   mimetype?: any;
-  mediaBlob?: any;
+  mediaBlob?: OpaqueData;
   renderableUrl?: any;
   fullHeight?: any;
   fullWidth?: any;
@@ -73,11 +74,11 @@ interface Derived {
   streamable?: any;
 }
 
-/** @whatsapp 2.2140.7:49694 */
+/** @whatsapp 2.2140.12:49694 */
 export declare interface MediaDataModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 2.2140.7:49694 */
+/** @whatsapp 2.2140.12:49694 */
 export declare class MediaDataModel extends Model {
   static TYPE?: any;
   constructor(

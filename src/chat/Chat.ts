@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+import parseDataURL from 'data-urls';
 import Debug from 'debug';
 import Emittery from 'emittery';
+import FileType from 'file-type';
 
 import { assertFindChat, assertGetChat, assertWid } from '../assert';
 import { WPPError } from '../util';
@@ -27,8 +29,11 @@ import {
   ClockSkew,
   Constants,
   Features,
+  MediaPrep,
   MsgKey,
+  MsgModel,
   MsgStore,
+  OpaqueData,
   ReplyButtonModel,
   UserPrefs,
   Wid,
@@ -42,6 +47,13 @@ import {
   sendClear,
   sendDelete,
 } from '../whatsapp/functions';
+import {
+  AudioMessageOptions,
+  DocumentMessageOptions,
+  ImageMessageOptions,
+  SendMessageReturn,
+  VideoMessageOptions,
+} from '.';
 import {
   ChatEventTypes,
   GetMessagesOptions,
@@ -280,7 +292,7 @@ export class Chat extends Emittery<ChatEventTypes> {
     chatId: any,
     message: RawMessage,
     options: SendMessageOptions = {}
-  ) {
+  ): Promise<SendMessageReturn> {
     options = {
       ...this.defaultSendMessageOptions,
       ...options,
@@ -328,9 +340,9 @@ export class Chat extends Emittery<ChatEventTypes> {
 
     return {
       id: finalMessage.id.toString(),
-      ack: finalMessage.ack,
-      message: result[0],
-      sendMsgResult: result[1],
+      ack: finalMessage.ack!,
+      message: finalMessage,
+      sendMsgResult: result[1]!,
     };
   }
 
@@ -338,7 +350,7 @@ export class Chat extends Emittery<ChatEventTypes> {
     chatId: any,
     content: any,
     options: TextMessageOptions = {}
-  ): Promise<any> {
+  ): Promise<SendMessageReturn> {
     options = {
       ...this.defaultSendMessageOptions,
       ...options,
@@ -383,7 +395,7 @@ export class Chat extends Emittery<ChatEventTypes> {
   async sendListMessage(
     chatId: any,
     options: ListMessageOptions
-  ): Promise<any> {
+  ): Promise<SendMessageReturn> {
     options = {
       ...this.defaultSendMessageOptions,
       ...options,
@@ -415,5 +427,138 @@ export class Chat extends Emittery<ChatEventTypes> {
     };
 
     return await this.sendRawMessage(chatId, message, options);
+  }
+
+  protected async convertToFile(
+    data: string,
+    mimetype?: string,
+    filename?: string
+  ): Promise<File> {
+    const parsed = parseDataURL(data);
+    if (!parsed) {
+      throw 'invalid_data_url';
+    }
+
+    if (!mimetype) {
+      mimetype = parsed.mimeType.essence;
+    }
+
+    const buffer = parsed.body;
+    const blob = new Blob(
+      [new Uint8Array(buffer, buffer.byteOffset, buffer.length)],
+      { type: mimetype }
+    );
+
+    if (!filename) {
+      const result = await FileType.fromBuffer(buffer);
+      if (result) {
+        const baseType = result.mime.split('/')[0];
+        filename = `${baseType}.${result.ext}`;
+      } else {
+        filename = 'unknown';
+      }
+    }
+
+    return new File([blob], filename, {
+      type: mimetype,
+      lastModified: Date.now(),
+    });
+  }
+
+  async sendFileMessage(
+    chatId: any,
+    content: any,
+    options:
+      | AudioMessageOptions
+      | DocumentMessageOptions
+      | ImageMessageOptions
+      | VideoMessageOptions
+  ): Promise<SendMessageReturn> {
+    options = {
+      ...this.defaultSendMessageOptions,
+      ...{
+        type: 'document',
+      },
+      ...options,
+    };
+
+    const chat = options.createChat
+      ? await assertFindChat(chatId)
+      : assertGetChat(chatId);
+
+    const file = await this.convertToFile(
+      content,
+      options.mimetype,
+      options.filename
+    );
+
+    const opaqueData = await OpaqueData.createFromData(file, file.type);
+
+    const rawMediaOptions: {
+      isPtt?: boolean;
+      asDocument?: boolean;
+      asGif?: boolean;
+      isAudio?: boolean;
+      asSticker?: boolean;
+    } = {};
+
+    let isViewOnce: boolean | undefined;
+
+    if (options.type === 'audio') {
+      rawMediaOptions.isPtt = options.isPtt;
+    } else if (options.type === 'image') {
+      isViewOnce = options.isViewOnce;
+    } else if (options.type === 'video') {
+      rawMediaOptions.asGif = options.isGif;
+    } else if (options.type === 'document') {
+      rawMediaOptions.asDocument = true;
+    }
+
+    const mediaPrep = MediaPrep.prepRawMedia(opaqueData, rawMediaOptions);
+
+    // Force a known mesage ID
+    const id = new MsgKey({
+      from: UserPrefs.getMaybeMeUser(),
+      to: chat.id,
+      id: randomMessageId(),
+      selfDir: 'out',
+    });
+
+    // The generated message in `sendToChat` is merged with `productMsgOptions`
+    const productMsgOptions = { id };
+
+    debugMessage(`sending message (${options.type}) with id ${id}`);
+    const sendMsgResult = mediaPrep.sendToChat(chat, {
+      caption: options.caption,
+      isViewOnce,
+      productMsgOptions,
+    });
+
+    const message = await new Promise<MsgModel>((resolve) => {
+      chat.msgs.on('add', function fn(msg: MsgModel) {
+        if (msg.id === id) {
+          chat.msgs.off('add', fn);
+          resolve(msg);
+        }
+      });
+    });
+    debugMessage(`message file ${message.id} queued`);
+
+    if (options.waitForAck) {
+      debugMessage(`waiting ack for ${message.id}`);
+
+      const sendResult = await sendMsgResult;
+
+      debugMessage(
+        `ack received for ${message.id} (ACK: ${message.ack}, SendResult: ${sendResult})`
+      );
+    }
+
+    return {
+      id: message.id.toString(),
+      ack: message.ack!,
+      message: message,
+      sendMsgResult,
+    };
   }
 }
