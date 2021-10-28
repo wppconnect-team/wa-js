@@ -241,6 +241,59 @@ export class Chat extends Emittery<ChatEventTypes> {
     return msgs;
   }
 
+  async getMessageById(chatId: string | Wid, id: string): Promise<MsgModel>;
+  async getMessageById(
+    chatId: string | Wid,
+    ids: string[]
+  ): Promise<MsgModel[]>;
+  async getMessageById(
+    chatId: string | Wid,
+    ids: string | string[]
+  ): Promise<MsgModel | MsgModel[]> {
+    const chat = assertGetChat(chatId);
+    const debug = debugMessage.extend('getMessageById');
+
+    let isSingle = false;
+
+    if (!Array.isArray(ids)) {
+      isSingle = true;
+      ids = [ids];
+    }
+
+    const msgsKeys = ids.map((id) => MsgKey.fromString(id));
+
+    const msgs: MsgModel[] = [];
+    for (const msgKey of msgsKeys) {
+      let msg = chat.msgs.get(msgKey);
+
+      if (!msg) {
+        debug(`searching remote message with id ${msgKey.toString()}`);
+        const result = chat.getSearchContext(msgKey);
+        await result.collection.loadAroundPromise;
+
+        msg = chat.msgs.get(msgKey);
+      }
+
+      if (!msg) {
+        debug(`message id ${msgKey.toString()} not found`);
+        throw new WPPError(
+          'msg_not_found',
+          `Message ${msgKey.toString()} not fount`,
+          {
+            id: msgKey.toString(),
+          }
+        );
+      }
+
+      msgs.push(msg);
+    }
+
+    if (isSingle) {
+      return msgs[0];
+    }
+    return msgs;
+  }
+
   prepareMessageButtons(
     message: RawMessage,
     options: MessageButtonsOptions
