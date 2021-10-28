@@ -17,63 +17,63 @@
 import * as collections from './collections';
 import { exportModule } from './exportModule';
 
-/** @whatsapp undefined:15701 */
+/** @whatsapp 2.2142.11:15701 */
 export declare const BlocklistStore: collections.BlocklistCollection;
-/** @whatsapp undefined:54100 */
+/** @whatsapp 2.2142.11:54100 */
 export declare const BusinessCategoriesResultStore: collections.BusinessCategoriesResultCollection;
-/** @whatsapp undefined:8581 */
+/** @whatsapp 2.2142.11:8581 */
 export declare const BusinessProfileStore: collections.BusinessProfileCollection;
-/** @whatsapp undefined:15971 */
+/** @whatsapp 2.2142.11:15971 */
 export declare const CallStore: collections.CallCollection;
-/** @whatsapp undefined:25523 */
+/** @whatsapp 2.2142.11:25523 */
 export declare const CartStore: collections.CartCollection;
-/** @whatsapp undefined:60028 */
+/** @whatsapp 2.2142.11:60028 */
 export declare const CatalogStore: collections.CatalogCollection;
-/** @whatsapp undefined:84758 */
+/** @whatsapp 2.2142.11:84758 */
 export declare const ChatStore: collections.ChatCollection;
-/** @whatsapp undefined:17025 */
+/** @whatsapp 2.2142.11:17025 */
 export declare const ContactStore: collections.ContactCollection;
-/** @whatsapp undefined:41098 */
+/** @whatsapp 2.2142.11:41098 */
 export declare const EmojiVariantStore: collections.EmojiVariantCollection;
-/** @whatsapp undefined:75798 */
+/** @whatsapp 2.2142.11:75798 */
 export declare const GroupMetadataStore: collections.GroupMetadataCollection;
-/** @whatsapp undefined:59606 */
+/** @whatsapp 2.2142.11:59606 */
 export declare const LabelStore: collections.LabelCollection;
-/** @whatsapp undefined:31104 */
+/** @whatsapp 2.2142.11:31104 */
 export declare const LiveLocationStore: collections.LiveLocationCollection;
-/** @whatsapp undefined:45472 */
+/** @whatsapp 2.2142.11:45472 */
 export declare const MsgStore: collections.MsgCollection;
-/** @whatsapp undefined:57636 */
+/** @whatsapp 2.2142.11:57636 */
 export declare const MsgInfoStore: collections.MsgInfoCollection;
-/** @whatsapp undefined:80959 */
+/** @whatsapp 2.2142.11:80959 */
 export declare const MuteStore: collections.MuteCollection;
-/** @whatsapp undefined:98052 */
+/** @whatsapp 2.2142.11:98052 */
 export declare const OrderStore: collections.OrderCollection;
-/** @whatsapp undefined:48327 */
+/** @whatsapp 2.2142.11:48327 */
 export declare const PresenceStore: collections.PresenceCollection;
-/** @whatsapp undefined:97038 */
+/** @whatsapp 2.2142.11:97038 */
 export declare const ProductMessageListStore: collections.ProductMessageListCollection;
-/** @whatsapp undefined:3165 */
+/** @whatsapp 2.2142.11:3165 */
 export declare const ProfilePicThumbStore: collections.ProfilePicThumbCollection;
-/** @whatsapp undefined:65963 */
+/** @whatsapp 2.2142.11:65963 */
 export declare const QuickReplyStore: collections.QuickReplyCollection;
-/** @whatsapp undefined:30462 */
+/** @whatsapp 2.2142.11:30462 */
 export declare const RecentEmojiStore: collections.RecentEmojiCollection;
-/** @whatsapp undefined:27686 */
+/** @whatsapp 2.2142.11:27686 */
 export declare const RecentStickerStore: collections.RecentStickerCollection;
-/** @whatsapp undefined:30118 */
+/** @whatsapp 2.2142.11:30118 */
 export declare const StarredMsgStore: collections.StarredMsgCollection;
-/** @whatsapp undefined:68477 */
+/** @whatsapp 2.2142.11:68477 */
 export declare const StarredStickerStore: collections.StarredStickerCollection;
-/** @whatsapp undefined:22360 */
+/** @whatsapp 2.2142.11:22360 */
 export declare const StatusStore: collections.StatusCollection;
-/** @whatsapp undefined:83125 */
+/** @whatsapp 2.2142.11:83125 */
 export declare const StatusV3Store: collections.StatusV3Collection;
-/** @whatsapp undefined:16482 */
+/** @whatsapp 2.2142.11:16482 */
 export declare const StickerStore: collections.StickerCollection;
-/** @whatsapp undefined:45822 */
+/** @whatsapp 2.2142.11:45822 */
 export declare const StickerPackStore: collections.StickerPackCollection;
-/** @whatsapp undefined:6009 */
+/** @whatsapp 2.2142.11:6009 */
 export declare const StickerSearchStore: collections.StickerSearchCollection;
 
 const storeNames = [

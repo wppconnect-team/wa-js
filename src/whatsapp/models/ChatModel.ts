@@ -98,11 +98,11 @@ interface Derived {
   shouldShowUnreadInTitle?: any;
 }
 
-/** @whatsapp undefined:58380 */
+/** @whatsapp 2.2142.11:58380 */
 export declare interface ChatModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp undefined:58380 */
+/** @whatsapp 2.2142.11:58380 */
 export declare class ChatModel extends ModelChatBase {
   idClass: typeof Wid;
   constructor(

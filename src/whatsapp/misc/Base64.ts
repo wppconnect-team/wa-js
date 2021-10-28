@@ -16,7 +16,7 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp undefined:42977 */
+/** @whatsapp 2.2142.11:42977 */
 export declare namespace Base64 {
   const BASE64_DATA_URL_SCHEME: 'data:image/jpeg;base64,';
   function encodeB64(data: ArrayLike<number> | ArrayBufferLike): string;

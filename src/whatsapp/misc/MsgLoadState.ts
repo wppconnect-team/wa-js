@@ -18,7 +18,7 @@ import { CollectionCache } from '../collections';
 import { exportModule } from '../exportModule';
 import { Model, MsgModel } from '../models';
 
-/** @whatsapp undefined:97490 */
+/** @whatsapp 2.2142.11:97490 */
 export declare class MsgLoadState extends Model {
   noEarlierMsgs: any;
   isLoadingEarlierMsgs: any;
@@ -27,7 +27,7 @@ export declare class MsgLoadState extends Model {
   contextLoaded: any;
 }
 
-/** @whatsapp undefined:97490 */
+/** @whatsapp 2.2142.11:97490 */
 export declare class MsgLoad extends CollectionCache<MsgModel> {
   msgLoadState: MsgLoadState;
   loadRecentPromise?: Promise<any>;

@@ -57,11 +57,11 @@ interface Derived {
   fileExt?: any;
 }
 
-/** @whatsapp undefined:73754 */
+/** @whatsapp 2.2142.11:73754 */
 export declare interface AttachMediaModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp undefined:73754 */
+/** @whatsapp 2.2142.11:73754 */
 export declare class AttachMediaModel extends Model {
   constructor(
     proterties?: ModelPropertiesContructor<AttachMediaModel>,

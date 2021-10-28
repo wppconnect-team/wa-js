@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { QuickReplyModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp undefined:65963 */
+/** @whatsapp 2.2142.11:65963 */
 export declare class QuickReplyCollection extends Collection<QuickReplyModel> {
   static model: QuickReplyModel;
   checksum?: any;

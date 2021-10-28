@@ -16,7 +16,7 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp undefined:55454 */
+/** @whatsapp 2.2142.11:55454 */
 export declare const Constants: {
   ARCHIVE_NUX_MAX_VIEWS: number;
   IMG_THUMB_MAX_EDGE: number;

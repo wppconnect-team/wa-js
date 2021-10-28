@@ -145,7 +145,7 @@ declare class FeatureClass extends EventEmitter {
   isInAppSupportEnabled(): boolean;
 }
 
-/** @whatsapp undefined:12950 */
+/** @whatsapp 2.2142.11:12950 */
 export declare const Features: FeatureClass;
 
 exportModule(

@@ -17,10 +17,10 @@
 import { exportModule } from '../exportModule';
 import { ContactModel } from '../models';
 
-/** @whatsapp undefined:38512 */
+/** @whatsapp 2.2142.11:38512 */
 export declare function blockContact(contact: ContactModel): Promise<void>;
 
-/** @whatsapp undefined:38512 */
+/** @whatsapp 2.2142.11:38512 */
 export declare function unblockContact(contact: ContactModel): Promise<void>;
 
 exportModule(
