@@ -44,6 +44,13 @@ export interface GetMessagesOptions {
   id?: string;
 }
 
+export interface DeleteMessageReturn {
+  id: string;
+  sendMsgResult: Promise<SendMsgResult>;
+  isRevoked: boolean;
+  isDeleted: boolean;
+}
+
 export interface SendMessageOptions {
   waitForAck?: boolean;
   createChat?: boolean;

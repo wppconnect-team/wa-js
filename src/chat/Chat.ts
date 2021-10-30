@@ -38,6 +38,7 @@ import {
   UserPrefs,
   Wid,
 } from '../whatsapp';
+import { SendMsgResult } from '../whatsapp/enums';
 import {
   addAndSendMsgToChat,
   findChat,
@@ -49,6 +50,7 @@ import {
 } from '../whatsapp/functions';
 import {
   AudioMessageOptions,
+  DeleteMessageReturn,
   DocumentMessageOptions,
   ImageMessageOptions,
   SendMessageReturn,
@@ -297,17 +299,66 @@ export class Chat extends Emittery<ChatEventTypes> {
   async deleteMessage(
     chatId: string | Wid,
     id: string,
+    deleteMediaInDevice: boolean,
+    revoke: boolean
+  ): Promise<DeleteMessageReturn>;
+  async deleteMessage(
+    chatId: string | Wid,
+    ids: string[],
+    deleteMediaInDevice: boolean,
+    revoke: boolean
+  ): Promise<DeleteMessageReturn[]>;
+  async deleteMessage(
+    chatId: string | Wid,
+    ids: string | string[],
     deleteMediaInDevice = false,
     revoke = false
-  ) {
+  ): Promise<DeleteMessageReturn | DeleteMessageReturn[]> {
     const chat = assertGetChat(chatId);
 
-    const msg = await this.getMessageById(chatId, id);
+    let isSingle = false;
 
-    if (revoke) {
-      return await chat.sendRevokeMsgs([msg], deleteMediaInDevice);
+    if (!Array.isArray(ids)) {
+      isSingle = true;
+      ids = [ids];
     }
-    return await chat.sendDeleteMsgs([msg], deleteMediaInDevice);
+
+    const msgs = await this.getMessageById(chatId, ids);
+
+    const results: any[] = [];
+    for (const msg of msgs) {
+      let sendMsgResult: SendMsgResult = SendMsgResult.ERROR_UNKNOWN;
+      let isRevoked = false;
+      let isDeleted = false;
+
+      if (msg.type === Constants.MSG_TYPE.REVOKED) {
+        // Message is already revoked
+        sendMsgResult = SendMsgResult.ERROR_UNKNOWN;
+        isRevoked = true;
+      } else if (revoke) {
+        sendMsgResult = await chat.sendRevokeMsgs([msg], deleteMediaInDevice);
+        if (sendMsgResult === SendMsgResult.OK) {
+          isRevoked = true;
+        }
+      } else {
+        sendMsgResult = await chat.sendDeleteMsgs([msg], deleteMediaInDevice);
+        if (sendMsgResult === SendMsgResult.OK) {
+          isDeleted = true;
+        }
+      }
+
+      results.push({
+        id: msg.id.toString(),
+        sendMsgResult,
+        isRevoked,
+        isDeleted,
+      });
+    }
+
+    if (isSingle) {
+      return results[0];
+    }
+    return results;
   }
 
   prepareMessageButtons(
