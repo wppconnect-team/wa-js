@@ -278,7 +278,7 @@ export class Chat extends Emittery<ChatEventTypes> {
         debug(`message id ${msgKey.toString()} not found`);
         throw new WPPError(
           'msg_not_found',
-          `Message ${msgKey.toString()} not fount`,
+          `Message ${msgKey.toString()} not found`,
           {
             id: msgKey.toString(),
           }
@@ -292,6 +292,22 @@ export class Chat extends Emittery<ChatEventTypes> {
       return msgs[0];
     }
     return msgs;
+  }
+
+  async deleteMessage(
+    chatId: string | Wid,
+    id: string,
+    deleteMediaInDevice = false,
+    revoke = false
+  ) {
+    const chat = assertGetChat(chatId);
+
+    const msg = await this.getMessageById(chatId, id);
+
+    if (revoke) {
+      return await chat.sendRevokeMsgs([msg], deleteMediaInDevice);
+    }
+    return await chat.sendDeleteMsgs([msg], deleteMediaInDevice);
   }
 
   prepareMessageButtons(

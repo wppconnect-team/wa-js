@@ -15,6 +15,7 @@
  */
 
 import { ChatCollection } from '../collections';
+import { SendMsgResult } from '../enums';
 import { exportProxyModel } from '../exportModule';
 import { MsgKey, MsgLoad, Wid } from '../misc';
 import { GroupMetadataModel, MsgModel } from '.';
@@ -149,8 +150,15 @@ export declare class ChatModel extends ModelChatBase {
     highlightMsg: true;
   };
   sendStarMsgs(e?: any, t?: any): any;
-  sendRevokeMsgs(e?: any, t?: any): any;
-  sendDeleteMsgs(e?: any, t?: any): any;
+  sendRevokeMsgs(
+    messages: MsgModel[],
+    deleteMediaInDevice?: boolean
+  ): Promise<SendMsgResult>;
+  sendDeleteMsgs(
+    messages: MsgModel[],
+    deleteMediaInDevice?: boolean
+  ): Promise<SendMsgResult>;
+
   deleteMsgs(e?: any, t?: any): any;
   deleteMsgsOlderThan(e?: any, t?: any, r?: any): any;
   deleteMsgsBeforeMsgInclusive(e?: any, t?: boolean, r?: any): any;
