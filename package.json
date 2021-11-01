@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^14.1.0",
-    "@commitlint/config-conventional": "^13.2.0",
+    "@commitlint/config-conventional": "^14.1.0",
     "@commitlint/cz-commitlint": "^14.1.0",
     "@types/data-urls": "^2.0.1",
     "@types/debug": "^4.1.7",
