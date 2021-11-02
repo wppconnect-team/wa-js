@@ -1,3 +1,12 @@
+## 1.0.9 (2021-11-02)
+
+
+### Features
+
+* Added quotedMsg option for send message ([1a6aacd](https://github.com/wppconnect-team/wa-js/commit/1a6aacd68a408049cfd2bb034626f0e0bd5f62bf))
+
+
+
 ## 1.0.8 (2021-10-30)
 
 
