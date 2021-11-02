@@ -54,21 +54,30 @@ export interface DeleteMessageReturn {
 export interface SendMessageOptions {
   waitForAck?: boolean;
   createChat?: boolean;
+  messageId?: string | MsgKey;
 }
 
 export interface SendMessageReturn {
   id: string;
   ack: number;
-  message: MsgModel;
   sendMsgResult: Promise<SendMsgResult>;
 }
 
 export interface MessageButtonsOptions {
+  /**
+   * List of buttons, with at least 1 option and a maximum of 3
+   */
   buttons?: Array<{
     id: string;
     text: string;
   }>;
+  /**
+   * Title for buttons, only for text message
+   */
   title?: string;
+  /**
+   * Footer text for buttons
+   */
   footer?: string;
 }
 
@@ -94,22 +103,29 @@ export interface FileMessageOptions extends SendMessageOptions {
   mimetype?: string;
 }
 
-export interface ImageMessageOptions extends FileMessageOptions {
+export interface AudioMessageOptions extends FileMessageOptions {
+  type: 'audio';
+  isPtt?: boolean;
+}
+
+export interface DocumentMessageOptions
+  extends FileMessageOptions,
+    MessageButtonsOptions {
+  type: 'document';
+}
+
+export interface ImageMessageOptions
+  extends FileMessageOptions,
+    MessageButtonsOptions {
   type: 'image';
   isViewOnce?: boolean;
 }
 
-export interface VideoMessageOptions extends FileMessageOptions {
+export interface VideoMessageOptions
+  extends FileMessageOptions,
+    MessageButtonsOptions {
   type: 'video';
   isGif?: boolean;
-}
-
-export interface DocumentMessageOptions extends FileMessageOptions {
-  type: 'document';
-}
-export interface AudioMessageOptions extends FileMessageOptions {
-  type: 'audio';
-  isPtt?: boolean;
 }
 
 export type AllMessageOptions = SendMessageOptions &

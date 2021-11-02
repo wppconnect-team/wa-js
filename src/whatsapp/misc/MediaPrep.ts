@@ -45,7 +45,7 @@ export declare namespace MediaPrep {
       options: {
         caption?: string;
         quotedMsg?: MsgModel;
-        productMsgOptions?: ModelPropertiesContructor<MsgModel, 'id'>;
+        productMsgOptions?: ModelPropertiesContructor<MsgModel>;
         type?: any;
         mentionedJidList?: any;
         isForwarded?: boolean;

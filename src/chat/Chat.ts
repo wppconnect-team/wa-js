@@ -361,12 +361,31 @@ export class Chat extends Emittery<ChatEventTypes> {
     return results;
   }
 
-  prepareMessageButtons(
-    message: RawMessage,
+  generateMessageID(chat: string | ChatModel | Wid): MsgKey {
+    let to: Wid;
+
+    if (chat instanceof Wid) {
+      to = chat;
+    } else if (chat instanceof ChatModel) {
+      to = chat.id;
+    } else {
+      to = assertWid(chat);
+    }
+
+    return new MsgKey({
+      from: UserPrefs.getMaybeMeUser(),
+      to: to,
+      id: randomMessageId(),
+      selfDir: 'out',
+    });
+  }
+
+  prepareMessageButtons<T extends RawMessage>(
+    message: T,
     options: MessageButtonsOptions
-  ): RawMessage {
+  ): T {
     if (!options.buttons) {
-      return message;
+      return message as any;
     }
 
     if (!Array.isArray(options.buttons)) {
@@ -375,12 +394,6 @@ export class Chat extends Emittery<ChatEventTypes> {
 
     if (options.buttons.length === 0 || options.buttons.length > 3) {
       throw 'Buttons options must have between 1 and 3 options';
-    }
-
-    if (message.type === 'chat') {
-      message.contentText = message.body;
-    } else {
-      message.contentText = message.caption;
     }
 
     message.title = options.title;
@@ -408,19 +421,15 @@ export class Chat extends Emittery<ChatEventTypes> {
     return message;
   }
 
-  async sendRawMessage(
-    chatId: any,
-    message: RawMessage,
+  async prepareRawMessage<T extends RawMessage>(
+    chat: ChatModel,
+    message: T,
     options: SendMessageOptions = {}
-  ): Promise<SendMessageReturn> {
+  ): Promise<T> {
     options = {
       ...this.defaultSendMessageOptions,
       ...options,
     };
-
-    const chat = options.createChat
-      ? await assertFindChat(chatId)
-      : assertGetChat(chatId);
 
     message = {
       t: ClockSkew.globalUnixTime(),
@@ -433,35 +442,78 @@ export class Chat extends Emittery<ChatEventTypes> {
       ...message,
     };
 
-    if (!message.id) {
-      message.id = new MsgKey({
-        from: UserPrefs.getMaybeMeUser(),
-        to: chat.id,
-        id: randomMessageId(),
-        selfDir: 'out',
-      });
+    if (options.messageId) {
+      if (typeof options.messageId === 'string') {
+        options.messageId = MsgKey.fromString(options.messageId);
+      }
+
+      if (!options.messageId.fromMe) {
+        throw new WPPError(
+          'message_key_is_not_from_me',
+          'Message key is not from me',
+          {
+            messageId: options.messageId.toString(),
+          }
+        );
+      }
+
+      if (!options.messageId.remote.equals(chat.id)) {
+        throw new WPPError(
+          'message_key_remote_id_is_not_same_of_chat',
+          'Message key remote ID is not same of chat',
+          {
+            messageId: options.messageId.toString(),
+          }
+        );
+      }
+
+      message.id = options.messageId;
     }
 
-    debugMessage(`sending message (${message.type}) with id ${message.id}`);
-    const result = await addAndSendMsgToChat(chat, message);
-    debugMessage(`message ${message.id} queued`);
+    if (!message.id) {
+      message.id = this.generateMessageID(chat);
+    }
 
-    const finalMessage = await result[0];
+    return message;
+  }
+
+  async sendRawMessage(
+    chatId: any,
+    rawMessage: RawMessage,
+    options: SendMessageOptions = {}
+  ): Promise<SendMessageReturn> {
+    options = {
+      ...this.defaultSendMessageOptions,
+      ...options,
+    };
+
+    const chat = options.createChat
+      ? await assertFindChat(chatId)
+      : assertGetChat(chatId);
+
+    rawMessage = await this.prepareRawMessage(chat, rawMessage, options);
+
+    debugMessage(
+      `sending message (${rawMessage.type}) with id ${rawMessage.id}`
+    );
+    const result = await addAndSendMsgToChat(chat, rawMessage);
+    debugMessage(`message ${rawMessage.id} queued`);
+
+    const message = await result[0];
 
     if (options.waitForAck) {
-      debugMessage(`waiting ack for ${message.id}`);
+      debugMessage(`waiting ack for ${rawMessage.id}`);
 
       const sendResult = await result[1];
 
       debugMessage(
-        `ack received for ${message.id} (ACK: ${finalMessage.ack}, SendResult: ${sendResult})`
+        `ack received for ${rawMessage.id} (ACK: ${message.ack}, SendResult: ${sendResult})`
       );
     }
 
     return {
-      id: finalMessage.id.toString(),
-      ack: finalMessage.ack!,
-      message: finalMessage,
+      id: message.id.toString(),
+      ack: message.ack!,
       sendMsgResult: result[1]!,
     };
   }
@@ -476,7 +528,7 @@ export class Chat extends Emittery<ChatEventTypes> {
       ...options,
     };
 
-    let message: RawMessage = {
+    let rawMessage: RawMessage = {
       body: content,
       type: 'chat',
       subtype: null,
@@ -484,9 +536,9 @@ export class Chat extends Emittery<ChatEventTypes> {
       urlNumber: null,
     };
 
-    message = this.prepareMessageButtons(message, options);
+    rawMessage = this.prepareMessageButtons(rawMessage, options);
 
-    return await this.sendRawMessage(chatId, message, options);
+    return await this.sendRawMessage(chatId, rawMessage, options);
   }
 
   /**
@@ -636,33 +688,42 @@ export class Chat extends Emittery<ChatEventTypes> {
 
     const mediaPrep = MediaPrep.prepRawMedia(opaqueData, rawMediaOptions);
 
-    // Force a known mesage ID
-    const id = new MsgKey({
-      from: UserPrefs.getMaybeMeUser(),
-      to: chat.id,
-      id: randomMessageId(),
-      selfDir: 'out',
-    });
-
     // The generated message in `sendToChat` is merged with `productMsgOptions`
-    const productMsgOptions = { id };
+    let rawMessage = await this.prepareRawMessage<RawMessage>(
+      chat,
+      {},
+      options
+    );
 
-    debugMessage(`sending message (${options.type}) with id ${id}`);
+    rawMessage = this.prepareMessageButtons(rawMessage, options as any);
+
+    debugMessage(`sending message (${options.type}) with id ${rawMessage.id}`);
     const sendMsgResult = mediaPrep.sendToChat(chat, {
       caption: options.caption,
       isViewOnce,
-      productMsgOptions,
+      productMsgOptions: rawMessage,
     });
 
+    // Wait for message register
     const message = await new Promise<MsgModel>((resolve) => {
       chat.msgs.on('add', function fn(msg: MsgModel) {
-        if (msg.id === id) {
+        if (msg.id === rawMessage.id) {
           chat.msgs.off('add', fn);
           resolve(msg);
         }
       });
     });
     debugMessage(`message file ${message.id} queued`);
+
+    function uploadStage(mediaData: any, stage: string) {
+      debugMessage(`message file ${message.id} is ${stage}`);
+    }
+
+    message.on('change:mediaData.mediaStage', uploadStage);
+
+    sendMsgResult.finally(() => {
+      message.off('change:mediaData.mediaStage', uploadStage);
+    });
 
     if (options.waitForAck) {
       debugMessage(`waiting ack for ${message.id}`);
@@ -677,7 +738,6 @@ export class Chat extends Emittery<ChatEventTypes> {
     return {
       id: message.id.toString(),
       ack: message.ack!,
-      message: message,
       sendMsgResult,
     };
   }
