@@ -637,6 +637,68 @@ export class Chat extends Emittery<ChatEventTypes> {
     });
   }
 
+  /**
+   * Send a file message, that can be an audio, document, image or video
+   *
+   * @example
+   * ```javascript
+   * // Single document
+   * WPP.chat.sendFileMessage(
+   *  '<number>@c.us', {
+   *  'data:image/jpeg;base64,<a long base64 file...>',
+   *  {
+   *    type: 'document',
+   *    caption: 'My document', // Optional
+   *    filename: 'myfile.doc', // Optional
+   *    mimetype: 'application/msword' // Optional
+   *  }
+   * });
+   *
+   * // Image with view once
+   * WPP.chat.sendFileMessage(
+   *  '<number>@c.us', {
+   *  'data:image/jpeg;base64,<a long base64 file...>',
+   *  {
+   *    type: 'image',
+   *    caption: 'My image', // Optional
+   *    isViewOnce: true
+   *  }
+   * });
+   *
+   * // PTT audio
+   * WPP.chat.sendFileMessage(
+   *  '<number>@c.us', {
+   *  'data:audio/mp3;base64,<a long base64 file...>',
+   *  {
+   *    type: 'audio',
+   *    isPtt: true // false for common audio
+   *  }
+   * });
+   *
+   * // Image with view buttons
+   * WPP.chat.sendFileMessage(
+   *  '<number>@c.us', {
+   *  'data:image/jpeg;base64,<a long base64 file...>',
+   *  {
+   *    type: 'image',
+   *    caption: 'My image'
+   *    buttons: [
+   *      {
+   *        id: 'your custom id 1',
+   *        text: 'Some text'
+   *      },
+   *      {
+   *        id: 'another id 2',
+   *        text: 'Another text'
+   *      }
+   *    ],
+   *    footer: 'Footer text' // Optional
+   *  }
+   * });
+   * ```
+   *
+   * @return  {SendMessageReturn} The result
+   */
   async sendFileMessage(
     chatId: any,
     content: any,
