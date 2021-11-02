@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { OrderItemModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2142.11:2414 */
+/** @whatsapp 2.2142.12:2414 */
 export declare class OrderItemCollection extends Collection<OrderItemModel> {
   static model: OrderItemModel;
 }

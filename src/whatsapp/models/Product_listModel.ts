@@ -35,11 +35,11 @@ interface Session {
 
 interface Derived {}
 
-/** @whatsapp 2.2142.11:16689 */
+/** @whatsapp 2.2142.12:16689 */
 export declare interface Product_listModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 2.2142.11:16689 */
+/** @whatsapp 2.2142.12:16689 */
 export declare class Product_listModel extends Model {
   idClass: typeof MsgKey;
   constructor(

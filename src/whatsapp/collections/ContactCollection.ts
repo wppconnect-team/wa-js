@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { ContactModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2142.11:17025 */
+/** @whatsapp 2.2142.12:17025 */
 export declare class ContactCollection extends Collection<ContactModel> {
   static model: ContactModel;
   static cachePolicy?: any;

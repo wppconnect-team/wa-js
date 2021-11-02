@@ -17,7 +17,7 @@
 import { exportModule } from '../exportModule';
 import { StateModel } from '../models';
 
-/** @whatsapp 2.2142.11:72787 */
+/** @whatsapp 2.2142.12:72787 */
 export declare const State: StateModel;
 
 exportModule(exports, { State: 'default' }, (m) => m.default.initConn);

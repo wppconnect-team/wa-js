@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { CallModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2142.11:15971 */
+/** @whatsapp 2.2142.12:15971 */
 export declare class CallCollection extends Collection<CallModel> {
   static model: CallModel;
   pendingOffers?: any;

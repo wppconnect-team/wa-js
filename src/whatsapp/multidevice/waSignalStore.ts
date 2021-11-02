@@ -73,7 +73,7 @@ declare class SignalStore {
   rotateSignedPreKey(e?: any, t?: any): any;
 }
 
-/** @whatsapp 2.2142.11:93381 */
+/** @whatsapp 2.2142.12:93381 */
 export declare const waSignalStore: SignalStore;
 
 exportModule(

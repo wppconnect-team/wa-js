@@ -16,7 +16,7 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 2.2142.11:2019 */
+/** @whatsapp 2.2142.12:2019 */
 export declare namespace adv {
   function generateADVSecretKey(): string;
   function getADVSecretKey(): string;
