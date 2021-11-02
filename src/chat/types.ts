@@ -55,6 +55,30 @@ export interface SendMessageOptions {
   waitForAck?: boolean;
   createChat?: boolean;
   messageId?: string | MsgKey;
+  /**
+   * Define a mentioned list for a message
+   * This option work better with a message with mension
+   *
+   * @example
+   * ```javascript
+   * WPP.chat.sendTextMessage('<number>@c.us', 'Hello @123 and @456', {
+   *   mentionedList: ['123@c.us', '456@c.us']
+   * })
+   * ```
+   */
+  mentionedList?: (string | Wid)[];
+
+  /**
+   * Automatic detect and add the mentioned contacts with @<number>
+   *
+   * @example
+   * ```javascript
+   * WPP.chat.sendTextMessage('<number>@c.us', 'Hello @123 and @456', {
+   *   detectMentioned: true
+   * });
+   * ```
+   */
+  detectMentioned?: boolean;
 }
 
 export interface SendMessageReturn {

@@ -72,6 +72,7 @@ const debugMessage = Debug('WA-JS:message');
 export class Chat extends Emittery<ChatEventTypes> {
   public defaultSendMessageOptions: SendMessageOptions = {
     createChat: false,
+    detectMentioned: true,
     waitForAck: true,
   };
 
@@ -474,6 +475,57 @@ export class Chat extends Emittery<ChatEventTypes> {
       message.id = this.generateMessageID(chat);
     }
 
+    if (options.mentionedList && !Array.isArray(options.mentionedList)) {
+      throw new WPPError(
+        'mentioned_list_is_not_array',
+        'The option mentionedList is not an array',
+        {
+          mentionedList: options.mentionedList,
+        }
+      );
+    }
+
+    /**
+     * Try to detect mentioned list from message
+     */
+    if (
+      options.detectMentioned &&
+      (!options.mentionedList || !options.mentionedList.length)
+    ) {
+      const text = message.type === 'chat' ? message.body : message.caption;
+
+      options.mentionedList = options.mentionedList || [];
+
+      const ids = text?.match(/(?<=@)(\d+)\b/g) || [];
+
+      for (const id of ids) {
+        options.mentionedList.push(assertWid(id));
+      }
+    }
+
+    /**
+     * Add the metadata for  mentioned list
+     */
+    if (options.mentionedList) {
+      const mentionedList = options.mentionedList.map((m) =>
+        m instanceof Wid ? m : assertWid(m)
+      );
+
+      for (const m of mentionedList) {
+        if (!m.isUser()) {
+          throw new WPPError(
+            'mentioned_is_not_user',
+            'Mentioned is not an user',
+            {
+              mentionedId: m.toString(),
+            }
+          );
+        }
+      }
+
+      message.mentionedJidList = mentionedList;
+    }
+
     return message;
   }
 
@@ -753,7 +805,9 @@ export class Chat extends Emittery<ChatEventTypes> {
     // The generated message in `sendToChat` is merged with `productMsgOptions`
     let rawMessage = await this.prepareRawMessage<RawMessage>(
       chat,
-      {},
+      {
+        caption: options.caption,
+      },
       options
     );
 
