@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { TextFontStyle } from '../whatsapp/enums';
+import { TextFontStyle } from '../enums';
 
 export interface StatusEventTypes {
   sync: undefined;

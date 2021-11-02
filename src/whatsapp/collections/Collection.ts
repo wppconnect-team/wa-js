@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
+import { Stringable } from '../../types';
 import { exportModule } from '../exportModule';
-import { EventEmitter, Stringable } from '../misc';
+import { EventEmitter } from '../misc';
 
 interface Option {
   add: boolean;

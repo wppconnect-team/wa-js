@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+import { TextFontStyle } from '../../enums';
 import { ButtonCollection, MsgCollection } from '../collections';
-import { TextFontStyle } from '../enums';
 import { exportProxyModel } from '../exportModule';
 import { MsgKey, Wid } from '../misc';
 import {

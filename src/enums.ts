@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-/**
- * @whatsapp 2.2136.10:57528
- */
 export enum TextFontStyle {
   SANS_SERIF = 0,
   SERIF = 1,

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+import { Stringable } from '../../types';
 import { exportModule } from '../exportModule';
-import { Stringable } from '../misc';
 import { Collection } from './Collection';
 
 /** @whatsapp 2.2142.12:36513 */

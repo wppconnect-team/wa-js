@@ -79,6 +79,11 @@ async function start() {
 
   await browser.close();
 
+  delete result['_moduleIdMap'];
+  for (const dir of dirs) {
+    delete result[dir];
+  }
+
   console.log(result);
 
   const project = new Project({

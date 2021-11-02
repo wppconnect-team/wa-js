@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+import { Stringable } from '../../types';
 import { WritableProperties } from '../../util';
 import { exportModule } from '../exportModule';
-import { EventEmitter, Stringable } from '../misc';
+import { EventEmitter } from '../misc';
 
 export type ModelProxy<P, S, D> = P &
   S &

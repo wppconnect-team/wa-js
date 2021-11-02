@@ -32,7 +32,6 @@ export * from './MsgKey';
 export * from './MsgLoadState';
 export * from './OpaqueData';
 export * from './State';
-export * from './Stringable';
 export * from './UserPrefs';
 export * from './Wid';
 export * from './WidFactory';
