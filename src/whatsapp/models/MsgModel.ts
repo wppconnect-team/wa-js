@@ -116,12 +116,12 @@ interface Props {
   sessionId?: any;
   recipients?: any;
   broadcast?: any;
-  quotedMsg?: any;
+  quotedMsg?: MsgModel;
   quotedStanzaID?: any;
   quotedRemoteJid?: any;
   quotedParticipant?: any;
-  mentionedJidList?: any;
-  footer?: any;
+  mentionedJidList?: Wid[];
+  footer?: string;
   hydratedButtons?: any;
   buttons?: any;
   selectedId?: any;

@@ -526,6 +526,42 @@ export class Chat extends Emittery<ChatEventTypes> {
       message.mentionedJidList = mentionedList;
     }
 
+    /**
+     * Quote a message, like a reply message
+     */
+    if (options.quotedMsg) {
+      if (typeof options.quotedMsg === 'string') {
+        options.quotedMsg = MsgKey.fromString(options.quotedMsg);
+      }
+      if (options.quotedMsg instanceof MsgKey) {
+        options.quotedMsg = await this.getMessageById(
+          options.quotedMsg.remote,
+          options.quotedMsg.toString()
+        );
+      }
+
+      if (!(options.quotedMsg instanceof MsgModel)) {
+        throw new WPPError('invalid_quoted_msg', 'Invalid quotedMsg', {
+          quotedMsg: options.quotedMsg,
+        });
+      }
+
+      if (!options.quotedMsg.canReply()) {
+        throw new WPPError(
+          'quoted_msg_can_not_reply',
+          'QuotedMsg can not reply',
+          {
+            quotedMsg: options.quotedMsg,
+          }
+        );
+      }
+
+      message = {
+        ...message,
+        ...options.quotedMsg.msgContextInfo(chat),
+      };
+    }
+
     return message;
   }
 

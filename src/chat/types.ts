@@ -52,8 +52,19 @@ export interface DeleteMessageReturn {
 }
 
 export interface SendMessageOptions {
-  waitForAck?: boolean;
   createChat?: boolean;
+
+  /**
+   * Automatic detect and add the mentioned contacts with @<number>
+   *
+   * @example
+   * ```javascript
+   * WPP.chat.sendTextMessage('<number>@c.us', 'Hello @123 and @456', {
+   *   detectMentioned: true
+   * });
+   * ```
+   */
+  detectMentioned?: boolean;
   messageId?: string | MsgKey;
   /**
    * Define a mentioned list for a message
@@ -67,18 +78,28 @@ export interface SendMessageOptions {
    * ```
    */
   mentionedList?: (string | Wid)[];
-
   /**
-   * Automatic detect and add the mentioned contacts with @<number>
+   * Quote a message, like a reply message
    *
    * @example
    * ```javascript
-   * WPP.chat.sendTextMessage('<number>@c.us', 'Hello @123 and @456', {
-   *   detectMentioned: true
-   * });
+   * WPP.chat.sendTextMessage('<number>@c.us', 'This is a reply', {
+   *   quotedMsg: 'true_<number>@c.us_3EB0F435D95D32C4C638'
+   * })
    * ```
    */
-  detectMentioned?: boolean;
+  quotedMsg?: string | MsgKey | MsgModel;
+  /**
+   * Wait for send while the ACK of message is SENT(1)
+   *
+   * @example
+   * ```javascript
+   * WPP.chat.sendTextMessage('<number>@c.us', 'Wait for sent', {
+   *   waitForAck: true
+   * })
+   * ```
+   */
+  waitForAck?: boolean;
 }
 
 export interface SendMessageReturn {
