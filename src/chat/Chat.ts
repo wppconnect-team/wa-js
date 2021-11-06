@@ -216,25 +216,29 @@ export class Chat extends Emittery<ChatEventTypes> {
 
     let count = options.count || 20;
     const direction = options.direction === 'after' ? 'after' : 'before';
-    const id = options.id || chat.lastReceivedKey!.toString();
+    const id = options.id || chat.lastReceivedKey?.toString();
 
     // Fix for multidevice
     if (count === -1 && Features.supportsFeature('MD_BACKEND')) {
       count = Infinity;
     }
 
-    if (!options.id) {
+    if (!options.id && id) {
       count--;
     }
 
-    const params: MsgFindQueryParams = MsgKey.fromString(id) as any;
+    const params: MsgFindQueryParams = id
+      ? (MsgKey.fromString(id) as any)
+      : {
+          remote: chat.id,
+        };
 
     params.count = count;
     params.direction = direction;
 
     const msgs = await msgFindQuery(direction, params);
 
-    if (!options.id) {
+    if (!options.id && id) {
       const msg = MsgStore.get(id);
       if (msg) {
         msgs.push(msg.attributes);
