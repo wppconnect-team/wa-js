@@ -1,3 +1,12 @@
+## 1.0.10 (2021-11-06)
+
+
+### Bug Fixes
+
+* Fixed getMessages for non multidevices (fix wppconnect-team/wppconnect[#629](https://github.com/wppconnect-team/wa-js/issues/629)) ([c43b2cb](https://github.com/wppconnect-team/wa-js/commit/c43b2cb9f1e7cd0bebd8754f9f1458f56f778091))
+
+
+
 ## 1.0.9 (2021-11-02)
 
 
