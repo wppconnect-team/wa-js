@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { ReplyButtonModel } from '../models';
 import { CollectionCache } from './CollectionCache';
 
-/** @whatsapp 2.2142.12:84142 */
+/** @whatsapp 2.2144.8:84142 */
 export declare class ButtonCollection extends CollectionCache<ReplyButtonModel> {
   static model: ReplyButtonModel;
   static comparator(): any;

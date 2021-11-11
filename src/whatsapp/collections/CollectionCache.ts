@@ -18,7 +18,7 @@ import { Stringable } from '../../types';
 import { exportModule } from '../exportModule';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2142.12:36513 */
+/** @whatsapp 2.2144.8:36513 */
 export declare class CollectionCache<C, A = C | C[]> extends Collection<C> {
   static cachePolicy: {
     id: string;

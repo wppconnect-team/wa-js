@@ -17,7 +17,7 @@
 import { exportModule } from '../exportModule';
 import { ConnModel } from '../models';
 
-/** @whatsapp 2.2142.12:9322 */
+/** @whatsapp 2.2144.8:9322 */
 export declare const Conn: ConnModel;
 
 exportModule(exports, { Conn: 'default' }, (m) => m.Conn && m.default);

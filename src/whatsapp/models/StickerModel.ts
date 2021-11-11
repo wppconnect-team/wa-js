@@ -47,11 +47,11 @@ interface Session {
 
 interface Derived {}
 
-/** @whatsapp 2.2142.12:92537 */
+/** @whatsapp 2.2144.8:92537 */
 export declare interface StickerModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 2.2142.12:92537 */
+/** @whatsapp 2.2144.8:92537 */
 export declare class StickerModel extends Model {
   constructor(
     proterties?: ModelPropertiesContructor<StickerModel>,

@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { StickerModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2142.12:27686 */
+/** @whatsapp 2.2144.8:27686 */
 export declare class RecentStickerCollection extends Collection<StickerModel> {
   static model: StickerModel;
   enqueue(e?: any): any;
