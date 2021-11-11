@@ -14,16 +14,25 @@
  * limitations under the License.
  */
 
-export * from './addAndSendMsgToChat';
-export * from './blockContact';
-export * from './findChat';
-export * from './getOrGenerate';
-export * from './groupParticipants';
-export * from './isAuthenticated';
-export * from './msgFindQuery';
-export * from './randomId';
-export * from './sendClear';
-export * from './sendCreateGroup';
-export * from './sendDelete';
-export * from './sendQueryExists';
-export * from './sendTextMsgToChat';
+import { Wid } from '..';
+import { exportModule } from '../exportModule';
+
+/** @whatsapp 2.2142.12:53876 */
+export declare function sendCreateGroup(
+  groupName: string,
+  participants: Wid[],
+  ephemeral?: number,
+  dogfooding?: boolean
+): Promise<{
+  gid: Wid;
+  participants: { [key: string]: { code: string } }[];
+  status: number;
+}>;
+
+exportModule(
+  exports,
+  {
+    sendCreateGroup: 'sendCreateGroup',
+  },
+  (m) => m.sendCreateGroup
+);

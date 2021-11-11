@@ -122,6 +122,10 @@ export function searchId(
     ids = ids.reverse();
   }
 
+  const timer = setTimeout(() => {
+    debug(`Searching for: ${condition.toString()}`);
+  }, 500);
+
   const ignoreRE = /\w+\.PureComponent\s*\{/;
 
   for (const moduleId of ids) {
@@ -135,6 +139,7 @@ export function searchId(
 
       if (condition(module, moduleId)) {
         debug(`Module found: ${moduleId} - ${condition.toString()}`);
+        clearTimeout(timer);
         return moduleId;
       }
     } catch (error) {

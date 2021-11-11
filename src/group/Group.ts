@@ -18,14 +18,17 @@ import Debug from 'debug';
 import Emittery from 'emittery';
 
 import { assertGetChat, assertWid } from '../assert';
+import Chat from '../chat';
+import Contact from '../contact';
 import { WPPError } from '../util';
 import * as webpack from '../webpack';
-import { ParticipantModel, Wid } from '../whatsapp';
+import { ChatStore, ContactStore, ParticipantModel, Wid } from '../whatsapp';
 import {
   addParticipants,
   demoteParticipants,
   promoteParticipants,
   removeParticipants,
+  sendCreateGroup,
 } from '../whatsapp/functions';
 import { ChatEventTypes as GroupEventTypes } from './types';
 
@@ -255,5 +258,59 @@ export class Group extends Emittery<GroupEventTypes> {
     }
 
     return demoteParticipants(groupChat, participants);
+  }
+
+  async create(
+    groupName: string,
+    participantsIds: (string | Wid) | (string | Wid)[]
+  ) {
+    if (!Array.isArray(participantsIds)) {
+      participantsIds = [participantsIds];
+    }
+
+    const participantsWids = participantsIds.map(assertWid);
+
+    const wids: Wid[] = [];
+
+    for (const wid of participantsWids) {
+      console.log('wid', wid);
+      const contact = ContactStore.get(wid);
+      if (contact) {
+        wids.push(contact.id);
+        continue;
+      }
+
+      const info = await Contact.queryExists(wid);
+
+      if (!info) {
+        throw new WPPError('participant_not_exists', 'Participant not exists', {
+          id: wid,
+        });
+      }
+
+      wids.push(info.wid);
+    }
+
+    ChatStore.on('all', console.log);
+
+    const result = await sendCreateGroup(groupName, wids);
+
+    if (result.gid) {
+      const chatGroup = await Chat.find(result.gid);
+
+      // Wait group meta to be not stale
+      if (chatGroup.groupMetadata?.stale !== false) {
+        await new Promise<void>((resolve) => {
+          chatGroup.on('change:groupMetadata.stale', function fn() {
+            if (chatGroup.groupMetadata?.stale === false) {
+              resolve();
+              chatGroup.off('change:groupMetadata.stale', fn);
+            }
+          });
+        });
+      }
+    }
+
+    return result;
   }
 }
