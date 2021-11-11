@@ -24,4 +24,5 @@ export * from './msgFindQuery';
 export * from './randomId';
 export * from './sendClear';
 export * from './sendDelete';
+export * from './sendQueryExists';
 export * from './sendTextMsgToChat';

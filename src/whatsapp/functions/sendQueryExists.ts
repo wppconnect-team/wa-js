@@ -14,9 +14,19 @@
  * limitations under the License.
  */
 
-export * as auth from './auth';
-export * as blocklist from './blocklist';
-export * as chat from './chat';
-export * as contact from './contact';
-export * as group from './group';
-export * as status from './status';
+import { Wid } from '..';
+import { exportModule } from '../exportModule';
+
+/** @whatsapp 2.2142.12:66469 */
+export declare function sendQueryExists(contact: Wid): Promise<{
+  wid: Wid;
+  biz: boolean;
+}>;
+
+exportModule(
+  exports,
+  {
+    sendQueryExists: 'default',
+  },
+  (m) => m.default.toString().includes('Should not reach queryExists MD')
+);

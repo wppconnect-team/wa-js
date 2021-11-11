@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-export * as auth from './auth';
-export * as blocklist from './blocklist';
-export * as chat from './chat';
-export * as contact from './contact';
-export * as group from './group';
-export * as status from './status';
+export interface ContactEventTypes {
+  idle: undefined;
+}

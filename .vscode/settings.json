@@ -1,0 +1,7 @@
+{
+  "[javascript]": {
+    "editor.maxTokenizationLineLength": 2500,
+    "editor.bracketPairColorization.enabled": false,
+    "editor.guides.bracketPairs": false
+  }
+}
