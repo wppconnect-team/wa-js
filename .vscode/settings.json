@@ -3,5 +3,14 @@
     "editor.maxTokenizationLineLength": 2500,
     "editor.bracketPairColorization.enabled": false,
     "editor.guides.bracketPairs": false
+  },
+  "search.useIgnoreFiles": false,
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/dist": true,
+    "**/docs": true,
+    "**/userDataDir": true,
+    "**/wa-source": false
   }
 }

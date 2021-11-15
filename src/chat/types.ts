@@ -36,6 +36,21 @@ export interface ChatEventTypes {
     refId: MsgKey;
     to: Wid;
   };
+  msg_ack_change: {
+    ack: number;
+    /**
+     * Who sended the ack, only for groups, broadcast and status
+     */
+    sender?: Wid;
+    /**
+     * The chat that sended the messeage
+     */
+    chat: Wid;
+    /**
+     * Message id of revoke event
+     */
+    ids: MsgKey[];
+  };
 }
 
 export interface GetMessagesOptions {

@@ -48,7 +48,7 @@ import {
   sendClear,
   sendDelete,
 } from '../whatsapp/functions';
-import {
+import chat, {
   AudioMessageOptions,
   DeleteMessageReturn,
   DocumentMessageOptions,
@@ -91,7 +91,7 @@ export class Chat extends Emittery<ChatEventTypes> {
     debugChat('initialized');
   }
 
-  protected registerEvents() {
+  protected registerRevokeMessageEvent() {
     /**
      * processMultipleMessages receive all msgs events before the screen processing,
      * so for some events, like revoke, is called here and not in MsgStore,
@@ -124,8 +124,98 @@ export class Chat extends Emittery<ChatEventTypes> {
       } catch (error) {}
 
       // Call the original method
-      return processMultipleMessages.call(MsgStore, chatId, msgs, ...args);
+      return await processMultipleMessages.call(
+        MsgStore,
+        chatId,
+        msgs,
+        ...args
+      );
     };
+  }
+
+  protected registerAckMessageEvent() {
+    MsgStore.on('change:ack', (msg: MsgModel) => {
+      if (msg.ack === 1) {
+        this.emit('msg_ack_change', {
+          ack: msg.ack,
+          chat: msg.to!,
+          ids: [msg.id],
+        });
+      }
+    });
+
+    const processACK = (e: any) => {
+      let ids: string[] = e.id;
+
+      if (!Array.isArray(ids)) {
+        ids = [ids];
+      }
+
+      let chatId: Wid = e.to;
+      let sender: Wid | undefined = e.participant;
+
+      if (e.broadcast) {
+        chatId = e.broadcast;
+        sender = e.to;
+      }
+
+      const keys = ids.map(
+        (id) =>
+          new MsgKey({
+            from: e.from,
+            to: chatId,
+            id: id,
+            selfDir: 'out',
+          })
+      );
+
+      this.emit('msg_ack_change', {
+        ack: e.ack,
+        chat: chatId,
+        sender: sender,
+        ids: keys,
+      });
+    };
+
+    const msgHandlerModule = webpack.search((m) =>
+      m.default.toString().includes('Msg:out of order ack')
+    );
+
+    if (msgHandlerModule) {
+      const originalCall = msgHandlerModule.default;
+
+      msgHandlerModule.default = async ([e]: [any]) => {
+        if (e.cmd === 'ack' || e.cmd === 'acks') {
+          processACK(e);
+        }
+
+        return originalCall.call(msgHandlerModule, [e]);
+      };
+    }
+
+    const msgInfoHandlerModule = webpack.search(
+      (m) =>
+        m.default.toString().includes('ack') &&
+        m.default.toString().includes('acks') &&
+        m.default.toString().includes('default.updateInfo')
+    );
+
+    if (msgInfoHandlerModule) {
+      const originalCall = msgInfoHandlerModule.default;
+
+      msgInfoHandlerModule.default = async ([e]: [any]) => {
+        if (e.cmd === 'ack' || e.cmd === 'acks') {
+          processACK(e);
+        }
+
+        return originalCall.call(msgHandlerModule, [e]);
+      };
+    }
+  }
+
+  protected registerEvents() {
+    this.registerRevokeMessageEvent();
+    this.registerAckMessageEvent();
   }
 
   async find(chatId: string | Wid): Promise<ChatModel> {
