@@ -26,6 +26,7 @@ import {
 
 interface Props {
   id: Wid;
+  name?: any;
   shortName?: any;
   pushname?: any;
   type?: any;

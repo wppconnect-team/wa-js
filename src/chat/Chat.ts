@@ -28,6 +28,8 @@ import {
   ChatStore,
   ClockSkew,
   Constants,
+  ContactModel,
+  ContactStore,
   Features,
   MediaPrep,
   MsgKey,
@@ -36,6 +38,8 @@ import {
   OpaqueData,
   ReplyButtonModel,
   UserPrefs,
+  VCard,
+  VCardData,
   Wid,
 } from '../whatsapp';
 import { SendMsgResult } from '../whatsapp/enums';
@@ -54,6 +58,7 @@ import {
   DocumentMessageOptions,
   ImageMessageOptions,
   SendMessageReturn,
+  VCardContact,
   VideoMessageOptions,
 } from '.';
 import {
@@ -986,5 +991,65 @@ export class Chat extends Emittery<ChatEventTypes> {
       ack: message.ack!,
       sendMsgResult,
     };
+  }
+
+  async sendVCardContact(
+    chatId: any,
+    contacts: string | Wid | VCardContact | (string | Wid | VCardContact)[],
+    options: SendMessageOptions = {}
+  ): Promise<SendMessageReturn> {
+    options = {
+      ...this.defaultSendMessageOptions,
+      ...options,
+    };
+
+    if (!Array.isArray(contacts)) {
+      contacts = [contacts];
+    }
+
+    const vcards: VCardData[] = [];
+
+    for (const contact of contacts) {
+      let id = '';
+      let name = '';
+
+      if (typeof contact === 'object' && 'name' in contact) {
+        id = contact.id.toString();
+        name = contact.name;
+      } else {
+        id = contact.toString();
+      }
+
+      let contactModel = ContactStore.get(id);
+      if (!contactModel) {
+        contactModel = new ContactModel({
+          id: assertWid(id),
+          name,
+        });
+      }
+
+      if (name) {
+        // Create a clone
+        contactModel = new ContactModel(contactModel.attributes);
+        contactModel.name = name;
+        Object.defineProperty(contactModel, 'formattedName', { value: name });
+        Object.defineProperty(contactModel, 'displayName', { value: name });
+      }
+
+      vcards.push(VCard.vcardFromContactModel(contactModel));
+    }
+
+    const message: RawMessage = {};
+
+    if (vcards.length === 1) {
+      message.type = 'vcard';
+      message.body = vcards[0].vcard;
+      message.vcardFormattedName = vcards[0].displayName;
+    } else {
+      message.type = 'multi_vcard';
+      message.vcardList = vcards;
+    }
+
+    return this.sendRawMessage(chatId, message, options);
   }
 }

@@ -192,6 +192,11 @@ export interface VideoMessageOptions
   isGif?: boolean;
 }
 
+export interface VCardContact {
+  id: string | Wid;
+  name: string;
+}
+
 export type AllMessageOptions = SendMessageOptions &
   MessageButtonsOptions &
   Partial<ListMessageOptions>;
