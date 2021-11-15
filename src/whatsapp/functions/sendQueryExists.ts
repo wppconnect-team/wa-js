@@ -17,7 +17,7 @@
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 2.2144.8:66469 */
+/** @whatsapp 2.2144.10:66469 */
 export declare function sendQueryExists(contact: Wid): Promise<{
   wid: Wid;
   biz: boolean;

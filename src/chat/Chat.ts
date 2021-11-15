@@ -48,7 +48,7 @@ import {
   sendClear,
   sendDelete,
 } from '../whatsapp/functions';
-import chat, {
+import {
   AudioMessageOptions,
   DeleteMessageReturn,
   DocumentMessageOptions,

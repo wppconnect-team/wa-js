@@ -24,7 +24,7 @@ interface Option {
   remove: boolean;
 }
 
-/** @whatsapp 2.2144.8:85392 */
+/** @whatsapp 2.2144.10:85392 */
 export declare interface Collection<M>
   extends EventEmitter,
     Pick<
@@ -40,7 +40,7 @@ export declare interface Collection<M>
       | 'slice'
     > {}
 
-/** @whatsapp 2.2144.8:85392 */
+/** @whatsapp 2.2144.10:85392 */
 export declare class Collection<M, A = M | M[]> extends EventEmitter {
   static model: any;
   static comparator: (a: any, b: any) => number;

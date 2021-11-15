@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { ParticipantModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2144.8:16748 */
+/** @whatsapp 2.2144.10:16748 */
 export declare class ParticipantCollection extends Collection<ParticipantModel> {
   static model: ParticipantModel;
   static comparator(): any;

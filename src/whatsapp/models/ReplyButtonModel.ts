@@ -34,11 +34,11 @@ interface Session {
 
 interface Derived {}
 
-/** @whatsapp 2.2144.8:46420 */
+/** @whatsapp 2.2144.10:46420 */
 export declare interface ReplyButtonModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 2.2144.8:46420 */
+/** @whatsapp 2.2144.10:46420 */
 export declare class ReplyButtonModel extends Model {
   constructor(
     proterties?: ModelPropertiesContructor<ReplyButtonModel>,
