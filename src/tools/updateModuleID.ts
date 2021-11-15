@@ -49,7 +49,9 @@ async function start() {
     .catch(() => null);
 
   page.on('console', (message) => {
-    console.log(message.type(), message.text());
+    if (message.type() !== 'debug') {
+      console.log('browser', message.type(), message.text());
+    }
   });
 
   const result = await page.evaluate((dirs: string[]) => {
@@ -84,7 +86,11 @@ async function start() {
     delete result[dir];
   }
 
-  console.log(result);
+  for (const moduleName of Object.keys(result)) {
+    if (!result[moduleName]) {
+      console.error(`Módule not found for ${moduleName}`);
+    }
+  }
 
   const project = new Project({
     tsConfigFilePath: path.resolve(__dirname, '../../tsconfig.json'),
