@@ -17,6 +17,7 @@
 import { CatalogCollection } from '../collections';
 import { exportProxyModel } from '../exportModule';
 import { Wid } from '../misc';
+import { ProductModel } from '.';
 import {
   Model,
   ModelOptions,
@@ -52,7 +53,7 @@ export declare class CatalogModel extends Model<CatalogCollection> {
   triggerMsgUpdate(): any;
   markProductCollectionOld(): any;
   addProduct(e?: any): any;
-  editProduct(e?: any): any;
+  editProduct(e: ProductModel): any;
   pullProduct(e?: any): any;
   updateProduct(e?: any): any;
   getCollection(): CatalogCollection;

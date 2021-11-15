@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-export * from './addAndSendMsgToChat';
-export * from './blockContact';
-export * from './findChat';
-export * from './getOrGenerate';
-export * from './groupParticipants';
-export * from './isAuthenticated';
-export * from './msgFindQuery';
-export * from './products';
-export * from './randomId';
-export * from './sendClear';
-export * from './sendCreateGroup';
-export * from './sendDelete';
-export * from './sendQueryExists';
-export * from './sendTextMsgToChat';
-export * from './uploadProductImage';
+import { OpaqueData } from '..';
+import { exportModule } from '../exportModule';
+
+/** @whatsapp 2.2144.10:57990 */
+export declare function uploadProductImage(
+  mediaBlob: OpaqueData,
+  filehash: string
+): Promise<string>;
+
+exportModule(
+  exports,
+  {
+    uploadProductImage: 'uploadProductImage',
+  },
+  (m) => m.MediaPrep
+);
