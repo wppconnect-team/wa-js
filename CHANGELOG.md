@@ -1,3 +1,12 @@
+## 1.0.12 (2021-11-15)
+
+
+### Features
+
+* Added WPP.chat.sendVCardContact function ([01c9fbe](https://github.com/wppconnect-team/wa-js/commit/01c9fbeeb806909542339bf26009c9b37cdda861))
+
+
+
 ## 1.0.11 (2021-11-11)
 
 
