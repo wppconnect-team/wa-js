@@ -163,6 +163,10 @@ export interface FileMessageOptions extends SendMessageOptions {
   mimetype?: string;
 }
 
+export interface AutoDetectMessageOptions extends FileMessageOptions {
+  type: 'auto-detect';
+}
+
 export interface AudioMessageOptions extends FileMessageOptions {
   type: 'audio';
   isPtt?: boolean;

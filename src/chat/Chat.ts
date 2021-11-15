@@ -893,7 +893,7 @@ export class Chat extends Emittery<ChatEventTypes> {
     options = {
       ...this.defaultSendMessageOptions,
       ...{
-        type: 'document',
+        type: 'auto-detect',
       },
       ...options,
     };
