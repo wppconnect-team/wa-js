@@ -38,4 +38,6 @@ export { default as status } from './status';
 
 export * as whatsapp from './whatsapp';
 
+export { version, license } from '../package.json';
+
 webpack.injectLoader();
