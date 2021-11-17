@@ -19,7 +19,7 @@ import Emittery from 'emittery';
 
 import { assertWid } from '../assert';
 import * as webpack from '../webpack';
-import { Wid } from '../whatsapp';
+import { ContactStore, Wid } from '../whatsapp';
 import { sendQueryExists } from '../whatsapp/functions';
 import { ContactEventTypes } from './types';
 
@@ -37,6 +37,15 @@ export class Contact extends Emittery<ContactEventTypes> {
 
   async queryExists(contactId: string | Wid) {
     const wid = assertWid(contactId);
+
+    const contact = ContactStore.get(wid);
+
+    if (contact) {
+      return {
+        wid,
+        biz: contact.isBusiness,
+      };
+    }
 
     return await sendQueryExists(wid).catch(() => null);
   }
