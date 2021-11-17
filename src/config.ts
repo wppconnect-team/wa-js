@@ -34,7 +34,7 @@ export interface Config {
 }
 
 export const defaultConfig: Config = {
-  deviceName: 'WPPConnect',
+  deviceName: false,
 };
 
 export const config: Config = defaultConfig;
