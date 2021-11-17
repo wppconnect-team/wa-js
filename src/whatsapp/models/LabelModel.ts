@@ -37,11 +37,11 @@ interface Derived {
   hexColor?: any;
 }
 
-/** @whatsapp 2.2144.10:14137 */
+/** @whatsapp 2.2144.11:14137 */
 export declare interface LabelModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 2.2144.10:14137 */
+/** @whatsapp 2.2144.11:14137 */
 export declare class LabelModel extends Model {
   constructor(
     proterties?: ModelPropertiesContructor<LabelModel>,

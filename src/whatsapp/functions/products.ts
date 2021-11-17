@@ -20,32 +20,24 @@ import { exportModule } from '../exportModule';
 /** @whatsapp 2.2144.10:35339 */
 export declare function createBusinessCatalog(): Promise<any>;
 
-/**
- * @whatsapp 2.2144.10:68793
- */
+/** @whatsapp 2.2144.11:68793 */
 export declare function addProduct(
   product: ProductModel,
   imageWidth?: number,
   imageHeight?: number
 ): Promise<any>;
 
-/**
- * @whatsapp 2.2144.10:68793
- */
+/** @whatsapp 2.2144.11:68793 */
 export declare function editProduct(
   product: ProductModel,
   imageWidth?: number,
   imageHeight?: number
 ): Promise<any>;
 
-/**
- * @whatsapp 2.2144.10:68793
- */
+/** @whatsapp 2.2144.11:68793 */
 export declare function deleteProducts(productIds: string[]): Promise<any>;
 
-/**
- * @whatsapp 2.2144.10:68793
- */
+/** @whatsapp 2.2144.11:68793 */
 export declare function sendProductToChat(...args: any[]): Promise<any>;
 
 exportModule(

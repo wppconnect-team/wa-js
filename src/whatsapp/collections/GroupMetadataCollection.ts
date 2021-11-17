@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { GroupMetadataModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2144.10:75798 */
+/** @whatsapp 2.2144.11:75798 */
 export declare class GroupMetadataCollection extends Collection<GroupMetadataModel> {
   static model: GroupMetadataModel;
   static cachePolicy?: any;
