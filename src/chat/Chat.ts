@@ -1028,6 +1028,10 @@ export class Chat extends Emittery<ChatEventTypes> {
         });
       }
 
+      if (!name && contactModel.id.equals(UserPrefs.getMaybeMeUser())) {
+        name = contactModel.displayName;
+      }
+
       if (name) {
         // Create a clone
         contactModel = new ContactModel(contactModel.attributes);
