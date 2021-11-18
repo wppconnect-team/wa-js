@@ -38,6 +38,8 @@ export { default as status } from './status';
 
 export * as whatsapp from './whatsapp';
 
-export { version, license } from '../package.json';
+declare const __VERSION__: string;
+export const version = __VERSION__;
+export const license = 'Apache-2.0';
 
 webpack.injectLoader();

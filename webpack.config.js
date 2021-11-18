@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const packageJSON = require('./package.json');
 
 module.exports = {
   entry: './src/index.ts',
@@ -30,6 +31,9 @@ module.exports = {
   plugins: [
     new webpack.ProvidePlugin({
       Buffer: ['buffer', 'Buffer'],
+    }),
+    new webpack.DefinePlugin({
+      __VERSION__: `'${packageJSON.version}'`,
     }),
   ],
 };
