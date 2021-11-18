@@ -1,3 +1,17 @@
+## 1.0.14 (2021-11-18)
+
+
+### Code Refactoring
+
+* Renamed sendVCardContact to sendVCardContactMessage ([13fb994](https://github.com/wppconnect-team/wa-js/commit/13fb9946473fbf1d374ec6808277053ac836a717))
+
+
+### BREAKING CHANGES
+
+* Renamed sendVCardContact to sendVCardContactMessage
+
+
+
 ## 1.0.13 (2021-11-18)
 
 
