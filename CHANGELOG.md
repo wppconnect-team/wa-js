@@ -1,3 +1,12 @@
+## 1.0.13 (2021-11-18)
+
+
+### Features
+
+* Added WPP.version and WPP.license ([31eaddd](https://github.com/wppconnect-team/wa-js/commit/31eaddd2673e0d4d1d2d4594f1ad7f7805a8014d))
+
+
+
 ## 1.0.12 (2021-11-15)
 
 
