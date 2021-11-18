@@ -993,7 +993,7 @@ export class Chat extends Emittery<ChatEventTypes> {
     };
   }
 
-  async sendVCardContact(
+  async sendVCardContactMessage(
     chatId: any,
     contacts: string | Wid | VCardContact | (string | Wid | VCardContact)[],
     options: SendMessageOptions = {}
