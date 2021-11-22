@@ -15,4 +15,5 @@
  */
 
 export * from './assertChat';
+export * from './assertColor';
 export * from './assertWid';
