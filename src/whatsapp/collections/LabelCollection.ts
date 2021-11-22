@@ -25,7 +25,7 @@ export declare class LabelCollection extends Collection<LabelModel> {
   static resumeOnAvailable?: any;
   checksum?: any;
   initializeAssociationsFromCache(e?: any): any;
-  addNewLabel(e?: any, t?: any): any;
+  addNewLabel(labelName: string, labelColor: string): any;
   removeAllLabelsMD(chat: ChatModel): any;
   addOrRemoveLabelsMD(e?: any, t?: any): any;
   addOrRemoveLabels(e?: any, t?: any): any;
