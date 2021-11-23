@@ -22,10 +22,20 @@ export class InvalidColor extends WPPError {
   }
 }
 
+/**
+ * Return the color  in positive decimal
+ * @example
+ * ```javascript
+ * assertColor('#dfaef0');  //Result: 4292849392
+ * assertColor('dfaef0');   //Result: 4292849392
+ * assertColor(-2117904);   //Result: 4292849392
+ * assertColor(4292849392); //Result: 4292849392
+ * ```
+ */
 export function assertColor(color?: string | number): number {
   let assertedColor: number;
   if (typeof color === 'number') {
-    assertedColor = color;
+    assertedColor = color > 0 ? color : 0xffffffff + Number(color) + 1;
   } else if (typeof color === 'string') {
     let hex = color.trim().replace('#', '');
     if (hex.length <= 6) {

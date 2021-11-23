@@ -22,7 +22,7 @@ import * as webpack from '../webpack';
 import { LabelStore } from '../whatsapp';
 import { newLabelOptions } from './types';
 
-const debug = Debug('WA-JS:Labels');
+const debug = Debug('WA-JS:labels');
 
 export class Labels {
   constructor() {
@@ -40,9 +40,9 @@ export class Labels {
    * ```javascript
    * await WPP.labels.addNewLabel(`Name of label`);
    * //or
-   * await WPP.labels.addNewLabel(`Name of label`, { labelColor: '#ffd429' });
+   * await WPP.labels.addNewLabel(`Name of label`, { labelColor: 'dfaef0' });
    * //or
-   * await WPP.labels.addNewLabel(`Name of label`, { labelColor: 4284794111 });
+   * await WPP.labels.addNewLabel(`Name of label`, { labelColor: 4292849392 });
    * ```
    */
   async addNewLabel(labelName: string, options: newLabelOptions = {}) {
@@ -60,56 +60,44 @@ export class Labels {
     await LabelStore.addNewLabel(labelName, labelColor.toString());
   }
 
+  /**
+   * Return the color of the next label in positive decimal
+   */
   async getNewLabelColor(): Promise<number> {
-    return new Promise((resolve) => {
-      const labelColor = LabelStore.getNewLabelColor();
-      const startTime = Date.now();
-      const loop = () => {
-        setTimeout(() => {
-          if (labelColor._value) {
-            resolve(labelColor._value);
-          } else if (Date.now() - startTime > 2000) {
-            throw new WPPError(
-              'invalid_label_color',
-              `Error when getNewLabelColor`
-            );
-          } else {
-            loop();
-          }
-        }, 100);
-      };
-      loop();
-    });
+    const newLabelColor = await LabelStore.getNewLabelColor();
+
+    if (!newLabelColor) {
+      throw new WPPError('canot_get_color', `Can't get new label color`);
+    }
+
+    return assertColor(Number(newLabelColor));
   }
 
+  /**
+   * Returns an array of color palette in positive decimal
+   */
   async getLabelColorPalette(): Promise<Array<number>> {
-    return new Promise((resolve) => {
-      const labelColorPalette = LabelStore.getLabelColorPalette();
-      const startTime = Date.now();
-      const loop = () => {
-        setTimeout(() => {
-          if (labelColorPalette._value) {
-            resolve(
-              labelColorPalette._value.map((e: string) => {
-                return 0xffffffff + Number(e) + 1;
-              })
-            );
-          } else if (Date.now() - startTime > 2000) {
-            throw new WPPError(
-              'invalid_label_palette',
-              `Error when getLabelColorPalette`
-            );
-          } else {
-            loop();
-          }
-        }, 100);
-      };
-      loop();
-    });
+    const colorPalette = await LabelStore.getLabelColorPalette();
+
+    if (!colorPalette) {
+      throw new WPPError('canot_get_color_palette', `Can't get color palette`);
+    }
+
+    return colorPalette.map((e: string) => assertColor(Number(e)));
   }
 
-  async colorIsInLabelPalette(color: number): Promise<boolean> {
+  /**
+   * Check if color is in label palette
+   * @param color If it's decimal, send it as a number. If it's hexadecimal, send it as a string
+   * @example
+   * ```javascript
+   * await WPP.labels.colorIsInLabelPalette('ffd429');
+   * //or
+   * await WPP.labels.colorIsInLabelPalette(4284794111);
+   * ```
+   */
+  async colorIsInLabelPalette(color: string | number): Promise<boolean> {
     const colorPalette = await this.getLabelColorPalette();
-    return colorPalette && colorPalette.includes(color);
+    return colorPalette && colorPalette.includes(assertColor(color));
   }
 }
