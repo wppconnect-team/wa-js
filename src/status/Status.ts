@@ -17,7 +17,7 @@
 import Debug from 'debug';
 import Emittery from 'emittery';
 
-import { assertWid } from '../assert';
+import { assertColor, assertWid } from '../assert';
 import chat, { RawMessage } from '../chat';
 import * as webpack from '../webpack';
 import {
@@ -102,24 +102,11 @@ export class Status extends Emittery<StatusEventTypes> {
     let backgroundColor: number | undefined;
     let textColor: number | undefined;
 
-    if (typeof options.backgroundColor === 'string') {
-      let hex = options.backgroundColor.trim().replace('#', '');
-      if (hex.length <= 6) {
-        hex = 'FF' + hex.padStart(6, '0');
-      }
-      backgroundColor = parseInt(hex, 16);
-    } else if (typeof options.backgroundColor === 'number') {
-      backgroundColor = options.backgroundColor;
+    if (['number', 'string'].includes(typeof options.backgroundColor)) {
+      backgroundColor = assertColor(options.backgroundColor);
     }
-
-    if (typeof options.textColor === 'string') {
-      let hex = options.textColor.trim().replace('#', '');
-      if (hex.length <= 6) {
-        hex = 'FF' + hex.padStart(6, '0');
-      }
-      textColor = parseInt(hex, 16);
-    } else if (typeof options.textColor === 'number') {
-      textColor = options.textColor;
+    if (['number', 'string'].includes(typeof options.textColor)) {
+      textColor = assertColor(options.textColor);
     }
 
     const message: RawMessage = {

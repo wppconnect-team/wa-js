@@ -1,4 +1,6 @@
 *.tgz
+yarn.lock
+/.idea
 /debug.log
 /dist/
 /docs

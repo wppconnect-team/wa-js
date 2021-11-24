@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
-export * from './assertChat';
-export * from './assertColor';
-export * from './assertWid';
+export interface newLabelOptions {
+  /**
+   * If it's decimal, send it as a number. If it's hexadecimal, send it as a string.
+   * If labelColor is omitted, the color will be generated automatically
+   */
+  labelColor?: string | number;
+}

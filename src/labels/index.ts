@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
-export * from './assertChat';
-export * from './assertColor';
-export * from './assertWid';
+import { Labels } from './Labels';
+
+export * from './Labels';
+export * from './types';
+
+export default new Labels();
