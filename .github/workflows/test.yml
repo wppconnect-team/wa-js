@@ -1,0 +1,85 @@
+name: test
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  provide_wa_versions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: 14.x
+
+      - name: Get npm cache directory
+        id: npm-cache
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+
+      - name: Setup npm cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Dependencies
+        run: npm ci || npm install
+
+      - uses: actions/github-script@v5
+        id: versions
+        with:
+          script: |
+            const waVersion = require('@wppconnect/wa-version');
+            return waVersion.getAvailableVersions()
+
+    outputs:
+      versions: ${{ steps.versions.outputs.result }}
+
+  test:
+    needs: provide_wa_versions
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        versions: ${{ fromJson(needs.provide_wa_versions.outputs.versions) }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: 14.x
+
+      - name: Get npm cache directory
+        id: npm-cache
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+
+      - name: Setup npm cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Dependencies
+        run: npm ci || npm install
+
+      - name: Test modules resolution
+        run: npm run update-module-id -- --dry-run
+        env:
+          WA_VERSION: '${{matrix.versions }}'

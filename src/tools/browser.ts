@@ -17,10 +17,12 @@
 import * as waVersion from '@wppconnect/wa-version';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as playwright from 'playwright';
+import * as playwright from 'playwright-chromium';
 
 export const URL = 'https://web.whatsapp.com/';
 export const WA_DIR = path.resolve(__dirname, '../../wa-source');
+
+const WA_VERSION = process.env['WA_VERSION'];
 
 type LaunchArguments = Parameters<
   typeof playwright.chromium.launchPersistentContext
@@ -45,7 +47,7 @@ export async function getPage(options?: LaunchArguments[1]) {
       return route.fulfill({
         status: 200,
         contentType: 'text/html',
-        body: waVersion.getPageContent(),
+        body: waVersion.getPageContent(WA_VERSION),
       });
     }
 
