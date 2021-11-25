@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { ChatModel, LabelModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2144.11:59606 */
+/** @whatsapp 2.2146.9:59606 */
 export declare class LabelCollection extends Collection<LabelModel> {
   static model: LabelModel;
   static staleCollection?: any;
@@ -41,6 +41,6 @@ export declare class LabelCollection extends Collection<LabelModel> {
 }
 exportModule(
   exports,
-  { LabelCollection: 'LabelCollection' },
-  (m) => m.LabelCollection
+  { LabelCollection: (m) => m.LabelCollectionImpl || m.LabelCollection },
+  (m) => m.LabelCollectionImpl || m.LabelCollection
 );

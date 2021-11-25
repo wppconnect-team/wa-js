@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { CollectionCache } from '../collections';
+import { BaseCollection } from '../collections';
 import { exportModule } from '../exportModule';
 import { Model, MsgModel } from '../models';
 
-/** @whatsapp 2.2144.11:97490 */
+/** @whatsapp 2.2146.9:97490 */
 export declare class MsgLoadState extends Model {
   noEarlierMsgs: any;
   isLoadingEarlierMsgs: any;
@@ -27,8 +27,8 @@ export declare class MsgLoadState extends Model {
   contextLoaded: any;
 }
 
-/** @whatsapp 2.2144.11:97490 */
-export declare class MsgLoad extends CollectionCache<MsgModel> {
+/** @whatsapp 2.2146.9:97490 */
+export declare class MsgLoad extends BaseCollection<MsgModel> {
   msgLoadState: MsgLoadState;
   loadRecentPromise?: Promise<any>;
   loadEarlierPromise?: Promise<any>;
@@ -39,7 +39,7 @@ exportModule(
   exports,
   {
     MsgLoadState: 'MsgLoadState',
-    MsgLoad: 'default',
+    MsgLoad: (m) => m.ChatMsgsCollection || m.default,
   },
   (m) => m.MsgLoadState
 );

@@ -16,16 +16,16 @@
 
 import { exportModule } from '../exportModule';
 import { ReplyButtonModel } from '../models';
-import { CollectionCache } from './CollectionCache';
+import { BaseCollection } from './BaseCollection';
 
-/** @whatsapp 2.2144.11:84142 */
-export declare class ButtonCollection extends CollectionCache<ReplyButtonModel> {
+/** @whatsapp 2.2146.9:84142 */
+export declare class ButtonCollection extends BaseCollection<ReplyButtonModel> {
   static model: ReplyButtonModel;
   static comparator(): any;
 }
 
 exportModule(
   exports,
-  { ButtonCollection: 'ButtonCollection' },
-  (m) => m.ButtonCollection
+  { ButtonCollection: (m) => m.ButtonCollectionImpl || m.ButtonCollection },
+  (m) => m.ButtonCollectionImpl || m.ButtonCollection
 );

@@ -18,12 +18,14 @@ import { exportModule } from '../exportModule';
 import { CartItemModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2144.11:29844 */
+/** @whatsapp 2.2146.9:29844 */
 export declare class CartItemCollection extends Collection<CartItemModel> {
   static model: CartItemModel;
 }
 exportModule(
   exports,
-  { CartItemCollection: 'CartItemCollection' },
-  (m) => m.CartItemCollection
+  {
+    CartItemCollection: (m) => m.CartItemCollectionImpl || m.CartItemCollection,
+  },
+  (m) => m.CartItemCollectionImpl || m.CartItemCollection
 );

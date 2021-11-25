@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { ProductModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2144.11:26491 */
+/** @whatsapp 2.2146.9:26491 */
 export declare class ProductCollection extends Collection<ProductModel> {
   static model: ProductModel;
   getProductModels(e?: boolean): any;
@@ -27,6 +27,6 @@ export declare class ProductCollection extends Collection<ProductModel> {
 }
 exportModule(
   exports,
-  { ProductCollection: 'ProductCollection' },
-  (m) => m.ProductCollection
+  { ProductCollection: (m) => m.ProductCollectionImpl || m.ProductCollection },
+  (m) => m.ProductCollectionImpl || m.ProductCollection
 );

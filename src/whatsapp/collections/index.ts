@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+export * from './BaseCollection';
 export * from './BlocklistCollection';
 export * from './BusinessCategoriesResultCollection';
 export * from './BusinessProfileCollection';
@@ -25,7 +26,6 @@ export * from './CatalogCollection';
 export * from './ChatCollection';
 export * from './ChatstateCollection';
 export * from './Collection';
-export * from './CollectionCache';
 export * from './ContactCollection';
 export * from './ContactCollection';
 export * from './ContactCollection';

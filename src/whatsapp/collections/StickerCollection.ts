@@ -18,13 +18,13 @@ import { exportModule } from '../exportModule';
 import { StickerModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2144.11:16482 */
+/** @whatsapp 2.2146.9:16482 */
 export declare class StickerCollection extends Collection<StickerModel> {
   static model: StickerModel;
   fetch(): any;
 }
 exportModule(
   exports,
-  { StickerCollection: 'StickerCollection' },
-  (m) => m.StickerCollection
+  { StickerCollection: (m) => m.StickerCollectionImpl || m.StickerCollection },
+  (m) => m.StickerCollectionImpl || m.StickerCollection
 );

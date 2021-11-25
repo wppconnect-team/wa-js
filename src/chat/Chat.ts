@@ -26,7 +26,7 @@ import {
   ButtonCollection,
   ChatModel,
   ChatStore,
-  ClockSkew,
+  Clock,
   Constants,
   ContactModel,
   ContactStore,
@@ -532,7 +532,7 @@ export class Chat extends Emittery<ChatEventTypes> {
     };
 
     message = {
-      t: ClockSkew.globalUnixTime(),
+      t: Clock.globalUnixTime(),
       from: UserPrefs.getMaybeMeUser(),
       to: chat.id,
       self: 'out',

@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { ProfilePicThumbModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2144.11:3165 */
+/** @whatsapp 2.2146.9:3165 */
 export declare class ProfilePicThumbCollection extends Collection<ProfilePicThumbModel> {
   static model: ProfilePicThumbModel;
   static staleCollection?: any;
@@ -32,6 +32,9 @@ export declare class ProfilePicThumbCollection extends Collection<ProfilePicThum
 }
 exportModule(
   exports,
-  { ProfilePicThumbCollection: 'ProfilePicThumbCollection' },
-  (m) => m.ProfilePicThumbCollection
+  {
+    ProfilePicThumbCollection: (m) =>
+      m.ProfilePicThumbCollectionImpl || m.ProfilePicThumbCollection,
+  },
+  (m) => m.ProfilePicThumbCollectionImpl || m.ProfilePicThumbCollection
 );

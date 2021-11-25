@@ -19,7 +19,7 @@ import { Wid } from '../misc';
 import { StatusModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2144.11:22360 */
+/** @whatsapp 2.2146.9:22360 */
 export declare class StatusCollection extends Collection<StatusModel> {
   static model: StatusModel;
   static idClass: typeof Wid;
@@ -29,6 +29,6 @@ export declare class StatusCollection extends Collection<StatusModel> {
 }
 exportModule(
   exports,
-  { StatusCollection: 'StatusCollection' },
-  (m) => m.StatusCollection
+  { StatusCollection: (m) => m.StatusCollectionImpl || m.StatusCollection },
+  (m) => m.StatusCollectionImpl || m.StatusCollection
 );

@@ -18,12 +18,15 @@ import { exportModule } from '../exportModule';
 import { ProductImageModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2144.11:55845 */
+/** @whatsapp 2.2146.9:55845 */
 export declare class ProductImageCollection extends Collection<ProductImageModel> {
   static model: ProductImageModel;
 }
 exportModule(
   exports,
-  { ProductImageCollection: 'ProductImageCollection' },
-  (m) => m.ProductImageCollection
+  {
+    ProductImageCollection: (m) =>
+      m.ProductImageCollectionImpl || m.ProductImageCollection,
+  },
+  (m) => m.ProductImageCollectionImpl || m.ProductImageCollection
 );

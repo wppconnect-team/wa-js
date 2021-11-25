@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { ChatstateModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2144.11:48327 */
+/** @whatsapp 2.2146.9:48327 */
 export declare class PresenceCollection extends Collection<ChatstateModel> {
   static model: ChatstateModel;
   static staleCollection?: any;
@@ -26,6 +26,8 @@ export declare class PresenceCollection extends Collection<ChatstateModel> {
 }
 exportModule(
   exports,
-  { PresenceCollection: 'PresenceCollection' },
-  (m) => m.PresenceCollection
+  {
+    PresenceCollection: (m) => m.PresenceCollectionImpl || m.PresenceCollection,
+  },
+  (m) => m.PresenceCollectionImpl || m.PresenceCollection
 );

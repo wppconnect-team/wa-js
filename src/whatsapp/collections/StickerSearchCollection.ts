@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { StickerModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2144.11:6009 */
+/** @whatsapp 2.2146.9:6009 */
 export declare class StickerSearchCollection extends Collection<StickerModel> {
   static model: StickerModel;
   isFetchingData(): boolean;
@@ -30,6 +30,9 @@ export declare class StickerSearchCollection extends Collection<StickerModel> {
 }
 exportModule(
   exports,
-  { StickerSearchCollection: 'StickerSearchCollection' },
-  (m) => m.StickerSearchCollection
+  {
+    StickerSearchCollection: (m) =>
+      m.StickerSearchCollectionImpl || m.StickerSearchCollection,
+  },
+  (m) => m.StickerSearchCollectionImpl || m.StickerSearchCollection
 );

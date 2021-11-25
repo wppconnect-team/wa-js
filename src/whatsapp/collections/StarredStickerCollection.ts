@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { StickerModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2144.11:68477 */
+/** @whatsapp 2.2146.9:68477 */
 export declare class StarredStickerCollection extends Collection<StickerModel> {
   static model: StickerModel;
   syncNextPage(): any;
@@ -30,6 +30,9 @@ export declare class StarredStickerCollection extends Collection<StickerModel> {
 }
 exportModule(
   exports,
-  { StarredStickerCollection: 'StarredStickerCollection' },
-  (m) => m.StarredStickerCollection
+  {
+    StarredStickerCollection: (m) =>
+      m.StarredStickerCollectionImpl || m.StarredStickerCollection,
+  },
+  (m) => m.StarredStickerCollectionImpl || m.StarredStickerCollection
 );

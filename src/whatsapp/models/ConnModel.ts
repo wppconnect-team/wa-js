@@ -64,11 +64,11 @@ interface Derived {
   isSMB?: boolean;
 }
 
-/** @whatsapp 2.2144.11:9322 */
+/** @whatsapp 2.2146.9:9322 */
 export declare interface ConnModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 2.2144.11:9322 */
+/** @whatsapp 2.2146.9:9322 */
 export declare class ConnModel extends Model {
   constructor(
     proterties?: ModelPropertiesContructor<ConnModel>,
@@ -84,6 +84,6 @@ export declare class ConnModel extends Model {
 
 exportModule(
   exports,
-  { ConnModel: (m) => m.default.constructor },
-  (m) => m.Conn && m.default
+  { ConnModel: (m) => (m.default ? m.default.constructor : m.ConnImpl) },
+  (m) => (m.Conn && m.ConnImpl) || (m.Conn && m.default)
 );

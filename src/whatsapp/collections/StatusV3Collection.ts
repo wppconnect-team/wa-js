@@ -16,10 +16,10 @@
 
 import { exportModule } from '../exportModule';
 import { StatusV3Model } from '../models';
-import { CollectionCache } from '.';
+import { BaseCollection } from '.';
 
-/** @whatsapp 2.2144.11:83125 */
-export declare class StatusV3Collection extends CollectionCache<StatusV3Model> {
+/** @whatsapp 2.2146.9:70173 */
+export declare class StatusV3Collection extends BaseCollection<StatusV3Model> {
   static model: StatusV3Model;
   loadMore(e?: any, t?: any, r?: any): any;
   sync(e?: any): any;
@@ -34,6 +34,8 @@ export declare class StatusV3Collection extends CollectionCache<StatusV3Model> {
 }
 exportModule(
   exports,
-  { StatusV3Collection: 'StatusV3Collection' },
-  (m) => m.StatusV3Collection
+  {
+    StatusV3Collection: (m) => m.StatusV3CollectionImpl || m.StatusV3Collection,
+  },
+  (m) => m.StatusV3CollectionImpl || m.StatusV3Collection
 );

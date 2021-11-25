@@ -36,14 +36,14 @@ interface Session {
 interface Derived {}
 
 /** @whatsapp 2.2144.11:16689 */
-export declare interface Product_listModel
+export declare interface ProductMessageListModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /** @whatsapp 2.2144.11:16689 */
-export declare class Product_listModel extends Model {
+export declare class ProductMessageListModel extends Model {
   idClass: typeof MsgKey;
   constructor(
-    proterties?: ModelPropertiesContructor<Product_listModel>,
+    proterties?: ModelPropertiesContructor<ProductMessageListModel>,
     options?: ModelOptions
   );
   triggerProductRemoved(e?: any): any;
@@ -60,4 +60,4 @@ export declare class Product_listModel extends Model {
   isFetching(): boolean;
 }
 
-exportProxyModel(exports, 'Product_listModel');
+exportProxyModel(exports, 'ProductMessageListModel');

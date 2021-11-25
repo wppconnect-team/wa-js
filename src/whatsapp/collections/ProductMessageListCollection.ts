@@ -15,17 +15,20 @@
  */
 
 import { exportModule } from '../exportModule';
-import { Product_listModel } from '../models';
+import { ProductMessageListModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2144.11:97038 */
-export declare class ProductMessageListCollection extends Collection<Product_listModel> {
-  static model: Product_listModel;
+/** @whatsapp 2.2146.9:97038 */
+export declare class ProductMessageListCollection extends Collection<ProductMessageListModel> {
+  static model: ProductMessageListModel;
   static staleCollection?: any;
   getOrAdd(e?: any, t?: any, r?: any, a?: any): any;
 }
 exportModule(
   exports,
-  { ProductMessageListCollection: 'ProductMessageListCollection' },
-  (m) => m.ProductMessageListCollection
+  {
+    ProductMessageListCollection: (m) =>
+      m.ProductMessageListCollectionImpl || m.ProductMessageListCollection,
+  },
+  (m) => m.ProductMessageListCollectionImpl || m.ProductMessageListCollection
 );

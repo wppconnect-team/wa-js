@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { CallModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2144.11:15971 */
+/** @whatsapp 2.2146.9:15971 */
 export declare class CallCollection extends Collection<CallModel> {
   static model: CallModel;
   pendingOffers?: any;
@@ -30,6 +30,6 @@ export declare class CallCollection extends Collection<CallModel> {
 }
 exportModule(
   exports,
-  { CallCollection: 'CallCollection' },
-  (m) => m.CallCollection
+  { CallCollection: (m) => m.CallCollectionImpl || m.CallCollection },
+  (m) => m.CallCollectionImpl || m.CallCollection
 );

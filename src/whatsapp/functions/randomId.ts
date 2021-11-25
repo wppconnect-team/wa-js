@@ -16,15 +16,15 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 2.2144.11:17754 */
+/** @whatsapp 2.2146.9:17754 */
 export declare function randomMessageId(): string;
-/** @whatsapp 2.2144.11:17754 */
+/** @whatsapp 2.2146.9:17754 */
 export declare function randomId(): string;
 
 exportModule(
   exports,
   {
-    randomMessageId: 'default',
+    randomMessageId: (m) => m.newTag || m.default,
     randomId: 'randomId',
   },
   (m) => m.randomId

@@ -34,11 +34,11 @@ interface Session {
 
 interface Derived {}
 
-/** @whatsapp 2.2144.11:43123 */
+/** @whatsapp 2.2146.9:43123 */
 export declare interface BlocklistModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 2.2144.11:43123 */
+/** @whatsapp 2.2146.9:43123 */
 export declare class BlocklistModel extends Model<BlocklistCollection> {
   idClass: typeof Wid;
   constructor(

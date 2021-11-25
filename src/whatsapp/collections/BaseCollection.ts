@@ -18,8 +18,8 @@ import { Stringable } from '../../types';
 import { exportModule } from '../exportModule';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2144.11:36513 */
-export declare class CollectionCache<C, A = C | C[]> extends Collection<C> {
+/** @whatsapp 2.2146.9:36513 */
+export declare class BaseCollection<C, A = C | C[]> extends Collection<C> {
   static cachePolicy: {
     id: string;
     policy: string;
@@ -58,4 +58,8 @@ export declare class CollectionCache<C, A = C | C[]> extends Collection<C> {
   isStateStale(id: Stringable): boolean;
 }
 
-exportModule(exports, { CollectionCache: 'default' }, (m) => m.CACHE_POLICY);
+exportModule(
+  exports,
+  { BaseCollection: (m) => m.BaseCollection || m.default },
+  (m) => m.CACHE_POLICY
+);

@@ -16,10 +16,10 @@
 
 import { exportModule } from '../exportModule';
 import { ChatModel } from '../models';
-import { CollectionCache } from './CollectionCache';
+import { BaseCollection } from './BaseCollection';
 
-/** @whatsapp 2.2144.11:84758 */
-export declare class ChatCollection extends CollectionCache<ChatModel> {
+/** @whatsapp 2.2146.9:84758 */
+export declare class ChatCollection extends BaseCollection<ChatModel> {
   static model: ChatModel;
   static comparator(): any;
   notSpam?: any;
@@ -37,6 +37,6 @@ export declare class ChatCollection extends CollectionCache<ChatModel> {
 
 exportModule(
   exports,
-  { ChatCollection: 'ChatCollection' },
-  (m) => m.ChatCollection
+  { ChatCollection: (m) => m.ChatCollectionImpl || m.ChatCollection },
+  (m) => m.ChatCollectionImpl || m.ChatCollection
 );

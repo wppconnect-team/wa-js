@@ -17,10 +17,10 @@
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
 import { ModelPropertiesContructor, MsgModel } from '../models';
-import { CollectionCache } from './CollectionCache';
+import { BaseCollection } from './BaseCollection';
 
-/** @whatsapp 2.2144.11:45472 */
-export declare class MsgCollection extends CollectionCache<MsgModel> {
+/** @whatsapp 2.2146.9:45472 */
+export declare class MsgCollection extends BaseCollection<MsgModel> {
   static model: MsgModel;
   lastReceivedReceipt?: any;
   lastReceivedPaymentTransaction?: any;
@@ -53,6 +53,6 @@ export declare class MsgCollection extends CollectionCache<MsgModel> {
 
 exportModule(
   exports,
-  { MsgCollection: 'MsgCollection' },
-  (m) => m.MsgCollection
+  { MsgCollection: (m) => m.MsgCollectionImpl || m.MsgCollection },
+  (m) => m.MsgCollectionImpl || m.MsgCollection
 );

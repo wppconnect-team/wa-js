@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { MsgModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2144.11:30118 */
+/** @whatsapp 2.2146.9:30118 */
 export declare class StarredMsgCollection extends Collection<MsgModel> {
   static model: MsgModel;
   syncPromise?: any;
@@ -30,6 +30,9 @@ export declare class StarredMsgCollection extends Collection<MsgModel> {
 }
 exportModule(
   exports,
-  { StarredMsgCollection: 'StarredMsgCollection' },
-  (m) => m.StarredMsgCollection
+  {
+    StarredMsgCollection: (m) =>
+      m.StarredMsgCollectionImpl || m.StarredMsgCollection,
+  },
+  (m) => m.StarredMsgCollectionImpl || m.StarredMsgCollection
 );

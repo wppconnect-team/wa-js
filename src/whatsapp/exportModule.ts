@@ -114,8 +114,13 @@ export function exportProxyModel(exports: any, name: string) {
   exportModule(
     exports,
     {
-      [name]: 'default',
+      [name]: (m) => m.default || m[name] || m[baseName],
     },
-    (m) => names.includes(m.default.prototype.proxyName)
+    (m) =>
+      names.includes(
+        m.default?.prototype?.proxyName ||
+          m[name]?.prototype?.proxyName ||
+          m[baseName]?.prototype?.proxyName
+      )
   );
 }

@@ -18,13 +18,19 @@ import { exportModule } from '../exportModule';
 import { BusinessCategoriesResultModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2144.11:54100 */
+/** @whatsapp 2.2146.9:54100 */
 export declare class BusinessCategoriesResultCollection extends Collection<BusinessCategoriesResultModel> {
   static model: BusinessCategoriesResultModel;
   static staleCollection?: any;
 }
 exportModule(
   exports,
-  { BusinessCategoriesResultCollection: 'BusinessCategoriesResultCollection' },
-  (m) => m.BusinessCategoriesResultCollection
+  {
+    BusinessCategoriesResultCollection: (m) =>
+      m.BusinessCategoriesResultCollectionImpl ||
+      m.BusinessCategoriesResultCollection,
+  },
+  (m) =>
+    m.BusinessCategoriesResultCollectionImpl ||
+    m.BusinessCategoriesResultCollection
 );

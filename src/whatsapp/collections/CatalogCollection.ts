@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { CatalogModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2144.11:60028 */
+/** @whatsapp 2.2146.9:60028 */
 export declare class CatalogCollection extends Collection<CatalogModel> {
   static model: CatalogModel;
   static staleCollection?: any;
@@ -34,6 +34,6 @@ export declare class CatalogCollection extends Collection<CatalogModel> {
 }
 exportModule(
   exports,
-  { CatalogCollection: 'CatalogCollection' },
-  (m) => m.CatalogCollection
+  { CatalogCollection: (m) => m.CatalogCollectionImpl || m.CatalogCollection },
+  (m) => m.CatalogCollectionImpl || m.CatalogCollection
 );
