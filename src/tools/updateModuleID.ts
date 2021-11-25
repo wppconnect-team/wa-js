@@ -66,10 +66,11 @@ async function start() {
       }
 
       for (const name of Object.keys(submodules)) {
-        const module: any = submodules[name];
-        if (!module) {
-          throw `Not found: ${name}`;
-        }
+        let module: any;
+        try {
+          module = submodules[name];
+        } catch (error) {}
+
         const resultName = dir ? `${dir}.${name}` : name;
 
         result[resultName] = window.WPP.whatsapp._moduleIdMap.get(module);
@@ -86,81 +87,88 @@ async function start() {
     delete result[dir];
   }
 
+  let exitCode = 0;
+
   for (const moduleName of Object.keys(result)) {
     if (!result[moduleName]) {
+      exitCode = 1;
       console.error(`Módule not found for ${moduleName}`);
     }
   }
 
-  const project = new Project({
-    tsConfigFilePath: path.resolve(__dirname, '../../tsconfig.json'),
-  });
+  if (!process.argv.includes('--dry-run')) {
+    const project = new Project({
+      tsConfigFilePath: path.resolve(__dirname, '../../tsconfig.json'),
+    });
 
-  for (const dir of dirs) {
-    const filePath = `${DIR_BASE}${dir ? '/' + dir : ''}/index.ts`;
+    for (const dir of dirs) {
+      const filePath = `${DIR_BASE}${dir ? '/' + dir : ''}/index.ts`;
 
-    const mainFile = project.getSourceFileOrThrow(filePath);
+      const mainFile = project.getSourceFileOrThrow(filePath);
 
-    for (const [name, declarations] of mainFile.getExportedDeclarations()) {
-      const resultName = dir ? `${dir}.${name}` : name;
+      for (const [name, declarations] of mainFile.getExportedDeclarations()) {
+        const resultName = dir ? `${dir}.${name}` : name;
 
-      if (!result[resultName]) {
-        continue;
-      }
+        if (!result[resultName]) {
+          continue;
+        }
 
-      const moduleID = `${whatsappVersion}:${result[resultName]}`;
-      if (!moduleID) {
-        continue;
-      }
+        const moduleID = `${whatsappVersion}:${result[resultName]}`;
+        if (!moduleID) {
+          continue;
+        }
 
-      for (const d of declarations) {
-        let docs: JSDoc[] = [];
+        for (const d of declarations) {
+          let docs: JSDoc[] = [];
 
-        if (Node.isJSDocableNode(d)) {
-          docs = d.getJsDocs();
-          if (!docs.length) {
-            d.addJsDoc('\n');
+          if (Node.isJSDocable(d)) {
             docs = d.getJsDocs();
-          }
-        } else if (Node.isVariableDeclaration(d)) {
-          const parent = d.getParent().getParent();
+            if (!docs.length) {
+              d.addJsDoc('\n');
+              docs = d.getJsDocs();
+            }
+          } else if (Node.isVariableDeclaration(d)) {
+            const parent = d.getParent().getParent();
 
-          if (!parent || !Node.isJSDocableNode(parent)) {
+            if (!parent || !Node.isJSDocable(parent)) {
+              continue;
+            }
+
+            docs = parent.getJsDocs();
+            if (!docs.length) {
+              parent.addJsDoc('\n');
+              docs = parent.getJsDocs();
+            }
+          } else {
             continue;
           }
 
-          docs = parent.getJsDocs();
           if (!docs.length) {
-            parent.addJsDoc('\n');
-            docs = parent.getJsDocs();
+            continue;
           }
-        } else {
-          continue;
-        }
+          const tags = docs[0].getTags() || [];
+          let hasID = false;
 
-        if (!docs.length) {
-          continue;
-        }
-        const tags = docs[0].getTags() || [];
-        let hasID = false;
-
-        for (const tag of tags) {
-          if (moduleID === tag.getCommentText()) {
-            hasID = true;
-          } else {
-            tag.remove();
+          for (const tag of tags) {
+            if (moduleID === tag.getCommentText()) {
+              hasID = true;
+            } else {
+              tag.remove();
+            }
           }
-        }
-        if (!hasID) {
-          docs[0].addTag({
-            tagName: 'whatsapp',
-            text: moduleID,
-          });
+          if (!hasID) {
+            docs[0].addTag({
+              tagName: 'whatsapp',
+              text: moduleID,
+            });
+          }
         }
       }
     }
+
+    await project.save();
   }
 
-  await project.save();
+  process.exit(exitCode);
 }
 start();
