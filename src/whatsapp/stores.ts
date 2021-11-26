@@ -98,13 +98,10 @@ const storeNames = [
   'ProfilePicThumbStore',
   'QuickReplyStore',
   'RecentEmojiStore',
-  'RecentStickerStore',
-  'StarredMsgStore',
   'StarredStickerStore',
   'StatusStore',
   'StatusV3Store',
   'StickerStore',
-  'StickerPackStore',
   'StickerSearchStore',
 ];
 
@@ -120,3 +117,27 @@ for (const name of storeNames) {
       (collections as any)[collectionName]
   );
 }
+
+exportModule(
+  exports,
+  {
+    RecentStickerStore: (m) => m.RecentStickerCollectionMd,
+  },
+  (m) => m.RecentStickerCollection && m.RecentStickerCollectionMd
+);
+
+exportModule(
+  exports,
+  {
+    StarredMsgStore: (m) => m.AllStarredMsgsCollection,
+  },
+  (m) => m.StarredMsgCollection && m.AllStarredMsgsCollection
+);
+
+exportModule(
+  exports,
+  {
+    StickerPackStore: (m) => m.StickerPackCollectionMd,
+  },
+  (m) => m.StickerPackCollection && m.StickerPackCollectionMd
+);

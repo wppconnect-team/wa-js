@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { exportProxyModel } from '../exportModule';
+import { exportModule } from '../exportModule';
 import { MsgKey } from '../misc';
 import {
   Model,
@@ -60,4 +60,10 @@ export declare class ProductMessageListModel extends Model {
   isFetching(): boolean;
 }
 
-exportProxyModel(exports, 'ProductMessageListModel');
+exportModule(
+  exports,
+  {
+    ProductMessageListModel: 'ProductMessageList',
+  },
+  (m) => m.ProductMessageList
+);
