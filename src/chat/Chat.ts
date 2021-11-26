@@ -809,7 +809,7 @@ export class Chat extends Emittery<ChatEventTypes> {
     );
 
     if (!filename) {
-      const result = await FileType.fromBuffer(buffer);
+      const result = await FileType.fileTypeFromBuffer(buffer);
       if (result) {
         const baseType = result.mime.split('/')[0];
         filename = `${baseType}.${result.ext}`;
