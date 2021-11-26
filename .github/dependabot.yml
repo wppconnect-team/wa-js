@@ -15,3 +15,6 @@ updates:
       - dependency-name: '@types/node'
         versions:
           - '>= 15.a'
+      - dependency-name: 'file-type'
+        versions:
+          - '>= 17.a'
