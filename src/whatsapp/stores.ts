@@ -59,9 +59,9 @@ export declare const ProfilePicThumbStore: collections.ProfilePicThumbCollection
 export declare const QuickReplyStore: collections.QuickReplyCollection;
 /** @whatsapp 2.2146.9:30462 */
 export declare const RecentEmojiStore: collections.RecentEmojiCollection;
-/** @whatsapp 2.2144.11:27686 */
+/** @whatsapp 2.2146.9:27686 */
 export declare const RecentStickerStore: collections.RecentStickerCollection;
-/** @whatsapp 2.2144.11:30118 */
+/** @whatsapp 2.2146.9:30118 */
 export declare const StarredMsgStore: collections.StarredMsgCollection;
 /** @whatsapp 2.2146.9:68477 */
 export declare const StarredStickerStore: collections.StarredStickerCollection;
@@ -71,7 +71,7 @@ export declare const StatusStore: collections.StatusCollection;
 export declare const StatusV3Store: collections.StatusV3Collection;
 /** @whatsapp 2.2146.9:16482 */
 export declare const StickerStore: collections.StickerCollection;
-/** @whatsapp 2.2144.11:45822 */
+/** @whatsapp 2.2146.9:45822 */
 export declare const StickerPackStore: collections.StickerPackCollection;
 /** @whatsapp 2.2146.9:6009 */
 export declare const StickerSearchStore: collections.StickerSearchCollection;
