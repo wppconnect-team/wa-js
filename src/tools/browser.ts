@@ -105,10 +105,15 @@ export async function getPage(options?: LaunchArguments[1]) {
   setTimeout(async () => {
     await page.goto(URL, {
       waitUntil: 'domcontentloaded',
+      timeout: 120000,
     });
 
     await page
-      .waitForFunction(() => (window as any).Debug.VERSION)
+      .waitForFunction(
+        () => (window as any).Debug.VERSION,
+        {},
+        { timeout: 120000 }
+      )
       .catch(() => null);
 
     const version = await page
