@@ -56,5 +56,5 @@ exportModule(
     ClockClass: (m) => m.Clock?.constructor || m.default?.constructor,
     Clock: (m) => m.Clock || m.default,
   },
-  (m) => m.Clock.globalUnixTime || m.default.globalUnixTime
+  (m) => m.Clock?.globalUnixTime || m.default?.globalUnixTime
 );

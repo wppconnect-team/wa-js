@@ -110,10 +110,10 @@ for (const name of storeNames) {
   exportModule(
     exports,
     {
-      [name]: (m) => m[collectionName] || m[`${collectionName}Md`] || m.default,
+      [name]: (m) => m.default || m[collectionName],
     },
     (m) =>
-      (m[collectionName] || m[`${collectionName}Md`] || m.default) instanceof
+      (m.default || m[collectionName]) instanceof
       (collections as any)[collectionName]
   );
 }
@@ -121,23 +121,23 @@ for (const name of storeNames) {
 exportModule(
   exports,
   {
-    RecentStickerStore: (m) => m.RecentStickerCollectionMd,
+    RecentStickerStore: (m) => m.default || m.RecentStickerCollectionMd,
   },
-  (m) => m.RecentStickerCollection && m.RecentStickerCollectionMd
+  (m) => m.RecentStickerCollection
 );
 
 exportModule(
   exports,
   {
-    StarredMsgStore: (m) => m.AllStarredMsgsCollection,
+    StarredMsgStore: (m) => m.default || m.AllStarredMsgsCollection,
   },
-  (m) => m.StarredMsgCollection && m.AllStarredMsgsCollection
+  (m) => m.StarredMsgCollection
 );
 
 exportModule(
   exports,
   {
-    StickerPackStore: (m) => m.StickerPackCollectionMd,
+    StickerPackStore: (m) => m.default || m.StickerPackCollectionMd,
   },
-  (m) => m.StickerPackCollection && m.StickerPackCollectionMd
+  (m) => m.StickerPackCollection
 );
