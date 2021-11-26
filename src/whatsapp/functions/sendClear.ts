@@ -28,5 +28,5 @@ exportModule(
   {
     sendClear: 'sendClear',
   },
-  (m) => m.sendClear && m.clearMessagesInChatModel
+  (m) => m.sendClear && !m.clearStorage
 );
