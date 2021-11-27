@@ -107,6 +107,23 @@ export function injectLoader(): void {
   ]);
 }
 
+const pureComponentMap = new Map<string, boolean>();
+
+export function isReactComponent(moduleId: string) {
+  if (pureComponentMap.has(moduleId)) {
+    return pureComponentMap.get(moduleId);
+  }
+
+  const ignoreRE = /\w+\.(Pure)?Component\s*\{/;
+
+  const source = webpackRequire.m[moduleId].toString();
+
+  const isPure = ignoreRE.test(source);
+
+  pureComponentMap.set(moduleId, isPure);
+  return isPure;
+}
+
 /**
  * Return the webpack module id from a search function
  * @param condition Function for compare the modules
@@ -126,11 +143,8 @@ export function searchId(
     debug(`Searching for: ${condition.toString()}`);
   }, 500);
 
-  const ignoreRE = /\w+\.PureComponent\s*\{/;
-
   for (const moduleId of ids) {
-    const source = webpackRequire.m[moduleId].toString();
-    if (ignoreRE.test(source)) {
+    if (isReactComponent(moduleId)) {
       continue;
     }
 
@@ -184,6 +198,10 @@ export function modules(
     ids = ids.reverse();
   }
   for (const moduleId of ids) {
+    if (isReactComponent(moduleId)) {
+      continue;
+    }
+
     try {
       const module = webpackRequire(moduleId);
 
