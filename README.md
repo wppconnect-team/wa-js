@@ -4,8 +4,10 @@
 [![Downloads](https://img.shields.io/npm/dm/@wppconnect/wa-js.svg)](https://www.npmjs.com/package/@wppconnect/wa-js)
 [![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/wppconnect-team/wa-js.svg)](https://isitmaintained.com/project/wppconnect/wa-js 'Average time to resolve an issue')
 [![Percentage of issues still open](https://isitmaintained.com/badge/open/wppconnect-team/wa-js.svg)](https://isitmaintained.com/project/wppconnect/wa-js 'Percentage of issues still open')
-[![Build Status](https://img.shields.io/github/workflow/status/wppconnect-team/wa-js/build.svg)](https://github.com/wppconnect/wa-js/actions)
-[![Lint Status](https://img.shields.io/github/workflow/status/wppconnect-team/wa-js/lint.svg?label=lint)](https://github.com/wppconnect/wa-js/actions)
+
+[![Build Status](https://img.shields.io/github/workflow/status/wppconnect-team/wa-js/build.svg)](https://github.com/wppconnect-team/wa-js/actions/workflows/build.yml)
+[![Build Status](https://img.shields.io/github/workflow/status/wppconnect-team/wa-js/test.svg)](https://github.com/wppconnect-team/wa-js/actions/workflows/test.yml)
+[![Lint Status](https://img.shields.io/github/workflow/status/wppconnect-team/wa-js/lint.svg?label=lint)](https://github.com/wppconnect-team/wa-js/actions/workflows/lint.yml)
 [![release-it](https://img.shields.io/badge/%F0%9F%93%A6%F0%9F%9A%80-release--it-e10079.svg)](https://github.com/release-it/release-it)
 
 > WPPConnect/WA-JS is an open-source project with the aim of exporting functions from WhatsApp Web, which can be used to support the creation of any interaction, such as customer service, media sending, intelligence recognition based on phrases artificial and many other things, use your imagination...
