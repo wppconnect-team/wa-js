@@ -98,7 +98,9 @@ export function injectLoader(): void {
           return true;
         });
 
-      await Promise.all(availablesRuntimes.map((v) => webpackRequire.e(v)));
+      await Promise.all(
+        availablesRuntimes.reverse().map((v) => webpackRequire.e(v))
+      );
 
       isReady = true;
       debug('ready to use');
