@@ -104,37 +104,36 @@ export class Chat extends Emittery<ChatEventTypes> {
      */
     const processMultipleMessages = MsgStore.processMultipleMessages;
 
-    MsgStore.processMultipleMessages = async (
+    MsgStore.processMultipleMessages = (
       chatId: Wid,
       msgs: RawMessage[],
       ...args: any[]
     ) => {
-      // try...catch to avoid screen block
-      try {
-        for (const msg of msgs) {
-          if (!msg.isNewMsg) {
-            continue;
-          }
+      return new Promise((resolve, reject) => {
+        // try...catch to avoid screen block
+        try {
+          for (const msg of msgs) {
+            if (!msg.isNewMsg) {
+              continue;
+            }
 
-          if (msg.type === 'protocol' && msg.subtype === 'revoke') {
-            this.emit('msg_revoke', {
-              author: msg.author,
-              from: msg.from!,
-              id: msg.id!,
-              refId: msg.protocolMessageKey!,
-              to: msg.to!,
-            });
+            if (msg.type === 'protocol' && msg.subtype === 'revoke') {
+              this.emit('msg_revoke', {
+                author: msg.author,
+                from: msg.from!,
+                id: msg.id!,
+                refId: msg.protocolMessageKey!,
+                to: msg.to!,
+              });
+            }
           }
-        }
-      } catch (error) {}
+        } catch (error) {}
 
-      // Call the original method
-      return await processMultipleMessages.call(
-        MsgStore,
-        chatId,
-        msgs,
-        ...args
-      );
+        // Call the original method
+        processMultipleMessages
+          .call(MsgStore, chatId, msgs, ...args)
+          .then(resolve, reject);
+      });
     };
   }
 
