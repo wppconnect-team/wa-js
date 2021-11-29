@@ -16,6 +16,7 @@
 
 export * from './Base64';
 export * from './Browser';
+export * from './ChatPresence';
 export * from './Clock';
 export * from './Cmd';
 export * from './Conn';
