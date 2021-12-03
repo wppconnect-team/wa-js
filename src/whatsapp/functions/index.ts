@@ -20,6 +20,7 @@ export * from './findChat';
 export * from './getOrGenerate';
 export * from './groupParticipants';
 export * from './isAuthenticated';
+export * from './markSeen';
 export * from './msgFindQuery';
 export * from './products';
 export * from './randomId';
