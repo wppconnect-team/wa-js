@@ -16,7 +16,7 @@
 
 import Debug from 'debug';
 
-import { assertColor } from '../assert';
+import { assertColor, assertIsBusiness } from '../assert';
 import { WPPError } from '../util';
 import * as webpack from '../webpack';
 import { LabelStore } from '../whatsapp';
@@ -46,6 +46,8 @@ export class Labels {
    * ```
    */
   async addNewLabel(labelName: string, options: newLabelOptions = {}) {
+    assertIsBusiness();
+
     let labelColor: number | false;
 
     if (['number', 'string'].includes(typeof options.labelColor)) {
@@ -64,6 +66,8 @@ export class Labels {
    * Return the color of the next label in positive decimal
    */
   async getNewLabelColor(): Promise<number> {
+    assertIsBusiness();
+
     const newLabelColor = await LabelStore.getNewLabelColor();
 
     if (!newLabelColor) {
@@ -77,6 +81,8 @@ export class Labels {
    * Returns an array of color palette in positive decimal
    */
   async getLabelColorPalette(): Promise<Array<number>> {
+    assertIsBusiness();
+
     const colorPalette = await LabelStore.getLabelColorPalette();
 
     if (!colorPalette) {
@@ -97,6 +103,8 @@ export class Labels {
    * ```
    */
   async colorIsInLabelPalette(color: string | number): Promise<boolean> {
+    assertIsBusiness();
+
     const colorPalette = await this.getLabelColorPalette();
     return colorPalette && colorPalette.includes(assertColor(color));
   }

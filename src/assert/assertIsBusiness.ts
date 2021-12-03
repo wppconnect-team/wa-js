@@ -14,7 +14,17 @@
  * limitations under the License.
  */
 
-export * from './assertChat';
-export * from './assertColor';
-export * from './assertIsBusiness';
-export * from './assertWid';
+import { WPPError } from '../util';
+import { Conn } from '../whatsapp';
+
+export class NotIsBusinessError extends WPPError {
+  constructor() {
+    super('is_not_business', `This account is not a business version`);
+  }
+}
+
+export function assertIsBusiness(): void {
+  if (!Conn.isSMB) {
+    throw new NotIsBusinessError();
+  }
+}
