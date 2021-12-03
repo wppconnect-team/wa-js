@@ -92,7 +92,7 @@ async function start() {
   for (const moduleName of Object.keys(result)) {
     if (!result[moduleName]) {
       exitCode = 1;
-      console.error(`Módule not found for ${moduleName}`);
+      console.error(`Module not found: ${moduleName}`);
     }
   }
 

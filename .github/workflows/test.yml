@@ -80,6 +80,10 @@ jobs:
         run: npm ci || npm install
 
       - name: Test modules resolution
-        run: npm run update-module-id -- --dry-run
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: npm run update-module-id -- --dry-run
         env:
           WA_VERSION: '${{matrix.versions }}'
