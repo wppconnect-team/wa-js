@@ -46,11 +46,13 @@ import { SendMsgResult } from '../whatsapp/enums';
 import {
   addAndSendMsgToChat,
   findChat,
+  markUnread,
   msgFindQuery,
   MsgFindQueryParams,
   randomMessageId,
   sendClear,
   sendDelete,
+  sendSeen,
 } from '../whatsapp/functions';
 import {
   AudioMessageOptions,
@@ -274,6 +276,47 @@ export class Chat extends Emittery<ChatEventTypes> {
       wid,
       status,
       keepStarred,
+    };
+  }
+
+  /**
+   * Mark a chat as read and send SEEN event
+   *
+   * @example
+   * ```javascript
+   * // Some messages
+   * WPP.chat.markAsRead('<number>@c.us');
+   * ```
+   */
+  async markAsRead(chatId: string | Wid) {
+    const chat = assertGetChat(chatId);
+
+    const unreadCount = chat.unreadCount!;
+
+    await sendSeen(chat, true);
+
+    return {
+      wid: chat.id,
+      unreadCount,
+    };
+  }
+
+  /**
+   * Mark a chat as unread
+   *
+   * @example
+   * ```javascript
+   * // Some messages
+   * WPP.chat.markAsUnread('<number>@c.us');
+   * ```
+   */
+  async markAsUnread(chatId: string | Wid) {
+    const chat = assertGetChat(chatId);
+
+    await markUnread(chat, true);
+
+    return {
+      wid: chat.id,
     };
   }
 
