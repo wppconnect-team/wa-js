@@ -25,6 +25,7 @@ import * as webpack from '../webpack';
 import {
   ButtonCollection,
   ChatModel,
+  ChatPresence,
   ChatStore,
   Clock,
   Constants,
@@ -318,6 +319,82 @@ export class Chat extends Emittery<ChatEventTypes> {
     return {
       wid: chat.id,
     };
+  }
+
+  /**
+   * Mark a chat to composing state
+   * and keep sending "is writting a message"
+   *
+   * @example
+   * ```javascript
+   * // Mark is composing
+   * WPP.chat.markIsComposing('<number>@c.us');
+   *
+   * // Mark is composing for 5 seconds
+   * WPP.chat.markIsComposing('<number>@c.us', 5000);
+   * ```
+   */
+  async markIsComposing(chatId: string | Wid, duration?: number) {
+    const chat = assertGetChat(chatId);
+
+    await chat.presence.subscribe();
+
+    await ChatPresence.markComposing(chat);
+
+    if (chat.pausedTimerId) {
+      clearTimeout(chat.pausedTimerId);
+      chat.unset('pausedTimerId');
+    }
+
+    if (duration) {
+      chat.pausedTimerId = setTimeout(() => {
+        this.markIsPaused(chatId);
+      }, duration);
+    }
+  }
+
+  /**
+   * Mark a chat to recording state
+   * and keep sending "is recording"
+   *
+   * @example
+   * ```javascript
+   * // Mark is recording
+   * WPP.chat.markIsRecording('<number>@c.us');
+   *
+   * // Mark is recording for 5 seconds
+   * WPP.chat.markIsRecording('<number>@c.us', 5000);
+   * ```
+   */
+  async markIsRecording(chatId: string | Wid, duration?: number) {
+    const chat = assertGetChat(chatId);
+
+    await chat.presence.subscribe();
+
+    await ChatPresence.markRecording(chat);
+
+    if (duration) {
+      chat.pausedTimerId = setTimeout(() => {
+        this.markIsPaused(chatId);
+      }, duration);
+    }
+  }
+
+  /**
+   * Mark a chat is paused state
+   *
+   * @example
+   * ```javascript
+   * // Mark as recording
+   * WPP.chat.markIsPaused('<number>@c.us');
+   * ```
+   */
+  async markIsPaused(chatId: string | Wid) {
+    const chat = assertGetChat(chatId);
+
+    await chat.presence.subscribe();
+
+    await ChatPresence.markPaused(chat);
   }
 
   /**
