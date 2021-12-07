@@ -82,6 +82,7 @@ export class Chat extends Emittery<ChatEventTypes> {
     createChat: false,
     detectMentioned: true,
     waitForAck: true,
+    markIsRead: true,
   };
 
   constructor() {
@@ -799,6 +800,11 @@ export class Chat extends Emittery<ChatEventTypes> {
 
     rawMessage = await this.prepareRawMessage(chat, rawMessage, options);
 
+    if (options.markIsRead) {
+      debugMessage(`marking chat is read before send message`);
+      await this.markIsRead(chat.id);
+    }
+
     debugMessage(
       `sending message (${rawMessage.type}) with id ${rawMessage.id}`
     );
@@ -1066,6 +1072,11 @@ export class Chat extends Emittery<ChatEventTypes> {
     );
 
     rawMessage = this.prepareMessageButtons(rawMessage, options as any);
+
+    if (options.markIsRead) {
+      debugMessage(`marking chat is read before send file`);
+      await this.markIsRead(chat.id);
+    }
 
     debugMessage(`sending message (${options.type}) with id ${rawMessage.id}`);
     const sendMsgResult = mediaPrep.sendToChat(chat, {

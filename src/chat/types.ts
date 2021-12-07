@@ -67,10 +67,24 @@ export interface DeleteMessageReturn {
 }
 
 export interface SendMessageOptions {
+  /**
+   * Create a new chat to a new contact
+   *
+   * @default false
+   *
+   * @example
+   * ```javascript
+   * WPP.chat.sendTextMessage('<number>@c.us', 'Hello new contact', {
+   *   createChat: true
+   * });
+   * ```
+   */
   createChat?: boolean;
 
   /**
    * Automatic detect and add the mentioned contacts with @<number>
+   *
+   * @default true
    *
    * @example
    * ```javascript
@@ -80,7 +94,26 @@ export interface SendMessageOptions {
    * ```
    */
   detectMentioned?: boolean;
+
+  /**
+   * Automatically mark chat is read after send a message
+   *
+   * @default true
+   *
+   * @example
+   * ```javascript
+   * WPP.chat.sendTextMessage('<number>@c.us', 'Replying your message', {
+   *   markIsRead: true
+   * });
+   * ```
+   */
+  markIsRead?: boolean;
+
+  /**
+   *
+   */
   messageId?: string | MsgKey;
+
   /**
    * Define a mentioned list for a message
    * This option work better with a message with mension
@@ -93,6 +126,7 @@ export interface SendMessageOptions {
    * ```
    */
   mentionedList?: (string | Wid)[];
+
   /**
    * Quote a message, like a reply message
    *
@@ -104,8 +138,11 @@ export interface SendMessageOptions {
    * ```
    */
   quotedMsg?: string | MsgKey | MsgModel;
+
   /**
    * Wait for send while the ACK of message is SENT(1)
+   *
+   * @default true
    *
    * @example
    * ```javascript
