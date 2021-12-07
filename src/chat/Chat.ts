@@ -286,10 +286,10 @@ export class Chat extends Emittery<ChatEventTypes> {
    * @example
    * ```javascript
    * // Some messages
-   * WPP.chat.markAsRead('<number>@c.us');
+   * WPP.chat.markIsRead('<number>@c.us');
    * ```
    */
-  async markAsRead(chatId: string | Wid) {
+  async markIsRead(chatId: string | Wid) {
     const chat = assertGetChat(chatId);
 
     const unreadCount = chat.unreadCount!;
@@ -308,10 +308,10 @@ export class Chat extends Emittery<ChatEventTypes> {
    * @example
    * ```javascript
    * // Some messages
-   * WPP.chat.markAsUnread('<number>@c.us');
+   * WPP.chat.markIsUnread('<number>@c.us');
    * ```
    */
-  async markAsUnread(chatId: string | Wid) {
+  async markIsUnread(chatId: string | Wid) {
     const chat = assertGetChat(chatId);
 
     await markUnread(chat, true);
