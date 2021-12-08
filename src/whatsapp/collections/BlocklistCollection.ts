@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { BlocklistModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2146.9:15701 */
+/** @whatsapp 2.2147.14:15701 */
 export declare class BlocklistCollection extends Collection<BlocklistModel> {
   static model: BlocklistModel;
   blockContact(e?: any): any;

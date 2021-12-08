@@ -17,7 +17,7 @@
 import { ChatModel } from '..';
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 2.2146.9:67357 */
+/** @whatsapp 2.2147.14:67357 */
 export declare function sendClear(
   chat: ChatModel,
   keepStarred?: boolean
