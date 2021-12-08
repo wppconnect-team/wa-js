@@ -150,6 +150,6 @@ export declare const Features: FeatureClass;
 
 exportModule(
   exports,
-  { Features: 'default' },
-  (m) => m.default.supportsFeature
+  { Features: (m) => m.GK || m.default },
+  (m) => m.GK?.supportsFeature || m.default?.supportsFeature
 );
