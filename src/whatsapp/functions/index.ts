@@ -16,6 +16,7 @@
 
 export * from './addAndSendMsgToChat';
 export * from './blockContact';
+export * from './fetchLinkPreview';
 export * from './findChat';
 export * from './getOrGenerate';
 export * from './groupParticipants';

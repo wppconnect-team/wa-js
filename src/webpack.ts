@@ -44,7 +44,7 @@ export function onReady(listener: () => void): void {
   emitter.on('ready', listener);
 }
 
-export type SearchModuleCondition = (module: any, moduleId?: string) => boolean;
+export type SearchModuleCondition = (module: any, moduleId: string) => boolean;
 
 export let webpackRequire: (<T = any>(moduleId: string) => T) & {
   /**
