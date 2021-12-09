@@ -109,6 +109,23 @@ export function injectLoader(): void {
   ]);
 }
 
+const sourceModuleMap = new Map<string, boolean>();
+
+export function moduleSource(moduleId: string) {
+  if (typeof webpackRequire.m[moduleId] === 'undefined') {
+    return '';
+  }
+
+  if (sourceModuleMap.has(moduleId)) {
+    return sourceModuleMap.get(moduleId);
+  }
+
+  const source = webpackRequire.m[moduleId].toString();
+
+  sourceModuleMap.set(moduleId, source);
+  return source;
+}
+
 const pureComponentMap = new Map<string, boolean>();
 
 export function isReactComponent(moduleId: string) {
@@ -118,7 +135,7 @@ export function isReactComponent(moduleId: string) {
 
   const ignoreRE = /\w+\.(Pure)?Component\s*\{/;
 
-  const source = webpackRequire.m[moduleId].toString();
+  const source = moduleSource(moduleId);
 
   const isPure = ignoreRE.test(source);
 
