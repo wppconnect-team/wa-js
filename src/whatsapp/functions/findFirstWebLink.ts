@@ -14,21 +14,17 @@
  * limitations under the License.
  */
 
-export * from './addAndSendMsgToChat';
-export * from './blockContact';
-export * from './fetchLinkPreview';
-export * from './findChat';
-export * from './findFirstWebLink';
-export * from './getOrGenerate';
-export * from './groupParticipants';
-export * from './isAuthenticated';
-export * from './markSeen';
-export * from './msgFindQuery';
-export * from './products';
-export * from './randomId';
-export * from './sendClear';
-export * from './sendCreateGroup';
-export * from './sendDelete';
-export * from './sendQueryExists';
-export * from './sendTextMsgToChat';
-export * from './uploadProductImage';
+import { exportModule } from '../exportModule';
+
+/** @whatsapp 2.2147.14:78502 */
+export declare function findFirstWebLink(
+  message: string
+): Promise<undefined | string>;
+
+exportModule(
+  exports,
+  {
+    findFirstWebLink: 'findFirstWebLink',
+  },
+  (m) => m.findFirstWebLink
+);
