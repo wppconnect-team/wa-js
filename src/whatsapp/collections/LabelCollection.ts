@@ -29,7 +29,7 @@ export declare class LabelCollection extends Collection<LabelModel> {
   removeAllLabelsMD(chat: ChatModel): any;
   addOrRemoveLabelsMD(e?: any, t?: any): any;
   addOrRemoveLabels(e?: any, t?: any): any;
-  deleteLabel(e?: any): any;
+  deleteLabel(e?: string): any;
   updateLabel(e?: any, t?: any): any;
   getNewLabelColor(): any;
   getLabelColorPalette(): any;
@@ -38,6 +38,7 @@ export declare class LabelCollection extends Collection<LabelModel> {
   sync(e?: any): any;
   updateChecksum(e?: any): any;
   getLabelsForModel(e?: any, t?: any): any;
+  _findQuery(): any;
 }
 exportModule(
   exports,
