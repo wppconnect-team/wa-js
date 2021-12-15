@@ -46,7 +46,9 @@ import {
 import { SendMsgResult } from '../whatsapp/enums';
 import {
   addAndSendMsgToChat,
+  fetchLinkPreview,
   findChat,
+  findFirstWebLink,
   markUnread,
   msgFindQuery,
   MsgFindQueryParams,
@@ -56,10 +58,12 @@ import {
   sendSeen,
 } from '../whatsapp/functions';
 import {
+  AllMessageOptions,
   AudioMessageOptions,
   DeleteMessageReturn,
   DocumentMessageOptions,
   ImageMessageOptions,
+  LinkPreviewOptions,
   SendMessageReturn,
   StickerMessageOptions,
   VCardContact,
@@ -79,11 +83,12 @@ const debugChat = Debug('WA-JS:chat');
 const debugMessage = Debug('WA-JS:message');
 
 export class Chat extends Emittery<ChatEventTypes> {
-  public defaultSendMessageOptions: SendMessageOptions = {
+  public defaultSendMessageOptions: AllMessageOptions = {
     createChat: false,
     detectMentioned: true,
-    waitForAck: true,
+    linkPreview: true,
     markIsRead: true,
+    waitForAck: true,
   };
 
   constructor() {
@@ -642,6 +647,42 @@ export class Chat extends Emittery<ChatEventTypes> {
     return message;
   }
 
+  async prepareLinkPreview<T extends RawMessage>(
+    message: T,
+    options: LinkPreviewOptions
+  ): Promise<T> {
+    if (!options.linkPreview) {
+      return message as any;
+    }
+
+    if (options.linkPreview) {
+      const override =
+        typeof options.linkPreview === 'object' ? options.linkPreview : {};
+
+      const text = message.type === 'chat' ? message.body : '';
+
+      if (text) {
+        const link = await findFirstWebLink(text);
+        if (link) {
+          const preview = await fetchLinkPreview(link);
+          if (preview?.data) {
+            options.linkPreview = { ...preview.data, ...override };
+          }
+        }
+      }
+    }
+
+    if (typeof options.linkPreview === 'object') {
+      message.subtype = 'url';
+      message = {
+        ...message,
+        ...options.linkPreview,
+      };
+    }
+
+    return message;
+  }
+
   async prepareRawMessage<T extends RawMessage>(
     chat: ChatModel,
     message: T,
@@ -850,6 +891,7 @@ export class Chat extends Emittery<ChatEventTypes> {
     };
 
     rawMessage = this.prepareMessageButtons(rawMessage, options);
+    rawMessage = await this.prepareLinkPreview(rawMessage, options);
 
     return await this.sendRawMessage(chatId, rawMessage, options);
   }

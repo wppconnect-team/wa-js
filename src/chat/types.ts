@@ -178,6 +178,39 @@ export interface MessageButtonsOptions {
   footer?: string;
 }
 
+export interface LinkPreviewOptions {
+  /**
+   * Send text message with link preview
+   *
+   * @default true
+   *
+   * @example
+   * ```javascript
+   * // Automatic detection
+   * WPP.chat.sendTextMessage('<number>@c.us', 'See https://www.youtube.com/watch?v=v1PBptSDIh8');
+   *
+   * // Overriding the title and description
+   * WPP.chat.sendTextMessage('<number>@c.us', 'See https://www.youtube.com/watch?v=v1PBptSDIh8', {
+   *   linkPreview: {
+   *     title: 'Another text',
+   *     description: 'Another description'
+   *   }
+   * });
+   * ```
+   */
+  linkPreview?:
+    | boolean
+    | {
+        title?: string;
+        description?: string;
+        canonicalUrl?: string;
+        matchedText?: string;
+        richPreviewType?: number;
+        thumbnail?: string;
+        doNotPlayInline: boolean;
+      };
+}
+
 export interface ListMessageOptions extends SendMessageOptions {
   buttonText: string;
   description: string;
@@ -191,7 +224,9 @@ export interface ListMessageOptions extends SendMessageOptions {
   }>;
 }
 
-export type TextMessageOptions = SendMessageOptions & MessageButtonsOptions;
+export type TextMessageOptions = SendMessageOptions &
+  MessageButtonsOptions &
+  LinkPreviewOptions;
 
 export interface FileMessageOptions extends SendMessageOptions {
   type: string;
@@ -239,6 +274,7 @@ export interface VCardContact {
 }
 
 export type AllMessageOptions = SendMessageOptions &
+  LinkPreviewOptions &
   MessageButtonsOptions &
   Partial<ListMessageOptions>;
 

@@ -274,7 +274,15 @@ interface Derived {
   isUnsentMedia: boolean;
   dir?: any;
   rtl?: any;
-  linkPreview?: any;
+  linkPreview?: {
+    title?: string;
+    description?: string;
+    canonicalUrl?: string;
+    matchedText: string;
+    richPreviewType: number;
+    thumbnail?: string;
+    doNotPlayInline: boolean;
+  };
   isGroupsV4InviteExpired: boolean;
   isPersistent: boolean;
   isUnreadType: boolean;
