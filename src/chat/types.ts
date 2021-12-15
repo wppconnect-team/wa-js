@@ -222,6 +222,10 @@ export interface ImageMessageOptions
   isViewOnce?: boolean;
 }
 
+export interface StickerMessageOptions extends FileMessageOptions {
+  type: 'sticker';
+}
+
 export interface VideoMessageOptions
   extends FileMessageOptions,
     MessageButtonsOptions {
