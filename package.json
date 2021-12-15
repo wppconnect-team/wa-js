@@ -44,7 +44,7 @@
     "@types/shelljs": "^0.8.9",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
-    "@wppconnect/wa-version": "^1.1.25",
+    "@wppconnect/wa-version": "^1.1.26",
     "buffer": "^6.0.3",
     "commitizen": "^4.2.4",
     "conventional-changelog-cli": "^2.1.1",
