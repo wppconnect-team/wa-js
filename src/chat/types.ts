@@ -222,9 +222,7 @@ export interface ImageMessageOptions
   isViewOnce?: boolean;
 }
 
-export interface StickerMessageOptions
-  extends FileMessageOptions,
-    MessageButtonsOptions {
+export interface StickerMessageOptions extends FileMessageOptions {
   type: 'sticker';
 }
 
