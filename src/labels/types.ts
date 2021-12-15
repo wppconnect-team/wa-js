@@ -14,10 +14,26 @@
  * limitations under the License.
  */
 
-export interface newLabelOptions {
+export interface Label {
+  id: string;
+  name: string;
+  color: number;
+  count: number;
+}
+export interface NewLabelOptions {
   /**
    * If it's decimal, send it as a number. If it's hexadecimal, send it as a string.
    * If labelColor is omitted, the color will be generated automatically
    */
   labelColor?: string | number;
+}
+
+export interface AddOrRemoveLabelsOptions {
+  labelId: string;
+  type: 'add' | 'remove';
+}
+
+export interface DeleteLabelReturn {
+  id: string;
+  deleteLabelResult: any;
 }
