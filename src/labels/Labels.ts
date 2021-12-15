@@ -21,10 +21,10 @@ import { WPPError } from '../util';
 import * as webpack from '../webpack';
 import { LabelStore, Wid } from '../whatsapp';
 import {
-  addOrRemoveLabelsOptions,
+  AddOrRemoveLabelsOptions,
   DeleteLabelReturn,
-  label,
-  newLabelOptions,
+  Label,
+  NewLabelOptions,
 } from './types';
 
 const debug = Debug('WA-JS:labels');
@@ -38,9 +38,9 @@ export class Labels {
     debug('initialized');
   }
 
-  async getAllLabels(): Promise<label[]> {
-    const labels = (await LabelStore._findQuery()) || [];
-    return labels.map((e: label) => {
+  async getAllLabels(): Promise<Label[]> {
+    const labels = (await LabelStore._find()) || [];
+    return labels.map((e: Label) => {
       return { ...e, color: assertColor(Number(e.color)) };
     });
   }
@@ -57,7 +57,7 @@ export class Labels {
    * await WPP.labels.addNewLabel(`Name of label`, { labelColor: 4292849392 });
    * ```
    */
-  async addNewLabel(labelName: string, options: newLabelOptions = {}) {
+  async addNewLabel(labelName: string, options: NewLabelOptions = {}) {
     assertIsBusiness();
 
     let labelColor: number | false;
@@ -114,14 +114,14 @@ export class Labels {
    * @example
    * ```javascript
    * await WPP.labels.addOrRemoveLabels(
-   *   ['5541999999999','5541988888888'],
+   *   ['<number>@c.us','<number>@c.us'],
    *   [{labelId:'76', type:'add'},{labelId:'75', type:'remove'}]
    * )
    * ```
    */
   async addOrRemoveLabels(
     chatIds: string | Wid | (string | Wid)[],
-    options: addOrRemoveLabelsOptions | addOrRemoveLabelsOptions[]
+    options: AddOrRemoveLabelsOptions | AddOrRemoveLabelsOptions[]
   ): Promise<any> {
     assertIsBusiness();
 

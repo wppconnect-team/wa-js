@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-import { SendMsgResult } from '../whatsapp/enums';
-
-export interface label {
+export interface Label {
   id: string;
   name: string;
   color: number;
   count: number;
 }
-export interface newLabelOptions {
+export interface NewLabelOptions {
   /**
    * If it's decimal, send it as a number. If it's hexadecimal, send it as a string.
    * If labelColor is omitted, the color will be generated automatically
@@ -30,7 +28,7 @@ export interface newLabelOptions {
   labelColor?: string | number;
 }
 
-export interface addOrRemoveLabelsOptions {
+export interface AddOrRemoveLabelsOptions {
   labelId: string;
   type: 'add' | 'remove';
 }
