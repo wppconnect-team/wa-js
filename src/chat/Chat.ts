@@ -469,16 +469,32 @@ export class Chat extends Emittery<ChatEventTypes> {
     return msgs;
   }
 
-  async getMessageById(chatId: string | Wid, id: string): Promise<MsgModel>;
+  /**
+   * Get message by a single ID or array of IDs
+   *
+   * @example
+   * ```javascript
+   * // Single message
+   * WPP.chat.getMessageById('true_<number>@c.us_ABCDEF');
+   *
+   * // List of messages
+   * WPP.chat.getMessageById(['true_<number>@c.us_ABCDEF', 'false_<number>@c.us_789456']);
+   * ```
+   *
+   * @return  {Promise<MsgModel> | Promise<MsgModel[]>} List of raw messages
+   */
+  async getMessageById(id: string | MsgKey): Promise<MsgModel>;
+  async getMessageById(ids: (string | MsgKey)[]): Promise<MsgModel[]>;
+  async getMessageById(notUsed: any, id: string): Promise<MsgModel>;
+  async getMessageById(notUsed: any, ids: string[]): Promise<MsgModel[]>;
   async getMessageById(
-    chatId: string | Wid,
-    ids: string[]
-  ): Promise<MsgModel[]>;
-  async getMessageById(
-    chatId: string | Wid,
-    ids: string | string[]
+    notUsed: any,
+    ids?: string | MsgKey | (string | MsgKey)[]
   ): Promise<MsgModel | MsgModel[]> {
-    const chat = assertGetChat(chatId);
+    if (typeof ids === 'undefined') {
+      ids = notUsed as string;
+    }
+
     const debug = debugMessage.extend('getMessageById');
 
     let isSingle = false;
@@ -488,10 +504,11 @@ export class Chat extends Emittery<ChatEventTypes> {
       ids = [ids];
     }
 
-    const msgsKeys = ids.map((id) => MsgKey.fromString(id));
+    const msgsKeys = ids.map((id) => MsgKey.fromString(id.toString()));
 
     const msgs: MsgModel[] = [];
     for (const msgKey of msgsKeys) {
+      const chat = assertGetChat(msgKey.remote);
       let msg = chat.msgs.get(msgKey);
 
       if (!msg) {
