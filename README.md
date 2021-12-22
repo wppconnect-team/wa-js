@@ -56,6 +56,74 @@ npm run build:prd # or build:dev for development
 
 # lauch a local browser with automatic injection
 npm run launch:local
+
+# or only run in VSCode
+```
+
+## How to use this project
+
+Basicaly, you need to inject the `wppconnect-wa.js` file into the browser after WhatsApp page load.
+
+### TamperMonkey or GreaseMonkey
+
+```javascript
+// ==UserScript==
+// @name         WA-JS Teste
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  Simple example of WA-JS
+// @author       You
+// @match        https://web.whatsapp.com/*
+// @icon         https://www.google.com/s2/favicons?domain=whatsapp.com
+// @require      https://github.com/wppconnect-team/wa-js/releases/download/nightly/wppconnect-wa.js
+// @grant        none
+// ==/UserScript==
+
+/* globals WPP */
+
+(function () {
+  'use strict';
+
+  WPP.webpack.onReady(function () {
+    alert('Ready to use WPPConnect WA-JS');
+  });
+
+  // Your code here...
+})();
+```
+
+### Playwright
+
+```typescript
+import * as playwright from 'playwright-chromium';
+
+async function start() {
+  const browser = await playwright.chromium.launch();
+  const page = browser.newPage();
+
+  await page.goto('https://web.whatsapp.com/');
+
+  await page.addScriptTag({
+    path: require.resolve('@wppconnect/wa-js'),
+  });
+
+  // Wait WA-JS load
+  await page.waitForFunction(() => window.WPP?.isReady);
+
+  // Evaluating code: See https://playwright.dev/docs/evaluating/
+  const isAuthenticated: string = await page.evaluate(() =>
+    WPP.auth.isAuthenticated()
+  );
+
+  // Sending message: See https://playwright.dev/docs/evaluating/
+  const sendResult: string = await page.evaluate(
+    (to, message) => WPP.chat.sendTextMessage(to, message),
+    to,
+    message
+  );
+}
+
+start();
 ```
 
 ## License
