@@ -16,7 +16,7 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 2.2147.14:96403 */
+/** @whatsapp 2.2147.16:96403 */
 export declare function getOrGenerate(): string;
 
 exportModule(

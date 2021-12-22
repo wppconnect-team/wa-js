@@ -38,11 +38,11 @@ interface Session {
 
 interface Derived {}
 
-/** @whatsapp 2.2147.14:82600 */
+/** @whatsapp 2.2147.16:82600 */
 export declare interface LiveLocationModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 2.2147.14:82600 */
+/** @whatsapp 2.2147.16:82600 */
 export declare class LiveLocationModel extends Model<LiveLocationCollection> {
   idClass: typeof Wid;
   constructor(
