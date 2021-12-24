@@ -14,17 +14,26 @@
  * limitations under the License.
  */
 
-import './events';
+import { assertGetChat } from '../../assert';
+import { Wid } from '../../whatsapp';
+import { markUnread } from '../../whatsapp/functions';
 
-export * from './defaultSendMessageOptions';
-export {
-  clearListeners,
-  EventTypes,
-  listenerCount,
-  off,
-  on,
-  once,
-  UnsubscribeFn,
-} from './eventEmitter';
-export * from './functions';
-export * from './types';
+/**
+ * Mark a chat as unread
+ *
+ * @example
+ * ```javascript
+ * // Some messages
+ * WPP.chat.markIsUnread('<number>@c.us');
+ * ```
+ * @category Chat
+ */
+export async function markIsUnread(chatId: string | Wid) {
+  const chat = assertGetChat(chatId);
+
+  await markUnread(chat, true);
+
+  return {
+    wid: chat.id,
+  };
+}

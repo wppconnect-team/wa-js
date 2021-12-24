@@ -18,7 +18,7 @@ import Debug from 'debug';
 import Emittery from 'emittery';
 
 import { assertColor, assertWid } from '../assert';
-import chat, { RawMessage } from '../chat';
+import * as Chat from '../chat';
 import * as webpack from '../webpack';
 import {
   ChatStore,
@@ -65,12 +65,15 @@ export class Status extends Emittery<StatusEventTypes> {
     return myStatus;
   }
 
-  async sendRawStatus(message: RawMessage, options: SendStatusOptions = {}) {
+  async sendRawStatus(
+    message: Chat.RawMessage,
+    options: SendStatusOptions = {}
+  ) {
     options = {
       ...this.defaultSendMessageOptions,
       ...options,
     };
-    const result = await chat.sendRawMessage('status@broadcast', message, {
+    const result = await Chat.sendRawMessage('status@broadcast', message, {
       ...options,
       createChat: true,
     });
@@ -109,7 +112,7 @@ export class Status extends Emittery<StatusEventTypes> {
       textColor = assertColor(options.textColor);
     }
 
-    const message: RawMessage = {
+    const message: Chat.RawMessage = {
       body: content,
       type: 'chat',
       subtype: null,

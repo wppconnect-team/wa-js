@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-import './events';
+import { assertWid } from '../../assert';
+import { ChatModel, ChatStore, Wid } from '../../whatsapp';
 
-export * from './defaultSendMessageOptions';
-export {
-  clearListeners,
-  EventTypes,
-  listenerCount,
-  off,
-  on,
-  once,
-  UnsubscribeFn,
-} from './eventEmitter';
-export * from './functions';
-export * from './types';
+/**
+ * Find a chat by id
+ *
+ * @category Chat
+ */
+export function get(chatId: string | Wid): ChatModel | undefined {
+  const wid = assertWid(chatId);
+  return ChatStore.get(wid);
+}

@@ -14,17 +14,29 @@
  * limitations under the License.
  */
 
-import './events';
+import { assertGetChat } from '../../assert';
+import { Wid } from '../../whatsapp';
+import { sendSeen } from '../../whatsapp/functions';
 
-export * from './defaultSendMessageOptions';
-export {
-  clearListeners,
-  EventTypes,
-  listenerCount,
-  off,
-  on,
-  once,
-  UnsubscribeFn,
-} from './eventEmitter';
-export * from './functions';
-export * from './types';
+/**
+ * Mark a chat as read and send SEEN event
+ *
+ * @example
+ * ```javascript
+ * // Some messages
+ * WPP.chat.markIsRead('<number>@c.us');
+ * ```
+ * @category Chat
+ */
+export async function markIsRead(chatId: string | Wid) {
+  const chat = assertGetChat(chatId);
+
+  const unreadCount = chat.unreadCount!;
+
+  await sendSeen(chat, true);
+
+  return {
+    wid: chat.id,
+    unreadCount,
+  };
+}

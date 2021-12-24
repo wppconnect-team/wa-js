@@ -27,11 +27,10 @@ export { webpack };
 export { isInjected, isReady } from './webpack';
 
 export * as config from './config';
-export * as internal from './internal';
 
 export { default as auth } from './auth';
 export { default as blocklist } from './blocklist';
-export { default as chat } from './chat';
+export * as chat from './chat';
 export { default as contact } from './contact';
 export { default as group } from './group';
 export { default as status } from './status';

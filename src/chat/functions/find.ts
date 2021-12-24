@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-import './events';
+import { assertWid } from '../../assert';
+import { ChatModel, Wid } from '../../whatsapp';
+import { findChat } from '../../whatsapp/functions';
 
-export * from './defaultSendMessageOptions';
-export {
-  clearListeners,
-  EventTypes,
-  listenerCount,
-  off,
-  on,
-  once,
-  UnsubscribeFn,
-} from './eventEmitter';
-export * from './functions';
-export * from './types';
+/**
+ * Find a chat by id
+ *
+ * This create a new chat if no one was found
+ *
+ * @category Chat
+ */
+export async function find(chatId: string | Wid): Promise<ChatModel> {
+  const wid = assertWid(chatId);
+  return findChat(wid);
+}

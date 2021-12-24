@@ -14,17 +14,23 @@
  * limitations under the License.
  */
 
-import './events';
+import { assertGetChat } from '../../assert';
+import { ChatPresence, Wid } from '../../whatsapp';
 
-export * from './defaultSendMessageOptions';
-export {
-  clearListeners,
-  EventTypes,
-  listenerCount,
-  off,
-  on,
-  once,
-  UnsubscribeFn,
-} from './eventEmitter';
-export * from './functions';
-export * from './types';
+/**
+ * Mark a chat is paused state
+ *
+ * @example
+ * ```javascript
+ * // Mark as recording
+ * WPP.chat.markIsPaused('<number>@c.us');
+ * ```
+ * @category Chat
+ */
+export async function markIsPaused(chatId: string | Wid) {
+  const chat = assertGetChat(chatId);
+
+  await chat.presence.subscribe();
+
+  await ChatPresence.markPaused(chat);
+}

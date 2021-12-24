@@ -14,17 +14,30 @@
  * limitations under the License.
  */
 
-import './events';
+import { assertWid } from '../../assert';
+import { ChatModel, MsgKey, UserPrefs, Wid } from '../../whatsapp';
+import { randomMessageId } from '../../whatsapp/functions';
 
-export * from './defaultSendMessageOptions';
-export {
-  clearListeners,
-  EventTypes,
-  listenerCount,
-  off,
-  on,
-  once,
-  UnsubscribeFn,
-} from './eventEmitter';
-export * from './functions';
-export * from './types';
+/**
+ * Generate a new message ID
+ *
+ * @category Message
+ */
+export function generateMessageID(chat: string | ChatModel | Wid): MsgKey {
+  let to: Wid;
+
+  if (chat instanceof Wid) {
+    to = chat;
+  } else if (chat instanceof ChatModel) {
+    to = chat.id;
+  } else {
+    to = assertWid(chat);
+  }
+
+  return new MsgKey({
+    from: UserPrefs.getMaybeMeUser(),
+    to: to,
+    id: randomMessageId(),
+    selfDir: 'out',
+  });
+}

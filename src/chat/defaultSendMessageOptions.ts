@@ -14,17 +14,22 @@
  * limitations under the License.
  */
 
-import './events';
+import {
+  LinkPreviewOptions,
+  MessageButtonsOptions,
+  SendMessageOptions,
+} from '.';
+import { ListMessageOptions } from './functions/sendListMessage';
 
-export * from './defaultSendMessageOptions';
-export {
-  clearListeners,
-  EventTypes,
-  listenerCount,
-  off,
-  on,
-  once,
-  UnsubscribeFn,
-} from './eventEmitter';
-export * from './functions';
-export * from './types';
+export type AllMessageOptions = SendMessageOptions &
+  LinkPreviewOptions &
+  MessageButtonsOptions &
+  Partial<ListMessageOptions>;
+
+export const defaultSendMessageOptions: AllMessageOptions = {
+  createChat: false,
+  detectMentioned: true,
+  linkPreview: true,
+  markIsRead: true,
+  waitForAck: true,
+};

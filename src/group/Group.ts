@@ -18,7 +18,7 @@ import Debug from 'debug';
 import Emittery from 'emittery';
 
 import { assertGetChat, assertWid } from '../assert';
-import Chat from '../chat';
+import * as Chat from '../chat';
 import Contact from '../contact';
 import { WPPError } from '../util';
 import * as webpack from '../webpack';
