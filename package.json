@@ -47,7 +47,7 @@
     "@wppconnect/wa-version": "^1.1.26",
     "buffer": "^6.0.3",
     "commitizen": "^4.2.4",
-    "conventional-changelog-cli": "^2.1.1",
+    "conventional-changelog-cli": "^2.2.2",
     "data-urls": "^3.0.1",
     "debug": "^4.3.3",
     "emittery": "^0.10.0",
