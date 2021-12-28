@@ -35,7 +35,7 @@
     "watch": "webpack watch --devtool inline-source-map --mode development"
   },
   "devDependencies": {
-    "@commitlint/cli": "^15.0.0",
+    "@commitlint/cli": "^16.0.1",
     "@commitlint/config-conventional": "^16.0.0",
     "@commitlint/cz-commitlint": "^15.0.0",
     "@types/data-urls": "^2.0.1",
