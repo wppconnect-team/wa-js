@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import { Wid } from '../whatsapp';
+import { State } from '../../whatsapp';
 
-export interface BlocklistResult {
-  wid: Wid;
-  isBlocked: boolean;
+export function poke(): void {
+  State.poke();
 }

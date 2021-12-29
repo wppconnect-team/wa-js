@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import { Wid } from '../whatsapp';
+import * as wa_functions from '../../whatsapp/functions';
 
-export interface BlocklistResult {
-  wid: Wid;
-  isBlocked: boolean;
+export function isAuthenticated(): boolean {
+  return wa_functions.isAuthenticated();
 }

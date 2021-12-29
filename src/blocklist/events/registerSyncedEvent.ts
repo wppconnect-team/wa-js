@@ -14,9 +14,21 @@
  * limitations under the License.
  */
 
-import { Wid } from '../whatsapp';
+import Debug from 'debug';
 
-export interface BlocklistResult {
-  wid: Wid;
-  isBlocked: boolean;
+import * as webpack from '../../webpack';
+import { BlocklistStore } from '../../whatsapp';
+import { eventEmitter } from '../eventEmitter';
+
+const debug = Debug('WA-JS:blocklist');
+
+webpack.onInjected(() => registerSyncedEvent());
+
+function registerSyncedEvent() {
+  BlocklistStore.on('sort', () => {
+    debug('synced');
+    eventEmitter.emit('sync');
+  });
+
+  debug('synced event registered');
 }

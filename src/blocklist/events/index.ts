@@ -14,9 +14,4 @@
  * limitations under the License.
  */
 
-import { Wid } from '../whatsapp';
-
-export interface BlocklistResult {
-  wid: Wid;
-  isBlocked: boolean;
-}
+import './registerSyncedEvent';

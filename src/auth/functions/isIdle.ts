@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import { Wid } from '../whatsapp';
+import { Constants, State } from '../../whatsapp';
 
-export interface BlocklistResult {
-  wid: Wid;
-  isBlocked: boolean;
+export function isIdle(): boolean {
+  return State.state === Constants.SOCKET_STATE.UNPAIRED_IDLE;
 }

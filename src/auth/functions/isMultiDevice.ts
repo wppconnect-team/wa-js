@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import { Wid } from '../whatsapp';
+import { Features } from '../../whatsapp';
 
-export interface BlocklistResult {
-  wid: Wid;
-  isBlocked: boolean;
+export function isMultiDevice(): boolean {
+  return Features.supportsFeature('MD_BACKEND');
 }

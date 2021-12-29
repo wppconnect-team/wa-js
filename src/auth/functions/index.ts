@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { Wid } from '../whatsapp';
-
-export interface BlocklistResult {
-  wid: Wid;
-  isBlocked: boolean;
-}
+export { getAuthCode } from './getAuthCode';
+export { isAuthenticated } from './isAuthenticated';
+export { isIdle } from './isIdle';
+export { isMultiDevice } from './isMultiDevice';
+export { logout } from './logout';
+export { poke } from './poke';

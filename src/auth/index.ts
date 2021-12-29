@@ -14,9 +14,16 @@
  * limitations under the License.
  */
 
-import { Auth } from './Auth';
+import './events';
 
-export * from './Auth';
+export {
+  clearListeners,
+  EventTypes,
+  listenerCount,
+  off,
+  on,
+  once,
+  UnsubscribeFn,
+} from './eventEmitter';
+export * from './functions';
 export * from './types';
-
-export default new Auth();

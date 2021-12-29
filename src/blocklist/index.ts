@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
-import { Blocklist } from './Blocklist';
+import './events';
 
-export * from './Blocklist';
-export * from './types';
-
-export default new Blocklist();
+export {
+  clearListeners,
+  EventTypes,
+  listenerCount,
+  off,
+  on,
+  once,
+  UnsubscribeFn,
+} from './eventEmitter';
+export * from './functions';

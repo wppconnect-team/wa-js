@@ -14,9 +14,24 @@
  * limitations under the License.
  */
 
-import { Wid } from '../whatsapp';
+import Debug from 'debug';
 
-export interface BlocklistResult {
-  wid: Wid;
-  isBlocked: boolean;
+import * as webpack from '../../webpack';
+import { Conn } from '../../whatsapp';
+import { getAuthCode } from '..';
+import { eventEmitter } from '../eventEmitter';
+
+const debug = Debug('WA-JS:auth');
+
+webpack.onInjected(() => registerChangeEvent());
+
+function registerChangeEvent() {
+  Conn.on('change:ref', async () => {
+    const authCode = await getAuthCode().catch(() => null);
+    if (authCode) {
+      eventEmitter.emit('change', authCode);
+    }
+  });
+
+  debug('change event registered');
 }

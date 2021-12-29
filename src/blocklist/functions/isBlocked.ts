@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-import { Wid } from '../whatsapp';
+import { assertWid } from '../../assert';
+import { ContactModel, ContactStore, Wid } from '../../whatsapp';
 
-export interface BlocklistResult {
-  wid: Wid;
-  isBlocked: boolean;
+export function isBlocked(chatId: string | Wid): boolean {
+  const wid = assertWid(chatId);
+
+  const contact = ContactStore.get(wid) || new ContactModel({ id: wid });
+
+  return contact.isBlocked();
 }

@@ -14,9 +14,14 @@
  * limitations under the License.
  */
 
-import { Wid } from '../whatsapp';
+import { Cmd, State } from '../../whatsapp';
 
-export interface BlocklistResult {
-  wid: Wid;
-  isBlocked: boolean;
+export async function logout(): Promise<boolean> {
+  State.logout();
+
+  await new Promise((resolve) => {
+    Cmd.once('logout', resolve);
+  });
+
+  return true;
 }

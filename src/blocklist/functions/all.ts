@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import { Wid } from '../whatsapp';
+import { BlocklistStore, Wid } from '../../whatsapp';
 
-export interface BlocklistResult {
-  wid: Wid;
-  isBlocked: boolean;
+export function all(): Wid[] {
+  return BlocklistStore.models.map((b) => b.id);
 }

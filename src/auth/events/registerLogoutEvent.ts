@@ -14,9 +14,18 @@
  * limitations under the License.
  */
 
-import { Wid } from '../whatsapp';
+import Debug from 'debug';
 
-export interface BlocklistResult {
-  wid: Wid;
-  isBlocked: boolean;
+import * as webpack from '../../webpack';
+import { Cmd } from '../../whatsapp';
+import { eventEmitter } from '../eventEmitter';
+
+const debug = Debug('WA-JS:auth');
+
+webpack.onInjected(() => registerLogoutEvent());
+
+function registerLogoutEvent() {
+  Cmd.on('logout', () => eventEmitter.emit('logout'));
+
+  debug('logout event registered');
 }
