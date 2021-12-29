@@ -14,9 +14,14 @@
  * limitations under the License.
  */
 
-import { Labels } from './Labels';
-
-export * from './Labels';
+export {
+  clearListeners,
+  EventTypes,
+  listenerCount,
+  off,
+  on,
+  once,
+  UnsubscribeFn,
+} from './eventEmitter';
+export * from './functions';
 export * from './types';
-
-export default new Labels();

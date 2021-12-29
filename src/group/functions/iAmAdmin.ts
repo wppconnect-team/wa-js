@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-export interface Label {
-  id: string;
-  name: string;
-  color: number;
-  count: number;
+import { Wid } from '../../whatsapp';
+import { ensureGroup } from './';
+
+export function iAmAdmin(groupId: string | Wid) {
+  const groupChat = ensureGroup(groupId);
+  return groupChat.groupMetadata!.participants.iAmAdmin();
 }

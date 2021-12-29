@@ -14,9 +14,21 @@
  * limitations under the License.
  */
 
-export interface Label {
-  id: string;
-  name: string;
-  color: number;
-  count: number;
+import { assertWid } from '../../assert';
+import { ContactStore, Wid } from '../../whatsapp';
+import { sendQueryExists } from '../../whatsapp/functions';
+
+export async function queryExists(contactId: string | Wid) {
+  const wid = assertWid(contactId);
+
+  const contact = ContactStore.get(wid);
+
+  if (contact) {
+    return {
+      wid,
+      biz: contact.isBusiness,
+    };
+  }
+
+  return await sendQueryExists(wid).catch(() => null);
 }

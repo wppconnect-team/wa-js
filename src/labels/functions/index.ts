@@ -14,9 +14,14 @@
  * limitations under the License.
  */
 
-export interface Label {
-  id: string;
-  name: string;
-  color: number;
-  count: number;
-}
+export { addNewLabel } from './addNewLabel';
+export {
+  addOrRemoveLabels,
+  AddOrRemoveLabelsOptions,
+} from './addOrRemoveLabels';
+export { colorIsInLabelPalette } from './colorIsInLabelPalette';
+export { deleteAllLabels } from './deleteAllLabels';
+export { deleteLabel, DeleteLabelReturn } from './deleteLabel';
+export { getAllLabels } from './getAllLabels';
+export { getLabelColorPalette } from './getLabelColorPalette';
+export { getNewLabelColor } from './getNewLabelColor';

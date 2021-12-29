@@ -14,9 +14,21 @@
  * limitations under the License.
  */
 
-export interface Label {
-  id: string;
-  name: string;
-  color: number;
-  count: number;
+import { assertColor, assertIsBusiness } from '../../assert';
+import { WPPError } from '../../util';
+import { LabelStore } from '../../whatsapp';
+
+/**
+ * Returns an array of color palette in positive decimal
+ */
+export async function getLabelColorPalette(): Promise<number[]> {
+  assertIsBusiness();
+
+  const colorPalette = await LabelStore.getLabelColorPalette();
+
+  if (!colorPalette) {
+    throw new WPPError('canot_get_color_palette', `Can't get color palette`);
+  }
+
+  return colorPalette.map((e: string) => assertColor(Number(e)));
 }

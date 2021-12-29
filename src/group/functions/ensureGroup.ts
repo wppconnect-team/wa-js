@@ -14,6 +14,19 @@
  * limitations under the License.
  */
 
-export interface ContactEventTypes {
-  idle: undefined;
+import { assertGetChat } from '../../assert';
+import { WPPError } from '../../util';
+import { Wid } from '../../whatsapp';
+
+export function ensureGroup(groupId: string | Wid) {
+  const groupChat = assertGetChat(groupId);
+
+  if (!groupChat.isGroup) {
+    throw new WPPError(
+      'not_a_group',
+      `Chat ${groupChat.id._serialized} is not a group`
+    );
+  }
+
+  return groupChat;
 }

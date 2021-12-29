@@ -31,10 +31,10 @@ export * as config from './config';
 export { default as auth } from './auth';
 export { default as blocklist } from './blocklist';
 export * as chat from './chat';
-export { default as contact } from './contact';
-export { default as group } from './group';
-export { default as status } from './status';
-export { default as labels } from './labels';
+export * as contact from './contact';
+export * as group from './group';
+export * as status from './status';
+export * as labels from './labels';
 
 export * as whatsapp from './whatsapp';
 

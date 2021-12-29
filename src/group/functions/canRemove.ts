@@ -14,9 +14,19 @@
  * limitations under the License.
  */
 
-export interface Label {
-  id: string;
-  name: string;
-  color: number;
-  count: number;
+import { Wid } from '../../whatsapp';
+import { ensureGroupAndParticipants } from './';
+
+export function canRemove(
+  groupId: string | Wid,
+  participantsIds: (string | Wid) | (string | Wid)[]
+) {
+  const { groupChat, participants } = ensureGroupAndParticipants(
+    groupId,
+    participantsIds
+  );
+
+  return participants.every((p) =>
+    groupChat.groupMetadata!.participants.canRemove(p)
+  );
 }

@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-import { Group } from './Group';
-
-export * from './Group';
-export * from './types';
-
-export default new Group();
+export {
+  clearListeners,
+  EventTypes,
+  listenerCount,
+  off,
+  on,
+  once,
+  UnsubscribeFn,
+} from './eventEmitter';
+export * from './functions';

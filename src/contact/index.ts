@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-import { Contact } from './Contact';
-
-export * from './Contact';
-export * from './types';
-
-export default new Contact();
+export {
+  clearListeners,
+  EventTypes,
+  listenerCount,
+  off,
+  on,
+  once,
+  UnsubscribeFn,
+} from './eventEmitter';
+export * from './functions';

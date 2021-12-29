@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-export interface Label {
-  id: string;
-  name: string;
-  color: number;
-  count: number;
+import { assertIsBusiness } from '../../assert';
+import { deleteLabel, DeleteLabelReturn, getAllLabels } from '.';
+
+export async function deleteAllLabels(): Promise<DeleteLabelReturn[]> {
+  assertIsBusiness();
+
+  const labels = await getAllLabels();
+  return deleteLabel(labels.map((e) => e.id));
 }

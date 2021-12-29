@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-export interface Label {
-  id: string;
-  name: string;
-  color: number;
-  count: number;
+import { assertColor } from '../../assert';
+import { LabelStore } from '../../whatsapp';
+import { Label } from '..';
+
+export async function getAllLabels(): Promise<Label[]> {
+  const labels = (await LabelStore._find()) || [];
+  return labels.map((e: Label) => {
+    return { ...e, color: assertColor(Number(e.color)) };
+  });
 }

@@ -14,9 +14,4 @@
  * limitations under the License.
  */
 
-export interface Label {
-  id: string;
-  name: string;
-  color: number;
-  count: number;
-}
+export { queryExists } from './queryExists';
