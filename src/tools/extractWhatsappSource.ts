@@ -58,6 +58,8 @@ async function start() {
     content = content.replace(/\b(return|case)\s*!1\b/g, '$1 false');
     content = content.replace(/\b(return|case)\s*!0\b/g, '$1 true');
     content = content.replace(/\bvoid 0\b/g, 'undefined');
+    // Remove sourcemap because it not exists in production
+    content = content.replace(/\/\/# sourceMappingURL.*/g, '');
 
     fs.writeFileSync(filePath, content, { encoding: 'utf8' });
   });
