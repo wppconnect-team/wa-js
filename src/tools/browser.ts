@@ -29,8 +29,20 @@ type LaunchArguments = Parameters<
 >;
 
 export async function getPage(options?: LaunchArguments[1]) {
+  let userDataDir = path.resolve(__dirname, '../../userDataDir');
+  if (Array.isArray(options?.args)) {
+    const index = options?.args.findIndex((a) =>
+      a.startsWith('--user-data-dir')
+    );
+    if (typeof index === 'number' && index > -1) {
+      const param = options?.args[index];
+      options?.args.splice(index, 1);
+      userDataDir = param?.split('=')[1] || userDataDir;
+    }
+  }
+
   const browser = await playwright.chromium.launchPersistentContext(
-    path.resolve(__dirname, '../../userDataDir'),
+    userDataDir,
     options
   );
 
