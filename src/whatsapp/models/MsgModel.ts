@@ -17,7 +17,8 @@
 import { TextFontStyle } from '../../enums';
 import { ButtonCollection, MsgCollection } from '../collections';
 import { exportProxyModel } from '../exportModule';
-import { MsgKey, Wid } from '../misc';
+import { MediaObject, MsgKey, Wid } from '../misc';
+import { MediaDataModel } from '.';
 import {
   Model,
   ModelOptions,
@@ -226,7 +227,7 @@ interface Session {
   startOfDaySkew?: any;
   isQuotedMsgAvailable: boolean;
   senderObj?: any;
-  mediaData?: any;
+  mediaData?: MediaDataModel;
   forwardedFromWeb?: any;
   linksIndexParsed?: any;
 }
@@ -304,6 +305,7 @@ export declare class MsgModel extends Model {
     proterties: ModelPropertiesContructor<MsgModel, 'id'>,
     options?: ModelOptions
   );
+  mediaObject?: MediaObject;
   getLinks(e?: number): any;
   getHeaderLinks(): any;
   getFooterLinks(): any;

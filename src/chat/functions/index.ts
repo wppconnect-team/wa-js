@@ -17,6 +17,7 @@
 export { clear } from './clear';
 export { delete } from './delete';
 export { deleteMessage } from './deleteMessage';
+export { downloadMedia } from './downloadMedia';
 export { find } from './find';
 export { generateMessageID } from './generateMessageID';
 export { get } from './get';
