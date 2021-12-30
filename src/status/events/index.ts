@@ -14,16 +14,4 @@
  * limitations under the License.
  */
 
-import './events';
-
-export * from './defaultSendStatusOptions';
-export {
-  clearListeners,
-  EventTypes,
-  listenerCount,
-  off,
-  on,
-  once,
-  UnsubscribeFn,
-} from './eventEmitter';
-export * from './functions';
+import './registerSyncedEvent';

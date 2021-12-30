@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-import './events';
+import { StatusV3Model, StatusV3Store, UserPrefs } from '../../whatsapp';
 
-export * from './defaultSendStatusOptions';
-export {
-  clearListeners,
-  EventTypes,
-  listenerCount,
-  off,
-  on,
-  once,
-  UnsubscribeFn,
-} from './eventEmitter';
-export * from './functions';
+export async function getMyStatus(): Promise<StatusV3Model> {
+  let myStatus = StatusV3Store.getMyStatus();
+
+  if (!myStatus)
+    myStatus = await StatusV3Store.find(UserPrefs.getMaybeMeUser());
+
+  return myStatus;
+}

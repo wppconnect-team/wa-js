@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-import './events';
+import { SendStatusOptions } from './functions/sendRawStatus';
+import { TextStatusOptions } from './functions/sendTextStatus';
 
-export * from './defaultSendStatusOptions';
-export {
-  clearListeners,
-  EventTypes,
-  listenerCount,
-  off,
-  on,
-  once,
-  UnsubscribeFn,
-} from './eventEmitter';
-export * from './functions';
+export type AllStatusOptions = SendStatusOptions & TextStatusOptions;
+
+export const defaultSendStatusOptions: AllStatusOptions = {
+  waitForAck: true,
+};

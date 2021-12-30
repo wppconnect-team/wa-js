@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-import './events';
+import Debug from 'debug';
 
-export * from './defaultSendStatusOptions';
-export {
-  clearListeners,
-  EventTypes,
-  listenerCount,
-  off,
-  on,
-  once,
-  UnsubscribeFn,
-} from './eventEmitter';
-export * from './functions';
+import * as webpack from '../../webpack';
+import { StatusV3Store } from '../../whatsapp';
+import { eventEmitter } from '../eventEmitter';
+
+const debug = Debug('WA-JS:blocklist');
+
+webpack.onInjected(() => registerSyncedEvent());
+
+function registerSyncedEvent() {
+  StatusV3Store.on('sync', () => {
+    debug('synced');
+    eventEmitter.emit('sync');
+  });
+
+  debug('synced event registered');
+}

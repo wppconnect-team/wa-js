@@ -34,7 +34,7 @@ export * as chat from './chat';
 export * as contact from './contact';
 export * as group from './group';
 export * as labels from './labels';
-export { default as status } from './status';
+export * as status from './status';
 
 export * as whatsapp from './whatsapp';
 

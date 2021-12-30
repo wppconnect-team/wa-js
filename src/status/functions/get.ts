@@ -14,16 +14,10 @@
  * limitations under the License.
  */
 
-import './events';
+import { assertWid } from '../../assert';
+import { StatusV3Model, StatusV3Store, Wid } from '../../whatsapp';
 
-export * from './defaultSendStatusOptions';
-export {
-  clearListeners,
-  EventTypes,
-  listenerCount,
-  off,
-  on,
-  once,
-  UnsubscribeFn,
-} from './eventEmitter';
-export * from './functions';
+export function get(chatId: string | Wid): StatusV3Model | undefined {
+  const wid = assertWid(chatId);
+  return StatusV3Store.get(wid);
+}

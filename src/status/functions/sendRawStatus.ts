@@ -14,20 +14,30 @@
  * limitations under the License.
  */
 
-import { TextFontStyle } from '../enums';
-
-export interface StatusEventTypes {
-  sync: undefined;
-}
+import * as Chat from '../../chat';
+import { ChatStore } from '../../whatsapp';
+import { defaultSendStatusOptions } from '..';
 
 export interface SendStatusOptions {
   waitForAck?: boolean;
 }
 
-export interface TextStatusOptions extends SendStatusOptions {
-  font?: TextFontStyle;
-  backgroundColor?: string | number;
-  textColor?: string | number; // Work only in APP
-}
+export async function sendRawStatus(
+  message: Chat.RawMessage,
+  options: SendStatusOptions = {}
+) {
+  options = {
+    ...defaultSendStatusOptions,
+    ...options,
+  };
+  const result = await Chat.sendRawMessage('status@broadcast', message, {
+    ...options,
+    createChat: true,
+  });
 
-export type AllStatusOptions = SendStatusOptions & TextStatusOptions;
+  result.sendMsgResult.then(() => {
+    ChatStore.resyncMessages();
+  });
+
+  return result;
+}
