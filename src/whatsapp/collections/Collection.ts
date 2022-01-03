@@ -15,6 +15,7 @@
  */
 
 import { Stringable } from '../../types';
+import { WritableProperties } from '../../util';
 import { exportModule } from '../exportModule';
 import { EventEmitter } from '../misc';
 
@@ -49,7 +50,7 @@ export declare class Collection<M, A = M | M[]> extends EventEmitter {
 
   constructor(e?: any, t?: { parent: any });
 
-  add(value: A, options?: Option): A;
+  add(value: A | WritableProperties<A>, options?: Option): A;
 
   set(value: A, options?: Option): A;
 

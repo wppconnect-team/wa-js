@@ -18,7 +18,7 @@ import { TextFontStyle } from '../../enums';
 import { ButtonCollection, MsgCollection } from '../collections';
 import { exportProxyModel } from '../exportModule';
 import { MediaObject, MsgKey, Wid } from '../misc';
-import { MediaDataModel } from '.';
+import { ChatModel, MediaDataModel } from '.';
 import {
   Model,
   ModelOptions,
@@ -50,15 +50,15 @@ interface Props {
   interactiveAnnotations?: any;
   clientUrl?: any;
   loc?: any;
-  lat?: any;
-  lng?: any;
+  lat?: number;
+  lng?: number;
   isLive: boolean;
-  accuracy?: any;
-  speed?: any;
-  degrees?: any;
-  comment?: any;
-  sequence?: any;
-  shareDuration?: any;
+  accuracy?: number;
+  speed?: number;
+  degrees?: number;
+  comment?: string;
+  sequence?: number;
+  shareDuration?: number;
   finalLat?: any;
   finalLng?: any;
   finalAccuracy?: any;
@@ -233,7 +233,7 @@ interface Session {
 }
 
 interface Derived {
-  chat?: any;
+  chat?: ChatModel;
   hasTemplateButtons: boolean;
   ephemeralExpirationTimestamp?: any;
   isEphemeral: boolean;
@@ -267,7 +267,7 @@ interface Derived {
   numTimesForwarded?: any;
   isFrequentlyForwarded: boolean;
   eventType?: any;
-  sender?: any;
+  sender?: Wid;
   text?: any;
   containsEmoji?: any;
   isFailed: boolean;
