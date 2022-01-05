@@ -16,6 +16,13 @@
 
 import { Cmd } from '../../whatsapp';
 
+/**
+ * @param md If it's true, WhatsApp WEB will switch to MD. If it's false, WhatsApp WEB will switch to Legacy.
+ * @example
+ * ```javascript
+ * WPP.auth.setMultiDevice(true)
+ * ```
+ */
 export function setMultiDevice(md = true): boolean {
   if (md) {
     Cmd.upgradeToMDProd();
