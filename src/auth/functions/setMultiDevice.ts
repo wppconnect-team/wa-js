@@ -14,10 +14,20 @@
  * limitations under the License.
  */
 
-export { getAuthCode } from './getAuthCode';
-export { isAuthenticated } from './isAuthenticated';
-export { isIdle } from './isIdle';
-export { isMultiDevice } from './isMultiDevice';
-export { logout } from './logout';
-export { poke } from './poke';
-export { setMultiDevice } from './setMultiDevice';
+import { Cmd } from '../../whatsapp';
+
+/**
+ * @param md If it's true, WhatsApp WEB will switch to MD. If it's false, WhatsApp WEB will switch to Legacy.
+ * @example
+ * ```javascript
+ * WPP.auth.setMultiDevice(true)
+ * ```
+ */
+export function setMultiDevice(md = true): boolean {
+  if (md) {
+    Cmd.upgradeToMDProd();
+  } else {
+    Cmd.downgradeWebclient();
+  }
+  return true;
+}
