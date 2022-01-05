@@ -18,6 +18,6 @@ export { getAuthCode } from './getAuthCode';
 export { isAuthenticated } from './isAuthenticated';
 export { isIdle } from './isIdle';
 export { isMultiDevice } from './isMultiDevice';
-export { setMultiDevice } from './setMultiDevice';
 export { logout } from './logout';
 export { poke } from './poke';
+export { setMultiDevice } from './setMultiDevice';

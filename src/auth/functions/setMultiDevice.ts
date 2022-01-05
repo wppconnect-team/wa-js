@@ -16,7 +16,7 @@
 
 import { Cmd } from '../../whatsapp';
 
-export function setMultiDevice(md: boolean = true): boolean {
+export function setMultiDevice(md = true): boolean {
   if (md) {
     Cmd.upgradeToMDProd();
   } else {
