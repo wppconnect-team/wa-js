@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-export { getAuthCode } from './getAuthCode';
-export { isAuthenticated } from './isAuthenticated';
-export { isIdle } from './isIdle';
-export { isMultiDevice } from './isMultiDevice';
-export { setMultiDevice } from './setMultiDevice';
-export { logout } from './logout';
-export { poke } from './poke';
+import { Cmd } from '../../whatsapp';
+
+export function setMultiDevice(md: boolean = true): boolean {
+  if (md) {
+    Cmd.upgradeToMDProd();
+  } else {
+    Cmd.downgradeWebclient();
+  }
+  return true;
+}
