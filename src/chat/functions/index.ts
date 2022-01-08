@@ -16,13 +16,13 @@
 
 export { clear } from './clear';
 export { delete } from './delete';
-export { deleteMessage } from './deleteMessage';
+export { deleteMessage, DeleteMessageReturn } from './deleteMessage';
 export { downloadMedia } from './downloadMedia';
 export { find } from './find';
 export { generateMessageID } from './generateMessageID';
 export { get } from './get';
 export { getMessageById } from './getMessageById';
-export { getMessages } from './getMessages';
+export { getMessages, GetMessagesOptions } from './getMessages';
 export { markIsComposing } from './markIsComposing';
 export { markIsPaused } from './markIsPaused';
 export { markIsRead } from './markIsRead';
@@ -44,7 +44,10 @@ export {
   StickerMessageOptions,
   VideoMessageOptions,
 } from './sendFileMessage';
-export { sendListMessage } from './sendListMessage';
+export { ListMessageOptions, sendListMessage } from './sendListMessage';
 export { sendRawMessage } from './sendRawMessage';
-export { sendTextMessage } from './sendTextMessage';
-export { sendVCardContactMessage } from './sendVCardContactMessage';
+export { sendTextMessage, TextMessageOptions } from './sendTextMessage';
+export {
+  sendVCardContactMessage,
+  VCardContact,
+} from './sendVCardContactMessage';
