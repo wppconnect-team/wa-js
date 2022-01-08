@@ -1,3 +1,12 @@
+# 1.1.0 (2022-01-08)
+
+
+### Bug Fixes
+
+* Fixed WPP.contact.queryExists (fix wppconnect-team/wppconnect[#725](https://github.com/wppconnect-team/wa-js/issues/725)) ([0c2b50c](https://github.com/wppconnect-team/wa-js/commit/0c2b50c4994d81d0e0d5debdfea7a3e96e333d50))
+
+
+
 ## 1.0.16 (2021-12-08)
 
 
