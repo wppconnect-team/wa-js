@@ -1,3 +1,7 @@
+## [1.1.1](https://github.com/wppconnect-team/wa-js/compare/v1.1.0...v1.1.1) (2022-01-08)
+
+
+
 # 1.1.0 (2022-01-08)
 
 
