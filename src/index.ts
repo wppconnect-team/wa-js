@@ -35,6 +35,7 @@ export * as contact from './contact';
 export * as group from './group';
 export * as labels from './labels';
 export * as status from './status';
+export * as util from './util';
 
 export * as whatsapp from './whatsapp';
 
