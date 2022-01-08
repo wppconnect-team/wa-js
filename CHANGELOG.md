@@ -1,3 +1,12 @@
+## 1.1.3 (2022-01-08)
+
+
+### Bug Fixes
+
+* Fixed WPP.chat.downloadMedia for Videos in Chromium ([ba07dfc](https://github.com/wppconnect-team/wa-js/commit/ba07dfcf7d11dda6d379766932bdd43adc9cd319))
+
+
+
 ## 1.1.2 (2022-01-08)
 
 
