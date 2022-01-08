@@ -36,7 +36,7 @@ export declare class OpaqueData extends OpaqueDataBase {
   size(): number;
   formData(): string;
   type(): string;
-  forceToBlob(): string;
+  forceToBlob(): Blob;
   isBlobEqual(e: any): string;
 
   static createFromBase64Jpeg(base64: string): Promise<OpaqueData>;

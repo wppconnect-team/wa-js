@@ -32,6 +32,7 @@ export declare class MediaObject {
   contentInfo: any;
   progressiveStage: any;
   parsedVcards: any;
+  type: string;
 
   consolidate(e: any): any;
   clearBlob(): void;

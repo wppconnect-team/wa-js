@@ -23,7 +23,7 @@ import { getMessageById } from '.';
  *
  * @category Message
  */
-export async function downloadMedia(id: string): Promise<any> {
+export async function downloadMedia(id: string): Promise<Blob> {
   const msg = await getMessageById(id);
 
   if (!msg.mediaData) {
@@ -42,12 +42,23 @@ export async function downloadMedia(id: string): Promise<any> {
     isUserInitiated: true,
   });
 
-  let blob = null;
+  let blob: Blob | null = null;
 
   if (msg.mediaData.mediaBlob) {
     blob = msg.mediaData.mediaBlob.forceToBlob();
   } else if (msg.mediaData.filehash) {
     blob = MediaBlobCache.get(msg.mediaData.filehash);
+  }
+
+  if (!blob && msg.mediaObject?.type === 'VIDEO') {
+    try {
+      msg.type = 'document';
+      msg.mediaObject.type = 'DOCUMENT';
+      return await downloadMedia(id);
+    } finally {
+      msg.type = 'video';
+      msg.mediaObject.type = 'VIDEO';
+    }
   }
 
   if (!blob) {
