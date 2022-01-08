@@ -55,6 +55,33 @@ export interface EventTypes {
      */
     ids: MsgKey[];
   };
+  live_location_start: {
+    id: Wid;
+    msgId: MsgKey;
+    chat: Wid;
+    lat: number;
+    lng: number;
+    accuracy?: number;
+    speed?: number;
+    degrees?: number;
+    shareDuration: number;
+  };
+  live_location_update: {
+    id: Wid;
+    lastUpdated: number;
+    elapsed: number;
+    lat: number;
+    lng: number;
+    accuracy?: number;
+    speed?: number;
+    degrees?: number;
+    comment: string;
+  };
+  live_location_end: {
+    id: Wid;
+    chat: Wid;
+    seq: number;
+  };
 }
 
 export const eventEmitter = new Emittery<EventTypes, EventTypes>({

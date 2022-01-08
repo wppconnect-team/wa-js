@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { LiveLocationCollection } from '../collections';
+import { LiveLocationCollection, ParticipantCollection } from '../collections';
 import { exportProxyModel } from '../exportModule';
 import { Wid } from '../misc';
 import {
@@ -49,6 +49,7 @@ export declare class LiveLocationModel extends Model<LiveLocationCollection> {
     proterties?: ModelPropertiesContructor<LiveLocationModel>,
     options?: ModelOptions
   );
+  participants: ParticipantCollection;
   hasParticipants(): boolean;
   startViewingMap(): any;
   stopViewingMap(): any;

@@ -40,12 +40,12 @@ export declare class BaseCollection<C, A = C | C[]> extends Collection<C> {
   find(
     id: Stringable,
     options?: { logOnSend?: boolean; set?: boolean }
-  ): Promise<C | undefined>;
+  ): Promise<C>;
 
   update(
     id: Stringable,
     options?: { logOnSend?: boolean; set?: boolean }
-  ): Promise<C | undefined>;
+  ): Promise<C>;
 
   handle(values: A): void;
 

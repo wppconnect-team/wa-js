@@ -16,13 +16,11 @@
 
 import { exportModule } from '../exportModule';
 import { GroupMetadataModel } from '../models';
-import { Collection } from './Collection';
+import { BaseCollection } from '.';
 
 /** @whatsapp 2.2147.16:75798 */
-export declare class GroupMetadataCollection extends Collection<GroupMetadataModel> {
+export declare class GroupMetadataCollection extends BaseCollection<GroupMetadataModel> {
   static model: GroupMetadataModel;
-  static cachePolicy?: any;
-  onResume(): any;
   handlePendingInvite(): any;
 }
 exportModule(

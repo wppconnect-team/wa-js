@@ -16,3 +16,4 @@
 
 import './registerAckMessageEvent';
 import './registerRevokeMessageEvent';
+import './registerLiveLocationUpdateEvent';

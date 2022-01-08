@@ -16,15 +16,14 @@
 
 import { exportModule } from '../exportModule';
 import { LiveLocationModel } from '../models';
-import { Collection } from './Collection';
+import { BaseCollection } from '.';
 
 /** @whatsapp 2.2147.16:31104 */
-export declare class LiveLocationCollection extends Collection<LiveLocationModel> {
+export declare class LiveLocationCollection extends BaseCollection<LiveLocationModel> {
   static model: LiveLocationModel;
   static staleCollection?: any;
   static resumeOnAvailable?: any;
   getActive(e?: any): any;
-  onResume(): any;
   processMsg(e?: any, t?: boolean): any;
   removeMsg(e?: any): any;
 }
