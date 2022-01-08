@@ -15,20 +15,23 @@
  */
 
 import { assertWid } from '../../assert';
-import { ContactStore, Wid } from '../../whatsapp';
+import { Wid } from '../../whatsapp';
 import { sendQueryExists } from '../../whatsapp/functions';
+
+const cache = new Map<string, { wid: Wid; biz: boolean } | null>();
 
 export async function queryExists(contactId: string | Wid) {
   const wid = assertWid(contactId);
 
-  const contact = ContactStore.get(wid);
+  const id = wid.toString();
 
-  if (contact) {
-    return {
-      wid,
-      biz: contact.isBusiness,
-    };
+  if (cache.has(id)) {
+    return cache.get(id);
   }
 
-  return await sendQueryExists(wid).catch(() => null);
+  const result = await sendQueryExists(wid).catch(() => null);
+
+  cache.set(id, result);
+
+  return result;
 }
