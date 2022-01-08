@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
-export * from './blobToBase64';
-export * from './convertToFile';
-export * from './createWid';
-export * from './errors';
-export * from './types';
+export function blobToBase64(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = function () {
+      resolve(reader.result as string);
+    };
+    reader.onabort = reject;
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
