@@ -42,7 +42,7 @@
     "@types/debug": "^4.1.7",
     "@types/node": "^14.18.5",
     "@types/shelljs": "^0.8.10",
-    "@typescript-eslint/eslint-plugin": "^5.9.0",
+    "@typescript-eslint/eslint-plugin": "^5.9.1",
     "@typescript-eslint/parser": "^5.9.0",
     "@wppconnect/wa-version": "^1.1.26",
     "buffer": "^6.0.3",
