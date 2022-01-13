@@ -16,9 +16,9 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 2.2147.16:17754 */
+/** @whatsapp 2.2149.4:17754 */
 export declare function randomMessageId(): string;
-/** @whatsapp 2.2147.16:17754 */
+/** @whatsapp 2.2149.4:17754 */
 export declare function randomId(): string;
 
 exportModule(

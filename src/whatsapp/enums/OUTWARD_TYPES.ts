@@ -16,7 +16,7 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 2.2147.16:90672 */
+/** @whatsapp 2.2149.4:90672 */
 export declare enum OUTWARD_TYPES {
   IMAGE = 'image',
   VIDEO = 'video',

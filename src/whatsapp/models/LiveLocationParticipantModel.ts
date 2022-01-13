@@ -49,11 +49,11 @@ interface Derived {
   valid?: any;
 }
 
-/** @whatsapp 2.2147.16:77872 */
+/** @whatsapp 2.2149.4:77872 */
 export declare interface LiveLocationParticipantModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 2.2147.16:77872 */
+/** @whatsapp 2.2149.4:77872 */
 export declare class LiveLocationParticipantModel extends Model {
   idClass: typeof Wid;
   constructor(

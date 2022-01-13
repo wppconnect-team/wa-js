@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { StickerPackModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2147.16:45822 */
+/** @whatsapp 2.2149.4:45822 */
 export declare class StickerPackCollection extends Collection<StickerPackModel> {
   static model: StickerPackModel;
   checksum?: any;

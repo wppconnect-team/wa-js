@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { StickerModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 2.2147.16:6009 */
+/** @whatsapp 2.2149.4:6009 */
 export declare class StickerSearchCollection extends Collection<StickerModel> {
   static model: StickerModel;
   isFetchingData(): boolean;

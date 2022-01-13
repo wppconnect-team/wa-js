@@ -64,11 +64,11 @@ interface Derived {
   isSMB?: boolean;
 }
 
-/** @whatsapp 2.2147.16:9322 */
+/** @whatsapp 2.2149.4:9322 */
 export declare interface ConnModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 2.2147.16:9322 */
+/** @whatsapp 2.2149.4:9322 */
 export declare class ConnModel extends Model {
   constructor(
     proterties?: ModelPropertiesContructor<ConnModel>,
