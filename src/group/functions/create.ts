@@ -18,7 +18,7 @@ import { assertWid } from '../../assert';
 import * as Chat from '../../chat';
 import * as Contact from '../../contact';
 import { WPPError } from '../../util';
-import { ChatStore, ContactStore, Wid } from '../../whatsapp';
+import { ContactStore, Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
 
 export async function create(
@@ -34,7 +34,6 @@ export async function create(
   const wids: Wid[] = [];
 
   for (const wid of participantsWids) {
-    console.log('wid', wid);
     const contact = ContactStore.get(wid);
     if (contact) {
       wids.push(contact.id);
@@ -51,8 +50,6 @@ export async function create(
 
     wids.push(info.wid);
   }
-
-  ChatStore.on('all', console.log);
 
   const result = await wa_functions.sendCreateGroup(groupName, wids);
 
