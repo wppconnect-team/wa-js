@@ -1,3 +1,12 @@
+## 1.1.5 (2022-01-15)
+
+
+### Bug Fixes
+
+* Allow WPP.contact.queryExists to throw exception (wppconnect-team/wppconnect[#793](https://github.com/wppconnect-team/wa-js/issues/793)) ([7331aad](https://github.com/wppconnect-team/wa-js/commit/7331aadb06b77550ba0c959d29ba6118bb5fa0f2))
+
+
+
 ## 1.1.4 (2022-01-14)
 
 
