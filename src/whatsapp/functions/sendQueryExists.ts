@@ -21,6 +21,19 @@ import { exportModule } from '../exportModule';
 export declare function sendQueryExists(contact: Wid): Promise<{
   wid: Wid;
   biz: boolean;
+  bizInfo?: {
+    verifiedName?: {
+      isApi: boolean;
+      level: string;
+      name: string;
+      privacyMode: any;
+      serial: string;
+    };
+  };
+  disappearingMode?: {
+    duration: number;
+    settingTimestamp: number;
+  };
 }>;
 
 exportModule(

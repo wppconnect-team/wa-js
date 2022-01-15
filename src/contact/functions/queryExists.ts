@@ -29,7 +29,7 @@ export async function queryExists(contactId: string | Wid) {
     return cache.get(id);
   }
 
-  const result = await sendQueryExists(wid).catch(() => null);
+  const result = await sendQueryExists(wid);
 
   cache.set(id, result);
 
