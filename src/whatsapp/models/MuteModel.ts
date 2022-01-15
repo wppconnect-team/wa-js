@@ -26,7 +26,7 @@ import {
 
 interface Props {
   id: Wid;
-  expiration?: any;
+  expiration: number;
 }
 
 interface Session {
@@ -51,9 +51,13 @@ export declare class MuteModel extends Model<MuteCollection> {
     options?: ModelOptions
   );
   setMute(e?: any, t?: any): any;
-  mute(e?: any, t?: any, r?: any): any;
+  mute(
+    expiration: number,
+    sendAction?: boolean,
+    sequence?: number
+  ): Promise<number>;
   canMute(): boolean;
-  unmute(e?: any, t?: any): any;
+  unmute(sendAction?: boolean, sequence?: number): Promise<void>;
   getCollection(): MuteCollection;
 }
 

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+export { canMute } from './canMute';
 export { clear } from './clear';
 export { delete } from './delete';
 export { deleteMessage, DeleteMessageReturn } from './deleteMessage';
@@ -28,6 +29,7 @@ export { markIsPaused } from './markIsPaused';
 export { markIsRead } from './markIsRead';
 export { markIsRecording } from './markIsRecording';
 export { markIsUnread } from './markIsUnread';
+export { mute } from './mute';
 export { LinkPreviewOptions, prepareLinkPreview } from './prepareLinkPreview';
 export {
   MessageButtonsOptions,
@@ -51,3 +53,4 @@ export {
   sendVCardContactMessage,
   VCardContact,
 } from './sendVCardContactMessage';
+export { unmute } from './unmute';

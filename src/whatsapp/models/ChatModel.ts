@@ -18,7 +18,7 @@ import { ChatCollection } from '../collections';
 import { SendMsgResult } from '../enums';
 import { exportProxyModel } from '../exportModule';
 import { MsgKey, MsgLoad, Wid } from '../misc';
-import { GroupMetadataModel, MsgModel } from '.';
+import { GroupMetadataModel, MsgModel, MuteModel } from '.';
 import { ModelOptions, ModelPropertiesContructor, ModelProxy } from './Model';
 import { ModelChatBase, PropsChatBase, SessionChatBase } from './ModelChatBase';
 
@@ -68,7 +68,7 @@ interface Session extends SessionChatBase {
   quotedMsgAdminGroupJid?: any;
   groupMetadata?: GroupMetadataModel;
   presence?: any;
-  mute?: any;
+  mute: MuteModel;
   contact?: any;
   liveLocation?: any;
   liveLocationQueried?: any;
