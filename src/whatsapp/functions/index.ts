@@ -26,6 +26,7 @@ export * from './isAuthenticated';
 export * from './markSeen';
 export * from './msgFindQuery';
 export * from './products';
+export * from './profilePic';
 export * from './randomId';
 export * from './sendClear';
 export * from './sendCreateGroup';
