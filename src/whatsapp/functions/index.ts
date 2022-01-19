@@ -33,4 +33,5 @@ export * from './sendCreateGroup';
 export * from './sendDelete';
 export * from './sendQueryExists';
 export * from './sendTextMsgToChat';
+export * from './status';
 export * from './uploadProductImage';
