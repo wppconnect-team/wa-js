@@ -14,4 +14,5 @@
  * limitations under the License.
  */
 
+export { getStatus } from './getStatus';
 export { queryExists } from './queryExists';

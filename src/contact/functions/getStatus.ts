@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-import { exportModule } from '../exportModule';
-import { Wid } from '../misc';
-import { StatusModel } from '../models';
-import { BaseCollection } from '.';
+import { assertWid } from '../../assert';
+import { StatusStore, Wid } from '../../whatsapp';
 
-/** @whatsapp 2.2149.4:22360 */
-export declare class StatusCollection extends BaseCollection<StatusModel> {
-  static model: StatusModel;
-  static idClass: typeof Wid;
-  static staleCollection?: any;
-  static resumeOnAvailable?: any;
+/**
+ * Get the current text status
+ *
+ * @example
+ * ```javascript
+ * await WPP.contact.getStatus('<number>@c.us');
+ * ```
+ *
+ * @category Chat
+ */
+
+export async function getStatus(contactId: string | Wid) {
+  const wid = assertWid(contactId);
+
+  return StatusStore.find(wid);
 }
-
-exportModule(
-  exports,
-  { StatusCollection: (m) => m.StatusCollectionImpl || m.StatusCollection },
-  (m) => m.StatusCollectionImpl || m.StatusCollection
-);
