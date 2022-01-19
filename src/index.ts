@@ -34,6 +34,7 @@ export * as chat from './chat';
 export * as contact from './contact';
 export * as group from './group';
 export * as labels from './labels';
+export * as profile from './profile';
 export * as status from './status';
 export * as util from './util';
 
