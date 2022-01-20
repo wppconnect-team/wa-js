@@ -1,3 +1,12 @@
+## 1.1.6 (2022-01-20)
+
+
+### Bug Fixes
+
+* Ignore markIsRead error while is sending message ([17d4ca5](https://github.com/wppconnect-team/wa-js/commit/17d4ca540897a0610016fac34e85d1292297461e))
+
+
+
 ## 1.1.5 (2022-01-15)
 
 
