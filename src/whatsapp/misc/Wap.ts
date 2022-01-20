@@ -31,7 +31,7 @@ export declare class WapClass {
   }>;
 }
 
-/** @whatsapp 69162 */
+/** @whatsapp 69610 */
 export declare const Wap: WapClass;
 
 exportModule(

@@ -84,6 +84,8 @@ export declare class ConnModel extends Model {
 
 exportModule(
   exports,
-  { ConnModel: (m) => (m.default ? m.default.constructor : m.ConnImpl) },
+  {
+    ConnModel: (m) => (m.ConnImpl ? m.Conn.constructor : m.default.constructor),
+  },
   (m) => (m.Conn && m.ConnImpl) || (m.Conn && m.default)
 );
