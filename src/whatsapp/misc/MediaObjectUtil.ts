@@ -17,7 +17,7 @@
 import { exportModule } from '../exportModule';
 import { MediaObject } from '.';
 
-/** @whatsapp 2.2149.4:70233 */
+/** @whatsapp 70233 */
 export declare namespace MediaObjectUtil {
   function getOrCreateMediaObject(hash: string): MediaObject;
 }

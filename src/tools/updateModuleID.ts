@@ -44,10 +44,6 @@ async function start() {
     timeout: 0,
   });
 
-  const whatsappVersion: string = await page
-    .evaluate(() => (window as any).Debug.VERSION)
-    .catch(() => null);
-
   page.on('console', (message) => {
     if (message.type() !== 'debug') {
       console.log('browser', message.type(), message.text(), ...message.args());
@@ -113,7 +109,7 @@ async function start() {
           continue;
         }
 
-        const moduleID = `${whatsappVersion}:${result[resultName]}`;
+        const moduleID = `${result[resultName]}`;
         if (!moduleID) {
           continue;
         }

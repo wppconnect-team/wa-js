@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { GroupMetadataModel } from '../models';
 import { BaseCollection } from '.';
 
-/** @whatsapp 2.2149.4:75798 */
+/** @whatsapp 75798 */
 export declare class GroupMetadataCollection extends BaseCollection<GroupMetadataModel> {
   static model: GroupMetadataModel;
   handlePendingInvite(): any;

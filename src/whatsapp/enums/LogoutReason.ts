@@ -16,7 +16,7 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 2.2149.4:82735 */
+/** @whatsapp 82735 */
 export declare enum LogoutReason {
   USER_INITIATED = 'user_initiated',
   SYNCD_FAILURE = 'syncd_failure',

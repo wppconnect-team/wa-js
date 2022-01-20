@@ -16,7 +16,7 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 2.2149.4:75571 */
+/** @whatsapp 75571 */
 export declare class MediaBlobCacheImpl {
   is24h: boolean;
   getOrCreateURL(filehash: string): string;
@@ -30,7 +30,7 @@ export declare class MediaBlobCacheImpl {
   decreaseUsageCount(filehash: string): void;
 }
 
-/** @whatsapp 2.2149.4:75571 */
+/** @whatsapp 75571 */
 export declare const MediaBlobCache: MediaBlobCacheImpl;
 
 exportModule(

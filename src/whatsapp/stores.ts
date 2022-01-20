@@ -17,63 +17,63 @@
 import * as collections from './collections';
 import { exportModule } from './exportModule';
 
-/** @whatsapp 2.2149.4:15701 */
+/** @whatsapp 15701 */
 export declare const BlocklistStore: collections.BlocklistCollection;
-/** @whatsapp 2.2149.4:54100 */
+/** @whatsapp 54100 */
 export declare const BusinessCategoriesResultStore: collections.BusinessCategoriesResultCollection;
-/** @whatsapp 2.2149.4:8581 */
+/** @whatsapp 8581 */
 export declare const BusinessProfileStore: collections.BusinessProfileCollection;
-/** @whatsapp 2.2149.4:15971 */
+/** @whatsapp 15971 */
 export declare const CallStore: collections.CallCollection;
-/** @whatsapp 2.2149.4:25523 */
+/** @whatsapp 25523 */
 export declare const CartStore: collections.CartCollection;
-/** @whatsapp 2.2149.4:60028 */
+/** @whatsapp 60028 */
 export declare const CatalogStore: collections.CatalogCollection;
-/** @whatsapp 2.2149.4:84758 */
+/** @whatsapp 84758 */
 export declare const ChatStore: collections.ChatCollection;
-/** @whatsapp 2.2149.4:17025 */
+/** @whatsapp 17025 */
 export declare const ContactStore: collections.ContactCollection;
-/** @whatsapp 2.2149.4:41098 */
+/** @whatsapp 41098 */
 export declare const EmojiVariantStore: collections.EmojiVariantCollection;
-/** @whatsapp 2.2149.4:75798 */
+/** @whatsapp 75798 */
 export declare const GroupMetadataStore: collections.GroupMetadataCollection;
-/** @whatsapp 2.2149.4:59606 */
+/** @whatsapp 59606 */
 export declare const LabelStore: collections.LabelCollection;
-/** @whatsapp 2.2149.4:31104 */
+/** @whatsapp 31104 */
 export declare const LiveLocationStore: collections.LiveLocationCollection;
-/** @whatsapp 2.2149.4:45472 */
+/** @whatsapp 45472 */
 export declare const MsgStore: collections.MsgCollection;
-/** @whatsapp 2.2149.4:57636 */
+/** @whatsapp 57636 */
 export declare const MsgInfoStore: collections.MsgInfoCollection;
-/** @whatsapp 2.2149.4:80959 */
+/** @whatsapp 80959 */
 export declare const MuteStore: collections.MuteCollection;
-/** @whatsapp 2.2149.4:98052 */
+/** @whatsapp 98052 */
 export declare const OrderStore: collections.OrderCollection;
-/** @whatsapp 2.2149.4:48327 */
+/** @whatsapp 48327 */
 export declare const PresenceStore: collections.PresenceCollection;
-/** @whatsapp 2.2149.4:97038 */
+/** @whatsapp 97038 */
 export declare const ProductMessageListStore: collections.ProductMessageListCollection;
-/** @whatsapp 2.2149.4:3165 */
+/** @whatsapp 3165 */
 export declare const ProfilePicThumbStore: collections.ProfilePicThumbCollection;
-/** @whatsapp 2.2149.4:60123 */
+/** @whatsapp 60123 */
 export declare const QuickReplyStore: collections.QuickReplyCollection;
-/** @whatsapp 2.2149.4:30462 */
+/** @whatsapp 30462 */
 export declare const RecentEmojiStore: collections.RecentEmojiCollection;
-/** @whatsapp 2.2149.4:27686 */
+/** @whatsapp 27686 */
 export declare const RecentStickerStore: collections.RecentStickerCollection;
-/** @whatsapp 2.2149.4:30118 */
+/** @whatsapp 30118 */
 export declare const StarredMsgStore: collections.StarredMsgCollection;
-/** @whatsapp 2.2149.4:68477 */
+/** @whatsapp 68477 */
 export declare const StarredStickerStore: collections.StarredStickerCollection;
-/** @whatsapp 2.2149.4:22360 */
+/** @whatsapp 22360 */
 export declare const StatusStore: collections.StatusCollection;
-/** @whatsapp 2.2149.4:70173 */
+/** @whatsapp 70173 */
 export declare const StatusV3Store: collections.StatusV3Collection;
-/** @whatsapp 2.2149.4:16482 */
+/** @whatsapp 16482 */
 export declare const StickerStore: collections.StickerCollection;
-/** @whatsapp 2.2149.4:45822 */
+/** @whatsapp 45822 */
 export declare const StickerPackStore: collections.StickerPackCollection;
-/** @whatsapp 2.2149.4:6009 */
+/** @whatsapp 6009 */
 export declare const StickerSearchStore: collections.StickerSearchCollection;
 
 const storeNames = [

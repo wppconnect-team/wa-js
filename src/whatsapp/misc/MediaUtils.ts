@@ -16,7 +16,7 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 2.2149.4:63063 */
+/** @whatsapp 63063 */
 export declare namespace MediaUtils {
   function getImageWidthHeight(): Promise<{ width: number; height: number }>;
 }

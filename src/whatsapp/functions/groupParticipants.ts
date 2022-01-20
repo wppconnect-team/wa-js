@@ -17,25 +17,25 @@
 import { ChatModel, ParticipantModel } from '..';
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 2.2149.4:97449 */
+/** @whatsapp 97449 */
 export declare function addParticipants(
   group: ChatModel,
   participants: ParticipantModel[]
 ): Promise<void>;
 
-/** @whatsapp 2.2149.4:97449 */
+/** @whatsapp 97449 */
 export declare function removeParticipants(
   group: ChatModel,
   participants: ParticipantModel[]
 ): Promise<void>;
 
-/** @whatsapp 2.2149.4:97449 */
+/** @whatsapp 97449 */
 export declare function promoteParticipants(
   group: ChatModel,
   participants: ParticipantModel[]
 ): Promise<void>;
 
-/** @whatsapp 2.2149.4:97449 */
+/** @whatsapp 97449 */
 export declare function demoteParticipants(
   group: ChatModel,
   participants: ParticipantModel[]
