@@ -71,13 +71,15 @@ export async function prepareLinkPreview<T extends RawMessage>(
     const text = message.type === 'chat' ? message.body : '';
 
     if (text) {
-      const link = await findFirstWebLink(text).catch(() => null);
-      if (link) {
-        const preview = await fetchLinkPreview(link).catch(() => null);
-        if (preview?.data) {
-          options.linkPreview = { ...preview.data, ...override };
+      try {
+        const link = await findFirstWebLink(text);
+        if (link) {
+          const preview = await fetchLinkPreview(link);
+          if (preview?.data) {
+            options.linkPreview = { ...preview.data, ...override };
+          }
         }
-      }
+      } catch (error) {}
     }
   }
 
