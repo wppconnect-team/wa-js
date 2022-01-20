@@ -209,7 +209,8 @@ export async function sendFileMessage(
 
   if (options.markIsRead) {
     debug(`marking chat is read before send file`);
-    await markIsRead(chat.id);
+    // Try to mark is read and ignore errors
+    await markIsRead(chat.id).catch(() => null);
   }
 
   debug(`sending message (${options.type}) with id ${rawMessage.id}`);

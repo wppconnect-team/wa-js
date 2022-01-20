@@ -51,7 +51,8 @@ export async function sendRawMessage(
 
   if (options.markIsRead) {
     debug(`marking chat is read before send message`);
-    await markIsRead(chat.id);
+    // Try to mark is read and ignore errors
+    await markIsRead(chat.id).catch(() => null);
   }
 
   debug(`sending message (${rawMessage.type}) with id ${rawMessage.id}`);
