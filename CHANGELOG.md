@@ -1,3 +1,12 @@
+## 1.1.9 (2022-01-21)
+
+
+### Bug Fixes
+
+* Fixed live location event register and added a option ([08949a9](https://github.com/wppconnect-team/wa-js/commit/08949a9c3c46274f2ccca7d30e3aeb9c8a4e9851))
+
+
+
 ## 1.1.8 (2022-01-21)
 
 
