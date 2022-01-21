@@ -16,6 +16,7 @@
 
 import Debug from 'debug';
 
+import { config } from '../../config';
 import * as webpack from '../../webpack';
 import {
   ChatStore,
@@ -108,7 +109,8 @@ function registerLiveLocationUpdateEvent() {
    * Start for all active chats
    */
   ChatStore.once('collection_has_synced', () => {
-    ChatStore.forEach((chat) => {
+    const chats = ChatStore.models.slice(0, config.liveLocationLimit);
+    chats.forEach((chat) => {
       LiveLocationStore.update(chat.id)
         .then((liveLocation) => {
           liveLocation.startViewingMap();

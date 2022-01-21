@@ -20,7 +20,7 @@ import * as webpack from '../../webpack';
 import { StatusV3Store } from '../../whatsapp';
 import { eventEmitter } from '../eventEmitter';
 
-const debug = Debug('WA-JS:blocklist');
+const debug = Debug('WA-JS:status');
 
 webpack.onInjected(() => registerSyncedEvent());
 

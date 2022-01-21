@@ -21,7 +21,8 @@
  * ```javascript
  * // Global variable before injection
  * WPPConfig = {
- *   deviceName: 'WPPConnect'
+ *   deviceName: 'WPPConnect',
+ *   liveLocationLimit: 10
  * };
  * ```
  */
@@ -31,10 +32,16 @@ export interface Config {
    * @default 'WPPConnect'
    */
   deviceName: string | false;
+
+  /**
+   * Number of last chats to check live location after a page reload
+   */
+  liveLocationLimit: number;
 }
 
 export const defaultConfig: Config = {
   deviceName: false,
+  liveLocationLimit: 10,
 };
 
 export const config: Config = defaultConfig;
