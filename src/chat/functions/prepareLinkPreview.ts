@@ -72,7 +72,7 @@ export async function prepareLinkPreview<T extends RawMessage>(
 
     if (text) {
       try {
-        const link = await findFirstWebLink(text);
+        const link = findFirstWebLink(text);
         if (link) {
           const preview = await fetchLinkPreview(link);
           if (preview?.data) {
