@@ -15,21 +15,63 @@
  */
 
 import { assertWid } from '../../assert';
-import { Wid } from '../../whatsapp';
+import { Wap, Wid } from '../../whatsapp';
 import { sendQueryExists } from '../../whatsapp/functions';
 
-const cache = new Map<string, { wid: Wid; biz: boolean } | null>();
+export interface QueryExistsResult {
+  wid: Wid;
+  biz: boolean;
+  bizInfo?: {
+    verifiedName?: {
+      isApi: boolean;
+      level: string;
+      name: string;
+      privacyMode: any;
+      serial: string;
+    };
+  };
+  disappearingMode?: {
+    duration: number;
+    settingTimestamp: number;
+  };
+}
 
-export async function queryExists(contactId: string | Wid) {
+const cache = new Map<string, QueryExistsResult | null>();
+
+export async function queryExists(
+  contactId: string | Wid
+): Promise<QueryExistsResult | null> {
   const wid = assertWid(contactId);
 
   const id = wid.toString();
 
   if (cache.has(id)) {
-    return cache.get(id);
+    return cache.get(id)!;
   }
 
-  const result = await sendQueryExists(wid);
+  let result = await sendQueryExists(wid).catch(() => null);
+
+  if (!result) {
+    const query = await Wap.queryExist(id);
+    if (query.status === 200) {
+      result = {
+        wid: query.jid,
+        biz: query.biz || false,
+      };
+
+      // @todo: Migrate condition to isDisappearingModeEnabled()
+      if (result) {
+        const disappearing = await Wap.queryDisappearingMode(wid);
+
+        if (disappearing.status === 200) {
+          result.disappearingMode = {
+            duration: disappearing.duration!,
+            settingTimestamp: disappearing.settingTimestamp!,
+          };
+        }
+      }
+    }
+  }
 
   cache.set(id, result);
 
