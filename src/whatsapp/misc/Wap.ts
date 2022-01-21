@@ -37,7 +37,8 @@ export declare const Wap: WapClass;
 exportModule(
   exports,
   {
-    Wap: (m) => m.instance || m.Cmd,
+    WapClass: (m) => m.instance?.constructor || m.Wap,
+    Wap: (m) => m.instance || m.default,
   },
-  (m) => !m.default && m.instance.queryExist
+  (m) => (!m.default && m.instance?.queryExist) || (m.default && m.Wap)
 );
