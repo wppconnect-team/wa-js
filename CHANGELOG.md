@@ -1,3 +1,12 @@
+## 1.1.10 (2022-01-22)
+
+
+### Bug Fixes
+
+* Fixed getMessageById when the message is from status (wppconnect-team/wppconnect[#823](https://github.com/wppconnect-team/wa-js/issues/823)) ([f075cd2](https://github.com/wppconnect-team/wa-js/commit/f075cd24fd01e33f0322da9f9be321f039b9b6b3))
+
+
+
 ## 1.1.9 (2022-01-21)
 
 
