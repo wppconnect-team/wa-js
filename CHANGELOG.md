@@ -1,3 +1,12 @@
+## 1.1.11 (2022-01-22)
+
+
+### Features
+
+* Added WPP.profile.getMyStatus function ([7c5975d](https://github.com/wppconnect-team/wa-js/commit/7c5975df3eaacc6a4b98f5e9116574dfbcaf8cfa))
+
+
+
 ## 1.1.10 (2022-01-22)
 
 
