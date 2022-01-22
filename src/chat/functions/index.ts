@@ -53,4 +53,5 @@ export {
   sendVCardContactMessage,
   VCardContact,
 } from './sendVCardContactMessage';
+export { starMessage, StarMessageReturn } from './starMessage';
 export { unmute } from './unmute';
