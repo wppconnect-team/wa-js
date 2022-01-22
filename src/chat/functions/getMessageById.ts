@@ -18,7 +18,7 @@ import Debug from 'debug';
 
 import { assertGetChat } from '../../assert';
 import { WPPError } from '../../util';
-import { MsgKey, MsgModel } from '../../whatsapp';
+import { MsgKey, MsgModel, MsgStore } from '../../whatsapp';
 
 const debug = Debug('WA-JS:message:getMessageById');
 
@@ -68,15 +68,19 @@ export async function getMessageById(
 
   const msgs: MsgModel[] = [];
   for (const msgKey of msgsKeys) {
-    const chat = assertGetChat(msgKey.remote);
-    let msg = chat.msgs.get(msgKey);
+    let msg = MsgStore.get(msgKey);
 
     if (!msg) {
-      debug(`searching remote message with id ${msgKey.toString()}`);
-      const result = chat.getSearchContext(msgKey);
-      await result.collection.loadAroundPromise;
-
+      const chat = assertGetChat(msgKey.remote);
       msg = chat.msgs.get(msgKey);
+
+      if (!msg) {
+        debug(`searching remote message with id ${msgKey.toString()}`);
+        const result = chat.getSearchContext(msgKey);
+        await result.collection.loadAroundPromise;
+
+        msg = chat.msgs.get(msgKey);
+      }
     }
 
     if (!msg) {
