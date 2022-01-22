@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import parseDataURL from 'data-urls';
 import FileType from 'file-type';
+import parseDataURL from 'parse-data-url';
 
 export async function convertToFile(
   data: string,
@@ -28,10 +28,10 @@ export async function convertToFile(
   }
 
   if (!mimetype) {
-    mimetype = parsed.mimeType.essence;
+    mimetype = parsed.contentType;
   }
 
-  const buffer = parsed.body;
+  const buffer = parsed.toBuffer();
   const blob = new Blob(
     [new Uint8Array(buffer, buffer.byteOffset, buffer.length)],
     { type: mimetype }
