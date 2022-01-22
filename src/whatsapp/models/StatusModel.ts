@@ -26,7 +26,7 @@ import {
 
 interface Props {
   id: Wid;
-  status?: any;
+  status?: string;
 }
 
 interface Session {

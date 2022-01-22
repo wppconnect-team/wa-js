@@ -14,5 +14,21 @@
  * limitations under the License.
  */
 
-export { getMyStatus } from './getMyStatus';
-export { setMyStatus } from './setMyStatus';
+import { StatusStore, UserPrefs } from '../../whatsapp';
+
+/**
+ * Get your current text status
+ *
+ * @example
+ * ```javascript
+ * await WPP.profile.getMyStatus();
+ * ```
+ *
+ * @category Chat
+ */
+
+export async function getMyStatus() {
+  const myStatus = await StatusStore.find(UserPrefs.getMaybeMeUser());
+
+  return myStatus.status;
+}
