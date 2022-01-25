@@ -137,7 +137,8 @@ exportModule(
 exportModule(
   exports,
   {
-    StickerPackStore: (m) => m.default || m.StickerPackCollectionMd,
+    StickerPackStore: (m) =>
+      m.default || m.StickerPackCollectionMd || m.StickerPackCollection,
   },
   (m) => m.StickerPackCollection
 );
