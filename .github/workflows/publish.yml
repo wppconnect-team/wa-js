@@ -58,13 +58,18 @@ jobs:
           echo -e "::set-output name=changelog::${changelog}\n"
 
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+        uses: meeDamian/github-release@2.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref }}
+          commitish: ${{ github.sha }}
+          name: ${{ github.ref }}
           body: ${{ steps.generate_changelog.outputs.changelog }}
           draft: false
           prerelease: false
+          files: >
+            dist/wppconnect-wa.js
+          gzip: folders
+          allow_override: true
