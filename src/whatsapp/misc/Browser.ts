@@ -16,7 +16,7 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 94666 */
+/** @whatsapp 5897 */
 export declare namespace Browser {
   let promptUnloadGuards: number;
   function id(): string;

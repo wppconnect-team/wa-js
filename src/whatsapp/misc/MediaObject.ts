@@ -17,7 +17,7 @@
 import { exportModule } from '../exportModule';
 import { OpaqueData } from '.';
 
-/** @whatsapp 78690 */
+/** @whatsapp 73941 */
 export declare class MediaObject {
   entries: any;
   downloadStage: any;

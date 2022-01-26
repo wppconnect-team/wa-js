@@ -16,13 +16,13 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 82069 */
+/** @whatsapp 95782 */
 export declare function handleStatusSimpleAck(ackData: any): Promise<any>;
 
-/** @whatsapp 82075 */
+/** @whatsapp 33630 */
 export declare function handleChatSimpleAck(ackData: any): Promise<any>;
 
-/** @whatsapp 34269 */
+/** @whatsapp 14569 */
 export declare function handleGroupSimpleAck(ackData: any): Promise<any>;
 
 exportModule(

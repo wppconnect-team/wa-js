@@ -19,7 +19,7 @@ import { Wid } from '../misc';
 import { StatusModel } from '../models';
 import { BaseCollection } from '.';
 
-/** @whatsapp 22360 */
+/** @whatsapp 798 */
 export declare class StatusCollection extends BaseCollection<StatusModel> {
   static model: StatusModel;
   static idClass: typeof Wid;

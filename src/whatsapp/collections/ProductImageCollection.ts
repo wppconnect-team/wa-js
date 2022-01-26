@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { ProductImageModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 55845 */
+/** @whatsapp 47473 */
 export declare class ProductImageCollection extends Collection<ProductImageModel> {
   static model: ProductImageModel;
 }

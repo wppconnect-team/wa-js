@@ -35,11 +35,11 @@ interface Session {
 
 interface Derived {}
 
-/** @whatsapp 36705 */
+/** @whatsapp 27009 */
 export declare interface LabelItemModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 36705 */
+/** @whatsapp 27009 */
 export declare class LabelItemModel extends Model {
   constructor(
     proterties?: ModelPropertiesContructor<LabelItemModel>,

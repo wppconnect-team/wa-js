@@ -16,7 +16,7 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 78502 */
+/** @whatsapp 23740 */
 export declare function findFirstWebLink(message: string): undefined | string;
 
 exportModule(

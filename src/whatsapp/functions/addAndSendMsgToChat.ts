@@ -18,7 +18,7 @@ import { SendMsgResult } from '../enums';
 import { exportModule } from '../exportModule';
 import { ChatModel, ModelPropertiesContructor, MsgModel } from '../models';
 
-/** @whatsapp 35339 */
+/** @whatsapp 12862 */
 export declare function addAndSendMsgToChat(
   chat: ChatModel,
   message: ModelPropertiesContructor<MsgModel>

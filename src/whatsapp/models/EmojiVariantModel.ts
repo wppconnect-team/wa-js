@@ -33,11 +33,11 @@ interface Session {
 
 interface Derived {}
 
-/** @whatsapp 14996 */
+/** @whatsapp 84603 */
 export declare interface EmojiVariantModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 14996 */
+/** @whatsapp 84603 */
 export declare class EmojiVariantModel extends Model {
   constructor(
     proterties?: ModelPropertiesContructor<EmojiVariantModel>,

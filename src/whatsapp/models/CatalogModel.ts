@@ -38,11 +38,11 @@ interface Session {
 
 interface Derived {}
 
-/** @whatsapp 73310 */
+/** @whatsapp 22746 */
 export declare interface CatalogModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 73310 */
+/** @whatsapp 22746 */
 export declare class CatalogModel extends Model<CatalogCollection> {
   idClass: typeof Wid;
   constructor(

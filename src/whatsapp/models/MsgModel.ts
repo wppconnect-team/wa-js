@@ -295,10 +295,10 @@ interface Derived {
   productListHeaderImage?: any;
 }
 
-/** @whatsapp 92954 */
+/** @whatsapp 93021 */
 export declare interface MsgModel extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 92954 */
+/** @whatsapp 93021 */
 export declare class MsgModel extends Model {
   idClass: typeof MsgKey;
   constructor(

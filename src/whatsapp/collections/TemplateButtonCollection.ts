@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { TemplateButtonModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 95411 */
+/** @whatsapp 41605 */
 export declare class TemplateButtonCollection extends Collection<TemplateButtonModel> {
   static model: TemplateButtonModel;
   static comparator(): any;

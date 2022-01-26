@@ -35,11 +35,11 @@ interface Session {
 
 interface Derived {}
 
-/** @whatsapp 84959 */
+/** @whatsapp 37331 */
 export declare interface RecentStickerModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 84959 */
+/** @whatsapp 37331 */
 export declare class RecentStickerModel extends Model {
   constructor(
     proterties?: ModelPropertiesContructor<RecentStickerModel>,

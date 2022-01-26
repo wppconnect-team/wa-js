@@ -17,7 +17,7 @@
 import { exportModule } from '../exportModule';
 import { ConnModel } from '../models';
 
-/** @whatsapp 9322 */
+/** @whatsapp 13798 */
 export declare const Conn: ConnModel;
 
 exportModule(

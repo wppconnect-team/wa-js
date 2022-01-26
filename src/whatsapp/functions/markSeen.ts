@@ -17,19 +17,19 @@
 import { exportModule } from '../exportModule';
 import { ChatModel, MsgModel } from '../models';
 
-/** @whatsapp 74109 */
+/** @whatsapp 9301 */
 export declare function markUnread(
   chat: ChatModel,
   whenAvailable: boolean
 ): Promise<ChatModel>;
 
-/** @whatsapp 74109 */
+/** @whatsapp 9301 */
 export declare function sendSeen(
   chat: ChatModel,
   whenAvailable: boolean
 ): Promise<ChatModel>;
 
-/** @whatsapp 64850 */
+/** @whatsapp 12785 */
 export declare function markPlayed(msg: MsgModel): Promise<void>;
 
 /**

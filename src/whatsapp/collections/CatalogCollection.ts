@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { CatalogModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 60028 */
+/** @whatsapp 39985 */
 export declare class CatalogCollection extends Collection<CatalogModel> {
   static model: CatalogModel;
   static staleCollection?: any;

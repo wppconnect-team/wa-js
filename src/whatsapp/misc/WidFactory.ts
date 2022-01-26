@@ -17,7 +17,7 @@
 import { exportModule } from '../exportModule';
 import { Wid } from './Wid';
 
-/** @whatsapp 89573 */
+/** @whatsapp 31517 */
 export declare namespace WidFactory {
   function createDeviceWid(wid: string): Wid;
 

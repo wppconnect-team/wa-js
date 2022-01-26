@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { CartModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 25523 */
+/** @whatsapp 93987 */
 export declare class CartCollection extends Collection<CartModel> {
   static model: CartModel;
   static cachePolicy?: any;

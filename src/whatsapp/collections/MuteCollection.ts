@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { MuteModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 80959 */
+/** @whatsapp 23297 */
 export declare class MuteCollection extends Collection<MuteModel> {
   static model: MuteModel;
   static cachePolicy?: any;
