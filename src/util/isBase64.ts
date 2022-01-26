@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-export * from './blobToBase64';
-export * from './convertToFile';
-export * from './createWid';
-export * from './errors';
-export * from './isBase64';
-export * from './types';
+const re = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
+
+export function isBase64(data: string): boolean {
+  return re.test(data);
+}
