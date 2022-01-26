@@ -17,12 +17,19 @@
 import FileType from 'file-type';
 import parseDataURL from 'parse-data-url';
 
+import { isBase64 } from '.';
+
 export async function convertToFile(
   data: string,
   mimetype?: string,
   filename?: string
 ): Promise<File> {
-  const parsed = parseDataURL(data);
+  let parsed = parseDataURL(data);
+
+  if (!parsed && isBase64(data)) {
+    parsed = parseDataURL('data:;base64,' + data);
+  }
+
   if (!parsed) {
     throw 'invalid_data_url';
   }
@@ -37,14 +44,16 @@ export async function convertToFile(
     { type: mimetype }
   );
 
-  if (!filename) {
+  if (!filename || !mimetype) {
     const result = await FileType.fromBuffer(buffer);
     if (result) {
       const baseType = result.mime.split('/')[0];
-      filename = `${baseType}.${result.ext}`;
-    } else {
-      filename = 'unknown';
+      filename = filename || `${baseType}.${result.ext}`;
+      mimetype = mimetype || result.mime;
     }
+
+    filename = filename || 'unknown';
+    mimetype = mimetype || 'application/octet-stream';
   }
 
   return new File([blob], filename, {
