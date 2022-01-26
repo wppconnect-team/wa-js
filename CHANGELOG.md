@@ -1,3 +1,12 @@
+## 1.1.12 (2022-01-26)
+
+
+### Bug Fixes
+
+* Improved file mimetype detection ([df98559](https://github.com/wppconnect-team/wa-js/commit/df98559ef9be4356b9bd73944259c4e171ef7cc4))
+
+
+
 ## 1.1.11 (2022-01-22)
 
 
