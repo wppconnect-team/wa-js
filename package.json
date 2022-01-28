@@ -24,6 +24,7 @@
     "docs:clean": "shx rm -rf docs",
     "docs:theme": "cd ./docs-source && tsc",
     "launch:local": "ts-node ./src/tools/launchLocal.ts",
+    "launch:protocol-log": "ts-node ./src/tools/launchProtocolLog.ts",
     "lint": "npx eslint --ext .ts src",
     "prepare": "husky install && npm run clean && npm run build:prd",
     "release": "release-it",
