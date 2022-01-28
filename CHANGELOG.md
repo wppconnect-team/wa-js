@@ -1,3 +1,12 @@
+## 1.1.13 (2022-01-28)
+
+
+### Bug Fixes
+
+* Fixed WPP.contact.queryExists to avoid stuck in MD ([a7761e5](https://github.com/wppconnect-team/wa-js/commit/a7761e5a8d7dea66c5f0522eb294cbe763e6ebaa))
+
+
+
 ## 1.1.12 (2022-01-26)
 
 
