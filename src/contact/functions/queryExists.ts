@@ -15,7 +15,7 @@
  */
 
 import { assertWid } from '../../assert';
-import { Wap, Wid } from '../../whatsapp';
+import { Features, Wap, Wid } from '../../whatsapp';
 import { sendQueryExists } from '../../whatsapp/functions';
 
 export interface QueryExistsResult {
@@ -64,24 +64,26 @@ export async function queryExists(
 
   let result: QueryExistsResult | null = null;
 
-  const query = await Wap.queryExist(id);
-  if (query.status === 200) {
-    result = {
-      wid: query.jid,
-      biz: query.biz || false,
-    };
+  if (Features.supportsFeature('MD_BACKEND')) {
+    const query = await Wap.queryExist(id);
+    if (query.status === 200) {
+      result = {
+        wid: query.jid,
+        biz: query.biz || false,
+      };
 
-    // @todo: Migrate condition to isDisappearingModeEnabled()
-    if (result) {
-      const disappearing = await Wap.queryDisappearingMode(wid).catch(
-        () => null
-      );
+      // @todo: Migrate condition to isDisappearingModeEnabled()
+      if (result) {
+        const disappearing = await Wap.queryDisappearingMode(wid).catch(
+          () => null
+        );
 
-      if (disappearing?.status === 200) {
-        result.disappearingMode = {
-          duration: disappearing.duration!,
-          settingTimestamp: disappearing.settingTimestamp!,
-        };
+        if (disappearing?.status === 200) {
+          result.disappearingMode = {
+            duration: disappearing.duration!,
+            settingTimestamp: disappearing.settingTimestamp!,
+          };
+        }
       }
     }
   }
