@@ -64,7 +64,7 @@ export async function queryExists(
 
   let result: QueryExistsResult | null = null;
 
-  if (Features.supportsFeature('MD_BACKEND')) {
+  if (!Features.supportsFeature('MD_BACKEND')) {
     const query = await Wap.queryExist(id);
     if (query.status === 200) {
       result = {
