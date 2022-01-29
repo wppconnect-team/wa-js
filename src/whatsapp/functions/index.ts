@@ -33,6 +33,7 @@ export * from './sendClear';
 export * from './sendCreateGroup';
 export * from './sendDelete';
 export * from './sendExitGroup';
+export * from './sendJoinGroupViaInvite';
 export * from './sendQueryExists';
 export * from './sendTextMsgToChat';
 export * from './status';
