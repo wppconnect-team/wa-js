@@ -79,7 +79,7 @@ export async function getMessageById(
         const result = chat.getSearchContext(msgKey);
         await result.collection.loadAroundPromise;
 
-        msg = chat.msgs.get(msgKey);
+        msg = chat.msgs.get(msgKey) || result.collection.get(msgKey);
       }
     }
 
