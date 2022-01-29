@@ -33,3 +33,4 @@ export { join } from './join';
 export { leave } from './leave';
 export { promoteParticipants } from './promoteParticipants';
 export { removeParticipants } from './removeParticipants';
+export { revokeInviteCode } from './revokeInviteCode';
