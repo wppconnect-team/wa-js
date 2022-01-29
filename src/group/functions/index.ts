@@ -28,5 +28,6 @@ export { iAmAdmin } from './iAmAdmin';
 export { iAmMember } from './iAmMember';
 export { iAmRestrictedMember } from './iAmRestrictedMember';
 export { iAmSuperAdmin } from './iAmSuperAdmin';
+export { leave } from './leave';
 export { promoteParticipants } from './promoteParticipants';
 export { removeParticipants } from './removeParticipants';
