@@ -16,6 +16,7 @@
 
 export * from './addAndSendMsgToChat';
 export * from './blockContact';
+export * from './createMsgProtobuf';
 export * from './fetchLinkPreview';
 export * from './findChat';
 export * from './findFirstWebLink';
