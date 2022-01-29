@@ -30,6 +30,9 @@ export { markIsRead } from './markIsRead';
 export { markIsRecording } from './markIsRecording';
 export { markIsUnread } from './markIsUnread';
 export { mute } from './mute';
+export { openChatAt } from './openChatAt';
+export { openChatBottom } from './openChatBottom';
+export { openChatFromUnread } from './openChatFromUnread';
 export { LinkPreviewOptions, prepareLinkPreview } from './prepareLinkPreview';
 export {
   MessageButtonsOptions,

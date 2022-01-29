@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { ChatModel } from '..';
 import { exportModule } from '../exportModule';
 import { EventEmitter } from '.';
 
@@ -53,9 +54,12 @@ export declare class CmdClass extends EventEmitter {
   sendDeleteMsgs(e?: any, t?: any, r?: any, n?: any, i?: any): void;
   sendRevokeMsgs(e?: any, t?: any, r?: any, n?: any, i?: any): void;
   _openChat(e?: any, t?: any): void;
-  openChatAt(e?: any, t?: any): void;
-  openChatFromUnread(e?: any): void;
-  openChatBottom(e?: any): void;
+  openChatAt(
+    chat: ChatModel,
+    context: ReturnType<ChatModel['getSearchContext']>
+  ): Promise<boolean>;
+  openChatFromUnread(chat: ChatModel): Promise<boolean>;
+  openChatBottom(chat: ChatModel): Promise<boolean>;
   scrollToPtt(e?: any): void;
   _scrollToFocusedMsg(e?: any): void;
   _scrollChatToBottom(): void;
