@@ -24,14 +24,7 @@ export function ensureGroupAndParticipants(
   participantsIds: (string | Wid) | (string | Wid)[],
   createIfNotExists = false
 ) {
-  const groupChat = ensureGroup(groupId);
-
-  if (!groupChat.groupMetadata!.participants.iAmAdmin()) {
-    throw new WPPError(
-      'group_you_are_not_admin',
-      `You are not admin in ${groupChat.id._serialized}`
-    );
-  }
+  const groupChat = ensureGroup(groupId, true);
 
   if (!Array.isArray(participantsIds)) {
     participantsIds = [participantsIds];

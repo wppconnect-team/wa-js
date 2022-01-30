@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import { WPPError } from '../../util';
 import { Wid } from '../../whatsapp';
 import { sendRevokeGroupInviteCode } from '../../whatsapp/functions';
-import { ensureGroup, iAmAdmin } from '.';
+import { ensureGroup } from '.';
 
 /**
  * Revoke the current invite code and generate new one.
@@ -31,14 +30,7 @@ import { ensureGroup, iAmAdmin } from '.';
  * @category Group
  */
 export async function revokeInviteCode(groupId: string | Wid) {
-  const groupChat = ensureGroup(groupId);
-
-  if (!iAmAdmin(groupId)) {
-    throw new WPPError(
-      'group_you_are_not_admin',
-      `You are not admin in ${groupChat.id._serialized}`
-    );
-  }
+  const groupChat = ensureGroup(groupId, true);
 
   return await sendRevokeGroupInviteCode(groupChat.id);
 }

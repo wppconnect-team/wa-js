@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-import { WPPError } from '../../util';
 import { Wid } from '../../whatsapp';
 import { sendSetGroupSubject } from '../../whatsapp/functions';
-import { iAmAdmin } from '..';
 import { ensureGroup } from './';
 
 /**
@@ -31,14 +29,7 @@ import { ensureGroup } from './';
  * @category Group
  */
 export async function setSubject(groupId: string | Wid, subject: string) {
-  const groupChat = ensureGroup(groupId);
-
-  if (!iAmAdmin(groupId)) {
-    throw new WPPError(
-      'group_you_are_not_admin',
-      `You are not admin in ${groupChat.id._serialized}`
-    );
-  }
+  const groupChat = ensureGroup(groupId, true);
 
   await sendSetGroupSubject(groupChat.id, subject);
 

@@ -17,14 +17,22 @@
 import { assertGetChat } from '../../assert';
 import { WPPError } from '../../util';
 import { Wid } from '../../whatsapp';
+import { iAmAdmin } from '.';
 
-export function ensureGroup(groupId: string | Wid) {
+export function ensureGroup(groupId: string | Wid, checkIsAdmin = false) {
   const groupChat = assertGetChat(groupId);
 
   if (!groupChat.isGroup) {
     throw new WPPError(
       'not_a_group',
       `Chat ${groupChat.id._serialized} is not a group`
+    );
+  }
+
+  if (checkIsAdmin && !iAmAdmin(groupId)) {
+    throw new WPPError(
+      'group_you_are_not_admin',
+      `You are not admin in ${groupChat.id._serialized}`
     );
   }
 

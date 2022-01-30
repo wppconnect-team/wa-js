@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-import { WPPError } from '../../util';
 import { Wid } from '../../whatsapp';
 import { sendQueryGroupInviteCode } from '../../whatsapp/functions/sendQueryGroupInviteCode';
-import { iAmAdmin } from '..';
 import { ensureGroup } from './';
 
 /**
@@ -30,14 +28,7 @@ import { ensureGroup } from './';
  * ```
  */
 export async function getInviteCode(groupId: string | Wid) {
-  const groupChat = ensureGroup(groupId);
-
-  if (!iAmAdmin(groupId)) {
-    throw new WPPError(
-      'group_you_are_not_admin',
-      `You are not admin in ${groupChat.id._serialized}`
-    );
-  }
+  const groupChat = ensureGroup(groupId, true);
 
   return await sendQueryGroupInviteCode(groupChat.id);
 }
