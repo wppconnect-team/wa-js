@@ -35,6 +35,7 @@ export * from './sendDelete';
 export * from './sendExitGroup';
 export * from './sendJoinGroupViaInvite';
 export * from './sendQueryExists';
+export * from './sendQueryGroupInvite';
 export * from './sendRevokeGroupInviteCode';
 export * from './sendTextMsgToChat';
 export * from './status';
