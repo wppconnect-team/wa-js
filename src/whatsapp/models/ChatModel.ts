@@ -31,6 +31,7 @@ interface Props extends PropsChatBase {
   isAnnounceGrpRestrict: boolean;
   modifyTag?: any;
   muteExpiration?: any;
+  name?: string;
   notSpam?: any;
   pin?: any;
   changeNumberOldJid?: any;
@@ -47,7 +48,7 @@ interface Session extends SessionChatBase {
   stale?: any;
   createdLocally?: any;
   pendingAction?: any;
-  formattedTitle?: any;
+  formattedTitle?: string;
   active?: any;
   pausedTimerId?: any;
   presenceResendTimerId?: any;
