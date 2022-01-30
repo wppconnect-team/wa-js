@@ -38,5 +38,6 @@ export * from './sendQueryExists';
 export * from './sendQueryGroupInvite';
 export * from './sendRevokeGroupInviteCode';
 export * from './sendTextMsgToChat';
+export * from './setGroup';
 export * from './status';
 export * from './uploadProductImage';

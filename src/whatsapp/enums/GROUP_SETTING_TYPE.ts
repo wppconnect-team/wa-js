@@ -14,7 +14,20 @@
  * limitations under the License.
  */
 
-export * from './GROUP_SETTING_TYPE';
-export * from './LogoutReason';
-export * from './OUTWARD_TYPES';
-export * from './SendMsgResult';
+import { exportModule } from '../exportModule';
+
+/** @whatsapp 77976 */
+export declare enum GROUP_SETTING_TYPE {
+  ANNOUNCEMENT = 'announcement',
+  RESTRICT = 'restrict',
+  NO_FREQUENTLY_FORWARDED = 'no_frequently_forwarded',
+  EPHEMERAL = 'ephemeral',
+}
+
+exportModule(
+  exports,
+  {
+    GROUP_SETTING_TYPE: 'default.GROUP_SETTING_TYPE',
+  },
+  (m) => m.default.GROUP_SETTING_TYPE
+);
