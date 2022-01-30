@@ -28,8 +28,8 @@ interface Props {
   id: Wid;
   creation?: any;
   owner?: any;
-  desc?: any;
-  descId?: any;
+  desc?: string;
+  descId?: string;
   descTime?: any;
   descOwner?: any;
   restrict?: any;
