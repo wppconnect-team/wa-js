@@ -44,7 +44,7 @@
     "@commitlint/cz-commitlint": "^16.1.0",
     "@playwright/test": "^1.18.1",
     "@types/debug": "^4.1.7",
-    "@types/node": "^14.18.9",
+    "@types/node": "^14.18.10",
     "@types/parse-data-url": "^3.0.0",
     "@types/shelljs": "^0.8.11",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
