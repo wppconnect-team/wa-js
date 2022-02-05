@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { WPPError } from '../../util';
 import { Wid } from '../../whatsapp';
 import {
   randomMessageId,
@@ -35,7 +36,17 @@ export async function setDescription(
   groupId: string | Wid,
   description: string
 ) {
-  const groupChat = ensureGroup(groupId, true);
+  const groupChat = ensureGroup(groupId);
+
+  if (!groupChat.groupMetadata?.canSetDescription()) {
+    throw new WPPError(
+      'you_are_not_allowed_set_group_description',
+      `You are not allowed to set group description in ${groupChat.id._serialized}`,
+      {
+        groupId: groupChat.id.toString(),
+      }
+    );
+  }
 
   const tagId = randomMessageId();
 

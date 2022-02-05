@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { WPPError } from '../../util';
 import { Wid } from '../../whatsapp';
 import { sendSetGroupSubject } from '../../whatsapp/functions';
 import { ensureGroup } from './';
@@ -29,7 +30,17 @@ import { ensureGroup } from './';
  * @category Group
  */
 export async function setSubject(groupId: string | Wid, subject: string) {
-  const groupChat = ensureGroup(groupId, true);
+  const groupChat = ensureGroup(groupId);
+
+  if (!groupChat.groupMetadata?.canSetSubject()) {
+    throw new WPPError(
+      'you_are_not_allowed_set_group_subject',
+      `You are not allowed to set group subject in ${groupChat.id._serialized}`,
+      {
+        groupId: groupChat.id.toString(),
+      }
+    );
+  }
 
   await sendSetGroupSubject(groupChat.id, subject);
 
