@@ -1,3 +1,12 @@
+## 1.1.15 (2022-02-06)
+
+
+### Bug Fixes
+
+* Fixed permission check for set group subject/description ([0ff6d58](https://github.com/wppconnect-team/wa-js/commit/0ff6d5892252150524f0595d711ff42338bdb29c))
+
+
+
 ## 1.1.14 (2022-01-28)
 
 
