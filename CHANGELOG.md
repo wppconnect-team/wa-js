@@ -1,3 +1,12 @@
+## 1.1.16 (2022-02-06)
+
+
+### Bug Fixes
+
+* exported WPP.group.getGroupInfoFromInviteCode function ([0616778](https://github.com/wppconnect-team/wa-js/commit/0616778ea749f69d76b7eb79bcd1135fdaeaf70f))
+
+
+
 ## 1.1.15 (2022-02-06)
 
 
