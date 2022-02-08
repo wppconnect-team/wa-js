@@ -20,7 +20,7 @@ import { GROUP_SETTING_TYPE } from '../../whatsapp/enums';
 import { sendSetGroupProperty } from '../../whatsapp/functions';
 import { ensureGroup } from './';
 
-export declare enum GroupProperty {
+export enum GroupProperty {
   ANNOUNCEMENT = 'announcement',
   EPHEMERAL = 'ephemeral',
   RESTRICT = 'restrict',
