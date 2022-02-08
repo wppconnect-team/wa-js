@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { ParticipantModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 59638 */
+/** @whatsapp 69125 */
 export declare class ParticipantCollection extends Collection<ParticipantModel> {
   static model: ParticipantModel;
   static comparator(): any;
@@ -40,5 +40,5 @@ exportModule(
   {
     ParticipantCollection: 'default',
   },
-  (m) => m.default.model === ParticipantModel
+  (m) => m.default.model === ParticipantModel && m.default.prototype.iAmMember
 );
