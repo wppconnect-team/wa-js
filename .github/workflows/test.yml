@@ -36,7 +36,7 @@ jobs:
       - name: Install Dependencies
         run: npm ci || npm install
 
-      - uses: actions/github-script@v5
+      - uses: actions/github-script@v6
         id: versions
         with:
           script: |
