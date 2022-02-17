@@ -16,10 +16,10 @@
 
 import { assertGetChat } from '../../assert';
 import { WPPError } from '../../util';
-import { Wid } from '../../whatsapp';
+import { GroupMetadataStore, Wid } from '../../whatsapp';
 import { iAmAdmin } from '.';
 
-export function ensureGroup(groupId: string | Wid, checkIsAdmin = false) {
+export async function ensureGroup(groupId: string | Wid, checkIsAdmin = false) {
   const groupChat = assertGetChat(groupId);
 
   if (!groupChat.isGroup) {
@@ -29,7 +29,9 @@ export function ensureGroup(groupId: string | Wid, checkIsAdmin = false) {
     );
   }
 
-  if (checkIsAdmin && !iAmAdmin(groupId)) {
+  await GroupMetadataStore.find(groupChat.id);
+
+  if (checkIsAdmin && !(await iAmAdmin(groupId))) {
     throw new WPPError(
       'group_you_are_not_admin',
       `You are not admin in ${groupChat.id._serialized}`

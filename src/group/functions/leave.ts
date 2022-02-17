@@ -29,7 +29,7 @@ import { ensureGroup } from '.';
  * @category Group
  */
 export async function leave(groupId: string | Wid) {
-  const groupChat = ensureGroup(groupId);
+  const groupChat = await ensureGroup(groupId);
 
   return await sendExitGroup(groupChat);
 }

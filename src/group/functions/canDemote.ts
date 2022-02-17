@@ -17,11 +17,11 @@
 import { Wid } from '../../whatsapp';
 import { ensureGroupAndParticipants } from './';
 
-export function canDemote(
+export async function canDemote(
   groupId: string | Wid,
   participantsIds: (string | Wid) | (string | Wid)[]
 ) {
-  const { groupChat, participants } = ensureGroupAndParticipants(
+  const { groupChat, participants } = await ensureGroupAndParticipants(
     groupId,
     participantsIds
   );

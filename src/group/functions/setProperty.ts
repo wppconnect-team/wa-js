@@ -63,7 +63,7 @@ export async function setProperty(
   property: GroupProperty,
   value: 0 | 1 | 86400 | 604800 | 7776000 | boolean
 ) {
-  const groupChat = ensureGroup(groupId);
+  const groupChat = await ensureGroup(groupId);
 
   if (
     property !== GroupProperty.ANNOUNCEMENT &&

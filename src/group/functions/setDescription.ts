@@ -36,7 +36,7 @@ export async function setDescription(
   groupId: string | Wid,
   description: string
 ) {
-  const groupChat = ensureGroup(groupId);
+  const groupChat = await ensureGroup(groupId);
 
   if (!groupChat.groupMetadata?.canSetDescription()) {
     throw new WPPError(

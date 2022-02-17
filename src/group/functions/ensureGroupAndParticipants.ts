@@ -19,12 +19,12 @@ import { WPPError } from '../../util';
 import { ParticipantModel, Wid } from '../../whatsapp';
 import { ensureGroup } from '.';
 
-export function ensureGroupAndParticipants(
+export async function ensureGroupAndParticipants(
   groupId: string | Wid,
   participantsIds: (string | Wid) | (string | Wid)[],
   createIfNotExists = false
 ) {
-  const groupChat = ensureGroup(groupId, true);
+  const groupChat = await ensureGroup(groupId, true);
 
   if (!Array.isArray(participantsIds)) {
     participantsIds = [participantsIds];

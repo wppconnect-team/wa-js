@@ -28,7 +28,7 @@ import { ensureGroup } from './';
  * ```
  */
 export async function getInviteCode(groupId: string | Wid) {
-  const groupChat = ensureGroup(groupId, true);
+  const groupChat = await ensureGroup(groupId, true);
 
   return await sendQueryGroupInviteCode(groupChat.id);
 }

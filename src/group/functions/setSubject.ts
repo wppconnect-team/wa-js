@@ -30,7 +30,7 @@ import { ensureGroup } from './';
  * @category Group
  */
 export async function setSubject(groupId: string | Wid, subject: string) {
-  const groupChat = ensureGroup(groupId);
+  const groupChat = await ensureGroup(groupId);
 
   if (!groupChat.groupMetadata?.canSetSubject()) {
     throw new WPPError(

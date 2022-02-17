@@ -23,7 +23,7 @@ export async function addParticipants(
   groupId: string | Wid,
   participantsIds: (string | Wid) | (string | Wid)[]
 ): Promise<void> {
-  const { groupChat, participants } = ensureGroupAndParticipants(
+  const { groupChat, participants } = await ensureGroupAndParticipants(
     groupId,
     participantsIds,
     true

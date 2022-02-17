@@ -17,11 +17,11 @@
 import { Wid } from '../../whatsapp';
 import { ensureGroupAndParticipants } from './';
 
-export function canRemove(
+export async function canRemove(
   groupId: string | Wid,
   participantsIds: (string | Wid) | (string | Wid)[]
 ) {
-  const { groupChat, participants } = ensureGroupAndParticipants(
+  const { groupChat, participants } = await ensureGroupAndParticipants(
     groupId,
     participantsIds
   );

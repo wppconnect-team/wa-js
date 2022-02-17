@@ -17,7 +17,7 @@
 import { Wid } from '../../whatsapp';
 import { ensureGroup } from './';
 
-export function iAmAdmin(groupId: string | Wid) {
-  const groupChat = ensureGroup(groupId);
+export async function iAmAdmin(groupId: string | Wid) {
+  const groupChat = await ensureGroup(groupId);
   return groupChat.groupMetadata!.participants.iAmAdmin();
 }

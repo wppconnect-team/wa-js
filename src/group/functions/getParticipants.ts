@@ -25,7 +25,7 @@ import { ensureGroup } from './';
  * WPP.group.getParticipants('<group-id>@g.us');
  * ```
  */
-export function getParticipants(groupId: string | Wid) {
-  const groupChat = ensureGroup(groupId);
+export async function getParticipants(groupId: string | Wid) {
+  const groupChat = await ensureGroup(groupId);
   return groupChat.groupMetadata!.participants.models;
 }

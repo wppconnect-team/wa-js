@@ -30,7 +30,7 @@ import { ensureGroup } from '.';
  * @category Group
  */
 export async function revokeInviteCode(groupId: string | Wid) {
-  const groupChat = ensureGroup(groupId, true);
+  const groupChat = await ensureGroup(groupId, true);
 
   return await sendRevokeGroupInviteCode(groupChat.id);
 }
