@@ -1,3 +1,12 @@
+## 1.1.18 (2022-02-17)
+
+
+### Bug Fixes
+
+* Fixed group functions when there are a lot of chats (fix wppconnect-team/wppconnect[#871](https://github.com/wppconnect-team/wa-js/issues/871)) ([1ff6a50](https://github.com/wppconnect-team/wa-js/commit/1ff6a5053cdd6ccc2ddc5df09dc3e73497987ad5))
+
+
+
 ## 1.1.17 (2022-02-12)
 
 
