@@ -40,11 +40,11 @@ interface Derived {
   mediaData?: any;
 }
 
-/** @whatsapp 82250 */
+/** @whatsapp 52822 */
 export declare interface OrderItemModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 82250 */
+/** @whatsapp 52822 */
 export declare class OrderItemModel extends Model<OrderCollection> {
   constructor(
     proterties?: ModelPropertiesContructor<OrderItemModel>,

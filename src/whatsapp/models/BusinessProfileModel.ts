@@ -46,11 +46,11 @@ interface Session {
 
 interface Derived {}
 
-/** @whatsapp 20586 */
+/** @whatsapp 48018 */
 export declare interface BusinessProfileModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 20586 */
+/** @whatsapp 48018 */
 export declare class BusinessProfileModel extends Model<BusinessProfileCollection> {
   idClass: typeof Wid;
   constructor(

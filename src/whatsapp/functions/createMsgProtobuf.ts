@@ -17,7 +17,7 @@
 import { MsgModel } from '..';
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 56346 */
+/** @whatsapp 6565 */
 export declare function createMsgProtobuf(
   e: MsgModel,
   t?: { [key: string]: any }

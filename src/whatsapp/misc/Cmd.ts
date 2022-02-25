@@ -18,7 +18,7 @@ import { ChatModel } from '..';
 import { exportModule } from '../exportModule';
 import { EventEmitter } from '.';
 
-/** @whatsapp 2751 */
+/** @whatsapp 88102 */
 export declare class CmdClass extends EventEmitter {
   public isMainLoaded: boolean;
   public uiBusy: number;
@@ -152,7 +152,7 @@ export declare class CmdClass extends EventEmitter {
   toggleStickerMaker(): void;
 }
 
-/** @whatsapp 2751 */
+/** @whatsapp 88102 */
 export declare const Cmd: CmdClass;
 
 exportModule(

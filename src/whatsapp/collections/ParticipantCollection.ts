@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { ParticipantModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 69125 */
+/** @whatsapp 96091 */
 export declare class ParticipantCollection extends Collection<ParticipantModel> {
   static model: ParticipantModel;
   static comparator(): any;

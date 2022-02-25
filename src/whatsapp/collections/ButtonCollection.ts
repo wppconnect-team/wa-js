@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { ReplyButtonModel } from '../models';
 import { BaseCollection } from './BaseCollection';
 
-/** @whatsapp 6136 */
+/** @whatsapp 47688 */
 export declare class ButtonCollection extends BaseCollection<ReplyButtonModel> {
   static model: ReplyButtonModel;
   static comparator(): any;

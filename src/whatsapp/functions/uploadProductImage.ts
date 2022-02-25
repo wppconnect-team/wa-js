@@ -17,7 +17,7 @@
 import { OpaqueData } from '..';
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 22367 */
+/** @whatsapp 78986 */
 export declare function uploadProductImage(
   mediaBlob: OpaqueData,
   filehash: string

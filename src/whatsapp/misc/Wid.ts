@@ -15,7 +15,7 @@
  */
 
 import { exportModule } from '../exportModule';
-/** @whatsapp 69678 */
+/** @whatsapp 39546 */
 export declare class Wid {
   constructor(
     id: string,

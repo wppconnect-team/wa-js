@@ -16,7 +16,7 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 21810 */
+/** @whatsapp 22683 */
 export declare class ClockClass {
   is24h: boolean;
   skew: number;
@@ -45,7 +45,7 @@ export declare class ClockClass {
   shouldUseIntlDateTimeFormat(): boolean;
 }
 
-/** @whatsapp 21810 */
+/** @whatsapp 22683 */
 export declare const Clock: ClockClass;
 
 exportModule(

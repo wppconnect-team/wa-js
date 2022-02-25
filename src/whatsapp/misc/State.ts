@@ -17,7 +17,7 @@
 import { exportModule } from '../exportModule';
 import { StateModel } from '../models';
 
-/** @whatsapp 37441 */
+/** @whatsapp 65044 */
 export declare const State: StateModel;
 
 exportModule(

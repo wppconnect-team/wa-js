@@ -18,7 +18,7 @@ import { Wid } from '..';
 import { exportModule } from '../exportModule';
 import { ChatModel } from '../models';
 
-/** @whatsapp 67935 */
+/** @whatsapp 56981 */
 export declare function sendCallSignalingMsg(
   data: {
     common: {

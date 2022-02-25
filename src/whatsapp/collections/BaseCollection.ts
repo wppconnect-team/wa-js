@@ -18,7 +18,7 @@ import { Stringable } from '../../types';
 import { exportModule } from '../exportModule';
 import { Collection } from './Collection';
 
-/** @whatsapp 30765 */
+/** @whatsapp 1255 */
 export declare class BaseCollection<C, A = C | C[]> extends Collection<C> {
   static cachePolicy: {
     id: string;

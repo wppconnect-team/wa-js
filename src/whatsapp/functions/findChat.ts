@@ -18,7 +18,7 @@ import { Wid } from '..';
 import { exportModule } from '../exportModule';
 import { ChatModel } from '../models';
 
-/** @whatsapp 42423 */
+/** @whatsapp 50101 */
 export declare function findChat(wid: Wid): Promise<ChatModel>;
 
 exportModule(

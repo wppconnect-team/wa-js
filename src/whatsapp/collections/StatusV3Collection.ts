@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { StatusV3Model } from '../models';
 import { BaseCollection } from '.';
 
-/** @whatsapp 7687 */
+/** @whatsapp 59387 */
 export declare class StatusV3Collection extends BaseCollection<StatusV3Model> {
   static model: StatusV3Model;
   loadMore(e?: any, t?: any, r?: any): any;

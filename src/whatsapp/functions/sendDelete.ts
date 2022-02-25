@@ -17,7 +17,7 @@
 import { ChatModel } from '..';
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 86212 */
+/** @whatsapp 20052 */
 export declare function sendDelete(chat: ChatModel): Promise<void>;
 
 exportModule(

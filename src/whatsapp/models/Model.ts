@@ -49,7 +49,7 @@ export interface ModelOptions {
   silent?: any;
 }
 
-/** @whatsapp 94077 */
+/** @whatsapp 11290 */
 export declare class Model<Collection = undefined> extends EventEmitter {
   static Proxy: string;
 

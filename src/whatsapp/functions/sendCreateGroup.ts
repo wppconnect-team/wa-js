@@ -17,7 +17,7 @@
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 75830 */
+/** @whatsapp 79583 */
 export declare function sendCreateGroup(
   groupName: string,
   participants: Wid[],

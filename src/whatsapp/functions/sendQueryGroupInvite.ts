@@ -44,7 +44,7 @@ export interface QueryGroupInviteResult {
   suspended: boolean;
 }
 
-/** @whatsapp 85709 */
+/** @whatsapp 10790 */
 export declare function sendQueryGroupInvite(
   inviteCode: string
 ): Promise<QueryGroupInviteResult>;

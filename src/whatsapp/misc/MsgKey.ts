@@ -17,7 +17,7 @@
 import { exportModule } from '../exportModule';
 import { Wid } from './Wid';
 
-/** @whatsapp 42078 */
+/** @whatsapp 32219 */
 export declare class MsgKey {
   constructor(
     options:

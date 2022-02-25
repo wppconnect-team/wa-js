@@ -16,7 +16,7 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 11424 */
+/** @whatsapp 13705 */
 export declare enum SendMsgResult {
   OK = 'OK',
   ERROR_NETWORK = 'ERROR_NETWORK',

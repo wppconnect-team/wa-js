@@ -17,7 +17,7 @@
 import { ChatModel } from '..';
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 94881 */
+/** @whatsapp 5501 */
 export declare function sendExitGroup(group: ChatModel): Promise<void>;
 
 exportModule(

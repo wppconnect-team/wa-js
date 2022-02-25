@@ -16,7 +16,7 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 93784 */
+/** @whatsapp 13194 */
 export declare function isAuthenticated(): boolean;
 
 exportModule(

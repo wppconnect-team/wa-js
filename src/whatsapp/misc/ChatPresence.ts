@@ -17,7 +17,7 @@
 import { ChatModel } from '..';
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 58487 */
+/** @whatsapp 371 */
 export declare namespace ChatPresence {
   function markComposing(chat: ChatModel): Promise<void>;
   function markPaused(chat: ChatModel): Promise<void>;

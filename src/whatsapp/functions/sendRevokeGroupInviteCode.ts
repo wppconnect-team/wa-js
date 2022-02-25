@@ -17,7 +17,7 @@
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 65705 */
+/** @whatsapp 69586 */
 export declare function sendRevokeGroupInviteCode(
   groupId: Wid
 ): Promise<string>;

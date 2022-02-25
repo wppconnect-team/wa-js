@@ -17,7 +17,7 @@
 import { exportModule } from '../exportModule';
 import { Wid } from '.';
 
-/** @whatsapp 25195 */
+/** @whatsapp 86875 */
 export declare class WapClass {
   queryExist(contactId: string): Promise<{
     status: 200;
@@ -31,7 +31,7 @@ export declare class WapClass {
   }>;
 }
 
-/** @whatsapp 25195 */
+/** @whatsapp 86875 */
 export declare const Wap: WapClass;
 
 exportModule(

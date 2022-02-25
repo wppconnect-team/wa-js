@@ -18,7 +18,7 @@ import { BaseCollection } from '../collections';
 import { exportModule } from '../exportModule';
 import { Model, MsgModel } from '../models';
 
-/** @whatsapp 38671 */
+/** @whatsapp 51612 */
 export declare class MsgLoadState extends Model {
   noEarlierMsgs: any;
   isLoadingEarlierMsgs: any;
@@ -27,7 +27,7 @@ export declare class MsgLoadState extends Model {
   contextLoaded: any;
 }
 
-/** @whatsapp 38671 */
+/** @whatsapp 51612 */
 export declare class MsgLoad extends BaseCollection<MsgModel> {
   msgLoadState: MsgLoadState;
   loadRecentPromise?: Promise<any>;
