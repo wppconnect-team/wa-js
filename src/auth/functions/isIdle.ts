@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { Constants, State } from '../../whatsapp';
+import { State } from '../../whatsapp';
+import { SOCKET_STATE } from '../../whatsapp/enums/SOCKET_STATE';
 
 export function isIdle(): boolean {
-  return State.state === Constants.SOCKET_STATE.UNPAIRED_IDLE;
+  return State.state === SOCKET_STATE.UNPAIRED_IDLE;
 }

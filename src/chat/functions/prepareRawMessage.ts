@@ -19,12 +19,12 @@ import { WPPError } from '../../util';
 import {
   ChatModel,
   Clock,
-  Constants,
   MsgKey,
   MsgModel,
   UserPrefs,
   Wid,
 } from '../../whatsapp';
+import { ACK } from '../../whatsapp/enums';
 import { defaultSendMessageOptions, RawMessage, SendMessageOptions } from '..';
 import { generateMessageID, getMessageById } from '.';
 
@@ -50,7 +50,7 @@ export async function prepareRawMessage<T extends RawMessage>(
     self: 'out',
     isNewMsg: true,
     local: true,
-    ack: Constants.ACK.CLOCK,
+    ack: ACK.CLOCK,
     ...message,
   };
 

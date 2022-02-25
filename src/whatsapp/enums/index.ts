@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+export * from './ACK';
 export * from './GROUP_SETTING_TYPE';
 export * from './LogoutReason';
+export * from './MSG_TYPE';
 export * from './OUTWARD_TYPES';
 export * from './SendMsgResult';

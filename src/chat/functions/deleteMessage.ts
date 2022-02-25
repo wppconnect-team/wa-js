@@ -15,8 +15,8 @@
  */
 
 import { assertGetChat } from '../../assert';
-import { Constants, Wid } from '../../whatsapp';
-import { SendMsgResult } from '../../whatsapp/enums';
+import { Wid } from '../../whatsapp';
+import { MSG_TYPE, SendMsgResult } from '../../whatsapp/enums';
 import { getMessageById } from '.';
 
 export interface DeleteMessageReturn {
@@ -71,7 +71,7 @@ export async function deleteMessage(
     let isRevoked = false;
     let isDeleted = false;
 
-    if (msg.type === Constants.MSG_TYPE.REVOKED) {
+    if (msg.type === MSG_TYPE.REVOKED) {
       // Message is already revoked
       sendMsgResult = SendMsgResult.ERROR_UNKNOWN;
       isRevoked = true;
