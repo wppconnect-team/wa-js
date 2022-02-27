@@ -33,7 +33,7 @@ export * from './MediaUtils';
 export * from './MsgKey';
 export * from './MsgLoadState';
 export * from './OpaqueData';
-export * from './State';
+export * from './Socket';
 export * from './UserPrefs';
 export * from './VCard';
 export * from './Wap';

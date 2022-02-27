@@ -17,7 +17,7 @@
 import Debug from 'debug';
 
 import * as webpack from '../../webpack';
-import { State } from '../../whatsapp';
+import { Socket } from '../../whatsapp';
 import { isIdle } from '..';
 import { eventEmitter } from '../eventEmitter';
 
@@ -33,7 +33,7 @@ function registerQRCodeIdleEvent() {
     }
   };
   trigger();
-  State.on('change:state', trigger);
+  Socket.on('change:state', trigger);
 
   debug('idle event registered');
 }

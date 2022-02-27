@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { State } from '../../whatsapp';
+import { Socket } from '../../whatsapp';
 
 export function poke(): void {
-  State.poke();
+  Socket.poke();
 }

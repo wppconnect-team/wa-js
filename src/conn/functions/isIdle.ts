@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { State } from '../../whatsapp';
+import { Socket } from '../../whatsapp';
 import { SOCKET_STATE } from '../../whatsapp/enums/SOCKET_STATE';
 
 export function isIdle(): boolean {
-  return State.state === SOCKET_STATE.UNPAIRED_IDLE;
+  return Socket.state === SOCKET_STATE.UNPAIRED_IDLE;
 }

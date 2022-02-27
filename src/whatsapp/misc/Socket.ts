@@ -15,13 +15,13 @@
  */
 
 import { exportModule } from '../exportModule';
-import { StateModel } from '../models';
+import { SocketModel } from '../models';
 
 /** @whatsapp 65044 */
-export declare const State: StateModel;
+export declare const Socket: SocketModel;
 
 exportModule(
   exports,
-  { State: (m) => m.Socket || m.default },
+  { Socket: (m) => m.Socket || m.default },
   (m) => m.Socket?.initConn || m.default?.initConn
 );

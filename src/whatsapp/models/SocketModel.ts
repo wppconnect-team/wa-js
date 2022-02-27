@@ -64,13 +64,13 @@ interface Session {
 interface Derived {}
 
 /** @whatsapp 65044 */
-export declare interface StateModel
+export declare interface SocketModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /** @whatsapp 65044 */
-export declare class StateModel extends Model {
+export declare class SocketModel extends Model {
   constructor(
-    proterties?: ModelPropertiesContructor<StateModel>,
+    proterties?: ModelPropertiesContructor<SocketModel>,
     options?: ModelOptions
   );
 
@@ -130,6 +130,6 @@ export declare class StateModel extends Model {
 
 exportModule(
   exports,
-  { StateModel: (m) => m.Socket?.constructor || m.default?.constructor },
+  { Socket: (m) => m.Socket?.constructor || m.default?.constructor },
   (m) => m.Socket?.initConn || m.default?.initConn
 );

@@ -27,6 +27,7 @@ export interface EventTypes {
   auth_code_change: AuthCode | null;
   logout: undefined;
   qrcode_idle: undefined;
+  require_auth: undefined;
 }
 
 export const eventEmitter = new Emittery<EventTypes, EventTypes>({

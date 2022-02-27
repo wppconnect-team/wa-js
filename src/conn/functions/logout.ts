@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Cmd, State } from '../../whatsapp';
+import { Cmd, Socket } from '../../whatsapp';
 
 export async function logout(): Promise<boolean> {
-  State.logout();
+  Socket.logout();
 
   await new Promise((resolve) => {
     Cmd.once('logout', resolve);
