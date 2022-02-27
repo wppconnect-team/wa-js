@@ -17,3 +17,4 @@
 import './registerAuthCodeChangeEvent';
 import './registerQRCodeIdleEvent';
 import './registerLogoutEvent';
+import './registerRequireAuthEvent';

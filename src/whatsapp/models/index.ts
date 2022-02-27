@@ -55,7 +55,7 @@ export * from './QuickReplyModel';
 export * from './RecentEmojiModel';
 export * from './RecentStickerModel';
 export * from './ReplyButtonModel';
-export * from './StateModel';
+export * from './SocketModel';
 export * from './StatusModel';
 export * from './StatusV3Model';
 export * from './StickerModel';
