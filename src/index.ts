@@ -31,10 +31,6 @@ export * as config from './config';
 export * as blocklist from './blocklist';
 export * as chat from './chat';
 export * as conn from './conn';
-/**
- * @deprecated
- */
-export * as auth from './conn';
 export * as contact from './contact';
 export * as group from './group';
 export * as labels from './labels';

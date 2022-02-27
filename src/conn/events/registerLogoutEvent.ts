@@ -22,7 +22,7 @@ import { eventEmitter } from '../eventEmitter';
 
 const debug = Debug('WA-JS:conn');
 
-webpack.onInjected(() => registerLogoutEvent());
+webpack.onInjected(registerLogoutEvent);
 
 function registerLogoutEvent() {
   Cmd.on('logout', () => eventEmitter.emit('logout'));

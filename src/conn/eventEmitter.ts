@@ -24,9 +24,9 @@ const debug = Debug('WA-JS:event:conn');
 export type UnsubscribeFn = () => void;
 
 export interface EventTypes {
-  change: AuthCode;
-  idle: undefined;
+  auth_code_change: AuthCode | null;
   logout: undefined;
+  qrcode_idle: undefined;
 }
 
 export const eventEmitter = new Emittery<EventTypes, EventTypes>({

@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-import './registerChangeEvent';
-import './registerIdleEvent';
+import './registerAuthCodeChangeEvent';
+import './registerQRCodeIdleEvent';
 import './registerLogoutEvent';

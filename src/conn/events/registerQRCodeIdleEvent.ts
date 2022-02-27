@@ -23,14 +23,17 @@ import { eventEmitter } from '../eventEmitter';
 
 const debug = Debug('WA-JS:conn');
 
-webpack.onInjected(() => registerIdleEvent());
+webpack.onInjected(registerQRCodeIdleEvent);
 
-function registerIdleEvent() {
-  State.on('change:state', async () => {
+function registerQRCodeIdleEvent() {
+  const trigger = async () => {
     const idle = isIdle();
     if (idle) {
-      eventEmitter.emit('idle');
+      eventEmitter.emit('qrcode_idle');
     }
-  });
+  };
+  trigger();
+  State.on('change:state', trigger);
+
   debug('idle event registered');
 }

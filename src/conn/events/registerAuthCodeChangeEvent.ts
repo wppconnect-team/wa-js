@@ -23,15 +23,16 @@ import { eventEmitter } from '../eventEmitter';
 
 const debug = Debug('WA-JS:conn');
 
-webpack.onInjected(() => registerChangeEvent());
+webpack.onInjected(registerAuthCodeChangeEvent);
 
-function registerChangeEvent() {
-  Conn.on('change:ref', async () => {
+function registerAuthCodeChangeEvent() {
+  const trigger = async () => {
     const authCode = await getAuthCode().catch(() => null);
-    if (authCode) {
-      eventEmitter.emit('change', authCode);
-    }
-  });
+    eventEmitter.emit('auth_code_change', authCode);
+  };
+
+  trigger();
+  Conn.on('change:ref', trigger);
 
   debug('change event registered');
 }
