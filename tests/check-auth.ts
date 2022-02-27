@@ -21,7 +21,7 @@ test('chech is not logged test', async ({ page }) => {
 
   await expect(title).toHaveText('WhatsApp');
 
-  const isAuthenticated = await page.evaluate(() => WPP.auth.isAuthenticated());
+  const isAuthenticated = await page.evaluate(() => WPP.conn.isAuthenticated());
 
   expect(isAuthenticated).toBe(false);
 });
@@ -32,7 +32,7 @@ test('chech is logged test', async ({ loggedPage: cleanPage }) => {
   await expect(title).toHaveText('WhatsApp');
 
   const isAuthenticated = await cleanPage.evaluate(() =>
-    WPP.auth.isAuthenticated()
+    WPP.conn.isAuthenticated()
   );
 
   expect(isAuthenticated).toBe(true);

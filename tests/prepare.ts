@@ -22,7 +22,7 @@ test('basic setup', async ({ loggedPage }) => {
   await expect(title).toHaveText('WhatsApp');
 
   let isAuthenticated = await loggedPage.evaluate(() =>
-    WPP.auth.isAuthenticated()
+    WPP.conn.isAuthenticated()
   );
 
   if (isAuthenticated) {
@@ -32,9 +32,9 @@ test('basic setup', async ({ loggedPage }) => {
 
   expect(isAuthenticated).toBe(false);
 
-  await loggedPage.waitForFunction(() => WPP.auth.isAuthenticated());
+  await loggedPage.waitForFunction(() => WPP.conn.isAuthenticated());
 
-  isAuthenticated = await loggedPage.evaluate(() => WPP.auth.isAuthenticated());
+  isAuthenticated = await loggedPage.evaluate(() => WPP.conn.isAuthenticated());
 
   expect(isAuthenticated).toBe(true);
 });

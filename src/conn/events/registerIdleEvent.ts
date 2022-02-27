@@ -14,9 +14,23 @@
  * limitations under the License.
  */
 
-export * as auth from './auth';
-export * as blocklist from './blocklist';
-export * as chat from './chat';
-export * as contact from './contact';
-export * as group from './group';
-export * as status from './status';
+import Debug from 'debug';
+
+import * as webpack from '../../webpack';
+import { State } from '../../whatsapp';
+import { isIdle } from '..';
+import { eventEmitter } from '../eventEmitter';
+
+const debug = Debug('WA-JS:conn');
+
+webpack.onInjected(() => registerIdleEvent());
+
+function registerIdleEvent() {
+  State.on('change:state', async () => {
+    const idle = isIdle();
+    if (idle) {
+      eventEmitter.emit('idle');
+    }
+  });
+  debug('idle event registered');
+}

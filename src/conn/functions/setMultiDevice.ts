@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-import Debug from 'debug';
+import { Cmd } from '../../whatsapp';
 
-import * as webpack from '../../webpack';
-import { State } from '../../whatsapp';
-import { isIdle } from '..';
-import { eventEmitter } from '../eventEmitter';
-
-const debug = Debug('WA-JS:auth');
-
-webpack.onInjected(() => registerIdleEvent());
-
-function registerIdleEvent() {
-  State.on('change:state', async () => {
-    const idle = isIdle();
-    if (idle) {
-      eventEmitter.emit('idle');
-    }
-  });
-  debug('idle event registered');
+/**
+ * @param md If it's true, WhatsApp WEB will switch to MD. If it's false, WhatsApp WEB will switch to Legacy.
+ * @example
+ * ```javascript
+ * WPP.conn.setMultiDevice(true)
+ * ```
+ */
+export function setMultiDevice(md = true): boolean {
+  if (md) {
+    Cmd.upgradeToMDProd();
+  } else {
+    Cmd.downgradeWebclient();
+  }
+  return true;
 }

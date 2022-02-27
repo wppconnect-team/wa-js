@@ -20,7 +20,7 @@ import * as webpack from '../../webpack';
 import { Cmd } from '../../whatsapp';
 import { eventEmitter } from '../eventEmitter';
 
-const debug = Debug('WA-JS:auth');
+const debug = Debug('WA-JS:conn');
 
 webpack.onInjected(() => registerLogoutEvent());
 

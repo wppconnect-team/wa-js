@@ -21,7 +21,7 @@ import { Conn } from '../../whatsapp';
 import { getAuthCode } from '..';
 import { eventEmitter } from '../eventEmitter';
 
-const debug = Debug('WA-JS:auth');
+const debug = Debug('WA-JS:conn');
 
 webpack.onInjected(() => registerChangeEvent());
 

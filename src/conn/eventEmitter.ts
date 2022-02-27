@@ -19,7 +19,7 @@ import Emittery from 'emittery';
 
 import { AuthCode } from '.';
 
-const debug = Debug('WA-JS:event:auth');
+const debug = Debug('WA-JS:event:conn');
 
 export type UnsubscribeFn = () => void;
 
@@ -31,7 +31,7 @@ export interface EventTypes {
 
 export const eventEmitter = new Emittery<EventTypes, EventTypes>({
   debug: {
-    name: 'AuthEvent',
+    name: 'ConnEvent',
     enabled: debug.enabled,
     logger: (type, debugName, eventName, eventData) => {
       debug(eventName, eventData);
