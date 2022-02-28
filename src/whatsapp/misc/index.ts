@@ -34,6 +34,7 @@ export * from './MsgKey';
 export * from './MsgLoadState';
 export * from './OpaqueData';
 export * from './Socket';
+export * from './Stream';
 export * from './UserPrefs';
 export * from './VCard';
 export * from './Wap';

@@ -60,6 +60,7 @@ export * from './StatusModel';
 export * from './StatusV3Model';
 export * from './StickerModel';
 export * from './StickerPackModel';
+export * from './StreamModel';
 export * from './TemplateButtonModel';
 export * from './UnreadMentionModel';
 export * from './WebCallModel';
