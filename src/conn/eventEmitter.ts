@@ -25,6 +25,17 @@ export type UnsubscribeFn = () => void;
 
 export interface EventTypes {
   auth_code_change: AuthCode | null;
+  /**
+   * Triggered afted a success QR code scan
+   *
+   * @example
+   * ```javascript
+   * WPP.conn.on('authenticated', () => {
+   *   // Your code
+   * });
+   * ```
+   */
+  authenticated: undefined;
   logout: undefined;
   /**
    * Triggered when the main interface is loaded, but is syncing
