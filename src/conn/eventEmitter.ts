@@ -26,6 +26,17 @@ export type UnsubscribeFn = () => void;
 export interface EventTypes {
   auth_code_change: AuthCode | null;
   logout: undefined;
+  /**
+   * Triggered when the main interface is loaded and authenticated
+   *
+   * @example
+   * ```javascript
+   * WPP.conn.on('main_loaded', () => {
+   *   // Your code
+   * });
+   * ```
+   */
+  main_loaded: undefined;
   qrcode_idle: undefined;
   require_auth: undefined;
 }

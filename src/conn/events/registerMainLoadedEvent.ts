@@ -14,8 +14,20 @@
  * limitations under the License.
  */
 
-import './registerAuthCodeChangeEvent';
-import './registerQRCodeIdleEvent';
-import './registerLogoutEvent';
-import './registerRequireAuthEvent';
-import './registerMainLoadedEvent';
+import * as webpack from '../../webpack';
+import { Cmd } from '../../whatsapp';
+import { eventEmitter } from '../eventEmitter';
+
+webpack.onInjected(register);
+
+function register() {
+  const trigger = async () => {
+    eventEmitter.emit('main_loaded');
+  };
+
+  if (Cmd.isMainLoaded) {
+    trigger();
+  } else {
+    Cmd.on('main_loaded', trigger);
+  }
+}
