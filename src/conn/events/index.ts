@@ -19,3 +19,4 @@ import './registerQRCodeIdleEvent';
 import './registerLogoutEvent';
 import './registerRequireAuthEvent';
 import './registerMainLoadedEvent';
+import './registerMainReadyEvent';

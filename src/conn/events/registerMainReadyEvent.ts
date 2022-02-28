@@ -15,19 +15,19 @@
  */
 
 import * as webpack from '../../webpack';
-import { Cmd } from '../../whatsapp';
+import { Cmd, Stream } from '../../whatsapp';
 import { eventEmitter } from '../eventEmitter';
 
 webpack.onInjected(register);
 
 function register() {
   const trigger = async () => {
-    eventEmitter.emit('main_loaded');
+    eventEmitter.emit('main_ready');
   };
 
-  if (Cmd.isMainLoaded) {
+  if (Stream.mode === 'MAIN') {
     trigger();
   } else {
-    Cmd.on('main_loaded', trigger);
+    Cmd.on('main_stream_mode_ready_legacy', trigger);
   }
 }

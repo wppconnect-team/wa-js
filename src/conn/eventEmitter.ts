@@ -27,7 +27,7 @@ export interface EventTypes {
   auth_code_change: AuthCode | null;
   logout: undefined;
   /**
-   * Triggered when the main interface is loaded and authenticated
+   * Triggered when the main interface is loaded, but is syncing
    *
    * @example
    * ```javascript
@@ -37,6 +37,17 @@ export interface EventTypes {
    * ```
    */
   main_loaded: undefined;
+  /**
+   * Triggered when the main interface is loaded, authenticated and ready to send message
+   *
+   * @example
+   * ```javascript
+   * WPP.conn.on('main_ready', () => {
+   *   // Your code
+   * });
+   * ```
+   */
+  main_ready: undefined;
   qrcode_idle: undefined;
   require_auth: undefined;
 }

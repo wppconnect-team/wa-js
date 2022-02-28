@@ -26,7 +26,7 @@ interface Props {}
 
 interface Session {
   info?: any;
-  mode?: any;
+  mode: string;
   obscurity?: any;
   needsUpdate?: any;
   clientExpired?: any;
