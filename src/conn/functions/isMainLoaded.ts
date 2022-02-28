@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 
-export { getAuthCode } from './getAuthCode';
-export { isAuthenticated } from './isAuthenticated';
-export { isIdle } from './isIdle';
-export { isMainLoaded } from './isMainLoaded';
-export { isMultiDevice } from './isMultiDevice';
-export { logout } from './logout';
-export { poke } from './poke';
-export { setMultiDevice } from './setMultiDevice';
+import { Cmd } from '../../whatsapp';
+
+/**
+ * Check is main interface is loaded and authenticated
+ *
+ * @example
+ * ```javascript
+ * const isMainLoaded = WPP.conn.isMainLoaded();
+ * ```
+ */
+export function isMainLoaded(): boolean {
+  return Cmd.isMainLoaded;
+}
