@@ -20,5 +20,5 @@ export { isIdle } from './isIdle';
 export { isMainLoaded } from './isMainLoaded';
 export { isMultiDevice } from './isMultiDevice';
 export { logout } from './logout';
-export { poke } from './poke';
+export { refreshQR } from './refreshQR';
 export { setMultiDevice } from './setMultiDevice';

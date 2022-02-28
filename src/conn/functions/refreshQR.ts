@@ -14,21 +14,31 @@
  * limitations under the License.
  */
 
-import * as webpack from '../../webpack';
-import { Cmd } from '../../whatsapp';
+import { Cmd, Socket } from '../../whatsapp';
+import { AuthCode } from '..';
 import { eventEmitter } from '../eventEmitter';
+import { isAuthenticated, isMultiDevice } from '.';
 
-webpack.onInjected(register);
-
-function register() {
-  Cmd.on('all', console.log);
-  const trigger = async () => {
-    eventEmitter.emit('main_loaded');
-  };
-
-  if (Cmd.isMainLoaded) {
-    trigger();
-  } else {
-    Cmd.on('main_loaded', trigger);
+/**
+ * Refresh the current QRCode when is waiting for scan and return the current code
+ *
+ * For legacy: It will wait for next code
+ * For multidevice: It will generate a new one
+ *
+ * @example
+ * ```javascript
+ * await WPP.conn.refreshQR();
+ * ```
+ */
+export async function refreshQR(): Promise<AuthCode | null> {
+  if (isAuthenticated()) {
+    return null;
   }
+
+  if (isMultiDevice()) {
+    Cmd.refreshQR();
+  } else {
+    Socket.poke();
+  }
+  return await eventEmitter.once('auth_code_change');
 }
