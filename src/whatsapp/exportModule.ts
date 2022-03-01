@@ -52,7 +52,7 @@ export function exportModule(
     Object.defineProperty(exports, name, {
       enumerable: true,
       configurable: true,
-      get: () => {
+      get() {
         let value: any = undefined;
         const moduleId = webpack.searchId(condition);
 
@@ -81,7 +81,7 @@ export function exportModule(
 
         // Avoid re-searching modules
         if (value) {
-          Object.defineProperty(exports, name, {
+          Object.defineProperty(this, name, {
             get: () => value,
           });
 
