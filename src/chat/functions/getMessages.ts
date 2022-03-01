@@ -15,7 +15,8 @@
  */
 
 import { assertGetChat } from '../../assert';
-import { Features, MsgKey, MsgStore, Wid } from '../../whatsapp';
+import { isMultiDevice } from '../../conn';
+import { MsgKey, MsgStore, Wid } from '../../whatsapp';
 import { msgFindQuery, MsgFindQueryParams } from '../../whatsapp/functions';
 import { RawMessage } from '..';
 
@@ -61,7 +62,7 @@ export async function getMessages(
   const id = options.id || chat.lastReceivedKey?.toString();
 
   // Fix for multidevice
-  if (count === -1 && Features.supportsFeature('MD_BACKEND')) {
+  if (count === -1 && isMultiDevice()) {
     count = Infinity;
   }
 

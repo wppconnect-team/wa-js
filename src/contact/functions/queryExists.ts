@@ -15,7 +15,8 @@
  */
 
 import { assertWid } from '../../assert';
-import { Features, Wap, Wid } from '../../whatsapp';
+import { isMultiDevice } from '../../conn';
+import { Wap, Wid } from '../../whatsapp';
 import { sendQueryExists } from '../../whatsapp/functions';
 
 export interface QueryExistsResult {
@@ -64,7 +65,7 @@ export async function queryExists(
 
   let result: QueryExistsResult | null = null;
 
-  if (!Features.supportsFeature('MD_BACKEND')) {
+  if (!isMultiDevice()) {
     const query = await Wap.queryExist(id);
     if (query.status === 200) {
       result = {

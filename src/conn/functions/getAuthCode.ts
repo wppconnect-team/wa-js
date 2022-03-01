@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { Base64, Browser, Conn, Features, UserPrefs } from '../../whatsapp';
+import { Base64, Browser, Conn } from '../../whatsapp';
 import { getOrGenerate } from '../../whatsapp/functions';
 import { adv, waNoiseInfo, waSignalStore } from '../../whatsapp/multidevice';
 import { AuthCode } from '..';
+import { isAuthenticated, isMultiDevice } from '.';
 
 /**
  * Return the current auth code
@@ -25,13 +26,13 @@ import { AuthCode } from '..';
  * @return  {Promise<AuthCode>}[return description]
  */
 export async function getAuthCode(): Promise<AuthCode | null> {
-  if (!Conn.ref || Conn.connected || UserPrefs.knowsPhone()) {
+  if (!Conn.ref || Conn.connected || isAuthenticated()) {
     return null;
   }
 
   const ref = Conn.ref;
 
-  if (Features.supportsFeature('MD_BACKEND')) {
+  if (isMultiDevice()) {
     const registrationInfo = await waSignalStore.getRegistrationInfo();
     const noiseInfo = await waNoiseInfo.get();
 
