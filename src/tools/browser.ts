@@ -22,7 +22,7 @@ import * as playwright from 'playwright-chromium';
 export const URL = 'https://web.whatsapp.com/';
 export const WA_DIR = path.resolve(__dirname, '../../wa-source');
 
-const WA_VERSION = process.env['WA_VERSION'];
+const WA_VERSION = process.env['WA_VERSION'] || waVersion.getLatestVersion();
 
 type LaunchArguments = Parameters<
   typeof playwright.chromium.launchPersistentContext
@@ -77,7 +77,7 @@ export async function getPage(options?: LaunchArguments[1]) {
       });
     }
 
-    const filePathSource = path.join(WA_DIR, fileName);
+    const filePathSource = path.join(WA_DIR, WA_VERSION, fileName);
 
     if (fs.existsSync(filePathSource)) {
       return route.fulfill({
