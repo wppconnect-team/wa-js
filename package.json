@@ -35,7 +35,7 @@
     "wa-source:clean": "shx rm -rf wa-source",
     "wa-source:download": "ts-node ./src/tools/extractWhatsappSource.ts",
     "wa-source:format": "prettier --write ./wa-source",
-    "wa-source": "npm run wa-source:clean && npm run wa-source:download && npm run wa-source:format",
+    "wa-source": "npm run wa-source:clean && npm run wa-source:download",
     "watch": "webpack watch --devtool inline-source-map --mode development"
   },
   "devDependencies": {
@@ -46,6 +46,7 @@
     "@types/debug": "^4.1.7",
     "@types/node": "^14.18.12",
     "@types/parse-data-url": "^3.0.0",
+    "@types/prettier": "^2.4.4",
     "@types/shelljs": "^0.8.11",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",

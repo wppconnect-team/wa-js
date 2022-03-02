@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+import * as waVersion from '@wppconnect/wa-version';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as prettier from 'prettier';
 
 import * as wpp from '../';
 import { getPage, WA_DIR } from './browser';
@@ -26,10 +28,19 @@ declare global {
   }
 }
 
+const WA_VERSION = process.env['WA_VERSION'] || waVersion.getLatestVersion();
+
 async function start() {
   if (!fs.existsSync(WA_DIR)) {
     fs.mkdirSync(WA_DIR);
   }
+
+  const versionDir = path.join(WA_DIR, WA_VERSION);
+  if (!fs.existsSync(versionDir)) {
+    fs.mkdirSync(versionDir);
+  }
+
+  const options = await prettier.resolveConfig(process.cwd());
 
   const { browser, page } = await getPage();
 
@@ -42,7 +53,7 @@ async function start() {
 
     const url = response.url();
     const fileName = path.basename(url, '.js') + '.js';
-    const filePath = path.join(WA_DIR, fileName);
+    const filePath = path.join(versionDir, fileName);
 
     if (fs.existsSync(filePath)) {
       return;
@@ -60,6 +71,12 @@ async function start() {
     content = content.replace(/\bvoid 0\b/g, 'undefined');
     // Remove sourcemap because it not exists in production
     content = content.replace(/\/\/# sourceMappingURL.*/g, '');
+
+    content = prettier.format(content, {
+      ...options!,
+      parser: 'espree',
+      printWidth: 120,
+    });
 
     fs.writeFileSync(filePath, content, { encoding: 'utf8' });
   });
