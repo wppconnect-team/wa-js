@@ -42,7 +42,7 @@
         "/dist": "${workspaceFolder}/dist",
         "/": "${workspaceFolder}/wa-source"
       },
-      "timeout": 30000,
+      "timeout": 60000,
       "restart": true
     }
   ],

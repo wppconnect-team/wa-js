@@ -77,7 +77,7 @@ export async function getPage(options?: LaunchArguments[1]) {
       });
     }
 
-    const filePathSource = path.join(WA_DIR, WA_VERSION, fileName);
+    const filePathSource = path.join(WA_DIR, fileName);
 
     if (fs.existsSync(filePathSource)) {
       return route.fulfill({

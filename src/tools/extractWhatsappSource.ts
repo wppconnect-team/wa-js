@@ -35,11 +35,6 @@ async function start() {
     fs.mkdirSync(WA_DIR);
   }
 
-  const versionDir = path.join(WA_DIR, WA_VERSION);
-  if (!fs.existsSync(versionDir)) {
-    fs.mkdirSync(versionDir);
-  }
-
   const options = await prettier.resolveConfig(process.cwd());
 
   const { browser, page } = await getPage();
@@ -53,7 +48,7 @@ async function start() {
 
     const url = response.url();
     const fileName = path.basename(url, '.js') + '.js';
-    const filePath = path.join(versionDir, fileName);
+    const filePath = path.join(WA_DIR, fileName);
 
     if (fs.existsSync(filePath)) {
       return;
@@ -77,6 +72,8 @@ async function start() {
       parser: 'espree',
       printWidth: 120,
     });
+
+    content = `/*! WhatsApp Version: ${WA_VERSION} */\n` + content;
 
     fs.writeFileSync(filePath, content, { encoding: 'utf8' });
   });
