@@ -70,7 +70,7 @@
     "release-it": "^14.12.5",
     "shx": "^0.3.4",
     "ts-loader": "^9.2.7",
-    "ts-morph": "^13.0.3",
+    "ts-morph": "^14.0.0",
     "ts-node": "^10.6.0",
     "typedoc": "^0.22.12",
     "typedoc-plugin-mdn-links": "^1.0.5",
