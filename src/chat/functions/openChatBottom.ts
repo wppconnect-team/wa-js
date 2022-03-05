@@ -22,7 +22,7 @@ import { Cmd, Wid } from '../../whatsapp';
  *
  * @example
  * ```javascript
- * await WPP.chat.openChatBottom('<number>@c.us');
+ * await WPP.chat.openChatBottom('[number]@c.us');
  * ```
  *
  * @category Chat

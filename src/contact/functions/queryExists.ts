@@ -46,7 +46,7 @@ const cache = new Map<string, QueryExistsResult | null>();
  *
  * @example
  * ```javascript
- * const result = await WPP.contact.queryExists('<number>@c.us');
+ * const result = await WPP.contact.queryExists('[number]@c.us');
  * console.log(result.wid); // Correct ID
  * ```
  *

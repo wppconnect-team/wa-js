@@ -22,7 +22,7 @@ import { ensureGroup } from './';
  *
  * @example
  * ```javascript
- * WPP.group.getParticipants('<group-id>@g.us');
+ * WPP.group.getParticipants('[group-id]@g.us');
  * ```
  */
 export async function getParticipants(groupId: string | Wid) {

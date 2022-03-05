@@ -27,7 +27,7 @@ export interface AddOrRemoveLabelsOptions {
  * @example
  * ```javascript
  * await WPP.labels.addOrRemoveLabels(
- *   ['<number>@c.us','<number>@c.us'],
+ *   ['[number]@c.us','[number]@c.us'],
  *   [{labelId:'76', type:'add'},{labelId:'75', type:'remove'}]
  * )
  * ```

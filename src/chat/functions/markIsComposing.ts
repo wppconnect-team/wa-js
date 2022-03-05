@@ -25,10 +25,10 @@ import { markIsPaused } from '.';
  * @example
  * ```javascript
  * // Mark is composing
- * WPP.chat.markIsComposing('<number>@c.us');
+ * WPP.chat.markIsComposing('[number]@c.us');
  *
  * // Mark is composing for 5 seconds
- * WPP.chat.markIsComposing('<number>@c.us', 5000);
+ * WPP.chat.markIsComposing('[number]@c.us', 5000);
  * ```
  * @category Chat
  */

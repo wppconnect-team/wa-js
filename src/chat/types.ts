@@ -25,7 +25,7 @@ export interface SendMessageOptions {
    *
    * @example
    * ```javascript
-   * WPP.chat.sendTextMessage('<number>@c.us', 'Hello new contact', {
+   * WPP.chat.sendTextMessage('[number]@c.us', 'Hello new contact', {
    *   createChat: true
    * });
    * ```
@@ -33,13 +33,13 @@ export interface SendMessageOptions {
   createChat?: boolean;
 
   /**
-   * Automatic detect and add the mentioned contacts with @<number>
+   * Automatic detect and add the mentioned contacts with @[number]
    *
    * @default true
    *
    * @example
    * ```javascript
-   * WPP.chat.sendTextMessage('<number>@c.us', 'Hello @123 and @456', {
+   * WPP.chat.sendTextMessage('[number]@c.us', 'Hello @123 and @456', {
    *   detectMentioned: true
    * });
    * ```
@@ -53,7 +53,7 @@ export interface SendMessageOptions {
    *
    * @example
    * ```javascript
-   * WPP.chat.sendTextMessage('<number>@c.us', 'Replying your message', {
+   * WPP.chat.sendTextMessage('[number]@c.us', 'Replying your message', {
    *   markIsRead: true
    * });
    * ```
@@ -71,7 +71,7 @@ export interface SendMessageOptions {
    *
    * @example
    * ```javascript
-   * WPP.chat.sendTextMessage('<number>@c.us', 'Hello @123 and @456', {
+   * WPP.chat.sendTextMessage('[number]@c.us', 'Hello @123 and @456', {
    *   mentionedList: ['123@c.us', '456@c.us']
    * })
    * ```
@@ -83,8 +83,8 @@ export interface SendMessageOptions {
    *
    * @example
    * ```javascript
-   * WPP.chat.sendTextMessage('<number>@c.us', 'This is a reply', {
-   *   quotedMsg: 'true_<number>@c.us_3EB0F435D95D32C4C638'
+   * WPP.chat.sendTextMessage('[number]@c.us', 'This is a reply', {
+   *   quotedMsg: 'true_[number]@c.us_3EB0F435D95D32C4C638'
    * })
    * ```
    */
@@ -97,7 +97,7 @@ export interface SendMessageOptions {
    *
    * @example
    * ```javascript
-   * WPP.chat.sendTextMessage('<number>@c.us', 'Wait for sent', {
+   * WPP.chat.sendTextMessage('[number]@c.us', 'Wait for sent', {
    *   waitForAck: true
    * })
    * ```

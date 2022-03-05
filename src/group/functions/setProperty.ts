@@ -32,28 +32,28 @@ export enum GroupProperty {
  * @example
  * ```javascript
  * // Only admins can send message
- * await WPP.group.setProperty('<group-id>@g.us', 'announcement', true);
+ * await WPP.group.setProperty('[group-id]@g.us', 'announcement', true);
  *
  * // All can send message
- * await WPP.group.setProperty('<group-id>@g.us', 'announcement', false);
+ * await WPP.group.setProperty('[group-id]@g.us', 'announcement', false);
  *
  * // Disatble temporary messages
- * await WPP.group.setProperty('<group-id>@g.us', 'ephemeral', 0);
+ * await WPP.group.setProperty('[group-id]@g.us', 'ephemeral', 0);
  *
  * // Enable temporary messages for 24 hours
- * await WPP.group.setProperty('<group-id>@g.us', 'ephemeral', 86400);
+ * await WPP.group.setProperty('[group-id]@g.us', 'ephemeral', 86400);
  *
  * // Enable temporary messages for 7 days
- * await WPP.group.setProperty('<group-id>@g.us', 'ephemeral', 604800);
+ * await WPP.group.setProperty('[group-id]@g.us', 'ephemeral', 604800);
  *
  * // Enable temporary messages for 90 days
- * await WPP.group.setProperty('<group-id>@g.us', 'ephemeral', 7776000);
+ * await WPP.group.setProperty('[group-id]@g.us', 'ephemeral', 7776000);
  *
  * // Only admins can edit group properties
- * await WPP.group.setProperty('<group-id>@g.us', 'restrict', true);
+ * await WPP.group.setProperty('[group-id]@g.us', 'restrict', true);
  *
  * // All can edit group properties
- * await WPP.group.setProperty('<group-id>@g.us', 'restrict', false);
+ * await WPP.group.setProperty('[group-id]@g.us', 'restrict', false);
  * ```
  *
  * @category Group

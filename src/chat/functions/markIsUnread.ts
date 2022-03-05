@@ -24,7 +24,7 @@ import { markUnread } from '../../whatsapp/functions';
  * @example
  * ```javascript
  * // Some messages
- * WPP.chat.markIsUnread('<number>@c.us');
+ * WPP.chat.markIsUnread('[number]@c.us');
  * ```
  * @category Chat
  */

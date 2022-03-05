@@ -22,7 +22,7 @@ import { Wid } from '../../whatsapp';
  *
  * @example
  * ```javascript
- * WPP.chat.unmute('<number>@c.us');
+ * WPP.chat.unmute('[number]@c.us');
  * ```
  *
  * @category Chat

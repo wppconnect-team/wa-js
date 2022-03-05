@@ -26,14 +26,14 @@ import { Clock, Wid } from '../../whatsapp';
  * @example
  * ```javascript
  * // Mute for 60 seconds
- * WPP.chat.mute('<number>@c.us', {duration: 60});
+ * WPP.chat.mute('[number]@c.us', {duration: 60});
  *
  * // Mute util 2021-01-01
- * WPP.chat.mute('<number>@c.us', {expiration: 1641006000});
+ * WPP.chat.mute('[number]@c.us', {expiration: 1641006000});
  *
  * // or using date
  * const expiration = new Date('2022-01-01 00:00:00');
- * WPP.chat.mute('<number>@c.us', {expiration: expiration});
+ * WPP.chat.mute('[number]@c.us', {expiration: expiration});
  * ```
  *
  * @category Chat

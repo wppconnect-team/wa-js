@@ -23,7 +23,7 @@ import { ensureGroup } from '.';
  *
  * @example
  * ```javascript
- * await WPP.group.leave('<number>@g.us');
+ * await WPP.group.leave('[number]@g.us');
  * ```
  *
  * @category Group

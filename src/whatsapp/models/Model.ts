@@ -22,9 +22,9 @@ import { EventEmitter } from '../misc';
 export type ModelProxy<P, S, D> = P &
   S &
   Readonly<D> & {
-    get attributes(): P & S;
+    readonly attributes: P & S;
 
-    get isState(): true;
+    readonly isState: true;
 
     readonly mirrorMask: {
       [key in keyof (P & S & D) as `change:${string & key}`]: number;

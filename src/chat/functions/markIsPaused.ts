@@ -23,7 +23,7 @@ import { ChatPresence, Wid } from '../../whatsapp';
  * @example
  * ```javascript
  * // Mark as recording
- * WPP.chat.markIsPaused('<number>@c.us');
+ * WPP.chat.markIsPaused('[number]@c.us');
  * ```
  * @category Chat
  */

@@ -22,7 +22,7 @@ import { Wid } from '../../whatsapp';
  *
  * @example
  * ```javascript
- * const canMute = WPP.chat.canMute('<number>@c.us');
+ * const canMute = WPP.chat.canMute('[number]@c.us');
  * ```
  *
  * @category Chat

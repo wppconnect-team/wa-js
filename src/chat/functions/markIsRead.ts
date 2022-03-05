@@ -24,7 +24,7 @@ import { sendSeen } from '../../whatsapp/functions';
  * @example
  * ```javascript
  * // Some messages
- * WPP.chat.markIsRead('<number>@c.us');
+ * WPP.chat.markIsRead('[number]@c.us');
  * ```
  * @category Chat
  */

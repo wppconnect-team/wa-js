@@ -23,7 +23,7 @@ import { ensureGroup } from '.';
  *
  * @example
  * ```javascript
- * const code = WPP.group.revokeInviteCode('<group-id>@g.us');
+ * const code = WPP.group.revokeInviteCode('[group-id]@g.us');
  * const link = 'https://chat.whatsapp.com/' + code;
  * ```
  *

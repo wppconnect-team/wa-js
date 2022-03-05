@@ -23,7 +23,7 @@ import { getMessageById } from '.';
  *
  * @example
  * ```javascript
- * await WPP.chat.openChatAt('<number>@c.us', <message_id>);
+ * await WPP.chat.openChatAt('[number]@c.us', <message_id>);
  * ```
  *
  * @category Chat

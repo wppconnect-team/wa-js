@@ -26,10 +26,10 @@ export interface LinkPreviewOptions {
    * @example
    * ```javascript
    * // Automatic detection
-   * WPP.chat.sendTextMessage('<number>@c.us', 'See https://www.youtube.com/watch?v=v1PBptSDIh8');
+   * WPP.chat.sendTextMessage('[number]@c.us', 'See https://www.youtube.com/watch?v=v1PBptSDIh8');
    *
    * // Overriding the title and description
-   * WPP.chat.sendTextMessage('<number>@c.us', 'See https://www.youtube.com/watch?v=v1PBptSDIh8', {
+   * WPP.chat.sendTextMessage('[number]@c.us', 'See https://www.youtube.com/watch?v=v1PBptSDIh8', {
    *   linkPreview: {
    *     title: 'Another text',
    *     description: 'Another description'

@@ -24,7 +24,7 @@ import { ensureGroup } from './';
  *
  * @example
  * ```javascript
- * await WPP.group.setSubject('<group-id>@g.us', 'new group subject');
+ * await WPP.group.setSubject('[group-id]@g.us', 'new group subject');
  * ```
  *
  * @category Group

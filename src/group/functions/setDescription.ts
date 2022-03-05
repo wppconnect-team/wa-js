@@ -27,7 +27,7 @@ import { ensureGroup } from './';
  *
  * @example
  * ```javascript
- * await WPP.group.setDescription('<group-id>@g.us', 'new group description');
+ * await WPP.group.setDescription('[group-id]@g.us', 'new group description');
  * ```
  *
  * @category Group

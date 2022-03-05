@@ -22,7 +22,7 @@ import { StatusStore, Wid } from '../../whatsapp';
  *
  * @example
  * ```javascript
- * await WPP.contact.getStatus('<number>@c.us');
+ * await WPP.contact.getStatus('[number]@c.us');
  * ```
  *
  * @category Chat

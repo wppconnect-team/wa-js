@@ -81,7 +81,7 @@ export interface VideoMessageOptions
  * ```javascript
  * // Single document
  * WPP.chat.sendFileMessage(
- *  '<number>@c.us',
+ *  '[number]@c.us',
  *  'data:image/jpeg;base64,<a long base64 file...>',
  *  {
  *    type: 'document',
@@ -93,7 +93,7 @@ export interface VideoMessageOptions
  *
  * // Image with view once
  * WPP.chat.sendFileMessage(
- *  '<number>@c.us',
+ *  '[number]@c.us',
  *  'data:image/jpeg;base64,<a long base64 file...>',
  *  {
  *    type: 'image',
@@ -104,7 +104,7 @@ export interface VideoMessageOptions
  *
  * // PTT audio
  * WPP.chat.sendFileMessage(
- *  '<number>@c.us',
+ *  '[number]@c.us',
  *  'data:audio/mp3;base64,<a long base64 file...>',
  *  {
  *    type: 'audio',
@@ -114,7 +114,7 @@ export interface VideoMessageOptions
  *
  * // Image with view buttons
  * WPP.chat.sendFileMessage(
- *  '<number>@c.us',
+ *  '[number]@c.us',
  *  'data:image/jpeg;base64,<a long base64 file...>',
  *  {
  *    type: 'image',
@@ -135,7 +135,7 @@ export interface VideoMessageOptions
  *
  * // Image as Sticker
  * WPP.chat.sendFileMessage(
- *   '<number>@c.us',
+ *   '[number]@c.us',
  *   'data:image/png;base64,<a long base64 file...>',
  *   {
  *     type: 'sticker'

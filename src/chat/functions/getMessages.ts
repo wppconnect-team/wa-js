@@ -32,17 +32,17 @@ export interface GetMessagesOptions {
  * @example
  * ```javascript
  * // Some messages
- * WPP.chat.getMessages('<number>@c.us', {
+ * WPP.chat.getMessages('[number]@c.us', {
  *   count: 20,
  * });
  *
  * // All messages
- * WPP.chat.getMessages('<number>@c.us', {
+ * WPP.chat.getMessages('[number]@c.us', {
  *   count: -1,
  * });
  *
  * // 20 messages before specific message
- * WPP.chat.getMessages('<number>@c.us', {
+ * WPP.chat.getMessages('[number]@c.us', {
  *   count: 20,
  *   direction: 'before',
  *   id: '<full message id>'

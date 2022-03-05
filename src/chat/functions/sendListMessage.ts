@@ -41,7 +41,7 @@ export interface ListMessageOptions extends SendMessageOptions {
  *
  * @example
  * ```javascript
- * WPP.chat.sendListMessage('<number>@c.us', {
+ * WPP.chat.sendListMessage('[number]@c.us', {
  *   buttonText: 'Click Me!',
  *   description: "Hello it's list message",
  *   sections: [{

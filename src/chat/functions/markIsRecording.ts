@@ -25,10 +25,10 @@ import { markIsPaused } from '.';
  * @example
  * ```javascript
  * // Mark is recording
- * WPP.chat.markIsRecording('<number>@c.us');
+ * WPP.chat.markIsRecording('[number]@c.us');
  *
  * // Mark is recording for 5 seconds
- * WPP.chat.markIsRecording('<number>@c.us', 5000);
+ * WPP.chat.markIsRecording('[number]@c.us', 5000);
  * ```
  * @category Chat
  */

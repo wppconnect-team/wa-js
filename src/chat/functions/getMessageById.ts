@@ -28,10 +28,10 @@ const debug = Debug('WA-JS:message:getMessageById');
  * @example
  * ```javascript
  * // Single message
- * WPP.chat.getMessageById('true_<number>@c.us_ABCDEF');
+ * WPP.chat.getMessageById('true_[number]@c.us_ABCDEF');
  *
  * // List of messages
- * WPP.chat.getMessageById(['true_<number>@c.us_ABCDEF', 'false_<number>@c.us_789456']);
+ * WPP.chat.getMessageById(['true_[number]@c.us_ABCDEF', 'false_[number]@c.us_789456']);
  * ```
  *
  * @category Message
