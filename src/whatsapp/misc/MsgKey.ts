@@ -17,7 +17,7 @@
 import { exportModule } from '../exportModule';
 import { Wid } from './Wid';
 
-/** @whatsapp 32219 */
+/** @whatsapp 65212 */
 export declare class MsgKey {
   constructor(
     options:
@@ -41,6 +41,11 @@ export declare class MsgKey {
   equals(key: unknown): key is MsgKey;
 
   static fromString(key: string): MsgKey;
+
+  /**
+   * @whatsapp >= 2.2208.7
+   */
+  static newId(): string;
 }
 
 exportModule(

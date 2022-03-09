@@ -39,7 +39,11 @@ export declare function sendQueryExists(contact: Wid): Promise<{
 exportModule(
   exports,
   {
-    sendQueryExists: 'default',
+    sendQueryExists: (m) =>
+      m.queryExists || // @whatsapp >= 2.2208.7
+      m.default,
   },
-  (m) => m.default.toString().includes('Should not reach queryExists MD')
+  (m) =>
+    m.default?.toString().includes('Should not reach queryExists MD') ||
+    m.queryExists?.toString().includes('Should not reach queryExists MD') // @whatsapp >= 2.2208.7
 );

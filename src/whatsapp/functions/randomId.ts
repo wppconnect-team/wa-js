@@ -16,16 +16,19 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 15860 */
+/** @whatsapp 65212 */
 export declare function randomMessageId(): string;
-/** @whatsapp 15860 */
-export declare function randomId(): string;
 
 exportModule(
   exports,
   {
-    randomMessageId: (m) => m.newTag || m.default,
-    randomId: 'randomId',
+    randomMessageId: (m) =>
+      m.newTag || // old
+      m.default.newId || // @whatsapp >= 2.2208.7
+      m.default, // old
   },
-  (m) => m.randomId
+  (m) =>
+    m.randomId ||
+    (m.default.toString().includes('MsgKey error: obj is null/undefined') &&
+      m.default.newId) // @whatsapp >= 2.2208.7
 );

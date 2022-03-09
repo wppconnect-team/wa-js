@@ -48,6 +48,9 @@ export async function setDescription(
     );
   }
 
+  /**
+   * @todo change randomMessageId to randomHex
+   */
   const tagId = randomMessageId();
 
   await sendSetGroupDescription(
