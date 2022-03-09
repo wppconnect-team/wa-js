@@ -1,3 +1,12 @@
+## 1.2.1 (2022-03-09)
+
+
+### Bug Fixes
+
+* Fixed compatibility with WhatsApp 2.2208.7 ([3bcac63](https://github.com/wppconnect-team/wa-js/commit/3bcac63b1b88fd36ae9c512cb1a944ee79292ffe))
+
+
+
 # 1.2.0 (2022-03-03)
 
 
