@@ -76,9 +76,20 @@ export async function deleteMessage(
       sendMsgResult = SendMsgResult.ERROR_UNKNOWN;
       isRevoked = true;
     } else if (revoke) {
-      sendMsgResult = await chat.sendRevokeMsgs([msg], deleteMediaInDevice);
-      if (sendMsgResult === SendMsgResult.OK) {
-        isRevoked = true;
+      if (typeof chat.canSenderRevoke === 'function') {
+        sendMsgResult = await chat.sendRevokeMsgs([msg], deleteMediaInDevice);
+        if (sendMsgResult === SendMsgResult.OK) {
+          isRevoked = true;
+        }
+      } else {
+        sendMsgResult = await chat.sendRevokeMsgs(
+          [msg],
+          'Sender',
+          deleteMediaInDevice
+        );
+        if (sendMsgResult === SendMsgResult.OK) {
+          isRevoked = true;
+        }
       }
     } else {
       sendMsgResult = await chat.sendDeleteMsgs([msg], deleteMediaInDevice);

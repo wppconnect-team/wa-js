@@ -155,6 +155,11 @@ export declare class ChatModel extends ModelChatBase {
     messages: MsgModel[],
     deleteMediaInDevice?: boolean
   ): Promise<SendMsgResult>;
+  sendRevokeMsgs(
+    messages: MsgModel[],
+    sender: string,
+    deleteMediaInDevice?: boolean
+  ): Promise<SendMsgResult>;
   sendDeleteMsgs(
     messages: MsgModel[],
     deleteMediaInDevice?: boolean
@@ -220,6 +225,7 @@ export declare class ChatModel extends ModelChatBase {
   replaceMsgsCollection(e?: any): any;
   removeMsgsCollection(e?: any): any;
   notifyMsgCollectionMerge(e?: any, t?: any, r?: any, a?: any): any;
+  canSenderRevoke(): boolean;
 }
 
 exportProxyModel(exports, 'ChatModel');
