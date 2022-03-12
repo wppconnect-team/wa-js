@@ -39,6 +39,10 @@ export interface EventTypes {
      */
     refId: MsgKey;
     to: Wid;
+    /**
+     * Type of revoke
+     */
+    type: 'revoke' | 'sender_revoke' | 'admin_revoke';
   };
   msg_ack_change: {
     ack: number;

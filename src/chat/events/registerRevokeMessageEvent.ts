@@ -33,6 +33,8 @@ function registerRevokeMessageEvent() {
    */
   const processMultipleMessages = MsgStore.processMultipleMessages;
 
+  const revokeTypes = ['revoke', 'sender_revoke', 'admin_revoke'];
+
   MsgStore.processMultipleMessages = (
     chatId: Wid,
     msgs: RawMessage[],
@@ -46,13 +48,14 @@ function registerRevokeMessageEvent() {
             continue;
           }
 
-          if (msg.type === 'protocol' && msg.subtype === 'revoke') {
+          if (msg.type === 'protocol' && revokeTypes.includes(msg.subtype!)) {
             eventEmitter.emit('msg_revoke', {
               author: msg.author,
               from: msg.from!,
               id: msg.id!,
               refId: msg.protocolMessageKey!,
               to: msg.to!,
+              type: msg.subtype as any,
             });
           }
         }
