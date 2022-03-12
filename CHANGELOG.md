@@ -1,3 +1,12 @@
+## 1.2.2 (2022-03-12)
+
+
+### Bug Fixes
+
+* Fixed WPP.chat.deleteMessage for old versions (fix wppconnect-team/wppconnect[#937](https://github.com/wppconnect-team/wa-js/issues/937)) ([a53ec55](https://github.com/wppconnect-team/wa-js/commit/a53ec55a04d3efa117dfd31ec4f1b2131ba85622))
+
+
+
 ## 1.2.1 (2022-03-09)
 
 
