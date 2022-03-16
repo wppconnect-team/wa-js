@@ -19,12 +19,20 @@ import { exportModule } from '../exportModule';
 /** @whatsapp 13194 */
 export declare function isAuthenticated(): boolean;
 
+/**
+ * @whatsapp 13194
+ * whatsapp >= 2.2208.11
+ */
+export declare function isLoggedIn(): boolean;
+
 exportModule(
   exports,
   {
-    isAuthenticated: 'Z',
+    isAuthenticated: (m) => m.isLoggedIn || m.Z,
+    isLoggedIn: (m) => m.isLoggedIn || m.Z,
   },
   (m) =>
-    m.Z.toString().includes('isRegistered') &&
-    m.Z.toString().includes('getLoginTokens')
+    (m.Z?.toString().includes('isRegistered') &&
+      m.Z?.toString().includes('getLoginTokens')) ||
+    m.isLoggedIn // whatsapp >= 2.2208.11
 );
