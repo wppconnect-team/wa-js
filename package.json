@@ -53,7 +53,7 @@
     "@wppconnect/wa-version": "^1.1.46",
     "buffer": "^6.0.3",
     "conventional-changelog-cli": "^2.2.2",
-    "debug": "^4.3.3",
+    "debug": "^4.3.4",
     "emittery": "^0.10.1",
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.5.0",
