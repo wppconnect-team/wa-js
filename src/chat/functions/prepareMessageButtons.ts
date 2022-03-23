@@ -14,21 +14,45 @@
  * limitations under the License.
  */
 
-import { ButtonCollection, ReplyButtonModel } from '../../whatsapp';
+import * as webpack from '../../webpack';
+import {
+  ButtonCollection,
+  MsgModel,
+  ReplyButtonModel,
+  TemplateButtonCollection,
+  TemplateButtonModel,
+} from '../../whatsapp';
+import { createMsgProtobuf } from '../../whatsapp/functions';
 import { RawMessage } from '..';
+
+export type MessageButtonsTypes =
+  | {
+      id: string;
+      text: string;
+    }
+  | {
+      phoneNumber: string;
+      text: string;
+    }
+  | {
+      url: string;
+      text: string;
+    };
 
 export interface MessageButtonsOptions {
   /**
    * List of buttons, with at least 1 option and a maximum of 3
    */
-  buttons?: Array<{
-    id: string;
-    text: string;
-  }>;
+  buttons?: Array<MessageButtonsTypes>;
   /**
    * Title for buttons, only for text message
    */
   title?: string;
+  /**
+   * Set to use template buttons instead of reply buttons.
+   * @default: undefined - auto detect
+   */
+  useTemplateButtons?: boolean;
   /**
    * Footer text for buttons
    */
@@ -59,25 +83,131 @@ export function prepareMessageButtons<T extends RawMessage>(
 
   message.title = options.title;
   message.footer = options.footer;
-  message.isDynamicReplyButtonsMsg = true;
 
-  message.dynamicReplyButtons = options.buttons.map((b) => ({
-    buttonId: b.id,
-    buttonText: { displayText: b.text },
-    type: 1,
-  }));
+  if (typeof options.useTemplateButtons === 'undefined') {
+    options.useTemplateButtons = options.buttons.some(
+      (button) => 'phoneNumber' in button || 'url' in button
+    );
+  }
 
-  // For UI only
-  message.replyButtons = new ButtonCollection();
-  message.replyButtons.add(
-    message.dynamicReplyButtons.map(
-      (b) =>
-        new ReplyButtonModel({
-          id: b.buttonId,
-          displayText: b.buttonText?.displayText || undefined,
-        })
-    )
-  );
+  if (options.useTemplateButtons) {
+    message.isFromTemplate = true;
+
+    message.buttons = new TemplateButtonCollection();
+
+    message.hydratedButtons = options.buttons.map((button, index) => {
+      if ('phoneNumber' in button) {
+        return {
+          index: index,
+          callButton: {
+            displayText: button.text,
+            phoneNumber: button.phoneNumber,
+          },
+        };
+      }
+      if ('url' in button) {
+        return {
+          index: index,
+          urlButton: {
+            displayText: button.text,
+            url: button.url,
+          },
+        };
+      }
+
+      return {
+        index: index,
+        quickReplyButton: {
+          displayText: button.text,
+          id: button.id || `${index}`,
+        },
+      };
+    });
+
+    message.buttons.add(
+      message.hydratedButtons.map((e, t: number) => {
+        const i = `${null != e.index ? e.index : t}`;
+
+        if (e.urlButton) {
+          return new TemplateButtonModel({
+            id: i,
+            displayText: e.urlButton?.displayText,
+            url: e.urlButton?.url,
+            subtype: 'url',
+          });
+        }
+
+        if (e.callButton) {
+          return new TemplateButtonModel({
+            id: i,
+            displayText: e.callButton.displayText,
+            phoneNumber: e.callButton.phoneNumber,
+            subtype: 'call',
+          });
+        }
+
+        return new TemplateButtonModel({
+          id: i,
+          displayText: e.quickReplyButton?.displayText,
+          selectionId: e.quickReplyButton?.id,
+          subtype: 'quick_reply',
+        });
+      })
+    );
+  } else {
+    message.isDynamicReplyButtonsMsg = true;
+
+    message.dynamicReplyButtons = options.buttons.map((button, index) => ({
+      buttonId: (button as any).id || `${index}`,
+      buttonText: { displayText: button.text },
+      type: 1,
+    }));
+
+    // For UI only
+    message.replyButtons = new ButtonCollection();
+    message.replyButtons.add(
+      message.dynamicReplyButtons.map(
+        (b) =>
+          new ReplyButtonModel({
+            id: b.buttonId,
+            displayText: b.buttonText?.displayText || undefined,
+          })
+      )
+    );
+  }
 
   return message;
 }
+
+webpack.onInjected(() => {
+  const m = webpack.search((m) => m.createMsgProtobuf === createMsgProtobuf);
+
+  const original = m.createMsgProtobuf;
+
+  m.createMsgProtobuf = (e: MsgModel, t: any) => {
+    const r = original(e, t);
+
+    if (e.hydratedButtons) {
+      r.templateMessage = {
+        hydratedTemplate: {
+          hydratedButtons: e.hydratedButtons,
+        },
+      };
+
+      if (e.title) {
+        r.templateMessage.hydratedTemplate.hydratedTitleText = e.title;
+      }
+      if (e.footer) {
+        r.templateMessage.hydratedTemplate.hydratedFooterText = e.footer;
+      }
+
+      if (r.conversation) {
+        r.templateMessage.hydratedTemplate.hydratedContentText = r.conversation;
+        delete r.conversation;
+      }
+      delete r.extendedTextMessage;
+    }
+
+    return r;
+  };
+});
