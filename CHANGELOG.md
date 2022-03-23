@@ -1,3 +1,12 @@
+## 1.2.4 (2022-03-23)
+
+
+### Features
+
+* Working on template buttons support ([ecf0a81](https://github.com/wppconnect-team/wa-js/commit/ecf0a813da0a3c3c811e3d6cf6611ea98ed1f18c))
+
+
+
 ## 1.2.3 (2022-03-16)
 
 
