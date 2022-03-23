@@ -15,7 +15,11 @@
  */
 
 import { TextFontStyle } from '../../enums';
-import { ButtonCollection, MsgCollection } from '../collections';
+import {
+  ButtonCollection,
+  MsgCollection,
+  TemplateButtonCollection,
+} from '../collections';
 import { exportProxyModel } from '../exportModule';
 import { MediaObject, MsgKey, Wid } from '../misc';
 import { ChatModel, MediaDataModel } from '.';
@@ -123,8 +127,22 @@ interface Props {
   quotedParticipant?: any;
   mentionedJidList?: Wid[];
   footer?: string;
-  hydratedButtons?: any;
-  buttons?: any;
+  hydratedButtons?: Array<{
+    index?: number;
+    quickReplyButton?: {
+      displayText: string;
+      id: string;
+    };
+    urlButton?: {
+      displayText: string;
+      url: string;
+    };
+    callButton?: {
+      displayText: string;
+      phoneNumber: string;
+    };
+  }>;
+  buttons?: TemplateButtonCollection;
   selectedId?: any;
   selectedIndex?: any;
   multicast?: any;
