@@ -22,11 +22,11 @@ export interface QueryGroupInviteResult {
   creation: number;
   desc: string;
   descId: string;
-  descOwner: Wid;
+  descOwner?: Wid;
   descTime: number;
   id: Wid;
   noFrequentlyForwarded: boolean;
-  owner: Wid;
+  owner?: Wid;
   parent: boolean;
   participants: {
     id: Wid;
@@ -38,7 +38,7 @@ export interface QueryGroupInviteResult {
   size: number;
   status: number;
   subject: string;
-  subjectOwner: Wid;
+  subjectOwner?: Wid;
   subjectTime: number;
   support: boolean;
   suspended: boolean;
