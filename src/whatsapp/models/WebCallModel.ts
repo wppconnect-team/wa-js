@@ -37,11 +37,11 @@ interface Session {
 
 interface Derived {}
 
-/** @whatsapp 91932 */
+/** @whatsapp 77107 */
 export declare interface WebCallModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 91932 */
+/** @whatsapp 77107 */
 export declare class WebCallModel extends Model {
   constructor(
     proterties?: ModelPropertiesContructor<WebCallModel>,

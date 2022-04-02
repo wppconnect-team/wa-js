@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 
 declare class LocaleClass {}
 
-/** @whatsapp 43725 */
+/** @whatsapp 14296 */
 export declare const Locale: LocaleClass;
 
 exportModule(

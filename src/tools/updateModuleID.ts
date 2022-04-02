@@ -76,6 +76,10 @@ async function start() {
     return result;
   }, dirs);
 
+  const version = await page
+    .evaluate(() => (window as any).Debug.VERSION)
+    .catch(() => null);
+
   await browser.close();
 
   delete result['_moduleIdMap'];
@@ -146,16 +150,16 @@ async function start() {
           let hasID = false;
 
           for (const tag of tags) {
-            if (moduleID === tag.getCommentText()) {
+            const currId = (tag.getCommentText() || '').split(' ')[0];
+
+            if (moduleID === currId) {
               hasID = true;
-            } else {
-              tag.remove();
             }
           }
           if (!hasID) {
             docs[0].addTag({
               tagName: 'whatsapp',
-              text: moduleID,
+              text: `${moduleID} >= ${version}`,
             });
           }
         }

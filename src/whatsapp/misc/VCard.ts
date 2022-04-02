@@ -23,7 +23,7 @@ export interface VCardData {
   isMultiVcard: false;
 }
 
-/** @whatsapp 78521 */
+/** @whatsapp 93778 */
 export declare namespace VCard {
   function vcardFromContactModel(contact: ContactModel): VCardData;
   function mergeVcards(vcards: VCardData[]): VCardData;

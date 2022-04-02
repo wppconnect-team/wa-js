@@ -16,7 +16,7 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 36638 */
+/** @whatsapp 51428 */
 export declare namespace ImageUtils {
   function rotateAndResize(
     e: any,

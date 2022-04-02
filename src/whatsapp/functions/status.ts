@@ -17,13 +17,13 @@
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 51316 */
+/** @whatsapp 46898 */
 export declare function getStatus(contactId: Wid): Promise<{
   id: Wid;
   status: string;
 }>;
 
-/** @whatsapp 51316 */
+/** @whatsapp 46898 */
 export declare function setMyStatus(
   status: string,
   seqId?: number

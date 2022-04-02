@@ -23,7 +23,7 @@ export declare const BlocklistStore: collections.BlocklistCollection;
 export declare const BusinessCategoriesResultStore: collections.BusinessCategoriesResultCollection;
 /** @whatsapp 93581 */
 export declare const BusinessProfileStore: collections.BusinessProfileCollection;
-/** @whatsapp 31218 */
+/** @whatsapp 60868 */
 export declare const CallStore: collections.CallCollection;
 /** @whatsapp 12392 */
 export declare const CartStore: collections.CartCollection;

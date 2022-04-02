@@ -19,7 +19,7 @@ import { exportModule } from '../exportModule';
 
 /**
  * This function can be used to define a group picture or self profile
- * @whatsapp 5018
+ * @whatsapp 78426
  */
 export declare function sendSetPicture(
   chat: Wid,
