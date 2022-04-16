@@ -14,14 +14,10 @@
  * limitations under the License.
  */
 
-import Debug from 'debug';
-
+import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
 import { Socket } from '../../whatsapp';
 import { isIdle } from '..';
-import { eventEmitter } from '../eventEmitter';
-
-const debug = Debug('WA-JS:conn');
 
 webpack.onInjected(registerQRCodeIdleEvent);
 
@@ -29,11 +25,9 @@ function registerQRCodeIdleEvent() {
   const trigger = async () => {
     const idle = isIdle();
     if (idle) {
-      eventEmitter.emit('qrcode_idle');
+      internalEv.emit('conn.qrcode_idle');
     }
   };
   trigger();
   Socket.on('change:state', trigger);
-
-  debug('idle event registered');
 }

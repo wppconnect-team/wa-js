@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
+import { internalEv } from '../../eventEmitter';
 import { Cmd, Socket } from '../../whatsapp';
 import { AuthCode } from '..';
-import { eventEmitter } from '../eventEmitter';
 import { isAuthenticated, isMultiDevice } from '.';
 
 /**
@@ -40,5 +40,5 @@ export async function refreshQR(): Promise<AuthCode | null> {
   } else {
     Socket.poke();
   }
-  return await eventEmitter.once('auth_code_change');
+  return await internalEv.waitFor('conn.auth_code_change').then((v) => v[0]);
 }

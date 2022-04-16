@@ -15,16 +15,10 @@
  */
 
 import Debug from 'debug';
-import Emittery from 'emittery';
+
+import { internalEv } from '../eventEmitter';
 
 const debug = Debug('WA-JS:webpack');
-
-interface WebpackEvents {
-  injected: undefined;
-  ready: undefined;
-}
-
-const emitter = new Emittery<WebpackEvents>();
 
 /**
  * Is setted true when the loader is injected
@@ -37,11 +31,11 @@ export let isInjected = false;
 export let isReady = false;
 
 export function onInjected(listener: () => void): void {
-  emitter.on('injected', listener);
+  internalEv.on('webpack.injected', listener);
 }
 
 export function onReady(listener: () => void): void {
-  emitter.on('ready', listener);
+  internalEv.on('webpack.ready', listener);
 }
 
 export type SearchModuleCondition = (module: any, moduleId: string) => boolean;
@@ -80,7 +74,7 @@ export function injectLoader(): void {
 
       isInjected = true;
       debug('injected');
-      await emitter.emitSerial('injected').catch(() => null);
+      await internalEv.emitAsync('webpack.injected').catch(() => null);
 
       const availablesRuntimes = new Array(10000)
         .fill(1)
@@ -104,7 +98,7 @@ export function injectLoader(): void {
 
       isReady = true;
       debug('ready to use');
-      await emitter.emitSerial('ready').catch(() => null);
+      await internalEv.emitAsync('webpack.ready').catch(() => null);
     },
   ]);
 }

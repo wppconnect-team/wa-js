@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
 import { Cmd } from '../../whatsapp';
 import { isAuthenticated } from '..';
-import { eventEmitter } from '../eventEmitter';
 
 webpack.onInjected(register);
 
@@ -26,7 +26,7 @@ function register() {
 
   const trigger = async () => {
     if (!isAuth) {
-      eventEmitter.emit('authenticated');
+      internalEv.emit('conn.authenticated');
       isAuth = false;
     }
   };

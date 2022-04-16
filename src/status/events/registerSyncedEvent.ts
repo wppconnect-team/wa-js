@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-import Debug from 'debug';
-
+import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
 import { StatusV3Store } from '../../whatsapp';
-import { eventEmitter } from '../eventEmitter';
-
-const debug = Debug('WA-JS:status');
 
 webpack.onInjected(() => registerSyncedEvent());
 
 function registerSyncedEvent() {
   StatusV3Store.on('sync', () => {
-    debug('synced');
-    eventEmitter.emit('sync');
+    internalEv.emit('status.sync');
   });
-
-  debug('synced event registered');
 }

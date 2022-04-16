@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
-import Debug from 'debug';
-
+import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
 import { MsgKey, MsgModel, MsgStore, Wid } from '../../whatsapp';
-import { eventEmitter } from '../eventEmitter';
-
-const debug = Debug('WA-JS:chat');
 
 webpack.onInjected(() => registerAckMessageEvent());
 
@@ -49,7 +45,7 @@ function processACK(e: any) {
       })
   );
 
-  eventEmitter.emit('msg_ack_change', {
+  internalEv.emit('chat.msg_ack_change', {
     ack: e.ack,
     chat: chatId,
     sender: sender,
@@ -60,7 +56,7 @@ function processACK(e: any) {
 function registerAckMessageEvent() {
   MsgStore.on('change:ack', (msg: MsgModel) => {
     if (msg.ack === 1) {
-      eventEmitter.emit('msg_ack_change', {
+      internalEv.emit('chat.msg_ack_change', {
         ack: msg.ack,
         chat: msg.to!,
         ids: [msg.id],
@@ -102,6 +98,4 @@ function registerAckMessageEvent() {
       return originalCall.call(msgHandlerModule, [e]);
     };
   }
-
-  debug('msg_ack_change event registered');
 }

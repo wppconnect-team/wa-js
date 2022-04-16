@@ -32,13 +32,40 @@ export * as blocklist from './blocklist';
 export * as chat from './chat';
 export * as conn from './conn';
 export * as contact from './contact';
+export * as ev from './eventEmitter';
 export * as group from './group';
 export * as labels from './labels';
 export * as profile from './profile';
 export * as status from './status';
 export * as util from './util';
-
 export * as whatsapp from './whatsapp';
+
+export {
+  emit,
+  emitAsync,
+  eventNames,
+  getMaxListeners,
+  hasListeners,
+  listenTo,
+  listenerCount,
+  listeners,
+  listenersAny,
+  many,
+  off,
+  offAny,
+  on,
+  onAny,
+  once,
+  prependAny,
+  prependListener,
+  prependMany,
+  prependOnceListener,
+  removeAllListeners,
+  removeListener,
+  setMaxListeners,
+  stopListeningTo,
+  waitFor,
+} from './eventEmitter';
 
 declare const __VERSION__: string;
 export const version = __VERSION__;

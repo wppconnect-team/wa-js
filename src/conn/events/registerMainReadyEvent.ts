@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
+import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
 import { Cmd, Stream } from '../../whatsapp';
-import { eventEmitter } from '../eventEmitter';
 
 webpack.onInjected(register);
 
 function register() {
   const trigger = async () => {
-    eventEmitter.emit('main_ready');
+    internalEv.emit('conn.main_ready');
   };
 
   if (Stream.mode === 'MAIN') {

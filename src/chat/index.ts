@@ -17,14 +17,5 @@
 import './events';
 
 export * from './defaultSendMessageOptions';
-export {
-  clearListeners,
-  EventTypes,
-  listenerCount,
-  off,
-  on,
-  once,
-  UnsubscribeFn,
-} from './eventEmitter';
 export * from './functions';
 export * from './types';

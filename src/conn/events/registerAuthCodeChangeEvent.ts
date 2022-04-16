@@ -14,25 +14,19 @@
  * limitations under the License.
  */
 
-import Debug from 'debug';
-
+import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
 import { Conn } from '../../whatsapp';
 import { getAuthCode } from '..';
-import { eventEmitter } from '../eventEmitter';
-
-const debug = Debug('WA-JS:conn');
 
 webpack.onInjected(registerAuthCodeChangeEvent);
 
 function registerAuthCodeChangeEvent() {
   const trigger = async () => {
     const authCode = await getAuthCode().catch(() => null);
-    eventEmitter.emit('auth_code_change', authCode);
+    internalEv.emit('conn.auth_code_change', authCode);
   };
 
   trigger();
   Conn.on('change:ref', trigger);
-
-  debug('change event registered');
 }

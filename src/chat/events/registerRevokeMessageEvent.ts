@@ -14,14 +14,10 @@
  * limitations under the License.
  */
 
-import Debug from 'debug';
-
+import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
 import { MsgStore, Wid } from '../../whatsapp';
 import { RawMessage } from '..';
-import { eventEmitter } from '../eventEmitter';
-
-const debug = Debug('WA-JS:chat');
 
 webpack.onInjected(() => registerRevokeMessageEvent());
 
@@ -49,7 +45,7 @@ function registerRevokeMessageEvent() {
           }
 
           if (msg.type === 'protocol' && revokeTypes.includes(msg.subtype!)) {
-            eventEmitter.emit('msg_revoke', {
+            internalEv.emit('chat.msg_revoke', {
               author: msg.author,
               from: msg.from!,
               id: msg.id!,
@@ -67,6 +63,4 @@ function registerRevokeMessageEvent() {
         .then(resolve, reject);
     });
   };
-
-  debug('msg_revoke event registered');
 }

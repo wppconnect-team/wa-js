@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import Debug from 'debug';
-
 import { config } from '../../config';
+import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
 import {
   ChatStore,
@@ -26,9 +25,6 @@ import {
   MsgStore,
   Wid,
 } from '../../whatsapp';
-import { eventEmitter } from '../eventEmitter';
-
-const debug = Debug('WA-JS:chat');
 
 webpack.onInjected(() => registerLiveLocationUpdateEvent());
 
@@ -53,7 +49,7 @@ interface LocationDisable {
 
 function processLocation(e: LocationUpdate | LocationDisable) {
   if (e.type === 'update') {
-    eventEmitter.emit('live_location_update', {
+    internalEv.emit('chat.live_location_update', {
       id: e.jid,
       lastUpdated: Clock.globalUnixTime() - e.elapsed,
       elapsed: e.elapsed,
@@ -68,7 +64,7 @@ function processLocation(e: LocationUpdate | LocationDisable) {
   }
 
   if (e.type === 'disable') {
-    eventEmitter.emit('live_location_end', {
+    internalEv.emit('chat.live_location_end', {
       id: e.jid,
       chat: e.chat,
       seq: e.seq,
@@ -86,7 +82,7 @@ function registerLiveLocationUpdateEvent() {
       return;
     }
 
-    eventEmitter.emit('live_location_start', {
+    internalEv.emit('chat.live_location_start', {
       id: msg.sender!,
       msgId: msg.id,
       chat: msg.chat!.id,
@@ -130,6 +126,4 @@ function registerLiveLocationUpdateEvent() {
     }
     return originalHandle.call(originalHandle, updateList);
   };
-
-  debug('live_location_* events registered');
 }

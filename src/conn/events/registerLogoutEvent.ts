@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-import Debug from 'debug';
-
+import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
 import { Cmd } from '../../whatsapp';
-import { eventEmitter } from '../eventEmitter';
-
-const debug = Debug('WA-JS:conn');
 
 webpack.onInjected(registerLogoutEvent);
 
 function registerLogoutEvent() {
-  Cmd.on('logout', () => eventEmitter.emit('logout'));
-
-  debug('logout event registered');
+  Cmd.on('logout', () => internalEv.emit('conn.logout'));
 }

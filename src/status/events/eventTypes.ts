@@ -14,14 +14,6 @@
  * limitations under the License.
  */
 
-import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
-import { BlocklistStore } from '../../whatsapp';
-
-webpack.onInjected(() => registerSyncedEvent());
-
-function registerSyncedEvent() {
-  BlocklistStore.on('sort', () => {
-    internalEv.emit('blocklist.sync');
-  });
+export interface StatusEventTypes {
+  'status.sync': undefined;
 }

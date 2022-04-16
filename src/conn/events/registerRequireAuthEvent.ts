@@ -14,15 +14,11 @@
  * limitations under the License.
  */
 
-import Debug from 'debug';
-
+import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
 import { Socket } from '../../whatsapp';
 import { SOCKET_STATE } from '../../whatsapp/enums/SOCKET_STATE';
 import { isAuthenticated } from '..';
-import { eventEmitter } from '../eventEmitter';
-
-const debug = Debug('WA-JS:conn');
 
 webpack.onInjected(registerRequireAuthEvent);
 
@@ -43,12 +39,10 @@ function registerRequireAuthEvent() {
       Socket.state === SOCKET_STATE.UNPAIRED_IDLE
     ) {
       fired = true;
-      eventEmitter.emit('require_auth');
+      internalEv.emit('conn.require_auth');
     }
   };
 
   trigger();
   Socket.on('change:state', trigger);
-
-  debug('change event registered');
 }

@@ -14,14 +14,5 @@
  * limitations under the License.
  */
 
-export {
-  clearListeners,
-  EventTypes,
-  listenerCount,
-  off,
-  on,
-  once,
-  UnsubscribeFn,
-} from './eventEmitter';
 export * from './functions';
 export * from './types';
