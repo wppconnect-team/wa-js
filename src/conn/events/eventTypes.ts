@@ -23,7 +23,7 @@ export interface ConnEventTypes {
    *
    * @example
    * ```javascript
-   * WPP.conn.on('authenticated', () => {
+   * WPP.on('conn.authenticated', () => {
    *   // Your code
    * });
    * ```
@@ -35,7 +35,7 @@ export interface ConnEventTypes {
    *
    * @example
    * ```javascript
-   * WPP.conn.on('main_loaded', () => {
+   * WPP.on('conn.main_loaded', () => {
    *   // Your code
    * });
    * ```
@@ -46,7 +46,7 @@ export interface ConnEventTypes {
    *
    * @example
    * ```javascript
-   * WPP.conn.on('main_ready', () => {
+   * WPP.on('conn.main_ready', () => {
    *   // Your code
    * });
    * ```
