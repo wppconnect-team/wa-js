@@ -19,6 +19,8 @@ import Debug from 'debug';
 import { EventEmitter } from './eventEmitter';
 import { EventTypes } from './eventTypes';
 
+export * from './eventTypes';
+
 const debug = Debug('WA-JS:event');
 
 export const internalEv = new EventEmitter<EventTypes>({
