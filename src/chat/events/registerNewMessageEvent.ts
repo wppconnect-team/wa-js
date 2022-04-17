@@ -14,7 +14,16 @@
  * limitations under the License.
  */
 
-import './registerAckMessageEvent';
-import './registerRevokeMessageEvent';
-import './registerLiveLocationUpdateEvent';
-import './registerNewMessageEvent';
+import { internalEv } from '../../eventEmitter';
+import * as webpack from '../../webpack';
+import { MsgModel, MsgStore } from '../../whatsapp';
+
+webpack.onInjected(() => register());
+
+function register() {
+  MsgStore.on('add', (msg: MsgModel) => {
+    if (msg.isNewMsg) {
+      internalEv.emit('chat.new_message', msg);
+    }
+  });
+}

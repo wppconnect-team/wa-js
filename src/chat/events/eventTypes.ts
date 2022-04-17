@@ -14,9 +14,20 @@
  * limitations under the License.
  */
 
-import { MsgKey, Wid } from '../../whatsapp';
+import { MsgKey, MsgModel, Wid } from '../../whatsapp';
 
 export interface ChatEventTypes {
+  /**
+   * Triggered when new message is received
+   *
+   * @example
+   * ```javascript
+   * WPP.on('chat.new_message', (msg) => {
+   *   // Your code
+   * });
+   * ```
+   */
+  'chat.new_message': MsgModel;
   'chat.msg_revoke': {
     /**
      * Author of message, only for groups
