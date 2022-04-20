@@ -40,9 +40,9 @@ interface Session {
 }
 
 interface Derived {
-  img?: any;
-  imgFull?: any;
-  fallbackType?: any;
+  img?: string | null;
+  imgFull?: string | null;
+  fallbackType?: 'SINGLE' | 'GROUP';
 }
 
 /** @whatsapp 93836 */

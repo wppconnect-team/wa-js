@@ -16,15 +16,13 @@
 
 import { exportModule } from '../exportModule';
 import { ProfilePicThumbModel } from '../models';
-import { Collection } from './Collection';
+import { BaseCollection } from './BaseCollection';
 
 /** @whatsapp 82039 */
-export declare class ProfilePicThumbCollection extends Collection<ProfilePicThumbModel> {
+export declare class ProfilePicThumbCollection extends BaseCollection<ProfilePicThumbModel> {
   static model: ProfilePicThumbModel;
   static staleCollection?: any;
   static resumeOnAvailable?: any;
-  static cachePolicy?: any;
-  onResume(): any;
   imageChanged(e?: any, t?: any): any;
   resyncPictures(e?: any): any;
   findThumbnailWid(e?: any): any;

@@ -14,6 +14,35 @@
  * limitations under the License.
  */
 
-export { getProfilePictureUrl } from './getProfilePictureUrl';
-export { getStatus } from './getStatus';
-export { queryExists } from './queryExists';
+import { assertWid } from '../../assert';
+import { ProfilePicThumbStore, Wid } from '../../whatsapp';
+
+/**
+ * Get the current text status
+ *
+ * @example
+ * ```javascript
+ * const url = await WPP.contact.getProfilePicture('[number]@c.us');
+ * ```
+ *
+ * @category Chat
+ */
+
+export async function getProfilePictureUrl(
+  contactId: string | Wid,
+  full = true
+) {
+  const wid = assertWid(contactId);
+
+  const profilePic = await ProfilePicThumbStore.find(wid);
+
+  if (!profilePic) {
+    return;
+  }
+
+  if (full) {
+    return profilePic.imgFull;
+  }
+
+  return profilePic.img;
+}
