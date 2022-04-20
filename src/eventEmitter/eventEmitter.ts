@@ -44,11 +44,6 @@ export interface OnOptions {
   promisify?: boolean;
 
   /**
-   * use process.nextTick instead of setImmediate to invoke the listener asynchronously.
-   */
-  nextTick?: boolean;
-
-  /**
    * activates returning a listener object instead of 'this' by the subscription method.
    */
   objectify?: boolean;
@@ -229,28 +224,54 @@ export declare class EventEmitter<EventData> {
    */
   removeAllListeners<Name extends keyof EventData>(event?: Name): this;
 
+  /**
+   * By default EventEmitters will print a warning if more than 10 listeners are added to it. This is a useful default which helps finding memory leaks. Obviously not all Emitters should be limited to 10. This function allows that to be increased. Set to zero for unlimited.
+   */
   setMaxListeners(n: number): void;
 
+  /**
+   * Returns the current max listener value for the EventEmitter which is either set by emitter.setMaxListeners(n) or defaults to EventEmitter2.defaultMaxListeners
+   */
   getMaxListeners(): number;
 
+  /**
+   * Returns an array listing the events for which the emitter has registered listeners.
+   *
+   * Note: Listeners order not guaranteed
+   */
   eventNames<Name extends keyof EventData>(nsAsArray?: boolean): Name[];
 
   listenerCount<Name extends keyof EventData>(event?: Name): number;
 
+  /**
+   * Returns an array of listeners for the specified event. This array can be manipulated, e.g. to remove listeners.
+   */
   listeners<Name extends keyof EventData>(event?: Name): ListenerFn[];
 
+  /**
+   * Returns an array of listeners that are listening for any event that is specified. This array can be manipulated, e.g. to remove listeners.
+   */
   listenersAny(): ListenerFn[];
 
+  /**
+   * Returns a thenable object (promise interface) that resolves when a specific event occurs
+   */
   waitFor<Name extends keyof EventData>(
     event: Name,
     timeout?: number
   ): CancelablePromise<ListenerType<EventData[Name]>>;
 
+  /**
+   * Returns a thenable object (promise interface) that resolves when a specific event occurs
+   */
   waitFor<Name extends keyof EventData>(
     event: Name,
     filter?: WaitForFilter
   ): CancelablePromise<ListenerType<EventData[Name]>>;
 
+  /**
+   * Returns a thenable object (promise interface) that resolves when a specific event occurs
+   */
   waitFor<Name extends keyof EventData>(
     event: Name,
     options?: WaitForOptions
@@ -279,6 +300,9 @@ export declare class EventEmitter<EventData> {
     event?: event | eventNS
   ): boolean;
 
+  /**
+   * Checks whether emitter has any listeners.
+   */
   hasListeners<Name extends keyof EventData>(event?: Name): boolean;
 
   static once(
