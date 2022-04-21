@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-import { MsgModel } from '..';
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 6565 */
-export declare function createMsgProtobuf(
-  e: MsgModel,
-  t?: { [key: string]: any }
-): { [key: string]: any };
+/** @whatsapp 93650 */
+export declare function typeAttributeFromProtobuf(protoMessage: {
+  [key: string]: any;
+}): string;
 
 exportModule(
   exports,
   {
-    createMsgProtobuf: 'createMsgProtobuf',
+    typeAttributeFromProtobuf: 'typeAttributeFromProtobuf',
   },
-  (m) => m.createMsgProtobuf
+  (m) => m.typeAttributeFromProtobuf
 );

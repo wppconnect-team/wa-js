@@ -41,4 +41,5 @@ export * from './sendRevokeGroupInviteCode';
 export * from './sendTextMsgToChat';
 export * from './setGroup';
 export * from './status';
+export * from './typeAttributeFromProtobuf';
 export * from './uploadProductImage';

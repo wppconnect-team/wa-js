@@ -17,12 +17,15 @@
 import * as webpack from '../../webpack';
 import {
   ButtonCollection,
-  MsgModel,
   ReplyButtonModel,
   TemplateButtonCollection,
   TemplateButtonModel,
 } from '../../whatsapp';
-import { createMsgProtobuf } from '../../whatsapp/functions';
+import { wrapModuleFunction } from '../../whatsapp/exportModule';
+import {
+  createMsgProtobuf,
+  typeAttributeFromProtobuf,
+} from '../../whatsapp/functions';
 import { RawMessage } from '..';
 
 export type MessageButtonsTypes =
@@ -180,25 +183,22 @@ export function prepareMessageButtons<T extends RawMessage>(
 }
 
 webpack.onInjected(() => {
-  const m = webpack.search((m) => m.createMsgProtobuf === createMsgProtobuf);
+  wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
+    const [message] = args;
+    const r = func(...args);
 
-  const original = m.createMsgProtobuf;
-
-  m.createMsgProtobuf = (e: MsgModel, t: any) => {
-    const r = original(e, t);
-
-    if (e.hydratedButtons) {
+    if (message.hydratedButtons) {
       r.templateMessage = {
         hydratedTemplate: {
-          hydratedButtons: e.hydratedButtons,
+          hydratedButtons: message.hydratedButtons,
         },
       };
 
-      if (e.title) {
-        r.templateMessage.hydratedTemplate.hydratedTitleText = e.title;
+      if (message.title) {
+        r.templateMessage.hydratedTemplate.hydratedTitleText = message.title;
       }
-      if (e.footer) {
-        r.templateMessage.hydratedTemplate.hydratedFooterText = e.footer;
+      if (message.footer) {
+        r.templateMessage.hydratedTemplate.hydratedFooterText = message.footer;
       }
 
       if (r.conversation) {
@@ -209,5 +209,13 @@ webpack.onInjected(() => {
     }
 
     return r;
-  };
+  });
+
+  wrapModuleFunction(typeAttributeFromProtobuf, (func, ...args) => {
+    const [proto] = args;
+    if (proto.templateMessage) {
+      return 'text';
+    }
+    return func(...args);
+  });
 });
