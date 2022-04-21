@@ -80,18 +80,24 @@ export function prepareMessageButtons<T extends RawMessage>(
     throw 'Buttons options is not a array';
   }
 
-  if (options.buttons.length === 0 || options.buttons.length > 3) {
-    throw 'Buttons options must have between 1 and 3 options';
-  }
-
-  message.title = options.title;
-  message.footer = options.footer;
-
   if (typeof options.useTemplateButtons === 'undefined') {
     options.useTemplateButtons = options.buttons.some(
       (button) => 'phoneNumber' in button || 'url' in button
     );
   }
+
+  if (options.useTemplateButtons) {
+    if (options.buttons.length === 0 || options.buttons.length > 5) {
+      throw 'Buttons options must have between 1 and 5 options';
+    }
+  } else {
+    if (options.buttons.length === 0 || options.buttons.length > 3) {
+      throw 'Buttons options must have between 1 and 3 options';
+    }
+  }
+
+  message.title = options.title;
+  message.footer = options.footer;
 
   if (options.useTemplateButtons) {
     message.isFromTemplate = true;
