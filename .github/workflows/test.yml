@@ -41,7 +41,7 @@ jobs:
         with:
           script: |
             const waVersion = require('@wppconnect/wa-version');
-            return waVersion.getAvailableVersions()
+            return waVersion.getAvailableVersions().slice(3)
 
     outputs:
       versions: ${{ steps.versions.outputs.result }}
