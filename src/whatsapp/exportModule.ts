@@ -169,4 +169,6 @@ export function wrapModuleFunction<TFunc extends (...args: any[]) => any>(
   }
 
   module[functionName] = wrapFunction(func.bind(module) as TFunc, callback);
+
+  moduleIdMap.set(module[functionName], moduleId);
 }
