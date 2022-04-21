@@ -16,6 +16,13 @@
 
 /* eslint-disable @typescript-eslint/ban-types */
 
+export type InferArgs<T> = T extends (...t: [...infer Arg]) => any
+  ? Arg
+  : never;
+export type InferReturn<T> = T extends (...t: [...infer Arg]) => infer Res
+  ? Res
+  : never;
+
 export type FunctionPropertyNames<T> = {
   [K in keyof T]: T[K] extends Function ? K : never;
 }[keyof T];

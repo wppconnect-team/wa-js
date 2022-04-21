@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-export * from './blobToBase64';
-export * from './convertToFile';
-export * from './createWid';
-export * from './errors';
-export * from './isBase64';
-export * from './types';
-export * from './wrapFunction';
+import { InferArgs, InferReturn } from './types';
+
+/**
+ * Wrap a function with the callback
+ */
+export function wrapFunction<TFunc extends (...args: any[]) => any>(
+  func: TFunc,
+  callback: (func: TFunc, ...args: InferArgs<TFunc>) => InferReturn<TFunc>
+): (...args: InferArgs<TFunc>) => InferReturn<TFunc> {
+  return (...args: InferArgs<TFunc>) => {
+    return callback(func, ...args);
+  };
+}

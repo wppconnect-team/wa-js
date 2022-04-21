@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { InferArgs, InferReturn, wrapFunction } from '../util';
 import * as webpack from '../webpack';
 
 const moduleIdMap = new WeakMap<any, string>();
@@ -53,7 +54,7 @@ export function exportModule(
       enumerable: true,
       configurable: true,
       get() {
-        let value: any = undefined;
+        let valueFn: any = undefined;
         const moduleId = webpack.searchId(condition);
 
         if (!moduleId) {
@@ -64,33 +65,35 @@ export function exportModule(
 
         switch (typeof property) {
           case 'function':
-            value = property(module);
-            if (!value) {
+            valueFn = () => property(module);
+            if (!valueFn()) {
               throw `Property ${property.toString()} not found in module ${name}`;
             }
             break;
           case 'string':
-            value = property.split('.').reduce((a, b) => a[b], module);
-            if (!value) {
+            valueFn = () => property.split('.').reduce((a, b) => a[b], module);
+            if (!valueFn()) {
               throw `Property ${property} not found in module ${name}`;
             }
             break;
           default:
-            value = module;
+            valueFn = () => module;
         }
 
         // Avoid re-searching modules
-        if (value) {
+        if (valueFn) {
           Object.defineProperty(this, name, {
-            get: () => value,
+            get: valueFn,
           });
 
           try {
-            moduleIdMap.set(value, moduleId);
+            moduleIdMap.set(valueFn(), moduleId);
           } catch (error) {}
+
+          return valueFn();
         }
 
-        return value;
+        return undefined;
       },
     });
   }
@@ -123,4 +126,47 @@ export function exportProxyModel(exports: any, name: string) {
           m[baseName]?.prototype?.proxyName
       )
   );
+}
+
+/**
+ * Wrap a exported function from a module
+ *
+ * @param func The original function
+ * @param callback A callback to wrap the function
+ * 
+ * @example
+ * ```typescript
+ *wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
+   const [message] = args; // Extract arguments
+   const result = func(...args); // Call the original function
+   // Logic to change the result
+   return result; // The new return
+ });
+ * ```
+ */
+export function wrapModuleFunction<TFunc extends (...args: any[]) => any>(
+  func: TFunc,
+  callback: (func: TFunc, ...args: InferArgs<TFunc>) => InferReturn<TFunc>
+) {
+  if (typeof func !== 'function') {
+    throw new TypeError('func is not a function');
+  }
+
+  const moduleId = _moduleIdMap.get(func);
+
+  if (!moduleId) {
+    throw new TypeError('func is not an exported function');
+  }
+
+  const module = webpack.webpackRequire(moduleId);
+
+  const functionName = Object.keys(module).find(
+    (name) => module[name] === func
+  );
+
+  if (!functionName) {
+    throw new TypeError(`function not found in the module ${moduleId}`);
+  }
+
+  module[functionName] = wrapFunction(func.bind(module) as TFunc, callback);
 }
