@@ -47,7 +47,7 @@ jobs:
             const supportedVersion = packageJSON.engines['whatsapp-web'];
             const allVersions = waVersion.getAvailableVersions();
             const versions = allVersions.filter(
-              (v) => semver.satisfies(v, supportedVersion)
+              (v) => semver.satisfies(v, supportedVersion, {includePrerelease: true})
             );
 
             return versions
