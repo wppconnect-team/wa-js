@@ -60,6 +60,6 @@ export declare class BaseCollection<C, A = C | C[]> extends Collection<C> {
 
 exportModule(
   exports,
-  { BaseCollection: (m) => m.BaseCollection || m.default },
+  { BaseCollection: 'BaseCollection' },
   (m) => m.CACHE_POLICY || m.BaseCollection
 );

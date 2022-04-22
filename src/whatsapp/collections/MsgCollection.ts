@@ -53,6 +53,6 @@ export declare class MsgCollection extends BaseCollection<MsgModel> {
 
 exportModule(
   exports,
-  { MsgCollection: (m) => m.MsgCollectionImpl || m.MsgCollection },
-  (m) => m.MsgCollectionImpl || m.MsgCollection
+  { MsgCollection: 'MsgCollectionImpl' },
+  (m) => m.MsgCollectionImpl
 );

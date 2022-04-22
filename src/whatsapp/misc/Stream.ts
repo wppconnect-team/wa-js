@@ -20,8 +20,4 @@ import { StreamModel } from '../models';
 /** @whatsapp 8080 */
 export declare const Stream: StreamModel;
 
-exportModule(
-  exports,
-  { Stream: (m) => (m.default ? m.default : m.Stream) },
-  (m) => m.Stream || m.StreamInfo
-);
+exportModule(exports, { Stream: 'Stream' }, (m) => m.Stream);

@@ -18,7 +18,9 @@ import { exportModule } from '../exportModule';
 import { StickerModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 49264 */
+/** @whatsapp 49264
+ * @whatsapp 91692 >= 2.2212.8
+ */
 export declare class RecentStickerCollection extends Collection<StickerModel> {
   static model: StickerModel;
   enqueue(e?: any): any;
@@ -29,8 +31,7 @@ export declare class RecentStickerCollection extends Collection<StickerModel> {
 exportModule(
   exports,
   {
-    RecentStickerCollection: (m) =>
-      m.RecentStickerCollectionImpl || m.RecentStickerCollection,
+    RecentStickerCollection: 'RecentStickerCollectionImpl',
   },
-  (m) => m.RecentStickerCollectionImpl || m.RecentStickerCollection
+  (m) => m.RecentStickerCollectionImpl
 );

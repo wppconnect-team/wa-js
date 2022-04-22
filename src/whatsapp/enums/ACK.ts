@@ -16,7 +16,9 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 35470 */
+/** @whatsapp 35470
+ * @whatsapp 69618 >= 2.2204.13
+ */
 export declare enum ACK {
   MD_DOWNGRADE = -7,
   INACTIVE = -6,
@@ -33,13 +35,17 @@ export declare enum ACK {
   PEER = 5,
 }
 
-/** @whatsapp 35470 */
+/** @whatsapp 35470
+ * @whatsapp 69618 >= 2.2204.13
+ */
 export declare enum EDIT_ATTR {
   SENDER_REVOKE = 7,
   ADMIN_REVOKE = 8,
 }
 
-/** @whatsapp 35470 */
+/** @whatsapp 35470
+ * @whatsapp 69618 >= 2.2204.13
+ */
 export declare enum ACK_STRING {
   SENDER = 'sender',
   DELIVERY = 'delivery',
@@ -53,9 +59,9 @@ export declare enum ACK_STRING {
 exportModule(
   exports,
   {
-    ACK: (m) => m.ACK || m.default.ACK,
-    EDIT_ATTR: (m) => m.EDIT_ATTR || m.default.EDIT_ATTR,
-    ACK_STRING: (m) => m.ACK_STRING || m.default.ACK_STRING,
+    ACK: ['ACK', 'default.ACK'],
+    EDIT_ATTR: ['EDIT_ATTR', 'default.EDIT_ATTR'],
+    ACK_STRING: ['ACK_STRING', 'default.ACK_STRING'],
   },
   (m) => m.ACK || m.default.ACK
 );

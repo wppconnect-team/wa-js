@@ -49,10 +49,12 @@ export declare enum WATCHED_SOCKET_STATE {
 exportModule(
   exports,
   {
-    SOCKET_STATE: (m) => m.SOCKET_STATE || m.default.SOCKET_STATE,
-    SOCKET_STREAM: (m) => m.SOCKET_STREAM || m.default.SOCKET_STREAM,
-    WATCHED_SOCKET_STATE: (m) =>
-      m.WATCHED_SOCKET_STATE || m.default.WATCHED_SOCKET_STATE,
+    SOCKET_STATE: ['SOCKET_STATE', 'default.SOCKET_STATE'],
+    SOCKET_STREAM: ['SOCKET_STREAM', 'default.SOCKET_STREAM'],
+    WATCHED_SOCKET_STATE: [
+      'WATCHED_SOCKET_STATE',
+      'default.WATCHED_SOCKET_STATE',
+    ],
   },
   (m) => m.SOCKET_STATE || m.default.SOCKET_STATE
 );

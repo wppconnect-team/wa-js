@@ -36,8 +36,8 @@ export declare const MediaBlobCache: MediaBlobCacheImpl;
 exportModule(
   exports,
   {
-    MediaBlobCacheImpl: (m) => m.MediaBlobCacheImpl || m.MediaBlobCache,
-    MediaBlobCache: (m) => m.default || m.MediaBlobCache,
+    MediaBlobCacheImpl: 'MediaBlobCacheImpl',
+    MediaBlobCache: 'MediaBlobCache',
   },
   (m) => m.MediaBlobCache
 );

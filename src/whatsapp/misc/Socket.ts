@@ -20,8 +20,4 @@ import { SocketModel } from '../models';
 /** @whatsapp 65044 */
 export declare const Socket: SocketModel;
 
-exportModule(
-  exports,
-  { Socket: (m) => m.Socket || m.default },
-  (m) => m.Socket?.initConn || m.default?.initConn
-);
+exportModule(exports, { Socket: 'Socket' }, (m) => m.Socket?.initConn);

@@ -18,7 +18,9 @@ import { exportModule } from '../exportModule';
 import { StickerPackModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 44333 */
+/** @whatsapp 44333
+ * @whatsapp 66299 >= 2.2212.8
+ */
 export declare class StickerPackCollection extends Collection<StickerPackModel> {
   static model: StickerPackModel;
   checksum?: any;
@@ -36,8 +38,7 @@ export declare class StickerPackCollection extends Collection<StickerPackModel> 
 exportModule(
   exports,
   {
-    StickerPackCollection: (m) =>
-      m.StickerPackCollectionImpl || m.StickerPackCollection,
+    StickerPackCollection: 'StickerPackCollectionImpl',
   },
-  (m) => m.StickerPackCollectionImpl || m.StickerPackCollection
+  (m) => m.StickerPackCollectionImpl
 );

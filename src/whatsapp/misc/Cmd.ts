@@ -158,8 +158,8 @@ export declare const Cmd: CmdClass;
 exportModule(
   exports,
   {
-    CmdClass: (m) => m.CmdImpl || m.Cmd,
-    Cmd: (m) => m.default || m.Cmd,
+    CmdClass: 'CmdImpl',
+    Cmd: 'Cmd',
   },
-  (m) => (m.Cmd && m.CmdImpl) || (m.Cmd && m.default)
+  (m) => m.Cmd && m.CmdImpl
 );

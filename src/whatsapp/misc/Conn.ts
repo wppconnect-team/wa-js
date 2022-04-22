@@ -20,8 +20,4 @@ import { ConnModel } from '../models';
 /** @whatsapp 17239 */
 export declare const Conn: ConnModel;
 
-exportModule(
-  exports,
-  { Conn: (m) => (m.default ? m.default : m.Conn) },
-  (m) => (m.Conn && m.ConnImpl) || (m.Conn && m.default)
-);
+exportModule(exports, { Conn: 'Conn' }, (m) => m.Conn && m.ConnImpl);

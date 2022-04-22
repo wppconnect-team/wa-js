@@ -26,7 +26,9 @@ type Event = string | symbol;
  */
 type Listener = (...args: any[]) => void;
 
-/** @whatsapp 76521 */
+/** @whatsapp 76521
+ * @whatsapp 34342 >= 2.2204.13
+ */
 export declare class EventEmitter {
   /**
    * Adds the listener function to the end of the listeners array for the event named eventName.

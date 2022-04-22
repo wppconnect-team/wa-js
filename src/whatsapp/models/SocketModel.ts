@@ -130,6 +130,6 @@ export declare class SocketModel extends Model {
 
 exportModule(
   exports,
-  { Socket: (m) => m.Socket?.constructor || m.default?.constructor },
-  (m) => m.Socket?.initConn || m.default?.initConn
+  { Socket: 'Socket.constructor' },
+  (m) => m.Socket?.initConn
 );

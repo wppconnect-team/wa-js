@@ -30,8 +30,7 @@ export declare class LiveLocationCollection extends BaseCollection<LiveLocationM
 exportModule(
   exports,
   {
-    LiveLocationCollection: (m) =>
-      m.LiveLocationCollectionImpl || m.LiveLocationCollection,
+    LiveLocationCollection: 'LiveLocationCollectionImpl',
   },
-  (m) => m.LiveLocationCollectionImpl || m.LiveLocationCollection
+  (m) => m.LiveLocationCollectionImpl
 );

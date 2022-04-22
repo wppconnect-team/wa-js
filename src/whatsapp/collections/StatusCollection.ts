@@ -29,6 +29,6 @@ export declare class StatusCollection extends BaseCollection<StatusModel> {
 
 exportModule(
   exports,
-  { StatusCollection: (m) => m.StatusCollectionImpl || m.StatusCollection },
-  (m) => m.StatusCollectionImpl || m.StatusCollection
+  { StatusCollection: 'StatusCollectionImpl' },
+  (m) => m.StatusCollectionImpl
 );

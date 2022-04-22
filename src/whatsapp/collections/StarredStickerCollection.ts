@@ -31,8 +31,7 @@ export declare class StarredStickerCollection extends Collection<StickerModel> {
 exportModule(
   exports,
   {
-    StarredStickerCollection: (m) =>
-      m.StarredStickerCollectionImpl || m.StarredStickerCollection,
+    StarredStickerCollection: 'StarredStickerCollectionImpl',
   },
-  (m) => m.StarredStickerCollectionImpl || m.StarredStickerCollection
+  (m) => m.StarredStickerCollectionImpl
 );

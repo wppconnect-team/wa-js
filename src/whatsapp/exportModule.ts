@@ -18,6 +18,7 @@ import { InferArgs, InferReturn, wrapFunction } from '../util';
 import * as webpack from '../webpack';
 
 const moduleIdMap = new WeakMap<any, string>();
+const functionPathMap = new WeakMap<any, string>();
 
 export const _moduleIdMap = moduleIdMap;
 
@@ -37,7 +38,7 @@ export function exportModule(
   properties:
     | string
     | {
-        [key: string]: null | undefined | string | ((module: any) => any);
+        [key: string]: null | undefined | string | string[];
       },
   condition: webpack.SearchModuleCondition
 ): void {
@@ -55,6 +56,8 @@ export function exportModule(
       configurable: true,
       get() {
         let valueFn: any = undefined;
+        let functionPath: string | undefined = undefined;
+
         const moduleId = webpack.searchId(condition);
 
         if (!moduleId) {
@@ -63,21 +66,30 @@ export function exportModule(
 
         const module = webpack.webpackRequire(moduleId);
 
-        switch (typeof property) {
-          case 'function':
-            valueFn = () => property(module);
-            if (!valueFn()) {
-              throw `Property ${property.toString()} not found in module ${name}`;
+        if (Array.isArray(property)) {
+          for (const p of property) {
+            valueFn = () => p.split('.').reduce((a, b) => a?.[b], module);
+            if (valueFn()) {
+              functionPath = p;
+              break;
             }
-            break;
-          case 'string':
-            valueFn = () => property.split('.').reduce((a, b) => a[b], module);
-            if (!valueFn()) {
-              throw `Property ${property} not found in module ${name}`;
-            }
-            break;
-          default:
-            valueFn = () => module;
+          }
+          if (!valueFn()) {
+            throw `Property ${property} not found in module ${name}`;
+          }
+        } else {
+          switch (typeof property) {
+            case 'string':
+              valueFn = () =>
+                property.split('.').reduce((a, b) => a?.[b], module);
+              if (!valueFn()) {
+                throw `Property ${property} not found in module ${name}`;
+              }
+              functionPath = property;
+              break;
+            default:
+              valueFn = () => module;
+          }
         }
 
         // Avoid re-searching modules
@@ -87,7 +99,11 @@ export function exportModule(
           });
 
           try {
-            moduleIdMap.set(valueFn(), moduleId);
+            const value = valueFn();
+            moduleIdMap.set(value, moduleId);
+            if (functionPath) {
+              functionPathMap.set(value, functionPath);
+            }
           } catch (error) {}
 
           return valueFn();
@@ -117,7 +133,7 @@ export function exportProxyModel(exports: any, name: string) {
   exportModule(
     exports,
     {
-      [name]: (m) => m.default || m[name] || m[baseName],
+      [name]: ['default', name, baseName],
     },
     (m) =>
       names.includes(
@@ -160,15 +176,26 @@ export function wrapModuleFunction<TFunc extends (...args: any[]) => any>(
 
   const module = webpack.webpackRequire(moduleId);
 
-  const functionName = Object.keys(module).find(
-    (name) => module[name] === func
-  );
+  const functionPath = functionPathMap.get(func);
+
+  if (!functionPath) {
+    throw new TypeError('function path not found');
+  }
+
+  const parts = functionPath.split('.');
+
+  const functionName = parts.pop();
 
   if (!functionName) {
     throw new TypeError(`function not found in the module ${moduleId}`);
   }
 
-  module[functionName] = wrapFunction(func.bind(module) as TFunc, callback);
+  const baseModule = parts.reduce((a, b) => a?.[b], module);
 
-  moduleIdMap.set(module[functionName], moduleId);
+  baseModule[functionName] = wrapFunction(
+    func.bind(baseModule) as TFunc,
+    callback
+  );
+
+  moduleIdMap.set(baseModule[functionName], moduleId);
 }

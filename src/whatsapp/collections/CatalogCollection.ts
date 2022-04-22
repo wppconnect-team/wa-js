@@ -34,6 +34,6 @@ export declare class CatalogCollection extends Collection<CatalogModel> {
 }
 exportModule(
   exports,
-  { CatalogCollection: (m) => m.CatalogCollectionImpl || m.CatalogCollection },
+  { CatalogCollection: 'CatalogCollectionImpl' },
   (m) => m.CatalogCollectionImpl || m.CatalogCollection
 );

@@ -17,7 +17,9 @@
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 57547 */
+/** @whatsapp 57547
+ * @whatsapp 69722 >= 2.2204.13
+ */
 export declare function sendQueryExists(contact: Wid): Promise<{
   wid: Wid;
   biz: boolean;
@@ -39,9 +41,10 @@ export declare function sendQueryExists(contact: Wid): Promise<{
 exportModule(
   exports,
   {
-    sendQueryExists: (m) =>
-      m.queryExists || // @whatsapp >= 2.2208.7
-      m.default,
+    sendQueryExists: [
+      'queryExists', // @whatsapp >= 2.2208.7
+      'default',
+    ],
   },
   (m) =>
     m.default?.toString().includes('Should not reach queryExists MD') ||

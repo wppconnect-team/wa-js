@@ -16,7 +16,9 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 12380 */
+/** @whatsapp 12380
+ * @whatsapp 69618 >= 2.2204.13
+ */
 export declare enum GROUP_SETTING_TYPE {
   ANNOUNCEMENT = 'announcement',
   RESTRICT = 'restrict',
@@ -27,8 +29,7 @@ export declare enum GROUP_SETTING_TYPE {
 exportModule(
   exports,
   {
-    GROUP_SETTING_TYPE: (m) =>
-      m.GROUP_SETTING_TYPE || m.default.GROUP_SETTING_TYPE,
+    GROUP_SETTING_TYPE: ['GROUP_SETTING_TYPE', 'default.GROUP_SETTING_TYPE'],
   },
   (m) => m.GROUP_SETTING_TYPE || m.default.GROUP_SETTING_TYPE
 );

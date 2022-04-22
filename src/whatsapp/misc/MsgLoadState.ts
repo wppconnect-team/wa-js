@@ -39,7 +39,7 @@ exportModule(
   exports,
   {
     MsgLoadState: 'MsgLoadState',
-    MsgLoad: (m) => m.ChatMsgsCollection || m.default,
+    MsgLoad: 'ChatMsgsCollection',
   },
   (m) => m.MsgLoadState
 );

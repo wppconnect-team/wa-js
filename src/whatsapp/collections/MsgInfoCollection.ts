@@ -26,6 +26,6 @@ export declare class MsgInfoCollection extends Collection<MsgInfoModel> {
 }
 exportModule(
   exports,
-  { MsgInfoCollection: (m) => m.MsgInfoCollectionImpl || m.MsgInfoCollection },
-  (m) => m.MsgInfoCollectionImpl || m.MsgInfoCollection
+  { MsgInfoCollection: 'MsgInfoCollectionImpl' },
+  (m) => m.MsgInfoCollectionImpl
 );

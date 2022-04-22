@@ -25,8 +25,7 @@ export declare class ChatstateCollection extends Collection<ChatstateModel> {
 exportModule(
   exports,
   {
-    ChatstateCollection: (m) =>
-      m.ChatstateCollectionImpl || m.ChatstateCollection,
+    ChatstateCollection: ['ChatstateCollectionImpl', 'ChatstateCollection'],
   },
   (m) => m.ChatstateCollectionImpl || m.ChatstateCollection
 );

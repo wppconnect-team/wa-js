@@ -29,8 +29,10 @@ export declare class ProductCollCollection extends Collection<ProductCollModel> 
 exportModule(
   exports,
   {
-    ProductCollCollection: (m) =>
-      m.ProductCollCollectionImpl || m.ProductCollCollection,
+    ProductCollCollection: [
+      'ProductCollCollectionImpl',
+      'ProductCollCollection',
+    ],
   },
   (m) => m.ProductCollCollectionImpl || m.ProductCollCollection
 );

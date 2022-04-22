@@ -16,16 +16,19 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 65212 */
+/** @whatsapp 65212
+ * @whatsapp 15860 >= 2.2204.13
+ */
 export declare function randomMessageId(): string;
 
 exportModule(
   exports,
   {
-    randomMessageId: (m) =>
-      m.newTag || // old
-      m.default.newId || // @whatsapp >= 2.2208.7
-      m.default, // old
+    randomMessageId: [
+      'newTag', // old
+      'default.newId', // @whatsapp >= 2.2208.7
+      'default', // old
+    ],
   },
   (m) =>
     m.randomId ||

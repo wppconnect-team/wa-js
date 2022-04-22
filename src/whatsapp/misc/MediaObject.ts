@@ -71,7 +71,7 @@ export declare class MediaObject {
 exportModule(
   exports,
   {
-    MediaObject: (m) => m.default || m.MediaObject,
+    MediaObject: 'MediaObject',
   },
   (m) => m.webMediaTypeToWamMediaType
 );

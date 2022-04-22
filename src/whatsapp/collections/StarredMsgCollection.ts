@@ -31,8 +31,7 @@ export declare class StarredMsgCollection extends Collection<MsgModel> {
 exportModule(
   exports,
   {
-    StarredMsgCollection: (m) =>
-      m.StarredMsgCollectionImpl || m.StarredMsgCollection,
+    StarredMsgCollection: ['StarredMsgCollectionImpl', 'StarredMsgCollection'],
   },
   (m) => m.StarredMsgCollectionImpl || m.StarredMsgCollection
 );

@@ -26,6 +26,6 @@ export declare class ButtonCollection extends BaseCollection<ReplyButtonModel> {
 
 exportModule(
   exports,
-  { ButtonCollection: (m) => m.ButtonCollectionImpl || m.ButtonCollection },
+  { ButtonCollection: ['ButtonCollectionImpl', 'ButtonCollection'] },
   (m) => m.ButtonCollectionImpl || m.ButtonCollection
 );

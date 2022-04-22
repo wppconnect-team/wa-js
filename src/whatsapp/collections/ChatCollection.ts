@@ -37,6 +37,6 @@ export declare class ChatCollection extends BaseCollection<ChatModel> {
 
 exportModule(
   exports,
-  { ChatCollection: (m) => m.ChatCollectionImpl || m.ChatCollection },
-  (m) => m.ChatCollectionImpl || m.ChatCollection
+  { ChatCollection: 'ChatCollectionImpl' },
+  (m) => m.ChatCollectionImpl
 );

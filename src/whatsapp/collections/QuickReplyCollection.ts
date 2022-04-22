@@ -37,8 +37,7 @@ export declare class QuickReplyCollection extends Collection<QuickReplyModel> {
 exportModule(
   exports,
   {
-    QuickReplyCollection: (m) =>
-      m.QuickReplyCollectionImpl || m.QuickReplyCollection,
+    QuickReplyCollection: 'QuickReplyCollectionImpl',
   },
-  (m) => m.QuickReplyCollectionImpl || m.QuickReplyCollection
+  (m) => m.QuickReplyCollectionImpl
 );

@@ -26,11 +26,8 @@ export declare class BusinessCategoriesResultCollection extends Collection<Busin
 exportModule(
   exports,
   {
-    BusinessCategoriesResultCollection: (m) =>
-      m.BusinessCategoriesResultCollectionImpl ||
-      m.BusinessCategoriesResultCollection,
+    BusinessCategoriesResultCollection:
+      'BusinessCategoriesResultCollectionImpl',
   },
-  (m) =>
-    m.BusinessCategoriesResultCollectionImpl ||
-    m.BusinessCategoriesResultCollection
+  (m) => m.BusinessCategoriesResultCollectionImpl
 );

@@ -25,7 +25,7 @@ export declare class CartItemCollection extends Collection<CartItemModel> {
 exportModule(
   exports,
   {
-    CartItemCollection: (m) => m.CartItemCollectionImpl || m.CartItemCollection,
+    CartItemCollection: ['CartItemCollectionImpl', 'CartItemCollection'],
   },
   (m) => m.CartItemCollectionImpl || m.CartItemCollection
 );

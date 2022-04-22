@@ -25,6 +25,6 @@ export declare class StickerCollection extends Collection<StickerModel> {
 }
 exportModule(
   exports,
-  { StickerCollection: (m) => m.StickerCollectionImpl || m.StickerCollection },
+  { StickerCollection: 'StickerCollectionImpl' },
   (m) => m.StickerCollectionImpl || m.StickerCollection
 );

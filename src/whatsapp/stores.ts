@@ -23,7 +23,9 @@ export declare const BlocklistStore: collections.BlocklistCollection;
 export declare const BusinessCategoriesResultStore: collections.BusinessCategoriesResultCollection;
 /** @whatsapp 93581 */
 export declare const BusinessProfileStore: collections.BusinessProfileCollection;
-/** @whatsapp 60868 */
+/** @whatsapp 60868
+ * @whatsapp 31218 >= 2.2204.13
+ */
 export declare const CallStore: collections.CallCollection;
 /** @whatsapp 12392 */
 export declare const CartStore: collections.CartCollection;
@@ -110,7 +112,7 @@ for (const name of storeNames) {
   exportModule(
     exports,
     {
-      [name]: (m) => m.default || m[collectionName],
+      [name]: ['default', collectionName],
     },
     (m) =>
       (m.default || m[collectionName]) instanceof
@@ -121,7 +123,7 @@ for (const name of storeNames) {
 exportModule(
   exports,
   {
-    RecentStickerStore: (m) => m.default || m.RecentStickerCollectionMd,
+    RecentStickerStore: ['default', 'RecentStickerCollectionMd'],
   },
   (m) => m.RecentStickerCollection
 );
@@ -129,7 +131,7 @@ exportModule(
 exportModule(
   exports,
   {
-    StarredMsgStore: (m) => m.default || m.AllStarredMsgsCollection,
+    StarredMsgStore: ['default', 'AllStarredMsgsCollection'],
   },
   (m) => m.StarredMsgCollection
 );
@@ -137,8 +139,11 @@ exportModule(
 exportModule(
   exports,
   {
-    StickerPackStore: (m) =>
-      m.default || m.StickerPackCollectionMd || m.StickerPackCollection,
+    StickerPackStore: [
+      'default',
+      'StickerPackCollectionMd',
+      'StickerPackCollection',
+    ],
   },
   (m) => m.StickerPackCollection
 );

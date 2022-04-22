@@ -63,8 +63,7 @@ export declare class ProductMessageListModel extends Model {
 exportModule(
   exports,
   {
-    ProductMessageListModel: (m) => m.ProductMessageList || m.default,
+    ProductMessageListModel: 'ProductMessageList',
   },
-  (m) =>
-    m.ProductMessageList || m.default?.prototype?.proxyName === 'product_list'
+  (m) => m.ProductMessageList
 );

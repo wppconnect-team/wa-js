@@ -76,8 +76,7 @@ export declare class StreamModel extends Model {
 exportModule(
   exports,
   {
-    StreamModel: (m) =>
-      m.default ? m.default.constructor : m.Stream.constructor,
+    StreamModel: 'Stream.constructor',
   },
-  (m) => m.Stream || m.StreamInfo
+  (m) => m.Stream
 );

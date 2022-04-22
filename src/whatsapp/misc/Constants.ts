@@ -16,7 +16,9 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 64369 */
+/** @whatsapp 64369
+ * @whatsapp 69618 >= 2.2204.13
+ */
 export declare const Constants: {
   IMG_THUMB_MAX_EDGE: 100;
   DOC_THUMB_MAX_EDGE: 480;

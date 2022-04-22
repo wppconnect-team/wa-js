@@ -25,8 +25,7 @@ export declare class OrderItemCollection extends Collection<OrderItemModel> {
 exportModule(
   exports,
   {
-    OrderItemCollection: (m) =>
-      m.OrderItemCollectionImpl || m.OrderItemCollection,
+    OrderItemCollection: ['OrderItemCollectionImpl', 'OrderItemCollection'],
   },
   (m) => m.OrderItemCollectionImpl || m.OrderItemCollection
 );

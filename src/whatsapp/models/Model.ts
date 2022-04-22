@@ -101,7 +101,7 @@ export declare class Model<Collection = undefined> extends EventEmitter {
 exportModule(
   exports,
   {
-    Model: (m) => m.BaseModel || m.default,
+    Model: 'BaseModel',
   },
   (m) => m.defineModel
 );

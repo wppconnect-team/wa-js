@@ -31,8 +31,8 @@ export declare function isLoggedIn(): boolean;
 exportModule(
   exports,
   {
-    isAuthenticated: (m) => m.isLoggedIn || m.Z,
-    isLoggedIn: (m) => m.isLoggedIn || m.Z,
+    isAuthenticated: ['isLoggedIn', 'Z'],
+    isLoggedIn: ['isLoggedIn', 'Z'],
   },
   (m) =>
     (m.Z?.toString().includes('isRegistered') &&

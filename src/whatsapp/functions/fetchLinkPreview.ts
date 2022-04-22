@@ -30,7 +30,9 @@ export interface LinkPreviewResult {
   };
 }
 
-/** @whatsapp 19146 */
+/** @whatsapp 19146
+ * @whatsapp 75820 >= 2.2204.13
+ */
 export declare function fetchLinkPreview(
   url: string
 ): Promise<null | LinkPreviewResult>;

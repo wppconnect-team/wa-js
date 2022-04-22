@@ -27,7 +27,7 @@ export declare class PresenceCollection extends Collection<ChatstateModel> {
 exportModule(
   exports,
   {
-    PresenceCollection: (m) => m.PresenceCollectionImpl || m.PresenceCollection,
+    PresenceCollection: 'PresenceCollectionImpl',
   },
   (m) => m.PresenceCollectionImpl || m.PresenceCollection
 );

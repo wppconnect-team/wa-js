@@ -29,8 +29,7 @@ export declare class BusinessProfileCollection extends Collection<BusinessProfil
 exportModule(
   exports,
   {
-    BusinessProfileCollection: (m) =>
-      m.BusinessProfileCollectionImpl || m.BusinessProfileCollection,
+    BusinessProfileCollection: 'BusinessProfileCollectionImpl',
   },
-  (m) => m.BusinessProfileCollectionImpl || m.BusinessProfileCollection
+  (m) => m.BusinessProfileCollectionImpl
 );

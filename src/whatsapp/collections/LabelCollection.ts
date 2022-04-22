@@ -42,6 +42,6 @@ export declare class LabelCollection extends Collection<LabelModel> {
 }
 exportModule(
   exports,
-  { LabelCollection: (m) => m.LabelCollectionImpl || m.LabelCollection },
-  (m) => m.LabelCollectionImpl || m.LabelCollection
+  { LabelCollection: 'LabelCollectionImpl' },
+  (m) => m.LabelCollectionImpl
 );

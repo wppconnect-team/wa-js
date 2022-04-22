@@ -28,6 +28,6 @@ export declare class OrderCollection extends Collection<OrderModel> {
 }
 exportModule(
   exports,
-  { OrderCollection: (m) => m.OrderCollectionImpl || m.OrderCollection },
-  (m) => m.OrderCollectionImpl || m.OrderCollection
+  { OrderCollection: 'OrderCollectionImpl' },
+  (m) => m.OrderCollectionImpl
 );

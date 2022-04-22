@@ -25,6 +25,6 @@ export declare class GroupMetadataCollection extends BaseCollection<GroupMetadat
 }
 exportModule(
   exports,
-  { GroupMetadataCollection: (m) => m.default.constructor },
+  { GroupMetadataCollection: 'default.constructor' },
   (m) => typeof m.default.handlePendingInvite === 'function'
 );

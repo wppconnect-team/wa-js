@@ -39,6 +39,6 @@ export declare class ContactCollection extends Collection<ContactModel> {
 }
 exportModule(
   exports,
-  { ContactCollection: (m) => m.ContactCollectionImpl || m.ContactCollection },
-  (m) => m.ContactCollectionImpl || m.ContactCollection
+  { ContactCollection: 'ContactCollectionImpl' },
+  (m) => m.ContactCollectionImpl
 );

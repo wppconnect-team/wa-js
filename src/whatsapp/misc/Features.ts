@@ -148,8 +148,4 @@ declare class FeatureClass extends EventEmitter {
 /** @whatsapp 7293 */
 export declare const Features: FeatureClass;
 
-exportModule(
-  exports,
-  { Features: (m) => m.GK || m.default },
-  (m) => m.GK?.supportsFeature || m.default?.supportsFeature
-);
+exportModule(exports, { Features: 'GK' }, (m) => m.GK?.supportsFeature);

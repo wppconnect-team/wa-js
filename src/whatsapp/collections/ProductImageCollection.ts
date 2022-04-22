@@ -25,8 +25,10 @@ export declare class ProductImageCollection extends Collection<ProductImageModel
 exportModule(
   exports,
   {
-    ProductImageCollection: (m) =>
-      m.ProductImageCollectionImpl || m.ProductImageCollection,
+    ProductImageCollection: [
+      'ProductImageCollectionImpl',
+      'ProductImageCollection',
+    ],
   },
   (m) => m.ProductImageCollectionImpl || m.ProductImageCollection
 );
