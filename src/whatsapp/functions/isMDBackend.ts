@@ -14,8 +14,19 @@
  * limitations under the License.
  */
 
-import { isMDBackend } from '../../whatsapp/functions';
+import { exportModule } from '../exportModule';
 
-export function isMultiDevice(): boolean {
-  return isMDBackend();
-}
+/** @whatsapp 88555 */
+export declare function isMDBackend(): boolean;
+
+/** @whatsapp 88555 */
+export declare function isLegacyWebdBackend(): boolean;
+
+exportModule(
+  exports,
+  {
+    isMDBackend: 'isMDBackend',
+    isLegacyWebdBackend: 'isLegacyWebdBackend',
+  },
+  (m) => m.isMDBackend
+);

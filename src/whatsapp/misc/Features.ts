@@ -148,4 +148,13 @@ declare class FeatureClass extends EventEmitter {
 /** @whatsapp 7293 */
 export declare const Features: FeatureClass;
 
-exportModule(exports, { Features: 'GK' }, (m) => m.GK?.supportsFeature);
+exportModule(
+  exports,
+  {
+    Features: [
+      'LegacyPhoneFeatures', // >= 2.22.14.8
+      'GK',
+    ],
+  },
+  (m) => m.LegacyPhoneFeatures?.supportsFeature || m.GK?.supportsFeature
+);
