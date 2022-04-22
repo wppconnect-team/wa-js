@@ -68,7 +68,9 @@ export {
 } from './eventEmitter';
 
 declare const __VERSION__: string;
+declare const __SUPPORTED_WHATSAPP_WEB__: string;
 export const version = __VERSION__;
+export const supportedWhatsappWeb = __SUPPORTED_WHATSAPP_WEB__;
 export const license = 'Apache-2.0';
 
 webpack.injectLoader();

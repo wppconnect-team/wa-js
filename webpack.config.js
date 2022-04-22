@@ -34,6 +34,7 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       __VERSION__: `'${packageJSON.version}'`,
+      __SUPPORTED_WHATSAPP_WEB__: `'${packageJSON.engines['whatsapp-web']}'`,
     }),
   ],
 };

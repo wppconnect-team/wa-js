@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3.1.1
         with:
-          node-version: 14.x
+          node-version: 16.x
 
       - name: Get npm cache directory
         id: npm-cache
@@ -40,8 +40,17 @@ jobs:
         id: versions
         with:
           script: |
+            const packageJSON = require('./package.json');
             const waVersion = require('@wppconnect/wa-version');
-            return waVersion.getAvailableVersions().slice(3)
+            const semver = require('semver');
+
+            const supportedVersion = packageJSON.engines['whatsapp-web'];
+            const allVersions = waVersion.getAvailableVersions();
+            const versions = allVersions.filter(
+              (v) => semver.satisfies(v, supportedVersion)
+            );
+
+            return versions
 
     outputs:
       versions: ${{ steps.versions.outputs.result }}

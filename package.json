@@ -2,16 +2,16 @@
   "name": "@wppconnect/wa-js",
   "version": "1.2.5",
   "description": "WPPConnect/WA-JS is an open-source project with the aim of exporting functions from WhatsApp Web",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": "./dist/wppconnect-wa.js"
-  },
+  "license": "Apache-2.0",
   "author": {
     "name": "Edgard Messias",
     "email": "edgardmessias@gmail.com",
     "url": "https://github.com/edgardmessias"
   },
-  "license": "Apache-2.0",
+  "exports": {
+    ".": "./dist/wppconnect-wa.js"
+  },
+  "types": "dist/index.d.ts",
   "scripts": {
     "build:dev": "webpack --devtool inline-source-map --mode development",
     "build:prd": "webpack",
@@ -30,12 +30,12 @@
     "release": "release-it",
     "test": "playwright test --project tests",
     "test:prepare": "playwright test --project prepare --headed",
-    "update-module-id": "ts-node ./src/tools/updateModuleID.ts",
     "update-models-attributes": "ts-node ./src/tools/updateModelsAttributes.ts",
+    "update-module-id": "ts-node ./src/tools/updateModuleID.ts",
+    "wa-source": "npm run wa-source:clean && npm run wa-source:download",
     "wa-source:clean": "shx rm -rf wa-source",
     "wa-source:download": "ts-node ./src/tools/extractWhatsappSource.ts",
     "wa-source:format": "prettier --write ./wa-source",
-    "wa-source": "npm run wa-source:clean && npm run wa-source:download",
     "watch": "webpack watch --devtool inline-source-map --mode development"
   },
   "devDependencies": {
@@ -78,5 +78,8 @@
     "typescript": "^4.6.3",
     "webpack": "^5.72.0",
     "webpack-cli": "^4.9.2"
+  },
+  "engines": {
+    "whatsapp-web": ">=2.2204.13"
   }
 }
