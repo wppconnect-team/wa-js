@@ -19,7 +19,6 @@
 import './config';
 
 import './deviceName';
-import './patch';
 
 import * as webpack from './webpack';
 

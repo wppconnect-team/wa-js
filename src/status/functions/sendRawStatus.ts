@@ -15,7 +15,10 @@
  */
 
 import * as Chat from '../../chat';
+import * as webpack from '../../webpack';
 import { ChatStore } from '../../whatsapp';
+import { wrapModuleFunction } from '../../whatsapp/exportModule';
+import { createMsgProtobuf } from '../../whatsapp/functions';
 import { defaultSendStatusOptions } from '..';
 
 export interface SendStatusOptions {
@@ -41,3 +44,26 @@ export async function sendRawStatus(
 
   return result;
 }
+
+webpack.onInjected(() => {
+  // allow to send backgroundColor, textColor and font for status
+  wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
+    const [msg] = args;
+
+    const result = func(...args);
+
+    if (result.extendedTextMessage) {
+      if (typeof msg.backgroundColor === 'number') {
+        result.extendedTextMessage.backgroundArgb = msg.backgroundColor;
+      }
+      if (typeof msg.textColor === 'number') {
+        result.extendedTextMessage.textArgb = msg.textColor;
+      }
+      if (typeof msg.font === 'number') {
+        result.extendedTextMessage.font = msg.font;
+      }
+    }
+
+    return result;
+  });
+});

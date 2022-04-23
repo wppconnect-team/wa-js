@@ -198,4 +198,5 @@ export function wrapModuleFunction<TFunc extends (...args: any[]) => any>(
   );
 
   moduleIdMap.set(baseModule[functionName], moduleId);
+  functionPathMap.set(baseModule[functionName], functionPath);
 }
