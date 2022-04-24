@@ -16,7 +16,14 @@
 
 import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
-import { MsgKey, MsgModel, MsgStore, Wid } from '../../whatsapp';
+import { MsgKey, MsgModel, MsgStore, UserPrefs, Wid } from '../../whatsapp';
+import { wrapModuleFunction } from '../../whatsapp/exportModule';
+import {
+  handleChatSimpleAck,
+  handleGroupSimpleAck,
+  handleStatusSimpleAck,
+  SimpleAckData,
+} from '../../whatsapp/functions';
 
 webpack.onInjected(() => registerAckMessageEvent());
 
@@ -98,4 +105,46 @@ function registerAckMessageEvent() {
       return originalCall.call(msgHandlerModule, [e]);
     };
   }
+
+  function processSimpleACK(ackData: SimpleAckData) {
+    if (ackData.ack < 2 || ackData.ackString === 'sender') {
+      return;
+    }
+    const chatId: Wid = ackData.from;
+    const sender: Wid | undefined = ackData.participant || undefined;
+
+    const remote = ackData.recipient || ackData.from;
+    const fromMe = remote.equals(UserPrefs.getMeUser());
+    const keys = ackData.externalIds.map(
+      (id) =>
+        new MsgKey({
+          id,
+          remote,
+          fromMe,
+        })
+    );
+
+    internalEv.emit('chat.msg_ack_change', {
+      ack: ackData.ack,
+      chat: chatId,
+      sender: sender,
+      ids: keys,
+    });
+  }
+
+  wrapModuleFunction(handleChatSimpleAck, (func, ...args) => {
+    const [ackData] = args;
+    processSimpleACK(ackData);
+    return func(...args);
+  });
+  wrapModuleFunction(handleGroupSimpleAck, (func, ...args) => {
+    const [ackData] = args;
+    processSimpleACK(ackData);
+    return func(...args);
+  });
+  wrapModuleFunction(handleStatusSimpleAck, (func, ...args) => {
+    const [ackData] = args;
+    processSimpleACK(ackData);
+    return func(...args);
+  });
 }

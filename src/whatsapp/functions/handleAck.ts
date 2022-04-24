@@ -15,15 +15,36 @@
  */
 
 import { exportModule } from '../exportModule';
+import { Wid } from '../misc';
+
+export interface SimpleAckData {
+  type: string;
+  stanzaId: string;
+  externalIds: string[];
+  from: Wid;
+  participant: null | Wid;
+  recipient: null;
+  ts: number;
+  ack: number;
+  ackString: null | string;
+  offline: null;
+  biz?: null;
+}
 
 /** @whatsapp 90756 */
-export declare function handleStatusSimpleAck(ackData: any): Promise<any>;
+export declare function handleStatusSimpleAck(
+  ackData: SimpleAckData
+): Promise<any>;
 
 /** @whatsapp 48309 */
-export declare function handleChatSimpleAck(ackData: any): Promise<any>;
+export declare function handleChatSimpleAck(
+  ackData: SimpleAckData
+): Promise<any>;
 
 /** @whatsapp 84947 */
-export declare function handleGroupSimpleAck(ackData: any): Promise<any>;
+export declare function handleGroupSimpleAck(
+  ackData: SimpleAckData
+): Promise<any>;
 
 exportModule(
   exports,
