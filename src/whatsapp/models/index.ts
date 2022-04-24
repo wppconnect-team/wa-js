@@ -46,6 +46,7 @@ export * from './OrderItemModel';
 export * from './OrderModel';
 export * from './ParticipantModel';
 export * from './ParticipantModel';
+export * from './PresenceModel';
 export * from './ProductCollModel';
 export * from './ProductImageModel';
 export * from './ProductMessageListModel';

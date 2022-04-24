@@ -90,4 +90,22 @@ export interface ChatEventTypes {
     chat: Wid;
     seq: number;
   };
+  /**
+   * On presence change
+   */
+  'chat.presence_change': {
+    id: Wid;
+    isOnline: boolean;
+    isGroup: boolean;
+    isUser: boolean;
+    shortName: string;
+    state: string;
+    t: number;
+    isContact?: boolean;
+    participants?: {
+      id: string;
+      state: string;
+      shortName: string;
+    }[];
+  };
 }

@@ -15,6 +15,7 @@
  */
 
 import './registerAckMessageEvent';
-import './registerRevokeMessageEvent';
 import './registerLiveLocationUpdateEvent';
 import './registerNewMessageEvent';
+import './registerPresenceChange';
+import './registerRevokeMessageEvent';

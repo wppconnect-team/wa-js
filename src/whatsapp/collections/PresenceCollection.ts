@@ -15,12 +15,12 @@
  */
 
 import { exportModule } from '../exportModule';
-import { ChatstateModel } from '../models';
+import { PresenceModel } from '../models';
 import { Collection } from './Collection';
 
 /** @whatsapp 68315 */
-export declare class PresenceCollection extends Collection<ChatstateModel> {
-  static model: ChatstateModel;
+export declare class PresenceCollection extends Collection<PresenceModel> {
+  static model: PresenceModel;
   static staleCollection?: any;
   clearAllPresence(): any;
 }
