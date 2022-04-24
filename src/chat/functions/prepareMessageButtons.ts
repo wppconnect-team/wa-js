@@ -24,6 +24,7 @@ import {
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   createMsgProtobuf,
+  mediaTypeFromProtobuf,
   typeAttributeFromProtobuf,
 } from '../../whatsapp/functions';
 import { RawMessage } from '..';
@@ -200,27 +201,69 @@ webpack.onInjected(() => {
         },
       };
 
-      if (message.title) {
-        r.templateMessage.hydratedTemplate.hydratedTitleText = message.title;
-      }
       if (message.footer) {
         r.templateMessage.hydratedTemplate.hydratedFooterText = message.footer;
       }
 
-      if (r.conversation) {
-        r.templateMessage.hydratedTemplate.hydratedContentText = r.conversation;
-        delete r.conversation;
+      if (message.caption) {
+        r.templateMessage.hydratedTemplate.hydratedContentText =
+          message.caption;
       }
-      delete r.extendedTextMessage;
+
+      if (r.documentMessage) {
+        r.templateMessage.hydratedTemplate.documentMessage = r.documentMessage;
+        delete r.documentMessage;
+      } else if (r.imageMessage) {
+        r.templateMessage.hydratedTemplate.imageMessage = r.imageMessage;
+        delete r.imageMessage;
+      } else if (r.videoMessage) {
+        r.templateMessage.hydratedTemplate.videoMessage = r.videoMessage;
+        delete r.videoMessage;
+      } else if (r.locationMessage) {
+        r.templateMessage.hydratedTemplate.locationMessage = r.locationMessage;
+        delete r.locationMessage;
+      } else if (r.conversation) {
+        if (message.title) {
+          r.templateMessage.hydratedTemplate.hydratedTitleText = r.conversation;
+        } else {
+          r.templateMessage.hydratedTemplate.hydratedTitleText = message.title;
+          r.templateMessage.hydratedTemplate.hydratedContentText =
+            r.conversation;
+        }
+        delete r.conversation;
+      } else if (r.extendedTextMessage?.text) {
+        if (message.title) {
+          r.templateMessage.hydratedTemplate.hydratedTitleText =
+            r.extendedTextMessage?.text;
+        } else {
+          r.templateMessage.hydratedTemplate.hydratedTitleText = message.title;
+          r.templateMessage.hydratedTemplate.hydratedContentText =
+            r.extendedTextMessage?.text;
+        }
+        delete r.extendedTextMessage;
+      } else {
+        delete r.templateMessage;
+      }
     }
 
     return r;
   });
 
+  wrapModuleFunction(mediaTypeFromProtobuf, (func, ...args) => {
+    const [proto] = args;
+    if (proto.templateMessage?.hydratedTemplate) {
+      return func(proto.templateMessage.hydratedTemplate);
+    }
+    return func(...args);
+  });
+
   wrapModuleFunction(typeAttributeFromProtobuf, (func, ...args) => {
     const [proto] = args;
-    if (proto.templateMessage) {
-      return 'text';
+    if (proto.templateMessage?.hydratedTemplate) {
+      if (proto.templateMessage.hydratedTemplate.hydratedTitleText) {
+        return 'text';
+      }
+      return func(proto.templateMessage.hydratedTemplate);
     }
     return func(...args);
   });

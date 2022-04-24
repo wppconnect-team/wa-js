@@ -26,6 +26,7 @@ export * from './handleAck';
 export * from './isAuthenticated';
 export * from './isMDBackend';
 export * from './markSeen';
+export * from './mediaTypeFromProtobuf';
 export * from './msgFindQuery';
 export * from './products';
 export * from './profilePic';
