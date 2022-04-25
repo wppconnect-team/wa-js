@@ -1,3 +1,12 @@
+## 2.0.1 (2022-04-25)
+
+
+### Bug Fixes
+
+* Fixed buttons title ([ae0a6e9](https://github.com/wppconnect-team/wa-js/commit/ae0a6e9b9a0a0077f506a478d70c9162dbc38c80))
+
+
+
 # 2.0.0 (2022-04-25)
 
 
