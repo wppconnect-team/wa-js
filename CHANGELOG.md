@@ -1,3 +1,12 @@
+# 2.0.0 (2022-04-25)
+
+
+### Features
+
+* Added WPP.conn.setKeepAlive function ([d211485](https://github.com/wppconnect-team/wa-js/commit/d211485cd6379073b1962e7fc8e99d6c3d30da8d))
+
+
+
 ## 1.2.5 (2022-03-25)
 
 
