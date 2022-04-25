@@ -21,4 +21,5 @@ export { isMainLoaded } from './isMainLoaded';
 export { isMultiDevice } from './isMultiDevice';
 export { logout } from './logout';
 export { refreshQR } from './refreshQR';
+export { setKeepAlive } from './setKeepAlive';
 export { setMultiDevice } from './setMultiDevice';
