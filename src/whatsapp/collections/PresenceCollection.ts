@@ -16,10 +16,10 @@
 
 import { exportModule } from '../exportModule';
 import { PresenceModel } from '../models';
-import { Collection } from './Collection';
+import { BaseCollection } from './BaseCollection';
 
 /** @whatsapp 68315 */
-export declare class PresenceCollection extends Collection<PresenceModel> {
+export declare class PresenceCollection extends BaseCollection<PresenceModel> {
   static model: PresenceModel;
   static staleCollection?: any;
   clearAllPresence(): any;
