@@ -224,20 +224,20 @@ webpack.onInjected(() => {
         delete r.locationMessage;
       } else if (r.conversation) {
         if (message.title) {
-          r.templateMessage.hydratedTemplate.hydratedTitleText = r.conversation;
-        } else {
           r.templateMessage.hydratedTemplate.hydratedTitleText = message.title;
           r.templateMessage.hydratedTemplate.hydratedContentText =
             r.conversation;
+        } else {
+          r.templateMessage.hydratedTemplate.hydratedTitleText = r.conversation;
         }
         delete r.conversation;
       } else if (r.extendedTextMessage?.text) {
         if (message.title) {
-          r.templateMessage.hydratedTemplate.hydratedTitleText =
-            r.extendedTextMessage?.text;
-        } else {
           r.templateMessage.hydratedTemplate.hydratedTitleText = message.title;
           r.templateMessage.hydratedTemplate.hydratedContentText =
+            r.extendedTextMessage?.text;
+        } else {
+          r.templateMessage.hydratedTemplate.hydratedTitleText =
             r.extendedTextMessage?.text;
         }
         delete r.extendedTextMessage;
