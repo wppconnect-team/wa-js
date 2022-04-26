@@ -168,7 +168,13 @@ export async function sendFileMessage(
     ? await assertFindChat(chatId)
     : assertGetChat(chatId);
 
-  const file = await convertToFile(content, options.mimetype, options.filename);
+  const file = await convertToFile(
+    content,
+    options.mimetype,
+    options.caption || options.filename
+  );
+
+  const filename = file.name;
 
   const opaqueData = await OpaqueData.createFromData(file, file.type);
 
@@ -200,7 +206,8 @@ export async function sendFileMessage(
   let rawMessage = await prepareRawMessage<RawMessage>(
     chat,
     {
-      caption: options.caption,
+      caption: filename,
+      filename: filename,
     },
     options
   );
