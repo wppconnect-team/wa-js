@@ -1,3 +1,12 @@
+## 2.0.2 (2022-04-26)
+
+
+### Bug Fixes
+
+* Fixed buttons without message title ([ed611cf](https://github.com/wppconnect-team/wa-js/commit/ed611cfe45d9abc79c7ac151e03fd1466a246b81))
+
+
+
 ## 2.0.1 (2022-04-25)
 
 
