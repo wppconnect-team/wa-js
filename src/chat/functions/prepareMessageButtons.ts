@@ -195,55 +195,75 @@ webpack.onInjected(() => {
     const r = func(...args);
 
     if (message.hydratedButtons) {
-      r.templateMessage = {
-        hydratedTemplate: {
-          hydratedButtons: message.hydratedButtons,
-        },
+      const hydratedTemplate: any = {
+        hydratedButtons: message.hydratedButtons,
       };
 
       if (message.footer) {
-        r.templateMessage.hydratedTemplate.hydratedFooterText = message.footer;
+        hydratedTemplate.hydratedFooterText = message.footer;
       }
 
       if (message.caption) {
-        r.templateMessage.hydratedTemplate.hydratedContentText =
-          message.caption;
+        hydratedTemplate.hydratedContentText = message.caption;
       }
 
-      if (r.documentMessage) {
-        r.templateMessage.hydratedTemplate.documentMessage = r.documentMessage;
-        delete r.documentMessage;
-      } else if (r.imageMessage) {
-        r.templateMessage.hydratedTemplate.imageMessage = r.imageMessage;
-        delete r.imageMessage;
-      } else if (r.videoMessage) {
-        r.templateMessage.hydratedTemplate.videoMessage = r.videoMessage;
-        delete r.videoMessage;
-      } else if (r.locationMessage) {
-        r.templateMessage.hydratedTemplate.locationMessage = r.locationMessage;
-        delete r.locationMessage;
-      } else if (r.conversation) {
-        if (message.title) {
-          r.templateMessage.hydratedTemplate.hydratedTitleText = message.title;
-          r.templateMessage.hydratedTemplate.hydratedContentText =
-            r.conversation;
-        } else {
-          r.templateMessage.hydratedTemplate.hydratedTitleText = r.conversation;
-        }
+      if (message.title) {
+        hydratedTemplate.hydratedTitleText = message.title;
+      }
+
+      if (r.conversation) {
+        hydratedTemplate.hydratedContentText = r.conversation;
         delete r.conversation;
       } else if (r.extendedTextMessage?.text) {
-        if (message.title) {
-          r.templateMessage.hydratedTemplate.hydratedTitleText = message.title;
-          r.templateMessage.hydratedTemplate.hydratedContentText =
-            r.extendedTextMessage?.text;
-        } else {
-          r.templateMessage.hydratedTemplate.hydratedTitleText =
-            r.extendedTextMessage?.text;
-        }
+        hydratedTemplate.hydratedContentText = r.extendedTextMessage.text;
         delete r.extendedTextMessage;
+      } else if (r.locationMessage) {
+        hydratedTemplate.locationMessage = r.locationMessage;
+        delete r.locationMessage;
       } else {
-        delete r.templateMessage;
+        // Search media part in message
+        let found;
+        const mediaPart = [
+          'documentMessage',
+          'imageMessage',
+          'locationMessage',
+          'videoMessage',
+        ];
+        for (const part of mediaPart) {
+          if (part in r) {
+            found = part;
+            break;
+          }
+        }
+
+        if (!found) {
+          return r;
+        }
+
+        // Media message doesn't allow title
+        hydratedTemplate[found] = r[found];
+
+        // Copy title to caption if not setted
+        if (
+          hydratedTemplate.hydratedTitleText &&
+          !hydratedTemplate.hydratedContentText
+        ) {
+          hydratedTemplate.hydratedContentText =
+            hydratedTemplate.hydratedTitleText;
+        }
+
+        // Ensure a content text;
+        hydratedTemplate.hydratedContentText =
+          hydratedTemplate.hydratedContentText || ' ';
+
+        delete hydratedTemplate.hydratedTitleText;
+
+        delete r[found];
       }
+
+      r.templateMessage = {
+        hydratedTemplate,
+      };
     }
 
     return r;
@@ -260,10 +280,20 @@ webpack.onInjected(() => {
   wrapModuleFunction(typeAttributeFromProtobuf, (func, ...args) => {
     const [proto] = args;
     if (proto.templateMessage?.hydratedTemplate) {
-      if (proto.templateMessage.hydratedTemplate.hydratedTitleText) {
-        return 'text';
+      const keys = Object.keys(proto.templateMessage?.hydratedTemplate);
+
+      const messagePart = [
+        'documentMessage',
+        'imageMessage',
+        'locationMessage',
+        'videoMessage',
+      ];
+
+      if (messagePart.some((part) => keys.includes(part))) {
+        return 'media';
       }
-      return func(proto.templateMessage.hydratedTemplate);
+
+      return 'text';
     }
     return func(...args);
   });
