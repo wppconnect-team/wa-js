@@ -37,6 +37,7 @@ const debug = Debug('WA-JS:message');
 export interface FileMessageOptions extends SendMessageOptions {
   type: string;
   caption?: string;
+  footer?: string;
   filename?: string;
   mimetype?: string;
 }
@@ -204,6 +205,7 @@ export async function sendFileMessage(
     {
       caption: options.caption || filename,
       filename: filename,
+      footer: options.footer,
     },
     options
   );
@@ -219,6 +221,7 @@ export async function sendFileMessage(
   debug(`sending message (${options.type}) with id ${rawMessage.id}`);
   const sendMsgResult = mediaPrep.sendToChat(chat, {
     caption: options.caption,
+    footer: options.footer,
     isViewOnce,
     productMsgOptions: rawMessage,
   });

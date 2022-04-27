@@ -44,9 +44,10 @@ export declare namespace MediaPrep {
       e: ChatModel,
       options: {
         caption?: string;
+        footer?: string;
         quotedMsg?: MsgModel;
         productMsgOptions?: ModelPropertiesContructor<MsgModel>;
-        type?: any;
+        type?: null | string;
         mentionedJidList?: any;
         isForwarded?: boolean;
         forwardingScore?: any;
