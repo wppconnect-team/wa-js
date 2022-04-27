@@ -168,11 +168,7 @@ export async function sendFileMessage(
     ? await assertFindChat(chatId)
     : assertGetChat(chatId);
 
-  const file = await convertToFile(
-    content,
-    options.mimetype,
-    options.caption || options.filename
-  );
+  const file = await convertToFile(content, options.mimetype, options.filename);
 
   const filename = file.name;
 
@@ -206,7 +202,7 @@ export async function sendFileMessage(
   let rawMessage = await prepareRawMessage<RawMessage>(
     chat,
     {
-      caption: filename,
+      caption: options.caption || filename,
       filename: filename,
     },
     options
