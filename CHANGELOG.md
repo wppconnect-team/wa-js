@@ -1,3 +1,12 @@
+## 2.1.1 (2022-04-27)
+
+
+### Bug Fixes
+
+* Added missing footer option for WPP.chat.sendFileMessage ([623c57f](https://github.com/wppconnect-team/wa-js/commit/623c57fe0460437663519148c7201885c1354a84))
+
+
+
 # 2.1.0 (2022-04-27)
 
 
