@@ -1,3 +1,12 @@
+# 2.1.0 (2022-04-27)
+
+
+### Features
+
+* Added WPP.chat.sendLocationMessage function ([9503dcc](https://github.com/wppconnect-team/wa-js/commit/9503dccdb2b1cdb436db7c243b2852ee80267620))
+
+
+
 ## 2.0.2 (2022-04-26)
 
 
