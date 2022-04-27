@@ -50,6 +50,10 @@ export {
   VideoMessageOptions,
 } from './sendFileMessage';
 export { ListMessageOptions, sendListMessage } from './sendListMessage';
+export {
+  LocationMessageOptions,
+  sendLocationMessage,
+} from './sendLocationMessage';
 export { sendRawMessage } from './sendRawMessage';
 export { sendTextMessage, TextMessageOptions } from './sendTextMessage';
 export {

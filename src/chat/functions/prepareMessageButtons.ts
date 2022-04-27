@@ -217,9 +217,6 @@ webpack.onInjected(() => {
       } else if (r.extendedTextMessage?.text) {
         hydratedTemplate.hydratedContentText = r.extendedTextMessage.text;
         delete r.extendedTextMessage;
-      } else if (r.locationMessage) {
-        hydratedTemplate.locationMessage = r.locationMessage;
-        delete r.locationMessage;
       } else {
         // Search media part in message
         let found;
@@ -252,11 +249,24 @@ webpack.onInjected(() => {
             hydratedTemplate.hydratedTitleText;
         }
 
+        // Remove title for media messages
+        delete hydratedTemplate.hydratedTitleText;
+
+        if (found === 'locationMessage') {
+          if (
+            !hydratedTemplate.hydratedContentText &&
+            (r[found].name || r[found].address)
+          ) {
+            hydratedTemplate.hydratedContentText =
+              r[found].name && r[found].address
+                ? `${r[found].name}\n${r[found].address}`
+                : r[found].name || r[found].address || '';
+          }
+        }
+
         // Ensure a content text;
         hydratedTemplate.hydratedContentText =
           hydratedTemplate.hydratedContentText || ' ';
-
-        delete hydratedTemplate.hydratedTitleText;
 
         delete r[found];
       }
