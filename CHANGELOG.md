@@ -1,3 +1,12 @@
+## 2.1.2 (2022-04-29)
+
+
+### Bug Fixes
+
+* Added missing footer and title option for WPP.chat.sendListMessage ([19401b3](https://github.com/wppconnect-team/wa-js/commit/19401b3a9e13ef8f1869355a30feea0fb3092da6))
+
+
+
 ## 2.1.1 (2022-04-27)
 
 
