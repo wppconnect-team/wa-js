@@ -206,6 +206,8 @@ interface Props {
   list?: {
     buttonText: string;
     description: string;
+    footerText?: string;
+    title?: string;
     sections: Array<{
       title: string;
       rows: Array<{

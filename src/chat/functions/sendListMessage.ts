@@ -29,6 +29,8 @@ import { sendRawMessage } from '.';
 export interface ListMessageOptions extends SendMessageOptions {
   buttonText: string;
   description: string;
+  title?: string;
+  footer?: string;
   sections: Array<{
     title: string;
     rows: Array<{
@@ -45,8 +47,10 @@ export interface ListMessageOptions extends SendMessageOptions {
  * @example
  * ```javascript
  * WPP.chat.sendListMessage('[number]@c.us', {
- *   buttonText: 'Click Me!',
- *   description: "Hello it's list message",
+ *   buttonText: 'Click Me!', //required
+ *   description: "Hello it's list message", //required
+ *   title: 'Hello user', //optional
+ *   footer: 'Click and choose one', //optional
  *   sections: [{
  *     title: 'Section 1',
  *     rows: [{
@@ -87,7 +91,9 @@ export async function sendListMessage(
 
   const list: RawMessage['list'] = {
     buttonText: options.buttonText,
-    description: options.description,
+    description: options.description || ' ',
+    title: options.title,
+    footerText: options.footer,
     listType: 1,
     sections,
   };
@@ -95,6 +101,7 @@ export async function sendListMessage(
   const message: RawMessage = {
     type: 'list',
     list,
+    footer: options.footer,
   };
 
   return await sendRawMessage(chatId, message, options);
