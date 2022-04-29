@@ -15,6 +15,9 @@
  */
 
 import { WPPError } from '../../util';
+import * as webpack from '../../webpack';
+import { wrapModuleFunction } from '../../whatsapp/exportModule';
+import { typeAttributeFromProtobuf } from '../../whatsapp/functions';
 import {
   defaultSendMessageOptions,
   RawMessage,
@@ -96,3 +99,13 @@ export async function sendListMessage(
 
   return await sendRawMessage(chatId, message, options);
 }
+
+webpack.onInjected(() => {
+  wrapModuleFunction(typeAttributeFromProtobuf, (func, ...args) => {
+    const [proto] = args;
+    if (proto.listMessage) {
+      return 'text';
+    }
+    return func(...args);
+  });
+});
