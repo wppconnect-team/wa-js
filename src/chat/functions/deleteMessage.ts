@@ -63,7 +63,7 @@ export async function deleteMessage(
     ids = [ids];
   }
 
-  const msgs = await getMessageById(chatId, ids);
+  const msgs = await getMessageById(ids);
 
   const results: any[] = [];
   for (const msg of msgs) {

@@ -42,21 +42,8 @@ export async function getMessageById(
   ids: (string | MsgKey)[]
 ): Promise<MsgModel[]>;
 export async function getMessageById(
-  notUsed: any,
-  id: string
-): Promise<MsgModel>;
-export async function getMessageById(
-  notUsed: any,
-  ids: string[]
-): Promise<MsgModel[]>;
-export async function getMessageById(
-  notUsed: any,
-  ids?: string | MsgKey | (string | MsgKey)[]
+  ids: string | MsgKey | (string | MsgKey)[]
 ): Promise<MsgModel | MsgModel[]> {
-  if (typeof ids === 'undefined') {
-    ids = notUsed as string;
-  }
-
   let isSingle = false;
 
   if (!Array.isArray(ids)) {

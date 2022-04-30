@@ -145,10 +145,7 @@ export async function prepareRawMessage<T extends RawMessage>(
       options.quotedMsg = MsgKey.fromString(options.quotedMsg);
     }
     if (options.quotedMsg instanceof MsgKey) {
-      options.quotedMsg = await getMessageById(
-        options.quotedMsg.remote,
-        options.quotedMsg.toString()
-      );
+      options.quotedMsg = await getMessageById(options.quotedMsg);
     }
 
     if (!(options.quotedMsg instanceof MsgModel)) {
