@@ -15,12 +15,18 @@
  */
 
 import { assertColor } from '../../assert';
-import { LabelStore } from '../../whatsapp';
+import { LabelModel, LabelStore } from '../../whatsapp';
 import { Label } from '..';
 
 export async function getAllLabels(): Promise<Label[]> {
-  const labels = (await LabelStore._find()) || [];
-  return labels.map((e: Label) => {
-    return { ...e, color: assertColor(Number(e.color)) };
+  const labels = LabelStore.models;
+  return labels.map((e: LabelModel) => {
+    return {
+      id: e.id!,
+      name: e.name!,
+      color: assertColor(e.hexColor),
+      count: e.count || 0,
+      hexColor: e.hexColor,
+    };
   });
 }

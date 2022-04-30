@@ -16,10 +16,10 @@
 
 import { exportModule } from '../exportModule';
 import { ChatModel, LabelModel } from '../models';
-import { Collection } from './Collection';
+import { BaseCollection } from './BaseCollection';
 
 /** @whatsapp 16770 */
-export declare class LabelCollection extends Collection<LabelModel> {
+export declare class LabelCollection extends BaseCollection<LabelModel> {
   static model: LabelModel;
   static staleCollection?: any;
   static resumeOnAvailable?: any;
@@ -34,8 +34,6 @@ export declare class LabelCollection extends Collection<LabelModel> {
   getNewLabelColor(): any;
   getLabelColorPalette(): any;
   handleRemove(e?: any): any;
-  onResume(): any;
-  sync(e?: any): any;
   updateChecksum(e?: any): any;
   getLabelsForModel(e?: any, t?: any): any;
   _find(): any;

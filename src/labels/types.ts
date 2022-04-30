@@ -19,4 +19,5 @@ export interface Label {
   name: string;
   color: number;
   count: number;
+  hexColor: string;
 }

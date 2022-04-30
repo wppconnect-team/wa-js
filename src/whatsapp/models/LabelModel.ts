@@ -23,9 +23,10 @@ import {
 } from './Model';
 
 interface Props {
-  id?: any;
-  colorIndex?: any;
-  color?: any;
+  id: string;
+  name: string;
+  colorIndex?: number;
+  color?: number;
   count?: any;
 }
 
@@ -34,7 +35,7 @@ interface Session {
 }
 
 interface Derived {
-  hexColor?: any;
+  hexColor: string;
 }
 
 /** @whatsapp 8803 */
