@@ -39,6 +39,7 @@ export * from './sendExitGroup';
 export * from './sendJoinGroupViaInvite';
 export * from './sendQueryExists';
 export * from './sendQueryGroupInvite';
+export * from './sendReactionToMsg';
 export * from './sendRevokeGroupInviteCode';
 export * from './sendTextMsgToChat';
 export * from './setGroup';
