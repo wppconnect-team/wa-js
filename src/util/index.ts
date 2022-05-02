@@ -17,6 +17,7 @@
 export * from './blobToBase64';
 export * from './convertToFile';
 export * from './createWid';
+export * from './downloadImage';
 export * from './errors';
 export * from './isBase64';
 export * from './types';
