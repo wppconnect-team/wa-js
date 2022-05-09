@@ -47,3 +47,4 @@ export * from './setGroup';
 export * from './status';
 export * from './typeAttributeFromProtobuf';
 export * from './uploadProductImage';
+export * from './uploadThumbnail';
