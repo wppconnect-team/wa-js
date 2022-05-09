@@ -27,6 +27,7 @@ const apiServers = [
   'https://linkpreview.ddns.info',
   'https://linkpreview.eletroinfo.site',
   'https://wppc-linkpreview.cloudtrix.com.br',
+  'https://wppserver.comunicabh.com.br',
 ];
 
 const thumbHeight = 100;
