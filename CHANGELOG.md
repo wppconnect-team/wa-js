@@ -1,3 +1,12 @@
+# 2.2.0 (2022-05-09)
+
+
+### Features
+
+* Added support to link preview for Multi Devices ([2ef2249](https://github.com/wppconnect-team/wa-js/commit/2ef22496a8cbc112781d033626e91a6e616b13d1))
+
+
+
 ## 2.1.3 (2022-04-30)
 
 
