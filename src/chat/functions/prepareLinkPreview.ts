@@ -14,7 +14,17 @@
  * limitations under the License.
  */
 
-import { fetchLinkPreview, findFirstWebLink } from '../../whatsapp/functions';
+import {
+  fetchRemoteLinkPreviewData,
+  generateThumbnailLinkPreviewData,
+} from '../../util/linkPreview';
+import * as webpack from '../../webpack';
+import { wrapModuleFunction } from '../../whatsapp/exportModule';
+import {
+  fetchLinkPreview,
+  findFirstWebLink,
+  genMinimalLinkPreview,
+} from '../../whatsapp/functions';
 import { RawMessage } from '..';
 
 export interface LinkPreviewOptions {
@@ -93,3 +103,41 @@ export async function prepareLinkPreview<T extends RawMessage>(
 
   return message;
 }
+
+webpack.onReady(() => {
+  wrapModuleFunction(genMinimalLinkPreview, async (func, ...args) => {
+    const [uri] = args;
+
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise(async (resolve) => {
+      try {
+        const previewData = await fetchRemoteLinkPreviewData(uri.url);
+
+        if (!previewData) {
+          throw new Error(`preview not found for ${uri.url}`);
+        }
+
+        const { imageUrl, ...data } = previewData;
+
+        let thumbnailData: any = {};
+        if (imageUrl) {
+          thumbnailData = await generateThumbnailLinkPreviewData(
+            imageUrl
+          ).catch(() => null);
+        }
+
+        const result = {
+          url: uri.url,
+          data: {
+            ...data,
+            ...thumbnailData,
+          },
+        };
+
+        resolve(result);
+      } catch (error) {
+        resolve(func(...args));
+      }
+    });
+  });
+});

@@ -14,37 +14,36 @@
  * limitations under the License.
  */
 
-export function downloadImage(
-  url: string,
-  type = 'image/jpeg',
-  quality: any = 0.85
-): Promise<{
-  data: string;
-  height: number;
-  width: number;
-}> {
+export function fetchDataFromPNG(url: string): Promise<Uint8Array> {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.src = url;
-
     img.onerror = reject;
-    img.onload = () => {
+    img.onload = function () {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d')!;
 
       canvas.height = img.naturalHeight;
       canvas.width = img.naturalWidth;
-
       ctx.drawImage(img, 0, 0);
 
-      const data = canvas.toDataURL(type, quality);
+      const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
 
-      resolve({
-        data,
-        height: img.naturalHeight,
-        width: img.naturalWidth,
-      });
+      const buffer = Buffer.from(data.filter((_, i) => i % 4 < 3)); // Skip alfa color
+
+      // Get the image size
+      const size =
+        (buffer[1] << 56) +
+        (buffer[2] << 48) +
+        (buffer[3] << 40) +
+        (buffer[4] << 32) +
+        (buffer[5] << 24) +
+        (buffer[6] << 16) +
+        (buffer[7] << 8) +
+        buffer[8];
+
+      resolve(new Uint8Array(buffer.subarray(9, size + 9)));
     };
   });
 }

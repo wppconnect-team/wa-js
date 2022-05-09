@@ -19,6 +19,7 @@ export * from './convertToFile';
 export * from './createWid';
 export * from './downloadImage';
 export * from './errors';
+export * from './fetchDataFromPNG';
 export * from './isBase64';
 export * from './types';
 export * from './wrapFunction';
