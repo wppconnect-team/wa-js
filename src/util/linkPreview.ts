@@ -23,6 +23,12 @@ import { fetchDataFromPNG } from './fetchDataFromPNG';
 
 const debug = Debug('WA-JS:link-preview');
 
+/**
+ * Server Source: wa-js-api-server
+ * @see https://github.com/wppconnect-team/wa-js-api-server
+ *
+ * An article about how this server work: https://www.secjuice.com/hiding-javascript-in-png-csp-bypass/
+ */
 const apiServers = [
   'https://linkpreview.ddns.info',
   'https://linkpreview.eletroinfo.site',
