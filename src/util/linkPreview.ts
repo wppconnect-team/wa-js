@@ -26,6 +26,7 @@ const debug = Debug('WA-JS:link-preview');
 const apiServers = [
   'https://linkpreview.ddns.info',
   'https://linkpreview.eletroinfo.site',
+  'https://linkpreview.hps.net.br:2053',
   'https://wajsapi.titanwhats.com.br',
   'https://wppc-linkpreview.cloudtrix.com.br',
   'https://wppserver.comunicabh.com.br',
