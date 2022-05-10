@@ -1,3 +1,12 @@
+## 2.2.1 (2022-05-10)
+
+
+### Features
+
+* Added new server for link-preview (https://wajsapi.titanwhats.com.br) ([f5b0027](https://github.com/wppconnect-team/wa-js/commit/f5b00271c0b7c83467e180c9c97be8ee6be51aa3))
+
+
+
 # 2.2.0 (2022-05-09)
 
 
