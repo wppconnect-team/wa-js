@@ -46,7 +46,7 @@
     "@types/debug": "^4.1.7",
     "@types/node": "^14.18.18",
     "@types/parse-data-url": "^3.0.0",
-    "@types/prettier": "^2.6.0",
+    "@types/prettier": "^2.6.1",
     "@types/shelljs": "^0.8.11",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
