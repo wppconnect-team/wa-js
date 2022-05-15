@@ -6,5 +6,5 @@ yarn.lock
 /docs
 /docs-source/theme-dist
 /node_modules
-/userDataDir
+/userDataDir*
 /wa-source

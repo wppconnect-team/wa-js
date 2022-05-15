@@ -20,6 +20,7 @@ export * from './createMsgProtobuf';
 export * from './fetchLinkPreview';
 export * from './findChat';
 export * from './findFirstWebLink';
+export * from './generateVideoThumbsAndDuration';
 export * from './genMinimalLinkPreview';
 export * from './getOrGenerate';
 export * from './groupParticipants';

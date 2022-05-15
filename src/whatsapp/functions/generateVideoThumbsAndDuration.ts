@@ -14,13 +14,31 @@
  * limitations under the License.
  */
 
-export * from './blobToBase64';
-export * from './convertToFile';
-export * from './createWid';
-export * from './downloadImage';
-export * from './errors';
-export * from './fetchDataFromPNG';
-export * from './getVideoInfoFromBuffer';
-export * from './isBase64';
-export * from './types';
-export * from './wrapFunction';
+import { exportModule } from '../exportModule';
+
+/**
+ * @whatsapp 51428
+ * */
+export declare function generateVideoThumbsAndDuration(data: {
+  file: Blob;
+  maxDimensions: number[];
+  debugHint: string;
+  throwOnBlack: boolean;
+}): Promise<{
+  duration: number;
+  thumbs: {
+    url: string;
+    width: number;
+    height: number;
+    fullWidth: number;
+    fullHeight: number;
+  }[];
+}>;
+
+exportModule(
+  exports,
+  {
+    generateVideoThumbsAndDuration: 'generateVideoThumbsAndDuration',
+  },
+  (m) => m.generateVideoThumbsAndDuration
+);

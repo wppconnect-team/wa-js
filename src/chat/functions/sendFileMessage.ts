@@ -17,8 +17,12 @@
 import Debug from 'debug';
 
 import { assertFindChat, assertGetChat } from '../../assert';
+import { getVideoInfoFromBuffer } from '../../util';
 import { convertToFile } from '../../util/convertToFile';
+import * as webpack from '../../webpack';
 import { MediaPrep, MsgModel, OpaqueData } from '../../whatsapp';
+import { wrapModuleFunction } from '../../whatsapp/exportModule';
+import { generateVideoThumbsAndDuration } from '../../whatsapp/functions';
 import {
   defaultSendMessageOptions,
   RawMessage,
@@ -263,3 +267,64 @@ export async function sendFileMessage(
     sendMsgResult,
   };
 }
+
+/**
+ * Generate a white thumbnail as WhatsApp generate for video files
+ */
+function generateWhiteThumb(width: number, height: number, maxSize: number) {
+  let r = null != height ? height : maxSize,
+    i = null != width ? width : maxSize;
+  r > i
+    ? r > maxSize && ((i *= maxSize / r), (r = maxSize))
+    : i > maxSize && ((r *= maxSize / i), (i = maxSize));
+
+  const bounds = { width: Math.max(r, 1), height: Math.max(i, 1) };
+
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d')!;
+
+  canvas.width = bounds.width;
+  canvas.height = bounds.height;
+
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  return {
+    url: canvas.toDataURL('image/jpeg'),
+    width: bounds.width,
+    height: bounds.height,
+    fullWidth: width,
+    fullHeight: height,
+  };
+}
+
+webpack.onReady(() => {
+  wrapModuleFunction(generateVideoThumbsAndDuration, async (func, ...args) => {
+    const [data] = args;
+
+    try {
+      return await func(...args);
+    } catch (error: any) {
+      if (
+        typeof error.message === 'string' &&
+        error.message.includes('MEDIA_ERR_SRC_NOT_SUPPORTED')
+      ) {
+        try {
+          const arrayBuffer = await data.file.arrayBuffer();
+          const info = getVideoInfoFromBuffer(arrayBuffer);
+
+          return {
+            duration: info.duration,
+            thumbs: data.maxDimensions.map((d) =>
+              generateWhiteThumb(info.width, info.height, d)
+            ),
+          };
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      throw error;
+    }
+  });
+});
