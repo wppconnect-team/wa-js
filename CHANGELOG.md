@@ -1,3 +1,12 @@
+## 2.2.2 (2022-05-15)
+
+
+### Bug Fixes
+
+* Fixed sendFileMessage for MP4 files on Chromium (fix [#384](https://github.com/wppconnect-team/wa-js/issues/384)) ([b7e6431](https://github.com/wppconnect-team/wa-js/commit/b7e6431a180f774f88f406a9600e3af7ac51e70f))
+
+
+
 ## 2.2.1 (2022-05-10)
 
 
