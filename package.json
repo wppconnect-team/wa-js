@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.0",
-    "@commitlint/config-conventional": "^16.2.4",
+    "@commitlint/config-conventional": "^17.0.0",
     "@commitlint/prompt-cli": "^17.0.0",
     "@playwright/test": "^1.22.0",
     "@types/debug": "^4.1.7",
