@@ -16,9 +16,15 @@
 
 import * as Chat from '../../chat';
 import * as webpack from '../../webpack';
-import { ChatStore } from '../../whatsapp';
+import { ChatStore, ContactStore } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
-import { createMsgProtobuf } from '../../whatsapp/functions';
+import {
+  createMsgProtobuf,
+  encryptAndSendGroupMsg,
+  encryptAndSendMsg,
+  getFanOutList,
+  getGroupSenderKeyList,
+} from '../../whatsapp/functions';
 import { defaultSendStatusOptions } from '..';
 
 export interface SendStatusOptions {
@@ -65,5 +71,54 @@ webpack.onInjected(() => {
     }
 
     return result;
+  });
+
+  // Return the contact list for status@broadcast
+  wrapModuleFunction(getGroupSenderKeyList, async (func, ...args) => {
+    const [wid] = args;
+
+    if (!wid.isStatusV3()) {
+      return await func(...args);
+    }
+
+    const myContacts = ContactStore.models
+      .filter((c) => c.isMyContact && !c.isContactBlocked)
+      .map((c) => c.id);
+
+    const wids = await getFanOutList({ wids: myContacts });
+
+    const result = {
+      skList: [],
+      skDistribList: wids,
+      rotateKey: false,
+    };
+
+    return result;
+  });
+
+  // Force to send as group for broadcast list
+  wrapModuleFunction(encryptAndSendMsg, async (func, ...args) => {
+    const [msg] = args;
+
+    try {
+      return await func(...args);
+    } catch (error: any) {
+      if (
+        !msg.to?.isStatusV3() ||
+        error.message !== '[messaging] unsupported remote jid type'
+      ) {
+        throw error;
+      }
+
+      let c;
+      if (msg.asMms) {
+        const t = msg.isUnsentPhoneMsg();
+        c = t ? { type: msg.type } : msg.avParams();
+      }
+
+      const proto = createMsgProtobuf(msg, c || {});
+
+      return await encryptAndSendGroupMsg(msg, proto);
+    }
   });
 });
