@@ -31,6 +31,7 @@ declare class NoiseInfo {
 
 /** @whatsapp 15875
  * @whatsapp 14111 >= 2.2204.13
+ * @whatsapp 34898 >= 2.2218.4
  */
 export declare const waNoiseInfo: NoiseInfo;
 

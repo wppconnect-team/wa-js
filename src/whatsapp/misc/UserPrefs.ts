@@ -19,6 +19,7 @@ import { Wid } from './Wid';
 
 /** @whatsapp 99234
  * @whatsapp 11362 >= 2.2212.5
+ * @whatsapp 78820 >= 2.2218.4
  */
 export declare namespace UserPrefs {
   function setMe(wid: Wid): void;
