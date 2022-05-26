@@ -48,6 +48,7 @@ export * from './sendQueryGroupInvite';
 export * from './sendReactionToMsg';
 export * from './sendRevokeGroupInviteCode';
 export * from './sendTextMsgToChat';
+export * from './setArchive';
 export * from './setGroup';
 export * from './status';
 export * from './typeAttributeFromProtobuf';

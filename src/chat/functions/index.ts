@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+export { archive, unarchive } from './archive';
 export { canMute } from './canMute';
 export { clear } from './clear';
 export { delete } from './delete';
