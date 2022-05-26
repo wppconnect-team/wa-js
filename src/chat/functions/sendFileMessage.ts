@@ -87,7 +87,7 @@ export interface VideoMessageOptions
  * // Single document
  * WPP.chat.sendFileMessage(
  *  '[number]@c.us',
- *  'data:image/jpeg;base64,<a long base64 file...>',
+ *  'data:application/msword;base64,<a long base64 file...>',
  *  {
  *    type: 'document',
  *    caption: 'My document', // Optional
