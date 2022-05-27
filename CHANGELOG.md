@@ -1,3 +1,12 @@
+# 2.3.0 (2022-05-27)
+
+
+### Bug Fixes
+
+* Fixed promise time for WPP.chat.markIsComposing with duration ([e94718b](https://github.com/wppconnect-team/wa-js/commit/e94718b37af7f9bfbb181473fc5ac3d0f2782c13))
+
+
+
 ## 2.2.2 (2022-05-15)
 
 
