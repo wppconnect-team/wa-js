@@ -40,8 +40,10 @@ export async function markIsRecording(chatId: string | Wid, duration?: number) {
   await ChatPresence.markRecording(chat);
 
   if (duration) {
-    chat.pausedTimerId = setTimeout(() => {
-      markIsPaused(chatId);
-    }, duration);
+    await new Promise<void>((resolve) => {
+      chat.pausedTimerId = setTimeout(() => {
+        markIsPaused(chatId).then(resolve, resolve);
+      }, duration);
+    });
   }
 }

@@ -45,8 +45,10 @@ export async function markIsComposing(chatId: string | Wid, duration?: number) {
   }
 
   if (duration) {
-    chat.pausedTimerId = setTimeout(() => {
-      markIsPaused(chatId);
-    }, duration);
+    await new Promise<void>((resolve) => {
+      chat.pausedTimerId = setTimeout(() => {
+        markIsPaused(chatId).then(resolve, resolve);
+      }, duration);
+    });
   }
 }
