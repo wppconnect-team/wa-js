@@ -34,6 +34,7 @@ export { mute } from './mute';
 export { openChatAt } from './openChatAt';
 export { openChatBottom } from './openChatBottom';
 export { openChatFromUnread } from './openChatFromUnread';
+export { pin, unpin } from './pin';
 export { LinkPreviewOptions, prepareLinkPreview } from './prepareLinkPreview';
 export {
   MessageButtonsOptions,
