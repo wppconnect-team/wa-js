@@ -59,6 +59,8 @@ export declare const ProductMessageListStore: collections.ProductMessageListColl
 export declare const ProfilePicThumbStore: collections.ProfilePicThumbCollection;
 /** @whatsapp 99662 */
 export declare const QuickReplyStore: collections.QuickReplyCollection;
+/** @whatsapp 57162 */
+export declare const ReactionsStore: collections.ReactionsCollection;
 /** @whatsapp 92671 */
 export declare const RecentEmojiStore: collections.RecentEmojiCollection;
 /** @whatsapp 49264 */
@@ -99,6 +101,7 @@ const storeNames = [
   'ProductMessageListStore',
   'ProfilePicThumbStore',
   'QuickReplyStore',
+  'ReactionsStore',
   'RecentEmojiStore',
   'StarredStickerStore',
   'StatusStore',

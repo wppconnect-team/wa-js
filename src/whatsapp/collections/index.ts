@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+export * from './AggReactionsCollection';
 export * from './BaseCollection';
 export * from './BlocklistCollection';
 export * from './BusinessCategoriesResultCollection';
@@ -47,6 +48,8 @@ export * from './ProductImageCollection';
 export * from './ProductMessageListCollection';
 export * from './ProfilePicThumbCollection';
 export * from './QuickReplyCollection';
+export * from './ReactionsCollection';
+export * from './ReactionsSendersCollection';
 export * from './RecentEmojiCollection';
 export * from './RecentStickerCollection';
 export * from './StarredMsgCollection';

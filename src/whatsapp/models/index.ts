@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+export * from './AggReactionsModel';
 export * from './AttachMediaModel';
 export * from './BlocklistModel';
 export * from './BusinessCategoriesResultModel';
@@ -53,6 +54,8 @@ export * from './ProductMessageListModel';
 export * from './ProductModel';
 export * from './ProfilePicThumbModel';
 export * from './QuickReplyModel';
+export * from './ReactionsModel';
+export * from './ReactionsSendersModel';
 export * from './RecentEmojiModel';
 export * from './RecentStickerModel';
 export * from './ReplyButtonModel';
