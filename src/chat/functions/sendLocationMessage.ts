@@ -32,11 +32,11 @@ export interface LocationMessageOptions
   /**
    * latitude in degrees
    */
-  lat: number;
+  lat: number | string;
   /**
    * longitude in degrees
    */
-  lng: number;
+  lng: number | string;
   /**
    * The full address of place
    */
@@ -124,6 +124,14 @@ export async function sendLocationMessage(
     options.name && options.address
       ? `${options.name}\n${options.address}`
       : options.name || options.address || '';
+
+  if (typeof options.lat === 'string') {
+    options.lat = parseFloat(options.lat);
+  }
+
+  if (typeof options.lng === 'string') {
+    options.lng = parseFloat(options.lng);
+  }
 
   let rawMessage: RawMessage = {
     type: 'location',
