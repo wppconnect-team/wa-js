@@ -25,6 +25,7 @@ export { generateMessageID } from './generateMessageID';
 export { get } from './get';
 export { getMessageById } from './getMessageById';
 export { getMessages, GetMessagesOptions } from './getMessages';
+export { ChatListOptions, list } from './list';
 export { markIsComposing } from './markIsComposing';
 export { markIsPaused } from './markIsPaused';
 export { markIsRead } from './markIsRead';
