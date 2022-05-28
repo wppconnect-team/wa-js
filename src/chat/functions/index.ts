@@ -42,6 +42,10 @@ export {
 } from './prepareMessageButtons';
 export { prepareRawMessage } from './prepareRawMessage';
 export {
+  PoolMessageOptions,
+  sendCreatePollMessage,
+} from './sendCreatePollMessage';
+export {
   AudioMessageOptions,
   AutoDetectMessageOptions,
   DocumentMessageOptions,
