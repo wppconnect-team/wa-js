@@ -1,3 +1,12 @@
+# 2.4.0 (2022-05-28)
+
+
+### Bug Fixes
+
+* Exported related reactions classes ([466ebad](https://github.com/wppconnect-team/wa-js/commit/466ebad34c1545121c681df0196539792b09f7eb))
+
+
+
 # 2.3.0 (2022-05-27)
 
 
