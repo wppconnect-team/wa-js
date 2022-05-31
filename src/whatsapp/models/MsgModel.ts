@@ -306,6 +306,7 @@ interface Derived {
   };
   isGroupsV4InviteExpired: boolean;
   isPersistent: boolean;
+  isRevokedByMe: boolean;
   isUnreadType: boolean;
   isUserCreatedType: boolean;
   supportsMessageFooter?: any;

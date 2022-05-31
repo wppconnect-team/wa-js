@@ -16,6 +16,7 @@
 
 import { ChatModel } from '..';
 import { exportModule } from '../exportModule';
+import { MsgModel } from '../models';
 import { EventEmitter } from '.';
 
 /** @whatsapp 88102
@@ -53,8 +54,20 @@ export declare class CmdClass extends EventEmitter {
   ephemeralDrawer(e?: any, t?: any): void;
   sendStarMsgs(e?: any, t?: any, r?: any, n?: any): void;
   sendUnstarMsgs(e?: any, t?: any, r?: any, n?: any): void;
-  sendDeleteMsgs(e?: any, t?: any, r?: any, n?: any, i?: any): void;
-  sendRevokeMsgs(e?: any, t?: any, r?: any, n?: any, i?: any): void;
+  sendDeleteMsgs(
+    chat: ChatModel,
+    msgs: MsgModel[],
+    clearMedia?: boolean,
+    toastPosition?: any
+  ): void;
+  sendRevokeMsgs(
+    chat: ChatModel,
+    msgs: MsgModel[],
+    options?: {
+      clearMedia?: boolean;
+      toastPosition?: any;
+    }
+  ): void;
   _openChat(e?: any, t?: any): void;
   openChatAt(
     chat: ChatModel,
