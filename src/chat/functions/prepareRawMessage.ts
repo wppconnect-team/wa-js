@@ -110,7 +110,9 @@ export async function prepareRawMessage<T extends RawMessage>(
     const ids = text?.match(/(?<=@)(\d+)\b/g) || [];
 
     for (const id of ids) {
-      options.mentionedList.push(assertWid(id));
+      try {
+        options.mentionedList.push(assertWid(id));
+      } catch (err) {}
     }
   }
 
