@@ -48,7 +48,7 @@
     "@types/parse-data-url": "^3.0.0",
     "@types/prettier": "^2.6.3",
     "@types/shelljs": "^0.8.11",
-    "@typescript-eslint/eslint-plugin": "^5.26.0",
+    "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
     "@wppconnect/wa-version": "^1.1.88",
     "buffer": "^6.0.3",
