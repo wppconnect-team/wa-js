@@ -1,3 +1,12 @@
+## 2.4.1 (2022-05-31)
+
+
+### Bug Fixes
+
+* Fixed detect mentionedList for invalid wids ([#427](https://github.com/wppconnect-team/wa-js/issues/427)) ([c701dc3](https://github.com/wppconnect-team/wa-js/commit/c701dc3b8b04cce1e51dd5dda12bf5e80e11de2e))
+
+
+
 # 2.4.0 (2022-05-28)
 
 
