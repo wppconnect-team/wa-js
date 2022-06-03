@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-export { getAuthCode } from './getAuthCode';
-export { getMyUserId } from './getMyUserId';
-export { isAuthenticated } from './isAuthenticated';
-export { isIdle } from './isIdle';
-export { isMainLoaded } from './isMainLoaded';
-export { isMultiDevice } from './isMultiDevice';
-export { logout } from './logout';
-export { refreshQR } from './refreshQR';
-export { setKeepAlive } from './setKeepAlive';
-export { setMultiDevice } from './setMultiDevice';
+import { UserPrefs, Wid } from '../../whatsapp';
+
+/**
+ * Return the current logged user ID without device id
+ *
+ * @example
+ * ```javascript
+ * const wid = WPP.conn.getMyUserId();
+ * console.log(wid.toString()); // Output: 123@c.us
+ * ```
+ */
+export function getMyUserId(): Wid | undefined {
+  return UserPrefs.getMaybeMeUser();
+}
