@@ -1,3 +1,12 @@
+# 2.5.0 (2022-06-04)
+
+
+### Features
+
+* Added option to filter chat and contacts with label (close [#436](https://github.com/wppconnect-team/wa-js/issues/436)) ([bff74df](https://github.com/wppconnect-team/wa-js/commit/bff74df6bc55ce657b97957752e06e0aa5c09d14))
+
+
+
 ## 2.4.1 (2022-05-31)
 
 
