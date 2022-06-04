@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { ContactModel, ContactStore } from '../../whatsapp';
+import { ContactModel, ContactStore, LabelStore } from '../../whatsapp';
 
 export interface ContactListOptions {
   onlyMyContacts?: boolean;
+  withLabels?: string[];
 }
 
 /**
@@ -29,7 +30,16 @@ export interface ContactListOptions {
  * const contats = await WPP.contact.list();
  *
  * // Only my contacts
- * const contatcs = await WPP.contact.list({onlyMyContacts: true});
+ * const contacts = await WPP.contact.list({onlyMyContacts: true});
+ *
+ * // Only with label Text
+ * const contacts = await WPP.contact.list({withLabels: ['Test']});
+ *
+ * // Only with label id
+ * const contacts = await WPP.contact.list({withLabels: ['1']});
+ *
+ * // Only with label with one of text or id
+ * const contacts = await WPP.contact.list({withLabels: ['Alfa','5']});
  * ```
  *
  * @category Contact
@@ -43,5 +53,18 @@ export async function list(
     models = models.filter((c) => c.isMyContact);
   }
 
+  if (options.withLabels) {
+    const ids = options.withLabels.map((value) => {
+      const label = LabelStore.findFirst((l) => l.name === value);
+
+      if (label) {
+        return label.id;
+      }
+
+      return value;
+    });
+
+    models = models.filter((c) => c.labels?.some((id) => ids.includes(id)));
+  }
   return models;
 }

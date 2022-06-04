@@ -37,7 +37,7 @@ interface Props {
   privacyMode?: any;
   statusMute?: any;
   sectionHeader?: any;
-  labels?: any;
+  labels?: string[];
   disappearingModeDuration?: any;
   disappearingModeSettingTimestamp?: any;
 }

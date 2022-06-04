@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-import { ChatModel, ChatStore } from '../../whatsapp';
+import { ChatModel, ChatStore, LabelStore } from '../../whatsapp';
 
 export interface ChatListOptions {
   onlyGroups?: boolean;
   onlyUsers?: boolean;
   onlyWithUnreadMessage?: boolean;
+  withLabels?: string[];
 }
 
 /**
@@ -28,13 +29,22 @@ export interface ChatListOptions {
  * @example
  * ```javascript
  * // All chats
- * const chat = await WPP.chat.list();
+ * const chats = await WPP.chat.list();
  *
  * // Only users chats
- * const chat = await WPP.chat.list({onlyUsers: true});
+ * const chats = await WPP.chat.list({onlyUsers: true});
  *
  * // Only groups chats
- * const chat = await WPP.chat.list({onlyGroups: true});
+ * const chats = await WPP.chat.list({onlyGroups: true});
+ *
+ * // Only with label Text
+ * const chats = await WPP.chat.list({withLabels: ['Test']});
+ *
+ * // Only with label id
+ * const chats = await WPP.chat.list({withLabels: ['1']});
+ *
+ * // Only with label with one of text or id
+ * const chats = await WPP.chat.list({withLabels: ['Alfa','5']});
  * ```
  *
  * @category Chat
@@ -54,6 +64,20 @@ export async function list(
 
   if (options.onlyWithUnreadMessage) {
     models = models.filter((c) => c.hasUnread);
+  }
+
+  if (options.withLabels) {
+    const ids = options.withLabels.map((value) => {
+      const label = LabelStore.findFirst((l) => l.name === value);
+
+      if (label) {
+        return label.id;
+      }
+
+      return value;
+    });
+
+    models = models.filter((c) => c.labels?.some((id) => ids.includes(id)));
   }
 
   return models;

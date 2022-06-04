@@ -23,7 +23,7 @@ import { MsgModel } from './MsgModel';
 export interface PropsChatBase {
   id: Wid;
   pendingMsgs: boolean;
-  labels: any | undefined;
+  labels?: string[];
 }
 
 export interface SessionChatBase {
