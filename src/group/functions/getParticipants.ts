@@ -27,5 +27,5 @@ import { ensureGroup } from './';
  */
 export async function getParticipants(groupId: string | Wid) {
   const groupChat = await ensureGroup(groupId);
-  return groupChat.groupMetadata!.participants.models;
+  return groupChat.groupMetadata!.participants.getModelsArray();
 }

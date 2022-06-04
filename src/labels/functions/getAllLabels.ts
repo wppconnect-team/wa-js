@@ -19,7 +19,7 @@ import { LabelModel, LabelStore } from '../../whatsapp';
 import { Label } from '..';
 
 export async function getAllLabels(): Promise<Label[]> {
-  const labels = LabelStore.models;
+  const labels = LabelStore.getModelsArray();
   return labels.map((e: LabelModel) => {
     return {
       id: e.id!,

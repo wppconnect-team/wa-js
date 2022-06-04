@@ -105,7 +105,7 @@ function registerLiveLocationUpdateEvent() {
    * Start for all active chats
    */
   ChatStore.once('collection_has_synced', () => {
-    const chats = ChatStore.models.slice(0, config.liveLocationLimit);
+    const chats = ChatStore.getModelsArray().slice(0, config.liveLocationLimit);
     chats.forEach((chat) => {
       LiveLocationStore.update(chat.id)
         .then((liveLocation) => {

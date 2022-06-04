@@ -81,7 +81,7 @@ webpack.onInjected(() => {
       return await func(...args);
     }
 
-    const myContacts = ContactStore.models
+    const myContacts = ContactStore.getModelsArray()
       .filter((c) => c.isMyContact && !c.isContactBlocked)
       .map((c) => c.id);
 

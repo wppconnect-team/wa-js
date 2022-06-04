@@ -40,7 +40,7 @@ export interface ChatListOptions {
  * @category Chat
  */
 export async function list(options: ChatListOptions): Promise<ChatModel[]> {
-  let models = ChatStore.models;
+  let models = ChatStore.getModelsArray();
 
   if (options.onlyUsers) {
     models = models.filter((c) => c.isUser);

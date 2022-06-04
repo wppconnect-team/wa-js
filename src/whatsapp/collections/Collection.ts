@@ -50,6 +50,8 @@ export declare class Collection<M, A = M | M[]> extends EventEmitter {
 
   constructor(e?: any, t?: { parent: any });
 
+  get length(): number;
+
   add(value: A | WritableProperties<A>, options?: Option): A;
 
   set(value: A, options?: Option): A;
@@ -69,12 +71,6 @@ export declare class Collection<M, A = M | M[]> extends EventEmitter {
   assertGet(e: Stringable): M;
 
   at(position: number): M | undefined;
-
-  get length(): number;
-
-  get isCollection(): boolean;
-
-  get models(): M[];
 
   serialize(): any[];
 

@@ -32,7 +32,7 @@ internalEv.on('conn.main_ready', () => {
 function register() {
   PresenceStore.on('change:chatstate.type', (chatstate: ChatstateModel) => {
     // Search precense model from chatstate
-    const presence = PresenceStore.models.find(
+    const presence = PresenceStore.getModelsArray().find(
       (m) => m.chatstate === chatstate
     );
 
@@ -58,7 +58,8 @@ function register() {
     }
 
     if (presence.isGroup) {
-      data.participants = presence.chatstates.models
+      data.participants = presence.chatstates
+        .getModelsArray()
         .filter((c) => !!c.type)
         .map((c) => {
           const contact = ContactStore.get(c.id);
