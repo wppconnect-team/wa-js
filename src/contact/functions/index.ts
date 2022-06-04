@@ -16,4 +16,5 @@
 
 export { getProfilePictureUrl } from './getProfilePictureUrl';
 export { getStatus } from './getStatus';
+export { ContactListOptions, list } from './list';
 export { queryExists } from './queryExists';

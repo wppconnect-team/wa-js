@@ -39,8 +39,10 @@ export interface ChatListOptions {
  *
  * @category Chat
  */
-export async function list(options: ChatListOptions): Promise<ChatModel[]> {
-  let models = ChatStore.getModelsArray();
+export async function list(
+  options: ChatListOptions = {}
+): Promise<ChatModel[]> {
+  let models = ChatStore.getModelsArray().slice();
 
   if (options.onlyUsers) {
     models = models.filter((c) => c.isUser);
