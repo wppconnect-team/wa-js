@@ -14,9 +14,28 @@
  * limitations under the License.
  */
 
-import './registerAckMessageEvent';
-import './registerLiveLocationUpdateEvent';
-import './registerNewMessageEvent';
-import './registerPresenceChange';
-import './registerRevokeMessageEvent';
-import './registerReactionsEvent';
+import { exportModule } from '../exportModule';
+
+export interface ReactionData {
+  msgKey: string;
+  orphan: number;
+  orphanReason: any;
+  parentMsgKey: string;
+  reactionText: string;
+  read: boolean;
+  senderUserJid: string;
+  timestamp: number;
+}
+
+/** @whatsapp 7394 */
+export declare function createOrUpdateReactions(
+  data: ReactionData[]
+): Promise<any>;
+
+exportModule(
+  exports,
+  {
+    createOrUpdateReactions: 'createOrUpdateReactions',
+  },
+  (m) => m.createOrUpdateReactions
+);

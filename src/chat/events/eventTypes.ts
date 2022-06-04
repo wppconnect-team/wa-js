@@ -90,6 +90,37 @@ export interface ChatEventTypes {
     chat: Wid;
     seq: number;
   };
+
+  /**
+   * Triggered when a new reaction is received
+   *
+   * @example
+   * ```javascript
+   * WPP.on('chat.new_reaction', (msg) => {
+   *   // Your code
+   * });
+   * ```
+   */
+  'chat.new_reaction': {
+    /**
+     * Reaction ID
+     */
+    id: MsgKey;
+    /**
+     * Message ID that received the reaction
+     */
+    msgId: MsgKey;
+    /**
+     * The reaction emoji or empty if removed
+     */
+    reactionText: string;
+    read: boolean;
+    sender: Wid;
+    orphan: number;
+    orphanReason: any;
+    timestamp: number;
+  };
+
   /**
    * On presence change
    */
