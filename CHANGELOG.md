@@ -1,3 +1,12 @@
+## 2.5.1 (2022-06-06)
+
+
+### Bug Fixes
+
+* Fixed revoke messages for list type ([7938ae7](https://github.com/wppconnect-team/wa-js/commit/7938ae7dab6bfa9e44f68f78dab01bbeeeeca0b6))
+
+
+
 # 2.5.0 (2022-06-04)
 
 
