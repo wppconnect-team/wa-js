@@ -90,17 +90,27 @@ export async function deleteMessage(
       sendMsgResult = SendMsgResult.ERROR_UNKNOWN;
       isRevoked = true;
     } else if (revoke) {
+      if (msg.type === 'list') {
+        (msg as any).__x_isUserCreatedType = true;
+      }
+
       Cmd.sendRevokeMsgs(chat, [msg], { clearMedia: deleteMediaInDevice });
 
       if (chat.promises.sendRevokeMsgs) {
-        await chat.promises.sendRevokeMsgs;
+        const result = await chat.promises.sendRevokeMsgs;
+        if (Array.isArray(result)) {
+          sendMsgResult = result[0];
+        }
       }
       isRevoked = msg.isRevokedByMe;
     } else {
       Cmd.sendDeleteMsgs(chat, [msg], deleteMediaInDevice);
 
       if (chat.promises.sendDeleteMsgs) {
-        await chat.promises.sendDeleteMsgs;
+        const result = await chat.promises.sendDeleteMsgs;
+        if (Array.isArray(result)) {
+          sendMsgResult = result[0];
+        }
       }
       isDeleted = Boolean(chat.msgs.get(msg.id));
     }
