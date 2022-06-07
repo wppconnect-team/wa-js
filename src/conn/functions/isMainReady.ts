@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2022 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,22 @@
  * limitations under the License.
  */
 
-import { Cmd } from '../../whatsapp';
+import { internalEv } from '../../eventEmitter';
+
+let isReady = false;
+
+internalEv.once('conn.main_ready', () => {
+  isReady = true;
+});
 
 /**
- * Check is main interface is authenticated and loaded, bot not synced
+ * Check is main interface is authenticated, loaded and synced
  *
  * @example
  * ```javascript
- * const isMainLoaded = WPP.conn.isMainLoaded();
+ * const isMainReady = WPP.conn.isMainReady();
  * ```
  */
-export function isMainLoaded(): boolean {
-  return Cmd.isMainLoaded;
+export function isMainReady(): boolean {
+  return isReady;
 }
