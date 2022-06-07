@@ -25,7 +25,7 @@ import { ModelChatBase, PropsChatBase, SessionChatBase } from './ModelChatBase';
 interface Props extends PropsChatBase {
   lastReceivedKey?: MsgKey;
   t?: number;
-  unreadCount?: number;
+  unreadCount: number;
   archive?: any;
   isReadOnly: boolean;
   isAnnounceGrpRestrict: boolean;

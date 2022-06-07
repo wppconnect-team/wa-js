@@ -24,6 +24,7 @@ export interface GetMessagesOptions {
   count?: number;
   direction?: 'after' | 'before';
   id?: string;
+  onlyUnread?: boolean;
 }
 
 /**
@@ -39,6 +40,18 @@ export interface GetMessagesOptions {
  * // All messages
  * WPP.chat.getMessages('[number]@c.us', {
  *   count: -1,
+ * });
+ *
+ * // Last 20 unread messages
+ * WPP.chat.getMessages('[number]@c.us', {
+ *   count: 20,
+ *   onlyUnread: true,
+ * });
+ *
+ * // All unread messages
+ * WPP.chat.getMessages('[number]@c.us', {
+ *   count: -1,
+ *   onlyUnread: true,
  * });
  *
  * // 20 messages before specific message
@@ -60,6 +73,21 @@ export async function getMessages(
   let count = options.count || 20;
   const direction = options.direction === 'after' ? 'after' : 'before';
   const id = options.id || chat.lastReceivedKey?.toString();
+
+  if (options.onlyUnread) {
+    if (!chat.hasUnread) {
+      return [];
+    }
+
+    // If marked as unread, return last 2 messages
+    const unreadCount = chat.unreadCount < 0 ? 2 : chat.unreadCount;
+
+    if (count < 0) {
+      count = unreadCount;
+    } else {
+      count = Math.min(count, unreadCount);
+    }
+  }
 
   // Fix for multidevice
   if (count === -1 && isMultiDevice()) {
