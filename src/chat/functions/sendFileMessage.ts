@@ -39,7 +39,7 @@ import {
 const debug = Debug('WA-JS:message');
 
 export interface FileMessageOptions extends SendMessageOptions {
-  type: string;
+  type?: string;
   caption?: string;
   footer?: string;
   filename?: string;
