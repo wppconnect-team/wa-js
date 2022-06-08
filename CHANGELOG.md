@@ -1,3 +1,12 @@
+# 2.6.0 (2022-06-08)
+
+
+### Bug Fixes
+
+* Fixed doc type for WPP.chat.sendFileMessage ([7701d88](https://github.com/wppconnect-team/wa-js/commit/7701d882df10e87e2ac477805f97a5984dd14870))
+
+
+
 ## 2.5.1 (2022-06-06)
 
 
