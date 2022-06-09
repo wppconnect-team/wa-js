@@ -3,7 +3,6 @@
   "extends": [
     "config:base",
     ":prHourlyLimitNone",
-    ":prNotPending",
     ":semanticCommits"
   ],
   "prConcurrentLimit": 3,
