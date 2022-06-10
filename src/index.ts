@@ -28,6 +28,7 @@ export { isInjected, isReady } from './webpack';
 export { config } from './config';
 
 export * as blocklist from './blocklist';
+export * as call from './call';
 export * as chat from './chat';
 export * as conn from './conn';
 export * as contact from './contact';

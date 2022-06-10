@@ -16,12 +16,35 @@
 
 import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
-import { CallModel, CallStore } from '../../whatsapp';
+import { CallModel, CallStore, WidFactory } from '../../whatsapp';
+import { CALL_STATES } from '../../whatsapp/enums';
 
 webpack.onInjected(() => register());
 
 function register() {
   CallStore.on('add', (call: CallModel) => {
-    internalEv.emit('call.incoming_call', call);
+    if (call.isGroup) {
+      internalEv.emit('call.incoming_call', {
+        id: call.id,
+        isGroup: call.isGroup,
+        isVideo: call.isVideo,
+        offerTime: call.offerTime,
+        sender: WidFactory.toChatWid(call.peerJid),
+        peerJid: call.peerJid,
+      });
+    }
+  });
+
+  CallStore.on('change:_state change:state', (call: CallModel) => {
+    if (call.getState() === CALL_STATES.INCOMING_RING) {
+      internalEv.emit('call.incoming_call', {
+        id: call.id,
+        isGroup: call.isGroup,
+        isVideo: call.isVideo,
+        offerTime: call.offerTime,
+        sender: WidFactory.toChatWid(call.peerJid),
+        peerJid: call.peerJid,
+      });
+    }
   });
 }

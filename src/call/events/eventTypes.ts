@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { CallModel } from '../../whatsapp';
+import { Wid } from '../../whatsapp';
 
 export interface CallEventTypes {
   /**
@@ -27,5 +27,30 @@ export interface CallEventTypes {
    * });
    * ```
    */
-  'call.incoming_call': CallModel;
+  'call.incoming_call': {
+    /**
+     * The call id
+     */
+    id: string;
+    /**
+     * Is a call from a group
+     */
+    isGroup: boolean;
+    /**
+     * Is call with video
+     */
+    isVideo: boolean;
+    /**
+     * timestamp of offer
+     */
+    offerTime: number;
+    /**
+     * Wid of sender without device id
+     */
+    sender: Wid;
+    /**
+     * Wid of sender with device id
+     */
+    peerJid: Wid;
+  };
 }

@@ -15,7 +15,9 @@
  */
 
 import { CallCollection } from '../collections';
+import { CALL_STATES } from '../enums';
 import { exportProxyModel } from '../exportModule';
+import { Wid } from '../misc';
 import {
   Model,
   ModelOptions,
@@ -24,15 +26,15 @@ import {
 } from './Model';
 
 interface Props {
-  id?: any;
-  peerJid?: any;
-  offerTime?: any;
+  id: string;
+  peerJid: Wid;
+  offerTime: number;
   isVideo: boolean;
   isGroup: boolean;
   groupCallParticipants?: any;
   canHandleLocally: boolean;
-  outgoing?: any;
-  webClientShouldHandle?: any;
+  outgoing: boolean;
+  webClientShouldHandle: boolean;
   callInfo?: any;
 }
 
@@ -56,9 +58,8 @@ export declare class CallModel extends Model<CallCollection> {
     proterties?: ModelPropertiesContructor<CallModel>,
     options?: ModelOptions
   );
-  getState(): any;
-  setState(e?: any): any;
-  handleNotification(): any;
+  getState(): CALL_STATES;
+  setState(state: CALL_STATES): void;
   getCollection(): CallCollection;
 }
 
