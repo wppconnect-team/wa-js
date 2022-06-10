@@ -14,10 +14,30 @@
  * limitations under the License.
  */
 
-export * from './ACK';
-export * from './CALL_STATES';
-export * from './GROUP_SETTING_TYPE';
-export * from './LogoutReason';
-export * from './MSG_TYPE';
-export * from './OUTWARD_TYPES';
-export * from './SendMsgResult';
+import { exportModule } from '../exportModule';
+
+/**
+ * @whatsapp 49835
+ */
+export declare enum CALL_STATES {
+  INCOMING_RING = 'INCOMING_RING',
+  OUTGOING_RING = 'OUTGOING_RING',
+  OUTGOING_CALLING = 'OUTGOING_CALLING',
+  CONNECTING = 'CONNECTING',
+  CONNECTION_LOST = 'CONNECTION_LOST',
+  ACTIVE = 'ACTIVE',
+  HANDLED_REMOTELY = 'HANDLED_REMOTELY',
+  ENDED = 'ENDED',
+  REJECTED = 'REJECTED',
+  REMOTE_CALL_IN_PROGRESS = 'REMOTE_CALL_IN_PROGRESS',
+  FAILED = 'FAILED',
+  NOT_ANSWERED = 'NOT_ANSWERED',
+}
+
+exportModule(
+  exports,
+  {
+    CALL_STATES: 'CALL_STATES',
+  },
+  (m) => m.CALL_STATES
+);
