@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-import { Wid } from '..';
 import { exportModule } from '../exportModule';
-import { ChatModel } from '../models';
 
 /** @whatsapp 56981 */
 export declare function sendCallSignalingMsg(
@@ -24,7 +22,7 @@ export declare function sendCallSignalingMsg(
     common: {
       type?: string;
       call_id?: string;
-      peer_jid: Wid;
+      peer_jid: string;
     };
     payload: [
       string,
@@ -37,7 +35,7 @@ export declare function sendCallSignalingMsg(
     ];
   },
   tagId?: string
-): Promise<ChatModel>;
+): Promise<{ payload: any; status: 200 }>;
 
 exportModule(
   exports,

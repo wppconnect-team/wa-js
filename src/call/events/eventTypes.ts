@@ -24,6 +24,8 @@ export interface CallEventTypes {
    * ```javascript
    * WPP.on('call.incoming_call', (call) => {
    *   // Your code
+   *   //Example: Reject any incoming call
+   *   WPP.call.rejectCall(call.id);
    * });
    * ```
    */
