@@ -31,41 +31,92 @@ export interface SimpleAckData {
   biz?: null;
 }
 
-/** @whatsapp 90756 */
+/**
+ * @whatsapp 90756
+ * @deprecated
+ */
 export declare function handleStatusSimpleAck(
   ackData: SimpleAckData
 ): Promise<any>;
 
-/** @whatsapp 48309 */
+/**
+ * @whatsapp 48309
+ * @deprecated
+ */
 export declare function handleChatSimpleAck(
   ackData: SimpleAckData
 ): Promise<any>;
 
-/** @whatsapp 84947 */
+/**
+ * @whatsapp 84947
+ * @deprecated
+ */
 export declare function handleGroupSimpleAck(
+  ackData: SimpleAckData
+): Promise<any>;
+
+/** @whatsapp 90756 */
+export declare function handleStatusSimpleReceipt(
+  ackData: SimpleAckData
+): Promise<any>;
+
+/** @whatsapp 48309 */
+export declare function handleChatSimpleReceipt(
+  ackData: SimpleAckData
+): Promise<any>;
+
+/** @whatsapp 84947 */
+export declare function handleGroupSimpleReceipt(
   ackData: SimpleAckData
 ): Promise<any>;
 
 exportModule(
   exports,
   {
-    handleStatusSimpleAck: 'handleStatusSimpleAck',
+    handleStatusSimpleAck: [
+      'handleStatusSimpleReceipt', // @whatsapp >= 2.2222.8
+      'handleStatusSimpleAck',
+    ],
+    handleStatusSimpleReceipt: [
+      'handleStatusSimpleReceipt', // @whatsapp >= 2.2222.8
+      'handleStatusSimpleAck',
+    ],
   },
-  (m) => m.handleStatusSimpleAck
+  (m) =>
+    m.handleStatusSimpleReceipt || // @whatsapp >= 2.2222.8
+    m.handleStatusSimpleAck
 );
 
 exportModule(
   exports,
   {
-    handleChatSimpleAck: 'handleChatSimpleAck',
+    handleChatSimpleAck: [
+      'handleChatSimpleReceipt', // @whatsapp >= 2.2222.8
+      'handleChatSimpleAck',
+    ],
+    handleChatSimpleReceipt: [
+      'handleChatSimpleReceipt', // @whatsapp >= 2.2222.8
+      'handleChatSimpleAck',
+    ],
   },
-  (m) => m.handleChatSimpleAck
+  (m) =>
+    m.handleChatSimpleReceipt || // @whatsapp >= 2.2222.8
+    m.handleChatSimpleAck
 );
 
 exportModule(
   exports,
   {
-    handleGroupSimpleAck: 'handleGroupSimpleAck',
+    handleGroupSimpleAck: [
+      'handleGroupSimpleReceipt', // @whatsapp >= 2.2222.8
+      'handleGroupSimpleAck',
+    ],
+    handleGroupSimpleReceipt: [
+      'handleGroupSimpleReceipt', // @whatsapp >= 2.2222.8
+      'handleGroupSimpleAck',
+    ],
   },
-  (m) => m.handleGroupSimpleAck
+  (m) =>
+    m.handleGroupSimpleReceipt || // @whatsapp >= 2.2222.8
+    m.handleGroupSimpleAck
 );

@@ -46,7 +46,7 @@ async function start() {
 
   page.on('console', (message) => {
     if (message.type() !== 'debug') {
-      console.log('browser', message.type(), message.text(), ...message.args());
+      console.log('browser', message.type(), message.text());
     }
   });
 

@@ -126,7 +126,11 @@ for (const name of storeNames) {
 exportModule(
   exports,
   {
-    RecentStickerStore: ['default', 'RecentStickerCollectionMd'],
+    RecentStickerStore: [
+      'default',
+      'RecentStickerCollectionMd',
+      'RecentStickerCollection', // @whatsapp >= 2.2222.8
+    ],
   },
   (m) => m.RecentStickerCollection
 );
