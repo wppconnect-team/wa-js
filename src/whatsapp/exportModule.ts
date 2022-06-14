@@ -61,7 +61,10 @@ export function exportModule(
         const moduleId = webpack.searchId(condition);
 
         if (!moduleId) {
-          throw `Module ${name} not found with ${condition.toString()}`;
+          console.error(
+            `Module ${name} was not found with ${condition.toString()}`
+          );
+          return undefined;
         }
 
         const module = webpack.webpackRequire(moduleId);
@@ -75,7 +78,12 @@ export function exportModule(
             }
           }
           if (!valueFn()) {
-            throw `Property ${property} not found in module ${name}`;
+            console.error(
+              `Property ${property.join(
+                ' or '
+              )} was not found for ${name} in module ${moduleId}`
+            );
+            return undefined;
           }
         } else {
           switch (typeof property) {
@@ -83,7 +91,10 @@ export function exportModule(
               valueFn = () =>
                 property.split('.').reduce((a, b) => a?.[b], module);
               if (!valueFn()) {
-                throw `Property ${property} not found in module ${name}`;
+                console.error(
+                  `Property ${property} was not found for ${name} in module ${moduleId}`
+                );
+                return undefined;
               }
               functionPath = property;
               break;
@@ -165,13 +176,15 @@ export function wrapModuleFunction<TFunc extends (...args: any[]) => any>(
   callback: (func: TFunc, ...args: InferArgs<TFunc>) => InferReturn<TFunc>
 ) {
   if (typeof func !== 'function') {
-    throw new TypeError('func is not a function');
+    console.error('func is not a function');
+    return;
   }
 
   const moduleId = _moduleIdMap.get(func);
 
   if (!moduleId) {
-    throw new TypeError('func is not an exported function');
+    console.error('func is not an exported function');
+    return;
   }
 
   const module = webpack.webpackRequire(moduleId);
@@ -179,7 +192,8 @@ export function wrapModuleFunction<TFunc extends (...args: any[]) => any>(
   const functionPath = functionPathMap.get(func);
 
   if (!functionPath) {
-    throw new TypeError('function path not found');
+    console.error('function path was not found');
+    return;
   }
 
   const parts = functionPath.split('.');
@@ -187,7 +201,8 @@ export function wrapModuleFunction<TFunc extends (...args: any[]) => any>(
   const functionName = parts.pop();
 
   if (!functionName) {
-    throw new TypeError(`function not found in the module ${moduleId}`);
+    console.error(`function was not found in the module ${moduleId}`);
+    return;
   }
 
   const baseModule = parts.reduce((a, b) => a?.[b], module);
