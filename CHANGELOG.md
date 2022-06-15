@@ -1,3 +1,12 @@
+# 2.7.0 (2022-06-15)
+
+
+### Features
+
+* Added Google Analytics ([946cc80](https://github.com/wppconnect-team/wa-js/commit/946cc80b691adcc2818a0702b821898f73311df7))
+
+
+
 # 2.6.0 (2022-06-08)
 
 
