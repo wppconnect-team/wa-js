@@ -95,7 +95,7 @@ function trackEvent(
 
 internalEv.on('webpack.injected', () => {
   // Add version info
-  eventModel['up.wa-js'] = version;
+  eventModel['up.wa_js'] = version;
   eventModel['up.whatsapp'] = (window as any).Debug?.VERSION || '-';
 
   const authenticated = conn.isAuthenticated();
