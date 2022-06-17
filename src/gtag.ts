@@ -19,9 +19,9 @@
  * @see https://www.optimizesmart.com/what-is-measurement-protocol-in-google-analytics-4-ga4/
  */
 
+import { config } from './config';
 import * as conn from './conn';
 import { internalEv } from './eventEmitter';
-import { config } from './config';
 
 declare const __VERSION__: string;
 export const version = __VERSION__;
