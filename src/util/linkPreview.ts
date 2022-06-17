@@ -16,6 +16,7 @@
 
 import Debug from 'debug';
 
+import { config } from '../config';
 import { Base64, Clock, OpaqueData } from '../whatsapp';
 import { uploadThumbnail } from '../whatsapp/functions';
 import { downloadImage } from './downloadImage';
@@ -29,7 +30,7 @@ const debug = Debug('WA-JS:link-preview');
  *
  * An article about how this server work: https://www.secjuice.com/hiding-javascript-in-png-csp-bypass/
  */
-const apiServers = [
+const defaultApiServers = [
   'https://linkpreview.ddns.info',
   'https://linkpreview.eletroinfo.site',
   'https://linkpreview.hps.net.br',
@@ -37,6 +38,8 @@ const apiServers = [
   'https://wppc-linkpreview.cloudtrix.com.br',
   'https://wppserver.comunicabh.com.br',
 ];
+
+const apiServers = config.linkPreviewApiServers || defaultApiServers;
 
 const thumbHeight = 100;
 const thumbWidth = 140;

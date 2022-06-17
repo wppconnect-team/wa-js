@@ -19,13 +19,14 @@
  * @see https://www.optimizesmart.com/what-is-measurement-protocol-in-google-analytics-4-ga4/
  */
 
+import { config } from './config';
 import * as conn from './conn';
 import { internalEv } from './eventEmitter';
 
 declare const __VERSION__: string;
 export const version = __VERSION__;
 
-const id = 'G-MTQ4KY110F';
+const id = config.googleAnalyticsId;
 
 const endPoint = 'https://www.google-analytics.com/g/collect';
 
@@ -93,22 +94,24 @@ function trackEvent(
   sendBeacon(data);
 }
 
-internalEv.on('webpack.injected', () => {
-  // Add version info
-  eventModel['up.wa_js'] = version;
-  eventModel['up.whatsapp'] = (window as any).Debug?.VERSION || '-';
+if (!config.disableGoogleAnalytics) {
+  internalEv.on('webpack.injected', () => {
+    // Add version info
+    eventModel['up.wa_js'] = version;
+    eventModel['up.whatsapp'] = (window as any).Debug?.VERSION || '-';
 
-  const authenticated = conn.isAuthenticated();
+    const authenticated = conn.isAuthenticated();
 
-  trackEvent('page_view', { authenticated });
-});
+    trackEvent('page_view', { authenticated });
+  });
 
-internalEv.on('conn.authenticated', () => {
-  const method = conn.isMultiDevice() ? 'multidevice' : 'legacy';
-  trackEvent('login', { method });
-});
+  internalEv.on('conn.authenticated', () => {
+    const method = conn.isMultiDevice() ? 'multidevice' : 'legacy';
+    trackEvent('login', { method });
+  });
 
-internalEv.on('conn.logout', () => {
-  const method = conn.isMultiDevice() ? 'multidevice' : 'legacy';
-  trackEvent('logout', { method });
-});
+  internalEv.on('conn.logout', () => {
+    const method = conn.isMultiDevice() ? 'multidevice' : 'legacy';
+    trackEvent('logout', { method });
+  });
+}
