@@ -18,7 +18,7 @@ import { assertWid } from '../../assert';
 import * as Chat from '../../chat';
 import * as Contact from '../../contact';
 import { WPPError } from '../../util';
-import { ContactStore, Wid } from '../../whatsapp';
+import { ContactStore, UserPrefs, Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
 
 export async function create(
@@ -31,9 +31,14 @@ export async function create(
 
   const participantsWids = participantsIds.map(assertWid);
 
+  const meWid = UserPrefs.getMaybeMeUser();
   const wids: Wid[] = [];
 
   for (const wid of participantsWids) {
+    if (meWid.equals(wid)) {
+      continue;
+    }
+
     const contact = ContactStore.get(wid);
     if (contact) {
       wids.push(contact.id);
@@ -46,6 +51,10 @@ export async function create(
       throw new WPPError('participant_not_exists', 'Participant not exists', {
         id: wid,
       });
+    }
+
+    if (meWid.equals(info.wid)) {
+      continue;
     }
 
     wids.push(info.wid);
