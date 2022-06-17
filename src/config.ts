@@ -22,7 +22,9 @@
  * // Global variable before injection
  * WPPConfig = {
  *   deviceName: 'WPPConnect',
- *   liveLocationLimit: 10
+ *   liveLocationLimit: 10,
+ *   disableGoogleAnalytics: false,
+ *   googleAnalyticsId: 'G-XXXXXXXXXX'
  * };
  * ```
  */
@@ -37,11 +39,23 @@ export interface Config {
    * Number of last chats to check live location after a page reload
    */
   liveLocationLimit: number;
+
+  /**
+   * Disable Google Analytics tracking
+   */
+  disableGoogleAnalytics: boolean;
+
+  /**
+   * Google Analytics Id
+   */
+  googleAnalyticsId: string;
 }
 
 export const defaultConfig: Config = {
   deviceName: false,
   liveLocationLimit: 10,
+  disableGoogleAnalytics: false,
+  googleAnalyticsId: 'G-MTQ4KY110F',
 };
 
 export const config: Config = defaultConfig;
