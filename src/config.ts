@@ -48,7 +48,7 @@ export interface Config {
   /**
    * Google Analytics Id
    */
-  googleAnalyticsId: string;
+  googleAnalyticsId: string | null;
 
   /**
    * Link Preview API servers
@@ -60,7 +60,7 @@ export const defaultConfig: Config = {
   deviceName: false,
   liveLocationLimit: 10,
   disableGoogleAnalytics: false,
-  googleAnalyticsId: 'G-MTQ4KY110F',
+  googleAnalyticsId: null,
   linkPreviewApiServers: null,
 };
 
