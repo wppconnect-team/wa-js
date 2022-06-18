@@ -16,6 +16,7 @@
 
 import { assertWid } from '../../assert';
 import { StatusStore, Wid } from '../../whatsapp';
+import { queryExists } from './queryExists';
 
 /**
  * Get the current text status
@@ -31,5 +32,13 @@ import { StatusStore, Wid } from '../../whatsapp';
 export async function getStatus(contactId: string | Wid) {
   const wid = assertWid(contactId);
 
-  return StatusStore.find(wid);
+  const exists = await queryExists(wid);
+
+  if (!exists) {
+    return null;
+  }
+
+  const model = await StatusStore.find(wid);
+
+  return model.status || null;
 }
