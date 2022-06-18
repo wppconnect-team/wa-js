@@ -51,7 +51,7 @@ export declare class BaseCollection<C, A = C | C[]> extends Collection<C> {
 
   handle(values: A): void;
 
-  gadd(id: C | Stringable): C;
+  gadd(id: C | Stringable, options?: any): C;
 
   gaddUp(id: C | Stringable): C;
 

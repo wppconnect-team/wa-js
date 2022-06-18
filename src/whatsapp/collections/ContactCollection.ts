@@ -16,14 +16,13 @@
 
 import { exportModule } from '../exportModule';
 import { ContactModel } from '../models';
-import { Collection } from './Collection';
+import { BaseCollection } from './BaseCollection';
 
 /** @whatsapp 19380
  * @whatsapp 719380 >= 2.2222.8
  */
-export declare class ContactCollection extends Collection<ContactModel> {
+export declare class ContactCollection extends BaseCollection<ContactModel> {
   static model: ContactModel;
-  static cachePolicy?: any;
   checksum?: any;
   ensureSorted(): any;
   contactAdded(e?: any): any;

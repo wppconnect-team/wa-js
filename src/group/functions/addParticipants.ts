@@ -14,29 +14,87 @@
  * limitations under the License.
  */
 
-import { WPPError } from '../../util';
-import { Wid } from '../../whatsapp';
+import { createWid, WPPError } from '../../util';
+import { ContactStore, Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
 import { ensureGroupAndParticipants } from './ensureGroupAndParticipants';
 
+const messageCodes: {
+  [key: number]: string;
+} = {
+  403: "Can't join this group because the number was restricted it.",
+  409: "Can't join this group because the number is already a member of it.",
+};
+
+/**
+ * Add one or more participants to a group
+ *
+ * The method return a object with the result of each participant as the key
+ *
+ * @example
+ * ```javascript
+ * await WPP.group.addParticipants('[group@g.us]', [number@c.us]);
+ * ```
+ *
+ * @category Group
+ */
 export async function addParticipants(
   groupId: string | Wid,
   participantsIds: (string | Wid) | (string | Wid)[]
-): Promise<void> {
+): Promise<{
+  [key: `${number}@c.us`]: {
+    code: number;
+    message: string;
+    invite_code: string | null;
+    invite_code_exp: number | null;
+  };
+}> {
   const { groupChat, participants } = await ensureGroupAndParticipants(
     groupId,
     participantsIds,
     true
   );
 
-  if (
-    participants.some((p) => groupChat.groupMetadata?.participants.get(p.id))
-  ) {
+  const result = await wa_functions.sendAddParticipants(
+    groupChat.id,
+    participants.map((p) => p.id)
+  );
+
+  if (result.status >= 400) {
     throw new WPPError(
-      'group_participant_already_a_group_member',
-      `Group ${groupChat.id._serialized}: Group participant already a group member`
+      'group_add_participant_error',
+      'Failed to add participants to the group',
+      { groupId, participantsIds }
     );
   }
 
-  return wa_functions.addParticipants(groupChat, participants);
+  const data: {
+    [key: `${number}@c.us`]: {
+      code: number;
+      message: string;
+      invite_code: string | null;
+      invite_code_exp: number | null;
+    };
+  } = {};
+
+  for (const r of result.participants || []) {
+    const firstKey = Object.keys(r)[0] as `${number}@c.us`;
+
+    const d = r[firstKey];
+
+    if (d.code !== '403') {
+      try {
+        ContactStore.gadd(createWid(firstKey) as any, { silent: true });
+      } catch (error) {}
+    }
+
+    data[firstKey] = {
+      code: Number(d.code),
+      message: messageCodes[Number(d.code)] || "Can't Join.",
+      invite_code: d.invite_code,
+      invite_code_exp: Number(d.invite_code) || null,
+    };
+  }
+
+  return data;
 }
