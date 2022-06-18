@@ -222,6 +222,8 @@ export async function sendFileMessage(
     await markIsRead(chat.id).catch(() => null);
   }
 
+  await mediaPrep.waitForPrep();
+
   debug(`sending message (${options.type}) with id ${rawMessage.id}`);
   const sendMsgResult = mediaPrep.sendToChat(chat, {
     caption: options.caption,
