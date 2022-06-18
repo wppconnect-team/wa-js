@@ -15,6 +15,7 @@
  */
 
 import * as waVersion from '@wppconnect/wa-version';
+import FileType from 'file-type';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as playwright from 'playwright-chromium';
@@ -111,6 +112,32 @@ export async function getPage(options?: LaunchArguments[1]) {
   page.on('domcontentloaded', async (page) => {
     await page.addScriptTag({
       url: `${URL}dist/wppconnect-wa.js`,
+    });
+
+    const mediaPath = path.resolve(__dirname, '../../media/');
+
+    if (!fs.existsSync(mediaPath)) {
+      return;
+    }
+    fs.readdirSync(mediaPath).forEach(async (filename) => {
+      const filePath = path.join(mediaPath, filename);
+      const content = fs.readFileSync(filePath, {
+        encoding: 'base64',
+      });
+
+      const mime = await FileType.fromFile(filePath);
+
+      const base64 = `data:${
+        mime?.mime || 'application/octet-stream'
+      };base64,${content}`;
+
+      page.evaluate(
+        ({ filename, base64 }) => {
+          (window as any).media = (window as any).media || {};
+          (window as any).media[filename] = base64;
+        },
+        { filename, base64 }
+      );
     });
   });
 
