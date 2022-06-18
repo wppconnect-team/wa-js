@@ -28,6 +28,7 @@ type Listener = (...args: any[]) => void;
 
 /** @whatsapp 76521
  * @whatsapp 34342 >= 2.2204.13
+ * @whatsapp 876521 >= 2.2222.8
  */
 export declare class EventEmitter {
   /**

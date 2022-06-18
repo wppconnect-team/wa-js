@@ -46,12 +46,14 @@ interface Derived {}
 
 /** @whatsapp 50064
  * @whatsapp 8384 >= 2.2204.13
+ * @whatsapp 850064 >= 2.2222.8
  */
 export declare interface CallParticipantModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /** @whatsapp 50064
  * @whatsapp 8384 >= 2.2204.13
+ * @whatsapp 850064 >= 2.2222.8
  */
 export declare class CallParticipantModel extends Model {
   constructor(

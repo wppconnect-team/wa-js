@@ -18,7 +18,9 @@ import { exportModule } from '../exportModule';
 import { MsgInfoModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 17972 */
+/** @whatsapp 17972
+ * @whatsapp 617972 >= 2.2222.8
+ */
 export declare class MsgInfoCollection extends Collection<MsgInfoModel> {
   static model: MsgInfoModel;
   static staleCollection?: any;

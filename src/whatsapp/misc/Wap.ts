@@ -19,6 +19,7 @@ import { Wid } from '.';
 
 /** @whatsapp 86875
  * @whatsapp 56891 >= 2.2212.8
+ * @whatsapp 656891 >= 2.2222.8
  */
 export declare class WapClass {
   queryExist(contactId: string): Promise<{
@@ -35,6 +36,7 @@ export declare class WapClass {
 
 /** @whatsapp 86875
  * @whatsapp 56891 >= 2.2212.8
+ * @whatsapp 656891 >= 2.2222.8
  */
 export declare const Wap: WapClass;
 

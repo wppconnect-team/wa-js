@@ -19,6 +19,7 @@ import { ChatModel } from '../models';
 
 /**
  * @whatsapp 10236
+ * @whatsapp 510236 >= 2.2222.8
  */
 export declare function setPin(chat: ChatModel, pin: boolean): Promise<void>;
 

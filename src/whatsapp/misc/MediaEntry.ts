@@ -18,7 +18,8 @@ import { exportModule } from '../exportModule';
 
 /**
  * @whatsapp 80923
- * */
+ * @whatsapp 480923 >= 2.2222.8
+ */
 export declare class MediaEntry {
   useBackupUrl: boolean;
   deprecatedMms3Url?: string;

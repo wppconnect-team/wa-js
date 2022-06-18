@@ -18,6 +18,7 @@ import { exportModule } from '../exportModule';
 
 /** @whatsapp 15461
  * @whatsapp 69618 >= 2.2204.13
+ * @whatsapp 115461 >= 2.2222.8
  */
 export declare enum MSG_TYPE {
   NOTIFICATION = 'notification',
@@ -58,6 +59,7 @@ export declare enum MSG_TYPE {
 
 /** @whatsapp 15461
  * @whatsapp 69618 >= 2.2204.13
+ * @whatsapp 115461 >= 2.2222.8
  */
 export declare const SYSTEM_MESSAGE_TYPES: string[];
 

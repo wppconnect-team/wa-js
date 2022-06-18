@@ -16,7 +16,9 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 34949 */
+/** @whatsapp 34949
+ * @whatsapp 534949 >= 2.2222.8
+ */
 export declare class OpaqueDataBase {
   released: boolean;
   retain(): void;
@@ -25,7 +27,9 @@ export declare class OpaqueDataBase {
   throwIfReleased(e: any): void;
 }
 
-/** @whatsapp 34949 */
+/** @whatsapp 34949
+ * @whatsapp 534949 >= 2.2222.8
+ */
 export declare class OpaqueData extends OpaqueDataBase {
   url(): string;
   getBase64(): string;

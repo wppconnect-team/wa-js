@@ -19,6 +19,7 @@ import { exportModule } from '../exportModule';
 
 /** @whatsapp 46898
  * @whatsapp 51316 >= 2.2204.13
+ * @whatsapp 546898 >= 2.2222.8
  */
 export declare function getStatus(contactId: Wid): Promise<{
   id: Wid;
@@ -27,6 +28,7 @@ export declare function getStatus(contactId: Wid): Promise<{
 
 /** @whatsapp 46898
  * @whatsapp 51316 >= 2.2204.13
+ * @whatsapp 546898 >= 2.2222.8
  */
 export declare function setMyStatus(
   status: string,

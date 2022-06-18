@@ -18,7 +18,9 @@ import { exportModule } from '../exportModule';
 import { AggReactionsModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 81130 */
+/** @whatsapp 81130
+ * @whatsapp 981130 >= 2.2222.8
+ */
 export declare class AggReactionsCollection extends Collection<AggReactionsModel> {
   static model: AggReactionsModel;
   static comparator(): number;

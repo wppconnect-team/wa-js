@@ -18,7 +18,9 @@ import { exportModule } from '../exportModule';
 import { RecentEmojiModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 92671 */
+/** @whatsapp 92671
+ * @whatsapp 492671 >= 2.2222.8
+ */
 export declare class RecentEmojiCollection extends Collection<RecentEmojiModel> {
   static cachePolicy?: any;
   static model: RecentEmojiModel;

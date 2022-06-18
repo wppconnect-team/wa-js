@@ -18,7 +18,8 @@ import { exportModule } from '../exportModule';
 
 /**
  * @whatsapp 51428
- * */
+ * @whatsapp 551428 >= 2.2222.8
+ */
 export declare function generateVideoThumbsAndDuration(data: {
   file: Blob;
   maxDimensions: number[];

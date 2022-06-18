@@ -27,7 +27,9 @@ export interface ReactionData {
   timestamp: number;
 }
 
-/** @whatsapp 7394 */
+/** @whatsapp 7394
+ * @whatsapp 307394 >= 2.2222.8
+ */
 export declare function createOrUpdateReactions(
   data: ReactionData[]
 ): Promise<any>;

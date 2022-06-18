@@ -82,11 +82,15 @@ interface Derived {
   showBusinessCheckmarkAsSecondary?: any;
 }
 
-/** @whatsapp 121 */
+/** @whatsapp 121
+ * @whatsapp 400121 >= 2.2222.8
+ */
 export declare interface ContactModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 121 */
+/** @whatsapp 121
+ * @whatsapp 400121 >= 2.2222.8
+ */
 export declare class ContactModel extends Model<ContactCollection> {
   idClass: typeof Wid;
   constructor(

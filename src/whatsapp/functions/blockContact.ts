@@ -17,10 +17,14 @@
 import { exportModule } from '../exportModule';
 import { ContactModel } from '../models';
 
-/** @whatsapp 80140 */
+/** @whatsapp 80140
+ * @whatsapp 780140 >= 2.2222.8
+ */
 export declare function blockContact(contact: ContactModel): Promise<void>;
 
-/** @whatsapp 80140 */
+/** @whatsapp 80140
+ * @whatsapp 780140 >= 2.2222.8
+ */
 export declare function unblockContact(contact: ContactModel): Promise<void>;
 
 exportModule(

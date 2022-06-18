@@ -38,11 +38,15 @@ interface Session {
 
 interface Derived {}
 
-/** @whatsapp 11897 */
+/** @whatsapp 11897
+ * @whatsapp 311897 >= 2.2222.8
+ */
 export declare interface TemplateButtonModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 11897 */
+/** @whatsapp 11897
+ * @whatsapp 311897 >= 2.2222.8
+ */
 export declare class TemplateButtonModel extends Model {
   constructor(
     proterties?: ModelPropertiesContructor<TemplateButtonModel>,

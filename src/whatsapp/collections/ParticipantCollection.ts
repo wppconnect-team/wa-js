@@ -20,6 +20,7 @@ import { Collection } from './Collection';
 
 /** @whatsapp 96091
  * @whatsapp 54311 >= 2.2212.8
+ * @whatsapp 754311 >= 2.2222.8
  */
 export declare class ParticipantCollection extends Collection<ParticipantModel> {
   static model: ParticipantModel;

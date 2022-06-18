@@ -17,25 +17,33 @@
 import { ChatModel, ParticipantModel } from '..';
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 89389 */
+/** @whatsapp 89389
+ * @whatsapp 389389 >= 2.2222.8
+ */
 export declare function addParticipants(
   group: ChatModel,
   participants: ParticipantModel[]
 ): Promise<void>;
 
-/** @whatsapp 89389 */
+/** @whatsapp 89389
+ * @whatsapp 389389 >= 2.2222.8
+ */
 export declare function removeParticipants(
   group: ChatModel,
   participants: ParticipantModel[]
 ): Promise<void>;
 
-/** @whatsapp 89389 */
+/** @whatsapp 89389
+ * @whatsapp 389389 >= 2.2222.8
+ */
 export declare function promoteParticipants(
   group: ChatModel,
   participants: ParticipantModel[]
 ): Promise<void>;
 
-/** @whatsapp 89389 */
+/** @whatsapp 89389
+ * @whatsapp 389389 >= 2.2222.8
+ */
 export declare function demoteParticipants(
   group: ChatModel,
   participants: ParticipantModel[]

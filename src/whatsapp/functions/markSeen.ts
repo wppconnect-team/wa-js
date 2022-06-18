@@ -29,7 +29,9 @@ export declare function sendSeen(
   whenAvailable: boolean
 ): Promise<ChatModel>;
 
-/** @whatsapp 30734 */
+/** @whatsapp 30734
+ * @whatsapp 730734 >= 2.2222.8
+ */
 export declare function markPlayed(msg: MsgModel): Promise<void>;
 
 /**

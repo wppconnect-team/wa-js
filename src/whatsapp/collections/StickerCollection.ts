@@ -18,7 +18,9 @@ import { exportModule } from '../exportModule';
 import { StickerModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 67963 */
+/** @whatsapp 67963
+ * @whatsapp 767963 >= 2.2222.8
+ */
 export declare class StickerCollection extends Collection<StickerModel> {
   static model: StickerModel;
   fetch(): any;

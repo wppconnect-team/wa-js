@@ -18,7 +18,9 @@ import { exportModule } from '../exportModule';
 import { ReactionsModel } from '../models';
 import { BaseCollection } from './BaseCollection';
 
-/** @whatsapp 57162 */
+/** @whatsapp 57162
+ * @whatsapp 257162 >= 2.2222.8
+ */
 export declare class ReactionsCollection extends BaseCollection<ReactionsModel> {
   static model: ReactionsModel;
   static comparator(): any;

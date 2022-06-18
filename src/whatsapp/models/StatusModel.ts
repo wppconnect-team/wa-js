@@ -35,11 +35,15 @@ interface Session {
 
 interface Derived {}
 
-/** @whatsapp 67234 */
+/** @whatsapp 67234
+ * @whatsapp 167234 >= 2.2222.8
+ */
 export declare interface StatusModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 67234 */
+/** @whatsapp 67234
+ * @whatsapp 167234 >= 2.2222.8
+ */
 export declare class StatusModel extends Model<StatusCollection> {
   idClass: typeof Wid;
   constructor(

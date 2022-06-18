@@ -18,6 +18,7 @@ import { exportModule } from '../exportModule';
 
 /** @whatsapp 35470
  * @whatsapp 69618 >= 2.2204.13
+ * @whatsapp 535470 >= 2.2222.8
  */
 export declare enum ACK {
   MD_DOWNGRADE = -7,
@@ -37,6 +38,7 @@ export declare enum ACK {
 
 /** @whatsapp 35470
  * @whatsapp 69618 >= 2.2204.13
+ * @whatsapp 535470 >= 2.2222.8
  */
 export declare enum EDIT_ATTR {
   SENDER_REVOKE = 7,
@@ -45,6 +47,7 @@ export declare enum EDIT_ATTR {
 
 /** @whatsapp 35470
  * @whatsapp 69618 >= 2.2204.13
+ * @whatsapp 535470 >= 2.2222.8
  */
 export declare enum ACK_STRING {
   SENDER = 'sender',

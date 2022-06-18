@@ -48,11 +48,15 @@ interface Derived {
   displayInfo?: any;
 }
 
-/** @whatsapp 8080 */
+/** @whatsapp 8080
+ * @whatsapp 608080 >= 2.2222.8
+ */
 export declare interface StreamModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 8080 */
+/** @whatsapp 8080
+ * @whatsapp 608080 >= 2.2222.8
+ */
 export declare class StreamModel extends Model {
   constructor(
     proterties?: ModelPropertiesContructor<StreamModel>,

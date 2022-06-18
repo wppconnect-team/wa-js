@@ -18,7 +18,9 @@ import { exportModule } from '../exportModule';
 import { BlocklistModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 32826 */
+/** @whatsapp 32826
+ * @whatsapp 132826 >= 2.2222.8
+ */
 export declare class BlocklistCollection extends Collection<BlocklistModel> {
   static model: BlocklistModel;
   blockContact(e?: any): any;

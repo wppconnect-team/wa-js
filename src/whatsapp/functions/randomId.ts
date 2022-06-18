@@ -18,6 +18,7 @@ import { exportModule } from '../exportModule';
 
 /** @whatsapp 65212
  * @whatsapp 15860 >= 2.2204.13
+ * @whatsapp 465212 >= 2.2222.8
  */
 export declare function randomMessageId(): string;
 

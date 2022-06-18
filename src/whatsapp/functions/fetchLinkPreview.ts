@@ -32,6 +32,7 @@ export interface LinkPreviewResult {
 
 /** @whatsapp 19146
  * @whatsapp 75820 >= 2.2204.13
+ * @whatsapp 519146 >= 2.2222.8
  */
 export declare function fetchLinkPreview(
   url: string

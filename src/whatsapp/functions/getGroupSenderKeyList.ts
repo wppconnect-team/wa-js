@@ -19,6 +19,7 @@ import { Wid } from '../misc';
 
 /**
  * @whatsapp 43201
+ * @whatsapp 543201 >= 2.2222.8
  */
 export declare function getGroupSenderKeyList(wid: Wid): Promise<{
   skList: Wid[];

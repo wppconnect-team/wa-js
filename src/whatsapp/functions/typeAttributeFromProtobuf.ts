@@ -16,7 +16,9 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 93650 */
+/** @whatsapp 93650
+ * @whatsapp 193650 >= 2.2222.8
+ */
 export declare function typeAttributeFromProtobuf(protoMessage: {
   [key: string]: any;
 }): string;

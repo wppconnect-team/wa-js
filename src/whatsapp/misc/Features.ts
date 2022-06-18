@@ -147,6 +147,7 @@ declare class FeatureClass extends EventEmitter {
 
 /** @whatsapp 7293
  * @whatsapp 38184 >= 2.2218.4
+ * @whatsapp 438184 >= 2.2222.8
  */
 export declare const Features: FeatureClass;
 

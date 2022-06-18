@@ -38,11 +38,15 @@ interface Derived {
   isMuted: boolean;
 }
 
-/** @whatsapp 40214 */
+/** @whatsapp 40214
+ * @whatsapp 440214 >= 2.2222.8
+ */
 export declare interface MuteModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 40214 */
+/** @whatsapp 40214
+ * @whatsapp 440214 >= 2.2222.8
+ */
 export declare class MuteModel extends Model<MuteCollection> {
   idClass: typeof Wid;
   allowedIds?: any;

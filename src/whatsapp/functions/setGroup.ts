@@ -18,13 +18,17 @@ import { Wid } from '..';
 import { GROUP_SETTING_TYPE } from '../enums';
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 57490 */
+/** @whatsapp 57490
+ * @whatsapp 357490 >= 2.2222.8
+ */
 export declare function sendSetGroupSubject(
   groupId: Wid,
   subject: string
 ): Promise<void>;
 
-/** @whatsapp 57490 */
+/** @whatsapp 57490
+ * @whatsapp 357490 >= 2.2222.8
+ */
 export declare function sendSetGroupDescription(
   groupId: Wid,
   description: string,
@@ -32,7 +36,9 @@ export declare function sendSetGroupDescription(
   previousTagId?: string
 ): Promise<void>;
 
-/** @whatsapp 57490 */
+/** @whatsapp 57490
+ * @whatsapp 357490 >= 2.2222.8
+ */
 export declare function sendSetGroupProperty(
   groupId: Wid,
   property: GROUP_SETTING_TYPE,

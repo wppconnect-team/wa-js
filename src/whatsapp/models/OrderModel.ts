@@ -43,11 +43,15 @@ interface Derived {
   totalItemCount?: any;
 }
 
-/** @whatsapp 86761 */
+/** @whatsapp 86761
+ * @whatsapp 286761 >= 2.2222.8
+ */
 export declare interface OrderModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 86761 */
+/** @whatsapp 86761
+ * @whatsapp 286761 >= 2.2222.8
+ */
 export declare class OrderModel extends Model<OrderCollection> {
   constructor(
     proterties?: ModelPropertiesContructor<OrderModel>,

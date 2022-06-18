@@ -21,6 +21,7 @@ import { EventEmitter } from '.';
 
 /** @whatsapp 88102
  * @whatsapp 81572 >= 2.2218.4
+ * @whatsapp 781572 >= 2.2222.8
  */
 export declare class CmdClass extends EventEmitter {
   public isMainLoaded: boolean;
@@ -169,6 +170,7 @@ export declare class CmdClass extends EventEmitter {
 
 /** @whatsapp 88102
  * @whatsapp 81572 >= 2.2218.4
+ * @whatsapp 781572 >= 2.2222.8
  */
 export declare const Cmd: CmdClass;
 

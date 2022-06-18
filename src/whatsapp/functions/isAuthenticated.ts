@@ -19,12 +19,14 @@ import { exportModule } from '../exportModule';
 /**
  * @whatsapp 13194
  * @whatsapp 9530 >= 2.2210.9
+ * @whatsapp 909530 >= 2.2222.8
  */
 export declare function isAuthenticated(): boolean;
 
 /**
  * @whatsapp 13194 >= 2.2208.11
  * @whatsapp 9530 >= 2.2210.9
+ * @whatsapp 909530 >= 2.2222.8
  */
 export declare function isLoggedIn(): boolean;
 

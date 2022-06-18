@@ -18,7 +18,9 @@ import { exportModule } from '../exportModule';
 import { ProfilePicThumbModel } from '../models';
 import { BaseCollection } from './BaseCollection';
 
-/** @whatsapp 82039 */
+/** @whatsapp 82039
+ * @whatsapp 582039 >= 2.2222.8
+ */
 export declare class ProfilePicThumbCollection extends BaseCollection<ProfilePicThumbModel> {
   static model: ProfilePicThumbModel;
   static staleCollection?: any;

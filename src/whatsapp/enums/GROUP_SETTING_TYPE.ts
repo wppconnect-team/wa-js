@@ -18,6 +18,7 @@ import { exportModule } from '../exportModule';
 
 /** @whatsapp 12380
  * @whatsapp 69618 >= 2.2204.13
+ * @whatsapp 312380 >= 2.2222.8
  */
 export declare enum GROUP_SETTING_TYPE {
   ANNOUNCEMENT = 'announcement',

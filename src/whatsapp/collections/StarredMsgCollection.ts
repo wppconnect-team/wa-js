@@ -18,7 +18,9 @@ import { exportModule } from '../exportModule';
 import { MsgModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 19011 */
+/** @whatsapp 19011
+ * @whatsapp 719011 >= 2.2222.8
+ */
 export declare class StarredMsgCollection extends Collection<MsgModel> {
   static model: MsgModel;
   syncPromise?: any;

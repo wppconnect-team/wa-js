@@ -18,7 +18,9 @@ import { exportModule } from '../exportModule';
 import { ChatModel, LabelModel } from '../models';
 import { BaseCollection } from './BaseCollection';
 
-/** @whatsapp 16770 */
+/** @whatsapp 16770
+ * @whatsapp 316770 >= 2.2222.8
+ */
 export declare class LabelCollection extends BaseCollection<LabelModel> {
   static model: LabelModel;
   static staleCollection?: any;

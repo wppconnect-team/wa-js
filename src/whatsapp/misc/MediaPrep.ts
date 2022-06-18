@@ -24,7 +24,9 @@ import { OUTWARD_TYPES, SendMsgResult } from '../enums';
 import { exportModule } from '../exportModule';
 import { OpaqueData } from '.';
 
-/** @whatsapp 78986 */
+/** @whatsapp 78986
+ * @whatsapp 778986 >= 2.2222.8
+ */
 export declare namespace MediaPrep {
   function prepRawMedia(
     data: OpaqueData,

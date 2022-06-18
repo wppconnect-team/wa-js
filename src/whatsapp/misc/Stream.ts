@@ -17,7 +17,9 @@
 import { exportModule } from '../exportModule';
 import { StreamModel } from '../models';
 
-/** @whatsapp 8080 */
+/** @whatsapp 8080
+ * @whatsapp 608080 >= 2.2222.8
+ */
 export declare const Stream: StreamModel;
 
 exportModule(exports, { Stream: 'Stream' }, (m) => m.Stream);

@@ -37,11 +37,15 @@ interface Session {
 
 interface Derived {}
 
-/** @whatsapp 30000 */
+/** @whatsapp 30000
+ * @whatsapp 330000 >= 2.2222.8
+ */
 export declare interface ChatstateModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 30000 */
+/** @whatsapp 30000
+ * @whatsapp 330000 >= 2.2222.8
+ */
 export declare class ChatstateModel extends Model {
   idClass: typeof Wid;
   allowedIds?: any;

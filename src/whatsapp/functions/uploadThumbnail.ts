@@ -34,6 +34,7 @@ export interface ThumbnailData {
 
 /**
  * @whatsapp 74460
+ * @whatsapp 474460 >= 2.2222.8
  */
 export declare function uploadThumbnail(data: ThumbnailData): Promise<{
   kind: string;

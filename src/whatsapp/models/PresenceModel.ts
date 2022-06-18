@@ -46,11 +46,15 @@ interface Derived {
   isUser: boolean;
 }
 
-/** @whatsapp 30000 */
+/** @whatsapp 30000
+ * @whatsapp 330000 >= 2.2222.8
+ */
 export declare interface PresenceModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 30000 */
+/** @whatsapp 30000
+ * @whatsapp 330000 >= 2.2222.8
+ */
 export declare class PresenceModel extends Model {
   idClass: typeof Wid;
   allowedIds?: any;

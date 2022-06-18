@@ -17,67 +17,118 @@
 import * as collections from './collections';
 import { exportModule } from './exportModule';
 
-/** @whatsapp 32826 */
+/** @whatsapp 32826
+ * @whatsapp 132826 >= 2.2222.8
+ */
 export declare const BlocklistStore: collections.BlocklistCollection;
-/** @whatsapp 3754 */
+/** @whatsapp 3754
+ * @whatsapp 203754 >= 2.2222.8
+ */
 export declare const BusinessCategoriesResultStore: collections.BusinessCategoriesResultCollection;
-/** @whatsapp 93581 */
+/** @whatsapp 93581
+ * @whatsapp 493581 >= 2.2222.8
+ */
 export declare const BusinessProfileStore: collections.BusinessProfileCollection;
 /** @whatsapp 60868
  * @whatsapp 31218 >= 2.2204.13
+ * @whatsapp 160868 >= 2.2222.8
  */
 export declare const CallStore: collections.CallCollection;
-/** @whatsapp 12392 */
+/** @whatsapp 12392
+ * @whatsapp 612392 >= 2.2222.8
+ */
 export declare const CartStore: collections.CartCollection;
-/** @whatsapp 99989 */
+/** @whatsapp 99989
+ * @whatsapp 599989 >= 2.2222.8
+ */
 export declare const CatalogStore: collections.CatalogCollection;
-/** @whatsapp 69951 */
+/** @whatsapp 69951
+ * @whatsapp 669951 >= 2.2222.8
+ */
 export declare const ChatStore: collections.ChatCollection;
-/** @whatsapp 19380 */
+/** @whatsapp 19380
+ * @whatsapp 719380 >= 2.2222.8
+ */
 export declare const ContactStore: collections.ContactCollection;
-/** @whatsapp 13185 */
+/** @whatsapp 13185
+ * @whatsapp 513185 >= 2.2222.8
+ */
 export declare const EmojiVariantStore: collections.EmojiVariantCollection;
-/** @whatsapp 63928 */
+/** @whatsapp 63928
+ * @whatsapp 963928 >= 2.2222.8
+ */
 export declare const GroupMetadataStore: collections.GroupMetadataCollection;
-/** @whatsapp 16770 */
+/** @whatsapp 16770
+ * @whatsapp 316770 >= 2.2222.8
+ */
 export declare const LabelStore: collections.LabelCollection;
-/** @whatsapp 85865 */
+/** @whatsapp 85865
+ * @whatsapp 985865 >= 2.2222.8
+ */
 export declare const LiveLocationStore: collections.LiveLocationCollection;
-/** @whatsapp 59871 */
+/** @whatsapp 59871
+ * @whatsapp 559871 >= 2.2222.8
+ */
 export declare const MsgStore: collections.MsgCollection;
-/** @whatsapp 17972 */
+/** @whatsapp 17972
+ * @whatsapp 617972 >= 2.2222.8
+ */
 export declare const MsgInfoStore: collections.MsgInfoCollection;
 /** @whatsapp 72472 */
 export declare const MuteStore: collections.MuteCollection;
-/** @whatsapp 84312 */
+/** @whatsapp 84312
+ * @whatsapp 584312 >= 2.2222.8
+ */
 export declare const OrderStore: collections.OrderCollection;
-/** @whatsapp 68315 */
+/** @whatsapp 68315
+ * @whatsapp 868315 >= 2.2222.8
+ */
 export declare const PresenceStore: collections.PresenceCollection;
 /** @whatsapp 18952 */
 export declare const ProductMessageListStore: collections.ProductMessageListCollection;
-/** @whatsapp 82039 */
+/** @whatsapp 82039
+ * @whatsapp 582039 >= 2.2222.8
+ */
 export declare const ProfilePicThumbStore: collections.ProfilePicThumbCollection;
-/** @whatsapp 99662 */
+/** @whatsapp 99662
+ * @whatsapp 999662 >= 2.2222.8
+ */
 export declare const QuickReplyStore: collections.QuickReplyCollection;
-/** @whatsapp 57162 */
+/** @whatsapp 57162
+ * @whatsapp 257162 >= 2.2222.8
+ */
 export declare const ReactionsStore: collections.ReactionsCollection;
-/** @whatsapp 92671 */
+/** @whatsapp 92671
+ * @whatsapp 492671 >= 2.2222.8
+ */
 export declare const RecentEmojiStore: collections.RecentEmojiCollection;
-/** @whatsapp 49264 */
+/** @whatsapp 49264
+ * @whatsapp 191692 >= 2.2222.8
+ */
 export declare const RecentStickerStore: collections.RecentStickerCollection;
-/** @whatsapp 19011 */
+/** @whatsapp 19011
+ * @whatsapp 719011 >= 2.2222.8
+ */
 export declare const StarredMsgStore: collections.StarredMsgCollection;
 /** @whatsapp 16774 */
 export declare const StarredStickerStore: collections.StarredStickerCollection;
 /** @whatsapp 46133 */
 export declare const StatusStore: collections.StatusCollection;
-/** @whatsapp 59387 */
+/** @whatsapp 59387
+ * @whatsapp 459387 >= 2.2222.8
+ */
 export declare const StatusV3Store: collections.StatusV3Collection;
-/** @whatsapp 67963 */
+/** @whatsapp 67963
+ * @whatsapp 767963 >= 2.2222.8
+ */
 export declare const StickerStore: collections.StickerCollection;
-/** @whatsapp 44333 */
+/** @whatsapp 44333
+ * @whatsapp 344333 >= 2.2222.8
+ */
 export declare const StickerPackStore: collections.StickerPackCollection;
-/** @whatsapp 45068 */
+/** @whatsapp 45068
+ * @whatsapp 545068 >= 2.2222.8
+ */
 export declare const StickerSearchStore: collections.StickerSearchCollection;
 
 const storeNames = [

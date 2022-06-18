@@ -19,6 +19,7 @@ import { LinkPreviewResult } from './fetchLinkPreview';
 
 /**
  * @whatsapp 92375
+ * @whatsapp 692375 >= 2.2222.8
  */
 export declare function genMinimalLinkPreview(data: {
   anchor: undefined;

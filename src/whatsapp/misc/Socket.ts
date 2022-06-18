@@ -17,7 +17,9 @@
 import { exportModule } from '../exportModule';
 import { SocketModel } from '../models';
 
-/** @whatsapp 65044 */
+/** @whatsapp 65044
+ * @whatsapp 765044 >= 2.2222.8
+ */
 export declare const Socket: SocketModel;
 
 exportModule(exports, { Socket: 'Socket' }, (m) => m.Socket?.initConn);

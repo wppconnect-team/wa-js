@@ -41,11 +41,15 @@ interface Derived {
   settled?: any;
 }
 
-/** @whatsapp 54311 */
+/** @whatsapp 54311
+ * @whatsapp 754311 >= 2.2222.8
+ */
 export declare interface MsgInfoModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 54311 */
+/** @whatsapp 54311
+ * @whatsapp 754311 >= 2.2222.8
+ */
 export declare class MsgInfoModel extends Model<MsgInfoCollection> {
   idClass: typeof MsgKey;
   constructor(

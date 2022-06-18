@@ -35,12 +35,14 @@ interface Derived {}
 
 /**
  * @whatsapp 81130
+ * @whatsapp 981130 >= 2.2222.8
  */
 export declare interface AggReactionsModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
  * @whatsapp 81130
+ * @whatsapp 981130 >= 2.2222.8
  */
 export declare class AggReactionsModel extends Model {
   constructor(

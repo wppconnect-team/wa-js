@@ -18,7 +18,9 @@ import { exportModule } from '../exportModule';
 import { PresenceModel } from '../models';
 import { BaseCollection } from './BaseCollection';
 
-/** @whatsapp 68315 */
+/** @whatsapp 68315
+ * @whatsapp 868315 >= 2.2222.8
+ */
 export declare class PresenceCollection extends BaseCollection<PresenceModel> {
   static model: PresenceModel;
   static staleCollection?: any;

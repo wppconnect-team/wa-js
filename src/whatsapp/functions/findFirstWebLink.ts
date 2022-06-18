@@ -18,6 +18,7 @@ import { exportModule } from '../exportModule';
 
 /** @whatsapp 29929
  * @whatsapp 31042 >= 2.2204.13
+ * @whatsapp 829929 >= 2.2222.8
  */
 export declare function findFirstWebLink(message: string): undefined | string;
 

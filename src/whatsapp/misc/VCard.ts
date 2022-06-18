@@ -25,6 +25,7 @@ export interface VCardData {
 
 /** @whatsapp 93778
  * @whatsapp 78521 >= 2.2204.13
+ * @whatsapp 893778 >= 2.2222.8
  */
 export declare namespace VCard {
   function vcardFromContactModel(contact: ContactModel): VCardData;

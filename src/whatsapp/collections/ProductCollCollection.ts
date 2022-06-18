@@ -18,7 +18,9 @@ import { exportModule } from '../exportModule';
 import { ProductCollModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 12496 */
+/** @whatsapp 12496
+ * @whatsapp 912496 >= 2.2222.8
+ */
 export declare class ProductCollCollection extends Collection<ProductCollModel> {
   static model: ProductCollModel;
   static staleCollection?: any;

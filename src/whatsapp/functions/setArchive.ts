@@ -19,6 +19,7 @@ import { ChatModel } from '../models';
 
 /**
  * @whatsapp 59992
+ * @whatsapp 259992 >= 2.2222.8
  */
 export declare function setArchive(
   chat: ChatModel,

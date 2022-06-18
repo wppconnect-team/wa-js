@@ -18,7 +18,9 @@ import { exportModule } from '../exportModule';
 import { BusinessProfileModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 93581 */
+/** @whatsapp 93581
+ * @whatsapp 493581 >= 2.2222.8
+ */
 export declare class BusinessProfileCollection extends Collection<BusinessProfileModel> {
   static model: BusinessProfileModel;
   static staleCollection?: any;

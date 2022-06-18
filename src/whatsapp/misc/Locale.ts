@@ -20,6 +20,7 @@ declare class LocaleClass {}
 
 /** @whatsapp 14296
  * @whatsapp 43725 >= 2.2204.13
+ * @whatsapp 914296 >= 2.2222.8
  */
 export declare const Locale: LocaleClass;
 

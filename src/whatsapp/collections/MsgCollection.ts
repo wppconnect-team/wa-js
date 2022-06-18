@@ -19,7 +19,9 @@ import { exportModule } from '../exportModule';
 import { ModelPropertiesContructor, MsgModel } from '../models';
 import { BaseCollection } from './BaseCollection';
 
-/** @whatsapp 59871 */
+/** @whatsapp 59871
+ * @whatsapp 559871 >= 2.2222.8
+ */
 export declare class MsgCollection extends BaseCollection<MsgModel> {
   static model: MsgModel;
   lastReceivedReceipt?: any;

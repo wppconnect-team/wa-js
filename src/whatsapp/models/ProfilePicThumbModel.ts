@@ -45,11 +45,15 @@ interface Derived {
   fallbackType?: 'SINGLE' | 'GROUP';
 }
 
-/** @whatsapp 93836 */
+/** @whatsapp 93836
+ * @whatsapp 793836 >= 2.2222.8
+ */
 export declare interface ProfilePicThumbModel
   extends ModelProxy<Props, Session, Derived> {}
 
-/** @whatsapp 93836 */
+/** @whatsapp 93836
+ * @whatsapp 793836 >= 2.2222.8
+ */
 export declare class ProfilePicThumbModel extends Model<ProfilePicThumbCollection> {
   idClass: typeof Wid;
   constructor(

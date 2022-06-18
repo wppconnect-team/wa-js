@@ -35,7 +35,9 @@ export interface SessionChatBase {
   msgsChanged: number;
 }
 
-/** @whatsapp 58492 */
+/** @whatsapp 58492
+ * @whatsapp 558492 >= 2.2222.8
+ */
 export declare class ModelChatBase extends Model<ChatCollection> {
   msgs: MsgLoad;
   onEmptyMRM(): void;
