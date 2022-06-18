@@ -15,6 +15,7 @@
  */
 
 import { assertWid } from '../../assert';
+import { getParticipants } from '../../group';
 import { WPPError } from '../../util';
 import {
   ChatModel,
@@ -101,6 +102,7 @@ export async function prepareRawMessage<T extends RawMessage>(
    */
   if (
     options.detectMentioned &&
+    chat.isGroup &&
     (!options.mentionedList || !options.mentionedList.length)
   ) {
     const text = message.type === 'chat' ? message.body : message.caption;
@@ -109,10 +111,18 @@ export async function prepareRawMessage<T extends RawMessage>(
 
     const ids = text?.match(/(?<=@)(\d+)\b/g) || [];
 
-    for (const id of ids) {
-      try {
-        options.mentionedList.push(assertWid(id));
-      } catch (err) {}
+    if (ids.length > 0) {
+      const participants = (await getParticipants(chat.id)).map((p) =>
+        p.id.toString()
+      );
+
+      for (const id of ids) {
+        const wid = `${id}@c.us`;
+        if (!participants.includes(wid)) {
+          continue;
+        }
+        options.mentionedList.push(wid);
+      }
     }
   }
 
