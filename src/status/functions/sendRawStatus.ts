@@ -15,15 +15,21 @@
  */
 
 import * as Chat from '../../chat';
+import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
-import { ChatStore, ContactStore } from '../../whatsapp';
+import {
+  ChatStore,
+  ContactStore,
+  ParticipantModel,
+  UserPrefs,
+  WidFactory,
+} from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   createMsgProtobuf,
   encryptAndSendGroupMsg,
   encryptAndSendMsg,
-  getFanOutList,
-  getGroupSenderKeyList,
+  updateParticipants,
 } from '../../whatsapp/functions';
 import { defaultSendStatusOptions } from '..';
 
@@ -39,6 +45,9 @@ export async function sendRawStatus(
     ...defaultSendStatusOptions,
     ...options,
   };
+
+  message.ctwaContext = message.ctwaContext || {};
+
   const result = await Chat.sendRawMessage('status@broadcast', message, {
     ...options,
     createChat: true,
@@ -51,7 +60,45 @@ export async function sendRawStatus(
   return result;
 }
 
+async function updateStatusGroup() {
+  const myContacts = ContactStore.getModelsArray()
+    .filter((c) => c.isMyContact && !c.isContactBlocked)
+    .map((c) => c.id);
+
+  myContacts.push(UserPrefs.getMaybeMeUser());
+
+  const participants = myContacts.map(
+    (id) =>
+      new ParticipantModel({
+        id,
+        isAdmin: false,
+        isSuperAdmin: false,
+      })
+  );
+
+  const group = WidFactory.createWid('status@broadcast');
+
+  await updateParticipants({
+    group,
+    participants,
+    version: Date.now(),
+    isOffline: false,
+  });
+}
+
 webpack.onInjected(() => {
+  let timer: any = null;
+
+  ContactStore.on('add remove', () => {
+    clearTimeout(timer);
+    timer = setTimeout(updateStatusGroup, 1000);
+  });
+
+  internalEv.on('conn.main_ready', () => {
+    clearTimeout(timer);
+    timer = setTimeout(updateStatusGroup, 2000);
+  });
+
   // allow to send backgroundColor, textColor and font for status
   wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
     const [msg] = args;
@@ -69,29 +116,6 @@ webpack.onInjected(() => {
         result.extendedTextMessage.font = msg.font;
       }
     }
-
-    return result;
-  });
-
-  // Return the contact list for status@broadcast
-  wrapModuleFunction(getGroupSenderKeyList, async (func, ...args) => {
-    const [wid] = args;
-
-    if (!wid.isStatusV3()) {
-      return await func(...args);
-    }
-
-    const myContacts = ContactStore.getModelsArray()
-      .filter((c) => c.isMyContact && !c.isContactBlocked)
-      .map((c) => c.id);
-
-    const wids = await getFanOutList({ wids: myContacts });
-
-    const result = {
-      skList: [],
-      skDistribList: wids,
-      rotateKey: false,
-    };
 
     return result;
   });
