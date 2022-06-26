@@ -44,8 +44,9 @@ export async function sendTextStatus(
     ...options,
   };
 
-  let backgroundColor: number | undefined;
-  let textColor: number | undefined;
+  let backgroundColor = assertColor('#000000');
+  let textColor = assertColor('#FFFFFF');
+  let font = 0;
 
   if (['number', 'string'].includes(typeof options.backgroundColor)) {
     backgroundColor = assertColor(options.backgroundColor);
@@ -54,14 +55,17 @@ export async function sendTextStatus(
     textColor = assertColor(options.textColor);
   }
 
+  if (options.font && options.font >= 0 && options.font <= 5) {
+    font = options.font;
+  }
+
   const message: Chat.RawMessage = {
     body: content,
     type: 'chat',
-    subtype: null,
-    urlText: null,
-    urlNumber: null,
     ctwaContext: {}, //Force to send font and color
-    font: options.font,
+    richPreviewType: 0,
+    inviteGrpType: 0,
+    font,
     backgroundColor,
     textColor,
   };
