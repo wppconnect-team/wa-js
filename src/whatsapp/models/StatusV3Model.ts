@@ -17,13 +17,8 @@
 import { StatusV3Collection } from '../collections';
 import { exportProxyModel } from '../exportModule';
 import { Wid } from '../misc';
-import {
-  Model,
-  ModelOptions,
-  ModelPropertiesContructor,
-  ModelProxy,
-} from './Model';
-import { PropsChatBase, SessionChatBase } from './ModelChatBase';
+import { ModelOptions, ModelPropertiesContructor, ModelProxy } from './Model';
+import { ModelChatBase, PropsChatBase, SessionChatBase } from './ModelChatBase';
 
 interface Props extends PropsChatBase {
   t?: any;
@@ -55,7 +50,7 @@ export declare interface StatusV3Model
 /** @whatsapp 47896
  * @whatsapp 547896 >= 2.2222.8
  */
-export declare class StatusV3Model extends Model<StatusV3Collection> {
+export declare class StatusV3Model extends ModelChatBase {
   idClass: typeof Wid;
   constructor(
     proterties?: ModelPropertiesContructor<StatusV3Model>,
