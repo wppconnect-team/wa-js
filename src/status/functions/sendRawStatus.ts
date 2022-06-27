@@ -29,6 +29,7 @@ import {
   createMsgProtobuf,
   encryptAndSendGroupMsg,
   encryptAndSendMsg,
+  markForgetSenderKey,
   updateParticipants,
 } from '../../whatsapp/functions';
 import { defaultSendStatusOptions } from '..';
@@ -60,6 +61,8 @@ export async function sendRawStatus(
   return result;
 }
 
+let isForgot = false;
+
 async function updateStatusGroup() {
   const myContacts = ContactStore.getModelsArray()
     .filter((c) => c.isMyContact && !c.isContactBlocked)
@@ -84,6 +87,12 @@ async function updateStatusGroup() {
     version: Date.now(),
     isOffline: false,
   });
+
+  if (!isForgot) {
+    isForgot = true;
+
+    markForgetSenderKey(group, myContacts);
+  }
 }
 
 webpack.onInjected(() => {

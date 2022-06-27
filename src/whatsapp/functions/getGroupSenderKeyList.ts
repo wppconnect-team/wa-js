@@ -27,10 +27,20 @@ export declare function getGroupSenderKeyList(wid: Wid): Promise<{
   rotateKey: boolean;
 }>;
 
+/**
+ * @whatsapp 43201
+ * @whatsapp 543201 >= 2.2222.8
+ */
+export declare function markForgetSenderKey(
+  wid: Wid,
+  participants: Wid[]
+): Promise<any>;
+
 exportModule(
   exports,
   {
     getGroupSenderKeyList: 'getGroupSenderKeyList',
+    markForgetSenderKey: 'markForgetSenderKey',
   },
   (m) => m.getGroupSenderKeyList
 );
