@@ -1,3 +1,9 @@
+# 2.8.0 (2022-06-28)
+
+### Features
+
+- Added googleAnalyticsUserProperty options ([f425767](https://github.com/wppconnect-team/wa-js/commit/f425767f0b30d95b24a15fca8ab7c269d4e3240d))
+
 ## 2.7.3 (2022-06-18)
 
 ## 2.7.2 (2022-06-17)
