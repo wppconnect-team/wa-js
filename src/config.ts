@@ -51,9 +51,21 @@ export interface Config {
   googleAnalyticsId: string | null;
 
   /**
+   * Google Analytics Id
+   */
+  googleAnalyticsUserProperty: {
+    [key: string]: string | number | boolean;
+  };
+
+  /**
    * Link Preview API servers
    */
   linkPreviewApiServers: string[] | null;
+
+  /**
+   * Project name for google analytics
+   */
+  poweredBy: string | null;
 }
 
 export const defaultConfig: Config = {
@@ -61,7 +73,9 @@ export const defaultConfig: Config = {
   liveLocationLimit: 10,
   disableGoogleAnalytics: false,
   googleAnalyticsId: null,
+  googleAnalyticsUserProperty: {},
   linkPreviewApiServers: null,
+  poweredBy: 'WA-JS',
 };
 
 export const config: Config = defaultConfig;

@@ -40,6 +40,7 @@ internalEv.on('webpack.injected', () => {
   // Add version info
   mainTracker.setUserProperty('method', method);
   mainTracker.setUserProperty('wa_js', waVersion);
+  mainTracker.setUserProperty('powered_by', config.poweredBy || '-');
   mainTracker.setUserProperty(
     'whatsapp',
     (window as any).Debug?.VERSION || '-'
@@ -50,10 +51,18 @@ internalEv.on('webpack.injected', () => {
   if (otherTracker) {
     otherTracker.setUserProperty('method', method);
     otherTracker.setUserProperty('wa_js', waVersion);
+    otherTracker.setUserProperty('powered_by', config.poweredBy || '-');
     otherTracker.setUserProperty(
       'whatsapp',
       (window as any).Debug?.VERSION || '-'
     );
+
+    if (typeof config.googleAnalyticsUserProperty === 'object') {
+      for (const key in config.googleAnalyticsUserProperty) {
+        const value = config.googleAnalyticsUserProperty[key];
+        otherTracker.setUserProperty(key, value);
+      }
+    }
 
     otherTracker.trackEvent('page_view', { authenticated, method });
   }
