@@ -14,28 +14,38 @@
  * limitations under the License.
  */
 
-import { blobToBase64, convertToFile, resizeImage } from '../../util';
-import { UserPrefs } from '../../whatsapp';
+import { blobToBase64, convertToFile, resizeImage, WPPError } from '../../util';
+import { Wid } from '../../whatsapp';
 import { sendSetPicture } from '../../whatsapp/functions';
+import { ensureGroup, iAmRestrictedMember } from './';
 
 /**
- * Update your profile picture
+ * Set the group icon (group profile picture)
  *
  * @example
  * ```javascript
- * await WPP.profile.setMyProfilePicture('data:image/jpeg;base64,.....');
+ * await WPP.group.setIcon('[group@g.us]', 'data:image/jpeg;base64,.....');
  * ```
- *
- * @category Chat
  */
-
-export async function setMyProfilePicture(content: string): Promise<{
+export async function setIcon(
+  groupId: string | Wid,
+  content: string
+): Promise<{
   eurl: string;
   status: number;
   tag: string;
   token: string;
   _duplicate: boolean;
 }> {
+  const groupChat = await ensureGroup(groupId);
+
+  if (await iAmRestrictedMember(groupId)) {
+    throw new WPPError(
+      'group_you_are_restricted_member',
+      `You are a restricted member in ${groupChat.id._serialized}`
+    );
+  }
+
   const file = await convertToFile(content);
 
   const thumbFile = await resizeImage(file, {
@@ -55,6 +65,5 @@ export async function setMyProfilePicture(content: string): Promise<{
   const thumbBase64 = await blobToBase64(thumbFile);
   const pictureBase64 = await blobToBase64(pictureFile);
 
-  const me = UserPrefs.getMaybeMeUser();
-  return sendSetPicture(me, thumbBase64, pictureBase64);
+  return sendSetPicture(groupChat.id, thumbBase64, pictureBase64);
 }
