@@ -26,7 +26,13 @@ export declare function sendSetPicture(
   chat: Wid,
   previewBase64: string,
   pictureBase64: string
-): Promise<void>;
+): Promise<{
+  eurl: string;
+  status: number;
+  tag: string;
+  token: string;
+  _duplicate: boolean;
+}>;
 
 exportModule(
   exports,

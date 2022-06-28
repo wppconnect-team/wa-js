@@ -14,24 +14,17 @@
  * limitations under the License.
  */
 
-import { assertWid } from '../../assert';
-import { Wid } from '../../whatsapp';
-import { sendQueryExists } from '../../whatsapp/functions';
+import Compressor from 'compressorjs';
 
-const cache = new Map<string, { wid: Wid; biz: boolean } | null>();
-
-export async function queryExists(contactId: string | Wid) {
-  const wid = assertWid(contactId);
-
-  const id = wid.toString();
-
-  if (cache.has(id)) {
-    return cache.get(id);
-  }
-
-  const result = await sendQueryExists(wid);
-
-  cache.set(id, result);
-
-  return result;
+export function resizeImage(
+  blob: Blob,
+  options: Compressor.Options = {}
+): Promise<Blob | File> {
+  return new Promise<File | Blob>((success, error) => {
+    new Compressor(blob, {
+      ...options,
+      success,
+      error,
+    });
+  });
 }

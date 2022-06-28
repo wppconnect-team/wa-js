@@ -22,5 +22,6 @@ export * from './errors';
 export * from './fetchDataFromPNG';
 export * from './getVideoInfoFromBuffer';
 export * from './isBase64';
+export * from './resizeImage';
 export * from './types';
 export * from './wrapFunction';

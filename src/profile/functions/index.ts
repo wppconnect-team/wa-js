@@ -15,4 +15,5 @@
  */
 
 export { getMyStatus } from './getMyStatus';
+export { setMyProfilePicture } from './setMyProfilePicture';
 export { setMyStatus } from './setMyStatus';
