@@ -15,7 +15,6 @@
  */
 
 import * as Chat from '../../chat';
-import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
 import {
   ChatStore,
@@ -91,23 +90,11 @@ async function updateStatusGroup() {
   if (!isForgot) {
     isForgot = true;
 
-    markForgetSenderKey(group, myContacts);
+    await markForgetSenderKey(group, myContacts);
   }
 }
 
 webpack.onInjected(() => {
-  let timer: any = null;
-
-  ContactStore.on('add remove', () => {
-    clearTimeout(timer);
-    timer = setTimeout(updateStatusGroup, 1000);
-  });
-
-  internalEv.on('conn.main_ready', () => {
-    clearTimeout(timer);
-    timer = setTimeout(updateStatusGroup, 2000);
-  });
-
   // allow to send backgroundColor, textColor and font for status
   wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
     const [msg] = args;
@@ -142,6 +129,8 @@ webpack.onInjected(() => {
       ) {
         throw error;
       }
+
+      await updateStatusGroup();
 
       let c;
       if (msg.asMms) {
