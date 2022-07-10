@@ -24,6 +24,14 @@ function register() {
   MsgStore.on('add', (msg: MsgModel) => {
     if (msg.isNewMsg) {
       queueMicrotask(() => {
+        if (msg.type === 'ciphertext') {
+          msg.once('change:type', () => {
+            queueMicrotask(() => {
+              internalEv.emit('chat.new_message', msg);
+            });
+          });
+        }
+
         internalEv.emit('chat.new_message', msg);
       });
     }
