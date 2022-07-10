@@ -15,7 +15,6 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
 import {
   ChatstateModel,
   ChatStore,
@@ -23,15 +22,17 @@ import {
   PresenceStore,
 } from '../../whatsapp';
 
-webpack.onInjected(() => register());
+internalEv.on('conn.main_ready', async () => {
+  const promises = ChatStore.map((c) => c.presence.subscribe());
 
-internalEv.on('conn.main_ready', () => {
-  ChatStore.forEach((c) => c.presence.subscribe());
+  await Promise.all(promises);
+
+  register();
 });
 
 function register() {
   PresenceStore.on('change:chatstate.type', (chatstate: ChatstateModel) => {
-    // Search precense model from chatstate
+    // Search presence model from chatstate
     const presence = PresenceStore.getModelsArray().find(
       (m) => m.chatstate === chatstate
     );
@@ -41,37 +42,39 @@ function register() {
       return;
     }
 
-    const contact = ContactStore.get(presence.id);
+    queueMicrotask(() => {
+      const contact = ContactStore.get(presence.id);
 
-    const data: any = {
-      id: presence.id,
-      isOnline: presence.isOnline,
-      isGroup: presence.isGroup,
-      isUser: presence.isUser,
-      shortName: contact ? contact.formattedShortName : '',
-      state: presence.chatstate.type,
-      t: Date.now(),
-    };
+      const data: any = {
+        id: presence.id,
+        isOnline: presence.isOnline,
+        isGroup: presence.isGroup,
+        isUser: presence.isUser,
+        shortName: contact ? contact.formattedShortName : '',
+        state: presence.chatstate?.type,
+        t: Date.now(),
+      };
 
-    if (presence.isUser) {
-      data.isContact = !presence.chatstate.deny;
-    }
+      if (presence.isUser) {
+        data.isContact = !presence.chatstate?.deny;
+      }
 
-    if (presence.isGroup) {
-      data.participants = presence.chatstates
-        .getModelsArray()
-        .filter((c) => !!c.type)
-        .map((c) => {
-          const contact = ContactStore.get(c.id);
+      if (presence.isGroup) {
+        data.participants = presence.chatstates
+          .getModelsArray()
+          .filter((c) => !!c.type)
+          .map((c) => {
+            const contact = ContactStore.get(c.id);
 
-          return {
-            id: c.id.toString(),
-            state: c.type,
-            shortName: contact ? contact.formattedShortName : '',
-          };
-        });
-    }
+            return {
+              id: c.id.toString(),
+              state: c.type,
+              shortName: contact ? contact.formattedShortName : '',
+            };
+          });
+      }
 
-    internalEv.emit('chat.presence_change', data);
+      internalEv.emit('chat.presence_change', data);
+    });
   });
 }
