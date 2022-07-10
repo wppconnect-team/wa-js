@@ -19,92 +19,26 @@ import * as webpack from '../../webpack';
 import { MsgKey, MsgModel, MsgStore, UserPrefs, Wid } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
-  handleChatSimpleAck,
-  handleGroupSimpleAck,
-  handleStatusSimpleAck,
+  handleChatSimpleReceipt,
+  handleGroupSimpleReceipt,
+  handleStatusSimpleReceipt,
   SimpleAckData,
 } from '../../whatsapp/functions';
 
 webpack.onInjected(() => registerAckMessageEvent());
 
-function processACK(e: any) {
-  let ids: string[] = e.id;
-
-  if (!Array.isArray(ids)) {
-    ids = [ids];
-  }
-
-  let chatId: Wid = e.to;
-  let sender: Wid | undefined = e.participant;
-
-  if (e.broadcast) {
-    chatId = e.broadcast;
-    sender = e.to;
-  }
-
-  const keys = ids.map(
-    (id) =>
-      new MsgKey({
-        from: e.from,
-        to: chatId,
-        id: id,
-        selfDir: 'out',
-      })
-  );
-
-  internalEv.emit('chat.msg_ack_change', {
-    ack: e.ack,
-    chat: chatId,
-    sender: sender,
-    ids: keys,
-  });
-}
-
 function registerAckMessageEvent() {
   MsgStore.on('change:ack', (msg: MsgModel) => {
     if (msg.ack === 1) {
-      internalEv.emit('chat.msg_ack_change', {
-        ack: msg.ack,
-        chat: msg.to!,
-        ids: [msg.id],
+      queueMicrotask(() => {
+        internalEv.emit('chat.msg_ack_change', {
+          ack: msg.ack!,
+          chat: msg.to!,
+          ids: [msg.id],
+        });
       });
     }
   });
-
-  const msgHandlerModule = webpack.search((m) =>
-    m.default.toString().includes('Msg:out of order ack')
-  );
-
-  if (msgHandlerModule) {
-    const originalCall = msgHandlerModule.default;
-
-    msgHandlerModule.default = async ([e]: [any]) => {
-      if (e.cmd === 'ack' || e.cmd === 'acks') {
-        processACK(e);
-      }
-
-      return originalCall.call(msgHandlerModule, [e]);
-    };
-  }
-
-  const msgInfoHandlerModule = webpack.search(
-    (m) =>
-      m.default.toString().includes('ack') &&
-      m.default.toString().includes('acks') &&
-      m.default.toString().includes('default.updateInfo')
-  );
-
-  if (msgInfoHandlerModule) {
-    const originalCall = msgInfoHandlerModule.default;
-
-    msgInfoHandlerModule.default = async ([e]: [any]) => {
-      if (e.cmd === 'ack' || e.cmd === 'acks') {
-        processACK(e);
-      }
-
-      return originalCall.call(msgHandlerModule, [e]);
-    };
-  }
 
   function processSimpleACK(ackData: SimpleAckData) {
     if (ackData.ack < 2 || ackData.ackString === 'sender') {
@@ -113,8 +47,15 @@ function registerAckMessageEvent() {
     const chatId: Wid = ackData.from;
     const sender: Wid | undefined = ackData.participant || undefined;
 
-    const remote = ackData.recipient || ackData.from;
-    const fromMe = remote.equals(UserPrefs.getMeUser());
+    const remote = ackData.from;
+    const fromMe =
+      !ackData.recipient || UserPrefs.getMeUser().equals(ackData.recipient);
+
+    // Ignore non my messages ACK events
+    if (!fromMe) {
+      return;
+    }
+
     const keys = ackData.externalIds.map(
       (id) =>
         new MsgKey({
@@ -132,19 +73,25 @@ function registerAckMessageEvent() {
     });
   }
 
-  wrapModuleFunction(handleChatSimpleAck, (func, ...args) => {
+  wrapModuleFunction(handleChatSimpleReceipt, (func, ...args) => {
     const [ackData] = args;
-    processSimpleACK(ackData);
+    queueMicrotask(() => {
+      processSimpleACK(ackData);
+    });
     return func(...args);
   });
-  wrapModuleFunction(handleGroupSimpleAck, (func, ...args) => {
+  wrapModuleFunction(handleGroupSimpleReceipt, (func, ...args) => {
     const [ackData] = args;
-    processSimpleACK(ackData);
+    queueMicrotask(() => {
+      processSimpleACK(ackData);
+    });
     return func(...args);
   });
-  wrapModuleFunction(handleStatusSimpleAck, (func, ...args) => {
+  wrapModuleFunction(handleStatusSimpleReceipt, (func, ...args) => {
     const [ackData] = args;
-    processSimpleACK(ackData);
+    queueMicrotask(() => {
+      processSimpleACK(ackData);
+    });
     return func(...args);
   });
 }
