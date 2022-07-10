@@ -20,6 +20,7 @@ import { ParticipantModel } from '../models';
 
 /**
  * @whatsapp 951974 >= 2.2222.8
+ * @whatsapp 318615 >= 2.2224.7
  */
 export declare function updateParticipants(params: {
   group: Wid;

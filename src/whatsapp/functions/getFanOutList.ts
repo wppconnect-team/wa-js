@@ -20,6 +20,7 @@ import { Wid } from '../misc';
 /**
  * @whatsapp 16104
  * @whatsapp 416104 >= 2.2222.8
+ * @whatsapp 963388 >= 2.2224.7
  */
 export declare function getFanOutList(param: { wids: Wid[] }): Promise<Wid[]>;
 
