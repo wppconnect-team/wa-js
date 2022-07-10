@@ -23,7 +23,9 @@ webpack.onInjected(() => register());
 function register() {
   MsgStore.on('add', (msg: MsgModel) => {
     if (msg.isNewMsg) {
-      internalEv.emit('chat.new_message', msg);
+      queueMicrotask(() => {
+        internalEv.emit('chat.new_message', msg);
+      });
     }
   });
 }

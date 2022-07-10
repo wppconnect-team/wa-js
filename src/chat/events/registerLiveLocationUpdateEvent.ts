@@ -82,23 +82,25 @@ function registerLiveLocationUpdateEvent() {
       return;
     }
 
-    internalEv.emit('chat.live_location_start', {
-      id: msg.sender!,
-      msgId: msg.id,
-      chat: msg.chat!.id,
-      lat: msg.lat!,
-      lng: msg.lng!,
-      accuracy: msg.accuracy,
-      speed: msg.speed,
-      degrees: msg.degrees,
-      shareDuration: msg.shareDuration!,
-    });
+    queueMicrotask(() => {
+      internalEv.emit('chat.live_location_start', {
+        id: msg.sender!,
+        msgId: msg.id,
+        chat: msg.chat!.id,
+        lat: msg.lat!,
+        lng: msg.lng!,
+        accuracy: msg.accuracy,
+        speed: msg.speed,
+        degrees: msg.degrees,
+        shareDuration: msg.shareDuration!,
+      });
 
-    LiveLocationStore.update(msg.chat!.id)
-      .then((liveLocation) => {
-        liveLocation.startViewingMap();
-      })
-      .catch(() => null);
+      LiveLocationStore.update(msg.chat!.id)
+        .then((liveLocation) => {
+          liveLocation.startViewingMap();
+        })
+        .catch(() => null);
+    });
   });
 
   /**
