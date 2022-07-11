@@ -1,3 +1,9 @@
+## 2.8.1 (2022-07-11)
+
+### Bug Fixes
+
+- Fixed WPP.chat.markIsUnread function (wppconnect-team/wppconnect[#1196](https://github.com/wppconnect-team/wa-js/issues/1196)) ([db7195e](https://github.com/wppconnect-team/wa-js/commit/db7195ee15a4e12c7a6b6a06bcb6bb711f59659b))
+
 # 2.8.0 (2022-06-28)
 
 ### Features
