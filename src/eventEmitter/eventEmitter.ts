@@ -26,11 +26,14 @@ import {
   ListenerFn,
   ListenToOptions,
   OnceOptions,
-  WaitForFilter,
   WaitForOptions,
 } from 'eventemitter2';
 
 exports.EventEmitter = EventEmitter2;
+
+interface WaitForFilter {
+  (...values: any[]): boolean;
+}
 
 export interface OnOptions {
   /**
