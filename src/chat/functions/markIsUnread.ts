@@ -31,7 +31,7 @@ import { markUnread } from '../../whatsapp/functions';
 export async function markIsUnread(chatId: string | Wid) {
   const chat = assertGetChat(chatId);
 
-  await markUnread(chat, false);
+  await markUnread(chat, true);
 
   return {
     wid: chat.id,
