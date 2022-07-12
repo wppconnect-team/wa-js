@@ -31,7 +31,7 @@ import {
 
 exports.EventEmitter = EventEmitter2;
 
-interface WaitForFilter {
+export interface WaitForFilter {
   (...values: any[]): boolean;
 }
 
