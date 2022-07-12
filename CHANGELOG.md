@@ -1,3 +1,9 @@
+## 2.8.2 (2022-07-12)
+
+### Bug Fixes
+
+- Fixed eventEmitter export ([2532a20](https://github.com/wppconnect-team/wa-js/commit/2532a200933d13f61e37fa3557bbb790798330bc))
+
 ## 2.8.1 (2022-07-11)
 
 ### Bug Fixes
