@@ -63,6 +63,7 @@ export {
 } from './sendLocationMessage';
 export { sendRawMessage } from './sendRawMessage';
 export { sendReactionToMessage } from './sendReactionToMessage';
+export { sendSeen } from './sendSeen';
 export { sendTextMessage, TextMessageOptions } from './sendTextMessage';
 export {
   sendVCardContactMessage,
