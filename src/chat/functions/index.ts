@@ -23,6 +23,7 @@ export { downloadMedia } from './downloadMedia';
 export { find } from './find';
 export { generateMessageID } from './generateMessageID';
 export { get } from './get';
+export { getLastSeen } from './getLastSeen';
 export { getMessageById } from './getMessageById';
 export { getMessages, GetMessagesOptions } from './getMessages';
 export { ChatListOptions, list } from './list';
