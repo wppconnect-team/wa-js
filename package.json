@@ -50,7 +50,7 @@
     "@types/shelljs": "^0.8.11",
     "@typescript-eslint/eslint-plugin": "^5.31.0",
     "@typescript-eslint/parser": "^5.31.0",
-    "@wppconnect/wa-version": "^1.1.111",
+    "@wppconnect/wa-version": "^1.1.112",
     "buffer": "^6.0.3",
     "compressorjs": "^1.1.1",
     "conventional-changelog-cli": "^2.2.2",
