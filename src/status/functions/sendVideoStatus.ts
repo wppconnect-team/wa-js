@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
+import { assertWid } from '../../assert';
 import { sendFileMessage } from '../../chat';
+import { MsgKey, UserPrefs } from '../../whatsapp';
+import { randomHex } from '../../whatsapp/functions';
 import { defaultSendStatusOptions } from '..';
 import { SendStatusOptions } from './sendRawStatus';
 
@@ -32,8 +35,16 @@ export async function sendVideoStatus(
   content: any,
   options: VideoStatusOptions = {}
 ): Promise<any> {
+  const messageId = new MsgKey({
+    fromMe: true,
+    id: randomHex(16),
+    participant: UserPrefs.getMaybeMeUser(),
+    remote: assertWid('status@broadcast'),
+  });
+
   options = {
     ...defaultSendStatusOptions,
+    messageId,
     ...options,
   };
 

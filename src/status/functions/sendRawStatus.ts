@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
+import { assertWid } from '../../assert';
 import * as Chat from '../../chat';
 import * as webpack from '../../webpack';
 import {
   ChatStore,
   ContactStore,
+  MsgKey,
   ParticipantModel,
   UserPrefs,
   WidFactory,
@@ -29,20 +31,30 @@ import {
   encryptAndSendGroupMsg,
   encryptAndSendMsg,
   markForgetSenderKey,
+  randomHex,
   updateParticipants,
 } from '../../whatsapp/functions';
 import { defaultSendStatusOptions } from '..';
 
 export interface SendStatusOptions {
   waitForAck?: boolean;
+  messageId?: string | MsgKey;
 }
 
 export async function sendRawStatus(
   message: Chat.RawMessage,
   options: SendStatusOptions = {}
 ) {
+  const messageId = new MsgKey({
+    fromMe: true,
+    id: randomHex(16),
+    participant: UserPrefs.getMaybeMeUser(),
+    remote: assertWid('status@broadcast'),
+  });
+
   options = {
     ...defaultSendStatusOptions,
+    messageId,
     ...options,
   };
 
@@ -111,6 +123,9 @@ webpack.onInjected(() => {
       if (typeof msg.font === 'number') {
         result.extendedTextMessage.font = msg.font;
       }
+
+      result.inviteLinkGroupTypeV2 = 0;
+      result.previewType = 0;
     }
 
     return result;
