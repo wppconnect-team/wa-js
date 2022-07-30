@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import * as webpack from '../../webpack';
+import { wrapModuleFunction } from '../../whatsapp/exportModule';
+import { typeAttributeFromProtobuf } from '../../whatsapp/functions';
 import {
   defaultSendMessageOptions,
   RawMessage,
@@ -145,3 +148,13 @@ export async function sendLocationMessage(
 
   return await sendRawMessage(chatId, rawMessage, options);
 }
+
+webpack.onInjected(() => {
+  wrapModuleFunction(typeAttributeFromProtobuf, (func, ...args) => {
+    const [proto] = args;
+    if (proto.locationMessage) {
+      return 'text';
+    }
+    return func(...args);
+  });
+});
