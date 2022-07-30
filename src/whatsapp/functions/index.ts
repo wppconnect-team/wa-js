@@ -37,6 +37,7 @@ export * from './mediaTypeFromProtobuf';
 export * from './msgFindQuery';
 export * from './products';
 export * from './profilePic';
+export * from './randomHex';
 export * from './randomId';
 export * from './sendCallSignalingMsg';
 export * from './sendClear';
