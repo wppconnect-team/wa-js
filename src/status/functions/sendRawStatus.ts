@@ -18,7 +18,6 @@ import { assertWid } from '../../assert';
 import * as Chat from '../../chat';
 import * as webpack from '../../webpack';
 import {
-  ChatStore,
   ContactStore,
   MsgKey,
   ParticipantModel,
@@ -35,6 +34,7 @@ import {
   updateParticipants,
 } from '../../whatsapp/functions';
 import { defaultSendStatusOptions } from '..';
+import { postSendStatus } from './postSendStatus';
 
 export interface SendStatusOptions {
   waitForAck?: boolean;
@@ -65,9 +65,7 @@ export async function sendRawStatus(
     createChat: true,
   });
 
-  result.sendMsgResult.then(() => {
-    ChatStore.resyncMessages();
-  });
+  postSendStatus(result);
 
   return result;
 }

@@ -19,6 +19,7 @@ import { sendFileMessage } from '../../chat';
 import { MsgKey, UserPrefs } from '../../whatsapp';
 import { randomHex } from '../../whatsapp/functions';
 import { defaultSendStatusOptions } from '..';
+import { postSendStatus } from './postSendStatus';
 import { SendStatusOptions } from './sendRawStatus';
 
 export type VideoStatusOptions = SendStatusOptions;
@@ -48,9 +49,13 @@ export async function sendVideoStatus(
     ...options,
   };
 
-  return sendFileMessage('status@broadcast', content, {
+  const result = await sendFileMessage('status@broadcast', content, {
     ...options,
     createChat: true,
     type: 'video',
   });
+
+  postSendStatus(result);
+
+  return result;
 }

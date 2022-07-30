@@ -27,11 +27,11 @@ export declare class StatusV3Collection extends BaseCollection<StatusV3Model> {
   sync(e?: any): any;
   logMetrics(e?: any): any;
   hasSynced(): boolean;
-  handleUpdate(e?: any, t?: any, r?: any): any;
+  handleUpdate(rawMsg?: any, checksum?: any, isMsgUpdate?: boolean): any;
   updateChecksum(e?: any): any;
   addStatusMessages(e?: any, t?: any): any;
   getUnexpired(e?: any): any;
-  getMyStatus(): any;
+  getMyStatus(): StatusV3Model;
   static comparator(): any;
 }
 exportModule(
