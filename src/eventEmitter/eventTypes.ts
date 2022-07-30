@@ -18,6 +18,7 @@ import { BlocklistEventTypes } from '../blocklist/events/eventTypes';
 import { CallEventTypes } from '../call/events/eventTypes';
 import { ChatEventTypes } from '../chat/events/eventTypes';
 import { ConnEventTypes } from '../conn/events/eventTypes';
+import { GroupEventTypes } from '../group/events/eventTypes';
 import { StatusEventTypes } from '../status/events/eventTypes';
 import { WebpackEvents } from '../webpack/eventTypes';
 
@@ -25,6 +26,7 @@ export { BlocklistEventTypes } from '../blocklist/events/eventTypes';
 export { CallEventTypes } from '../call/events/eventTypes';
 export { ChatEventTypes } from '../chat/events/eventTypes';
 export { ConnEventTypes } from '../conn/events/eventTypes';
+export { GroupEventTypes } from '../group/events/eventTypes';
 export { StatusEventTypes } from '../status/events/eventTypes';
 export { WebpackEvents } from '../webpack/eventTypes';
 
@@ -32,5 +34,6 @@ export type EventTypes = BlocklistEventTypes &
   CallEventTypes &
   ChatEventTypes &
   ConnEventTypes &
+  GroupEventTypes &
   StatusEventTypes &
   WebpackEvents;

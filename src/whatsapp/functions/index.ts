@@ -55,6 +55,7 @@ export * from './setGroup';
 export * from './setPin';
 export * from './status';
 export * from './typeAttributeFromProtobuf';
+export * from './updateDBForGroupAction';
 export * from './updateParticipants';
 export * from './uploadProductImage';
 export * from './uploadThumbnail';
