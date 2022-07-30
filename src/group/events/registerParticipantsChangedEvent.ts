@@ -27,10 +27,9 @@ function register() {
   wrapModuleFunction(updateDBForGroupAction, (func, ...args) => {
     const [meta, action] = args;
 
-    if (eventTypes.includes(action.actionType)) {
+    let actionType = action.actionType || action.action;
+    if (eventTypes.includes(actionType)) {
       queueMicrotask(() => {
-        let actionType = action.actionType;
-
         if (action.actionType === 'add' && action.isInvite) {
           actionType = 'join';
         } else if (

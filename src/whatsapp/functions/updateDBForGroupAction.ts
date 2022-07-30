@@ -18,7 +18,8 @@ import { exportModule } from '../exportModule';
 import { Wid } from '../misc';
 
 export interface GroupActionChange {
-  actionType: string;
+  action: string;
+  actionType: string; // @whatsapp >= 2.2224.6
   isInvite?: boolean;
   isLinkedGroupJoin?: boolean;
   participants: Wid[];
@@ -45,7 +46,12 @@ export declare function updateDBForGroupAction(
 exportModule(
   exports,
   {
-    updateDBForGroupAction: 'updateDBForGroupAction',
+    updateDBForGroupAction: [
+      'updateDBForGroupAction', // @whatsapp >= 2.2224.6
+      'handleGroupActionMD',
+    ],
   },
-  (m) => m.updateDBForGroupAction
+  (m) =>
+    m.updateDBForGroupAction || // @whatsapp >= 2.2224.6
+    m.handleGroupActionMD
 );
