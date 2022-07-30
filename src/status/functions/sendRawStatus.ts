@@ -77,6 +77,7 @@ let isForgot = false;
 async function updateStatusGroup() {
   const myContacts = ContactStore.getModelsArray()
     .filter((c) => c.isMyContact && !c.isContactBlocked)
+    .filter((c) => c.notifyName && !c.isMe)
     .map((c) => c.id);
 
   myContacts.push(UserPrefs.getMaybeMeUser());
