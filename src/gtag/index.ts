@@ -85,3 +85,14 @@ if (!config.disableGoogleAnalytics) {
     }
   });
 }
+
+export function trackException(description: string, fatal = false) {
+  if (config.disableGoogleAnalytics) {
+    return;
+  }
+
+  mainTracker.trackEvent('exception', { description, fatal });
+  if (otherTracker) {
+    otherTracker.trackEvent('exception', { description, fatal });
+  }
+}

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { trackException } from '../gtag';
 import { InferArgs, InferReturn, wrapFunction } from '../util';
 import * as webpack from '../webpack';
 
@@ -61,9 +62,9 @@ export function exportModule(
         const moduleId = webpack.searchId(condition);
 
         if (!moduleId) {
-          console.error(
-            `Module ${name} was not found with ${condition.toString()}`
-          );
+          const description = `Module ${name} was not found with ${condition.toString()}`;
+          console.error(description);
+          trackException(description);
           return undefined;
         }
 
@@ -78,11 +79,11 @@ export function exportModule(
             }
           }
           if (!valueFn()) {
-            console.error(
-              `Property ${property.join(
-                ' or '
-              )} was not found for ${name} in module ${moduleId}`
-            );
+            const description = `Property ${property.join(
+              ' or '
+            )} was not found for ${name} in module ${moduleId}`;
+            console.error(description);
+            trackException(description);
             return undefined;
           }
         } else {
@@ -91,9 +92,9 @@ export function exportModule(
               valueFn = () =>
                 property.split('.').reduce((a, b) => a?.[b], module);
               if (!valueFn()) {
-                console.error(
-                  `Property ${property} was not found for ${name} in module ${moduleId}`
-                );
+                const description = `Property ${property} was not found for ${name} in module ${moduleId}`;
+                console.error(description);
+                trackException(description);
                 return undefined;
               }
               functionPath = property;
@@ -201,7 +202,9 @@ export function wrapModuleFunction<TFunc extends (...args: any[]) => any>(
   const functionName = parts.pop();
 
   if (!functionName) {
-    console.error(`function was not found in the module ${moduleId}`);
+    const description = `function was not found in the module ${moduleId}`;
+    console.error(description);
+    trackException(description);
     return;
   }
 
