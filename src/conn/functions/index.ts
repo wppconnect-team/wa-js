@@ -17,6 +17,7 @@
 export { getAuthCode } from './getAuthCode';
 export { getMyDeviceId } from './getMyDeviceId';
 export { getMyUserId } from './getMyUserId';
+export { getPlatform } from './getPlatform';
 export { isAuthenticated } from './isAuthenticated';
 export { isIdle } from './isIdle';
 export { isMainLoaded } from './isMainLoaded';
