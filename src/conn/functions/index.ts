@@ -20,6 +20,7 @@ export { getMyUserId } from './getMyUserId';
 export { isAuthenticated } from './isAuthenticated';
 export { isIdle } from './isIdle';
 export { isMainLoaded } from './isMainLoaded';
+export { isMainReady } from './isMainReady';
 export { isMultiDevice } from './isMultiDevice';
 export { logout } from './logout';
 export { refreshQR } from './refreshQR';
