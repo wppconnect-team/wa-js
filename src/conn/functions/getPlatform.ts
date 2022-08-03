@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2022 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,17 @@
  * limitations under the License.
  */
 
-export { getMyStatus } from './getMyStatus';
-export { isBusiness } from './isBusiness';
-export { setMyProfilePicture } from './setMyProfilePicture';
-export { setMyStatus } from './setMyStatus';
+import { Conn } from '../../whatsapp';
+
+/**
+ * Check what's device platform is connected
+ * @returns android | iphone | wp
+ *
+ * @example
+ * ```javascript
+ * const getPlatform = WPP.conn.getPlatform();
+ * ```
+ */
+export function getPlatform(): any {
+  return Conn.platform;
+}

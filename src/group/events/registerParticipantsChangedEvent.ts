@@ -30,10 +30,10 @@ function register() {
     let actionType = action.actionType || action.action;
     if (eventTypes.includes(actionType)) {
       queueMicrotask(() => {
-        if (action.actionType === 'add' && action.isInvite) {
+        if (actionType === 'add' && action.isInvite) {
           actionType = 'join';
         } else if (
-          action.actionType === 'remove' &&
+          actionType === 'remove' &&
           action.participants.some((p) => p.equals(meta.author))
         ) {
           actionType = 'leave';
@@ -44,7 +44,7 @@ function register() {
           authorPushName: meta.pushname,
           groupId: meta.chatId.toString(),
           action: actionType as any,
-          operation: action.actionType as any,
+          operation: (action.actionType || action.action) as any,
           participants: action.participants.map((p) => p.toString()),
         });
       });

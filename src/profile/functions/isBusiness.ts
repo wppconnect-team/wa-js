@@ -14,7 +14,16 @@
  * limitations under the License.
  */
 
-export { getMyStatus } from './getMyStatus';
-export { isBusiness } from './isBusiness';
-export { setMyProfilePicture } from './setMyProfilePicture';
-export { setMyStatus } from './setMyStatus';
+import { Conn } from '../../whatsapp';
+
+/**
+ * Return the current logged user is Bussiness or not
+ *
+ * @example
+ * ```javascript
+ * WPP.profile.isBusiness();
+ * ```
+ */
+export function isBusiness(): boolean | undefined {
+  return Conn.isSMB;
+}
