@@ -17,7 +17,8 @@
 import { Conn } from '../../whatsapp';
 
 /**
- * Check is main interface is authenticated and loaded, bot not synced
+ * Check what's device platform is connected
+ * @returns android | iphone | wp
  *
  * @example
  * ```javascript
