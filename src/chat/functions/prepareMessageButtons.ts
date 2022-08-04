@@ -279,6 +279,31 @@ webpack.onInjected(() => {
     return r;
   });
 
+  // Delayed register to ensure is after the common protobuf
+  setTimeout(() => {
+    wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
+      const proto = func(...args);
+
+      if (proto.templateMessage) {
+        proto.viewOnceMessage = {
+          message: {
+            templateMessage: proto.templateMessage,
+          },
+        };
+        delete proto.templateMessage;
+      }
+      if (proto.buttonsMessage) {
+        proto.viewOnceMessage = {
+          message: {
+            buttonsMessage: proto.buttonsMessage,
+          },
+        };
+        delete proto.buttonsMessage;
+      }
+      return proto;
+    });
+  }, 100);
+
   wrapModuleFunction(mediaTypeFromProtobuf, (func, ...args) => {
     const [proto] = args;
     if (proto.templateMessage?.hydratedTemplate) {

@@ -15,6 +15,7 @@
  */
 
 import './events';
+import './patch';
 
 export * from './defaultSendMessageOptions';
 export * from './functions';

@@ -22,7 +22,7 @@ import { exportModule } from '../exportModule';
  */
 export declare function mediaTypeFromProtobuf(protoMessage: {
   [key: string]: any;
-}): string;
+}): string | null;
 
 exportModule(
   exports,
