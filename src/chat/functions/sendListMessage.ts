@@ -17,7 +17,10 @@
 import { WPPError } from '../../util';
 import * as webpack from '../../webpack';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
-import { typeAttributeFromProtobuf } from '../../whatsapp/functions';
+import {
+  createMsgProtobuf,
+  typeAttributeFromProtobuf,
+} from '../../whatsapp/functions';
 import {
   defaultSendMessageOptions,
   RawMessage,
@@ -115,4 +118,21 @@ webpack.onInjected(() => {
     }
     return func(...args);
   });
+
+  // Delayed register to ensure is after the common protobuf
+  setTimeout(() => {
+    wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
+      const proto = func(...args);
+
+      if (proto.listMessage) {
+        proto.viewOnceMessage = {
+          message: {
+            listMessage: proto.listMessage,
+          },
+        };
+        delete proto.listMessage;
+      }
+      return proto;
+    });
+  }, 100);
 });
