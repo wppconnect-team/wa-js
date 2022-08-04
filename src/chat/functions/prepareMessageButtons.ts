@@ -279,7 +279,10 @@ webpack.onInjected(() => {
     return r;
   });
 
-  // Delayed register to ensure is after the common protobuf
+  /**
+   * Delayed register to ensure is after the common protobuf
+   * Based on https://github.com/adiwajshing/Baileys/commit/9f3b00d58d4f6b1527db42069acafff01123cbf8
+   */
   setTimeout(() => {
     wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
       const proto = func(...args);

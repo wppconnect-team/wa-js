@@ -38,7 +38,27 @@ export interface VCardContact {
 
 /**
  * Send a VCard as message
+ * @example
+ * ```javascript
+ * // single contact
+ * WPP.chat.sendVCardContactMessage('[number]@c.us', {
+ *   id: '123456@c.us',
+ *   name: 'The Contact Name'
+ * });
  *
+ * // multiple contacts
+ * WPP.chat.sendVCardContactMessage('[number]@c.us', [
+ *   {
+ *     id: '123456@c.us',
+ *     name: 'The Contact Name'
+ *   },
+ *   {
+ *     id: '456789@c.us',
+ *     name: 'Another Contact'
+ *   },
+ * ]);
+ *
+ * ```
  * @category Message
  */
 export async function sendVCardContactMessage(

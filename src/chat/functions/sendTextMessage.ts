@@ -31,6 +31,37 @@ export type TextMessageOptions = SendMessageOptions &
 /**
  * Send a text message
  *
+ * @example
+ * ```javascript
+ * WPP.chat.sendTextMessage('[number]@c.us', 'Hello new contact', {
+ *   createChat: true
+ * });
+ *
+ * // With Buttons
+ * WPP.chat.sendTextMessage('[number]@c.us', 'Hello', {
+ *   useTemplateButtons: true, // False for legacy
+ *   buttons: [
+ *     {
+ *       url: 'https://wppconnect.io/',
+ *       text: 'WPPConnect Site'
+ *     },
+ *     {
+ *       phoneNumber: '+55 11 22334455',
+ *       text: 'Call me'
+ *     },
+ *     {
+ *       id: 'your custom id 1',
+ *       text: 'Some text'
+ *     },
+ *     {
+ *       id: 'another id 2',
+ *       text: 'Another text'
+ *     }
+ *   ],
+ *   title: 'Title text', // Optional
+ *   footer: 'Footer text' // Optional
+ * });
+ * ```
  * @category Message
  */
 export async function sendTextMessage(
