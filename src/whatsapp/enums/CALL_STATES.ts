@@ -19,6 +19,7 @@ import { exportModule } from '../exportModule';
 /**
  * @whatsapp 49835
  * @whatsapp 749835 >= 2.2222.8
+ * @whatsapp 873297 >= 2.2230.8
  */
 export declare enum CALL_STATES {
   INCOMING_RING = 'INCOMING_RING',

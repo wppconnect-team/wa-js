@@ -35,6 +35,7 @@ export interface SimpleAckData {
  * @whatsapp 90756
  * @deprecated
  * @whatsapp 590756 >= 2.2222.8
+ * @whatsapp 585294 >= 2.2230.8
  */
 export declare function handleStatusSimpleAck(
   ackData: SimpleAckData
@@ -44,6 +45,7 @@ export declare function handleStatusSimpleAck(
  * @whatsapp 48309
  * @deprecated
  * @whatsapp 648309 >= 2.2222.8
+ * @whatsapp 471873 >= 2.2230.8
  */
 export declare function handleChatSimpleAck(
   ackData: SimpleAckData
@@ -53,6 +55,7 @@ export declare function handleChatSimpleAck(
  * @whatsapp 84947
  * @deprecated
  * @whatsapp 284947 >= 2.2222.8
+ * @whatsapp 359554 >= 2.2230.8
  */
 export declare function handleGroupSimpleAck(
   ackData: SimpleAckData
@@ -60,6 +63,7 @@ export declare function handleGroupSimpleAck(
 
 /** @whatsapp 90756
  * @whatsapp 590756 >= 2.2222.8
+ * @whatsapp 585294 >= 2.2230.8
  */
 export declare function handleStatusSimpleReceipt(
   ackData: SimpleAckData
@@ -67,6 +71,7 @@ export declare function handleStatusSimpleReceipt(
 
 /** @whatsapp 48309
  * @whatsapp 648309 >= 2.2222.8
+ * @whatsapp 471873 >= 2.2230.8
  */
 export declare function handleChatSimpleReceipt(
   ackData: SimpleAckData
@@ -74,6 +79,7 @@ export declare function handleChatSimpleReceipt(
 
 /** @whatsapp 84947
  * @whatsapp 284947 >= 2.2222.8
+ * @whatsapp 359554 >= 2.2230.8
  */
 export declare function handleGroupSimpleReceipt(
   ackData: SimpleAckData
