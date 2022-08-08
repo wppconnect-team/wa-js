@@ -20,6 +20,7 @@ import { ChatModel } from '../models';
 
 /** @whatsapp 50101
  * @whatsapp 650101 >= 2.2222.8
+ * @whatsapp 211739 >= 2.2228.4
  */
 export declare function findChat(wid: Wid): Promise<ChatModel>;
 

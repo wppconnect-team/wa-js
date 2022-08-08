@@ -19,11 +19,13 @@ import { ContactModel } from '../models';
 
 /** @whatsapp 80140
  * @whatsapp 780140 >= 2.2222.8
+ * @whatsapp 48826 >= 2.2228.4
  */
 export declare function blockContact(contact: ContactModel): Promise<void>;
 
 /** @whatsapp 80140
  * @whatsapp 780140 >= 2.2222.8
+ * @whatsapp 48826 >= 2.2228.4
  */
 export declare function unblockContact(contact: ContactModel): Promise<void>;
 

@@ -19,6 +19,7 @@ import { exportModule } from '../exportModule';
 
 /** @whatsapp 5501
  * @whatsapp 605501 >= 2.2222.8
+ * @whatsapp 525510 >= 2.2228.4
  */
 export declare function sendExitGroup(group: ChatModel): Promise<void>;
 

@@ -18,6 +18,7 @@ import { exportModule } from '../exportModule';
 
 /** @whatsapp 13705
  * @whatsapp 413705 >= 2.2222.8
+ * @whatsapp 20551 >= 2.2228.4
  */
 export declare enum SendMsgResult {
   OK = 'OK',

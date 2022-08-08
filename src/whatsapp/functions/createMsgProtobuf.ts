@@ -19,6 +19,7 @@ import { exportModule } from '../exportModule';
 
 /** @whatsapp 6565
  * @whatsapp 606565 >= 2.2222.8
+ * @whatsapp 615947 >= 2.2228.4
  */
 export declare function createMsgProtobuf(
   e: MsgModel,

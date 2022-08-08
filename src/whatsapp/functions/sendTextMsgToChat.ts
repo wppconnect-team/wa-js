@@ -18,6 +18,7 @@ import { exportModule } from '../exportModule';
 
 /** @whatsapp 5524
  * @whatsapp 105524 >= 2.2222.8
+ * @whatsapp 781845 >= 2.2228.4
  */
 export declare function sendTextMsgToChat(
   chat: any,

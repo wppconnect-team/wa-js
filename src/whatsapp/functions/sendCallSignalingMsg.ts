@@ -16,7 +16,9 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 56981 */
+/** @whatsapp 56981
+ * @whatsapp 383674 >= 2.2228.4
+ */
 export declare function sendCallSignalingMsg(
   data: {
     common: {

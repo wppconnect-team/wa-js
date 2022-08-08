@@ -19,6 +19,7 @@ import { exportModule } from '../exportModule';
 
 /** @whatsapp 89389
  * @whatsapp 389389 >= 2.2222.8
+ * @whatsapp 815562 >= 2.2228.4
  */
 export declare function addParticipants(
   group: ChatModel,
@@ -27,6 +28,7 @@ export declare function addParticipants(
 
 /** @whatsapp 89389
  * @whatsapp 389389 >= 2.2222.8
+ * @whatsapp 815562 >= 2.2228.4
  */
 export declare function removeParticipants(
   group: ChatModel,
@@ -35,6 +37,7 @@ export declare function removeParticipants(
 
 /** @whatsapp 89389
  * @whatsapp 389389 >= 2.2222.8
+ * @whatsapp 815562 >= 2.2228.4
  */
 export declare function promoteParticipants(
   group: ChatModel,
@@ -43,6 +46,7 @@ export declare function promoteParticipants(
 
 /** @whatsapp 89389
  * @whatsapp 389389 >= 2.2222.8
+ * @whatsapp 815562 >= 2.2228.4
  */
 export declare function demoteParticipants(
   group: ChatModel,

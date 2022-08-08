@@ -18,6 +18,7 @@ import { exportModule } from '../exportModule';
 
 /**
  * @whatsapp 832678
+ * @whatsapp 787614 >= 2.2228.4
  */
 export declare function randomHex(size: number): string;
 

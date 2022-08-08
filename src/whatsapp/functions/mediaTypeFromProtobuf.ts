@@ -19,6 +19,7 @@ import { exportModule } from '../exportModule';
 /** @whatsapp 95318
  * @whatsapp 58853 >= 2.2218.4
  * @whatsapp 458853 >= 2.2222.8
+ * @whatsapp 760210 >= 2.2228.4
  */
 export declare function mediaTypeFromProtobuf(protoMessage: {
   [key: string]: any;

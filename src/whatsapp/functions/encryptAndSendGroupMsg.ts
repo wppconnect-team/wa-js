@@ -20,6 +20,7 @@ import { MsgModel } from '../models';
 /**
  * @whatsapp 51974
  * @whatsapp 951974 >= 2.2222.8
+ * @whatsapp 677020 >= 2.2228.4
  */
 export declare function encryptAndSendGroupMsg(
   message: MsgModel,

@@ -19,6 +19,7 @@ import { exportModule } from '../exportModule';
 
 /** @whatsapp 20052
  * @whatsapp 920052 >= 2.2222.8
+ * @whatsapp 43125 >= 2.2228.4
  */
 export declare function sendDelete(chat: ChatModel): Promise<void>;
 

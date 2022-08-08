@@ -22,6 +22,7 @@ export declare function createBusinessCatalog(): Promise<any>;
 
 /** @whatsapp 96519
  * @whatsapp 196519 >= 2.2222.8
+ * @whatsapp 895697 >= 2.2228.4
  */
 export declare function addProduct(
   product: ProductModel,
@@ -31,6 +32,7 @@ export declare function addProduct(
 
 /** @whatsapp 96519
  * @whatsapp 196519 >= 2.2222.8
+ * @whatsapp 895697 >= 2.2228.4
  */
 export declare function editProduct(
   product: ProductModel,
@@ -40,11 +42,13 @@ export declare function editProduct(
 
 /** @whatsapp 96519
  * @whatsapp 196519 >= 2.2222.8
+ * @whatsapp 895697 >= 2.2228.4
  */
 export declare function deleteProducts(productIds: string[]): Promise<any>;
 
 /** @whatsapp 96519
  * @whatsapp 196519 >= 2.2222.8
+ * @whatsapp 895697 >= 2.2228.4
  */
 export declare function sendProductToChat(...args: any[]): Promise<any>;
 

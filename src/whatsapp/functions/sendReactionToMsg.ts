@@ -19,6 +19,7 @@ import { MsgModel } from '../models';
 
 /** @whatsapp 21357
  * @whatsapp 621357 >= 2.2222.8
+ * @whatsapp 805687 >= 2.2228.4
  */
 export declare function sendReactionToMsg(
   msg: MsgModel,

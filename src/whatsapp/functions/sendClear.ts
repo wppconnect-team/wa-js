@@ -19,6 +19,7 @@ import { exportModule } from '../exportModule';
 
 /** @whatsapp 83802
  * @whatsapp 483802 >= 2.2222.8
+ * @whatsapp 382019 >= 2.2228.4
  */
 export declare function sendClear(
   chat: ChatModel,

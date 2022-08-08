@@ -20,6 +20,7 @@ import { ChatModel, ModelPropertiesContructor, MsgModel } from '../models';
 
 /** @whatsapp 75887
  * @whatsapp 975887 >= 2.2222.8
+ * @whatsapp 623631 >= 2.2228.4
  */
 export declare function addAndSendMsgToChat(
   chat: ChatModel,

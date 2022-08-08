@@ -19,6 +19,7 @@ import { exportModule } from '../exportModule';
 
 /** @whatsapp 371
  * @whatsapp 800371 >= 2.2222.8
+ * @whatsapp 366517 >= 2.2228.4
  */
 export declare namespace ChatPresence {
   function markComposing(chat: ChatModel): Promise<void>;
