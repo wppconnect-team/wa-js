@@ -18,6 +18,7 @@ export * from './addAndSendMsgToChat';
 export * from './blockContact';
 export * from './createMsgProtobuf';
 export * from './createOrUpdateReactions';
+export * from './encodeMaybeMediaType';
 export * from './encryptAndSendGroupMsg';
 export * from './encryptAndSendMsg';
 export * from './fetchLinkPreview';

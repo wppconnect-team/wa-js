@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
-export * from './collections';
-export * as contants from './contants';
-export * as enums from './enums';
-export { _moduleIdMap } from './exportModule';
-export * as functions from './functions';
-export * from './misc';
-export * from './models';
-export * as multidevice from './multidevice';
-export * from './stores';
+import { exportModule } from '../exportModule';
+
+/**
+ *  @whatsapp 831914
+ */
+export declare const DROP_ATTR: any;
+
+exportModule(
+  exports,
+  {
+    DROP_ATTR: ['DROP_ATTR'],
+  },
+  (m) => m.DROP_ATTR
+);
