@@ -25,13 +25,14 @@ export interface MsgFindQueryParams {
   fromMe?: boolean;
   id?: string;
   participant?: any;
+  media?: 'url' | 'document';
 }
 
 /** @whatsapp 76581 */
 export declare function msgFindQuery(
-  direction: 'after' | 'before',
+  direction: 'after' | 'before' | 'media',
   params: MsgFindQueryParams
-): Promise<ModelPropertiesContructor<MsgModel>[]>;
+): Promise<ModelPropertiesContructor<MsgModel>[] | any>;
 
 exportModule(
   exports,

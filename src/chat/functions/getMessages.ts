@@ -25,6 +25,7 @@ export interface GetMessagesOptions {
   direction?: 'after' | 'before';
   id?: string;
   onlyUnread?: boolean;
+  media?: 'url' | 'document' | 'all' | 'image';
 }
 
 /**
@@ -59,6 +60,30 @@ export interface GetMessagesOptions {
  *   count: 20,
  *   direction: 'before',
  *   id: '<full message id>'
+ * });
+ *
+ * // Only media messages (url, document and links)
+ * WPP.chat.getMessages('[number]@c.us', {
+ *   count: 20,
+ *   media: 'all',
+ * });
+ *
+ * // Only image messages
+ * WPP.chat.getMessages('[number]@c.us', {
+ *   count: 20,
+ *   media: 'image',
+ * });
+ *
+ * // Only document messages
+ * WPP.chat.getMessages('[number]@c.us', {
+ *   count: 20,
+ *   media: 'document',
+ * });
+ *
+ * // Only link (url) messages
+ * WPP.chat.getMessages('[number]@c.us', {
+ *   count: 20,
+ *   media: 'url',
  * });
  * ```
  * @category Message
@@ -107,7 +132,23 @@ export async function getMessages(
   params.count = count;
   params.direction = direction;
 
-  const msgs = await msgFindQuery(direction, params);
+  let msgs = [];
+  if (options.media === 'all') {
+    const { messages } = await msgFindQuery('media', params);
+    msgs = messages;
+  } else if (options.media === 'image') {
+    const { messages } = await msgFindQuery('media', params);
+    for (const Msg of messages) {
+      if (Msg.type === 'image') {
+        msgs.push(Msg);
+      }
+    }
+  } else if (options.media !== undefined) {
+    params.media = options.media;
+    msgs = await msgFindQuery('media', params);
+  } else {
+    msgs = await msgFindQuery(direction, params);
+  }
 
   if (!options.id && id) {
     const msg = MsgStore.get(id);
