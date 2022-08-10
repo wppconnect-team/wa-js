@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+export { editBusinessProfile } from './editBusinessProfile';
 export { getMyStatus } from './getMyStatus';
 export { isBusiness } from './isBusiness';
 export { setMyProfilePicture } from './setMyProfilePicture';

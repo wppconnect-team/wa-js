@@ -14,8 +14,30 @@
  * limitations under the License.
  */
 
-export { getBusinessProfile } from './getBusinessProfile';
-export { getProfilePictureUrl } from './getProfilePictureUrl';
-export { getStatus } from './getStatus';
-export { ContactListOptions, list } from './list';
-export { queryExists } from './queryExists';
+import { assertWid } from '../../assert';
+import {
+  BusinessProfileModel,
+  BusinessProfileStore,
+  Wid,
+} from '../../whatsapp';
+
+/**
+ * Get the current text status
+ *
+ * @example
+ * ```javascript
+ * const url = await WPP.contact.getBusinessProfile('[number]@c.us');
+ * ```
+ *
+ * @category Contact
+ */
+
+export async function getBusinessProfile(
+  contactId: string | Wid
+): Promise<BusinessProfileModel> {
+  const wid = assertWid(contactId);
+
+  const profile = await BusinessProfileStore.fetchBizProfile(wid);
+
+  return profile;
+}

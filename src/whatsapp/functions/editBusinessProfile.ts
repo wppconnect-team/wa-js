@@ -14,8 +14,20 @@
  * limitations under the License.
  */
 
-export { getBusinessProfile } from './getBusinessProfile';
-export { getProfilePictureUrl } from './getProfilePictureUrl';
-export { getStatus } from './getStatus';
-export { ContactListOptions, list } from './list';
-export { queryExists } from './queryExists';
+import { exportModule } from '../exportModule';
+import { BusinessProfileModel } from '../models';
+
+/**
+ * @whatsapp 461561
+ */
+export declare function editBusinessProfile(
+  arguments: BusinessProfileModel
+): Promise<any>;
+
+exportModule(
+  exports,
+  {
+    editBusinessProfile: 'editBusinessProfile',
+  },
+  (m) => m.editBusinessProfile
+);
