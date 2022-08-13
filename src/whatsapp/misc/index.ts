@@ -33,6 +33,7 @@ export * from './MediaPrep';
 export * from './MediaUtils';
 export * from './MsgKey';
 export * from './MsgLoadState';
+export * from './ProductCatalogSession';
 export * from './OpaqueData';
 export * from './Socket';
 export * from './Stream';
