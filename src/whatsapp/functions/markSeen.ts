@@ -40,7 +40,8 @@ export declare function sendSeen(
 export declare function markPlayed(msg: MsgModel): Promise<void>;
 
 /**
- * @whatsapp 2.2146.9:64850
+ * @whatsapp 64850
+ * @whatsapp 242050 >= 2.2228.4
  */
 export declare function canMarkPlayed(msg: MsgModel): boolean;
 
@@ -57,6 +58,7 @@ exportModule(
   exports,
   {
     markPlayed: 'markPlayed',
+    canMarkPlayed: 'canMarkPlayed',
   },
   (m) => m.markPlayed
 );
