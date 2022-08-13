@@ -24,10 +24,14 @@ import {
 
 interface Props {
   id?: any;
+  name?: string;
   isHidden: boolean;
   reviewStatus?: any;
+  commerceUrl?: any;
+  rejectReason?: any;
   totalItemsCount?: any;
   afterCursor?: any;
+  canAppeal?: any;
 }
 
 interface Session {

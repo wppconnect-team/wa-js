@@ -16,6 +16,8 @@
 
 export * from './addAndSendMsgToChat';
 export * from './blockContact';
+export * from './calculateFilehashFromBlob';
+export * from './collections';
 export * from './createMsgProtobuf';
 export * from './createOrUpdateReactions';
 export * from './editBusinessProfile';
