@@ -17,4 +17,5 @@
 export * from './assertChat';
 export * from './assertColor';
 export * from './assertIsBusiness';
+export * from './assertProduct';
 export * from './assertWid';
