@@ -58,12 +58,12 @@ export interface ProductVisibilitySetParams {
   productId: number;
 }
 
-/** @whatsapp 621374 */
+/** @whatsapp 621374 >= 2.2228.14 */
 export declare function productVisibilitySet(
   params: ProductVisibilitySetParams[]
 ): any;
 
-/** @whatsapp 621374 */
+/** @whatsapp 621374 >= 2.2228.14 */
 export declare function queryCatalog(
   chatId?: Wid,
   t?: any,
@@ -74,7 +74,7 @@ export declare function queryCatalog(
   l?: any
 ): any;
 
-/** @whatsapp 621374 */
+/** @whatsapp 621374 >= 2.2228.14 */
 export declare function queryProduct(
   chatId?: Wid,
   productId?: any,

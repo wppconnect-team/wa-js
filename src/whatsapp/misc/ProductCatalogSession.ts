@@ -17,7 +17,7 @@
 import { exportModule } from '../exportModule';
 
 /**
- * @whatsapp 409153
+ * @whatsapp 409153 >= 2.2228.14
  */
 export declare class ProductCatalogSession {
   constructor(e: any);

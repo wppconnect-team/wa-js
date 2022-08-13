@@ -17,18 +17,18 @@
 import { exportModule } from '../exportModule';
 import { Wid } from '../misc';
 
-/** @whatsapp 409465
+/** @whatsapp 409465 >= 2.2228.14
  */
 export declare function createCollection(...args: any[]): Promise<any>;
 
-/** @whatsapp 409465
+/** @whatsapp 409465 >= 2.2228.14
  */
 export declare function deleteCollection(
   id: string,
   sessionId: string
 ): Promise<any>;
 
-/** @whatsapp 409465
+/** @whatsapp 409465 >= 2.2228.14
  */
 export declare function editCollection(
   collectionId: string,
@@ -49,6 +49,8 @@ export interface QueryCollectionsIQtParams {
   productsCount?: number;
 }
 
+/** @whatsapp 409465 >= 2.2228.14
+ */
 export declare function queryCollectionsIQ(
   params: QueryCollectionsIQtParams
 ): any;

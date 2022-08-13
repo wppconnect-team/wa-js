@@ -17,7 +17,7 @@
 import { exportModule } from '../exportModule';
 
 /**
- * @whatsapp 818309 >= 2.2222.8
+ * @whatsapp 818309 >= 2.2228.14
  */
 export declare function calculateFilehashFromBlob(file: Blob): Promise<string>;
 
