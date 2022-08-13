@@ -15,7 +15,6 @@
  */
 
 import { Stringable } from '../../types';
-import { WPPError } from '../../util';
 import { MsgKey, MsgModel } from '../../whatsapp';
 import { markPlayed as MarkPlayed } from '../../whatsapp/functions';
 import { getMessageById } from './getMessageById';
