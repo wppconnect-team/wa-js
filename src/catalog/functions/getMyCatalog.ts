@@ -15,7 +15,6 @@
  */
 
 import { CatalogStore, UserPrefs } from '../../whatsapp';
-
 /**
  * Get your current catalog
  *

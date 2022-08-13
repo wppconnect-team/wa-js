@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { productVisibilitySet } from '../../whatsapp/functions';
 import { assertGetProduct } from '../../assert';
+import { productVisibilitySet } from '../../whatsapp/functions';
 
 /**
  * Get your current catalog

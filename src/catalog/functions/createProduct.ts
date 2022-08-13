@@ -16,7 +16,6 @@
 
 import { convertToFile } from '../../util';
 import {
-  CatalogStore,
   OpaqueData,
   ProductImageModel,
   ProductModel,

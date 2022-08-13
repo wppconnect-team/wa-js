@@ -15,12 +15,12 @@
  */
 
 import { assertGetProduct } from '../../assert';
-import { convertToFile, resizeImage } from '../../util';
+import { convertToFile } from '../../util';
 import { OpaqueData } from '../../whatsapp';
 import {
   calculateFilehashFromBlob,
-  uploadProductImage as UploadProductImage,
   editProduct as EditProduct,
+  uploadProductImage as UploadProductImage,
 } from '../../whatsapp/functions';
 
 /**

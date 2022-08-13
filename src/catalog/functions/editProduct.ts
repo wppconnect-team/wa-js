@@ -15,7 +15,7 @@
  */
 
 import { assertGetProduct } from '../../assert';
-import { CatalogStore, ProductModel, UserPrefs } from '../../whatsapp';
+import { ProductModel } from '../../whatsapp';
 import { editProduct as EditProduct } from '../../whatsapp/functions';
 
 /**

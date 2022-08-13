@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import { assertGetProduct } from '../../assert';
 import { createWid } from '../../util';
-import { CatalogStore, ProductModel, UserPrefs } from '../../whatsapp';
+import { ProductModel } from '../../whatsapp';
 import { queryProduct } from '../../whatsapp/functions';
 
 /**
@@ -35,7 +34,7 @@ export async function getProductById(
   chatId: string,
   productId: number
 ): Promise<ProductModel> {
-  let wid = createWid(chatId);
+  const wid = createWid(chatId);
   const { data } = await queryProduct(wid, productId);
   return data;
 }

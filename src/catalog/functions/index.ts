@@ -15,15 +15,15 @@
  */
 
 export { addProductImage } from './addProductImage';
-export { createProduct } from './createProduct';
 export { changeProductImage } from './changeProductImage';
 export { createCollection } from './createCollection';
+export { createProduct } from './createProduct';
 export { deleteCollection } from './deleteCollection';
 export { delProducts } from './deleteProduct';
 export { editCollection } from './editCollection';
 export { editProduct } from './editProduct';
-export { getMyCatalog } from './getMyCatalog';
 export { getCollections } from './getCollections';
+export { getMyCatalog } from './getMyCatalog';
 export { getProductById } from './getProductById';
 export { getProducts } from './getProducts';
 export { removeProductImage } from './removeProductImage';
