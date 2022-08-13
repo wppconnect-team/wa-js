@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+export { addProductImage } from './addProductImage';
 export { createProduct } from './createProduct';
 export { changeProductImage } from './changeProductImage';
 export { createCollection } from './createCollection';
@@ -27,4 +28,4 @@ export { getProductById } from './getProductById';
 export { getProducts } from './getProducts';
 export { removeProductImage } from './removeProductImage';
 export { setProductVisibility } from './setProductVisibility';
-export { addProductImage } from './addProductImage';
+export { updateCartEnabled } from './updateCartEnabled';

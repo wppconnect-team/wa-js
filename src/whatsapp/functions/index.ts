@@ -60,6 +60,7 @@ export * from './setGroup';
 export * from './setPin';
 export * from './status';
 export * from './typeAttributeFromProtobuf';
+export * from './updateCartEnabled';
 export * from './updateDBForGroupAction';
 export * from './updateParticipants';
 export * from './uploadProductImage';
