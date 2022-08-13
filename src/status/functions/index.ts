@@ -18,5 +18,6 @@ export { get } from './get';
 export { getMyStatus } from './getMyStatus';
 export { ImageStatusOptions, sendImageStatus } from './sendImageStatus';
 export { sendRawStatus, SendStatusOptions } from './sendRawStatus';
+export { sendReadStatus } from './sendReadStatus';
 export { sendTextStatus, TextStatusOptions } from './sendTextStatus';
 export { sendVideoStatus, VideoStatusOptions } from './sendVideoStatus';
