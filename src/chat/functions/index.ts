@@ -15,6 +15,7 @@
  */
 
 export { archive, unarchive } from './archive';
+export { canMarkPlayed } from './canMarkPlayed';
 export { canMute } from './canMute';
 export { clear } from './clear';
 export { delete } from './delete';
@@ -32,6 +33,7 @@ export { markIsPaused } from './markIsPaused';
 export { markIsRead } from './markIsRead';
 export { markIsRecording } from './markIsRecording';
 export { markIsUnread } from './markIsUnread';
+export { markPlayed } from './markPlayed';
 export { mute } from './mute';
 export { openChatAt } from './openChatAt';
 export { openChatBottom } from './openChatBottom';
