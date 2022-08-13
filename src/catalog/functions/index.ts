@@ -14,4 +14,17 @@
  * limitations under the License.
  */
 
+export { createProduct } from './createProduct';
+export { changeProductImage } from './changeProductImage';
+export { createCollection } from './createCollection';
+export { deleteCollection } from './deleteCollection';
+export { delProducts } from './deleteProduct';
+export { editCollection } from './editCollection';
+export { editProduct } from './editProduct';
 export { getMyCatalog } from './getMyCatalog';
+export { getCollections } from './getCollections';
+export { getProductById } from './getProductById';
+export { getProducts } from './getProducts';
+export { removeProductImage } from './removeProductImage';
+export { setProductVisibility } from './setProductVisibility';
+export { addProductImage } from './addProductImage';
