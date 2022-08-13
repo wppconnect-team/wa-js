@@ -40,6 +40,7 @@ export * from './markSeen';
 export * from './mediaTypeFromProtobuf';
 export * from './msgFindQuery';
 export * from './products';
+export * from './productVisibilitySet';
 export * from './profilePic';
 export * from './randomHex';
 export * from './randomId';

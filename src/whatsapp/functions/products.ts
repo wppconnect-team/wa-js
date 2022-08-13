@@ -53,16 +53,6 @@ export declare function deleteProducts(productIds: string[]): Promise<any>;
  */
 export declare function sendProductToChat(...args: any[]): Promise<any>;
 
-export interface ProductVisibilitySetParams {
-  isHidden: boolean;
-  productId: number;
-}
-
-/** @whatsapp 621374 >= 2.2228.14 */
-export declare function productVisibilitySet(
-  params: ProductVisibilitySetParams[]
-): any;
-
 /** @whatsapp 621374 >= 2.2228.14 */
 export declare function queryCatalog(
   chatId?: Wid,
@@ -92,7 +82,6 @@ exportModule(
     editProduct: 'editProduct',
     deleteProducts: 'deleteProducts',
     sendProductToChat: 'sendProductToChat',
-    productVisibilitySet: 'productVisibilitySet',
     queryCatalog: 'queryCatalog',
     queryProduct: 'queryProduct',
     queryProductList: 'queryProductList',
