@@ -16,6 +16,8 @@
 
 export * from './addAndSendMsgToChat';
 export * from './blockContact';
+export * from './calculateFilehashFromBlob';
+export * from './collections';
 export * from './createMsgProtobuf';
 export * from './createOrUpdateReactions';
 export * from './editBusinessProfile';
@@ -38,6 +40,7 @@ export * from './markSeen';
 export * from './mediaTypeFromProtobuf';
 export * from './msgFindQuery';
 export * from './products';
+export * from './productVisibilitySet';
 export * from './profilePic';
 export * from './randomHex';
 export * from './randomId';
@@ -58,6 +61,7 @@ export * from './setGroup';
 export * from './setPin';
 export * from './status';
 export * from './typeAttributeFromProtobuf';
+export * from './updateCartEnabled';
 export * from './updateDBForGroupAction';
 export * from './updateParticipants';
 export * from './uploadProductImage';

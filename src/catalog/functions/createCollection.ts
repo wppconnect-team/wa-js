@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2022 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,24 @@
  * limitations under the License.
  */
 
-import { CatalogStore, UserPrefs } from '../../whatsapp';
+import { ProductCatalogSession } from '../../whatsapp';
+import { createCollection as CreateCollection } from '../../whatsapp/functions';
+
 /**
- * Get your current catalog
+ * Create new collection
  *
  * @example
  * ```javascript
- * // Get your current catalog
- * const myCatalog = await WPP.catalog.getMyCatalog();
+ * const myCatalog = await WPP.catalog.createCollection('Collection Name', ['565656589898']);
  * ```
  *
- * @return Your current catalog
+ * @return Return collection created
  */
-export async function getMyCatalog() {
-  return CatalogStore.get(UserPrefs.getMeUser());
+export async function createCollection(
+  collectionName: string,
+  productsId: string[]
+): Promise<any> {
+  const { sessionId } = new ProductCatalogSession(true);
+
+  return await CreateCollection(collectionName, productsId, `${sessionId}`);
 }

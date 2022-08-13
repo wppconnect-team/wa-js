@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2022 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,17 @@
  * limitations under the License.
  */
 
-export * from './assertChat';
-export * from './assertColor';
-export * from './assertIsBusiness';
-export * from './assertProduct';
-export * from './assertWid';
+import { exportModule } from '../exportModule';
+
+/**
+ * @whatsapp 990553
+ */
+export declare function updateCartEnabled(enabled: boolean): Promise<void>;
+
+exportModule(
+  exports,
+  {
+    updateCartEnabled: 'updateCartEnabled',
+  },
+  (m) => m.updateCartEnabled
+);

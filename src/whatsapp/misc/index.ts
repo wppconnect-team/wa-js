@@ -34,6 +34,7 @@ export * from './MediaUtils';
 export * from './MsgKey';
 export * from './MsgLoadState';
 export * from './OpaqueData';
+export * from './ProductCatalogSession';
 export * from './Socket';
 export * from './Stream';
 export * from './UserPrefs';

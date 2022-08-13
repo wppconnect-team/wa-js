@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2022 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,21 @@
  * limitations under the License.
  */
 
-import { CatalogStore, UserPrefs } from '../../whatsapp';
+import { ProductCatalogSession } from '../../whatsapp';
+import { deleteCollection as DeleteCollection } from '../../whatsapp/functions';
+
 /**
- * Get your current catalog
+ * Delete a collection
  *
  * @example
  * ```javascript
- * // Get your current catalog
- * const myCatalog = await WPP.catalog.getMyCatalog();
+ * const myCatalog = await WPP.catalog.deleteCollection("377095767832354");
  * ```
  *
- * @return Your current catalog
+ * @return Return sucess or error
  */
-export async function getMyCatalog() {
-  return CatalogStore.get(UserPrefs.getMeUser());
+export async function deleteCollection(collectionId: string): Promise<any> {
+  const { sessionId } = new ProductCatalogSession(true);
+  await DeleteCollection(collectionId, `${sessionId}`);
+  return 'Collection deleted sucessful';
 }

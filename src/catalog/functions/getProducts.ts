@@ -14,8 +14,28 @@
  * limitations under the License.
  */
 
-export * from './assertChat';
-export * from './assertColor';
-export * from './assertIsBusiness';
-export * from './assertProduct';
-export * from './assertWid';
+import { createWid } from '../../util';
+import { queryCatalog } from '../../whatsapp/functions';
+
+/**
+ * Retrieves product by contact id
+ *
+ * @example
+ * Get products of catalogs
+ * ```javascript
+ * await WPP.catalog.getProducts('5521985625689@c.us', 10);
+ * ```
+ * @return A array with products
+ * @category Catalog
+ */
+
+export async function getProducts(chatId: string, qnt: number): Promise<any[]> {
+  const { data } = await queryCatalog(
+    createWid(chatId),
+    undefined,
+    qnt || 10,
+    100,
+    100
+  );
+  return data;
+}

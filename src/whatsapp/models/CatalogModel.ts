@@ -53,6 +53,8 @@ export declare class CatalogModel extends Model<CatalogCollection> {
     proterties?: ModelPropertiesContructor<CatalogModel>,
     options?: ModelOptions
   );
+  productCollection: ProductModel[];
+  collections: any;
   triggerProductUpdate(): any;
   triggerMsgUpdate(): any;
   markProductCollectionOld(): any;

@@ -15,6 +15,7 @@
  */
 
 import { exportModule } from '../exportModule';
+import { Wid } from '../misc';
 import { CatalogModel } from '../models';
 import { Collection } from './Collection';
 
@@ -24,15 +25,24 @@ import { Collection } from './Collection';
 export declare class CatalogCollection extends Collection<CatalogModel> {
   static model: CatalogModel;
   static staleCollection?: any;
+
   addMsgAsProduct(e?: any): any;
   findProduct(e?: {
     catalogWid: any;
     productId: any;
-    productMsgMediaData: any;
+    productMsgMediaData?: any;
   }): any;
   findCarouselCatalog(e?: any): any;
   findNextProductPage(e?: any): any;
   findCollectionMembership(e?: any, t?: any): any;
+  _queryCatalog(
+    e?: CatalogModel,
+    t?: Wid,
+    n?: any,
+    r?: any,
+    a?: any,
+    o?: any
+  ): any;
 }
 exportModule(
   exports,

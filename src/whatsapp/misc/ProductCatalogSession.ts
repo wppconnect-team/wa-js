@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2022 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,27 @@
  * limitations under the License.
  */
 
-export * from './assertChat';
-export * from './assertColor';
-export * from './assertIsBusiness';
-export * from './assertProduct';
-export * from './assertWid';
+import { exportModule } from '../exportModule';
+
+/**
+ * @whatsapp 409153 >= 2.2228.14
+ */
+export declare class ProductCatalogSession {
+  constructor(e: any);
+
+  accidental?: boolean;
+  sessionId?: number | string;
+
+  isAccidental(): boolean;
+  initSessionId(): number;
+  newSessionId(): number;
+  toString(): string;
+}
+
+exportModule(
+  exports,
+  {
+    ProductCatalogSession: 'ProductCatalogSession',
+  },
+  (m) => m.ProductCatalogSession
+);

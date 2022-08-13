@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2022 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-import { CatalogStore, UserPrefs } from '../../whatsapp';
+import { updateCartEnabled as UpdateCartEnabled } from '../../whatsapp/functions';
+
 /**
  * Get your current catalog
  *
  * @example
  * ```javascript
- * // Get your current catalog
- * const myCatalog = await WPP.catalog.getMyCatalog();
+ * // Set product visibility hidden
+ * const myCatalog = await WPP.catalog.setProductVisibility(54985569989897, true);
+ * ```
+ * // Set product visible
+ * const myCatalog = await WPP.catalog.setProductVisibility(54985569989897, false);
  * ```
  *
- * @return Your current catalog
+ * @return Return sucess of product visibility set
  */
-export async function getMyCatalog() {
-  return CatalogStore.get(UserPrefs.getMeUser());
+export async function updateCartEnabled(enabled: boolean): Promise<any> {
+  return await UpdateCartEnabled(enabled);
 }

@@ -24,9 +24,10 @@ import {
 
 interface Props {
   id?: any;
-  isHidden: boolean;
+  isHidden?: boolean;
   catalogWid?: any;
   url?: any;
+  name?: string;
   description?: any;
   availability?: any;
   reviewStatus?: any;
