@@ -166,7 +166,7 @@ export async function prepareRawMessage<T extends RawMessage>(
       });
     }
 
-    if (!options.quotedMsg.canReply()) {
+    if (!options.quotedMsg?.isStatusV3 && !options.quotedMsg.canReply()) {
       throw new WPPError(
         'quoted_msg_can_not_reply',
         'QuotedMsg can not reply',
