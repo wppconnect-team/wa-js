@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2022 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
-export { addNewLabel } from './addNewLabel';
-export {
-  addOrRemoveLabels,
-  AddOrRemoveLabelsOptions,
-} from './addOrRemoveLabels';
-export { colorIsInLabelPalette } from './colorIsInLabelPalette';
-export { deleteAllLabels } from './deleteAllLabels';
-export { deleteLabel, DeleteLabelReturn } from './deleteLabel';
-export { getAllLabels } from './getAllLabels';
-export { getLabelById } from './getLabelById';
-export { getLabelColorPalette } from './getLabelColorPalette';
-export { getNewLabelColor } from './getNewLabelColor';
+import { assertColor } from '../../assert';
+import { WPPError } from '../../util';
+import { LabelStore } from '../../whatsapp';
+import { Label } from '..';
+
+export async function getLabelById(labelId: string): Promise<Label> {
+  const label = LabelStore.get(labelId);
+
+  if (!label) {
+    throw new WPPError('canot_get_label_error', `Can't get label by id`);
+  }
+  return {
+    id: label.id,
+    name: label.name,
+    color: assertColor(label.hexColor),
+    count: label.count || 0,
+    hexColor: label.hexColor,
+  };
+}
