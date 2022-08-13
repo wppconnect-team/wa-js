@@ -16,6 +16,7 @@
 
 import { ProductModel } from '..';
 import { exportModule } from '../exportModule';
+import { Wid } from '../misc';
 
 /** @whatsapp 2.2144.10:35339 */
 export declare function createBusinessCatalog(): Promise<any>;
@@ -52,6 +53,38 @@ export declare function deleteProducts(productIds: string[]): Promise<any>;
  */
 export declare function sendProductToChat(...args: any[]): Promise<any>;
 
+export interface ProductVisibilitySetParams {
+  isHidden: boolean;
+  productId: number;
+}
+
+/** @whatsapp 621374 */
+export declare function productVisibilitySet(
+  params: ProductVisibilitySetParams[]
+): any;
+
+/** @whatsapp 621374 */
+export declare function queryCatalog(
+  chatId?: Wid,
+  t?: any,
+  n?: number,
+  r?: number,
+  i?: number,
+  s?: any,
+  l?: any
+): any;
+
+/** @whatsapp 621374 */
+export declare function queryProduct(
+  chatId?: Wid,
+  productId?: any,
+  imageWidth?: number,
+  imageHeight?: number,
+  i?: any,
+  s?: boolean,
+  l?: any
+): any;
+
 exportModule(
   exports,
   {
@@ -59,6 +92,10 @@ exportModule(
     editProduct: 'editProduct',
     deleteProducts: 'deleteProducts',
     sendProductToChat: 'sendProductToChat',
+    productVisibilitySet: 'productVisibilitySet',
+    queryCatalog: 'queryCatalog',
+    queryProduct: 'queryProduct',
+    queryProductList: 'queryProductList',
   },
   (m) => m.sendProductToChat
 );
