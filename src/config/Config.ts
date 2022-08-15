@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2022 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,8 @@
  * ```
  */
 export interface Config {
+  [key: string | symbol]: any;
+
   /**
    * Set the device name connected, false to disable
    * @default 'WPPConnect'
@@ -66,25 +68,4 @@ export interface Config {
    * Project name for google analytics
    */
   poweredBy: string | null;
-}
-
-export const defaultConfig: Config = {
-  deviceName: false,
-  liveLocationLimit: 10,
-  disableGoogleAnalytics: false,
-  googleAnalyticsId: null,
-  googleAnalyticsUserProperty: {},
-  linkPreviewApiServers: null,
-  poweredBy: 'WA-JS',
-};
-
-export const config: Config = defaultConfig;
-
-// Init config from global environment;
-const w = window as unknown as { WPPConfig: Config };
-
-w.WPPConfig = w.WPPConfig || defaultConfig;
-
-for (const key of Object.keys(w.WPPConfig)) {
-  (config as any)[key] = (w.WPPConfig as any)[key];
 }

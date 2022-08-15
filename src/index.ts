@@ -25,7 +25,7 @@ import * as webpack from './webpack';
 export { webpack };
 export { isInjected, isReady } from './webpack';
 
-export { config } from './config';
+export { config, Config } from './config';
 
 export * as blocklist from './blocklist';
 export * as call from './call';
