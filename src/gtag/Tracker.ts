@@ -201,5 +201,6 @@ export class Tracker {
 
   public setUserProperty(key: string, value: any) {
     this.userProperties[key] = value;
+    this.trackEvent('user_engagement');
   }
 }

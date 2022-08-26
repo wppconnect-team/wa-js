@@ -66,6 +66,22 @@ internalEv.on('webpack.injected', () => {
 
     otherTracker.trackEvent('page_view', { authenticated, method });
   }
+
+  internalEv.on('config.update', (evt) => {
+    if (evt.path[0] === 'poweredBy') {
+      mainTracker.setUserProperty('powered_by', evt.value || '-');
+      if (otherTracker) {
+        otherTracker.setUserProperty('powered_by', evt.value || '-');
+      }
+    } else if (evt.path[0] === 'googleAnalyticsUserProperty' && otherTracker) {
+      if (typeof config.googleAnalyticsUserProperty === 'object') {
+        for (const key in config.googleAnalyticsUserProperty) {
+          const value = config.googleAnalyticsUserProperty[key];
+          otherTracker.setUserProperty(key, value);
+        }
+      }
+    }
+  });
 });
 
 if (!config.disableGoogleAnalytics) {
