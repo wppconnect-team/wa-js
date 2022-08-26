@@ -18,8 +18,10 @@
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
 <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array" class="tsd-signature-type external" target="_blank">Uint8Array</a>
+<section class="tsd-panel tsd-hierarchy">
+<h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
-<li><span class="target">Buffer</span></li></ul></li></ul></section><aside class="tsd-sources">
+<li><span class="target">Buffer</span></li></ul></section></li></ul></section><aside class="tsd-sources">
 <ul>
 <li>Defined in node_modules/@types/node/buffer.d.ts:531</li>
 <li>Defined in node_modules/@types/node/buffer.d.ts:2195</li></ul></aside>
@@ -1547,9 +1549,11 @@ call to the callback function.</p>
 </div>
 <div class="tsd-type-parameters">
 <h4 class="tsd-type-parameters-title">Type Parameters</h4>
+<section class="tsd-panel tsd-type-parameters">
+<h4>Type Parameters</h4>
 <ul class="tsd-type-parameters">
 <li>
-<h4>U</h4></li></ul></div>
+<h4>U</h4></li></ul></section></div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
@@ -1661,9 +1665,11 @@ argument in the next call to the callback function.</p>
 </div>
 <div class="tsd-type-parameters">
 <h4 class="tsd-type-parameters-title">Type Parameters</h4>
+<section class="tsd-panel tsd-type-parameters">
+<h4>Type Parameters</h4>
 <ul class="tsd-type-parameters">
 <li>
-<h4>U</h4></li></ul></div>
+<h4>U</h4></li></ul></section></div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
@@ -1934,7 +1940,7 @@ Throws <code>ERR_INVALID_BUFFER_SIZE</code> if <code>buf.length</code> is not a 
 this function when stringifying a <code>Buffer</code> instance.</p>
 <p><code>Buffer.from()</code> accepts objects in the format returned from this method.
 In particular, <code>Buffer.from(buf.toJSON())</code> works like <code>Buffer.from(buf)</code>.</p>
-<pre><code class="language-js"><span class="hl-7">import</span><span class="hl-1"> { </span><span class="hl-5">Buffer</span><span class="hl-1"> } </span><span class="hl-7">from</span><span class="hl-1"> </span><span class="hl-3">&#39;buffer&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-2">const</span><span class="hl-1"> </span><span class="hl-4">buf</span><span class="hl-1"> = </span><span class="hl-5">Buffer</span><span class="hl-1">.</span><span class="hl-6">from</span><span class="hl-1">([</span><span class="hl-10">0x1</span><span class="hl-1">, </span><span class="hl-10">0x2</span><span class="hl-1">, </span><span class="hl-10">0x3</span><span class="hl-1">, </span><span class="hl-10">0x4</span><span class="hl-1">, </span><span class="hl-10">0x5</span><span class="hl-1">]);</span><br/><span class="hl-2">const</span><span class="hl-1"> </span><span class="hl-4">json</span><span class="hl-1"> = </span><span class="hl-8">JSON</span><span class="hl-1">.</span><span class="hl-6">stringify</span><span class="hl-1">(</span><span class="hl-5">buf</span><span class="hl-1">);</span><br/><br/><span class="hl-5">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-5">json</span><span class="hl-1">);</span><br/><span class="hl-0">// Prints: {&quot;type&quot;:&quot;Buffer&quot;,&quot;data&quot;:[1,2,3,4,5]}</span><br/><br/><span class="hl-2">const</span><span class="hl-1"> </span><span class="hl-4">copy</span><span class="hl-1"> = </span><span class="hl-8">JSON</span><span class="hl-1">.</span><span class="hl-6">parse</span><span class="hl-1">(</span><span class="hl-5">json</span><span class="hl-1">, (</span><span class="hl-5">key</span><span class="hl-1">, </span><span class="hl-5">value</span><span class="hl-1">) </span><span class="hl-2">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-7">return</span><span class="hl-1"> </span><span class="hl-5">value</span><span class="hl-1"> &amp;#</span><span class="hl-5">x26</span><span class="hl-1">;&amp;#</span><span class="hl-5">x26</span><span class="hl-1">; </span><span class="hl-5">value</span><span class="hl-1">.</span><span class="hl-5">type</span><span class="hl-1"> === </span><span class="hl-3">&#39;Buffer&#39;</span><span class="hl-1"> ?</span><br/><span class="hl-1">    </span><span class="hl-5">Buffer</span><span class="hl-1">.</span><span class="hl-6">from</span><span class="hl-1">(</span><span class="hl-5">value</span><span class="hl-1">) :</span><br/><span class="hl-1">    </span><span class="hl-5">value</span><span class="hl-1">;</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-5">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-5">copy</span><span class="hl-1">);</span><br/><span class="hl-0">// Prints: &lt;Buffer 01 02 03 04 05&gt;</span>
+<pre><code class="language-js"><span class="hl-7">import</span><span class="hl-1"> { </span><span class="hl-5">Buffer</span><span class="hl-1"> } </span><span class="hl-7">from</span><span class="hl-1"> </span><span class="hl-3">&#39;buffer&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-2">const</span><span class="hl-1"> </span><span class="hl-4">buf</span><span class="hl-1"> = </span><span class="hl-5">Buffer</span><span class="hl-1">.</span><span class="hl-6">from</span><span class="hl-1">([</span><span class="hl-10">0x1</span><span class="hl-1">, </span><span class="hl-10">0x2</span><span class="hl-1">, </span><span class="hl-10">0x3</span><span class="hl-1">, </span><span class="hl-10">0x4</span><span class="hl-1">, </span><span class="hl-10">0x5</span><span class="hl-1">]);</span><br/><span class="hl-2">const</span><span class="hl-1"> </span><span class="hl-4">json</span><span class="hl-1"> = </span><span class="hl-4">JSON</span><span class="hl-1">.</span><span class="hl-6">stringify</span><span class="hl-1">(</span><span class="hl-5">buf</span><span class="hl-1">);</span><br/><br/><span class="hl-5">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-5">json</span><span class="hl-1">);</span><br/><span class="hl-0">// Prints: {&quot;type&quot;:&quot;Buffer&quot;,&quot;data&quot;:[1,2,3,4,5]}</span><br/><br/><span class="hl-2">const</span><span class="hl-1"> </span><span class="hl-4">copy</span><span class="hl-1"> = </span><span class="hl-4">JSON</span><span class="hl-1">.</span><span class="hl-6">parse</span><span class="hl-1">(</span><span class="hl-5">json</span><span class="hl-1">, (</span><span class="hl-5">key</span><span class="hl-1">, </span><span class="hl-5">value</span><span class="hl-1">) </span><span class="hl-2">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-7">return</span><span class="hl-1"> </span><span class="hl-5">value</span><span class="hl-1"> &amp;#</span><span class="hl-5">x26</span><span class="hl-1">;&amp;#</span><span class="hl-5">x26</span><span class="hl-1">; </span><span class="hl-5">value</span><span class="hl-1">.</span><span class="hl-5">type</span><span class="hl-1"> === </span><span class="hl-3">&#39;Buffer&#39;</span><span class="hl-1"> ?</span><br/><span class="hl-1">    </span><span class="hl-5">Buffer</span><span class="hl-1">.</span><span class="hl-6">from</span><span class="hl-1">(</span><span class="hl-5">value</span><span class="hl-1">) :</span><br/><span class="hl-1">    </span><span class="hl-5">value</span><span class="hl-1">;</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-5">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-5">copy</span><span class="hl-1">);</span><br/><span class="hl-0">// Prints: &lt;Buffer 01 02 03 04 05&gt;</span>
 </code></pre>
 
 <h3>Since</h3><p>v0.9.2</p>
