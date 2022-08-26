@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+import { Config } from './Config';
+
 export interface ConfigEventTypes {
-  'config.update': { key: string | symbol; value: any };
+  'config.update': {
+    config: Config;
+    key: string | number | symbol;
+    path: (string | number | symbol)[];
+    target: any;
+    value: any;
+  };
 }

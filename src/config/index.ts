@@ -30,15 +30,35 @@ const setted = window.WPPConfig || {};
 
 const merged = { ...defaultConfig, ...setted };
 
-export const config: Config = new Proxy<Config>(merged, {
-  set: (target, key, value) => {
+const createHander = <T>(path: (string | number | symbol)[] = []) => ({
+  get: (target: T, key: keyof T): any => {
+    if (key == 'isProxy') {
+      return true;
+    }
+
+    if (typeof target[key] === 'object' && target[key] != null) {
+      return new Proxy(target[key], createHander<any>([...path, key]));
+    }
+
+    return target[key];
+  },
+  set: (target: T, key: keyof T, value: any) => {
     target[key] = value;
+
     try {
-      internalEv.emitAsync('config.update', { key, value });
+      internalEv.emitAsync('config.update', {
+        config: config,
+        key,
+        path: [...path, key],
+        target,
+        value,
+      });
     } catch (error) {}
 
     return true;
   },
 });
+
+export const config: Config = new Proxy<Config>(merged, createHander<Config>());
 
 window.WPPConfig = config;
