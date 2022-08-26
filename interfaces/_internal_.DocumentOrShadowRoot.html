@@ -22,7 +22,7 @@
 <li><a href="../modules/_internal_.html" class="tsd-signature-type" data-tsd-kind="Namespace">&lt;internal&gt;</a><span class="tsd-signature-symbol">.</span><a href="_internal_.Document.html" class="tsd-signature-type" data-tsd-kind="Interface">Document</a></li>
 <li><a href="../modules/_internal_.html" class="tsd-signature-type" data-tsd-kind="Namespace">&lt;internal&gt;</a><span class="tsd-signature-symbol">.</span><a href="_internal_.ShadowRoot.html" class="tsd-signature-type" data-tsd-kind="Interface">ShadowRoot</a></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4728</li></ul></aside>
+<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4735</li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -31,6 +31,7 @@
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Properties</h3>
 <div class="tsd-index-list"><a href="_internal_.DocumentOrShadowRoot.html#activeElement" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface tsd-is-external"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF984D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-1024-path"></rect><path d="M9.354 16V7.24H12.174C12.99 7.24 13.638 7.476 14.118 7.948C14.606 8.412 14.85 9.036 14.85 9.82C14.85 10.604 14.606 11.232 14.118 11.704C13.638 12.168 12.99 12.4 12.174 12.4H10.434V16H9.354ZM10.434 11.428H12.174C12.646 11.428 13.022 11.284 13.302 10.996C13.59 10.7 13.734 10.308 13.734 9.82C13.734 9.324 13.59 8.932 13.302 8.644C13.022 8.356 12.646 8.212 12.174 8.212H10.434V11.428Z" fill="var(--color-text)" id="icon-1024-text"></path></svg><span>active<wbr/>Element</span></a>
+<a href="_internal_.DocumentOrShadowRoot.html#adoptedStyleSheets" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface tsd-is-external"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>adopted<wbr/>Style<wbr/>Sheets</span></a>
 <a href="_internal_.DocumentOrShadowRoot.html#fullscreenElement" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface tsd-is-external"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>fullscreen<wbr/>Element</span></a>
 <a href="_internal_.DocumentOrShadowRoot.html#pictureInPictureElement" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface tsd-is-external"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>picture<wbr/>In<wbr/>Picture<wbr/>Element</span></a>
 <a href="_internal_.DocumentOrShadowRoot.html#pointerLockElement" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface tsd-is-external"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>pointer<wbr/>Lock<wbr/>Element</span></a>
@@ -52,31 +53,36 @@
 <p>Similarly, when the focused element is in a different node tree than documentOrShadowRoot, the element returned will be the host that&#39;s located in the same node tree as documentOrShadowRoot if documentOrShadowRoot is a shadow-including inclusive ancestor of the focused element, and null if not.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4736</li></ul></aside></section>
+<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4743</li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a id="adoptedStyleSheets" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>adopted<wbr/>Style<wbr/>Sheets</span><a href="#adoptedStyleSheets" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<div class="tsd-signature">adopted<wbr/>Style<wbr/>Sheets<span class="tsd-signature-symbol">:</span> <a href="../modules/_internal_.html" class="tsd-signature-type" data-tsd-kind="Namespace">&lt;internal&gt;</a><span class="tsd-signature-symbol">.</span><a href="../variables/_internal_.CSSStyleSheet-1.html" class="tsd-signature-type" data-tsd-kind="Variable">CSSStyleSheet</a><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
+<ul>
+<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4744</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a id="fullscreenElement" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagReadonly">Readonly</code> <span>fullscreen<wbr/>Element</span><a href="#fullscreenElement" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">fullscreen<wbr/>Element<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../modules/_internal_.html" class="tsd-signature-type" data-tsd-kind="Namespace">&lt;internal&gt;</a><span class="tsd-signature-symbol">.</span><a href="../variables/_internal_.Element-1.html" class="tsd-signature-type" data-tsd-kind="Variable">Element</a></div>
 <div class="tsd-comment tsd-typography"><p>Returns document&#39;s fullscreen element.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4738</li></ul></aside></section>
+<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4746</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a id="pictureInPictureElement" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagReadonly">Readonly</code> <span>picture<wbr/>In<wbr/>Picture<wbr/>Element</span><a href="#pictureInPictureElement" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">picture<wbr/>In<wbr/>Picture<wbr/>Element<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../modules/_internal_.html" class="tsd-signature-type" data-tsd-kind="Namespace">&lt;internal&gt;</a><span class="tsd-signature-symbol">.</span><a href="../variables/_internal_.Element-1.html" class="tsd-signature-type" data-tsd-kind="Variable">Element</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4739</li></ul></aside></section>
+<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4747</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a id="pointerLockElement" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagReadonly">Readonly</code> <span>pointer<wbr/>Lock<wbr/>Element</span><a href="#pointerLockElement" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">pointer<wbr/>Lock<wbr/>Element<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../modules/_internal_.html" class="tsd-signature-type" data-tsd-kind="Namespace">&lt;internal&gt;</a><span class="tsd-signature-symbol">.</span><a href="../variables/_internal_.Element-1.html" class="tsd-signature-type" data-tsd-kind="Variable">Element</a></div><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4740</li></ul></aside></section>
+<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4748</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a id="styleSheets" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagReadonly">Readonly</code> <span>style<wbr/>Sheets</span><a href="#styleSheets" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">style<wbr/>Sheets<span class="tsd-signature-symbol">:</span> <a href="https://developer.mozilla.org/en-US/docs/Web/API/StyleSheetList" class="tsd-signature-type external" target="_blank">StyleSheetList</a></div>
 <div class="tsd-comment tsd-typography"><p>Retrieves a collection of styleSheet objects representing the style sheets that correspond to each instance of a link or style object in the document.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4742</li></ul></aside></section></section>
+<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4750</li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a id="elementFromPoint" class="tsd-anchor"></a>
@@ -99,7 +105,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../modules/_internal_.html" class="tsd-signature-type" data-tsd-kind="Namespace">&lt;internal&gt;</a><span class="tsd-signature-symbol">.</span><a href="../variables/_internal_.Element-1.html" class="tsd-signature-type" data-tsd-kind="Variable">Element</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4748</li></ul></aside></li></ul></section>
+<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4756</li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a id="elementsFromPoint" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>elements<wbr/>From<wbr/>Point</span><a href="#elementsFromPoint" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
@@ -114,7 +120,7 @@
 <h5>y: <span class="tsd-signature-type">number</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="../modules/_internal_.html" class="tsd-signature-type" data-tsd-kind="Namespace">&lt;internal&gt;</a><span class="tsd-signature-symbol">.</span><a href="../variables/_internal_.Element-1.html" class="tsd-signature-type" data-tsd-kind="Variable">Element</a><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4749</li></ul></aside></li></ul></section>
+<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4757</li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a id="getAnimations" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Animations</span><a href="#getAnimations" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
@@ -122,7 +128,7 @@
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <a href="../modules/_internal_.html" class="tsd-signature-type" data-tsd-kind="Namespace">&lt;internal&gt;</a><span class="tsd-signature-symbol">.</span><a href="../variables/_internal_.Animation-1.html" class="tsd-signature-type" data-tsd-kind="Variable">Animation</a><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4750</li></ul></aside></li></ul></section></section></div>
+<li>Defined in node_modules/typescript/lib/lib.dom.d.ts:4758</li></ul></aside></li></ul></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -179,6 +185,7 @@
 <li class="current tsd-kind-interface tsd-parent-kind-namespace tsd-is-external"><a href="_internal_.DocumentOrShadowRoot.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-interface)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-256-path"></rect><path d="M9.51 16V15.016H11.298V8.224H9.51V7.24H14.19V8.224H12.402V15.016H14.19V16H9.51Z" fill="var(--color-text)" id="icon-256-text"></path></svg><span>Document<wbr/>Or<wbr/>Shadow<wbr/>Root</span></a>
 <ul>
 <li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="_internal_.DocumentOrShadowRoot.html#activeElement" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>active<wbr/>Element</a></li>
+<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="_internal_.DocumentOrShadowRoot.html#adoptedStyleSheets" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>adopted<wbr/>Style<wbr/>Sheets</a></li>
 <li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="_internal_.DocumentOrShadowRoot.html#fullscreenElement" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>fullscreen<wbr/>Element</a></li>
 <li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="_internal_.DocumentOrShadowRoot.html#pictureInPictureElement" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>picture<wbr/>In<wbr/>Picture<wbr/>Element</a></li>
 <li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="_internal_.DocumentOrShadowRoot.html#pointerLockElement" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>pointer<wbr/>Lock<wbr/>Element</a></li>
