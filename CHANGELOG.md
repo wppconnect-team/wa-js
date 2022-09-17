@@ -1,5 +1,5 @@
-## 2.11.1 (2022-08-26)
+# 2.12.0 (2022-09-17)
 
-### Bug Fixes
+### Features
 
-- Fixed Google Analytics user properties ([73ab7cd](https://github.com/wppconnect-team/wa-js/commit/73ab7cd21d091748612310ce3987a1a1867e5c16))
+- Added WPP.conn.markAvailable and WPP.conn.markUnavailable functions ([019bd36](https://github.com/wppconnect-team/wa-js/commit/019bd36d618a5e6bef6ba640573cafb4bcc1c185))
