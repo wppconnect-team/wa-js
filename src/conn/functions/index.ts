@@ -24,6 +24,7 @@ export { isMainLoaded } from './isMainLoaded';
 export { isMainReady } from './isMainReady';
 export { isMultiDevice } from './isMultiDevice';
 export { logout } from './logout';
+export { markAvailable, markUnavailable } from './markAvailable';
 export { refreshQR } from './refreshQR';
 export { setKeepAlive } from './setKeepAlive';
 export { setMultiDevice } from './setMultiDevice';
