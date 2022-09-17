@@ -64,3 +64,23 @@ function applyPatch() {
     return func(...args);
   });
 }
+
+declare global {
+  interface Window {
+    stylex: any;
+  }
+}
+/**
+ * Fix for buttons for @whatsapp >= 2.2234.6
+ * This is an erro in whatsapp javascript files
+ */
+webpack.onInjected(() => {
+  if ('stylex' in window) {
+    return;
+  }
+  const stylexModule = webpack.search((m) => m.default.dedupe);
+  if (!stylexModule?.default) {
+    return;
+  }
+  window.stylex = stylexModule?.default;
+});
