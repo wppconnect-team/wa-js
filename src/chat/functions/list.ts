@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-import { ChatModel, ChatStore, LabelStore } from '../../whatsapp';
+import {
+  ChatModel,
+  ChatStore,
+  GroupMetadataStore,
+  LabelStore,
+} from '../../whatsapp';
 
 export interface ChatListOptions {
   onlyGroups?: boolean;
@@ -78,6 +83,12 @@ export async function list(
     });
 
     models = models.filter((c) => c.labels?.some((id) => ids.includes(id)));
+  }
+
+  for (const chat of models) {
+    if (chat.isGroup) {
+      await GroupMetadataStore.find(chat.id);
+    }
   }
 
   return models;

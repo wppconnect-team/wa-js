@@ -15,7 +15,7 @@
  */
 
 import { assertWid } from '../../assert';
-import { ChatModel, Wid } from '../../whatsapp';
+import { ChatModel, GroupMetadataStore, Wid } from '../../whatsapp';
 import { findChat } from '../../whatsapp/functions';
 
 /**
@@ -27,5 +27,11 @@ import { findChat } from '../../whatsapp/functions';
  */
 export async function find(chatId: string | Wid): Promise<ChatModel> {
   const wid = assertWid(chatId);
-  return findChat(wid);
+  const chat = await findChat(wid);
+
+  if (chat.isGroup) {
+    await GroupMetadataStore.find(chat.id);
+  }
+
+  return chat;
 }
