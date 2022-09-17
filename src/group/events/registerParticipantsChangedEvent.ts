@@ -16,6 +16,7 @@
 
 import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
+import { Wid } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { updateDBForGroupAction } from '../../whatsapp/functions';
 
@@ -30,11 +31,18 @@ function register() {
     let actionType = action.actionType || action.action;
     if (eventTypes.includes(actionType)) {
       queueMicrotask(() => {
+        const participants: Wid[] = action.participants.map((p) => {
+          if ('id' in p) {
+            return p.id;
+          }
+          return p;
+        });
+
         if (actionType === 'add' && action.isInvite) {
           actionType = 'join';
         } else if (
           actionType === 'remove' &&
-          action.participants.some((p) => p.equals(meta.author))
+          participants.some((p) => p.equals(meta.author))
         ) {
           actionType = 'leave';
         }
@@ -45,7 +53,7 @@ function register() {
           groupId: meta.chatId.toString(),
           action: actionType as any,
           operation: (action.actionType || action.action) as any,
-          participants: action.participants.map((p) => p.toString()),
+          participants: participants.map((p) => p.toString()),
         });
       });
     }

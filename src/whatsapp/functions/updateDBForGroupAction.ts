@@ -17,12 +17,24 @@
 import { exportModule } from '../exportModule';
 import { Wid } from '../misc';
 
+/**
+ * GroupActionParticipant for @whatsapp >= 2.2234.6
+ */
+export interface GroupActionParticipant {
+  id: Wid;
+  isAdmin: boolean;
+  isSuperAdmin: boolean;
+}
+
 export interface GroupActionChange {
   action: string;
   actionType: string; // @whatsapp >= 2.2224.6
   isInvite?: boolean;
   isLinkedGroupJoin?: boolean;
-  participants: Wid[];
+  /**
+   * GroupActionParticipant for @whatsapp >= 2.2234.6
+   */
+  participants: Wid[] | GroupActionParticipant[];
   prevVersion: number;
   version: number;
 }
