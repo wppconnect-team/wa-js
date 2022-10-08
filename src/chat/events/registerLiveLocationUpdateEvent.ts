@@ -19,12 +19,12 @@ import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
 import {
   ChatStore,
-  Clock,
   LiveLocationStore,
   MsgModel,
   MsgStore,
   Wid,
 } from '../../whatsapp';
+import { unixTime } from '../../whatsapp/functions';
 
 webpack.onInjected(() => registerLiveLocationUpdateEvent());
 
@@ -51,7 +51,7 @@ function processLocation(e: LocationUpdate | LocationDisable) {
   if (e.type === 'update') {
     internalEv.emit('chat.live_location_update', {
       id: e.jid,
-      lastUpdated: Clock.globalUnixTime() - e.elapsed,
+      lastUpdated: unixTime() - e.elapsed,
       elapsed: e.elapsed,
       lat: e.lat,
       lng: e.lng,

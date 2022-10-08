@@ -17,8 +17,8 @@
 import Debug from 'debug';
 
 import { config } from '../config';
-import { Base64, Clock, OpaqueData } from '../whatsapp';
-import { uploadThumbnail } from '../whatsapp/functions';
+import { Base64, OpaqueData } from '../whatsapp';
+import { unixTime, uploadThumbnail } from '../whatsapp/functions';
 import { downloadImage } from './downloadImage';
 import { fetchDataFromPNG } from './fetchDataFromPNG';
 
@@ -173,7 +173,7 @@ export async function generateThumbnailLinkPreviewData(url: string) {
     (window.crypto.getRandomValues(e),
     {
       key: Base64.encodeB64(e),
-      timestamp: Clock.globalUnixTime(),
+      timestamp: unixTime(),
     });
 
   const abort = new AbortController();

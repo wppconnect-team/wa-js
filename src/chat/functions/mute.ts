@@ -16,7 +16,8 @@
 
 import { assertGetChat, assertWid } from '../../assert';
 import { WPPError } from '../../util';
-import { Clock, Wid } from '../../whatsapp';
+import { Wid } from '../../whatsapp';
+import { unixTime } from '../../whatsapp/functions';
 
 /**
  * Mute a chat, you can use duration or expiration
@@ -55,12 +56,12 @@ export async function mute(
       expiration = time.expiration.getTime() / 1000;
     }
   } else if ('duration' in time) {
-    expiration = Clock.globalUnixTime() + time.duration;
+    expiration = unixTime() + time.duration;
   } else {
     throw new WPPError('invalid_time_mute', 'Invalid time for mute', { time });
   }
 
-  if (expiration < Clock.globalUnixTime()) {
+  if (expiration < unixTime()) {
     throw new WPPError('negative_time_mute', 'Negative duration for mute', {
       time,
     });
