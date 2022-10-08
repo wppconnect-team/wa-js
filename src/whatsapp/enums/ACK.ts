@@ -66,5 +66,5 @@ exportModule(
     EDIT_ATTR: ['EDIT_ATTR', 'default.EDIT_ATTR'],
     ACK_STRING: ['ACK_STRING', 'default.ACK_STRING'],
   },
-  (m) => m.ACK || m.default.ACK
+  (m) => (m.ACK && m.ACK_STRING) || (m.default.ACK && m.default.ACK_STRING)
 );
