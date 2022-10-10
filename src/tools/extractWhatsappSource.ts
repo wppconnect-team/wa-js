@@ -31,13 +31,17 @@ declare global {
 const WA_VERSION = process.env['WA_VERSION'] || waVersion.getLatestVersion();
 
 async function start() {
+  const args = process.argv.slice(2);
+
   if (!fs.existsSync(WA_DIR)) {
     fs.mkdirSync(WA_DIR);
   }
 
   const options = await prettier.resolveConfig(process.cwd());
 
-  const { browser, page } = await getPage();
+  const { browser, page } = await getPage({
+    args,
+  });
 
   page.on('response', async (response) => {
     const contentType = response.headers()['content-type'] || '';
