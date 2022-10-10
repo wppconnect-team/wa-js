@@ -26,11 +26,30 @@ export declare function unixTime(): number;
  */
 export declare function unixTimeMs(): number;
 
+let exported = false;
+
 exportModule(
   exports,
   {
     unixTime: ['unixTime', 'Clock.globalUnixTime'],
     unixTimeMs: ['unixTimeMs', 'Clock.globalUnixTimeMilliseconds'],
   },
-  (m) => m.unixTime || m.Clock?.globalUnixTime
+  (m) => {
+    if (m.unixTime) {
+      return true;
+    }
+
+    /**
+     * Fix binding from method to function call
+     * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+     */
+    if (!exported && m.Clock?.globalUnixTime) {
+      exported = true;
+      m.Clock.globalUnixTime = m.Clock.globalUnixTime.bind(m.Clock);
+      m.Clock.globalUnixTimeMilliseconds =
+        m.Clock.globalUnixTimeMilliseconds.bind(m.Clock);
+    }
+
+    return m.Clock?.globalUnixTime;
+  }
 );
