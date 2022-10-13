@@ -72,6 +72,7 @@ export async function sendCreatePollMessage(
     pollOptions: choices.map((name, localId) => ({ name, localId })),
     pollEncKey: self.crypto.getRandomValues(new Uint8Array(32)),
     pollSelectableOptionsCount: options.selectableCount || 0,
+    messageSecret: self.crypto.getRandomValues(new Uint8Array(32)),
   };
 
   return await sendRawMessage(chatId, rawMessage, options);
