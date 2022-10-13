@@ -1,5 +1,5 @@
-## 2.13.1 (2022-10-10)
+## 2.13.2 (2022-10-13)
 
 ### Bug Fixes
 
-- Fixed unixTime function for WhatsApp < 2.2238.5 ([bf42f51](https://github.com/wppconnect-team/wa-js/commit/bf42f51db46bc24041b3426080d61bc4790335ed))
+- Fixed WPP.chat.sendCreatePollMessage function ([b688d95](https://github.com/wppconnect-team/wa-js/commit/b688d957a13d0a56311649d55ffd042fc6f3bea3))
