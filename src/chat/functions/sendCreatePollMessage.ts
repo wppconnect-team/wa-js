@@ -22,7 +22,9 @@ import {
 } from '..';
 import { sendRawMessage } from '.';
 
-export type PoolMessageOptions = SendMessageOptions;
+export interface PoolMessageOptions extends SendMessageOptions {
+  selectableCount?: number;
+}
 
 /**
  * Send a create poll message
@@ -36,6 +38,18 @@ export type PoolMessageOptions = SendMessageOptions;
  *  '[number]@g.us',
  *  'A poll name',
  *  ['Option 1', 'Option 2', 'Option 3']
+ * );
+ * ```
+ * // Selectable Count
+ * ```javascript
+ * // Single pool
+ * WPP.chat.sendCreatePollMessage(
+ *  '[number]@g.us',
+ *  'A poll name',
+ *  ['Option 1', 'Option 2', 'Option 3'],
+ *  {
+ *    selectableCount: 1,
+ *  }
  * );
  * ```
  *
@@ -57,7 +71,7 @@ export async function sendCreatePollMessage(
     pollName: name,
     pollOptions: choices.map((name, localId) => ({ name, localId })),
     pollEncKey: self.crypto.getRandomValues(new Uint8Array(32)),
-    pollSelectableOptionsCount: 0,
+    pollSelectableOptionsCount: options.selectableCount || 0,
   };
 
   return await sendRawMessage(chatId, rawMessage, options);
