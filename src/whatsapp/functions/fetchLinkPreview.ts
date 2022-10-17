@@ -47,7 +47,7 @@ exportModule(
   (m, id) => {
     const source: string = webpack.moduleSource(id);
     return (
-      source.includes('.queryLinkPreview') &&
+      source.includes('.genMinimalLinkPreview') &&
       source.includes('.getProductOrCatalogLinkPreview')
     );
   }
