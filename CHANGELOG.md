@@ -1,5 +1,5 @@
-## 2.13.2 (2022-10-13)
+## 2.13.3 (2022-10-17)
 
 ### Bug Fixes
 
-- Fixed WPP.chat.sendCreatePollMessage function ([b688d95](https://github.com/wppconnect-team/wa-js/commit/b688d957a13d0a56311649d55ffd042fc6f3bea3))
+- Fixed generated message ID for groups ([aceeb89](https://github.com/wppconnect-team/wa-js/commit/aceeb896886565708095f307f2ed621148b58571))
