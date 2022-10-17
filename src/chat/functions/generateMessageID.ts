@@ -15,7 +15,7 @@
  */
 
 import { assertWid } from '../../assert';
-import { ChatModel, MsgKey, UserPrefs, Wid } from '../../whatsapp';
+import { ChatModel, MsgKey, UserPrefs, Wid, WidFactory } from '../../whatsapp';
 import { randomMessageId } from '../../whatsapp/functions';
 
 /**
@@ -24,6 +24,7 @@ import { randomMessageId } from '../../whatsapp/functions';
  * @category Message
  */
 export function generateMessageID(chat: string | ChatModel | Wid): MsgKey {
+  const from = UserPrefs.getMaybeMeUser();
   let to: Wid;
 
   if (chat instanceof Wid) {
@@ -34,10 +35,17 @@ export function generateMessageID(chat: string | ChatModel | Wid): MsgKey {
     to = assertWid(chat);
   }
 
+  let participant = undefined;
+
+  if (to.isGroup()) {
+    participant = WidFactory.toUserWid(from);
+  }
+
   return new MsgKey({
-    from: UserPrefs.getMaybeMeUser(),
-    to: to,
+    from,
+    to,
     id: randomMessageId(),
+    participant,
     selfDir: 'out',
   });
 }
