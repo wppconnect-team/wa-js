@@ -15,8 +15,7 @@
  */
 
 import { assertWid } from '../../assert';
-import { isMultiDevice } from '../../conn';
-import { Wap, Wid } from '../../whatsapp';
+import { Wid } from '../../whatsapp';
 import { sendQueryExists } from '../../whatsapp/functions';
 
 export interface QueryExistsResult {
@@ -63,35 +62,7 @@ export async function queryExists(
     return cache.get(id)!;
   }
 
-  let result: QueryExistsResult | null = null;
-
-  if (!isMultiDevice()) {
-    const query = await Wap.queryExist(id);
-    if (query.status === 200) {
-      result = {
-        wid: query.jid,
-        biz: query.biz || false,
-      };
-
-      // @todo: Migrate condition to isDisappearingModeEnabled()
-      if (result) {
-        const disappearing = await Wap.queryDisappearingMode(wid).catch(
-          () => null
-        );
-
-        if (disappearing?.status === 200) {
-          result.disappearingMode = {
-            duration: disappearing.duration!,
-            settingTimestamp: disappearing.settingTimestamp!,
-          };
-        }
-      }
-    }
-  }
-
-  if (!result) {
-    result = await sendQueryExists(wid).catch(() => null);
-  }
+  const result = await sendQueryExists(wid).catch(() => null);
 
   cache.set(id, result);
 

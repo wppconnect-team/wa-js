@@ -43,11 +43,7 @@ exportModule(
   {
     sendQueryExists: [
       'queryExists', // @whatsapp >= 2.2208.7
-      'default',
     ],
   },
-  (m) =>
-    m.default?.toString().includes('Should not reach queryExists MD') ||
-    m.queryExists?.toString().includes('Should not reach queryExists MD') || // @whatsapp >= 2.2208.7
-    (m.queryExists && m.queryPhoneExists) // @whatsapp >= 2.2211.2
+  (m) => m.queryExists && m.queryPhoneExists // @whatsapp >= 2.2211.2
 );
