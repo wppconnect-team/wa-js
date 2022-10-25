@@ -50,7 +50,7 @@ jobs:
               (v) => semver.satisfies(v, supportedVersion, {includePrerelease: true})
             );
 
-            return versions
+            return versions.reverse()
 
     outputs:
       versions: ${{ steps.versions.outputs.result }}
