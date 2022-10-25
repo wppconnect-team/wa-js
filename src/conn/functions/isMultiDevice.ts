@@ -14,8 +14,20 @@
  * limitations under the License.
  */
 
-import { isMDBackend } from '../../whatsapp/functions';
+import * as webpack from '../../webpack';
 
 export function isMultiDevice(): boolean {
-  return isMDBackend();
+  /**
+   * backward compatibility with < 2.2241.6
+   */
+  const m = webpack.search((m) => m.isMDBackend);
+
+  if (m?.isMDBackend) {
+    return m.isMDBackend();
+  }
+
+  /**
+   * always true for >= 2.2241.6
+   */
+  return true;
 }
