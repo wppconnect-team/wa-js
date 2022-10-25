@@ -32,7 +32,6 @@ const debug = Debug('WA-JS:link-preview');
  */
 const defaultApiServers = [
   'https://linkpreview.ddns.info',
-  'https://linkpreview.eletroinfo.site',
   'https://linkpreview.hps.net.br',
   'https://wajsapi.titanwhats.com.br',
   'https://wppc-linkpreview.cloudtrix.com.br',
