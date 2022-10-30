@@ -36,6 +36,7 @@ export * from './getOrGenerate';
 export * from './groupParticipants';
 export * from './handleAck';
 export * from './isAuthenticated';
+export * from './isRegistered';
 export * from './markSeen';
 export * from './mediaTypeFromProtobuf';
 export * from './msgFindQuery';

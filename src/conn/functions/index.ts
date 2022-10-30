@@ -23,6 +23,7 @@ export { isIdle } from './isIdle';
 export { isMainLoaded } from './isMainLoaded';
 export { isMainReady } from './isMainReady';
 export { isMultiDevice } from './isMultiDevice';
+export { isRegistered } from './isRegistered';
 export { logout } from './logout';
 export { markAvailable, markUnavailable } from './markAvailable';
 export { refreshQR } from './refreshQR';
