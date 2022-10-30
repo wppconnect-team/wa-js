@@ -17,6 +17,7 @@
 export { archive, unarchive } from './archive';
 export { canMarkPlayed } from './canMarkPlayed';
 export { canMute } from './canMute';
+export { canReply } from './canReply';
 export { clear } from './clear';
 export { delete } from './delete';
 export { deleteMessage, DeleteMessageReturn } from './deleteMessage';
