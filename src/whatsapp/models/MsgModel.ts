@@ -335,7 +335,7 @@ export declare class MsgModel extends Model {
   hasSymbol(): boolean;
   mayFail(): any;
   isUnsentPhoneMsg(): boolean;
-  canReply(): boolean;
+  canReply?(): boolean;
   canPrivateReply(): boolean;
   canPrivateReplyInRestrictedGrp(): boolean;
   canForward(): boolean;

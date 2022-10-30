@@ -19,7 +19,7 @@ import { getParticipants } from '../../group';
 import { WPPError } from '../../util';
 import { ChatModel, MsgKey, MsgModel, UserPrefs, Wid } from '../../whatsapp';
 import { ACK } from '../../whatsapp/enums';
-import { unixTime } from '../../whatsapp/functions';
+import { canReplyMsg, unixTime } from '../../whatsapp/functions';
 import { defaultSendMessageOptions, RawMessage, SendMessageOptions } from '..';
 import { generateMessageID, getMessageById } from '.';
 
@@ -160,7 +160,7 @@ export async function prepareRawMessage<T extends RawMessage>(
       });
     }
 
-    if (!options.quotedMsg?.isStatusV3 && !options.quotedMsg.canReply()) {
+    if (!options.quotedMsg?.isStatusV3 && !canReplyMsg(options.quotedMsg)) {
       throw new WPPError(
         'quoted_msg_can_not_reply',
         'QuotedMsg can not reply',
