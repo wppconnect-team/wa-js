@@ -55,6 +55,11 @@ export let webpackRequire: (<T = any>(moduleId: string) => T) & {
   e: (id: string) => Promise<void>;
 };
 
+/**
+ * Fallback modules for forward compatibility
+ */
+export const fallbackModules: { [key: string]: any } = {};
+
 export function injectLoader(): void {
   if (isInjected) {
     return;
@@ -173,6 +178,23 @@ export function searchId(
       continue;
     }
   }
+
+  ids = Object.keys(fallbackModules);
+
+  for (const moduleId of ids) {
+    try {
+      const module = fallbackModules[moduleId];
+
+      if (condition(module, moduleId)) {
+        debug(`Fallback Module found: ${moduleId} - ${condition.toString()}`);
+        clearTimeout(timer);
+        return moduleId;
+      }
+    } catch (error) {
+      continue;
+    }
+  }
+
   debug(`Module not found: ${condition.toString()}`);
   return null;
 }
@@ -188,11 +210,11 @@ export function search<T = any>(
 ): T | null {
   const moduleId = searchId(condition, reverse);
 
-  if (moduleId) {
-    return webpackRequire(moduleId) as T;
+  if (!moduleId) {
+    return null;
   }
 
-  return null;
+  return loadModule<T>(moduleId);
 }
 /**
  * Return the webpack module from a search function
@@ -216,7 +238,7 @@ export function modules(
     }
 
     try {
-      const module = webpackRequire(moduleId);
+      const module = loadModule(moduleId);
 
       if (!condition || condition(module, moduleId)) {
         modules[moduleId] = module;
@@ -232,4 +254,31 @@ export function modules(
   );
 
   return modules;
+}
+
+export function loadModule<T = any>(moduleId: string) {
+  const module = /^\d+$/.test(moduleId)
+    ? webpackRequire(moduleId)
+    : fallbackModules[moduleId];
+
+  return module as T;
+}
+
+/**
+ * Inject a new module content
+ * @param moduleId Module ID
+ * @param content The module content
+ * @returns
+ */
+export function injectFallbackModule(
+  moduleId: number | string,
+  content: any
+): void {
+  moduleId = moduleId + '';
+
+  if (/^\d+$/.test(moduleId)) {
+    throw new Error('Invalid fallback ID');
+  }
+
+  fallbackModules[moduleId] = content;
 }

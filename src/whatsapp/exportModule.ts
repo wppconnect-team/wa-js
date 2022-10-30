@@ -68,7 +68,7 @@ export function exportModule(
           return undefined;
         }
 
-        const module = webpack.webpackRequire(moduleId);
+        const module = webpack.loadModule(moduleId);
 
         if (Array.isArray(property)) {
           for (const p of property) {
@@ -188,7 +188,7 @@ export function wrapModuleFunction<TFunc extends (...args: any[]) => any>(
     return;
   }
 
-  const module = webpack.webpackRequire(moduleId);
+  const module = webpack.loadModule(moduleId);
 
   const functionPath = functionPathMap.get(func);
 
