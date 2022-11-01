@@ -150,7 +150,6 @@ export declare class ChatModel extends ModelChatBase {
     key?: MsgKey;
     highlightMsg: true;
   };
-  sendStarMsgs(msgs: MsgModel[], star: boolean): any;
   sendRevokeMsgs(
     messages: MsgModel[],
     deleteMediaInDevice?: boolean

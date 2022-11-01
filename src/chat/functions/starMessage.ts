@@ -15,7 +15,7 @@
  */
 
 import { assertGetChat } from '../../assert';
-import { MsgModel } from '../../whatsapp';
+import { Cmd, MsgModel } from '../../whatsapp';
 import { getMessageById } from '.';
 
 export interface StarMessageReturn {
@@ -91,7 +91,15 @@ export async function starMessage(
     const chat = assertGetChat(chatId);
     const msgs = msgsPerChat[chatId];
 
-    await chat.sendStarMsgs(msgs, star);
+    if (star) {
+      Cmd.sendStarMsgs(chat, msgs);
+    } else {
+      Cmd.sendUnstarMsgs(chat, msgs);
+    }
+
+    if (chat.promises.sendStarMsgs) {
+      await chat.promises.sendStarMsgs;
+    }
   }
 
   if (isSingle) {
