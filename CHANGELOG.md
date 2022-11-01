@@ -1,5 +1,5 @@
-# 2.14.0 (2022-10-30)
+## 2.14.1 (2022-11-01)
 
-### Features
+### Bug Fixes
 
-- Added WPP.conn.isRegistered function ([44c4664](https://github.com/wppconnect-team/wa-js/commit/44c46649047464c230565ca143418e72417bea99))
+- Fixed WPP.chat.starMessage function (fix [#729](https://github.com/wppconnect-team/wa-js/issues/729)) ([bfa6969](https://github.com/wppconnect-team/wa-js/commit/bfa69697e8adbc8e2da82b4a9984d46daf01d79f))
