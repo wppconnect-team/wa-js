@@ -16,6 +16,7 @@
 
 import { assertFindChat, assertWid } from '../../assert';
 import { Cmd, Wid } from '../../whatsapp';
+import { getSearchContext } from '../../whatsapp/functions';
 import { getMessageById } from '.';
 
 /**
@@ -38,7 +39,7 @@ export async function openChatAt(
 
   const msg = await getMessageById(messageId);
 
-  const result = chat.getSearchContext(msg);
+  const result = getSearchContext(chat, msg);
 
   return await Cmd.openChatAt(chat, result);
 }

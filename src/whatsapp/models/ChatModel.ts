@@ -139,7 +139,7 @@ export declare class ChatModel extends ModelChatBase {
   loadEarlierMsgs(e?: any, t?: any): any;
   isMostRecentCMC(e?: any): boolean;
   loadRecentMsgs(e?: any): any;
-  getSearchContext(
+  getSearchContext?(
     msg: MsgModel | MsgKey,
     options?: {
       isQuotedMsgAvailable: boolean;

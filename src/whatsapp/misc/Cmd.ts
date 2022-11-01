@@ -16,6 +16,7 @@
 
 import { ChatModel } from '..';
 import { exportModule } from '../exportModule';
+import { getSearchContext } from '../functions';
 import { MsgModel } from '../models';
 import { EventEmitter } from '.';
 
@@ -72,7 +73,7 @@ export declare class CmdClass extends EventEmitter {
   _openChat(e?: any, t?: any): void;
   openChatAt(
     chat: ChatModel,
-    context: ReturnType<ChatModel['getSearchContext']>
+    context: ReturnType<typeof getSearchContext>
   ): Promise<boolean>;
   openChatFromUnread(chat: ChatModel): Promise<boolean>;
   openChatBottom(chat: ChatModel): Promise<boolean>;
