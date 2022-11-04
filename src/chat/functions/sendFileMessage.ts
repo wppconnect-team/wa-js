@@ -17,12 +17,16 @@
 import Debug from 'debug';
 
 import { assertFindChat, assertGetChat } from '../../assert';
-import { getVideoInfoFromBuffer } from '../../util';
+import { blobToArrayBuffer, getVideoInfoFromBuffer } from '../../util';
 import { convertToFile } from '../../util/convertToFile';
 import * as webpack from '../../webpack';
 import { MediaPrep, MsgModel, OpaqueData } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
-import { generateVideoThumbsAndDuration } from '../../whatsapp/functions';
+import {
+  generateVideoThumbsAndDuration,
+  isAnimatedWebp,
+  processRawSticker,
+} from '../../whatsapp/functions';
 import {
   defaultSendMessageOptions,
   RawMessage,
@@ -328,5 +332,21 @@ webpack.onReady(() => {
 
       throw error;
     }
+  });
+
+  wrapModuleFunction(processRawSticker, async (func, ...args) => {
+    const [data] = args;
+    const result = await func(...args);
+
+    if (data.type() === 'image/webp') {
+      const blob = data.forceToBlob();
+      const buffer = await blobToArrayBuffer(blob);
+
+      if (isAnimatedWebp(buffer)) {
+        result.mediaBlob = await OpaqueData.createFromData(blob, data.type());
+      }
+    }
+
+    return result;
   });
 });

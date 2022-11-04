@@ -44,10 +44,12 @@ export async function downloadMedia(id: string): Promise<Blob> {
 
   let blob: Blob | null = null;
 
-  if (msg.mediaData.mediaBlob) {
-    blob = msg.mediaData.mediaBlob.forceToBlob();
-  } else if (msg.mediaData.filehash) {
+  if (msg.mediaData.filehash) {
     blob = MediaBlobCache.get(msg.mediaData.filehash);
+  }
+
+  if (!blob && msg.mediaData.mediaBlob) {
+    blob = msg.mediaData.mediaBlob.forceToBlob();
   }
 
   if (!blob && msg.mediaObject?.type === 'VIDEO') {

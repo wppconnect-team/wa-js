@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2022 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
-export * from './blobToArrayBuffer';
-export * from './blobToBase64';
-export * from './convertToFile';
-export * from './createWid';
-export * from './downloadImage';
-export * from './errors';
-export * from './fetchDataFromPNG';
-export * from './getVideoInfoFromBuffer';
-export * from './isBase64';
-export * from './resizeImage';
-export * from './types';
-export * from './wrapFunction';
+import { exportModule } from '../exportModule';
+import { OpaqueData } from '../misc';
+
+/**
+ * @whatsapp 232294 >= 2.2242.6
+ */
+export declare function processRawSticker(data: OpaqueData): Promise<{
+  type: 'sticker';
+  mediaBlob: OpaqueData;
+  mimetype: string;
+  fullWidth: number;
+  fullHeight: number;
+}>;
+
+exportModule(
+  exports,
+  {
+    processRawSticker: 'processRawSticker',
+  },
+  (m) => m.processRawSticker
+);

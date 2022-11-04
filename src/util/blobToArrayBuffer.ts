@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-export * from './blobToArrayBuffer';
-export * from './blobToBase64';
-export * from './convertToFile';
-export * from './createWid';
-export * from './downloadImage';
-export * from './errors';
-export * from './fetchDataFromPNG';
-export * from './getVideoInfoFromBuffer';
-export * from './isBase64';
-export * from './resizeImage';
-export * from './types';
-export * from './wrapFunction';
+export function blobToArrayBuffer(blob: Blob): Promise<ArrayBuffer> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = function () {
+      resolve(reader.result as ArrayBuffer);
+    };
+    reader.onabort = reject;
+    reader.onerror = reject;
+    reader.readAsArrayBuffer(blob);
+  });
+}

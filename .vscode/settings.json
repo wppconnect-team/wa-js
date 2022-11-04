@@ -2,7 +2,8 @@
   "[javascript]": {
     "editor.maxTokenizationLineLength": 2500,
     "editor.bracketPairColorization.enabled": false,
-    "editor.guides.bracketPairs": false
+    "editor.guides.bracketPairs": false,
+    "editor.stickyScroll.enabled": false
   },
   "search.useIgnoreFiles": false,
   "search.exclude": {
