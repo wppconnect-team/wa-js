@@ -22,7 +22,7 @@ import { ProfilePicThumbStore, Wid } from '../../whatsapp';
  *
  * @example
  * ```javascript
- * const url = await WPP.contact.getProfilePicture('[number]@c.us');
+ * const url = await WPP.contact.getProfilePictureUrl('[number]@c.us');
  * ```
  *
  * @category Chat
