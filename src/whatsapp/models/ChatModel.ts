@@ -183,7 +183,11 @@ export declare class ChatModel extends ModelChatBase {
     i?: any,
     n?: any
   ): any;
-  forwardMessages(e?: any, t?: boolean): any;
+  forwardMessages(
+    msgs: MsgModel[],
+    multicast?: any,
+    displayCaptionText?: boolean
+  ): any;
   updateReadOnly(): any;
   updateIsAnnounceGrpRestrict(): any;
   sortMsgs(e?: any): any;

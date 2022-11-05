@@ -15,7 +15,7 @@
  */
 
 import { exportModule } from '../exportModule';
-import { ChatModel } from '../models';
+import { ChatModel, MsgModel } from '../models';
 import { BaseCollection } from './BaseCollection';
 
 /** @whatsapp 69951
@@ -34,7 +34,11 @@ export declare class ChatCollection extends BaseCollection<ChatModel> {
   getKeysForResyncMsgs(): any;
   resyncMessages(): any;
   unstarAllMessages(e?: any, t?: any): any;
-  forwardMessagesToChats(e?: any, t?: any): any;
+  forwardMessagesToChats(
+    msgs: MsgModel[],
+    chats: ChatModel[],
+    displayCaptionText?: boolean
+  ): any;
 }
 
 exportModule(
