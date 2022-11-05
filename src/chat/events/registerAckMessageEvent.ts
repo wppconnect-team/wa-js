@@ -62,6 +62,7 @@ function registerAckMessageEvent() {
           id,
           remote,
           fromMe,
+          participant: ackData.participant,
         })
     );
 
