@@ -37,6 +37,7 @@ export * from './LabelItemCollection';
 export * from './LiveLocationCollection';
 export * from './MsgCollection';
 export * from './MsgInfoCollection';
+export * from './MsgInfoParticipantCollection';
 export * from './MuteCollection';
 export * from './OrderCollection';
 export * from './OrderItemCollection';

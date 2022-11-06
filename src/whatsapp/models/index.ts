@@ -41,6 +41,7 @@ export * from './Model';
 export * from './ModelChatBase';
 export * from './MsgButtonReplyMsgModel';
 export * from './MsgInfoModel';
+export * from './MsgInfoParticipantModel';
 export * from './MsgModel';
 export * from './MuteModel';
 export * from './OrderItemModel';

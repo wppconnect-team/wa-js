@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-import {
-  MsgInfoCollection,
-  MsgInfoParticipantCollection,
-} from '../collections';
+import { MsgInfoCollection } from '../collections';
 import { exportProxyModel } from '../exportModule';
-import { MsgKey } from '../misc';
+import { Wid } from '../misc';
+import { ContactModel } from './ContactModel';
 import {
   Model,
   ModelOptions,
@@ -28,44 +26,31 @@ import {
 } from './Model';
 
 interface Props {
-  id: MsgKey;
-  usePlayReceipt?: any;
-  playedRemaining: number;
-  readRemaining: number;
-  deliveryRemaining: number;
-  deliveryPrivacyMode?: any;
+  id: Wid;
+  t: number;
 }
 
 interface Session {
-  stale?: any;
+  contact: ContactModel;
 }
 
-interface Derived {
-  settled?: any;
-}
+interface Derived {}
 
 /**
- * @whatsapp 54311
- * @whatsapp 754311 >= 2.2222.8
  * @whatsapp 738482 >= 2.2242.6
  */
-export declare interface MsgInfoModel
+export declare interface MsgInfoParticipantModel
   extends ModelProxy<Props, Session, Derived> {}
 
 /**
- * @whatsapp 54311
- * @whatsapp 738482 >= 2.2222.8
+ * @whatsapp 738482 >= 2.2242.6
  */
-export declare class MsgInfoModel extends Model<MsgInfoCollection> {
-  idClass: typeof MsgKey;
-  played: MsgInfoParticipantCollection;
-  read: MsgInfoParticipantCollection;
-  delivery: MsgInfoParticipantCollection;
+export declare class MsgInfoParticipantModel extends Model<MsgInfoCollection> {
   constructor(
-    proterties?: ModelPropertiesContructor<MsgInfoModel>,
+    proterties?: ModelPropertiesContructor<MsgInfoParticipantModel>,
     options?: ModelOptions
   );
   getCollection(): MsgInfoCollection;
 }
 
-exportProxyModel(exports, 'MsgInfoModel');
+exportProxyModel(exports, 'MsgInfoParticipantModel');

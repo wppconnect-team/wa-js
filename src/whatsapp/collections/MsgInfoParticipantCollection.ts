@@ -15,20 +15,21 @@
  */
 
 import { exportModule } from '../exportModule';
-import { MsgInfoModel } from '../models';
-import { BaseCollection } from './BaseCollection';
+import { MsgInfoParticipantModel } from '../models';
+import { Collection } from './Collection';
 
 /**
- * @whatsapp 617972 >= 2.2222.8
- * @whatsapp 739245 >= 2.2242.6
+ * @whatsapp 738482 >= 2.2242.6
  */
-export declare class MsgInfoCollection extends BaseCollection<MsgInfoModel> {
-  static model: MsgInfoModel;
-  static staleCollection?: any;
-  updateInfo(e?: any, t?: any, r?: any, a?: any, i?: any, n?: any): any;
+export declare class MsgInfoParticipantCollection extends Collection<MsgInfoParticipantModel> {
+  static model: MsgInfoParticipantModel;
+  static comparator(): any;
 }
+
 exportModule(
   exports,
-  { MsgInfoCollection: 'MsgInfoCollectionImpl' },
-  (m) => m.MsgInfoCollectionImpl
+  {
+    ParticipantCollection: ['ParticipantCollection'],
+  },
+  (m) => m.ParticipantCollection
 );
