@@ -18,9 +18,11 @@ import { exportModule } from '../exportModule';
 import { ParticipantModel } from '../models';
 import { Collection } from './Collection';
 
-/** @whatsapp 96091
+/**
+ * @whatsapp 96091
  * @whatsapp 54311 >= 2.2212.8
  * @whatsapp 754311 >= 2.2222.8
+ * @whatsapp 164560 >= 2.2242.6
  */
 export declare class ParticipantCollection extends Collection<ParticipantModel> {
   static model: ParticipantModel;
@@ -41,10 +43,7 @@ export declare class ParticipantCollection extends Collection<ParticipantModel> 
 exportModule(
   exports,
   {
-    ParticipantCollection: [
-      'ParticipantCollectionImpl',
-      'ParticipantCollection',
-    ],
+    ParticipantCollection: ['default'],
   },
-  (m) => m.ParticipantCollectionImpl || m.ParticipantCollection
+  (m) => m.default.prototype.iAmMember
 );
