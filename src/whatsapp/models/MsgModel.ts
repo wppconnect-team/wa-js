@@ -20,6 +20,7 @@ import {
   MsgCollection,
   TemplateButtonCollection,
 } from '../collections';
+import { ACK } from '../enums';
 import { exportProxyModel } from '../exportModule';
 import { MediaObject, MsgKey, Wid } from '../misc';
 import { ChatModel, MediaDataModel } from '.';
@@ -45,7 +46,7 @@ interface Props {
   /**
    * See {@link Constants}
    */
-  ack?: number;
+  ack?: ACK;
   invis?: any;
   isNewMsg: boolean;
   star?: any;

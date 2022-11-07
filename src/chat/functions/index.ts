@@ -27,6 +27,7 @@ export { forwardMessage, ForwardMessagesOptions } from './forwardMessage';
 export { generateMessageID } from './generateMessageID';
 export { get } from './get';
 export { getLastSeen } from './getLastSeen';
+export { getMessageACK } from './getMessageACK';
 export { getMessageById } from './getMessageById';
 export { getMessages, GetMessagesOptions } from './getMessages';
 export { getPlatformFromMessage } from './getPlatformFromMessage';
