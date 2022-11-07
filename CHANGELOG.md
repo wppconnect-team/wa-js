@@ -1,5 +1,5 @@
-## 2.14.1 (2022-11-01)
+# 2.15.0 (2022-11-07)
 
-### Bug Fixes
+### Features
 
-- Fixed WPP.chat.starMessage function (fix [#729](https://github.com/wppconnect-team/wa-js/issues/729)) ([bfa6969](https://github.com/wppconnect-team/wa-js/commit/bfa69697e8adbc8e2da82b4a9984d46daf01d79f))
+- Added WPP.chat.getMessageACK function (close [#697](https://github.com/wppconnect-team/wa-js/issues/697)) ([ffc378f](https://github.com/wppconnect-team/wa-js/commit/ffc378f9ea5b8a2be31e7fa1846381dff6ef9cd6))
