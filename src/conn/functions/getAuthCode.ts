@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-import { Base64, Browser, Conn } from '../../whatsapp';
-import { getOrGenerate } from '../../whatsapp/functions';
+import { Base64, Conn } from '../../whatsapp';
 import { adv, waNoiseInfo, waSignalStore } from '../../whatsapp/multidevice';
 import { AuthCode } from '..';
-import { isAuthenticated, isMultiDevice } from '.';
+import { isAuthenticated, isMultiDevice, isRegistered } from '.';
 
 /**
  * Return the current auth code
@@ -26,7 +25,7 @@ import { isAuthenticated, isMultiDevice } from '.';
  * @return  {Promise<AuthCode>}[return description]
  */
 export async function getAuthCode(): Promise<AuthCode | null> {
-  if (!Conn.ref || Conn.connected || isAuthenticated()) {
+  if (!Conn.ref || Conn.connected || isAuthenticated() || isRegistered()) {
     return null;
   }
 
@@ -54,16 +53,5 @@ export async function getAuthCode(): Promise<AuthCode | null> {
     };
   }
 
-  const keyPair = getOrGenerate();
-  const browserId = Browser.id();
-
-  const fullCode = [ref, keyPair, browserId].join(',');
-
-  return {
-    type: 'single',
-    ref,
-    keyPair,
-    browserId,
-    fullCode,
-  };
+  return null;
 }

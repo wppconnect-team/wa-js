@@ -110,8 +110,6 @@ export declare const RecentStickerStore: collections.RecentStickerCollection;
  * @whatsapp 719011 >= 2.2222.8
  */
 export declare const StarredMsgStore: collections.StarredMsgCollection;
-/** @whatsapp 16774 */
-export declare const StarredStickerStore: collections.StarredStickerCollection;
 /** @whatsapp 46133 */
 export declare const StatusStore: collections.StatusCollection;
 /** @whatsapp 59387
@@ -154,7 +152,6 @@ const storeNames = [
   'QuickReplyStore',
   'ReactionsStore',
   'RecentEmojiStore',
-  'StarredStickerStore',
   'StatusStore',
   'StatusV3Store',
   'StickerStore',

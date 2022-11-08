@@ -54,7 +54,6 @@ export * from './ReactionsSendersCollection';
 export * from './RecentEmojiCollection';
 export * from './RecentStickerCollection';
 export * from './StarredMsgCollection';
-export * from './StarredStickerCollection';
 export * from './StatusCollection';
 export * from './StatusV3Collection';
 export * from './StickerCollection';
