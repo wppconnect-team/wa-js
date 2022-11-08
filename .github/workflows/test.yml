@@ -46,9 +46,11 @@ jobs:
 
             const supportedVersion = packageJSON.engines['whatsapp-web'];
             const allVersions = waVersion.getAvailableVersions();
-            const versions = allVersions.filter(
+            let versions = allVersions.filter(
               (v) => semver.satisfies(v, supportedVersion, {includePrerelease: true})
             );
+            versions = versions.map(v => v.split('.').slice(0, -1).join('.') + '.x');
+            versions = versions.filter((v,i,a)=>a.indexOf(v)==i);
 
             return versions.reverse()
 
