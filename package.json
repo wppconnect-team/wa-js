@@ -63,7 +63,7 @@
     "eslint-plugin-simple-import-sort": "^8.0.0",
     "eventemitter2": "^6.4.9",
     "file-type": "~16.5.4",
-    "husky": "^8.0.1",
+    "husky": "^8.0.2",
     "parse-data-url": "^4.0.1",
     "playwright-chromium": "^1.27.1",
     "prettier": "^2.7.1",
