@@ -65,6 +65,9 @@ export function exportModule(
           const description = `Module ${name} was not found with ${condition.toString()}`;
           console.error(description);
           trackException(description);
+          Object.defineProperty(this, name, {
+            get: () => undefined,
+          });
           return undefined;
         }
 
@@ -84,6 +87,9 @@ export function exportModule(
             )} was not found for ${name} in module ${moduleId}`;
             console.error(description);
             trackException(description);
+            Object.defineProperty(this, name, {
+              get: () => undefined,
+            });
             return undefined;
           }
         } else {
@@ -95,6 +101,9 @@ export function exportModule(
                 const description = `Property ${property} was not found for ${name} in module ${moduleId}`;
                 console.error(description);
                 trackException(description);
+                Object.defineProperty(this, name, {
+                  get: () => undefined,
+                });
                 return undefined;
               }
               functionPath = property;
@@ -121,6 +130,9 @@ export function exportModule(
           return valueFn();
         }
 
+        Object.defineProperty(this, name, {
+          get: () => undefined,
+        });
         return undefined;
       },
     });
