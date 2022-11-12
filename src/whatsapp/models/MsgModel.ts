@@ -359,7 +359,7 @@ export declare class MsgModel extends Model {
   waitForPrep(): any;
   quotedMsgObj(): any;
   getQuotedMsgAdminGroupJid(): any;
-  msgContextInfo(e?: any): any;
+  msgContextInfo(chatId: Wid): any;
   displayName(e?: any, t?: any): any;
   isQuoted(e?: any): boolean;
   isMentioned(e?: any): boolean;

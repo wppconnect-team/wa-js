@@ -172,7 +172,7 @@ export async function prepareRawMessage<T extends RawMessage>(
 
     message = {
       ...message,
-      ...options.quotedMsg.msgContextInfo(chat),
+      ...options.quotedMsg.msgContextInfo(chat.id),
     };
   }
 
