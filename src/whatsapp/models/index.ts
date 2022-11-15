@@ -32,6 +32,7 @@ export * from './ContactModel';
 export * from './ConversionTupleModel';
 export * from './EmojiVariantModel';
 export * from './GroupMetadataModel';
+export * from './HistorySyncProgressModel';
 export * from './LabelItemModel';
 export * from './LabelModel';
 export * from './LiveLocationModel';

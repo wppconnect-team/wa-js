@@ -32,6 +32,7 @@ export * from './generateVideoThumbsAndDuration';
 export * from './genMinimalLinkPreview';
 export * from './getFanOutList';
 export * from './getGroupSenderKeyList';
+export * from './getHistorySyncProgress';
 export * from './getSearchContext';
 export * from './groupParticipants';
 export * from './handleAck';
