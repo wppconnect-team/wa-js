@@ -28,7 +28,7 @@ jobs:
       - name: Get npm cache directory
         id: npm-cache
         run: |
-          echo "::set-output name=dir::$(npm config get cache)"
+          echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
       - name: Setup npm cache
         uses: actions/cache@v3
         with:
@@ -52,10 +52,9 @@ jobs:
         id: generate_changelog
         run: |
           changelog=$(npm run changelog:last --silent)
-          changelog="${changelog//$'\n'/'%0A'}"
-          changelog="${changelog//$'\r'/'%0D'}" 
-          echo -e "set-output name=changelog::${changelog-<empty>}\n"
-          echo -e "::set-output name=changelog::${changelog}\n"
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "${changelog}" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create Release
         uses: meeDamian/github-release@2.0
