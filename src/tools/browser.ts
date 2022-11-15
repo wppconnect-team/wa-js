@@ -107,6 +107,11 @@ export async function getPage(options?: LaunchArguments[1]) {
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     navigator.serviceWorker.register = new Promise(() => {});
+
+    setInterval(() => {
+      window.onerror = console.error;
+      window.onunhandledrejection = console.error;
+    }, 500);
   });
 
   page.on('domcontentloaded', async (page) => {
