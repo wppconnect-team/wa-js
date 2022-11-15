@@ -88,50 +88,26 @@ export declare function handleGroupSimpleReceipt(
 exportModule(
   exports,
   {
-    handleStatusSimpleAck: [
-      'handleStatusSimpleReceipt', // @whatsapp >= 2.2222.8
-      'handleStatusSimpleAck',
-    ],
-    handleStatusSimpleReceipt: [
-      'handleStatusSimpleReceipt', // @whatsapp >= 2.2222.8
-      'handleStatusSimpleAck',
-    ],
+    handleStatusSimpleAck: ['handleStatusSimpleReceipt'],
+    handleStatusSimpleReceipt: ['handleStatusSimpleReceipt'],
   },
-  (m) =>
-    m.handleStatusSimpleReceipt || // @whatsapp >= 2.2222.8
-    m.handleStatusSimpleAck
+  (m) => m.handleStatusSimpleReceipt
 );
 
 exportModule(
   exports,
   {
-    handleChatSimpleAck: [
-      'handleChatSimpleReceipt', // @whatsapp >= 2.2222.8
-      'handleChatSimpleAck',
-    ],
-    handleChatSimpleReceipt: [
-      'handleChatSimpleReceipt', // @whatsapp >= 2.2222.8
-      'handleChatSimpleAck',
-    ],
+    handleChatSimpleAck: ['handleChatSimpleReceipt'],
+    handleChatSimpleReceipt: ['handleChatSimpleReceipt'],
   },
-  (m) =>
-    m.handleChatSimpleReceipt || // @whatsapp >= 2.2222.8
-    m.handleChatSimpleAck
+  (m) => m.handleChatSimpleReceipt
 );
 
 exportModule(
   exports,
   {
-    handleGroupSimpleAck: [
-      'handleGroupSimpleReceipt', // @whatsapp >= 2.2222.8
-      'handleGroupSimpleAck',
-    ],
-    handleGroupSimpleReceipt: [
-      'handleGroupSimpleReceipt', // @whatsapp >= 2.2222.8
-      'handleGroupSimpleAck',
-    ],
+    handleGroupSimpleAck: ['handleGroupSimpleReceipt'],
+    handleGroupSimpleReceipt: ['handleGroupSimpleReceipt'],
   },
-  (m) =>
-    m.handleGroupSimpleReceipt || // @whatsapp >= 2.2222.8
-    m.handleGroupSimpleAck
+  (m) => m.handleGroupSimpleReceipt
 );

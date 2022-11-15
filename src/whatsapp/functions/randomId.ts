@@ -25,14 +25,7 @@ export declare function randomMessageId(): string;
 exportModule(
   exports,
   {
-    randomMessageId: [
-      'newTag', // old
-      'default.newId', // @whatsapp >= 2.2208.7
-      'default', // old
-    ],
+    randomMessageId: ['default.newId'],
   },
-  (m) =>
-    m.randomId ||
-    (m.default.toString().includes('MsgKey error: obj is null/undefined') &&
-      m.default.newId) // @whatsapp >= 2.2208.7
+  (m) => m.default.newId
 );
