@@ -26,6 +26,7 @@ export { isMultiDevice } from './isMultiDevice';
 export { isRegistered } from './isRegistered';
 export { logout } from './logout';
 export { markAvailable, markUnavailable } from './markAvailable';
+export { needsUpdate } from './needsUpdate';
 export { refreshQR } from './refreshQR';
 export { setKeepAlive } from './setKeepAlive';
 export { setMultiDevice } from './setMultiDevice';

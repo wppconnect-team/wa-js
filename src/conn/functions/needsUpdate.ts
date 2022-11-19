@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2022 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 
-import './registerAuthCodeChangeEvent';
-import './registerAuthenticatedEvent';
-import './registerLogoutEvent';
-import './registerMainLoadedEvent';
-import './registerMainReadyEvent';
-import './registerNeedsUpdateEvent';
-import './registerQRCodeIdleEvent';
-import './registerRequireAuthEvent';
+import { Stream } from '../../whatsapp';
+
+/**
+ * Check if whatsapp web is asking for update
+ *
+ * @example
+ * ```javascript
+ * const needsUpdate = WPP.conn.needsUpdate();
+ * ```
+ */
+export function needsUpdate(): boolean {
+  return Stream.needsUpdate;
+}

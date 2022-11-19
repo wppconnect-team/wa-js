@@ -52,6 +52,17 @@ export interface ConnEventTypes {
    * ```
    */
   'conn.main_ready': undefined;
+  /**
+   * Triggered when a whatsapp web update is requested
+   *
+   * @example
+   * ```javascript
+   * WPP.on('conn.needs_update', () => {
+   *   // Your code
+   * });
+   * ```
+   */
+  'conn.needs_update': undefined;
   'conn.qrcode_idle': undefined;
   'conn.require_auth': undefined;
 }
