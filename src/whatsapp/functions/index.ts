@@ -17,6 +17,7 @@
 export * from './addAndSendMsgToChat';
 export * from './blockContact';
 export * from './calculateFilehashFromBlob';
+export * from './canEditMessage';
 export * from './canReplyMsg';
 export * from './collections';
 export * from './createMsgProtobuf';
@@ -55,6 +56,7 @@ export * from './sendDelete';
 export * from './sendExitGroup';
 export * from './sendGroupParticipants';
 export * from './sendJoinGroupViaInvite';
+export * from './sendMessageEdit';
 export * from './sendQueryExists';
 export * from './sendQueryGroupInvite';
 export * from './sendReactionToMsg';
