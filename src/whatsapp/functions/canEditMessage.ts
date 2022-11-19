@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+import * as webpack from '../../webpack';
 import { exportModule } from '../exportModule';
 import { MsgModel } from '../models';
 
-/** @whatsapp 591988
+/**
+ * @whatsapp 591988 >= 2.2244.5
  */
 export declare function canEditMessage(msg: MsgModel): boolean;
 
@@ -28,3 +30,14 @@ exportModule(
   },
   (m) => m.canEditMessage
 );
+
+webpack.injectFallbackModule('canEditMessage', {
+  canEditMessage: (msg: MsgModel) => {
+    if (!msg.isSentByMe) return false;
+    if (msg.type !== 'chat') return false;
+    if (msg.isForwarded) return false;
+    if ('out' !== msg.self) return false;
+    if (new Date().getTime() / 1e3 > msg.t! + 900) return false;
+    return true;
+  },
+});
