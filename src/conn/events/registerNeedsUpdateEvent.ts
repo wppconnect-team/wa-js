@@ -14,11 +14,20 @@
  * limitations under the License.
  */
 
-import './registerAuthCodeChangeEvent';
-import './registerAuthenticatedEvent';
-import './registerLogoutEvent';
-import './registerMainLoadedEvent';
-import './registerMainReadyEvent';
-import './registerNeedsUpdateEvent';
-import './registerQRCodeIdleEvent';
-import './registerRequireAuthEvent';
+import { internalEv } from '../../eventEmitter';
+import * as webpack from '../../webpack';
+import { Stream } from '../../whatsapp';
+
+webpack.onInjected(register);
+
+function register() {
+  const trigger = async () => {
+    internalEv.emit('conn.needs_update');
+  };
+
+  if (Stream.needsUpdate) {
+    trigger();
+  } else {
+    Stream.on('change:needsUpdate', trigger);
+  }
+}
