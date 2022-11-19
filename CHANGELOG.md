@@ -1,5 +1,5 @@
-## 2.15.2 (2022-11-12)
+# 2.16.0 (2022-11-19)
 
-### Bug Fixes
+### Features
 
-- Fixed quoted message response (fix [#737](https://github.com/wppconnect-team/wa-js/issues/737)) ([c7ddbfd](https://github.com/wppconnect-team/wa-js/commit/c7ddbfd556ea39a93048d1e61f343dec641d66d1))
+- Added WPP.chat.requestPhoneNumber function ([4723eac](https://github.com/wppconnect-team/wa-js/commit/4723eac3c7035a914cff8343a30af82554eef1ee))
