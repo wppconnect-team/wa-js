@@ -38,6 +38,8 @@ export interface QueryExistsResult {
 
 const cache = new Map<string, QueryExistsResult | null>();
 
+let useInternationalMode: boolean | null = null;
+
 /**
  * Check if the number exists and what is correct ID
  *
@@ -62,7 +64,30 @@ export async function queryExists(
     return cache.get(id)!;
   }
 
-  const result = await sendQueryExists(wid).catch(() => null);
+  /**
+   * @whatsapp >= 2.2244.5
+   * Since 2.2244.5 there are a problem with queryExists function,
+   * that not prepend the `+` sign
+   */
+  if (useInternationalMode === null) {
+    const source = sendQueryExists.toString();
+
+    useInternationalMode = !/`\+\$\{\w+\.toString\(\)\}`/.test(source);
+  }
+
+  let result: QueryExistsResult | null = null;
+
+  if (useInternationalMode) {
+    const internationalWid = assertWid(contactId);
+
+    internationalWid.toString = () => `+${internationalWid._serialized}`;
+
+    result = await sendQueryExists(internationalWid).catch(() => null);
+  }
+
+  if (!result) {
+    result = await sendQueryExists(wid).catch(() => null);
+  }
 
   cache.set(id, result);
 
