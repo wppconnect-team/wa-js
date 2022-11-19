@@ -15,15 +15,18 @@
  */
 
 import { WPPError } from '../../util';
-import { ChatModel, MsgKey, MsgModel, Wid } from '../../whatsapp';
+import { MsgKey } from '../../whatsapp';
+import { canEditMessage } from '../../whatsapp/functions';
 import {
-  canEditMessage,
-  fetchLinkPreview,
-  findFirstWebLink,
-  sendMessageEdit,
-} from '../../whatsapp/functions';
-import { LinkPreviewOptions, RawMessage } from '..';
-import { getMessageById, prepareRawMessage } from '.';
+  defaultSendMessageOptions,
+  LinkPreviewOptions,
+  RawMessage,
+  SendMessageOptions,
+  SendMessageReturn,
+} from '..';
+import { getMessageById, prepareRawMessage, sendRawMessage } from '.';
+
+export type EditMessageOptions = SendMessageOptions & LinkPreviewOptions;
 
 /**
  * Send a text message
@@ -38,51 +41,32 @@ import { getMessageById, prepareRawMessage } from '.';
  */
 export async function editMessage(
   msgId: string | MsgKey,
-  newText: any,
-  options?: LinkPreviewOptions & { mentionedJidList?: Wid[] }
-): Promise<MsgModel> {
+  newText: string,
+  options: EditMessageOptions = {}
+): Promise<SendMessageReturn> {
+  options = {
+    ...defaultSendMessageOptions,
+    ...options,
+  };
+
   const msg = await getMessageById(msgId);
 
   const canEdit = canEditMessage(msg);
   if (!canEdit) {
     throw new WPPError(`edit_message_error`, `Cannot edit this message`);
   }
-  let jidList: Wid[] | undefined = [];
-  let linkPreview: any = false;
 
-  if (options?.mentionedJidList) {
-    const rawMessage: RawMessage = {
-      body: newText,
-      type: 'chat',
-    };
+  let rawMessage: RawMessage = {
+    type: 'protocol',
+    subtype: 'message_edit',
+    protocolMessageKey: msg.id,
+    body: newText.trim(),
+  };
 
-    const raw = await prepareRawMessage(msg.chat as ChatModel, rawMessage, {
-      mentionedList: options.mentionedJidList,
-    });
-    jidList = raw.mentionedJidList;
-  }
+  rawMessage = await prepareRawMessage(msg.chat!, rawMessage, options);
 
-  if (options?.linkPreview != false) {
-    const override =
-      typeof options?.linkPreview === 'object' ? options.linkPreview : {};
+  rawMessage.latestEditMsgKey = rawMessage.id;
+  rawMessage.latestEditSenderTimestampMs = rawMessage.t;
 
-    if (newText) {
-      try {
-        const link = findFirstWebLink(newText);
-        if (link) {
-          const preview = await fetchLinkPreview(link);
-          if (preview?.data) {
-            linkPreview = { ...preview.data, ...override };
-          }
-        }
-      } catch (error) {}
-    }
-  }
-
-  await sendMessageEdit(msg as MsgModel, newText, {
-    linkPreview: linkPreview,
-    mentionedJidList: jidList as any,
-  });
-
-  return await getMessageById(msgId);
+  return await sendRawMessage(msg.chat?.id, rawMessage, options);
 }

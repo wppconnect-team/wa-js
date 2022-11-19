@@ -56,7 +56,6 @@ export * from './sendDelete';
 export * from './sendExitGroup';
 export * from './sendGroupParticipants';
 export * from './sendJoinGroupViaInvite';
-export * from './sendMessageEdit';
 export * from './sendQueryExists';
 export * from './sendQueryGroupInvite';
 export * from './sendReactionToMsg';
