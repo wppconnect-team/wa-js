@@ -41,6 +41,8 @@ export declare class Wid {
 
   isCompanion(): boolean;
 
+  isSameAccount(wid: Wid): boolean;
+
   isGreaterThan(wid: unknown): boolean;
 
   isGroup(): boolean;
@@ -58,6 +60,10 @@ export declare class Wid {
   isStatusV3(): boolean;
 
   isUser(): boolean;
+
+  isLid(): boolean;
+
+  isUserNotPSA(): boolean;
 
   server: string;
 
@@ -92,6 +98,8 @@ export declare class Wid {
   static isStatusV3(wid: string | Wid): boolean;
 
   static isUser(wid: string | Wid): boolean;
+
+  static isLid(wid: string | Wid): boolean;
 
   static isWid(wid: string | Wid): boolean;
 

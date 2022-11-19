@@ -44,4 +44,6 @@ export function createWid(
   if (/status$/.test(id)) {
     return WidFactory.createUserWid(id, 'broadcast');
   }
+
+  return WidFactory.createWid(id);
 }
