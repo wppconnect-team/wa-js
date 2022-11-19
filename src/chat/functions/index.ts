@@ -22,6 +22,7 @@ export { clear } from './clear';
 export { delete } from './delete';
 export { deleteMessage, DeleteMessageReturn } from './deleteMessage';
 export { downloadMedia } from './downloadMedia';
+export { editMessage } from './editMessage';
 export { find } from './find';
 export { forwardMessage, ForwardMessagesOptions } from './forwardMessage';
 export { generateMessageID } from './generateMessageID';
