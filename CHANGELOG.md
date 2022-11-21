@@ -1,5 +1,5 @@
-# 2.16.0 (2022-11-19)
+## 2.16.1 (2022-11-21)
 
-### Features
+### Bug Fixes
 
-- Added WPP.chat.requestPhoneNumber function ([4723eac](https://github.com/wppconnect-team/wa-js/commit/4723eac3c7035a914cff8343a30af82554eef1ee))
+- Fixed DataCloneError error after WPP.contact.queryExists call ([fabe916](https://github.com/wppconnect-team/wa-js/commit/fabe916ed8c52e4dfc3d3fb13afc7d9c54422251))
