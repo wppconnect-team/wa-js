@@ -80,9 +80,25 @@ export async function queryExists(
   if (useInternationalMode) {
     const internationalWid = assertWid(contactId);
 
-    internationalWid.toString = () => `+${internationalWid._serialized}`;
+    // Make a backup of original method
+    const originalToString = internationalWid.toString;
+
+    // Change 'toString' function without enumerating it
+    Object.defineProperty(internationalWid, 'toString', {
+      configurable: true,
+      enumerable: false,
+      value: () => `+${internationalWid._serialized}`,
+    });
 
     result = await sendQueryExists(internationalWid).catch(() => null);
+
+    // Restore 'toString' function without enumerating it
+    // Note: using `internationalWid = toString` make it enumerable
+    Object.defineProperty(internationalWid, 'toString', {
+      configurable: true,
+      enumerable: false,
+      value: originalToString,
+    });
   }
 
   if (!result) {
