@@ -1,5 +1,5 @@
-## 2.16.1 (2022-11-21)
+## 2.16.2 (2022-11-23)
 
-### Bug Fixes
+### Features
 
-- Fixed DataCloneError error after WPP.contact.queryExists call ([fabe916](https://github.com/wppconnect-team/wa-js/commit/fabe916ed8c52e4dfc3d3fb13afc7d9c54422251))
+- Exported getQuotedMsgObj function ([9ea80a2](https://github.com/wppconnect-team/wa-js/commit/9ea80a27a8d4d2357f44da09e54ac1f18e1b95c1))
