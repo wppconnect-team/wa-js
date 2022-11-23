@@ -357,7 +357,10 @@ export declare class MsgModel extends Model {
   downloadMedia(e?: any): any;
   applyUpdate(e?: any): any;
   waitForPrep(): any;
-  quotedMsgObj(): any;
+  /**
+   * @whatsapp < 2.2245.8
+   */
+  quotedMsgObj?(): any;
   getQuotedMsgAdminGroupJid(): any;
   msgContextInfo(chatId: Wid): any;
   displayName(e?: any, t?: any): any;
