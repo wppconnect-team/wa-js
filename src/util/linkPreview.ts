@@ -34,7 +34,6 @@ const defaultApiServers = [
   'https://linkpreview.ddns.info',
   'https://linkpreview.hps.net.br',
   'https://wajsapi.titanwhats.com.br',
-  'https://wppc-linkpreview.cloudtrix.com.br',
 ];
 
 const apiServers = config.linkPreviewApiServers || defaultApiServers;
