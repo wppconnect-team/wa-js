@@ -1,5 +1,5 @@
-## 2.16.2 (2022-11-23)
+## 2.16.3 (2022-12-01)
 
-### Features
+### Bug Fixes
 
-- Exported getQuotedMsgObj function ([9ea80a2](https://github.com/wppconnect-team/wa-js/commit/9ea80a27a8d4d2357f44da09e54ac1f18e1b95c1))
+- Fixed buttons/list reply is not flagging chat as unread (fix [#768](https://github.com/wppconnect-team/wa-js/issues/768)) ([3c3cd94](https://github.com/wppconnect-team/wa-js/commit/3c3cd94f5ff92bf1668d3c92a8c3ca0de024c309))
