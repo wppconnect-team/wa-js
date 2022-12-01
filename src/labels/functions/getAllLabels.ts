@@ -24,7 +24,7 @@ export async function getAllLabels(): Promise<Label[]> {
     return {
       id: e.id!,
       name: e.name!,
-      color: assertColor(e.hexColor),
+      color: e.hexColor ? assertColor(e.hexColor) : null,
       count: e.count || 0,
       hexColor: e.hexColor,
     };

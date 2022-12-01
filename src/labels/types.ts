@@ -17,7 +17,7 @@
 export interface Label {
   id: string;
   name: string;
-  color: number;
+  color: number | null;
   count: number;
   hexColor: string;
 }
