@@ -41,6 +41,7 @@ export * from './handleAck';
 export * from './isAnimatedWebp';
 export * from './isAuthenticated';
 export * from './isRegistered';
+export * from './isUnreadTypeMsg';
 export * from './markSeen';
 export * from './mediaTypeFromProtobuf';
 export * from './msgFindQuery';
