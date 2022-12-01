@@ -17,6 +17,7 @@
 import * as webpack from '../webpack';
 import { wrapModuleFunction } from '../whatsapp/exportModule';
 import {
+  isUnreadTypeMsg,
   mediaTypeFromProtobuf,
   typeAttributeFromProtobuf,
 } from '../whatsapp/functions';
@@ -59,6 +60,23 @@ function applyPatch() {
     if (proto.viewOnceMessage) {
       const { message: n } = proto.viewOnceMessage;
       return n ? typeAttributeFromProtobuf(n) : 'text';
+    }
+
+    return func(...args);
+  });
+
+  /**
+   * Reinforce unread messages for buttons and lists
+   */
+  wrapModuleFunction(isUnreadTypeMsg, (func, ...args) => {
+    const [msg] = args;
+
+    switch (msg.type) {
+      case 'buttons_response':
+      case 'list':
+      case 'list_response':
+      case 'template_button_reply':
+        return true;
     }
 
     return func(...args);
