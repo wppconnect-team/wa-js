@@ -31,6 +31,17 @@ export interface ConnEventTypes {
   'conn.authenticated': undefined;
   'conn.logout': undefined;
   /**
+   * Triggered when the interface is booting
+   *
+   * @example
+   * ```javascript
+   * WPP.on('conn.main_init', () => {
+   *   // Your code
+   * });
+   * ```
+   */
+  'conn.main_init': undefined;
+  /**
    * Triggered when the main interface is loaded, but is syncing
    *
    * @example

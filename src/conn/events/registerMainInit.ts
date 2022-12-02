@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
-import './registerAuthCodeChangeEvent';
-import './registerAuthenticatedEvent';
-import './registerLogoutEvent';
-import './registerMainInit';
-import './registerMainLoadedEvent';
-import './registerMainReadyEvent';
-import './registerNeedsUpdateEvent';
-import './registerQRCodeIdleEvent';
-import './registerRequireAuthEvent';
+import { internalEv } from '../../eventEmitter';
+import * as webpack from '../../webpack';
+
+webpack.onInjected(register);
+
+function register() {
+  const check = setInterval(() => {
+    const version = (window as any).Debug?.VERSION;
+
+    if (version) {
+      clearInterval(check);
+      internalEv.emit('conn.main_init');
+    }
+  }, 100);
+}

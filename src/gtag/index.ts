@@ -41,10 +41,13 @@ internalEv.on('webpack.injected', () => {
   mainTracker.setUserProperty('method', method);
   mainTracker.setUserProperty('wa_js', waVersion);
   mainTracker.setUserProperty('powered_by', config.poweredBy || '-');
-  mainTracker.setUserProperty(
-    'whatsapp',
-    (window as any).Debug?.VERSION || '-'
-  );
+
+  internalEv.on('conn.main_init', () => {
+    mainTracker.setUserProperty(
+      'whatsapp',
+      (window as any).Debug?.VERSION || '-'
+    );
+  });
 
   mainTracker.trackEvent('page_view', { authenticated, method });
 
@@ -52,10 +55,12 @@ internalEv.on('webpack.injected', () => {
     otherTracker.setUserProperty('method', method);
     otherTracker.setUserProperty('wa_js', waVersion);
     otherTracker.setUserProperty('powered_by', config.poweredBy || '-');
-    otherTracker.setUserProperty(
-      'whatsapp',
-      (window as any).Debug?.VERSION || '-'
-    );
+    internalEv.on('conn.main_init', () => {
+      otherTracker.setUserProperty(
+        'whatsapp',
+        (window as any).Debug?.VERSION || '-'
+      );
+    });
 
     if (typeof config.googleAnalyticsUserProperty === 'object') {
       for (const key in config.googleAnalyticsUserProperty) {
