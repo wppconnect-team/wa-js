@@ -22,4 +22,4 @@ import { SocketModel } from '../models';
  */
 export declare const Socket: SocketModel;
 
-exportModule(exports, { Socket: 'Socket' }, (m) => m.Socket?.initConn);
+exportModule(exports, { Socket: 'Socket' }, (m) => m.Socket);
