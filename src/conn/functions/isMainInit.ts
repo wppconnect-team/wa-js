@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
-import { isMainInit } from '../functions';
-
-webpack.onInjected(register);
-
-function register() {
-  const check = setInterval(() => {
-    if (isMainInit()) {
-      clearInterval(check);
-      internalEv.emit('conn.main_init');
-    }
-  }, 100);
+/**
+ * Check is main interface is initializing
+ *
+ * @example
+ * ```javascript
+ * const isMainInit = WPP.conn.isMainInit();
+ * ```
+ */
+export function isMainInit(): boolean {
+  return Boolean((window as any).Debug?.VERSION);
 }
