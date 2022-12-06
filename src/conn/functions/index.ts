@@ -15,6 +15,10 @@
  */
 
 export { getAuthCode } from './getAuthCode';
+export {
+  getHistorySyncProgress,
+  HistorySyncProgress,
+} from './getHistorySyncProgress';
 export { getMyDeviceId } from './getMyDeviceId';
 export { getMyUserId } from './getMyUserId';
 export { getPlatform } from './getPlatform';

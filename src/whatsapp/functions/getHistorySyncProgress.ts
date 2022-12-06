@@ -15,11 +15,12 @@
  */
 
 import { exportModule } from '../exportModule';
+import { HistorySyncProgressModel } from '../models';
 
 /**
  * @whatsapp 649959 >= 2.2244.5
  */
-export declare function getHistorySyncProgress(): any;
+export declare function getHistorySyncProgress(): HistorySyncProgressModel;
 
 exportModule(
   exports,
