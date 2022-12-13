@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2022 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@ function register() {
     for (const d of data) {
       try {
         internalEv.emitAsync('chat.poll_response', {
-          id: d.msgKey,
-          parentMsgId: d.parentMsgKey,
+          msgId: d.parentMsgKey,
+          chatId: d.parentMsgKey.remote,
           selectedOptions: d.selectedOptionLocalIds,
           timestamp: d.senderTimestampMs,
           sender: d.sender,

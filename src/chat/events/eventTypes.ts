@@ -144,8 +144,8 @@ export interface ChatEventTypes {
    * On Poll response
    */
   'chat.poll_response': {
-    id: MsgKey;
-    parentMsgId: MsgKey;
+    msgId: MsgKey;
+    chatId: Wid;
     selectedOptions: number[];
     timestamp: number;
     sender: Wid;

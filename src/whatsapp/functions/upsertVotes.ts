@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2022 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 import { exportModule } from '../exportModule';
 import { MsgKey, Wid } from '../misc';
 
-export interface voteData {
+export interface VoteData {
   ack: number;
   msgKey: MsgKey;
   parentMsgKey: MsgKey;
@@ -27,9 +27,9 @@ export interface voteData {
 }
 /**
  * @whatsapp 479261
- * @whatsapp 479261 >= 2.2244.6
+ * @whatsapp 479261 >= 2.2230
  */
-export declare function upsertVotes(args: voteData[]): Promise<any>;
+export declare function upsertVotes(args: VoteData[]): Promise<any>;
 
 exportModule(
   exports,
