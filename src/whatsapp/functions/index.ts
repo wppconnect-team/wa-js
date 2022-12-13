@@ -36,6 +36,7 @@ export * from './getGroupSenderKeyList';
 export * from './getHistorySyncProgress';
 export * from './getQuotedMsgObj';
 export * from './getSearchContext';
+export * from './getVotes';
 export * from './groupParticipants';
 export * from './handleAck';
 export * from './isAnimatedWebp';
