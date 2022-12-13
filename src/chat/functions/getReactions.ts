@@ -85,6 +85,6 @@ export async function getReactions(msgId: string): Promise<{
           timestamp: reactions.reactionByMe.timestamp as number,
         }
       : undefined,
-    ...returnData,
+    reactions: returnData,
   };
 }
