@@ -139,4 +139,15 @@ export interface ChatEventTypes {
       shortName: string;
     }[];
   };
+
+  /**
+   * On Poll response
+   */
+  'chat.poll_response': {
+    msgId: MsgKey;
+    chatId: Wid;
+    selectedOptions: number[];
+    timestamp: number;
+    sender: Wid;
+  };
 }

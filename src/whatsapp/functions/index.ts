@@ -74,3 +74,4 @@ export * from './updateDBForGroupAction';
 export * from './updateParticipants';
 export * from './uploadProductImage';
 export * from './uploadThumbnail';
+export * from './upsertVotes';

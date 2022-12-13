@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2022 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,27 @@
  * limitations under the License.
  */
 
-import './registerAckMessageEvent';
-import './registerLiveLocationUpdateEvent';
-import './registerNewMessageEvent';
-import './registerPollEvent';
-import './registerPresenceChange';
-import './registerRevokeMessageEvent';
-import './registerReactionsEvent';
+import { exportModule } from '../exportModule';
+import { MsgKey, Wid } from '../misc';
+
+export interface VoteData {
+  ack: number;
+  msgKey: MsgKey;
+  parentMsgKey: MsgKey;
+  selectedOptionLocalIds: number[];
+  sender: Wid;
+  senderTimestampMs: number;
+}
+/**
+ * @whatsapp 479261
+ * @whatsapp 479261 >= 2.2230
+ */
+export declare function upsertVotes(args: VoteData[]): Promise<any>;
+
+exportModule(
+  exports,
+  {
+    upsertVotes: 'upsertVotes',
+  },
+  (m) => m.upsertVotes
+);
