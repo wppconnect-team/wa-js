@@ -35,6 +35,7 @@ export * from './getFanOutList';
 export * from './getGroupSenderKeyList';
 export * from './getHistorySyncProgress';
 export * from './getQuotedMsgObj';
+export * from './getReactions';
 export * from './getSearchContext';
 export * from './groupParticipants';
 export * from './handleAck';
