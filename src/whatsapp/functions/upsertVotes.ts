@@ -14,10 +14,27 @@
  * limitations under the License.
  */
 
-import './registerAckMessageEvent';
-import './registerLiveLocationUpdateEvent';
-import './registerNewMessageEvent';
-import './registerPollEvent';
-import './registerPresenceChange';
-import './registerRevokeMessageEvent';
-import './registerReactionsEvent';
+import { exportModule } from '../exportModule';
+import { MsgKey, Wid } from '../misc';
+
+export interface voteData {
+  ack: number;
+  msgKey: MsgKey;
+  parentMsgKey: MsgKey;
+  selectedOptionLocalIds: number[];
+  sender: Wid;
+  senderTimestampMs: number;
+}
+/**
+ * @whatsapp 479261
+ * @whatsapp 479261 >= 2.2244.6
+ */
+export declare function upsertVotes(args: voteData[]): Promise<any>;
+
+exportModule(
+  exports,
+  {
+    upsertVotes: 'upsertVotes',
+  },
+  (m) => m.upsertVotes
+);
