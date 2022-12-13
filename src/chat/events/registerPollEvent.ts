@@ -27,13 +27,15 @@ function register() {
 
     for (const d of data) {
       try {
-        internalEv.emitAsync('chat.poll_response', {
-          msgId: d.parentMsgKey,
-          chatId: d.parentMsgKey.remote,
-          selectedOptions: d.selectedOptionLocalIds,
-          timestamp: d.senderTimestampMs,
-          sender: d.sender,
-        });
+        internalEv
+          .emitAsync('chat.poll_response', {
+            msgId: d.parentMsgKey,
+            chatId: d.parentMsgKey.remote,
+            selectedOptions: d.selectedOptionLocalIds,
+            timestamp: d.senderTimestampMs,
+            sender: d.sender,
+          })
+          .catch(() => null);
       } catch (error) {}
     }
 
