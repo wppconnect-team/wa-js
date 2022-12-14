@@ -18,20 +18,29 @@ import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { upsertVotes } from '../../whatsapp/functions';
+import { getMessageById } from '../functions';
 
 webpack.onInjected(() => register());
 
 function register() {
-  wrapModuleFunction(upsertVotes, (func, ...args) => {
+  wrapModuleFunction(upsertVotes, async (func, ...args) => {
     const [data] = args;
 
     for (const d of data) {
       try {
+        const msg = await getMessageById(d.parentMsgKey);
+        const selectedOptions: any = [];
+
+        for (const opt of d.selectedOptionLocalIds) {
+          selectedOptions[opt] = msg.pollOptions.filter(
+            (i: any) => i.localId == opt
+          )[0];
+        }
         internalEv
           .emitAsync('chat.poll_response', {
             msgId: d.parentMsgKey,
             chatId: d.parentMsgKey.remote,
-            selectedOptions: d.selectedOptionLocalIds,
+            selectedOptions: selectedOptions,
             timestamp: d.senderTimestampMs,
             sender: d.sender,
           })
