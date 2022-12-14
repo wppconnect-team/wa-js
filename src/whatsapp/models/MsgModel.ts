@@ -281,6 +281,8 @@ interface Derived {
   asImage?: any;
   asVideo?: any;
   asMms?: any;
+  asPollCreation?: any;
+  asPollUpdate?: any;
   asUrl?: any;
   asRevoked?: any;
   asViewOnce?: any;
@@ -315,6 +317,11 @@ interface Derived {
   hasBodyOrFooter: boolean;
   initialPageSize?: any;
   productListHeaderImage?: any;
+  pollInvalidated?: boolean;
+  pollName?: string;
+  pollOptions?: any;
+  pollSelectableOptionsCount?: number;
+  pollUpdateParentKey?: any;
 }
 
 /** @whatsapp 17304 */

@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+import { WPPError } from '../../util';
 import { MsgKey, Wid } from '../../whatsapp';
 import { getVotes as GetVotes } from '../../whatsapp/functions';
+import { getMessageById } from './getMessageById';
 
 /**
  * Get votes of a poll
@@ -35,6 +37,17 @@ export async function getVotes(id: string | MsgKey): Promise<{
   }[];
 }> {
   const msgKey = MsgKey.fromString(id.toString());
+  const msg = await getMessageById(msgKey);
+
+  if (!msg.asPollCreation) {
+    throw new WPPError(
+      'msg_not_found',
+      `Message ${msgKey.toString()} not not a poll`,
+      {
+        id: msgKey.toString(),
+      }
+    );
+  }
 
   const votes = await GetVotes(msgKey);
   const returnData = {
@@ -49,11 +62,17 @@ export async function getVotes(id: string | MsgKey): Promise<{
     >[],
   };
   for (const vote of votes) {
-    returnData.votes.push({
-      selectedOptions: vote.selectedOptionLocalIds,
+    const arr = {
+      selectedOptions: <any>[],
       timestamp: vote.senderTimestampMs,
       sender: vote.sender,
-    });
+    };
+    for (const d of vote.selectedOptionLocalIds) {
+      arr.selectedOptions[d] = msg.pollOptions.filter(
+        (i: any) => i.localId == d
+      )[0];
+    }
+    returnData.votes.push(arr);
   }
   return returnData;
 }
