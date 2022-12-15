@@ -25,8 +25,21 @@ export declare function sendCreateGroup(
   dogfooding?: boolean
 ): Promise<{
   gid: Wid;
-  participants: { [key: string]: { code: string } }[];
-  status: number;
+  participants: (
+    | {
+        [key: `${number}@c.us`]: {
+          code: string;
+          invite_code: string | null;
+          invite_code_exp: string | null;
+        };
+      }
+    | {
+        userWid: Wid;
+        code: string;
+        invite_code: string | null;
+        invite_code_exp: string | null;
+      }
+  )[];
 }>;
 
 exportModule(

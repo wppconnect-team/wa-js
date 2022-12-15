@@ -21,10 +21,49 @@ import { WPPError } from '../../util';
 import { ContactStore, UserPrefs, Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
 
+/**
+ * Create a new group
+ *
+ * The method return a object with the result of each participant as the key
+ *
+ * @example
+ * ```javascript
+ * const result = await WPP.group.create('Test Group', ['number@c.us']);
+ *
+ * console.log(result.gid.toString()); // Get the group ID
+ *
+ * // Get participant result:
+ * console.log(result['number@c.us'].code);
+ * console.log(result['number@c.us'].invite_code);
+ * console.log(result['number@c.us'].invite_code_exp);
+ * console.log(result['number@c.us'].message);
+ * console.log(result['number@c.us'].wid);
+ *
+ * const memberResult = result['number@c.us']; // To a variable
+ * // or
+ * const memberResult = Object.values(result)[0]; // Always the first member result
+ *
+ * // How to send a custom invite link
+ * const link = 'https://chat.whatsapp.com/' + result['number@c.us'].invite_code;
+ * console.log(link);
+ * ```
+ *
+ * @category Group
+ */
 export async function create(
   groupName: string,
   participantsIds: (string | Wid) | (string | Wid)[]
-) {
+): Promise<{
+  gid: Wid;
+  participants: {
+    [key: `${number}@c.us`]: {
+      wid: string;
+      code: number;
+      invite_code: string | null;
+      invite_code_exp: number | null;
+    };
+  };
+}> {
   if (!Array.isArray(participantsIds)) {
     participantsIds = [participantsIds];
   }
@@ -78,5 +117,45 @@ export async function create(
     }
   }
 
-  return result;
+  const participants: {
+    [key: `${number}@c.us`]: {
+      wid: string;
+      code: number;
+      invite_code: string | null;
+      invite_code_exp: number | null;
+    };
+  } = {};
+
+  for (const r of result.participants || []) {
+    let userWid: string | null = null;
+    let code: string | null = null;
+    let invite_code: string | null = null;
+    let invite_code_exp: string | null = null;
+
+    if ('userWid' in r) {
+      userWid = r.userWid.toString();
+      code = r.code;
+      invite_code = r.invite_code;
+      invite_code_exp = r.invite_code_exp;
+    } else {
+      userWid = Object.keys(r)[0] as `${number}@c.us`;
+
+      const d = (r as any)[userWid];
+      code = d.code;
+      invite_code = d.invite_code;
+      invite_code_exp = d.invite_code_exp;
+    }
+
+    participants[userWid as `${number}@c.us`] = {
+      wid: userWid,
+      code: Number(code),
+      invite_code: invite_code,
+      invite_code_exp: Number(invite_code_exp) || null,
+    };
+  }
+
+  return {
+    gid: result.gid,
+    participants,
+  };
 }
