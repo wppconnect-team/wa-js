@@ -24,13 +24,21 @@ export declare function sendAddParticipants(
   group: Wid,
   participants: Wid[]
 ): Promise<{
-  participants?: {
-    [key: `${number}@c.us`]: {
-      code: string;
-      invite_code: string | null;
-      invite_code_exp: string | null;
-    };
-  }[];
+  participants?: (
+    | {
+        [key: `${number}@c.us`]: {
+          code: string;
+          invite_code: string | null;
+          invite_code_exp: string | null;
+        };
+      }
+    | {
+        userWid: Wid;
+        code: string;
+        invite_code: string | null;
+        invite_code_exp: string | null;
+      }
+  )[];
   status: number;
   [key: `${number}@c.us`]: number;
 }>;

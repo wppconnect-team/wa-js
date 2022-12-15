@@ -33,7 +33,22 @@ const messageCodes: {
  *
  * @example
  * ```javascript
- * await WPP.group.addParticipants('[group@g.us]', [number@c.us]);
+ * const result = await WPP.group.addParticipants('[group@g.us]', [number@c.us]);
+ *
+ * // Get participant result:
+ * console.log(result['123@c.us'].code);
+ * console.log(result['123@c.us'].invite_code);
+ * console.log(result['123@c.us'].invite_code_exp);
+ * console.log(result['123@c.us'].message);
+ * console.log(result['123@c.us'].wid);
+ *
+ * const memberResult = result['123@c.us']; // To a variable
+ * // or
+ * const memberResult = Object.values(result)[0]; // Always the first member result
+ *
+ * // How to send a custom invite link
+ * const link = 'https://chat.whatsapp.com/' + result['123@c.us'].invite_code;
+ * console.log(link);
  * ```
  *
  * @category Group
@@ -43,6 +58,7 @@ export async function addParticipants(
   participantsIds: (string | Wid) | (string | Wid)[]
 ): Promise<{
   [key: `${number}@c.us`]: {
+    wid: string;
     code: number;
     message: string;
     invite_code: string | null;
@@ -70,6 +86,7 @@ export async function addParticipants(
 
   const data: {
     [key: `${number}@c.us`]: {
+      wid: string;
       code: number;
       message: string;
       invite_code: string | null;
@@ -78,21 +95,37 @@ export async function addParticipants(
   } = {};
 
   for (const r of result.participants || []) {
-    const firstKey = Object.keys(r)[0] as `${number}@c.us`;
+    let userWid: string | null = null;
+    let code: string | null = null;
+    let invite_code: string | null = null;
+    let invite_code_exp: string | null = null;
 
-    const d = r[firstKey];
+    if ('userWid' in r) {
+      userWid = r.userWid.toString();
+      code = r.code;
+      invite_code = r.invite_code;
+      invite_code_exp = r.invite_code_exp;
+    } else {
+      userWid = Object.keys(r)[0] as `${number}@c.us`;
 
-    if (d.code !== '403') {
+      const d = (r as any)[userWid];
+      code = d.code;
+      invite_code = d.invite_code;
+      invite_code_exp = d.invite_code_exp;
+    }
+
+    if (code !== '403') {
       try {
-        ContactStore.gadd(createWid(firstKey) as any, { silent: true });
+        ContactStore.gadd(createWid(userWid) as any, { silent: true });
       } catch (error) {}
     }
 
-    data[firstKey] = {
-      code: Number(d.code),
-      message: messageCodes[Number(d.code)] || "Can't Join.",
-      invite_code: d.invite_code,
-      invite_code_exp: Number(d.invite_code) || null,
+    data[userWid as `${number}@c.us`] = {
+      wid: userWid,
+      code: Number(code),
+      message: messageCodes[Number(code)] || "Can't Join., unknown error",
+      invite_code: invite_code,
+      invite_code_exp: Number(invite_code_exp) || null,
     };
   }
 
