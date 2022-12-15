@@ -17,6 +17,17 @@
 import { Wid } from '../../whatsapp';
 import { ensureGroupAndParticipants } from './';
 
+/**
+ * Check if your account is allowed to demote participants
+ *
+ * @example
+ * ```javascript
+ * await WPP.group.canDemote('group@g.us');
+ * console.log(result);
+ * ```
+ *
+ * @category Group
+ */
 export async function canDemote(
   groupId: string | Wid,
   participantsIds: (string | Wid) | (string | Wid)[]

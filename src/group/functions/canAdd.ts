@@ -17,6 +17,17 @@
 import { Wid } from '../../whatsapp';
 import { ensureGroup } from './';
 
+/**
+ * Check if your account is allowed to add new participants
+ *
+ * @example
+ * ```javascript
+ * const result = await WPP.group.canAdd('group@g.us');
+ * console.log(result);
+ * ```
+ *
+ * @category Group
+ */
 export async function canAdd(groupId: string | Wid) {
   const groupChat = await ensureGroup(groupId);
   return groupChat.groupMetadata!.participants.canAdd();

@@ -17,6 +17,17 @@
 import { Wid } from '../../whatsapp';
 import { ensureGroupAndParticipants } from './';
 
+/**
+ * Check if your account is allowed to promote participants
+ *
+ * @example
+ * ```javascript
+ * await WPP.group.canPromote('group@g.us');
+ * console.log(result);
+ * ```
+ *
+ * @category Group
+ */
 export async function canPromote(
   groupId: string | Wid,
   participantsIds: (string | Wid) | (string | Wid)[]

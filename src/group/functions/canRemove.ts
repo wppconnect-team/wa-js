@@ -17,6 +17,17 @@
 import { Wid } from '../../whatsapp';
 import { ensureGroupAndParticipants } from './';
 
+/**
+ * Check if your account is allowed to remove participants
+ *
+ * @example
+ * ```javascript
+ * const result = await WPP.group.canRemove('group@g.us');
+ * console.log(result);
+ * ```
+ *
+ * @category Group
+ */
 export async function canRemove(
   groupId: string | Wid,
   participantsIds: (string | Wid) | (string | Wid)[]
