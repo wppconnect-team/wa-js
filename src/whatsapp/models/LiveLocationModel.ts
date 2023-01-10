@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import * as webpack from '../../webpack';
 import { LiveLocationCollection, ParticipantCollection } from '../collections';
 import { exportProxyModel } from '../exportModule';
 import { Wid } from '../misc';
@@ -60,3 +61,22 @@ export declare class LiveLocationModel extends Model<LiveLocationCollection> {
 }
 
 exportProxyModel(exports, 'LiveLocationModel');
+
+const fallback = {};
+let cache: any = null;
+
+// Lazy load
+Object.defineProperty(fallback, 'LiveLocationModel', {
+  configurable: true,
+  enumerable: true,
+  get() {
+    if (!cache) {
+      class LiveLocationModel extends Model {}
+      LiveLocationModel.prototype.proxyName = 'live-location';
+      cache = LiveLocationModel;
+    }
+    return cache;
+  },
+});
+
+webpack.injectFallbackModule('LiveLocationModel', fallback);

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import * as webpack from '../../webpack';
 import { exportModule } from '../exportModule';
 import { LiveLocationModel } from '../models';
 import { BaseCollection } from '.';
@@ -36,3 +37,22 @@ exportModule(
   },
   (m) => m.LiveLocationCollectionImpl
 );
+
+const fallback = {};
+let cache: any = null;
+
+// Lazy load
+Object.defineProperty(fallback, 'LiveLocationCollectionImpl', {
+  configurable: true,
+  enumerable: true,
+  get() {
+    if (!cache) {
+      class LiveLocationCollection extends BaseCollection<any, any> {}
+      LiveLocationCollection.model = LiveLocationModel;
+      cache = LiveLocationCollection;
+    }
+    return cache;
+  },
+});
+
+webpack.injectFallbackModule('LiveLocationCollection', fallback);

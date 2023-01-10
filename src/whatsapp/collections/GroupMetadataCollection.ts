@@ -28,5 +28,7 @@ export declare class GroupMetadataCollection extends BaseCollection<GroupMetadat
 exportModule(
   exports,
   { GroupMetadataCollection: 'default.constructor' },
-  (m) => typeof m.default.onParentGroupChange === 'function'
+  (m) =>
+    typeof m.default.onParentGroupChange === 'function' || // @whatsapp < 2.2301.5
+    typeof m.default._handleParentGroupChange === 'function' // @whatsapp >= 2.2301.5
 );

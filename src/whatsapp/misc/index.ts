@@ -21,7 +21,6 @@ export * from './Cmd';
 export * from './Conn';
 export * from './Constants';
 export * from './EventEmitter';
-export * from './Features';
 export * from './ImageUtils';
 export * from './Locale';
 export * from './MediaBlobCache';
