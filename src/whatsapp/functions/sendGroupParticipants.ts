@@ -70,14 +70,27 @@ export declare function sendDemoteParticipants(
 exportModule(
   exports,
   {
-    sendAddParticipants: 'sendAddParticipants',
-    sendRemoveParticipants: 'sendRemoveParticipants',
-    sendPromoteParticipants: 'sendPromoteParticipants',
-    sendDemoteParticipants: 'sendDemoteParticipants',
+    sendAddParticipants: ['sendAddParticipants', 'addGroupParticipants'],
+    sendRemoveParticipants: [
+      'sendRemoveParticipants',
+      'removeGroupParticipants',
+    ],
+    sendPromoteParticipants: [
+      'sendPromoteParticipants',
+      'promoteGroupParticipants',
+    ],
+    sendDemoteParticipants: [
+      'sendDemoteParticipants',
+      'demoteGroupParticipants',
+    ],
   },
   (m) =>
-    m.sendAddParticipants &&
-    m.sendRemoveParticipants &&
-    m.sendPromoteParticipants &&
-    m.sendDemoteParticipants
+    (m.sendAddParticipants &&
+      m.sendRemoveParticipants &&
+      m.sendPromoteParticipants &&
+      m.sendDemoteParticipants) || // @whatsapp < 2.2301.5
+    (m.addGroupParticipants &&
+      m.removeGroupParticipants &&
+      m.promoteGroupParticipants &&
+      m.demoteGroupParticipants) // @whatsapp >= 2.2301.5
 );

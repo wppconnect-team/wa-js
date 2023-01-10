@@ -48,10 +48,13 @@ export declare function sendSetGroupProperty(
 exportModule(
   exports,
   {
-    sendSetGroupSubject: 'sendSetGroupSubject',
-    sendSetGroupDescription: 'sendSetGroupDescription',
-    sendSetGroupProperty: 'sendSetGroupProperty',
+    sendSetGroupSubject: ['sendSetGroupSubject', 'setGroupSubject'],
+    sendSetGroupDescription: ['sendSetGroupDescription', 'setGroupDescription'],
+    sendSetGroupProperty: ['sendSetGroupProperty', 'setGroupProperty'],
   },
   (m) =>
-    m.sendSetGroupSubject && m.sendSetGroupDescription && m.sendSetGroupProperty
+    (m.sendSetGroupSubject &&
+      m.sendSetGroupDescription &&
+      m.sendSetGroupProperty) || // @whatsapp < 2.2301.5
+    (m.setGroupSubject && m.setGroupDescription && m.setGroupProperty) // @whatsapp >= 2.2301.5
 );

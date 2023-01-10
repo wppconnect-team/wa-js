@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+import * as webpack from '../../webpack';
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
+import { joinGroupViaInvite } from './joinGroupViaInvite';
 
 /** @whatsapp 69586
  * @whatsapp 769586 >= 2.2222.8
@@ -29,3 +31,9 @@ exportModule(
   },
   (m) => m.sendJoinGroupViaInvite
 );
+
+webpack.injectFallbackModule('sendJoinGroupViaInvite', {
+  sendJoinGroupViaInvite: async (groupId: Wid) => {
+    return await joinGroupViaInvite(groupId).then((value) => value.gid);
+  },
+});

@@ -14,28 +14,18 @@
  * limitations under the License.
  */
 
-import * as webpack from '../../webpack';
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
-import { resetGroupInviteCode } from './resetGroupInviteCode';
 
-/** @whatsapp 69586
- * @whatsapp 769586 >= 2.2222.8
+/**
+ * @whatsapp 153438 >= 2.2301.5
  */
-export declare function sendRevokeGroupInviteCode(
-  groupId: Wid
-): Promise<string>;
+export declare function joinGroupViaInvite(groupId: Wid): Promise<{ gid: Wid }>;
 
 exportModule(
   exports,
   {
-    sendRevokeGroupInviteCode: 'sendRevokeGroupInviteCode',
+    joinGroupViaInvite: 'joinGroupViaInvite',
   },
-  (m) => m.sendRevokeGroupInviteCode
+  (m) => m.joinGroupViaInvite
 );
-
-webpack.injectFallbackModule('sendRevokeGroupInviteCode', {
-  sendRevokeGroupInviteCode: async (groupId: Wid) => {
-    return await resetGroupInviteCode(groupId).then((value) => value.code);
-  },
-});
