@@ -34,6 +34,9 @@ exportModule(
   (m) => m.sendRevokeGroupInviteCode
 );
 
+/**
+ * @whatsapp >= 2.2301.5
+ */
 webpack.injectFallbackModule('sendRevokeGroupInviteCode', {
   sendRevokeGroupInviteCode: async (groupId: Wid) => {
     return await resetGroupInviteCode(groupId).then((value) => value.code);

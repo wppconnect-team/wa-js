@@ -32,6 +32,9 @@ exportModule(
   (m) => m.sendJoinGroupViaInvite
 );
 
+/**
+ * @whatsapp >= 2.2301.5
+ */
 webpack.injectFallbackModule('sendJoinGroupViaInvite', {
   sendJoinGroupViaInvite: async (groupId: Wid) => {
     return await joinGroupViaInvite(groupId).then((value) => value.gid);

@@ -220,4 +220,7 @@ Object.defineProperty(fallback, 'LiveLocationCollection', {
   },
 });
 
+/**
+ * @whatsapp >= 2.2301.5
+ */
 webpack.injectFallbackModule('LiveLocationStore', fallback);
