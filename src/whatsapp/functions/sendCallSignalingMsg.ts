@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import * as webpack from '../../webpack';
 import { exportModule } from '../exportModule';
 
 /** @whatsapp 56981
@@ -46,3 +47,13 @@ exportModule(
   },
   (m) => m.sendCallSignalingMsg
 );
+
+/**
+ * @todo, create a full fallback based on sendCallSignalingMsg for WhatsApp >= 2.2301.5
+ */
+webpack.injectFallbackModule('sendCallSignalingMsg', {
+  sendCallSignalingMsg: async () => {
+    console.error('Unsupported for WhatsApp >= 2.2301.5');
+    return { payload: null, status: 500 };
+  },
+});
