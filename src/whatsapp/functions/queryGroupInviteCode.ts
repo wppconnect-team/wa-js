@@ -14,21 +14,20 @@
  * limitations under the License.
  */
 
-import { Wid } from '../../whatsapp';
-import { sendQueryGroupInviteCode } from '../../whatsapp/functions';
-import { ensureGroup } from './';
+import { Wid } from '..';
+import { exportModule } from '../exportModule';
 
 /**
- * Get the currend invite code of the group
- *
- * @example
- * ```javascript
- * const code = WPP.group.getInviteCode('[group-id]@g.us');
- * const link = 'https://chat.whatsapp.com/' + code;
- * ```
+ * @whatsapp 153438
  */
-export async function getInviteCode(groupId: string | Wid) {
-  const groupChat = await ensureGroup(groupId, true);
+export declare function queryGroupInviteCode(
+  groupId: Wid
+): Promise<{ code: string }>;
 
-  return await sendQueryGroupInviteCode(groupChat.id);
-}
+exportModule(
+  exports,
+  {
+    queryGroupInviteCode: 'queryGroupInviteCode',
+  },
+  (m) => m.queryGroupInviteCode && m.resetGroupInviteCode
+);

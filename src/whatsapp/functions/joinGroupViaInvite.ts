@@ -27,5 +27,5 @@ exportModule(
   {
     joinGroupViaInvite: 'joinGroupViaInvite',
   },
-  (m) => m.joinGroupViaInvite
+  (m) => m.joinGroupViaInvite && m.resetGroupInviteCode
 );

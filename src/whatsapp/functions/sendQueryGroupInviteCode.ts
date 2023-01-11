@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+import * as webpack from '../../webpack';
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
+import { queryGroupInviteCode } from './';
 
 /** @whatsapp 65705 */
 export declare function sendQueryGroupInviteCode(groupId: Wid): Promise<string>;
@@ -27,3 +29,9 @@ exportModule(
   },
   (m) => m.sendQueryGroupInviteCode
 );
+
+webpack.injectFallbackModule('sendQueryGroupInviteCode', {
+  sendQueryGroupInviteCode: async (groupId: Wid) => {
+    return await queryGroupInviteCode(groupId).then((value) => value.code);
+  },
+});
