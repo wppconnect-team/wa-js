@@ -20,6 +20,7 @@ export * from './calculateFilehashFromBlob';
 export * from './canEditMessage';
 export * from './canReplyMsg';
 export * from './collections';
+export * from './createGroup';
 export * from './createMsgProtobuf';
 export * from './createOrUpdateReactions';
 export * from './editBusinessProfile';

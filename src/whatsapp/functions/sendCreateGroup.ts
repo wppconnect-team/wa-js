@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+import * as webpack from '../../webpack';
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
+import { createGroup } from './createGroup';
 
 /** @whatsapp 79583 */
 export declare function sendCreateGroup(
@@ -49,3 +51,30 @@ exportModule(
   },
   (m) => m.sendCreateGroup
 );
+
+/**
+ * @whatsapp >= 2.2301.5
+ */
+webpack.injectFallbackModule('sendCreateGroup', {
+  sendCreateGroup: async (
+    groupName: string,
+    participants: Wid[],
+    ephemeral?: number,
+    dogfooding?: boolean
+  ) => {
+    return await createGroup(
+      groupName,
+      participants,
+      ephemeral,
+      dogfooding
+    ).then((e) => ({
+      gid: e.wid,
+      participants: e.participants.map((e) => ({
+        userWid: e.wid,
+        code: null != e.error ? e.error.toString() : '200',
+        invite_code: e.invite_code,
+        invite_code_exp: e.invite_code_exp,
+      })),
+    }));
+  },
+});
