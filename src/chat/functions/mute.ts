@@ -67,7 +67,7 @@ export async function mute(
     });
   }
 
-  await chat.mute.mute(expiration, true);
+  await chat.mute.setMute(expiration);
 
   return {
     wid,
