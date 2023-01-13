@@ -73,6 +73,7 @@ function applyPatch() {
 
     switch (msg.type) {
       case 'buttons_response':
+      case 'hsm':
       case 'list':
       case 'list_response':
       case 'template_button_reply':
