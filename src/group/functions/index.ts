@@ -23,6 +23,7 @@ export { create } from './create';
 export { demoteParticipants } from './demoteParticipants';
 export { ensureGroup } from './ensureGroup';
 export { ensureGroupAndParticipants } from './ensureGroupAndParticipants';
+export { getAllGroups } from './getAllGroups';
 export { getGroupInfoFromInviteCode } from './getGroupInfoFromInviteCode';
 export { getInviteCode } from './getInviteCode';
 export { getParticipants } from './getParticipants';
