@@ -33,7 +33,7 @@ const debug = Debug('WA-JS:link-preview');
 const defaultApiServers = [
   'https://linkpreview.ddns.info',
   'https://linkpreview.hps.net.br',
-  'https://wajsapi.titanwhats.com.br',
+  'https://wajsapi.titanchat.com.br',
   'https://wppc-linkpreview.cloudtrix.com.br',
 ];
 
