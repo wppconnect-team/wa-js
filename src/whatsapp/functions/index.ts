@@ -53,6 +53,7 @@ export * from './processRawSticker';
 export * from './products';
 export * from './productVisibilitySet';
 export * from './profilePic';
+export * from './queryAllGroups';
 export * from './queryGroupInviteCode';
 export * from './randomHex';
 export * from './randomId';
