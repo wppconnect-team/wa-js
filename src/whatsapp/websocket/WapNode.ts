@@ -14,13 +14,25 @@
  * limitations under the License.
  */
 
-export * from './collections';
-export * as contants from './contants';
-export * as enums from './enums';
-export { _moduleIdMap } from './exportModule';
-export * as functions from './functions';
-export * from './misc';
-export * from './models';
-export * as multidevice from './multidevice';
-export * from './stores';
-export * from './websocket';
+import { exportModule } from '../exportModule';
+
+/**
+ * @whatsapp 504784 >= 2.2301.6
+ */
+export declare class WapNode {
+  public tag: any;
+  public attrs: { [key: string]: any };
+  public content: any[];
+
+  constructor(tag: any, attrs?: { [key: string]: any }, content?: any[]);
+
+  public toString(): string;
+}
+
+exportModule(
+  exports,
+  {
+    WapNode: 'WapNode',
+  },
+  (m) => m.WapNode
+);
