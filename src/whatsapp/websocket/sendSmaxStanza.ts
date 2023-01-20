@@ -14,13 +14,21 @@
  * limitations under the License.
  */
 
-export * from './collections';
-export * as contants from './contants';
-export * as enums from './enums';
-export { _moduleIdMap } from './exportModule';
-export * as functions from './functions';
-export * from './misc';
-export * from './models';
-export * as multidevice from './multidevice';
-export * from './stores';
-export * as websocket from './websocket';
+import { exportModule } from '../exportModule';
+import { WapNode } from './';
+
+/**
+ * @whatsapp 67201 >= 2.2301.6
+ */
+export declare function sendSmaxStanza(
+  node: WapNode,
+  options?: any
+): Promise<WapNode>;
+
+exportModule(
+  exports,
+  {
+    sendSmaxStanza: 'sendSmaxStanza',
+  },
+  (m) => m.sendSmaxStanza
+);

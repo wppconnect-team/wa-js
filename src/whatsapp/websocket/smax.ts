@@ -23,7 +23,7 @@ import { WapNode } from './WapNode';
 export declare function smax(
   tag: any,
   attrs?: { [key: string]: any },
-  content?: any[] | string
+  content?: any[] | string | null | ArrayBuffer | Uint8Array
 ): WapNode;
 
 exportModule(
