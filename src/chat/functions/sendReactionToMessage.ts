@@ -27,10 +27,10 @@ import { getMessageById } from './getMessageById';
  * @example
  * ```javascript
  * // to react a message
- * WPP.chat.sendReactionMessage('[message_id]', '🤯');
+ * WPP.chat.sendReactionToMessage('[message_id]', '🤯');
  *
  * // to remove
- * WPP.chat.sendReactionMessage('[message_id]', false);
+ * WPP.chat.sendReactionToMessage('[message_id]', false);
  *
  * ```
  * @category Message
