@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
-export * from './collections';
-export * as contants from './contants';
-export * as enums from './enums';
-export { _moduleIdMap } from './exportModule';
-export * as functions from './functions';
-export * from './misc';
-export * from './models';
-export * as multidevice from './multidevice';
-export * from './stores';
-export * as websocket from './websocket';
+import { exportModule } from '../exportModule';
+import { WapNode } from './WapNode';
+
+/**
+ * @whatsapp 898165 >= 2.2301.6
+ */
+export declare function smax(
+  tag: any,
+  attrs?: { [key: string]: any },
+  content?: any[] | string | null | ArrayBuffer | Uint8Array
+): WapNode;
+
+exportModule(
+  exports,
+  {
+    smax: 'smax',
+  },
+  (m) => m.smax
+);

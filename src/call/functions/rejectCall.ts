@@ -15,9 +15,8 @@
  */
 
 import { WPPError } from '../../util';
-import { CallModel, CallStore } from '../../whatsapp';
+import { CallModel, CallStore, UserPrefs, websocket } from '../../whatsapp';
 import { CALL_STATES } from '../../whatsapp/enums';
-import { sendCallSignalingMsg } from '../../whatsapp/functions';
 
 /**
  * Reject a incoming call
@@ -72,20 +71,31 @@ export async function rejectCall(callId?: string): Promise<boolean> {
     );
   }
 
-  await sendCallSignalingMsg({
-    common: {
-      peer_jid: call.peerJid.toString(),
+  if (!call.peerJid.isGroupCall()) {
+    await websocket.ensureE2ESessions([call.peerJid]);
+  }
+
+  const node = websocket.smax(
+    'call',
+    {
+      from: UserPrefs.getMaybeMeUser().toString({ legacy: true }),
+      to: call.peerJid.toString({ legacy: true }),
+      id: websocket.generateId(),
     },
-    payload: [
-      'reject',
-      {
-        'call-id': call.id,
-        'call-creator': call.peerJid.toString({ legacy: true }),
-        count: '0',
-      },
-      null,
-    ],
-  });
+    [
+      websocket.smax(
+        'reject',
+        {
+          'call-id': call.id,
+          'call-creator': call.peerJid.toString({ legacy: true }),
+          count: '0',
+        },
+        null
+      ),
+    ]
+  );
+
+  await websocket.sendSmaxStanza(node);
 
   return true;
 }
