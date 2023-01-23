@@ -22,7 +22,7 @@ import { exportModule } from '../exportModule';
  */
 export declare namespace adv {
   function generateADVSecretKey(): string;
-  function getADVSecretKey(): string;
+  function getADVSecretKey(): string | Promise<string>;
   function setADVSignedIdentity(e: any): string;
   function getADVEncodedIdentity(): any;
   function verifyDeviceIdentityAccountSignature(): any;

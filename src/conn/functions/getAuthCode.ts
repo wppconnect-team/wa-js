@@ -22,6 +22,12 @@ import { isAuthenticated, isMultiDevice, isRegistered } from '.';
 /**
  * Return the current auth code
  *
+ * @example
+ * ```javascript
+ * const authCode = await WPP.conn.getAuthCode();
+ * console.log(authCode.fullCode); // Output: a long string to generate a QRCode
+ * ```
+ *
  * @return  {Promise<AuthCode>}[return description]
  */
 export async function getAuthCode(): Promise<AuthCode | null> {
@@ -39,7 +45,7 @@ export async function getAuthCode(): Promise<AuthCode | null> {
     const identityKeyPair = Base64.encodeB64(
       registrationInfo.identityKeyPair.pubKey
     );
-    const secretKey = adv.getADVSecretKey();
+    const secretKey = await Promise.resolve(adv.getADVSecretKey());
 
     const fullCode = [ref, staticKeyPair, identityKeyPair, secretKey].join(',');
 
