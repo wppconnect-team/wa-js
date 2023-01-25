@@ -64,7 +64,7 @@
     "eventemitter2": "^6.4.9",
     "file-type": "~16.5.4",
     "husky": "^8.0.3",
-    "parse-data-url": "^4.0.1",
+    "parse-data-url": "^5.0.0",
     "playwright-chromium": "^1.30.0",
     "prettier": "^2.8.3",
     "pretty-quick": "^3.1.3",
