@@ -53,18 +53,36 @@ export declare function demoteParticipants(
   participants: ParticipantModel[]
 ): Promise<void>;
 
+/** @whatsapp 688460
+ */
+export declare function promoteCommunityParticipants(
+  group: ChatModel,
+  participants: ParticipantModel[]
+): Promise<void>;
+
+/** @whatsapp 688460
+ */
+export declare function demoteCommunityParticipants(
+  group: ChatModel,
+  participants: ParticipantModel[]
+): Promise<void>;
+
 exportModule(
   exports,
   {
     addParticipants: 'addParticipants',
     removeParticipants: 'removeParticipants',
+    promoteCommunityParticipants: 'promoteCommunityParticipants',
     promoteParticipants: 'promoteParticipants',
+    demoteCommunityParticipants: 'demoteCommunityParticipants',
     demoteParticipants: 'demoteParticipants',
   },
   (m) =>
     m.addParticipants &&
     m.removeParticipants &&
+    m.promoteCommunityParticipants &&
     m.promoteParticipants &&
+    m.demoteCommunityParticipants &&
     m.demoteParticipants &&
     !m.updateParticipants
 );
