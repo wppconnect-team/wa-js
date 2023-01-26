@@ -14,8 +14,22 @@
  * limitations under the License.
  */
 
-export { addSubgroups } from './addSubgroups';
-export { create } from './create';
-export { deactivate } from './deactivate';
-export { getParticipants } from './getParticipants';
-export { removeSubgroups } from './removeSubgroups';
+import { assertWid } from '../../assert';
+import { Wid } from '../../whatsapp';
+import { sendDeactivateCommunity as SendDeactivateCommunity } from '../../whatsapp/functions';
+
+/**
+ * Deactivated a community
+ *
+ * @example
+ * ```javascript
+ * await WPP.community.deactivate('<>@g.us');
+ * ```
+ */
+
+export async function deactivate(communityId: string | Wid): Promise<any> {
+  const wid = assertWid(communityId);
+  return SendDeactivateCommunity({
+    parentGroupId: wid,
+  });
+}

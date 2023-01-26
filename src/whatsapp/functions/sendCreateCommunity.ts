@@ -63,10 +63,5 @@ exportModule(
     sendRemoveFromCommunityCommunity: 'sendRemoveFromCommunityCommunity',
     sendUnlinkSubgroups: 'sendUnlinkSubgroups',
   },
-  (m) =>
-    m.sendCreateCommunity &&
-    m.sendDeactivateCommunity &&
-    m.sendLinkSubgroups &&
-    m.sendRemoveFromCommunityCommunity &&
-    m.sendUnlinkSubgroups
+  (m) => m.sendCreateCommunity
 );

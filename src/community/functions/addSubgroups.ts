@@ -14,24 +14,33 @@
  * limitations under the License.
  */
 
+import { assertWid } from '../../assert';
 import { Wid } from '../../whatsapp';
 import { sendLinkSubgroups as SendLinkSubgroups } from '../../whatsapp/functions';
 
 /**
- * Add groups do tommunity
+ * Add groups do community
  *
  * @example
  * ```javascript
- * await WPP.community.sendLinkSubgroups('<>@g.us', ['<>@g.us', '<>@g.us']);
+ * await WPP.community.addSubgroups('<>@g.us', ['<>@g.us', '<>@g.us']);
  * ```
  */
 
-export async function sendLinkSubgroups(
-  parentGroupId: Wid,
-  subgroupIds: Wid | Wid[]
-): Promise<any> {
-  return SendLinkSubgroups({
-    parentGroupId: parentGroupId,
-    subgroupIds: subgroupIds,
+export async function addSubgroups(
+  parentGroupId: string | Wid,
+  subgroupIds: (string | Wid) | (string | Wid)[]
+): Promise<{
+  failedGroups: { error: string; jid: string }[];
+  linkedGroupJids: string[];
+}> {
+  if (!Array.isArray(subgroupIds)) {
+    subgroupIds = [subgroupIds];
+  }
+  const parentWid = assertWid(parentGroupId);
+  const subGroupsWids = subgroupIds.map(assertWid);
+  return await SendLinkSubgroups({
+    parentGroupId: parentWid,
+    subgroupIds: subGroupsWids,
   });
 }

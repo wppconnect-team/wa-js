@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
+import { assertWid } from '../../assert';
 import { Wid } from '../../whatsapp';
-import { sendCreateCommunity } from '../../whatsapp/functions';
-import { sendLinkSubgroups } from './sendLinkSubgroups';
+import {
+  sendCreateCommunity,
+  sendLinkSubgroups,
+} from '../../whatsapp/functions';
 
 /**
- * Create community
+ * Create a community
  *
  * @example
  * ```javascript
@@ -29,13 +32,25 @@ import { sendLinkSubgroups } from './sendLinkSubgroups';
 export async function create(
   name: string,
   desc: string,
-  subGroupsIds: Wid[]
+  subGroupsIds: (string | Wid) | (string | Wid)[]
 ): Promise<any> {
-  const community = await sendCreateCommunity({
+  if (!Array.isArray(subGroupsIds)) {
+    subGroupsIds = [subGroupsIds];
+  }
+
+  const subGroupsWids = subGroupsIds.map(assertWid);
+  const result = await sendCreateCommunity({
     name: name,
     desc: desc,
     closed: false,
   });
-  console.log(community);
-  return await sendLinkSubgroups(community.wid, subGroupsIds);
+  await sendLinkSubgroups({
+    parentGroupId: result.wid,
+    subgroupIds: subGroupsWids,
+  });
+
+  return {
+    wid: result.wid,
+    subGroups: subGroupsWids,
+  };
 }

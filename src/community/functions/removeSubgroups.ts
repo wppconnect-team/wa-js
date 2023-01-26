@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { assertWid } from '../../assert';
 import { Wid } from '../../whatsapp';
 import { sendUnlinkSubgroups as SendUnlinkSubgroups } from '../../whatsapp/functions';
 
@@ -26,12 +27,20 @@ import { sendUnlinkSubgroups as SendUnlinkSubgroups } from '../../whatsapp/funct
  * ```
  */
 
-export async function sendUnlinkSubgroups(
-  parentGroupId: Wid,
-  subgroupIds: Wid | Wid[]
-): Promise<any> {
-  return SendUnlinkSubgroups({
-    parentGroupId: parentGroupId,
-    subgroupIds: subgroupIds,
+export async function removeSubgroups(
+  parentGroupId: string | Wid,
+  subgroupIds: (string | Wid) | (string | Wid)[]
+): Promise<{
+  failedGroups: { error: string; jid: string }[];
+  linkedGroupJids: string[];
+}> {
+  if (!Array.isArray(subgroupIds)) {
+    subgroupIds = [subgroupIds];
+  }
+  const parentWid = assertWid(parentGroupId);
+  const subGroupsWids = subgroupIds.map(assertWid);
+  return await SendUnlinkSubgroups({
+    parentGroupId: parentWid,
+    subgroupIds: subGroupsWids,
   });
 }

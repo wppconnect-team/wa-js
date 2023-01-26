@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
+import { assertWid } from '../../assert';
 import { Wid } from '../../whatsapp';
 import { getCommunityParticipants as GetCommunityParticipants } from '../../whatsapp/functions';
 
 /**
- * Add groups do tommunity
+ * Get all participants of a community
  *
  * @example
  * ```javascript
- * await WPP.community.getCommunityParticipants('<>@g.us');
+ * await WPP.community.getParticipants('<>@g.us');
  * ```
  */
 
-export async function getCommunityParticipants(communityId: Wid): Promise<any> {
-  return GetCommunityParticipants(communityId);
+export async function getParticipants(communityId: string | Wid): Promise<any> {
+  const wid = assertWid(communityId);
+  return GetCommunityParticipants(wid);
 }
