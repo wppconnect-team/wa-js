@@ -44,11 +44,6 @@ export declare function sendLinkSubgroups(e: {
 /**
  * @whatsapp 650348
  */
-export declare function sendRemoveFromCommunityCommunity(e: any): Promise<any>;
-
-/**
- * @whatsapp 650348
- */
 export declare function sendUnlinkSubgroups(e: {
   parentGroupId: Wid;
   subgroupIds: Wid | Wid[];
@@ -60,7 +55,6 @@ exportModule(
     sendCreateCommunity: 'sendCreateCommunity',
     sendDeactivateCommunity: 'sendDeactivateCommunity',
     sendLinkSubgroups: 'sendLinkSubgroups',
-    sendRemoveFromCommunityCommunity: 'sendRemoveFromCommunityCommunity',
     sendUnlinkSubgroups: 'sendUnlinkSubgroups',
   },
   (m) => m.sendCreateCommunity

@@ -44,13 +44,13 @@ export async function create(
     desc: desc,
     closed: false,
   });
-  await sendLinkSubgroups({
+  const linkGroups = await sendLinkSubgroups({
     parentGroupId: result.wid,
     subgroupIds: subGroupsWids,
   });
 
   return {
     wid: result.wid,
-    subGroups: subGroupsWids,
+    subGroups: linkGroups,
   };
 }
