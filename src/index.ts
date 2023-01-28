@@ -34,6 +34,7 @@ export * as chat from './chat';
 export * as conn from './conn';
 export * as contact from './contact';
 export * as ev from './eventEmitter';
+export * as community from './community';
 export * as group from './group';
 export * as labels from './labels';
 export * as profile from './profile';
