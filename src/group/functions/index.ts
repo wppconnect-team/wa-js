@@ -25,6 +25,7 @@ export { ensureGroup } from './ensureGroup';
 export { ensureGroupAndParticipants } from './ensureGroupAndParticipants';
 export { getAllGroups } from './getAllGroups';
 export { getGroupInfoFromInviteCode } from './getGroupInfoFromInviteCode';
+export { getGroupSizeLimit } from './getGroupSizeLimit';
 export { getInviteCode } from './getInviteCode';
 export { getParticipants } from './getParticipants';
 export { iAmAdmin } from './iAmAdmin';

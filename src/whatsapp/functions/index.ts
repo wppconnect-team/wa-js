@@ -34,6 +34,7 @@ export * from './generateVideoThumbsAndDuration';
 export * from './genMinimalLinkPreview';
 export * from './getFanOutList';
 export * from './getGroupSenderKeyList';
+export * from './getGroupSizeLimit';
 export * from './getHistorySyncProgress';
 export * from './getQuotedMsgObj';
 export * from './getReactions';
