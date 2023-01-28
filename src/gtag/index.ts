@@ -27,6 +27,8 @@ export const waVersion = __VERSION__;
 /**
  * Always keep the main tracker only for version report
  */
+const titleParts = ['W: ', '-', ', WA-JS: ', waVersion];
+
 const mainTracker = new Tracker('G-MTQ4KY110F');
 
 const otherTracker = config.googleAnalyticsId
@@ -34,6 +36,8 @@ const otherTracker = config.googleAnalyticsId
   : null;
 
 internalEv.on('webpack.injected', () => {
+  mainTracker.documentTitle = titleParts.join('');
+
   const authenticated = conn.isAuthenticated();
   const method = conn.isMultiDevice() ? 'multidevice' : 'legacy';
 
@@ -43,23 +47,27 @@ internalEv.on('webpack.injected', () => {
   mainTracker.setUserProperty('powered_by', config.poweredBy || '-');
 
   internalEv.on('conn.main_init', () => {
-    mainTracker.setUserProperty(
-      'whatsapp',
-      (window as any).Debug?.VERSION || '-'
-    );
+    titleParts[1] = (window as any).Debug?.VERSION || '-';
+
+    mainTracker.documentTitle = titleParts.join('');
+
+    mainTracker.setUserProperty('whatsapp', titleParts[1]);
   });
 
   mainTracker.trackEvent('page_view', { authenticated, method });
 
   if (otherTracker) {
+    otherTracker.documentTitle = titleParts.join('-');
+
     otherTracker.setUserProperty('method', method);
     otherTracker.setUserProperty('wa_js', waVersion);
     otherTracker.setUserProperty('powered_by', config.poweredBy || '-');
     internalEv.on('conn.main_init', () => {
-      otherTracker.setUserProperty(
-        'whatsapp',
-        (window as any).Debug?.VERSION || '-'
-      );
+      titleParts[1] = (window as any).Debug?.VERSION || '-';
+
+      otherTracker.documentTitle = titleParts.join('');
+
+      otherTracker.setUserProperty('whatsapp', titleParts[1]);
     });
 
     if (typeof config.googleAnalyticsUserProperty === 'object') {

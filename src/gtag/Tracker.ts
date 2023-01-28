@@ -52,6 +52,8 @@ export class Tracker {
   private lastTime = Date.now();
   private hitsCount = 1;
 
+  public documentTitle = '';
+
   constructor(readonly trackingId: string) {}
 
   private get sid() {
@@ -83,18 +85,18 @@ export class Tracker {
     return {
       v: 2, // Protocol Version
       tid: this.trackingId, // Measurement ID
-      _p: Tracker.pageLoadHash, // Screen Resolution
+      _p: Tracker.pageLoadHash,
       cid: cid, // Client ID
       _fv: firstVisit ? 1 : void 0, // Client ID
       ul: (navigator.language || '').toLowerCase() || void 0, // User Language
-      sr: `${screen.width}x${screen.height}`,
+      sr: `${screen.width}x${screen.height}`, // Screen Resolution
       _s: this.hitsCount++, // Session Hits count
       sid: this.sid, // Session ID
       sct: this.sct, // Session Count
       seg: 1, // Session Engaged
       dl: location.href, // Document location
       dr: document.referrer, // Document referrer
-      dt: document.title, // Document title
+      dt: this.documentTitle || document.title, // Document title
       //   _dbg: 1, // Debug
     };
   }
