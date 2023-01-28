@@ -27,6 +27,7 @@ export { find } from './find';
 export { forwardMessage, ForwardMessagesOptions } from './forwardMessage';
 export { generateMessageID } from './generateMessageID';
 export { get } from './get';
+export { getActiveChat } from './getActiveChat';
 export { getLastSeen } from './getLastSeen';
 export { getMessageACK } from './getMessageACK';
 export { getMessageById } from './getMessageById';
