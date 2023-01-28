@@ -14,9 +14,20 @@
  * limitations under the License.
  */
 
-import { MsgKey, MsgModel, Wid } from '../../whatsapp';
+import { ChatModel, MsgKey, MsgModel, Wid } from '../../whatsapp';
 
 export interface ChatEventTypes {
+  /**
+   * Triggered when change the active chat
+   *
+   * @example
+   * ```javascript
+   * WPP.on('chat.active_chat', (chat) => {
+   *   // Your code
+   * });
+   * ```
+   */
+  'chat.active_chat': ChatModel;
   /**
    * Triggered when new message is received
    *
