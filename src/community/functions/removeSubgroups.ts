@@ -23,7 +23,7 @@ import { sendUnlinkSubgroups as SendUnlinkSubgroups } from '../../whatsapp/funct
  *
  * @example
  * ```javascript
- * await WPP.community.sendUnlinkSubgroups('<>@g.us', ['<>@g.us', '<>@g.us']);
+ * await WPP.community.sendUnlinkSubgroups('123456@g.us', ['123456@g.us', '123456@g.us']);
  * ```
  */
 

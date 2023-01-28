@@ -23,7 +23,7 @@ import { sendLinkSubgroups as SendLinkSubgroups } from '../../whatsapp/functions
  *
  * @example
  * ```javascript
- * await WPP.community.addSubgroups('<>@g.us', ['<>@g.us', '<>@g.us']);
+ * await WPP.community.addSubgroups('123456@g.us', ['123456@g.us', '123456@g.us']);
  * ```
  */
 

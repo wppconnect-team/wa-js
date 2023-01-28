@@ -23,7 +23,7 @@ import { getCommunityParticipants as GetCommunityParticipants } from '../../what
  *
  * @example
  * ```javascript
- * await WPP.community.getParticipants('<>@g.us');
+ * await WPP.community.getParticipants('123456@g.us');
  * ```
  */
 

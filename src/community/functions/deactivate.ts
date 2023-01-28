@@ -23,7 +23,7 @@ import { sendDeactivateCommunity as SendDeactivateCommunity } from '../../whatsa
  *
  * @example
  * ```javascript
- * await WPP.community.deactivate('<>@g.us');
+ * await WPP.community.deactivate('123456@g.us');
  * ```
  */
 

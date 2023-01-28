@@ -26,7 +26,7 @@ import {
  *
  * @example
  * ```javascript
- * await WPP.community.create('Name for community', 'description for community', ['120363048977606406@g.us', ''120363048977606406@g.us']);
+ * await WPP.community.create('Name for community', 'description for community', ['123456@g.us', '123456@g.us']);
  * ```
  */
 export async function create(
