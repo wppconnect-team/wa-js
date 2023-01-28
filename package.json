@@ -60,7 +60,7 @@
     "eslint-plugin-header": "^3.1.1",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-simple-import-sort": "^9.0.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
     "eventemitter2": "^6.4.9",
     "file-type": "~16.5.4",
     "husky": "^8.0.3",
