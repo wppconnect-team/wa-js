@@ -56,37 +56,70 @@ async function start() {
   });
 
   page.on('load', async (page) => {
-    await page.waitForFunction(() => WPP?.isReady, null, {
+    await page.waitForFunction(() => window.WPP?.isReady, null, {
       timeout: 0,
     });
 
     page.evaluate(() => {
+      const decoder = new TextDecoder('utf-8');
+      const serialize = (data: any) => {
+        const json = JSON.stringify(data, (key, value) => {
+          if (ArrayBuffer.isView(value)) {
+            const decoded = decoder.decode(value);
+            try {
+              return JSON.parse(decoded);
+            } catch (e) {
+              return (
+                value.constructor.name +
+                ': ' +
+                window.btoa(
+                  String.fromCharCode.apply(
+                    null,
+                    new Uint8Array(value as any) as unknown as number[]
+                  )
+                )
+              );
+            }
+          }
+          return value;
+        });
+
+        return JSON.parse(json);
+      };
+
       const module = WPP.webpack.search(
-        (m) => m.sendIq && m.sendSmaxIq && m.sendIqWithoutRetry
+        (m) =>
+          m.deprecatedSendIq &&
+          m.sendSmaxStanza &&
+          m.deprecatedSendIqWithoutRetry
       );
 
-      const sendIq = module.sendIq;
-      module.sendIq = function (stanzaData: any, ...args: any[]) {
+      const deprecatedSendIq = module.deprecatedSendIq;
+      module.deprecatedSendIq = function (stanzaData: any, ...args: any[]) {
         const id = stanzaData?.attrs?.id || '';
-        logStanzaInput(id, stanzaData);
-        const result = sendIq(stanzaData, ...args);
-        result.then((r: any) => logStanzaOutput(id, r));
+        logStanzaInput(id, serialize(stanzaData));
+        const result = deprecatedSendIq(stanzaData, ...args);
+        result.then((r: any) => logStanzaOutput(id, serialize(r)));
         return result;
       };
-      const sendSmaxIq = module.sendSmaxIq;
-      module.sendSmaxIq = function (stanzaData: any, ...args: any[]) {
+      const sendSmaxStanza = module.sendSmaxStanza;
+      module.sendSmaxStanza = function (stanzaData: any, ...args: any[]) {
         const id = stanzaData?.attrs?.id || '';
-        logStanzaInput(id, stanzaData);
-        const result = sendSmaxIq(stanzaData, ...args);
-        result.then((r: any) => logStanzaOutput(id, r));
+        logStanzaInput(id, serialize(stanzaData));
+        const result = sendSmaxStanza(stanzaData, ...args);
+        result.then((r: any) => logStanzaOutput(id, serialize(r)));
         return result;
       };
-      const sendIqWithoutRetry = module.sendIqWithoutRetry;
-      module.sendIqWithoutRetry = function (stanzaData: any, ...args: any[]) {
+      const deprecatedSendIqWithoutRetry =
+        module.deprecateddeprecatedSendIqWithoutRetry;
+      module.deprecatedSendIqWithoutRetry = function (
+        stanzaData: any,
+        ...args: any[]
+      ) {
         const id = stanzaData?.attrs?.id || '';
-        logStanzaInput(id, stanzaData);
-        const result = sendIqWithoutRetry(stanzaData, ...args);
-        result.then((r: any) => logStanzaOutput(id, r));
+        logStanzaInput(id, serialize(stanzaData));
+        const result = deprecatedSendIqWithoutRetry(stanzaData, ...args);
+        result.then((r: any) => logStanzaOutput(id, serialize(r)));
         return result;
       };
     });
