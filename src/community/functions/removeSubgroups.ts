@@ -25,6 +25,8 @@ import { sendUnlinkSubgroups as SendUnlinkSubgroups } from '../../whatsapp/funct
  * ```javascript
  * await WPP.community.sendUnlinkSubgroups('123456@g.us', ['123456@g.us', '123456@g.us']);
  * ```
+ *
+ * @category Community
  */
 
 export async function removeSubgroups(

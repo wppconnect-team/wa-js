@@ -19,6 +19,18 @@ import { Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
 import { ensureGroupAndParticipants } from './ensureGroupAndParticipants';
 
+/**
+ * Remove admin of a group
+ *
+ * @example
+ * ```javascript
+ * // One member
+ * await WPP.group.demoteParticipants('123456@g.us', '123456@c.us');
+ *
+ * // More than one member
+ * await WPP.group.demoteParticipants('123456@g.us', ['123456@c.us','123456@c.us']);
+ * ```
+ */
 export async function demoteParticipants(
   groupId: string | Wid,
   participantsIds: (string | Wid) | (string | Wid)[]

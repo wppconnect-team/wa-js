@@ -25,6 +25,8 @@ import { getCommunityParticipants as GetCommunityParticipants } from '../../what
  * ```javascript
  * await WPP.community.getParticipants('123456@g.us');
  * ```
+ *
+ * @category Community
  */
 
 export async function getParticipants(communityId: string | Wid): Promise<any> {

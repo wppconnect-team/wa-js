@@ -26,6 +26,8 @@ import { ensureGroup } from './';
  * const code = WPP.group.getInviteCode('[group-id]@g.us');
  * const link = 'https://chat.whatsapp.com/' + code;
  * ```
+ *
+ * @category Group
  */
 export async function getInviteCode(groupId: string | Wid) {
   const groupChat = await ensureGroup(groupId, true);

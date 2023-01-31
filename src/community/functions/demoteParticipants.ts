@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,44 +14,40 @@
  * limitations under the License.
  */
 
-import { WPPError } from '../../util';
+import { ensureGroupAndParticipants } from '../../group';
 import { Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
-import { ensureGroupAndParticipants } from './ensureGroupAndParticipants';
 
 /**
- * Promote group member to admin
+ * Remove admin of community participant
  *
  * @example
  * ```javascript
- * // One member
- * await WPP.group.promoteParticipants('123456@g.us', '123456@c.us');
- *
- * // More than one member
- * await WPP.group.promoteParticipants('123456@g.us', ['123456@c.us','123456@c.us']);
+ * await WPP.community.demoteParticipants('123456@g.us', '123456@c.us');
  * ```
  *
- * @category Group
+ * @category Community
  */
-export async function promoteParticipants(
-  groupId: string | Wid,
+
+export async function demoteParticipants(
+  communityId: string | Wid,
   participantsIds: (string | Wid) | (string | Wid)[]
-): Promise<void> {
+): Promise<any> {
   const { groupChat, participants } = await ensureGroupAndParticipants(
-    groupId,
+    communityId,
     participantsIds
   );
-
-  if (
-    participants.some(
-      (p) => !groupChat.groupMetadata?.participants.canPromote(p)
-    )
-  ) {
-    throw new WPPError(
-      'group_participant_is_already_a_group_admin',
-      `Group ${groupChat.id._serialized}: Group participant is already a group admin`
-    );
+  try {
+    await wa_functions.demoteCommunityParticipants(groupChat, participants);
+    return {
+      participants: participantsIds,
+      success: true,
+    };
+  } catch (error) {
+    return {
+      participants: participantsIds,
+      success: false,
+      error: error,
+    };
   }
-
-  return wa_functions.promoteParticipants(groupChat, participants);
 }

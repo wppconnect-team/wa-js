@@ -24,6 +24,8 @@ import { queryAllGroups } from '../../whatsapp/functions';
  * ```javascript
  * WPP.group.queryAllGroups();
  * ```
+ *
+ * @category Group
  */
 export async function getAllGroups() {
   const groupsArr = [];

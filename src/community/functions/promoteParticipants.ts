@@ -14,24 +14,29 @@
  * limitations under the License.
  */
 
-import { assertWid } from '../../assert';
+import { ensureGroupAndParticipants } from '../../group';
 import { Wid } from '../../whatsapp';
-import { sendDeactivateCommunity as SendDeactivateCommunity } from '../../whatsapp/functions';
+import * as wa_functions from '../../whatsapp/functions';
 
 /**
- * Deactivated a community
+ * Promote participant of community to admin
  *
  * @example
  * ```javascript
- * await WPP.community.deactivate('123456@g.us');
+ * await WPP.community.promoteParticipants('123456@g.us', '123456@c.us');
  * ```
  *
  * @category Community
  */
 
-export async function deactivate(communityId: string | Wid): Promise<any> {
-  const wid = assertWid(communityId);
-  return SendDeactivateCommunity({
-    parentGroupId: wid,
-  });
+export async function promoteParticipants(
+  communityId: string | Wid,
+  participantsIds: (string | Wid) | (string | Wid)[]
+): Promise<any> {
+  const { groupChat, participants } = await ensureGroupAndParticipants(
+    communityId,
+    participantsIds
+  );
+
+  return wa_functions.promoteCommunityParticipants(groupChat, participants);
 }

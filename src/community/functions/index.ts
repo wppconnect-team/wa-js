@@ -17,5 +17,7 @@
 export { addSubgroups } from './addSubgroups';
 export { create } from './create';
 export { deactivate } from './deactivate';
+export { demoteParticipants } from './demoteParticipants';
 export { getParticipants } from './getParticipants';
+export { promoteParticipants } from './promoteParticipants';
 export { removeSubgroups } from './removeSubgroups';
