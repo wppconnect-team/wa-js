@@ -26,6 +26,8 @@ import { ensureGroup, iAmRestrictedMember } from './';
  * ```javascript
  * await WPP.group.setIcon('[group@g.us]', 'data:image/jpeg;base64,.....');
  * ```
+ *
+ * @category Group
  */
 export async function setIcon(
   groupId: string | Wid,

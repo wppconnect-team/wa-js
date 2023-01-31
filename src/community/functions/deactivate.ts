@@ -25,6 +25,8 @@ import { sendDeactivateCommunity as SendDeactivateCommunity } from '../../whatsa
  * ```javascript
  * await WPP.community.deactivate('123456@g.us');
  * ```
+ *
+ * @category Community
  */
 
 export async function deactivate(communityId: string | Wid): Promise<any> {

@@ -19,6 +19,20 @@ import { Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
 import { ensureGroupAndParticipants } from './ensureGroupAndParticipants';
 
+/**
+ * Promote group member to admin
+ *
+ * @example
+ * ```javascript
+ * // One member
+ * await WPP.group.promoteParticipants('123456@g.us', '123456@c.us');
+ *
+ * // More than one member
+ * await WPP.group.promoteParticipants('123456@g.us', ['123456@c.us','123456@c.us']);
+ * ```
+ *
+ * @category Group
+ */
 export async function promoteParticipants(
   groupId: string | Wid,
   participantsIds: (string | Wid) | (string | Wid)[]

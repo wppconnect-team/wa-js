@@ -28,6 +28,8 @@ import {
  * ```javascript
  * await WPP.community.create('Name for community', 'description for community', ['123456@g.us', '123456@g.us']);
  * ```
+ *
+ * @category Community
  */
 export async function create(
   name: string,
