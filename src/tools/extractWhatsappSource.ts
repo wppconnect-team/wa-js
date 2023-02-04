@@ -43,6 +43,8 @@ async function start() {
     args,
   });
 
+  const downloads: Promise<void>[] = [];
+
   page.on('response', async (response) => {
     const contentType = response.headers()['content-type'] || '';
 
@@ -57,6 +59,14 @@ async function start() {
     if (fs.existsSync(filePath)) {
       return;
     }
+
+    let resolve: any = null;
+    downloads.push(
+      new Promise((r) => {
+        resolve = r;
+      })
+    );
+
     console.log('Downloading: ', fileName);
 
     const body = await response.body();
@@ -80,11 +90,17 @@ async function start() {
     content = `/*! WhatsApp Version: ${WA_VERSION} */\n` + content;
 
     fs.writeFileSync(filePath, content, { encoding: 'utf8' });
+
+    resolve?.();
   });
 
   await page.waitForFunction(() => window.WPP?.isReady, null, {
     timeout: 0,
   });
+
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+
+  await Promise.all(downloads);
 
   await browser.close();
 }

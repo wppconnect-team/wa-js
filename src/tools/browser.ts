@@ -154,7 +154,7 @@ export async function getPage(options?: LaunchArguments[1]) {
 
     await page
       .waitForFunction(
-        () => (window as any).Debug.VERSION,
+        () => (window as any).Debug?.VERSION,
         {},
         { timeout: 120000 }
       )
