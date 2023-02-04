@@ -33,6 +33,7 @@ import { editProduct as EditProduct } from '../../whatsapp/functions';
 export interface editProductParams {
   name?: string;
   description?: string;
+  image?: string;
   price?: number;
   isHidden?: boolean;
   url?: string;
@@ -44,11 +45,11 @@ export async function editProduct(
 ): Promise<ProductModel> {
   const produto = await assertGetProduct(productId);
   produto.name = params.name;
+  produto.imageCdnUrl = params.image;
   produto.description = params.description;
   produto.priceAmount1000 = params.price;
   produto.isHidden = params.isHidden;
   produto.url = params.url;
   produto.retailerId = params.retailerId;
-
   return await EditProduct(produto);
 }
