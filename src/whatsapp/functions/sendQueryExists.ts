@@ -43,7 +43,10 @@ exportModule(
   {
     sendQueryExists: [
       'queryExists', // @whatsapp >= 2.2208.7
+      'queryWidExists', // @whatsapp >= 2.2306.7
     ],
   },
-  (m) => m.queryExists && m.queryPhoneExists // @whatsapp >= 2.2211.2
+  (m) =>
+    (m.queryExists && m.queryPhoneExists) || // @whatsapp >= 2.2211.2
+    (m.queryWidExists && m.queryPhoneExists) // @whatsapp >= 2.2306.7
 );
