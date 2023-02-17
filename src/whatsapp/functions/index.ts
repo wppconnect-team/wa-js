@@ -37,6 +37,7 @@ export * from './getFanOutList';
 export * from './getGroupSenderKeyList';
 export * from './getGroupSizeLimit';
 export * from './getHistorySyncProgress';
+export * from './getParticipants';
 export * from './getQuotedMsgObj';
 export * from './getReactions';
 export * from './getSearchContext';

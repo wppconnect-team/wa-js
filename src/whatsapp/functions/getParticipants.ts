@@ -14,11 +14,27 @@
  * limitations under the License.
  */
 
-export { get } from './get';
-export { getMyStatus } from './getMyStatus';
-export { ImageStatusOptions, sendImageStatus } from './sendImageStatus';
-export { sendRawStatus, SendStatusOptions } from './sendRawStatus';
-export { sendReadStatus } from './sendReadStatus';
-export { sendTextStatus, TextStatusOptions } from './sendTextStatus';
-export { sendVideoStatus, VideoStatusOptions } from './sendVideoStatus';
-export { updateParticipants } from './updateParticipants';
+import { exportModule } from '../exportModule';
+import { Wid } from '../misc';
+
+/**
+ * @whatsapp 951974 >= 2.2222.8
+ * @whatsapp 318615 >= 2.2224.7
+ */
+export declare function getParticipants(group: Wid): Promise<null | {
+  admins: string[];
+  deviceSyncComplete?: any;
+  groupId: string;
+  participants: string[];
+  pastParticipants: string[];
+  rotateKey: boolean;
+  senderKey: Map<string, boolean>;
+}>;
+
+exportModule(
+  exports,
+  {
+    getParticipants: 'getParticipants',
+  },
+  (m) => m.getParticipants && m.addParticipants
+);

@@ -17,23 +17,15 @@
 import { assertWid } from '../../assert';
 import * as Chat from '../../chat';
 import * as webpack from '../../webpack';
-import {
-  ContactStore,
-  MsgKey,
-  ParticipantModel,
-  UserPrefs,
-  WidFactory,
-} from '../../whatsapp';
+import { ContactStore, functions, MsgKey, UserPrefs } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   createMsgProtobuf,
   encryptAndSendGroupMsg,
   encryptAndSendMsg,
-  markForgetSenderKey,
   randomHex,
-  updateParticipants,
 } from '../../whatsapp/functions';
-import { defaultSendStatusOptions } from '..';
+import { defaultSendStatusOptions, updateParticipants } from '..';
 import { postSendStatus } from './postSendStatus';
 
 export interface SendStatusOptions {
@@ -70,41 +62,6 @@ export async function sendRawStatus(
   return result;
 }
 
-let isForgot = false;
-
-async function updateStatusGroup() {
-  const myContacts = ContactStore.getModelsArray()
-    .filter((c) => c.isMyContact && !c.isContactBlocked)
-    .filter((c) => c.notifyName && !c.isMe)
-    .map((c) => c.id);
-
-  myContacts.push(UserPrefs.getMaybeMeUser());
-
-  const participants = myContacts.map(
-    (id) =>
-      new ParticipantModel({
-        id,
-        isAdmin: false,
-        isSuperAdmin: false,
-      })
-  );
-
-  const group = WidFactory.createWid('status@broadcast');
-
-  await updateParticipants({
-    group,
-    participants,
-    version: Date.now(),
-    isOffline: false,
-  });
-
-  if (!isForgot) {
-    isForgot = true;
-
-    await markForgetSenderKey(group, myContacts);
-  }
-}
-
 webpack.onInjected(() => {
   // allow to send backgroundColor, textColor and font for status
   wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
@@ -123,8 +80,8 @@ webpack.onInjected(() => {
         result.extendedTextMessage.font = msg.font;
       }
 
-      result.inviteLinkGroupTypeV2 = 0;
-      result.previewType = 0;
+      result.extendedTextMessage.inviteLinkGroupTypeV2 = 0;
+      result.extendedTextMessage.previewType = 0;
     }
 
     return result;
@@ -144,7 +101,28 @@ webpack.onInjected(() => {
         throw error;
       }
 
-      await updateStatusGroup();
+      if (localStorage.getItem('wpp-status-participants') !== 'custom') {
+        const myContacts = ContactStore.getModelsArray()
+          .filter((c) => c.isMyContact && !c.isContactBlocked)
+          .filter((c) => c.notifyName && !c.isMe)
+          .filter((c) => !c.id.equals(UserPrefs.getMaybeMeUser()))
+          .map((c) => c.id);
+
+        await updateParticipants(myContacts);
+
+        localStorage.setItem('wpp-status-participants', 'contacts');
+      }
+
+      const participants = await functions.getParticipants(msg.to);
+
+      if (!participants || participants.participants.length === 0) {
+        throw new Error('empty participants for status@broadcast');
+      }
+
+      await functions.markForgetSenderKey(
+        msg.to,
+        participants.participants.map(assertWid)
+      );
 
       let c;
       if (msg.asMms) {
