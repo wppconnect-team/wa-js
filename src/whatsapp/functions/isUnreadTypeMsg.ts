@@ -25,7 +25,12 @@ export declare function isUnreadTypeMsg(msg: MsgModel): boolean;
 exportModule(
   exports,
   {
-    isUnreadTypeMsg: 'isUnreadTypeMsg',
+    isUnreadTypeMsg: [
+      'isUnreadTypeMsg', // < 2.2308.6
+      'isUnreadType',
+    ],
   },
-  (m) => m.isUnreadTypeMsg
+  (m) =>
+    m.isUnreadTypeMsg || // < 2.2308.6
+    m.isUnreadType
 );
