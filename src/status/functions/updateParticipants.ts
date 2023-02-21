@@ -16,6 +16,7 @@
 
 import { assertWid } from '../../assert';
 import {
+  ContactStore,
   functions,
   MsgKey,
   ParticipantModel,
@@ -34,10 +35,27 @@ export interface SendStatusOptions {
  *
  * @example
  * ```javascript
+ * // Use a custom list
  * await WPP.status.updateParticipants(['123@c.us', '456@c.us']);
+ * // Use the contacts by default
+ * await WPP.status.updateParticipants(null);
  * ```
  */
-export async function updateParticipants(ids: (string | Wid)[]): Promise<void> {
+export async function updateParticipants(
+  ids?: (string | Wid)[] | null
+): Promise<void> {
+  let type = 'custom';
+
+  if (!ids || ids.length === 0) {
+    ids = ContactStore.getModelsArray()
+      .filter((c) => c.isMyContact && !c.isContactBlocked)
+      .filter((c) => c.notifyName && !c.isMe)
+      .filter((c) => !c.id.equals(UserPrefs.getMaybeMeUser()))
+      .map((c) => c.id);
+
+    type = 'contacts';
+  }
+
   const wids = ids
     .map(assertWid)
     .filter((c) => !c.equals(UserPrefs.getMaybeMeUser()));
@@ -62,5 +80,5 @@ export async function updateParticipants(ids: (string | Wid)[]): Promise<void> {
     isOffline: false,
   });
 
-  localStorage.setItem('wpp-status-participants', 'custom');
+  localStorage.setItem('wpp-status-participants', type);
 }

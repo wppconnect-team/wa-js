@@ -17,7 +17,7 @@
 import { assertWid } from '../../assert';
 import * as Chat from '../../chat';
 import * as webpack from '../../webpack';
-import { ContactStore, functions, MsgKey, UserPrefs } from '../../whatsapp';
+import { functions, MsgKey, UserPrefs } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   createMsgProtobuf,
@@ -102,15 +102,7 @@ webpack.onInjected(() => {
       }
 
       if (localStorage.getItem('wpp-status-participants') !== 'custom') {
-        const myContacts = ContactStore.getModelsArray()
-          .filter((c) => c.isMyContact && !c.isContactBlocked)
-          .filter((c) => c.notifyName && !c.isMe)
-          .filter((c) => !c.id.equals(UserPrefs.getMaybeMeUser()))
-          .map((c) => c.id);
-
-        await updateParticipants(myContacts);
-
-        localStorage.setItem('wpp-status-participants', 'contacts');
+        await updateParticipants();
       }
 
       const participants = await functions.getParticipants(msg.to);
