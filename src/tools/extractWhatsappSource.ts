@@ -16,62 +16,55 @@
 
 import * as waVersion from '@wppconnect/wa-version';
 import * as fs from 'fs';
+import fetch from 'node-fetch';
 import * as path from 'path';
 import * as prettier from 'prettier';
 
-import * as wpp from '../';
-import { getPage, WA_DIR } from './browser';
-
-declare global {
-  interface Window {
-    WPP: typeof wpp;
-  }
-}
+import { WA_DIR } from './browser';
 
 const WA_VERSION = process.env['WA_VERSION'] || waVersion.getLatestVersion();
 
 async function start() {
-  const args = process.argv.slice(2);
+  const options = await prettier.resolveConfig(process.cwd());
 
   if (!fs.existsSync(WA_DIR)) {
     fs.mkdirSync(WA_DIR);
   }
+  if (!fs.existsSync(`${WA_DIR}/locales`)) {
+    fs.mkdirSync(`${WA_DIR}/locales`);
+  }
 
-  const options = await prettier.resolveConfig(process.cwd());
+  const fullVersion =
+    waVersion.getAvailableVersions(WA_VERSION).reverse()[0] || WA_VERSION;
 
-  const { browser, page } = await getPage({
-    args,
-  });
+  const version = fullVersion.replace('-beta', '');
 
-  const downloads: Promise<void>[] = [];
+  const respAsset = await fetch(
+    `https://web.whatsapp.com/assets-manifest-${version}.json`
+  );
 
-  page.on('response', async (response) => {
-    const contentType = response.headers()['content-type'] || '';
+  if (!respAsset.ok) {
+    console.error(`No version found for ${WA_VERSION}`);
+    return;
+  }
 
-    if (!contentType.startsWith('application/javascript')) {
-      return;
-    }
+  const json = await respAsset.json();
 
-    const url = response.url();
-    const fileName = path.basename(url, '.js') + '.js';
-    const filePath = path.join(WA_DIR, fileName);
+  const files = Object.keys(json)
+    .filter((f) => /\.js$/.test(f))
+    .filter((f) => !/locales/.test(f) || /locales\/en(\.|-json)/.test(f));
+
+  const downloads = files.map(async (file) => {
+    const filePath = path.join(WA_DIR, file);
 
     if (fs.existsSync(filePath)) {
       return;
     }
 
-    let resolve: any = null;
-    downloads.push(
-      new Promise((r) => {
-        resolve = r;
-      })
-    );
+    console.log('Downloading: ', file);
+    const respFile = await fetch(`https://web.whatsapp.com/${file}`);
 
-    console.log('Downloading: ', fileName);
-
-    const body = await response.body();
-
-    let content = body.toString('utf8');
+    let content = await respFile.text();
 
     content = content.replace(/([ ,:;=>(){}[\]|&])!1\b/g, '$1false');
     content = content.replace(/([ ,:;=>(){}[\]|&])!0\b/g, '$1true');
@@ -87,21 +80,12 @@ async function start() {
       printWidth: 120,
     });
 
-    content = `/*! WhatsApp Version: ${WA_VERSION} */\n` + content;
+    content = `/*! WhatsApp Version: ${version} */\n` + content;
 
     fs.writeFileSync(filePath, content, { encoding: 'utf8' });
-
-    resolve?.();
+    console.log('Done: ', file);
   });
-
-  await page.waitForFunction(() => window.WPP?.isReady, null, {
-    timeout: 0,
-  });
-
-  await new Promise((resolve) => setTimeout(resolve, 5000));
 
   await Promise.all(downloads);
-
-  await browser.close();
 }
 start();
