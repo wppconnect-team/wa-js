@@ -1,10 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:base",
-    ":prHourlyLimitNone",
-    ":semanticCommits"
-  ],
+  "extends": ["config:base", ":prHourlyLimitNone", ":semanticCommits"],
   "prConcurrentLimit": 3,
   "lockFileMaintenance": {
     "enabled": true,
@@ -42,6 +38,11 @@
       "description": "Ignore major version",
       "matchPackageNames": ["@types/node"],
       "allowedVersions": "<17"
+    },
+    {
+      "description": "Ignore major version",
+      "matchPackageNames": ["@types/node-fetch", "node-fetch"],
+      "allowedVersions": "<3"
     },
     {
       "description": "Ignore major version",
