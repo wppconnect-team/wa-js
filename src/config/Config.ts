@@ -24,7 +24,8 @@
  *   deviceName: 'WPPConnect',
  *   liveLocationLimit: 10,
  *   disableGoogleAnalytics: false,
- *   googleAnalyticsId: 'G-XXXXXXXXXX'
+ *   googleAnalyticsId: 'G-XXXXXXXXXX',
+ *   sendStatusToDevice: true
  * };
  * ```
  */
@@ -68,4 +69,10 @@ export interface Config {
    * Project name for google analytics
    */
   poweredBy: string | null;
+
+  /**
+   * Send the status to your device, set it to false to avoid WhatsApp crashing
+   * @default false
+   */
+  sendStatusToDevice: boolean;
 }

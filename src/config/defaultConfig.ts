@@ -24,4 +24,5 @@ export const defaultConfig: Config = {
   googleAnalyticsUserProperty: {},
   linkPreviewApiServers: null,
   poweredBy: 'WA-JS',
+  sendStatusToDevice: false,
 };

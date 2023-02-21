@@ -15,6 +15,7 @@
  */
 
 import { assertWid } from '../../assert';
+import { config } from '../../config';
 import {
   ContactStore,
   functions,
@@ -60,7 +61,9 @@ export async function updateParticipants(
     .map(assertWid)
     .filter((c) => !c.equals(UserPrefs.getMaybeMeUser()));
 
-  // wids.push(UserPrefs.getMaybeMeUser());
+  if (config.sendStatusToDevice) {
+    wids.push(UserPrefs.getMaybeMeUser());
+  }
 
   const participants = wids.map(
     (id) =>
