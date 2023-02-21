@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as webpack from '../../webpack';
 import { exportModule } from '../exportModule';
 import { MsgModel } from '../models';
 
@@ -30,12 +29,3 @@ exportModule(
   },
   (m) => m.getQuotedMsgObj
 );
-
-/**
- * @whatsapp < 2.2245.8
- */
-webpack.injectFallbackModule('getQuotedMsgObj', {
-  getQuotedMsgObj: (msg: MsgModel) => {
-    return msg.quotedMsgObj?.() || null;
-  },
-});

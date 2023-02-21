@@ -34,7 +34,6 @@ export * from './EmojiVariantCollection';
 export * from './GroupMetadataCollection';
 export * from './LabelCollection';
 export * from './LabelItemCollection';
-export * from './LiveLocationCollection';
 export * from './MsgCollection';
 export * from './MsgInfoCollection';
 export * from './MsgInfoParticipantCollection';

@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-import * as webpack from '../webpack';
 import * as collections from './collections';
-import { LiveLocationCollection } from './collections';
 import { exportModule } from './exportModule';
 
 /** @whatsapp 32826
@@ -64,10 +62,6 @@ export declare const GroupMetadataStore: collections.GroupMetadataCollection;
  * @whatsapp 316770 >= 2.2222.8
  */
 export declare const LabelStore: collections.LabelCollection;
-/** @whatsapp 85865
- * @whatsapp 985865 >= 2.2222.8
- */
-export declare const LiveLocationStore: collections.LiveLocationCollection;
 /** @whatsapp 59871
  * @whatsapp 559871 >= 2.2222.8
  */
@@ -143,7 +137,6 @@ const storeNames = [
   'EmojiVariantStore',
   'GroupMetadataStore',
   'LabelStore',
-  'LiveLocationStore',
   'MsgStore',
   'MsgInfoStore',
   'MuteStore',
@@ -204,23 +197,3 @@ exportModule(
   },
   (m) => m.StickerPackCollection
 );
-
-const fallback = {};
-let cache: any = null;
-
-// Lazy load
-Object.defineProperty(fallback, 'LiveLocationCollection', {
-  configurable: true,
-  enumerable: true,
-  get() {
-    if (!cache) {
-      cache = new LiveLocationCollection();
-    }
-    return cache;
-  },
-});
-
-/**
- * @whatsapp >= 2.2301.5
- */
-webpack.injectFallbackModule('LiveLocationStore', fallback);

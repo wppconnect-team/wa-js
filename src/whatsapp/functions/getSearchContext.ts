@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as webpack from '../../webpack';
 import { exportModule } from '../exportModule';
 import { MsgKey, MsgLoad } from '../misc';
 import { ChatModel, MsgModel } from '../models';
@@ -42,15 +41,3 @@ exportModule(
   },
   (m) => m.getSearchContext
 );
-
-webpack.injectFallbackModule('getSearchContext', {
-  getSearchContext: (
-    chat: ChatModel,
-    msg: MsgModel | MsgKey,
-    options?: {
-      isQuotedMsgAvailable: boolean;
-    }
-  ) => {
-    return chat.getSearchContext?.(msg, options);
-  },
-});

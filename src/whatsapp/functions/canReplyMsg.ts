@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as webpack from '../../webpack';
 import { exportModule } from '../exportModule';
 import { MsgModel } from '../models';
 
@@ -30,9 +29,3 @@ exportModule(
   },
   (m) => m.canReplyMsg
 );
-
-webpack.injectFallbackModule('canReplyMsg', {
-  canReplyMsg: (msg: MsgModel) => {
-    return msg.canReply?.() || false;
-  },
-});

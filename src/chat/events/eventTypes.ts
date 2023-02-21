@@ -85,6 +85,9 @@ export interface ChatEventTypes {
     degrees?: number;
     shareDuration: number;
   };
+  /**
+   * @deprecated Temporary unsuported by WhatsApp Web Multi-Device
+   */
   'chat.live_location_update': {
     id: Wid;
     lastUpdated: number;
@@ -96,6 +99,9 @@ export interface ChatEventTypes {
     degrees?: number;
     comment: string;
   };
+  /**
+   * @deprecated Temporary unsuported by WhatsApp Web Multi-Device
+   */
   'chat.live_location_end': {
     id: Wid;
     chat: Wid;

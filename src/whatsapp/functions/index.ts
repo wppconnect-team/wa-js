@@ -17,7 +17,7 @@
 export * from './addAndSendMsgToChat';
 export * from './blockContact';
 export * from './calculateFilehashFromBlob';
-export * from './canEditMessage';
+export * from './canEditMsg';
 export * from './canReplyMsg';
 export * from './collections';
 export * from './createGroup';
@@ -61,7 +61,6 @@ export * from './queryGroupInviteCode';
 export * from './randomHex';
 export * from './randomId';
 export * from './resetGroupInviteCode';
-export * from './sendCallSignalingMsg';
 export * from './sendClear';
 export * from './sendCreateCommunity';
 export * from './sendCreateGroup';

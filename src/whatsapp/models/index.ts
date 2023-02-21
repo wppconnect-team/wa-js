@@ -35,8 +35,6 @@ export * from './GroupMetadataModel';
 export * from './HistorySyncProgressModel';
 export * from './LabelItemModel';
 export * from './LabelModel';
-export * from './LiveLocationModel';
-export * from './LiveLocationParticipantModel';
 export * from './MediaDataModel';
 export * from './Model';
 export * from './ModelChatBase';

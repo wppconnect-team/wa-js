@@ -14,64 +14,11 @@
  * limitations under the License.
  */
 
-import { config } from '../../config';
 import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
-import {
-  ChatStore,
-  LiveLocationStore,
-  MsgModel,
-  MsgStore,
-  Wid,
-} from '../../whatsapp';
-import { unixTime } from '../../whatsapp/functions';
+import { MsgModel, MsgStore } from '../../whatsapp';
 
 webpack.onInjected(() => registerLiveLocationUpdateEvent());
-
-interface LocationUpdate {
-  type: 'update';
-  accuracy?: number;
-  body: string;
-  degrees?: number;
-  elapsed: number;
-  jid: Wid;
-  lat: number;
-  lng: number;
-  speed?: number;
-}
-
-interface LocationDisable {
-  type: 'disable';
-  chat: Wid;
-  jid: Wid;
-  seq: number;
-}
-
-function processLocation(e: LocationUpdate | LocationDisable) {
-  if (e.type === 'update') {
-    internalEv.emit('chat.live_location_update', {
-      id: e.jid,
-      lastUpdated: unixTime() - e.elapsed,
-      elapsed: e.elapsed,
-      lat: e.lat,
-      lng: e.lng,
-      accuracy: e.accuracy,
-      speed: e.speed,
-      degrees: e.degrees,
-      comment: e.body,
-    });
-    return;
-  }
-
-  if (e.type === 'disable') {
-    internalEv.emit('chat.live_location_end', {
-      id: e.jid,
-      chat: e.chat,
-      seq: e.seq,
-    });
-    return;
-  }
-}
 
 function registerLiveLocationUpdateEvent() {
   /**
@@ -94,38 +41,6 @@ function registerLiveLocationUpdateEvent() {
         degrees: msg.degrees,
         shareDuration: msg.shareDuration!,
       });
-
-      LiveLocationStore.update(msg.chat!.id)
-        .then((liveLocation) => {
-          liveLocation.startViewingMap();
-        })
-        .catch(() => null);
     });
   });
-
-  /**
-   * Start for all active chats
-   */
-  internalEv.once('conn.main_ready', () => {
-    const chats = ChatStore.getModelsArray().slice(0, config.liveLocationLimit);
-    chats.forEach((chat) => {
-      LiveLocationStore.update(chat.id)
-        .then((liveLocation) => {
-          liveLocation.startViewingMap();
-        })
-        .catch(() => null);
-    });
-  });
-
-  /**
-   * Wrap LiveLocationStore.handle to get all LiveLocation events
-   * By default, only "loaded" messages process this events
-   */
-  const originalHandle = LiveLocationStore.handle;
-  LiveLocationStore.handle = (updateList: any[]) => {
-    for (const update of updateList) {
-      processLocation(update);
-    }
-    return originalHandle.call(originalHandle, updateList);
-  };
 }
