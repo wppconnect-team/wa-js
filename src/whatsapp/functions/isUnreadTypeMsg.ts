@@ -27,10 +27,12 @@ exportModule(
   {
     isUnreadTypeMsg: [
       'isUnreadTypeMsg', // < 2.2308.6
-      'isUnreadType',
+      'isUnreadType', // >= 2.2308.6, < 2.2310.4
+      'getIsUnreadType', // >= 2.2310.4
     ],
   },
   (m) =>
     m.isUnreadTypeMsg || // < 2.2308.6
-    m.isUnreadType
+    m.isUnreadType || // >= 2.2308.6, < 2.2310.4
+    m.getIsUnreadType // >= 2.2310.4
 );
