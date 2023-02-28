@@ -1,5 +1,5 @@
-# 2.20.0 (2023-02-21)
+## 2.20.1 (2023-02-28)
 
-### Features
+### Bug Fixes
 
-- Added sendStatusToDevice option to avoid app crashing ([d762d3a](https://github.com/wppconnect-team/wa-js/commit/d762d3a84bfc5ca8a164e7e2614453ab5114d301))
+- Removed offline link-preview server ([475bc4b](https://github.com/wppconnect-team/wa-js/commit/475bc4b7e0cced66184bf139a8fbc6887da14d87))
