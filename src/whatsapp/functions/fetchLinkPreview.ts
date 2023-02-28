@@ -17,6 +17,22 @@
 import * as webpack from '../../webpack';
 import { exportModule } from '../exportModule';
 
+export interface LinkUrlData {
+  anchor: undefined;
+  domain?: string;
+  href: string;
+  index: number;
+  input: string;
+  isHttp: boolean;
+  params?: string;
+  path?: string;
+  port?: number;
+  scheme: string;
+  suspiciousCharacters?: string;
+  url: string;
+  username?: string;
+}
+
 export interface LinkPreviewResult {
   url: string;
   data: {
@@ -36,7 +52,7 @@ export interface LinkPreviewResult {
  * @whatsapp 632590 >= 2.2228.4
  */
 export declare function fetchLinkPreview(
-  url: string
+  url: LinkUrlData
 ): Promise<null | LinkPreviewResult>;
 
 exportModule(

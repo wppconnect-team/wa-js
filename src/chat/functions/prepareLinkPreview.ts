@@ -108,13 +108,15 @@ webpack.onReady(() => {
   wrapModuleFunction(genMinimalLinkPreview, async (func, ...args) => {
     const [uri] = args;
 
+    const url = typeof uri === 'string' ? uri : uri.url;
+
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve) => {
       try {
-        const previewData = await fetchRemoteLinkPreviewData(uri.url);
+        const previewData = await fetchRemoteLinkPreviewData(url);
 
         if (!previewData) {
-          throw new Error(`preview not found for ${uri.url}`);
+          throw new Error(`preview not found for ${url}`);
         }
 
         const { imageUrl, ...data } = previewData;
@@ -127,7 +129,7 @@ webpack.onReady(() => {
         }
 
         const result = {
-          url: uri.url,
+          url: url,
           data: {
             ...data,
             ...thumbnailData,

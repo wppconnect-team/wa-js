@@ -15,28 +15,16 @@
  */
 
 import { exportModule } from '../exportModule';
-import { LinkPreviewResult } from './fetchLinkPreview';
+import { LinkPreviewResult, LinkUrlData } from './fetchLinkPreview';
 
 /**
  * @whatsapp 92375
  * @whatsapp 692375 >= 2.2222.8
  * @whatsapp 321120 >= 2.2228.4
  */
-export declare function genMinimalLinkPreview(data: {
-  anchor: undefined;
-  domain?: string;
-  href: string;
-  index: number;
-  input: string;
-  isHttp: boolean;
-  params?: string;
-  path?: string;
-  port?: number;
-  scheme: string;
-  suspiciousCharacters?: string;
-  url: string;
-  username?: string;
-}): Promise<null | LinkPreviewResult>;
+export declare function genMinimalLinkPreview(
+  data: LinkUrlData
+): Promise<null | LinkPreviewResult>;
 
 exportModule(
   exports,
