@@ -23,6 +23,7 @@ import { Conn } from '../../whatsapp';
  * ```javascript
  * WPP.profile.isBusiness();
  * ```
+ * @category Profile
  */
 export function isBusiness(): boolean | undefined {
   return Conn.isSMB;

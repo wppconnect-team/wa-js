@@ -25,7 +25,7 @@ import * as wa_functions from '../../whatsapp/functions';
  * await WPP.profile.setMyStatus('Example text');
  * ```
  *
- * @category Chat
+ * @category Profile
  */
 
 export async function setMyStatus(statusText: string) {

@@ -24,7 +24,7 @@ import { functions } from '../../whatsapp';
  * await WPP.profile.setMyProfileName('My new name');
  * ```
  *
- * @category Chat
+ * @category Profile
  */
 
 export async function setMyProfileName(name: string) {

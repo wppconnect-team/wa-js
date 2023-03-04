@@ -24,7 +24,7 @@ import { StatusStore, UserPrefs } from '../../whatsapp';
  * await WPP.profile.getMyStatus();
  * ```
  *
- * @category Chat
+ * @category Profile
  */
 
 export async function getMyStatus() {

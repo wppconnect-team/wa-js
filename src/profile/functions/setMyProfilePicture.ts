@@ -26,7 +26,7 @@ import { sendSetPicture } from '../../whatsapp/functions';
  * await WPP.profile.setMyProfilePicture('data:image/jpeg;base64,.....');
  * ```
  *
- * @category Chat
+ * @category Profile
  */
 
 export async function setMyProfilePicture(content: string): Promise<{
