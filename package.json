@@ -23,6 +23,7 @@
     "docs:build": "npm run docs:clean && npm run docs:theme && typedoc --gitRevision main",
     "docs:clean": "shx rm -rf docs",
     "docs:theme": "cd ./docs-source && tsc",
+    "launch:attach": "ts-node ./src/tools/launchAttach.ts",
     "launch:local": "ts-node ./src/tools/launchLocal.ts",
     "launch:protocol-log": "ts-node ./src/tools/launchProtocolLog.ts",
     "lint": "npx eslint --ext .ts src",

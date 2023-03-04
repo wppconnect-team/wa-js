@@ -29,28 +29,7 @@ type LaunchArguments = Parameters<
   typeof playwright.chromium.launchPersistentContext
 >;
 
-export async function getPage(options?: LaunchArguments[1]) {
-  let userDataDir = path.resolve(__dirname, '../../userDataDir');
-  if (Array.isArray(options?.args)) {
-    const index = options?.args.findIndex((a) =>
-      a.startsWith('--user-data-dir')
-    );
-    if (typeof index === 'number' && index > -1) {
-      const param = options?.args[index];
-      options?.args.splice(index, 1);
-      userDataDir = param?.split('=')[1] || userDataDir;
-    }
-  }
-
-  const browser = await playwright.chromium.launchPersistentContext(
-    userDataDir,
-    options
-  );
-
-  const page = browser.pages().length
-    ? browser.pages()[0]
-    : await browser.newPage();
-
+export async function preparePage(page: playwright.Page) {
   page.route('https://crashlogs.whatsapp.net/**', (route) => {
     route.abort();
   });
@@ -145,6 +124,31 @@ export async function getPage(options?: LaunchArguments[1]) {
       );
     });
   });
+}
+
+export async function getPage(options?: LaunchArguments[1]) {
+  let userDataDir = path.resolve(__dirname, '../../userDataDir');
+  if (Array.isArray(options?.args)) {
+    const index = options?.args.findIndex((a) =>
+      a.startsWith('--user-data-dir')
+    );
+    if (typeof index === 'number' && index > -1) {
+      const param = options?.args[index];
+      options?.args.splice(index, 1);
+      userDataDir = param?.split('=')[1] || userDataDir;
+    }
+  }
+
+  const browser = await playwright.chromium.launchPersistentContext(
+    userDataDir,
+    options
+  );
+
+  const page = browser.pages().length
+    ? browser.pages()[0]
+    : await browser.newPage();
+
+  await preparePage(page);
 
   setTimeout(async () => {
     await page.goto(URL, {
