@@ -39,7 +39,9 @@ export declare function sendSetPicture(
  * @whatsapp 78426
  * @whatsapp 5018 >= 2.2204.13
  */
-export declare function requestDeletePicture(chat: Wid): Promise<any>;
+export declare function requestDeletePicture(
+  chat: Wid
+): Promise<{ status: number }>;
 
 exportModule(
   exports,

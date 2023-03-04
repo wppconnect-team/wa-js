@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,22 @@
  * limitations under the License.
  */
 
-export { editBusinessProfile } from './editBusinessProfile';
-export { getMyStatus } from './getMyStatus';
-export { isBusiness } from './isBusiness';
-export { removeMyProfilePicture } from './removeMyProfilePicture';
-export { setMyProfileName } from './setMyProfileName';
-export { setMyProfilePicture } from './setMyProfilePicture';
-export { setMyStatus } from './setMyStatus';
+import { functions, UserPrefs } from '../../whatsapp';
+
+/**
+ * Remove your profile picture
+ *
+ * @example
+ * ```javascript
+ * await WPP.profile.removeMyProfilePicture();
+ * ```
+ *
+ * @category Profile
+ */
+
+export async function removeMyProfilePicture(): Promise<boolean> {
+  const me = UserPrefs.getMaybeMeUser();
+  const result = await functions.requestDeletePicture(me);
+
+  return result.status === 200;
+}
