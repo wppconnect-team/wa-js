@@ -14,9 +14,21 @@
  * limitations under the License.
  */
 
-export { editBusinessProfile } from './editBusinessProfile';
-export { getMyStatus } from './getMyStatus';
-export { isBusiness } from './isBusiness';
-export { setMyProfileName } from './setMyProfileName';
-export { setMyProfilePicture } from './setMyProfilePicture';
-export { setMyStatus } from './setMyStatus';
+import { functions } from '../../whatsapp';
+
+/**
+ * Update your current profile name
+ *
+ * @example
+ * ```javascript
+ * await WPP.profile.setMyProfileName('My new name');
+ * ```
+ *
+ * @category Chat
+ */
+
+export async function setMyProfileName(name: string) {
+  await functions.setPushname(name);
+
+  return true;
+}
