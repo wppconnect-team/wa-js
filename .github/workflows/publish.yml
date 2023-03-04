@@ -72,3 +72,9 @@ jobs:
             dist/wppconnect-wa.js
           gzip: folders
           allow_override: true
+
+      - name: Update WPPConnect Site
+        run: gh workflow run update-blog.yml --repo wppconnect-team/wppconnect-team.github.io
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
