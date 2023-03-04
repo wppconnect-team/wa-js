@@ -35,6 +35,7 @@ export { iAmSuperAdmin } from './iAmSuperAdmin';
 export { join } from './join';
 export { leave } from './leave';
 export { promoteParticipants } from './promoteParticipants';
+export { removeIcon } from './removeIcon';
 export { removeParticipants } from './removeParticipants';
 export { revokeInviteCode } from './revokeInviteCode';
 export { setDescription } from './setDescription';
