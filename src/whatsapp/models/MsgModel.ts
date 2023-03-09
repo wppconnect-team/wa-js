@@ -74,7 +74,8 @@ interface Props {
   deprecatedMms3Url?: any;
   directPath?: any;
   mimetype?: any;
-  duration?: any;
+  waveform?: any;
+  duration?: number;
   filehash?: any;
   encFilehash?: any;
   size?: any;

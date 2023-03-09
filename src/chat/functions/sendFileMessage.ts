@@ -39,6 +39,7 @@ import {
   prepareMessageButtons,
   prepareRawMessage,
 } from '.';
+import { prepareAudioWaveform } from './prepareAudioWaveform';
 
 const debug = Debug('WA-JS:message');
 
@@ -54,9 +55,53 @@ export interface AutoDetectMessageOptions extends FileMessageOptions {
   type: 'auto-detect';
 }
 
+/**
+ * Send an audio message as a PTT, like a recorded message
+ *
+ * @example
+ * ```javascript
+ * // PTT audio
+ * WPP.chat.sendFileMessage(
+ *  '[number]@c.us',
+ *  'data:audio/mp3;base64,<a long base64 file...>',
+ *  {
+ *    type: 'audio',
+ *    isPtt: true // false for common audio
+ *  }
+ * );
+ * ```
+ */
 export interface AudioMessageOptions extends FileMessageOptions {
   type: 'audio';
   isPtt?: boolean;
+  /**
+   * Send an audio message as a PTT with waveform
+   *
+   * @example
+   * ```javascript
+   * // Enable waveform
+   * WPP.chat.sendFileMessage(
+   *  '[number]@c.us',
+   *  'data:audio/mp3;base64,<a long base64 file...>',
+   *  {
+   *    type: 'audio',
+   *    isPtt: true,
+   *    waveform: true // false to disable
+   *  }
+   * );
+   * // Disable waveform
+   * WPP.chat.sendFileMessage(
+   *  '[number]@c.us',
+   *  'data:audio/mp3;base64,<a long base64 file...>',
+   *  {
+   *    type: 'audio',
+   *    isPtt: true,
+   *    waveform: false
+   *  }
+   * );
+   * ```
+   */
+  waveform?: boolean;
 }
 
 export interface DocumentMessageOptions
@@ -169,6 +214,7 @@ export async function sendFileMessage(
     ...defaultSendMessageOptions,
     ...{
       type: 'auto-detect',
+      waveform: true,
     },
     ...options,
   };
@@ -189,12 +235,20 @@ export async function sendFileMessage(
     asGif?: boolean;
     isAudio?: boolean;
     asSticker?: boolean;
+    precomputedFields?: {
+      duration: number;
+      waveform: Uint8Array;
+    };
   } = {};
 
   let isViewOnce: boolean | undefined;
 
   if (options.type === 'audio') {
     rawMediaOptions.isPtt = options.isPtt;
+    rawMediaOptions.precomputedFields = await prepareAudioWaveform(
+      options as any,
+      file
+    );
   } else if (options.type === 'image') {
     isViewOnce = options.isViewOnce;
   } else if (options.type === 'video') {
