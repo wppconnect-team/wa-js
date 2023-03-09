@@ -16,6 +16,12 @@
 <li><a href="../modules/chat.html">chat</a></li>
 <li><a href="chat.AudioMessageOptions.html">AudioMessageOptions</a></li></ul>
 <h1>Interface AudioMessageOptions</h1></div>
+<section class="tsd-panel tsd-comment">
+<div class="tsd-comment tsd-typography"><p>Send an audio message as a PTT, like a recorded message</p>
+
+<h3>Example</h3><pre><code class="language-javascript"><span class="hl-0">// PTT audio</span><br/><span class="hl-4">WPP</span><span class="hl-1">.</span><span class="hl-5">chat</span><span class="hl-1">.</span><span class="hl-6">sendFileMessage</span><span class="hl-1">(</span><br/><span class="hl-1"> </span><span class="hl-2">&#39;[number]@c.us&#39;</span><span class="hl-1">,</span><br/><span class="hl-1"> </span><span class="hl-2">&#39;data:audio/mp3;base64,&lt;a long base64 file...&gt;&#39;</span><span class="hl-1">,</span><br/><span class="hl-1"> {</span><br/><span class="hl-1">   </span><span class="hl-5">type:</span><span class="hl-1"> </span><span class="hl-2">&#39;audio&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">   </span><span class="hl-5">isPtt:</span><span class="hl-1"> </span><span class="hl-3">true</span><span class="hl-1"> </span><span class="hl-0">// false for common audio</span><br/><span class="hl-1"> }</span><br/><span class="hl-1">);</span>
+</code></pre>
+</div></section>
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
@@ -23,7 +29,7 @@
 <ul class="tsd-hierarchy">
 <li><span class="target">AudioMessageOptions</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/functions/sendFileMessage.ts#L57">src/chat/functions/sendFileMessage.ts:57</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/functions/sendFileMessage.ts#L74">src/chat/functions/sendFileMessage.ts:74</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -44,6 +50,7 @@
 <a href="chat.AudioMessageOptions.html#quotedMsg" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>quoted<wbr/>Msg?</span></a>
 <a href="chat.AudioMessageOptions.html#type" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>type</span></a>
 <a href="chat.AudioMessageOptions.html#waitForAck" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>wait<wbr/>For<wbr/>Ack?</span></a>
+<a href="chat.AudioMessageOptions.html#waveform" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>waveform?</span></a>
 </div></section></div></details></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
@@ -52,7 +59,7 @@
 <div class="tsd-signature">caption<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <p>Inherited from <a href="chat.FileMessageOptions.html">FileMessageOptions</a>.<a href="chat.FileMessageOptions.html#caption">caption</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/functions/sendFileMessage.ts#L47">src/chat/functions/sendFileMessage.ts:47</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/functions/sendFileMessage.ts#L48">src/chat/functions/sendFileMessage.ts:48</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a id="createChat" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>create<wbr/>Chat</span><a href="#createChat" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">create<wbr/>Chat<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -84,18 +91,18 @@
 <div class="tsd-signature">filename<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <p>Inherited from <a href="chat.FileMessageOptions.html">FileMessageOptions</a>.<a href="chat.FileMessageOptions.html#filename">filename</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/functions/sendFileMessage.ts#L49">src/chat/functions/sendFileMessage.ts:49</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/functions/sendFileMessage.ts#L50">src/chat/functions/sendFileMessage.ts:50</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a id="footer" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>footer</span><a href="#footer" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">footer<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <p>Inherited from <a href="chat.FileMessageOptions.html">FileMessageOptions</a>.<a href="chat.FileMessageOptions.html#footer">footer</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/functions/sendFileMessage.ts#L48">src/chat/functions/sendFileMessage.ts:48</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/functions/sendFileMessage.ts#L49">src/chat/functions/sendFileMessage.ts:49</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="isPtt" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>is<wbr/>Ptt</span><a href="#isPtt" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">is<wbr/>Ptt<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/functions/sendFileMessage.ts#L59">src/chat/functions/sendFileMessage.ts:59</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/functions/sendFileMessage.ts#L76">src/chat/functions/sendFileMessage.ts:76</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a id="markIsRead" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>mark<wbr/>Is<wbr/>Read</span><a href="#markIsRead" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">mark<wbr/>Is<wbr/>Read<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -132,7 +139,7 @@ This option work better with a message with mension</p>
 <div class="tsd-signature">mimetype<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <p>Inherited from <a href="chat.FileMessageOptions.html">FileMessageOptions</a>.<a href="chat.FileMessageOptions.html#mimetype">mimetype</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/functions/sendFileMessage.ts#L50">src/chat/functions/sendFileMessage.ts:50</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/functions/sendFileMessage.ts#L51">src/chat/functions/sendFileMessage.ts:51</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a id="quotedMsg" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>quoted<wbr/>Msg</span><a href="#quotedMsg" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">quoted<wbr/>Msg<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="../classes/whatsapp.MsgModel.html" class="tsd-signature-type" data-tsd-kind="Class">MsgModel</a><span class="tsd-signature-symbol"> | </span><a href="../classes/whatsapp.MsgKey.html" class="tsd-signature-type" data-tsd-kind="Class">MsgKey</a></div>
@@ -149,7 +156,7 @@ This option work better with a message with mension</p>
 <div class="tsd-signature">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;audio&quot;</span></div><aside class="tsd-sources">
 <p>Overrides <a href="chat.FileMessageOptions.html">FileMessageOptions</a>.<a href="chat.FileMessageOptions.html#type">type</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/functions/sendFileMessage.ts#L58">src/chat/functions/sendFileMessage.ts:58</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/functions/sendFileMessage.ts#L75">src/chat/functions/sendFileMessage.ts:75</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a id="waitForAck" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>wait<wbr/>For<wbr/>Ack</span><a href="#waitForAck" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">wait<wbr/>For<wbr/>Ack<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -162,7 +169,17 @@ This option work better with a message with mension</p>
 </div><aside class="tsd-sources">
 <p>Inherited from <a href="chat.FileMessageOptions.html">FileMessageOptions</a>.<a href="chat.FileMessageOptions.html#waitForAck">waitForAck</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L105">src/chat/types.ts:105</a></li></ul></aside></section></section></div>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L105">src/chat/types.ts:105</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="waveform" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>waveform</span><a href="#waveform" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<div class="tsd-signature">waveform<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
+<div class="tsd-comment tsd-typography"><p>Send an audio message as a PTT with waveform</p>
+
+<h3>Example</h3><pre><code class="language-javascript"><span class="hl-0">// Enable waveform</span><br/><span class="hl-4">WPP</span><span class="hl-1">.</span><span class="hl-5">chat</span><span class="hl-1">.</span><span class="hl-6">sendFileMessage</span><span class="hl-1">(</span><br/><span class="hl-1"> </span><span class="hl-2">&#39;[number]@c.us&#39;</span><span class="hl-1">,</span><br/><span class="hl-1"> </span><span class="hl-2">&#39;data:audio/mp3;base64,&lt;a long base64 file...&gt;&#39;</span><span class="hl-1">,</span><br/><span class="hl-1"> {</span><br/><span class="hl-1">   </span><span class="hl-5">type:</span><span class="hl-1"> </span><span class="hl-2">&#39;audio&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">   </span><span class="hl-5">isPtt:</span><span class="hl-1"> </span><span class="hl-3">true</span><span class="hl-1">,</span><br/><span class="hl-1">   </span><span class="hl-5">waveform:</span><span class="hl-1"> </span><span class="hl-3">true</span><span class="hl-1"> </span><span class="hl-0">// false to disable</span><br/><span class="hl-1"> }</span><br/><span class="hl-1">);</span><br/><span class="hl-0">// Disable waveform</span><br/><span class="hl-4">WPP</span><span class="hl-1">.</span><span class="hl-5">chat</span><span class="hl-1">.</span><span class="hl-6">sendFileMessage</span><span class="hl-1">(</span><br/><span class="hl-1"> </span><span class="hl-2">&#39;[number]@c.us&#39;</span><span class="hl-1">,</span><br/><span class="hl-1"> </span><span class="hl-2">&#39;data:audio/mp3;base64,&lt;a long base64 file...&gt;&#39;</span><span class="hl-1">,</span><br/><span class="hl-1"> {</span><br/><span class="hl-1">   </span><span class="hl-5">type:</span><span class="hl-1"> </span><span class="hl-2">&#39;audio&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">   </span><span class="hl-5">isPtt:</span><span class="hl-1"> </span><span class="hl-3">true</span><span class="hl-1">,</span><br/><span class="hl-1">   </span><span class="hl-5">waveform:</span><span class="hl-1"> </span><span class="hl-3">false</span><br/><span class="hl-1"> }</span><br/><span class="hl-1">);</span>
+</code></pre>
+</div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/functions/sendFileMessage.ts#L104">src/chat/functions/sendFileMessage.ts:104</a></li></ul></aside></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -232,7 +249,8 @@ This option work better with a message with mension</p>
 <li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="chat.AudioMessageOptions.html#mimetype" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>mimetype?</a></li>
 <li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="chat.AudioMessageOptions.html#quotedMsg" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>quoted<wbr/>Msg?</a></li>
 <li class="tsd-kind-property tsd-parent-kind-interface"><a href="chat.AudioMessageOptions.html#type" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>type</a></li>
-<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="chat.AudioMessageOptions.html#waitForAck" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>wait<wbr/>For<wbr/>Ack?</a></li></ul></li></ul></nav></div></div>
+<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="chat.AudioMessageOptions.html#waitForAck" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>wait<wbr/>For<wbr/>Ack?</a></li>
+<li class="tsd-kind-property tsd-parent-kind-interface"><a href="chat.AudioMessageOptions.html#waveform" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>waveform?</a></li></ul></li></ul></nav></div></div>
 <div class="container tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
 <div class="overlay"></div><script src="../assets/main.js"></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-LTZL26963K"></script><script>
