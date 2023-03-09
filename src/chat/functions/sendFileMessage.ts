@@ -201,7 +201,7 @@ export interface VideoMessageOptions
  */
 export async function sendFileMessage(
   chatId: any,
-  content: any,
+  content: string | Blob | File,
   options:
     | AutoDetectMessageOptions
     | AudioMessageOptions

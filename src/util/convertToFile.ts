@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,32 +20,43 @@ import parseDataURL from 'parse-data-url';
 import { isBase64 } from '.';
 
 export async function convertToFile(
-  data: string,
+  data: string | Blob | File,
   mimetype?: string,
   filename?: string
 ): Promise<File> {
-  let parsed = parseDataURL(data);
-
-  if (!parsed && isBase64(data)) {
-    parsed = parseDataURL('data:;base64,' + data);
+  if (data instanceof File) {
+    return data;
   }
 
-  if (!parsed) {
-    throw 'invalid_data_url';
-  }
+  let blob: Blob | null = null;
+  if (typeof data === 'string') {
+    let parsed = parseDataURL(data);
 
-  if (!mimetype) {
-    mimetype = parsed.contentType;
-  }
+    if (!parsed && isBase64(data)) {
+      parsed = parseDataURL('data:;base64,' + data);
+    }
 
-  const buffer = parsed.toBuffer();
-  const blob = new Blob(
-    [new Uint8Array(buffer, buffer.byteOffset, buffer.length)],
-    { type: mimetype }
-  );
+    if (!parsed) {
+      throw 'invalid_data_url';
+    }
+
+    if (!mimetype) {
+      mimetype = parsed.contentType;
+    }
+
+    const buffer = parsed.toBuffer();
+    blob = new Blob(
+      [new Uint8Array(buffer, buffer.byteOffset, buffer.length)],
+      {
+        type: mimetype,
+      }
+    );
+  } else {
+    blob = data;
+  }
 
   if (!filename || !mimetype) {
-    const result = await FileType.fromBuffer(buffer);
+    const result = await FileType.fromBuffer(await blob.arrayBuffer());
     if (result) {
       const baseType = result.mime.split('/')[0];
       filename = filename || `${baseType}.${result.ext}`;
