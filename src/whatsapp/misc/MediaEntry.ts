@@ -43,7 +43,12 @@ export declare class MediaEntry {
 exportModule(
   exports,
   {
-    MediaEntry: 'MediaEntry',
+    MediaEntry: [
+      'EncryptedMediaEntry', // >= 2.2312.5
+      'MediaEntry',
+    ],
   },
-  (m) => m.MediaEntry
+  (m) =>
+    m.EncryptedMediaEntry || // >= 2.2312.5
+    m.MediaEntry
 );

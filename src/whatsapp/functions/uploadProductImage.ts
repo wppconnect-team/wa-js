@@ -30,5 +30,5 @@ exportModule(
   {
     uploadProductImage: 'uploadProductImage',
   },
-  (m) => m.MediaPrep
+  (m) => m.uploadProductImage && m.MediaPrep
 );

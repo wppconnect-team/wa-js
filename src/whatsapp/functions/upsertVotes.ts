@@ -34,7 +34,12 @@ export declare function upsertVotes(args: VoteData[]): Promise<any>;
 exportModule(
   exports,
   {
-    upsertVotes: 'upsertVotes',
+    upsertVotes: [
+      'upsertVotesDb', // >= 2.2312.5
+      'upsertVotes',
+    ],
   },
-  (m) => m.upsertVotes
+  (m) =>
+    m.upsertVotesDb || // >= 2.2312.5
+    m.upsertVotes
 );
