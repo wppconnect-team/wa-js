@@ -31,11 +31,19 @@ export let isInjected = false;
 export let isReady = false;
 
 export function onInjected(listener: () => void): void {
-  internalEv.on('webpack.injected', async () => listener());
+  internalEv.on('webpack.injected', async () =>
+    Promise.resolve()
+      .then(listener)
+      .catch(() => null)
+  );
 }
 
 export function onReady(listener: () => void): void {
-  internalEv.on('webpack.ready', async () => listener());
+  internalEv.on('webpack.ready', () =>
+    Promise.resolve()
+      .then(listener)
+      .catch(() => null)
+  );
 }
 
 export type SearchModuleCondition = (module: any, moduleId: string) => boolean;
