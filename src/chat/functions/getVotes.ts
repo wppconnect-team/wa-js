@@ -49,7 +49,7 @@ export async function getVotes(id: string | MsgKey): Promise<{
     );
   }
 
-  const votes = await GetVotes(msgKey);
+  const votes = await GetVotes([msgKey]);
   const returnData = {
     msgId: msgKey,
     chatId: msgKey.remote,
