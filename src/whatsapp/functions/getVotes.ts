@@ -22,7 +22,7 @@ import { VoteData } from './upsertVotes';
  * @whatsapp 816349
  * @whatsapp 816349 >= 2.2232.6
  */
-export declare function getVotes(id: MsgKey): Promise<VoteData[]>;
+export declare function getVotes(id: MsgKey[]): Promise<VoteData[]>;
 
 exportModule(
   exports,
