@@ -63,4 +63,4 @@ export declare namespace MediaPrep {
   }
 }
 
-exportModule(exports, 'MediaPrep', (m) => m.MediaPrep);
+exportModule(exports, 'MediaPrep', (m) => m.uploadProductImage && m.MediaPrep);
