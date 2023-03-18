@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,5 +14,22 @@
  * limitations under the License.
  */
 
-export { rejectCall } from './rejectCall';
-export { sendCallOffer } from './sendCallOffer';
+import { exportModule } from '../exportModule';
+import { Wid } from '../misc';
+
+/**
+ * @whatsapp 309029 >= 2.2312.7
+ */
+export declare function encryptMsgProtobuf(
+  wid: Wid,
+  retryCount: number,
+  protoMessage: any
+): Promise<{ type: string; ciphertext: Uint8Array }>;
+
+exportModule(
+  exports,
+  {
+    encryptMsgProtobuf: 'encryptMsgProtobuf',
+  },
+  (m) => m.encryptMsgProtobuf
+);
