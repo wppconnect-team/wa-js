@@ -17,12 +17,16 @@
 import { assertWid } from '../../assert';
 import { WPPError } from '../../util';
 import {
+  CallModel,
+  CallStore,
   functions,
-  multidevice,
   UserPrefs,
   websocket,
   Wid,
 } from '../../whatsapp';
+import { CALL_STATES } from '../../whatsapp/enums';
+import { unixTime } from '../../whatsapp/functions';
+import { prepareDestionation } from './prepareDestination';
 
 export interface CallOfferOptions {
   isVideo?: boolean;
@@ -99,47 +103,7 @@ export async function sendCallOffer(
     ]
   );
 
-  const fanList = await functions.getFanOutList({ wids: [toWid] });
-  await websocket.ensureE2ESessions(fanList);
-
-  let shouldHaveIdentity = false;
-  const destination = await Promise.all(
-    fanList.map(async (wid) => {
-      const encKey = self.crypto.getRandomValues(new Uint8Array(32)).buffer;
-
-      const { type, ciphertext } = await functions.encryptMsgProtobuf(wid, 0, {
-        call: {
-          callKey: new Uint8Array(encKey),
-        },
-      });
-
-      shouldHaveIdentity = shouldHaveIdentity || type === 'pkmsg';
-
-      return websocket.smax(
-        'to',
-        {
-          jid: wid.toString({ legacy: true }),
-        },
-        [
-          websocket.smax(
-            'enc',
-            {
-              v: '2',
-              type: type,
-              count: '0',
-            },
-            ciphertext
-          ),
-        ]
-      );
-    })
-  );
-  content.push(websocket.smax('destination', {}, destination));
-
-  if (shouldHaveIdentity) {
-    const identity = await multidevice.adv.getADVEncodedIdentity();
-    content.push(websocket.smax('device-identity', undefined, identity));
-  }
+  content.push(...(await prepareDestionation([toWid])));
 
   const node = websocket.smax(
     'call',
@@ -159,7 +123,26 @@ export async function sendCallOffer(
     ]
   );
 
+  const model = new CallModel({
+    id: callId,
+    peerJid: toWid,
+    isVideo: options.isVideo,
+    isGroup: false,
+    outgoing: true,
+    offerTime: unixTime(),
+    webClientShouldHandle: false,
+    canHandleLocally: true,
+  });
+
+  CallStore.add(model);
+
+  CallStore.setActiveCall(CallStore.assertGet(callId));
+
+  model.setState(CALL_STATES.OUTGOING_CALLING);
+
   const response = await websocket.sendSmaxStanza(node);
 
-  return response;
+  console.info(response);
+
+  return model;
 }
