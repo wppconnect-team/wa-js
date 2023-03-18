@@ -31,7 +31,9 @@ import { CALL_STATES } from '../../whatsapp/enums';
  *
  * // Accept any incoming call
  * WPP.on('call.incoming_call', (call) => {
- *   WPP.call.acceptCall(call.id);
+ *   setTimeout(() => {
+ *     WPP.call.acceptCall(call.id);
+ *   }, 1000);
  * });
  * ```
  *
@@ -122,9 +124,7 @@ export async function acceptCall(callId?: string): Promise<boolean> {
     ]
   );
 
-  console.log(node);
-
-  console.log(await websocket.sendSmaxStanza(node));
+  await websocket.sendSmaxStanza(node);
 
   return true;
 }
