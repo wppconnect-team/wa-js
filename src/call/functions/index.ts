@@ -14,5 +14,6 @@
  * limitations under the License.
  */
 
+export { endCall } from './endCall';
 export { rejectCall } from './rejectCall';
 export { sendCallOffer } from './sendCallOffer';
