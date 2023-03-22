@@ -22,7 +22,7 @@ import { exportModule } from '../exportModule';
 export declare class WapNode {
   public tag: any;
   public attrs: { [key: string]: any };
-  public content: any[];
+  public content: Uint8Array | (any | WapNode)[];
 
   constructor(tag: any, attrs?: { [key: string]: any }, content?: any[]);
 

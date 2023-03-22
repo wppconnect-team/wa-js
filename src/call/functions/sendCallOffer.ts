@@ -26,6 +26,7 @@ import {
 } from '../../whatsapp';
 import { CALL_STATES } from '../../whatsapp/enums';
 import { unixTime } from '../../whatsapp/functions';
+import { parseRelayResponse } from './parseRelayResponse';
 import { prepareDestionation } from './prepareDestination';
 
 export interface CallOfferOptions {
@@ -145,6 +146,7 @@ export async function sendCallOffer(
   const response = await websocket.sendSmaxStanza(node);
 
   console.info(response);
+  console.info(parseRelayResponse(response));
 
   return model;
 }
