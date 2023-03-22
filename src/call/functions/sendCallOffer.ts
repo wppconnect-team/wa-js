@@ -103,7 +103,9 @@ export async function sendCallOffer(
     ]
   );
 
-  content.push(...(await prepareDestionation([toWid])));
+  const encKey = self.crypto.getRandomValues(new Uint8Array(32)).buffer;
+
+  content.push(...(await prepareDestionation([toWid], encKey)));
 
   const node = websocket.smax(
     'call',

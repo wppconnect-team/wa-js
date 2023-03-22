@@ -16,15 +16,16 @@
 
 import { functions, multidevice, websocket, Wid } from '../../whatsapp';
 
-export async function prepareDestionation(wids: Wid[]) {
+export async function prepareDestionation(
+  wids: Wid[],
+  encKey: ArrayBufferLike
+) {
   const fanList = await functions.getFanOutList({ wids });
   await websocket.ensureE2ESessions(fanList);
 
   let shouldHaveIdentity = false;
   const destination = await Promise.all(
     fanList.map(async (wid) => {
-      const encKey = self.crypto.getRandomValues(new Uint8Array(32)).buffer;
-
       const { type, ciphertext } = await functions.encryptMsgProtobuf(wid, 0, {
         call: {
           callKey: new Uint8Array(encKey),
