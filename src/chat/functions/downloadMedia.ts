@@ -21,6 +21,14 @@ import { getMessageById } from '.';
 /**
  * Download the blob of a media message
  *
+ * ```javascript
+ * // Get a blob file
+ * await WPP.chat.downloadMedia('true_[number]@c.us_ABCDEF');
+ *
+ * // Get a base64Content
+ * await WPP.chat.downloadMedia('true_[number]@c.us_ABCDEF').then(WPP.util.blobToBase64);
+ * ```
+ *
  * @category Message
  */
 export async function downloadMedia(id: string): Promise<Blob> {
