@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export { acceptCall } from './acceptCall';
-export { endCall } from './endCall';
-export { rejectCall } from './rejectCall';
-export { sendCallOffer } from './sendCallOffer';
+export { accept } from './accept';
+export { end } from './end';
+export { offer } from './offer';
+export { reject, reject as rejectCall } from './reject';

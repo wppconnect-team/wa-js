@@ -41,12 +41,12 @@ export interface CallOfferOptions {
  * @example
  * ```javascript
  * // Send a call offer
- * WPP.call.sendCallOffer('[number]@c.us');
+ * WPP.call.offer('[number]@c.us');
  * // Send a video call offer
- * WPP.call.sendCallOffer('[number]@c.us', {isVideo: true});
+ * WPP.call.offer('[number]@c.us', {isVideo: true});
  * ```
  */
-export async function sendCallOffer(
+export async function offer(
   to: string | Wid,
   options: CallOfferOptions = {}
 ): Promise<any> {

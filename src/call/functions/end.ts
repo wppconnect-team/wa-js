@@ -24,21 +24,21 @@ import { CALL_STATES } from '../../whatsapp/enums';
  * @example
  * ```javascript
  * // End any outcoming call
- * WPP.call.endCall();
+ * WPP.call.end();
  *
  * // End specific call id
- * WPP.call.endCall(callId);
+ * WPP.call.end(callId);
  *
  * // End any outcoming call
  * WPP.on('call.outcoming_call', (call) => {
- *   WPP.call.endCall(call.id);
+ *   WPP.call.end(call.id);
  * });
  * ```
  *
  * @param   {string}  callId  The call ID, empty to end the first one
  * @return  {[type]}          [return description]
  */
-export async function endCall(callId?: string): Promise<boolean> {
+export async function end(callId?: string): Promise<boolean> {
   const callOut = [
     CALL_STATES.ACTIVE,
     CALL_STATES.OUTGOING_CALLING,

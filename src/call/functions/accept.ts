@@ -15,30 +15,32 @@
  */
 
 import { WPPError } from '../../util';
-import { CallModel, CallStore, UserPrefs, websocket } from '../../whatsapp';
+import { CallModel, CallStore, websocket } from '../../whatsapp';
 import { CALL_STATES } from '../../whatsapp/enums';
 
 /**
- * Reject a incoming call
+ * Accept a incoming call
  *
  * @example
  * ```javascript
- * // Reject any incoming call
- * WPP.call.rejectCall();
+ * // Accept any incoming call
+ * WPP.call.accept();
  *
- * // Reject specific call id
- * WPP.call.rejectCall(callId);
+ * // Accept specific call id
+ * WPP.call.accept(callId);
  *
- * // Reject any incoming call
+ * // Accept any incoming call
  * WPP.on('call.incoming_call', (call) => {
- *   WPP.call.rejectCall(call.id);
+ *   setTimeout(() => {
+ *     WPP.call.accept(call.id);
+ *   }, 1000);
  * });
  * ```
  *
- * @param   {string}  callId  The call ID, empty to reject the first one
+ * @param   {string}  callId  The call ID, empty to accept the first one
  * @return  {[type]}          [return description]
  */
-export async function rejectCall(callId?: string): Promise<boolean> {
+export async function accept(callId?: string): Promise<boolean> {
   let call: CallModel | undefined = undefined;
 
   if (callId) {
@@ -75,22 +77,49 @@ export async function rejectCall(callId?: string): Promise<boolean> {
     await websocket.ensureE2ESessions([call.peerJid]);
   }
 
+  const content = [
+    websocket.smax('audio', { enc: 'opus', rate: '16000' }, null),
+    websocket.smax('audio', { enc: 'opus', rate: '8000' }, null),
+  ];
+
+  if (call.isVideo) {
+    content.push(
+      websocket.smax(
+        'video',
+        {
+          orientation: '0',
+          screen_width: '1920',
+          screen_height: '1080',
+          device_orientation: '0',
+          enc: 'vp8',
+          dec: 'vp8',
+        },
+        null
+      )
+    );
+  }
+
+  content.push(
+    ...[
+      websocket.smax('net', { medium: '3' }, null),
+      websocket.smax('encopt', { keygen: '2' }, null),
+    ]
+  );
+
   const node = websocket.smax(
     'call',
     {
-      from: UserPrefs.getMaybeMeUser().toString({ legacy: true }),
       to: call.peerJid.toString({ legacy: true }),
       id: websocket.generateId(),
     },
     [
       websocket.smax(
-        'reject',
+        'accept',
         {
           'call-id': call.id,
           'call-creator': call.peerJid.toString({ legacy: true }),
-          count: '0',
         },
-        null
+        content
       ),
     ]
   );
