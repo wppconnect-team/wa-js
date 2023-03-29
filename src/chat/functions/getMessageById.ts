@@ -54,7 +54,7 @@ export async function getMessageById(
 
   const msgsKeys = ids.map((id) => MsgKey.fromString(id.toString()));
 
-  const msgs: MsgModel[] = [];
+  let msgs: MsgModel[] = [];
   for (const msgKey of msgsKeys) {
     let msg = MsgStore.get(msgKey);
 
@@ -84,6 +84,13 @@ export async function getMessageById(
 
     msgs.push(msg);
   }
+
+  msgs = msgs.map((m: any) => {
+    if (m instanceof MsgModel) {
+      return m;
+    }
+    return MsgStore.get(m) || new MsgModel(m);
+  });
 
   if (isSingle) {
     return msgs[0];

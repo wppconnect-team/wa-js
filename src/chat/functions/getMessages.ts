@@ -16,7 +16,7 @@
 
 import { assertGetChat } from '../../assert';
 import { isMultiDevice } from '../../conn';
-import { MsgKey, MsgStore, Wid } from '../../whatsapp';
+import { MsgKey, MsgModel, MsgStore, Wid } from '../../whatsapp';
 import { msgFindQuery, MsgFindQueryParams } from '../../whatsapp/functions';
 import { RawMessage } from '..';
 
@@ -156,6 +156,13 @@ export async function getMessages(
       msgs.push(msg.attributes);
     }
   }
+
+  msgs = msgs.map((m: any) => {
+    if (m instanceof MsgModel) {
+      return m;
+    }
+    return MsgStore.get(m) || new MsgModel(m);
+  });
 
   return msgs;
 }
