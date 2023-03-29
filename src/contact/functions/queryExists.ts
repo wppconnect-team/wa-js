@@ -107,5 +107,11 @@ export async function queryExists(
 
   cache.set(id, result);
 
+  // Delete from cache after 5min is success or 15s for failure
+  const timeout = result ? 300000 : 15000;
+  setTimeout(() => {
+    cache.delete(id);
+  }, timeout);
+
   return result;
 }
