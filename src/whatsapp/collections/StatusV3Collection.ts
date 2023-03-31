@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+import { RawMessage } from '../../chat';
 import { exportModule } from '../exportModule';
+import { Wid } from '../misc';
 import { StatusV3Model } from '../models';
 import { BaseCollection } from '.';
 
@@ -27,9 +29,9 @@ export declare class StatusV3Collection extends BaseCollection<StatusV3Model> {
   sync(e?: any): any;
   logMetrics(e?: any): any;
   hasSynced(): boolean;
-  handleUpdate(rawMsg?: any, checksum?: any, isMsgUpdate?: boolean): any;
+  handleUpdate(rawMsg?: RawMessage, checksum?: any, isMsgUpdate?: boolean): any;
   updateChecksum(e?: any): any;
-  addStatusMessages(e?: any, t?: any): any;
+  addStatusMessages(wid: Wid, msgs: RawMessage[]): any;
   getUnexpired(e?: any): any;
   getMyStatus(): StatusV3Model;
   static comparator(): any;

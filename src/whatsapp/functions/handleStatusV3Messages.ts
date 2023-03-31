@@ -1,5 +1,5 @@
 /*!
- * Copyright 2022 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,23 @@
  * limitations under the License.
  */
 
-import { Config } from './Config';
+import { exportModule } from '../exportModule';
 
-export const defaultConfig: Config = {
-  deviceName: false,
-  liveLocationLimit: 10,
-  disableGoogleAnalytics: false,
-  googleAnalyticsId: null,
-  googleAnalyticsUserProperty: {},
-  linkPreviewApiServers: null,
-  poweredBy: 'WA-JS',
-  sendStatusToDevice: false,
-  syncAllStatus: true,
-};
+/** @whatsapp 84947
+ * @whatsapp 284947 >= 2.2222.8
+ * @whatsapp 359554 >= 2.2230.8
+ */
+export declare function handleStatusV3Messages(
+  data: any,
+  b: any,
+  c: any,
+  d: any
+): Promise<any>;
+
+exportModule(
+  exports,
+  {
+    handleStatusV3Messages: ['handleStatusV3Messages'],
+  },
+  (m) => m.handleStatusV3Messages
+);

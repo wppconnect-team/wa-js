@@ -75,4 +75,10 @@ export interface Config {
    * @default false
    */
   sendStatusToDevice: boolean;
+
+  /**
+   * Option to disable status sync
+   * @default false
+   */
+  syncAllStatus: boolean;
 }
