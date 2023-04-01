@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
+import { RawMessage } from '../../chat';
 import { exportModule } from '../exportModule';
+import { Wid } from '../misc';
 
-/** @whatsapp 84947
- * @whatsapp 284947 >= 2.2222.8
+/**
  * @whatsapp 359554 >= 2.2230.8
  */
-export declare function handleStatusV3Messages(
-  data: any,
-  b: any,
-  c: any,
-  d: any
+export declare function handleSingleMsg(
+  wid: Wid,
+  msg: RawMessage,
+  type: string,
+  update: boolean,
+  preserveOrder: boolean
 ): Promise<any>;
 
 exportModule(
   exports,
   {
-    handleStatusV3Messages: ['handleStatusV3Messages'],
+    handleSingleMsg: ['handleSingleMsg'],
   },
-  (m) => m.handleStatusV3Messages
+  (m) => m.handleSingleMsg
 );

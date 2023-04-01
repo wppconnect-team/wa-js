@@ -388,7 +388,11 @@ webpack.onInjected(() => {
     let bizNode = content.find((c) => c.tag === 'biz');
 
     if (!bizNode) {
-      bizNode = websocket.smax('biz', {}, null);
+      bizNode = websocket.smax(
+        'biz',
+        { native_flow_name: 'wa_payment_learn_more' },
+        null
+      );
       content.push(bizNode);
     }
 

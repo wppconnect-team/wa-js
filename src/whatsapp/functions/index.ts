@@ -46,7 +46,7 @@ export * from './getSearchContext';
 export * from './getVotes';
 export * from './groupParticipants';
 export * from './handleAck';
-export * from './handleStatusV3Messages';
+export * from './handleSingleMsg';
 export * from './isAnimatedWebp';
 export * from './isAuthenticated';
 export * from './isRegistered';

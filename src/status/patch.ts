@@ -16,19 +16,22 @@
 
 import { config } from '..';
 import * as webpack from '../webpack';
+import { UserPrefs } from '../whatsapp';
 import { wrapModuleFunction } from '../whatsapp/exportModule';
-import { handleStatusV3Messages } from '../whatsapp/functions';
+import { handleSingleMsg } from '../whatsapp/functions';
 
 webpack.onReady(applyPatch);
 
 function applyPatch() {
-  wrapModuleFunction(handleStatusV3Messages, (func, ...args) => {
-    if (!config.syncAllStatus) {
-      args[0].statusV3Messages = args[0].statusV3Messages.filter(
-        (status: any) => {
-          return status.key.fromMe === true;
-        }
-      );
+  wrapModuleFunction(handleSingleMsg, async (func, ...args) => {
+    const [wid, msg] = args;
+
+    if (!config.syncAllStatus && wid.isStatusV3()) {
+      const me = UserPrefs.getMaybeMeUser();
+
+      if (msg.author && !me.equals(msg.author)) {
+        return;
+      }
     }
 
     return func(...args);
