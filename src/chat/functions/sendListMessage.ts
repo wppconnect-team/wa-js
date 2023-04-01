@@ -127,14 +127,14 @@ webpack.onInjected(() => {
     wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
       const proto = func(...args);
 
-      if (proto.listMessage) {
-        proto.viewOnceMessage = {
-          message: {
-            listMessage: proto.listMessage,
-          },
-        };
-        delete proto.listMessage;
-      }
+      // if (proto.listMessage) {
+      //   proto.viewOnceMessage = {
+      //     message: {
+      //       listMessage: proto.listMessage,
+      //     },
+      //   };
+      //   delete proto.listMessage;
+      // }
       return proto;
     });
   }, 100);

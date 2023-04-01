@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ export * from './calculateFilehashFromBlob';
 export * from './canEditMsg';
 export * from './canReplyMsg';
 export * from './collections';
+export * from './createFanoutMsgStanza';
 export * from './createGroup';
 export * from './createMsgProtobuf';
 export * from './createOrUpdateReactions';

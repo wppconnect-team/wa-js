@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
+import { MsgModel, websocket, Wid } from '..';
 import { exportModule } from '../exportModule';
 
 /**
- * @whatsapp 504784 >= 2.2301.6
+ *
  */
-export declare class WapNode {
-  public tag: any;
-  public attrs: { [key: string]: any };
-  public content: undefined | string | Uint8Array | WapNode[];
-
-  constructor(tag: any, attrs?: { [key: string]: any }, content?: any[]);
-
-  public toString(): string;
-}
+export declare function createFanoutMsgStanza(
+  msg: MsgModel,
+  proto: { [key: string]: any },
+  devices: Wid[],
+  options: { [key: string]: any }
+): Promise<websocket.WapNode>;
 
 exportModule(
   exports,
   {
-    WapNode: 'WapNode',
+    createFanoutMsgStanza: 'createFanoutMsgStanza',
   },
-  (m) => m.WapNode
+  (m) => m.createFanoutMsgStanza
 );
