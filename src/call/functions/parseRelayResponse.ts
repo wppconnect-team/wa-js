@@ -31,29 +31,31 @@ function extractIpPort(data: Uint8Array) {
 }
 
 export function parseRelayResponse(response: websocket.WapNode) {
-  const rteNode = response.content.find(
+  const rteNode = (response.content as websocket.WapNode[]).find(
     (c) => c.tag === 'rte'
   ) as websocket.WapNode;
 
   const rte = extractIpPort(rteNode.content as any);
 
-  const relayNode = response.content.find(
+  const relayNode = (response.content as websocket.WapNode[]).find(
     (c) => c.tag === 'relay'
   ) as websocket.WapNode;
 
-  const keyNode = relayNode.content.find(
+  const keyNode = (relayNode.content as websocket.WapNode[]).find(
     (c) => c.tag === 'key'
   ) as websocket.WapNode;
 
   const textDecoder = new TextDecoder();
-  const key = textDecoder.decode(new Uint8Array(keyNode.content));
+  const key = textDecoder.decode(new Uint8Array(keyNode.content as Uint8Array));
 
   const tokens: { [key: string]: string } = {};
 
-  const tokensNodes = relayNode.content.filter((c) => c.tag === 'token');
+  const tokensNodes = (relayNode.content as websocket.WapNode[]).filter(
+    (c) => c.tag === 'token'
+  );
 
   tokensNodes.forEach((c) => {
-    const token = Base64.encodeB64(new Uint8Array(c.content));
+    const token = Base64.encodeB64(new Uint8Array(c.content as Uint8Array));
     tokens[c.attrs.id || '0'] = token;
   });
 
@@ -66,10 +68,12 @@ export function parseRelayResponse(response: websocket.WapNode) {
     };
   } = {};
 
-  const hostsNodes = relayNode.content.filter((c) => c.tag === 'te2');
+  const hostsNodes = (relayNode.content as websocket.WapNode[]).filter(
+    (c) => c.tag === 'te2'
+  );
 
   hostsNodes.forEach((c) => {
-    const host = extractIpPort(c.content);
+    const host = extractIpPort(c.content as Uint8Array);
     if (host) {
       const relay_id = c.attrs.relay_id || '0';
       const token_id = c.attrs.token_id || '0';
