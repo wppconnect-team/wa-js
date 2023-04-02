@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { Label } from '../../labels';
 import { ChatModel, MsgKey, MsgModel, Wid } from '../../whatsapp';
 
 export interface ChatEventTypes {
@@ -166,5 +167,15 @@ export interface ChatEventTypes {
     selectedOptions: number[];
     timestamp: number;
     sender: Wid;
+  };
+
+  /**
+   * On Labels update
+   */
+  'chat.update_label': {
+    chat: ChatModel;
+    ids: string[];
+    labels: Label[];
+    type: 'add' | 'remove';
   };
 }
