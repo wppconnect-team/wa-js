@@ -17,10 +17,7 @@
 import { WPPError } from '../../util';
 import * as webpack from '../../webpack';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
-import {
-  createMsgProtobuf,
-  typeAttributeFromProtobuf,
-} from '../../whatsapp/functions';
+import { typeAttributeFromProtobuf } from '../../whatsapp/functions';
 import {
   defaultSendMessageOptions,
   RawMessage,
@@ -118,24 +115,4 @@ webpack.onInjected(() => {
     }
     return func(...args);
   });
-
-  /**
-   * Delayed register to ensure is after the common protobuf
-   * Based on https://github.com/adiwajshing/Baileys/commit/9f3b00d58d4f6b1527db42069acafff01123cbf8
-   */
-  setTimeout(() => {
-    wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
-      const proto = func(...args);
-
-      // if (proto.listMessage) {
-      //   proto.viewOnceMessage = {
-      //     message: {
-      //       listMessage: proto.listMessage,
-      //     },
-      //   };
-      //   delete proto.listMessage;
-      // }
-      return proto;
-    });
-  }, 100);
 });

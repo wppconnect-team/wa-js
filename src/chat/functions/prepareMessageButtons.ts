@@ -286,34 +286,6 @@ webpack.onInjected(() => {
     return r;
   });
 
-  /**
-   * Delayed register to ensure is after the common protobuf
-   * Based on https://github.com/adiwajshing/Baileys/commit/9f3b00d58d4f6b1527db42069acafff01123cbf8
-   */
-  setTimeout(() => {
-    wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
-      const proto = func(...args);
-
-      if (proto.templateMessage) {
-        // proto.viewOnceMessage = {
-        //   message: {
-        //     templateMessage: proto.templateMessage,
-        //   },
-        // };
-        // delete proto.templateMessage;
-      }
-      // if (proto.buttonsMessage) {
-      //   proto.viewOnceMessage = {
-      //     message: {
-      //       buttonsMessage: proto.buttonsMessage,
-      //     },
-      //   };
-      //   delete proto.buttonsMessage;
-      // }
-      return proto;
-    });
-  }, 100);
-
   wrapModuleFunction(encodeMaybeMediaType, (func, ...args) => {
     const [type] = args;
     if (type === 'button') {
@@ -388,11 +360,7 @@ webpack.onInjected(() => {
     let bizNode = content.find((c) => c.tag === 'biz');
 
     if (!bizNode) {
-      bizNode = websocket.smax(
-        'biz',
-        { native_flow_name: 'wa_payment_learn_more' },
-        null
-      );
+      bizNode = websocket.smax('biz', {}, null);
       content.push(bizNode);
     }
 
