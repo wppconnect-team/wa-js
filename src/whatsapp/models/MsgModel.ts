@@ -123,10 +123,14 @@ interface Props {
   sessionId?: any;
   recipients?: any;
   broadcast?: any;
+  /** @deprecated */
+  quotedMsgId?: MsgKey;
   quotedMsg?: MsgModel;
   quotedStanzaID?: any;
   quotedRemoteJid?: any;
   quotedParticipant?: any;
+  quotedGroupSubject?: any;
+  quotedParentGroupJid?: any;
   mentionedJidList?: Wid[];
   footer?: string;
   hydratedButtons?: Array<{
@@ -252,9 +256,13 @@ interface Session {
   mediaData?: MediaDataModel;
   forwardedFromWeb?: any;
   linksIndexParsed?: any;
+  quotedMsgKey?: MsgKey;
 }
 
 interface Derived {
+  /**
+   * @deprecated
+   */
   chat?: ChatModel;
   hasTemplateButtons: boolean;
   ephemeralExpirationTimestamp?: any;
@@ -366,6 +374,7 @@ export declare class MsgModel extends Model {
   applyUpdate(e?: any): any;
   waitForPrep(): any;
   /**
+   * @deprecated
    * @whatsapp < 2.2245.8
    */
   quotedMsgObj?(): any;

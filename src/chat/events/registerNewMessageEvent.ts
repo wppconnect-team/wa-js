@@ -14,15 +14,31 @@
  * limitations under the License.
  */
 
+import { getMyUserId } from '../../conn';
 import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
-import { MsgModel, MsgStore } from '../../whatsapp';
+import { ChatStore, MsgKey, MsgModel, MsgStore, Wid } from '../../whatsapp';
+import { getMessageById } from '../functions';
 
 webpack.onInjected(() => register());
 
 function register() {
-  MsgStore.on('add', (msg: MsgModel) => {
+  MsgStore.on('add', async (msg: MsgModel) => {
     if (msg.isNewMsg) {
+      if (msg.quotedStanzaID && !msg.quotedMsgObj) {
+        msg.quotedMsgId = new MsgKey({
+          id: msg.quotedStanzaID,
+          fromMe:
+            msg.quotedParticipant?._serialized === getMyUserId()?._serialized,
+          remote: msg.quotedRemoteJid ? msg.quotedRemoteJid : msg.id.remote,
+          participant: msg.isGroupMsg ? msg.quotedParticipant : undefined,
+        });
+        (msg as any).quotedMsgObj = await getMessageById(msg.quotedMsgId);
+      }
+      if (!msg.chat) {
+        (msg as any).chat = ChatStore.get(msg.from as Wid);
+      }
+
       queueMicrotask(() => {
         if (msg.type === 'ciphertext') {
           msg.once('change:type', () => {
