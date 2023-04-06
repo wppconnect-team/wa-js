@@ -14,30 +14,17 @@
  * limitations under the License.
  */
 
-import { getMyUserId } from '../../conn';
 import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
-import { ChatStore, MsgKey, MsgModel, MsgStore, Wid } from '../../whatsapp';
-import { getMessageById } from '../functions';
+import { ChatStore, MsgModel, MsgStore, Wid } from '../../whatsapp';
+import { getReplyMsg } from '../functions/getReplyMsg';
 
 webpack.onInjected(() => register());
 
 function register() {
   MsgStore.on('add', async (msg: MsgModel) => {
     if (msg.isNewMsg) {
-      if (msg.quotedStanzaID && !msg.quotedMsgObj) {
-        msg.quotedMsgId = new MsgKey({
-          id: msg.quotedStanzaID,
-          fromMe:
-            msg.quotedParticipant?._serialized === getMyUserId()?._serialized,
-          remote: msg.quotedRemoteJid ? msg.quotedRemoteJid : msg.id.remote,
-          participant: msg.isGroupMsg ? msg.quotedParticipant : undefined,
-        });
-        (msg as any).quotedMsgObj = await getMessageById(msg.quotedMsgId);
-      }
-      if (!msg.chat) {
-        (msg as any).chat = ChatStore.get(msg.from as Wid);
-      }
+      msg = await addAttributesMsg(msg);
 
       queueMicrotask(() => {
         if (msg.type === 'ciphertext') {
@@ -52,4 +39,14 @@ function register() {
       });
     }
   });
+}
+
+async function addAttributesMsg(msg: any): Promise<MsgModel> {
+  if (!msg.chat) msg.chat = ChatStore.get(msg.from as Wid);
+  if (msg.quotedStanzaID) {
+    const replyMsg = await getReplyMsg(msg.id);
+    (msg as any).quotedMsgObj = replyMsg;
+    msg.quotedMsgId = replyMsg.id;
+  }
+  return msg;
 }

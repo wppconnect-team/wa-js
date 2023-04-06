@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ export { getMessageById } from './getMessageById';
 export { getMessages, GetMessagesOptions } from './getMessages';
 export { getPlatformFromMessage } from './getPlatformFromMessage';
 export { getReactions } from './getReactions';
+export { getReplyMsg } from './getReplyMsg';
 export { getVotes } from './getVotes';
 export { ChatListOptions, list } from './list';
 export { markIsComposing } from './markIsComposing';
