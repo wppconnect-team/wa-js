@@ -74,19 +74,19 @@ export async function list(
 
   // Getting All Chats.
   // IDK, why we use slice here. don't think its needed.
-  let allChats = ChatStore.getModelsArray().slice();
+  let models = ChatStore.getModelsArray().slice();
 
   // Filtering Based on Options.
   if (options.onlyUsers) {
-    allChats = allChats.filter((c) => c.isUser);
+    models = models.filter((c) => c.isUser);
   }
 
   if (options.onlyGroups) {
-    allChats = allChats.filter((c) => c.isGroup);
+    models = models.filter((c) => c.isGroup);
   }
 
   if (options.onlyWithUnreadMessage) {
-    allChats = allChats.filter((c) => c.hasUnread);
+    models = models.filter((c) => c.hasUnread);
   }
 
   if (options.withLabels) {
@@ -95,29 +95,29 @@ export async function list(
       return label ? label.id : value;
     });
 
-    allChats = allChats.filter((c) => c.labels?.some((id) => ids.includes(id)));
+    models = models.filter((c) => c.labels?.some((id) => ids.includes(id)));
   }
 
   // Getting The Chat to start from.
   // Searching for index is here, so it gets applied after all filtering.
   const indexChat = options?.id ? get(options.id) : null;
-  const startIndex = indexChat ? allChats.indexOf(indexChat as any) : 0;
+  const startIndex = indexChat ? models.indexOf(indexChat as any) : 0;
 
   if (direction === 'before') {
     const fixStartIndex = startIndex - count < 0 ? 0 : startIndex - count;
     const fixEndIndex =
       fixStartIndex + count >= startIndex ? startIndex : fixStartIndex + count;
-    allChats = allChats.slice(fixStartIndex, fixEndIndex);
+    models = models.slice(fixStartIndex, fixEndIndex);
   } else {
-    allChats = allChats.slice(startIndex, startIndex + count);
+    models = models.slice(startIndex, startIndex + count);
   }
 
   // Attaching Group Metadata on Found Chats.
-  for (const chat of allChats) {
+  for (const chat of models) {
     if (chat.isGroup) {
       await GroupMetadataStore.find(chat.id);
     }
   }
 
-  return allChats;
+  return models;
 }
