@@ -99,7 +99,7 @@ export async function list(
   }
 
   // Getting The Chat to start from.
-  // Searching for index is here, so it gets applied after all filtering.
+  // Searching for chat (index) here, so it gets applied after all filtering.
   const indexChat = options?.id ? get(options.id) : null;
   const startIndex = indexChat ? models.indexOf(indexChat as any) : 0;
 
