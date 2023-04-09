@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,14 @@ import {
   ChatStore,
   GroupMetadataStore,
   LabelStore,
+  Wid,
 } from '../../whatsapp';
+import { get } from './get';
 
 export interface ChatListOptions {
+  id?: Wid;
+  count?: number;
+  direction?: 'after' | 'before';
   onlyGroups?: boolean;
   onlyUsers?: boolean;
   onlyWithUnreadMessage?: boolean;
@@ -35,6 +40,12 @@ export interface ChatListOptions {
  * ```javascript
  * // All chats
  * const chats = await WPP.chat.list();
+ *
+ * // Some chats
+ * const chats = WPP.chat.list({count: 20});
+ *
+ * // 20 chats before specific chat
+ * const chats = WPP.chat.list({count: 20, direction: 'before', id: '[number]@c.us'});
  *
  * // Only users chats
  * const chats = await WPP.chat.list({onlyUsers: true});
@@ -57,39 +68,56 @@ export interface ChatListOptions {
 export async function list(
   options: ChatListOptions = {}
 ): Promise<ChatModel[]> {
-  let models = ChatStore.getModelsArray().slice();
+  // Setting the check to null, so it doesn't break existing codes.
+  const count = options.count == null ? Infinity : options.count;
+  const direction = options.direction === 'before' ? 'before' : 'after';
 
+  // Getting All Chats.
+  // IDK, why we use slice here. don't think its needed.
+  let allChats = ChatStore.getModelsArray().slice();
+
+  // Filtering Based on Options.
   if (options.onlyUsers) {
-    models = models.filter((c) => c.isUser);
+    allChats = allChats.filter((c) => c.isUser);
   }
 
   if (options.onlyGroups) {
-    models = models.filter((c) => c.isGroup);
+    allChats = allChats.filter((c) => c.isGroup);
   }
 
   if (options.onlyWithUnreadMessage) {
-    models = models.filter((c) => c.hasUnread);
+    allChats = allChats.filter((c) => c.hasUnread);
   }
 
   if (options.withLabels) {
     const ids = options.withLabels.map((value) => {
       const label = LabelStore.findFirst((l) => l.name === value);
-
-      if (label) {
-        return label.id;
-      }
-
-      return value;
+      return label ? label.id : value;
     });
 
-    models = models.filter((c) => c.labels?.some((id) => ids.includes(id)));
+    allChats = allChats.filter((c) => c.labels?.some((id) => ids.includes(id)));
   }
 
-  for (const chat of models) {
+  // Getting The Chat to start from.
+  // Searching for index is here, so it gets applied after all filtering.
+  const indexChat = options?.id ? get(options.id) : null;
+  const startIndex = indexChat ? allChats.indexOf(indexChat as any) : 0;
+
+  if (direction === 'before') {
+    const fixStartIndex = startIndex - count < 0 ? 0 : startIndex - count;
+    const fixEndIndex =
+      fixStartIndex + count >= startIndex ? startIndex : fixStartIndex + count;
+    allChats = allChats.slice(fixStartIndex, fixEndIndex);
+  } else {
+    allChats = allChats.slice(startIndex, startIndex + count);
+  }
+
+  // Attaching Group Metadata on Found Chats.
+  for (const chat of allChats) {
     if (chat.isGroup) {
       await GroupMetadataStore.find(chat.id);
     }
   }
 
-  return models;
+  return allChats;
 }
