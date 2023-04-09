@@ -76,7 +76,7 @@
     "ts-loader": "^9.4.2",
     "ts-morph": "^17.0.1",
     "ts-node": "^10.9.1",
-    "typedoc": "^0.23.28",
+    "typedoc": "^0.24.1",
     "typedoc-plugin-mdn-links": "^2.0.2",
     "typedoc-plugin-missing-exports": "^1.0.0",
     "typescript": "^5.0.4",
