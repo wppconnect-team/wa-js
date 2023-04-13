@@ -2,7 +2,6 @@
 *.tgz
 *.zip
 /docs
-/docs-source
 /src
 /tsconfig.json
 /typedoc.json

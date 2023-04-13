@@ -3,7 +3,6 @@
 /debug.log
 /dist/
 /docs
-/docs-source/theme-dist
 /media
 /node_modules
 /userDataDir*
