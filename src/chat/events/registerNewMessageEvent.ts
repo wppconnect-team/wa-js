@@ -16,13 +16,15 @@
 
 import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
-import { MsgModel, MsgStore } from '../../whatsapp';
+import { ChatStore, MsgModel, MsgStore, Wid } from '../../whatsapp';
+import { getQuotedMsg } from '../functions/';
 
 webpack.onInjected(() => register());
 
 function register() {
-  MsgStore.on('add', (msg: MsgModel) => {
+  MsgStore.on('add', async (msg: MsgModel) => {
     if (msg.isNewMsg) {
+      msg = await addAttributesMsg(msg);
       queueMicrotask(() => {
         if (msg.type === 'ciphertext') {
           msg.once('change:type', () => {
@@ -36,4 +38,17 @@ function register() {
       });
     }
   });
+}
+
+async function addAttributesMsg(msg: any): Promise<MsgModel> {
+  if (typeof msg.chat === 'undefined')
+    msg.chat = ChatStore.get(msg.from as Wid);
+  msg.isGroupMsg = msg.isGroupMsg || msg?.chat?.isGroup;
+
+  if (!(typeof msg.quotedStanzaID === 'undefined')) {
+    const replyMsg = await getQuotedMsg(msg.id);
+    msg._quotedMsgObj = replyMsg;
+    msg.quotedMsgId = replyMsg.id;
+  }
+  return msg;
 }
