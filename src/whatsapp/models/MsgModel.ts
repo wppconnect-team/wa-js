@@ -269,6 +269,9 @@ interface Derived {
   isEphemeral: boolean;
   isQuickReply: boolean;
   isFutureproof: boolean;
+  /**
+   * @deprecated
+   */
   isGroupMsg: boolean;
   isStatusV3: boolean;
   isPSA: boolean;

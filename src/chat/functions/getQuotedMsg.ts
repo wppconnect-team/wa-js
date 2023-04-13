@@ -24,7 +24,7 @@ import { getMessageById } from './getMessageById';
  *
  * @category Chat
  */
-export async function getReplyMsg(id: string | MsgKey): Promise<MsgModel> {
+export async function getQuotedMsg(id: string | MsgKey): Promise<MsgModel> {
   const msg = await getMessageById(id);
 
   if (!msg.quotedStanzaID && !msg.quotedMsgId) {

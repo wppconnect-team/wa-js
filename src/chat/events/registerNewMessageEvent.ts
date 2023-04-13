@@ -17,7 +17,7 @@
 import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
 import { ChatStore, MsgModel, MsgStore, Wid } from '../../whatsapp';
-import { getReplyMsg } from '../functions/getReplyMsg';
+import { getQuotedMsg } from '../functions/';
 
 webpack.onInjected(() => register());
 
@@ -25,7 +25,6 @@ function register() {
   MsgStore.on('add', async (msg: MsgModel) => {
     if (msg.isNewMsg) {
       msg = await addAttributesMsg(msg);
-
       queueMicrotask(() => {
         if (msg.type === 'ciphertext') {
           msg.once('change:type', () => {
@@ -42,10 +41,13 @@ function register() {
 }
 
 async function addAttributesMsg(msg: any): Promise<MsgModel> {
-  if (!msg.chat) msg.chat = ChatStore.get(msg.from as Wid);
-  if (msg.quotedStanzaID) {
-    const replyMsg = await getReplyMsg(msg.id);
-    (msg as any).quotedMsgObj = replyMsg;
+  if (typeof msg.chat === 'undefined')
+    msg.chat = ChatStore.get(msg.from as Wid);
+  msg.isGroupMsg = msg.isGroupMsg || msg?.chat?.isGroup;
+
+  if (!(typeof msg.quotedStanzaID === 'undefined')) {
+    const replyMsg = await getQuotedMsg(msg.id);
+    msg._quotedMsgObj = replyMsg;
     msg.quotedMsgId = replyMsg.id;
   }
   return msg;
