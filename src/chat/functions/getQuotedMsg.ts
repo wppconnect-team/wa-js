@@ -16,7 +16,7 @@
 
 import { getMyUserId } from '../../conn';
 import { WPPError } from '../../util';
-import { MsgKey, MsgModel } from '../../whatsapp';
+import { ChatStore, MsgKey, MsgModel, Wid } from '../../whatsapp';
 import { getMessageById } from './getMessageById';
 
 /**
@@ -27,7 +27,7 @@ import { getMessageById } from './getMessageById';
 export async function getQuotedMsg(id: string | MsgKey): Promise<MsgModel> {
   const msg = await getMessageById(id);
 
-  if (!msg.quotedStanzaID && !msg.quotedMsgId) {
+  if (!msg.quotedStanzaID) {
     throw new WPPError(
       'message_not_have_a_reply',
       `Message ${id} does not have a reply`,
@@ -36,12 +36,13 @@ export async function getQuotedMsg(id: string | MsgKey): Promise<MsgModel> {
       }
     );
   }
+  const chat = ChatStore.get(msg.from as Wid);
 
-  const replyMsgId = new MsgKey({
+  const quotedMsgId = new MsgKey({
     id: msg.quotedStanzaID,
     fromMe: msg.quotedParticipant?._serialized === getMyUserId()?._serialized,
     remote: msg.quotedRemoteJid ? msg.quotedRemoteJid : msg.id.remote,
-    participant: msg.isGroupMsg ? msg.quotedParticipant : undefined,
+    participant: chat?.isGroup ? msg.quotedParticipant : undefined,
   });
-  return await getMessageById(replyMsgId);
+  return await getMessageById(quotedMsgId);
 }
