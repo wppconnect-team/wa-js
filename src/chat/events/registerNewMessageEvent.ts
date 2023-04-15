@@ -41,14 +41,30 @@ function register() {
 }
 
 async function addAttributesMsg(msg: any): Promise<MsgModel> {
-  if (typeof msg.chat === 'undefined')
+  if (typeof msg.chat === 'undefined') {
     msg.chat = ChatStore.get(msg.from as Wid);
-  msg.isGroupMsg = msg.isGroupMsg || msg?.chat?.isGroup;
+    Object.defineProperty(msg, 'chat', {
+      value: msg.isGroupMsg || msg?.chat?.isGroup,
+      writable: false,
+    });
+  }
+  Object.defineProperty(msg, 'isGroupMsg', {
+    value: msg.isGroupMsg || msg?.chat?.isGroup,
+    writable: false,
+  });
 
   if (!(typeof msg.quotedStanzaID === 'undefined')) {
     const replyMsg = await getQuotedMsg(msg.id);
-    msg._quotedMsgObj = replyMsg;
-    msg.quotedMsgId = replyMsg.id;
+    Object.defineProperties(msg, {
+      _quotedMsgObj: {
+        value: replyMsg,
+        writable: false,
+      },
+      quotedMsgId: {
+        value: replyMsg.id,
+        writable: false,
+      },
+    });
   }
   return msg;
 }
