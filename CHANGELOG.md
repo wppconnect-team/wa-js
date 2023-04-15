@@ -1,5 +1,5 @@
-## 2.23.2 (2023-04-13)
+## 2.23.3 (2023-04-15)
 
 ### Bug Fixes
 
-- Fixed attributes MsgModel ([4ac516f](https://github.com/wppconnect-team/wa-js/commit/4ac516f42479a82b38423f3b25ce0f6e7bb46661))
+- Fixed deprecated attributes for MsgModel ([ff65494](https://github.com/wppconnect-team/wa-js/commit/ff654947fba905c6be0eb020637d68f231be3d57))
