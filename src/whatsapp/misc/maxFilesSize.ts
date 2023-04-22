@@ -19,7 +19,7 @@ import { exportModule } from '../exportModule';
 /** @whatsapp 8080
  * @whatsapp 608080 >= 2.2222.8
  */
-export declare const Limits: any;
+export declare const maxFilesSize: any;
 export declare var getMaxFilesSizeServerProp: any;
 
 export declare namespace MaxFileSize {
