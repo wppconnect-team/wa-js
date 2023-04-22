@@ -6,8 +6,7 @@ import { exportModule } from '../exportModule';
  * @whatsapp 925080 >= 2.2228.4
  */
 export declare function maxFilesSize(value: any): any;
-export declare function numPinned(): any;
-export declare const pin: any;
+export declare function numPinned(value: any): any;
 
 
 exportModule(
@@ -24,13 +23,4 @@ exportModule(
     numPinned: 'getNumChatsPinned',
   },
   (m) => m.getNumChatsPinned
-);
-
-
-exportModule(
-  exports,
-  {
-    pin: 'default',
-  },
-  (m) => m.default.getLocalPins
 );
