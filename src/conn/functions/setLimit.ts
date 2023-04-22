@@ -76,7 +76,7 @@ export function setLimit(key: string, value: boolean | number): any {
     case "maxFileSize": {
       if (typeof value !== 'number' || (value > 1073741824)) {
         throw new WPPError(
-          `maxMediasSize_error`,
+          `maxFileSize_error`,
           typeof value !== 'number' ? `Value type invalid!`: `Maximum value is 1GB`
         );
       }
