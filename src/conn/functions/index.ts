@@ -35,3 +35,4 @@ export { needsUpdate } from './needsUpdate';
 export { refreshQR } from './refreshQR';
 export { setKeepAlive } from './setKeepAlive';
 export { setMultiDevice } from './setMultiDevice';
+export { setLimit } from './setLimit';
