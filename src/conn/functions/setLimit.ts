@@ -17,7 +17,7 @@
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { WPPError } from '../../util';
 import { Limits } from '../../whatsapp';
-import { maxFilesSize, numPinned, pin } from '../../whatsapp/functions';
+import { maxFilesSize, numPinned } from '../../whatsapp/functions';
 import * as webpack from '../../webpack';
 
 /**
