@@ -19,9 +19,6 @@ import { WPPError } from '../../util';
 import { Limits } from '../../whatsapp';
 import { maxFilesSize, numPinned, pin } from '../../whatsapp/functions';
 import * as webpack from '../../webpack';
-//import alertify from 'alertifyjs';
-
-
 
 /**
  * Change limits
