@@ -25,7 +25,7 @@ import * as webpack from '../../webpack';
  *
  * @example
  * ```javascript
- *  //Change the maximum size (bytes) for uploading media (max 70mb)
+ *  //Change the maximum size (bytes) for uploading media (max 70MB)
  *  WPP.conn.setLimit('maxMediaSize',16777216);
  * 
  *  //Change the maximum size (bytes) for uploading files (max 1GB)
