@@ -67,3 +67,4 @@ export * from './StickerPackModel';
 export * from './StreamModel';
 export * from './TemplateButtonModel';
 export * from './UnreadMentionModel';
+export * from './ServerPropsModel';
