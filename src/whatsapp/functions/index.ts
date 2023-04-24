@@ -33,7 +33,7 @@ export * from './fetchLinkPreview';
 export * from './findChat';
 export * from './findFirstWebLink';
 export * from './generateVideoThumbsAndDuration';
-export * from './maxFilesSize';
+export * from './getNumChatsPinned';
 export * from './genMinimalLinkPreview';
 export * from './getCommunityParticipants';
 export * from './getFanOutList';
