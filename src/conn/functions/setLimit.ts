@@ -74,9 +74,8 @@ export function setLimit(key: string, value: boolean | number): any {
           typeof value !== 'number' ? `Value type invalid!`: `Maximum value is 1GB`
         );
       }
-
       Limits.maxFileSize = value
-      return value
+      return Limits.maxFileSize
     }
 
     case "maxShare": {
@@ -110,7 +109,6 @@ export function setLimit(key: string, value: boolean | number): any {
           `Value type invalid!`
         );
       }
-
       value ? unlimitedPin = value : unlimitedPin = undefined;
       return value
     }
