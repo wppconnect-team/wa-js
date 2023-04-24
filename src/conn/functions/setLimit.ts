@@ -17,7 +17,7 @@
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { WPPError } from '../../util';
 import { Limits } from '../../whatsapp';
-import { maxFilesSize, numPinned } from '../../whatsapp/functions';
+import { numPinned } from '../../whatsapp/functions';
 import * as webpack from '../../webpack';
 
 /**
@@ -52,11 +52,6 @@ webpack.onInjected(() => {
     return unlimitedPin ? 1 : numPinnedOriginal
   });
 
-  wrapModuleFunction(maxFilesSize, (func,...args) => {
-    const maxFilesSizeOriginal = func(...args);
-    return maxFileSize ? maxFileSize : maxFilesSizeOriginal
-  });
-
 });
 
 export function setLimit(key: string, value: boolean | number): any {
@@ -81,7 +76,7 @@ export function setLimit(key: string, value: boolean | number): any {
         );
       }
 
-      maxFileSize = value
+      Limits.maxFileSize = value
       return value
     }
 
