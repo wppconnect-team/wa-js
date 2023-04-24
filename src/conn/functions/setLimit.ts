@@ -43,7 +43,6 @@ import * as webpack from '../../webpack';
  */
 
 let unlimitedPin: undefined | boolean = undefined;
-let maxFileSize: undefined | number = undefined;
 
 webpack.onInjected(() => {
 
