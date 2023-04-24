@@ -64,7 +64,7 @@ export function setLimit(key: string, value: boolean | number): any {
         );
       }
       ServerProps.media = value;
-      return Limits.media;
+      return ServerProps.media;
     }
 
     case "maxFileSize": {
@@ -75,7 +75,7 @@ export function setLimit(key: string, value: boolean | number): any {
         );
       }
       ServerProps.maxFileSize = value
-      return Limits.maxFileSize
+      return ServerProps.maxFileSize
     }
 
     case "maxShare": {
