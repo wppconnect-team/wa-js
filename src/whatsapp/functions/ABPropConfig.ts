@@ -11,7 +11,7 @@ export declare function ABPropConfig(value: any): any;
 exportModule(
   exports,
   {
-    ABPropConfig: 'getABPropConfigValue',
+    getABPropConfigValue: 'getABPropConfigValue',
   },
   (m) => m.getABPropConfigValue
 );
