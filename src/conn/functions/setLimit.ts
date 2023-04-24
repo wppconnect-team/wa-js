@@ -16,8 +16,8 @@
 
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { WPPError } from '../../util';
-import { Limits } from '../../whatsapp';
-import { numPinned } from '../../whatsapp/functions';
+import { ServerProps } from '../../whatsapp';
+import { getNumChatsPinned } from '../../whatsapp/functions';
 import * as webpack from '../../webpack';
 
 /**
@@ -46,9 +46,9 @@ let unlimitedPin: undefined | boolean = undefined;
 
 webpack.onInjected(() => {
 
-  wrapModuleFunction(numPinned, (func,...args) => {
-    const numPinnedOriginal = func(...args);
-    return unlimitedPin ? 1 : numPinnedOriginal
+  wrapModuleFunction(getNumChatsPinned, (func,...args) => {
+    const getNumChatsPinnedOriginal = func(...args);
+    return unlimitedPin ? 1 : getNumChatsPinnedOriginal
   });
 
 });
@@ -63,7 +63,7 @@ export function setLimit(key: string, value: boolean | number): any {
           typeof value !== 'number' ? `Value type invalid!` : `Maximum value is 70MB`
         );
       }
-      Limits.media = value;
+      ServerProps.media = value;
       return Limits.media;
     }
 
@@ -74,7 +74,7 @@ export function setLimit(key: string, value: boolean | number): any {
           typeof value !== 'number' ? `Value type invalid!`: `Maximum value is 1GB`
         );
       }
-      Limits.maxFileSize = value
+      ServerProps.maxFileSize = value
       return Limits.maxFileSize
     }
 
@@ -85,10 +85,10 @@ export function setLimit(key: string, value: boolean | number): any {
           `Value type invalid!`
         );
       }
-      Limits.multicastLimitGlobal = value;
-      Limits.frequentlyForwardedMax = value;
-      Limits.frequentlyForwardedThreshold = value;
-      return Limits.multicastLimitGlobal;
+      ServerProps.multicastLimitGlobal = value;
+      ServerProps.frequentlyForwardedMax = value;
+      ServerProps.frequentlyForwardedThreshold = value;
+      return ServerProps.multicastLimitGlobal;
     }
 
     case "statusVideoMaxDuration": {
@@ -98,8 +98,8 @@ export function setLimit(key: string, value: boolean | number): any {
           `Value type invalid!`
         );
       }
-      Limits.statusVideoMaxDuration = value;
-      return Limits.statusVideoMaxDuration;
+      ServerProps.statusVideoMaxDuration = value;
+      return ServerProps.statusVideoMaxDuration;
     }
 
     case "unlimitedPin": {
