@@ -24,7 +24,7 @@ export declare const Limits: any;
 exportModule(
   exports,
   {
-    Limits: 'ServerProps',
+    ServerProps: 'ServerProps',
   },
   (m) => m.getMaxFilesSizeServerProp && m.ServerProps
 );
