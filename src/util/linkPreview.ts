@@ -156,11 +156,11 @@ export async function generateThumbnailLinkPreviewData(url: string) {
   const thumbnail = await generateThumbnail(download.data);
 
   // Only display High Quality in link preview for wide images
-  if (download.width / download.height < 1.4) {
-    return {
-      thumbnail,
-    };
-  }
+  // if (download.width / download.height < 1.4) {
+  //   return {
+  //     thumbnail,
+  //   };
+  // }
 
   const thumbnailHQ = download.data.replace('data:image/jpeg;base64,', '');
 
