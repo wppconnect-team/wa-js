@@ -39,4 +39,4 @@ export * from './UserPrefs';
 export * from './VCard';
 export * from './Wid';
 export * from './WidFactory';
-export * from './Limits';
+export * from './ServerProps';
