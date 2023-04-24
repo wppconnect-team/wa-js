@@ -24,7 +24,7 @@ import {
   fetchLinkPreview,
   findFirstWebLink,
   genMinimalLinkPreview,
-  ABPropConfig
+  getABPropConfigValue
 } from '../../whatsapp/functions';
 import { RawMessage } from '..';
 
@@ -107,7 +107,7 @@ export async function prepareLinkPreview<T extends RawMessage>(
 
 webpack.onReady(() => {
   
-  wrapModuleFunction(ABPropConfig, (func, ...args) => {
+  wrapModuleFunction(getABPropConfigValue, (func, ...args) => {
     const [msg] = args;
     switch (msg) {
       case "high_quality_link_preview_enabled": return true
