@@ -111,7 +111,7 @@ webpack.onReady(() => {
     const [msg] = args;
     switch (msg) {
       case "high_quality_link_preview_enabled": return true
-      case "link_preview_wait_time": return 0
+      case "link_preview_wait_time": return 1
     }
     return func(...args);
   });
