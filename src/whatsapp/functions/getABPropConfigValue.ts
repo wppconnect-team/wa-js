@@ -6,7 +6,7 @@ import { exportModule } from '../exportModule';
  * @whatsapp 925080 >= 2.2228.4
  */
  
-export declare function ABPropConfig(value: any): any;
+export declare function getABPropConfigValue(value: any): any;
 
 exportModule(
   exports,
