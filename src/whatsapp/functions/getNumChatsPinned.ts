@@ -10,7 +10,7 @@ export declare function numPinned(value: any): any;
 exportModule(
   exports,
   {
-    numPinned: 'getNumChatsPinned',
+    getNumChatsPinned: 'getNumChatsPinned',
   },
   (m) => m.getNumChatsPinned
 );
