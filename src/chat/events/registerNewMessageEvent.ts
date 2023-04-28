@@ -44,7 +44,7 @@ async function addAttributesMsg(msg: any): Promise<MsgModel> {
   if (typeof msg.chat === 'undefined') {
     msg.chat = ChatStore.get(msg.from as Wid);
     Object.defineProperty(msg, 'chat', {
-      value: msg.isGroupMsg || msg?.chat?.isGroup,
+      value: msg?.chat,
       writable: false,
     });
   }
