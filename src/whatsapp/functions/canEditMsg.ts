@@ -25,7 +25,12 @@ export declare function canEditMsg(msg: MsgModel): boolean;
 exportModule(
   exports,
   {
-    canEditMsg: 'canEditMsg',
+    canEditMsg: [
+      'canEditText', // @whatsapp >= 2.2318.7
+      'canEditMsg',
+    ],
   },
-  (m) => m.canEditMsg
+  (m) =>
+    m.canEditMsg || // @whatsapp >= 2.2318.7
+    m.canEditText
 );
