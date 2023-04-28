@@ -34,5 +34,5 @@ export { markAvailable, markUnavailable } from './markAvailable';
 export { needsUpdate } from './needsUpdate';
 export { refreshQR } from './refreshQR';
 export { setKeepAlive } from './setKeepAlive';
-export { setMultiDevice } from './setMultiDevice';
 export { setLimit } from './setLimit';
+export { setMultiDevice } from './setMultiDevice';

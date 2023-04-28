@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as webpack from '../../webpack';
-
 export function isMultiDevice(): boolean {
   /**
    * always true for >= 2.2241.6

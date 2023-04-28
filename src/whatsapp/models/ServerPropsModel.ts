@@ -31,11 +31,9 @@ interface Props {
   media: number;
 }
 
-interface Session {
-}
+interface Session {}
 
-interface Derived {
-}
+interface Derived {}
 
 /** @whatsapp 17239
  * @whatsapp 317239 >= 2.2222.8

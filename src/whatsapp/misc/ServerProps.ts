@@ -20,7 +20,7 @@ import { ServerPropsModel } from '../models';
 /** @whatsapp 8080
  * @whatsapp 608080 >= 2.2222.8
  */
-export declare const ServerProps: ServerPropsModel 
+export declare const ServerProps: ServerPropsModel;
 
 exportModule(
   exports,

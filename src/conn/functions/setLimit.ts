@@ -14,11 +14,20 @@
  * limitations under the License.
  */
 
-import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { WPPError } from '../../util';
-import { ServerProps } from '../../whatsapp';
-import { getNumChatsPinned } from '../../whatsapp/functions';
 import * as webpack from '../../webpack';
+import { ServerProps } from '../../whatsapp';
+import { wrapModuleFunction } from '../../whatsapp/exportModule';
+import { getNumChatsPinned } from '../../whatsapp/functions';
+
+let unlimitedPin: undefined | boolean = undefined;
+
+webpack.onReady(() => {
+  wrapModuleFunction(getNumChatsPinned, (func, ...args) => {
+    const getNumChatsPinnedOriginal = func(...args);
+    return unlimitedPin ? 1 : getNumChatsPinnedOriginal;
+  });
+});
 
 /**
  * Change limits
@@ -27,63 +36,51 @@ import * as webpack from '../../webpack';
  * ```javascript
  *  //Change the maximum size (bytes) for uploading media (max 70MB)
  *  WPP.conn.setLimit('maxMediaSize',16777216);
- * 
+ *
  *  //Change the maximum size (bytes) for uploading files (max 1GB)
  *  WPP.conn.setLimit('maxFileSize',104857600);
- * 
+ *
  *  //Change the maximum number of contacts that can be selected when sharing (Default 5)
  *  WPP.conn.setLimit('maxShare',100);
- * 
+ *
  *  //Change the maximum time (seconds) of a video status
  *  WPP.conn.setLimit('statusVideoMaxDuration',120);
- * 
+ *
  *  //Remove pinned conversation limit (only whatsapp web) (Default 3)
  *  WPP.conn.setLimit('unlimitedPin',true);
  * ```
  */
-
-let unlimitedPin: undefined | boolean = undefined;
-
-webpack.onInjected(() => {
-
-  wrapModuleFunction(getNumChatsPinned, (func,...args) => {
-    const getNumChatsPinnedOriginal = func(...args);
-    return unlimitedPin ? 1 : getNumChatsPinnedOriginal
-  });
-
-});
-
 export function setLimit(key: string, value: boolean | number): any {
   switch (key) {
-
-    case "maxMediaSize": {
+    case 'maxMediaSize': {
       if (typeof value !== 'number' || value > 73400320) {
         throw new WPPError(
           `maxMediaSize_error`,
-          typeof value !== 'number' ? `Value type invalid!` : `Maximum value is 70MB`
+          typeof value !== 'number'
+            ? `Value type invalid!`
+            : `Maximum value is 70MB`
         );
       }
       ServerProps.media = value;
       return ServerProps.media;
     }
 
-    case "maxFileSize": {
-      if (typeof value !== 'number' || (value > 1073741824)) {
+    case 'maxFileSize': {
+      if (typeof value !== 'number' || value > 1073741824) {
         throw new WPPError(
           `maxFileSize_error`,
-          typeof value !== 'number' ? `Value type invalid!`: `Maximum value is 1GB`
+          typeof value !== 'number'
+            ? `Value type invalid!`
+            : `Maximum value is 1GB`
         );
       }
-      ServerProps.maxFileSize = value
-      return ServerProps.maxFileSize
+      ServerProps.maxFileSize = value;
+      return ServerProps.maxFileSize;
     }
 
-    case "maxShare": {
+    case 'maxShare': {
       if (typeof value !== 'number') {
-        throw new WPPError(
-          `maxShare_error`,
-          `Value type invalid!`
-        );
+        throw new WPPError(`maxShare_error`, `Value type invalid!`);
       }
       ServerProps.multicastLimitGlobal = value;
       ServerProps.frequentlyForwardedMax = value;
@@ -91,7 +88,7 @@ export function setLimit(key: string, value: boolean | number): any {
       return ServerProps.multicastLimitGlobal;
     }
 
-    case "statusVideoMaxDuration": {
+    case 'statusVideoMaxDuration': {
       if (typeof value !== 'number') {
         throw new WPPError(
           `statusVideoMaxDuration_error`,
@@ -102,26 +99,16 @@ export function setLimit(key: string, value: boolean | number): any {
       return ServerProps.statusVideoMaxDuration;
     }
 
-    case "unlimitedPin": {
+    case 'unlimitedPin': {
       if (typeof value !== 'boolean') {
-        throw new WPPError(
-          `unlimitedPin_error`,
-          `Value type invalid!`
-        );
+        throw new WPPError(`unlimitedPin_error`, `Value type invalid!`);
       }
-      value ? unlimitedPin = value : unlimitedPin = undefined;
-      return value
+      value ? (unlimitedPin = value) : (unlimitedPin = undefined);
+      return value;
     }
 
     default: {
-      throw new WPPError(
-        `setLimit_error`,
-        `Key type invalid!`
-      );
+      throw new WPPError(`setLimit_error`, `Key type invalid!`);
     }
-
   }
-
 }
-
-
