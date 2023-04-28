@@ -24,6 +24,7 @@ import {
   fetchLinkPreview,
   findFirstWebLink,
   genMinimalLinkPreview,
+  getABPropConfigValue
 } from '../../whatsapp/functions';
 import { RawMessage } from '..';
 
@@ -105,6 +106,16 @@ export async function prepareLinkPreview<T extends RawMessage>(
 }
 
 webpack.onReady(() => {
+  
+  wrapModuleFunction(getABPropConfigValue, (func, ...args) => {
+    const [key] = args;
+    switch (key) {
+      case "high_quality_link_preview_enabled": return true
+      case "link_preview_wait_time": return 1
+    }
+    return func(...args);
+  });
+  
   wrapModuleFunction(genMinimalLinkPreview, async (func, ...args) => {
     const [uri] = args;
 
