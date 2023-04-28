@@ -30,7 +30,57 @@ webpack.onReady(() => {
 });
 
 /**
- * Change limits
+ * Change the limit of MediaSize
+ *
+ * @example
+ * ```javascript
+ *  //Change the maximum size (bytes) for uploading media (max 70MB)
+ *  WPP.conn.setLimit('maxMediaSize',16777216);
+ * ```
+ */
+export function setLimit(key: 'maxMediaSize', value: number): number;
+/**
+ * Change the limit of FileSize
+ *
+ * @example
+ * ```javascript
+ *  //Change the maximum size (bytes) for uploading files (max 1GB)
+ *  WPP.conn.setLimit('maxFileSize',104857600);
+ * ```
+ */
+export function setLimit(key: 'maxFileSize', value: number): number;
+/**
+ * Change the limit of Share
+ *
+ * @example
+ * ```javascript
+ *  //Change the maximum number of contacts that can be selected when sharing (Default 5)
+ *  WPP.conn.setLimit('maxShare',100);
+ * ```
+ */
+export function setLimit(key: 'maxShare', value: number): number;
+/**
+ * Change the limit of Status Video Duration
+ *
+ * @example
+ * ```javascript
+ *  //Change the maximum time (seconds) of a video status
+ *  WPP.conn.setLimit('statusVideoMaxDuration',120);
+ * ```
+ */
+export function setLimit(key: 'statusVideoMaxDuration', value: number): number;
+/**
+ * Change the limit of Pin
+ *
+ * @example
+ * ```javascript
+ *  //Remove pinned conversation limit (only whatsapp web) (Default 3)
+ *  WPP.conn.setLimit('unlimitedPin',true);
+ * ```
+ */
+export function setLimit(key: 'unlimitedPin', value: boolean): boolean;
+/**
+ * Change the limits
  *
  * @example
  * ```javascript
