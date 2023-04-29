@@ -20,7 +20,7 @@ import { ChatStore, MsgKey, MsgModel, Wid } from '../../whatsapp';
 import { getMessageById } from './getMessageById';
 
 /**
- * Get a reply message
+ * Get a quoted message
  *
  * @category Chat
  */
@@ -36,7 +36,9 @@ export async function getQuotedMsg(id: string | MsgKey): Promise<MsgModel> {
       }
     );
   }
-  const chat = ChatStore.get(msg.from as Wid);
+  const chat = msg.id.fromMe
+    ? ChatStore.get(msg.to as Wid)
+    : ChatStore.get(msg.from as Wid);
 
   const quotedMsgId = new MsgKey({
     id: msg.quotedStanzaID,
