@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
+import { getMyUserId } from '../../conn';
 import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
-import { ChatStore, MsgModel, MsgStore, Wid } from '../../whatsapp';
+import { ChatStore, MsgKey, MsgModel, MsgStore } from '../../whatsapp';
 import { getQuotedMsg } from '../functions/';
 
 webpack.onInjected(() => register());
 
 function register() {
-  MsgStore.on('add', async (msg: MsgModel) => {
+  MsgStore.on('add', (msg: MsgModel) => {
     if (msg.isNewMsg) {
-      msg = await addAttributesMsg(msg);
-      queueMicrotask(() => {
+      queueMicrotask(async () => {
+        msg = await addAttributesMsg(msg);
         if (msg.type === 'ciphertext') {
           msg.once('change:type', () => {
             queueMicrotask(() => {
@@ -38,30 +39,51 @@ function register() {
       });
     }
   });
+
+  if (typeof MsgModel.prototype.chat === 'undefined') {
+    Object.defineProperty(MsgModel.prototype, 'chat', {
+      get: function () {
+        return ChatStore.get(this.id.fromMe ? this.to : this.from);
+      },
+      configurable: true,
+    });
+  }
+
+  if (typeof MsgModel.prototype.isGroupMsg === 'undefined') {
+    Object.defineProperty(MsgModel.prototype, 'isGroupMsg', {
+      get: function () {
+        return this?.chat?.isGroup;
+      },
+      configurable: true,
+    });
+  }
+
+  if (typeof MsgModel.prototype.quotedMsgId === 'undefined') {
+    Object.defineProperty(MsgModel.prototype, 'quotedMsgId', {
+      get: function () {
+        const quotedMsgId = new MsgKey({
+          id: this.quotedStanzaID,
+          fromMe: getMyUserId()?.equals(this.quotedParticipant) || false,
+          remote: this.quotedRemoteJid ? this.quotedRemoteJid : this.id.remote,
+          participant: this.isGroupMsg ? this.quotedParticipant : undefined,
+        });
+
+        return quotedMsgId;
+      },
+      configurable: true,
+    });
+  }
 }
 
 async function addAttributesMsg(msg: any): Promise<MsgModel> {
-  if (typeof msg.chat === 'undefined') {
-    msg.chat = ChatStore.get(msg.from as Wid);
-    Object.defineProperty(msg, 'chat', {
-      value: msg?.chat,
-      writable: false,
-    });
-  }
-  Object.defineProperty(msg, 'isGroupMsg', {
-    value: msg.isGroupMsg || msg?.chat?.isGroup,
-    writable: false,
-  });
-
+  /**
+   * @todo, remove this
+   */
   if (!(typeof msg.quotedStanzaID === 'undefined')) {
     const replyMsg = await getQuotedMsg(msg.id);
     Object.defineProperties(msg, {
       _quotedMsgObj: {
         value: replyMsg,
-        writable: false,
-      },
-      quotedMsgId: {
-        value: replyMsg.id,
         writable: false,
       },
     });
