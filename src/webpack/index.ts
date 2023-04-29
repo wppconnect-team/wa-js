@@ -105,8 +105,38 @@ export function injectLoader(): void {
           return true;
         });
 
+      const sortWeight: [RegExp, number][] = [
+        [/locale/, 99],
+        [/vendor.*main~/, 83],
+        [/vendor.*main/, 82],
+        [/main~/, 81],
+        [/main/, 80],
+        [/vendor.*lazy.*high/, 75],
+        [/lazy.*high.*~/, 74],
+        [/lazy.*high/, 73],
+        [/vendor.*lazy.*low/, 72],
+        [/lazy.*low.*~/, 71],
+        [/lazy.*low/, 70],
+        [/vendor/, 2],
+        [/lazy/, 1],
+      ];
+
+      const sortValue = (id: string) => {
+        const filename = webpackRequire.u(id);
+
+        for (const w of sortWeight) {
+          if (w[0].test(filename)) {
+            return w[1];
+          }
+        }
+
+        return 0;
+      };
+
       await Promise.all(
-        availablesRuntimes.reverse().map((v) => webpackRequire.e(v))
+        availablesRuntimes
+          .sort((a, b) => sortValue(b) - sortValue(a))
+          .map((v) => webpackRequire.e(v))
       );
 
       isReady = true;
