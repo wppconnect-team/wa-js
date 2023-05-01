@@ -22,3 +22,4 @@ import './registerPollEvent';
 import './registerPresenceChange';
 import './registerReactionsEvent';
 import './registerRevokeMessageEvent';
+import './registerLabelEvent';

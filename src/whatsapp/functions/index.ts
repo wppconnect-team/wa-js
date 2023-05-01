@@ -15,6 +15,7 @@
  */
 
 export * from './addAndSendMsgToChat';
+export * from './addToLabelCollection';
 export * from './blockContact';
 export * from './calculateFilehashFromBlob';
 export * from './canEditMsg';

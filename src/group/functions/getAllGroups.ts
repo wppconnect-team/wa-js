@@ -22,7 +22,7 @@ import { queryAllGroups } from '../../whatsapp/functions';
  *
  * @example
  * ```javascript
- * WPP.group.queryAllGroups();
+ * WPP.group.getAllGroups();
  * ```
  *
  * @category Group
