@@ -51,6 +51,7 @@ export async function sendRawStatus(
   };
 
   message.ctwaContext = message.ctwaContext || {};
+  message.author = UserPrefs.getMaybeMeUser();
 
   const result = await Chat.sendRawMessage('status@broadcast', message, {
     ...options,
@@ -120,6 +121,10 @@ webpack.onInjected(() => {
       if (functions.getAsMms(msg)) {
         const t = msg.isUnsentPhoneMsg();
         c = t ? { type: msg.type } : msg.avParams();
+      }
+
+      if (!msg.author) {
+        msg.author = UserPrefs.getMaybeMeUser();
       }
 
       const proto = createMsgProtobuf(msg, c || {});
