@@ -15,6 +15,7 @@
  */
 
 export { addParticipants } from './addParticipants';
+export { approve } from './approve';
 export { canAdd } from './canAdd';
 export { canDemote } from './canDemote';
 export { canPromote } from './canPromote';
@@ -27,6 +28,7 @@ export { getAllGroups } from './getAllGroups';
 export { getGroupInfoFromInviteCode } from './getGroupInfoFromInviteCode';
 export { getGroupSizeLimit } from './getGroupSizeLimit';
 export { getInviteCode } from './getInviteCode';
+export { getMembershipRequests } from './getMembershipRequests';
 export { getParticipants } from './getParticipants';
 export { iAmAdmin } from './iAmAdmin';
 export { iAmMember } from './iAmMember';
@@ -35,6 +37,7 @@ export { iAmSuperAdmin } from './iAmSuperAdmin';
 export { join } from './join';
 export { leave } from './leave';
 export { promoteParticipants } from './promoteParticipants';
+export { reject } from './reject';
 export { removeIcon } from './removeIcon';
 export { removeParticipants } from './removeParticipants';
 export { revokeInviteCode } from './revokeInviteCode';
