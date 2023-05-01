@@ -36,6 +36,7 @@ export * from './findFirstWebLink';
 export * from './generateVideoThumbsAndDuration';
 export * from './genMinimalLinkPreview';
 export * from './getABPropConfigValue';
+export * from './getAsMms';
 export * from './getCommunityParticipants';
 export * from './getEphemeralFields';
 export * from './getFanOutList';

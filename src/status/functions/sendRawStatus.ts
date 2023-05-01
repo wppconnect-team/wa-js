@@ -117,7 +117,7 @@ webpack.onInjected(() => {
       );
 
       let c;
-      if (msg.asMms) {
+      if (functions.getAsMms(msg)) {
         const t = msg.isUnsentPhoneMsg();
         c = t ? { type: msg.type } : msg.avParams();
       }
