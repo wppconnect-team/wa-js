@@ -176,8 +176,8 @@ interface Props {
   paymentRequestMessageKey?: any;
   paymentExpiryTimestamp?: any;
   ephemeralStartTimestamp?: any;
-  ephemeralDuration?: any;
-  ephemeralSettingTimestamp?: any;
+  ephemeralDuration?: number;
+  ephemeralSettingTimestamp?: number;
   ephemeralOutOfSync?: any;
   ephemeralSharedSecret?: any;
   disappearingModeInitiator?: any;

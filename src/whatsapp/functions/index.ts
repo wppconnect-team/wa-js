@@ -37,6 +37,7 @@ export * from './generateVideoThumbsAndDuration';
 export * from './genMinimalLinkPreview';
 export * from './getABPropConfigValue';
 export * from './getCommunityParticipants';
+export * from './getEphemeralFields';
 export * from './getFanOutList';
 export * from './getGroupSenderKeyList';
 export * from './getGroupSizeLimit';

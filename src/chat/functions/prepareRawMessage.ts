@@ -19,7 +19,11 @@ import { getParticipants } from '../../group';
 import { WPPError } from '../../util';
 import { ChatModel, MsgKey, MsgModel, UserPrefs, Wid } from '../../whatsapp';
 import { ACK } from '../../whatsapp/enums';
-import { canReplyMsg, unixTime } from '../../whatsapp/functions';
+import {
+  canReplyMsg,
+  getEphemeralFields,
+  unixTime,
+} from '../../whatsapp/functions';
 import { defaultSendMessageOptions, RawMessage, SendMessageOptions } from '..';
 import { generateMessageID, getMessageById } from '.';
 
@@ -48,6 +52,15 @@ export async function prepareRawMessage<T extends RawMessage>(
     ack: ACK.CLOCK,
     ...message,
   };
+
+  if (message.type !== 'protocol') {
+    const ephemeral = getEphemeralFields(chat);
+
+    message = {
+      ...ephemeral,
+      ...message,
+    };
+  }
 
   if (options.messageId) {
     if (typeof options.messageId === 'string') {
