@@ -29,6 +29,7 @@ export { isMainLoaded } from './isMainLoaded';
 export { isMainReady } from './isMainReady';
 export { isMultiDevice } from './isMultiDevice';
 export { isRegistered } from './isRegistered';
+export { joinWebBeta } from './joinWebBeta';
 export { logout } from './logout';
 export { markAvailable, markUnavailable } from './markAvailable';
 export { needsUpdate } from './needsUpdate';
