@@ -14,11 +14,17 @@
  * limitations under the License.
  */
 
-export * from './ensureE2ESessions';
-export * from './generateId';
-export * from './sendSmaxStanza';
-export * from './smax';
-export * from './startWebComms';
-export * from './stopComms';
-export * from './wap';
-export * from './WapNode';
+import { exportModule } from '../exportModule';
+
+/**
+ * @whatsapp 504784
+ */
+export declare function startWebComms(): Promise<void>;
+
+exportModule(
+  exports,
+  {
+    startWebComms: 'startWebComms',
+  },
+  (m) => m.startWebComms
+);
