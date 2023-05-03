@@ -28,6 +28,7 @@ export { isMainInit } from './isMainInit';
 export { isMainLoaded } from './isMainLoaded';
 export { isMainReady } from './isMainReady';
 export { isMultiDevice } from './isMultiDevice';
+export { isOnline } from './isOnline';
 export { isRegistered } from './isRegistered';
 export { joinWebBeta } from './joinWebBeta';
 export { logout } from './logout';
