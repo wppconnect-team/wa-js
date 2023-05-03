@@ -74,6 +74,22 @@ export interface ConnEventTypes {
    * ```
    */
   'conn.needs_update': undefined;
+
+  /**
+   * Triggered when the online change to online or offline
+   *
+   * @example
+   * ```javascript
+   * WPP.on('conn.online', (online) => {
+   *   if (online) {
+   *     console.log('You are online');
+   *   } else {
+   *     console.log('You are offline');
+   *   }
+   * });
+   * ```
+   */
+  'conn.online': boolean;
   'conn.qrcode_idle': undefined;
   'conn.require_auth': undefined;
 }

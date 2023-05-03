@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-import './registerAuthCodeChangeEvent';
-import './registerAuthenticatedEvent';
-import './registerLogoutEvent';
-import './registerMainInit';
-import './registerMainLoadedEvent';
-import './registerMainReadyEvent';
-import './registerNeedsUpdateEvent';
-import './registerOnlineEvent';
-import './registerQRCodeIdleEvent';
-import './registerRequireAuthEvent';
+import { internalEv } from '../../eventEmitter';
+import * as webpack from '../../webpack';
+import { NetworkStatus, NetworkStatusModel } from '../../whatsapp';
+
+webpack.onInjected(register);
+
+function register() {
+  NetworkStatus.on(
+    'change:online',
+    (model: NetworkStatusModel, online: boolean) => {
+      internalEv.emit('conn.online', online);
+    }
+  );
+}
