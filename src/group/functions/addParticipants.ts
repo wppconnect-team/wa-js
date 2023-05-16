@@ -71,10 +71,10 @@ export async function addParticipants(
     true
   );
 
-  let participantsArray: (any)[] = [];
+  const participantsArray: any [] = [];
 
   participants.map((p) => {
-    participantsArray.push({ phoneNumber: p.id })
+    participantsArray.push({ phoneNumber: p.id });
   });
   
   const result = await wa_functions.sendAddParticipants(
