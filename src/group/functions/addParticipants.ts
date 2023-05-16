@@ -71,9 +71,15 @@ export async function addParticipants(
     true
   );
 
+  let participantsArray: (any)[] = [];
+
+  participants.map((p) => {
+    participantsArray.push({ phoneNumber: p.id })
+  });
+  
   const result = await wa_functions.sendAddParticipants(
     groupChat.id,
-    participants.map((p) => p.id)
+    participantsArray
   );
 
   if (result.status >= 400) {
