@@ -23,7 +23,9 @@ import { randomMessageId } from '../../whatsapp/functions';
  *
  * @category Message
  */
-export function generateMessageID(chat: string | ChatModel | Wid): MsgKey {
+export async function generateMessageID(
+  chat: string | ChatModel | Wid
+): Promise<MsgKey> {
   const from = UserPrefs.getMaybeMeUser();
   let to: Wid;
 
@@ -44,7 +46,7 @@ export function generateMessageID(chat: string | ChatModel | Wid): MsgKey {
   return new MsgKey({
     from,
     to,
-    id: randomMessageId(),
+    id: await Promise.resolve(randomMessageId()),
     participant,
     selfDir: 'out',
   });

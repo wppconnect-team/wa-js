@@ -51,7 +51,7 @@ export async function setDescription(
   /**
    * @todo change randomMessageId to randomHex
    */
-  const tagId = randomMessageId();
+  const tagId = await Promise.resolve(randomMessageId());
 
   await sendSetGroupDescription(
     groupChat.id,

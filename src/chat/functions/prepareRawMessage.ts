@@ -91,7 +91,7 @@ export async function prepareRawMessage<T extends RawMessage>(
   }
 
   if (!message.id) {
-    message.id = generateMessageID(chat);
+    message.id = await generateMessageID(chat);
   }
 
   if (options.mentionedList && !Array.isArray(options.mentionedList)) {
