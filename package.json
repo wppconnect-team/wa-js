@@ -43,7 +43,7 @@
     "@commitlint/config-conventional": "^17.6.3",
     "@commitlint/prompt-cli": "^17.6.3",
     "@playwright/test": "^1.34.0",
-    "@types/debug": "^4.1.7",
+    "@types/debug": "^4.1.8",
     "@types/node": "^16.18.32",
     "@types/node-fetch": "^2.6.4",
     "@types/parse-data-url": "^3.0.0",
