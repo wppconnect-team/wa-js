@@ -1,5 +1,5 @@
-# 2.24.0 (2023-05-03)
+## 2.24.1 (2023-05-19)
 
-### Features
+### Bug Fixes
 
-- Added WPP.conn.isOnline function (close [#1085](https://github.com/wppconnect-team/wa-js/issues/1085)) ([b2d48c1](https://github.com/wppconnect-team/wa-js/commit/b2d48c116d0d03614dc66fbcf857c72e5fb7fc4f))
+- Fixed send message (DuplicateMessageError) (fix [#1126](https://github.com/wppconnect-team/wa-js/issues/1126)) ([d95b140](https://github.com/wppconnect-team/wa-js/commit/d95b140164e688c2603487602283039114a9e9b0))

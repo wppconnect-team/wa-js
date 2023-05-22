@@ -19,8 +19,10 @@ import { exportModule } from '../exportModule';
 /** @whatsapp 65212
  * @whatsapp 15860 >= 2.2204.13
  * @whatsapp 465212 >= 2.2222.8
+ * @returns Promise for @whatsapp >= 2.2321.4
+ * @returns string for @whatsapp < 2.2321.4
  */
-export declare function randomMessageId(): string;
+export declare function randomMessageId(): string | Promise<string>;
 
 exportModule(
   exports,

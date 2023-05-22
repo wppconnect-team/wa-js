@@ -107,17 +107,16 @@ export function injectLoader(): void {
 
       const sortWeight: [RegExp, number][] = [
         [/locale/, 99],
-        [/vendor.*main~/, 83],
-        [/vendor.*main/, 82],
+        [/vendor.*main~/, 84],
+        [/vendor.*main/, 83],
+        [/vendor/, 82],
         [/main~/, 81],
         [/main/, 80],
         [/vendor.*lazy.*high/, 75],
         [/lazy.*high.*~/, 74],
         [/lazy.*high/, 73],
-        [/vendor.*lazy.*low/, 72],
         [/lazy.*low.*~/, 71],
         [/lazy.*low/, 70],
-        [/vendor/, 2],
         [/lazy/, 1],
       ];
 
@@ -133,11 +132,18 @@ export function injectLoader(): void {
         return 0;
       };
 
-      await Promise.all(
-        availablesRuntimes
-          .sort((a, b) => sortValue(b) - sortValue(a))
-          .map((v) => webpackRequire.e(v))
+      const sorted = availablesRuntimes.sort(
+        (a, b) => sortValue(b) - sortValue(a)
       );
+
+      // Use sequential file load
+      for (const v of sorted) {
+        try {
+          await webpackRequire.e(v);
+        } catch (error) {
+          debug('load file error', webpackRequire.e(v));
+        }
+      }
 
       isReady = true;
       debug('ready to use');
