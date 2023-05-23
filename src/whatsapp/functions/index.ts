@@ -40,6 +40,7 @@ export * from './genMinimalLinkPreview';
 export * from './getABPropConfigValue';
 export * from './getAsMms';
 export * from './getCommunityParticipants';
+export * from './getCurrentLid';
 export * from './getEphemeralFields';
 export * from './getFanOutList';
 export * from './getGroupSenderKeyList';
