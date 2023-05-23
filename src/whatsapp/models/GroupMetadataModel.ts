@@ -39,6 +39,7 @@ interface Props {
   size?: any;
   support?: any;
   uniqueShortNameMap?: any;
+  isLidAddressingMode: boolean;
 }
 
 interface Session {

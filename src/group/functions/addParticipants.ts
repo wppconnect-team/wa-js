@@ -14,14 +14,24 @@
  * limitations under the License.
  */
 
+import { compare } from 'compare-versions';
+
 import { createWid, WPPError } from '../../util';
-import { ContactStore, Wid } from '../../whatsapp';
-import * as wa_functions from '../../whatsapp/functions';
+import { ContactStore, functions, ParticipantModel, Wid } from '../../whatsapp';
 import { ensureGroupAndParticipants } from './ensureGroupAndParticipants';
+
+declare global {
+  interface Window {
+    Debug: {
+      VERSION: string;
+    };
+  }
+}
 
 const messageCodes: {
   [key: number]: string;
 } = {
+  200: 'OK',
   403: "Can't join this group because the number was restricted it.",
   409: "Can't join this group because the number is already a member of it.",
 };
@@ -71,10 +81,30 @@ export async function addParticipants(
     true
   );
 
-  const result = await wa_functions.sendAddParticipants(
-    groupChat.id,
-    participants.map((p) => p.id)
-  );
+  let members: any[] = [];
+
+  if (compare(self.Debug.VERSION, '2.2320.0', '>=')) {
+    if (groupChat.groupMetadata?.isLidAddressingMode) {
+      members = participants.map((p: ParticipantModel) => ({
+        phoneNumber: p.id,
+        lid: functions.getCurrentLid(p.id),
+      }));
+    } else {
+      members = participants.map((p: ParticipantModel) => ({
+        phoneNumber: p.id,
+      }));
+    }
+  } else {
+    if (groupChat.groupMetadata?.isLidAddressingMode) {
+      members = participants.map((p: ParticipantModel) =>
+        functions.getCurrentLid(p.id)
+      );
+    } else {
+      members = participants.map((p: ParticipantModel) => p.id);
+    }
+  }
+
+  const result = await functions.sendAddParticipants(groupChat.id, members);
 
   if (result.status >= 400) {
     throw new WPPError(

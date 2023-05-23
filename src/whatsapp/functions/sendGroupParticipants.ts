@@ -22,7 +22,7 @@ import { exportModule } from '../exportModule';
  */
 export declare function sendAddParticipants(
   group: Wid,
-  participants: Wid[]
+  participants: (Wid | { phoneNumber: Wid; lid?: Wid })[]
 ): Promise<{
   participants?: (
     | {

@@ -53,6 +53,7 @@
     "@typescript-eslint/parser": "^5.59.7",
     "@wppconnect/wa-version": "^1.2.41",
     "buffer": "^6.0.3",
+    "compare-versions": "^6.0.0-rc.1",
     "compressorjs": "^1.2.1",
     "conventional-changelog-cli": "^2.2.2",
     "debug": "^4.3.4",
