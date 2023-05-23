@@ -1,5 +1,5 @@
-## 2.24.1 (2023-05-19)
+## 2.24.2 (2023-05-23)
 
 ### Bug Fixes
 
-- Fixed send message (DuplicateMessageError) (fix [#1126](https://github.com/wppconnect-team/wa-js/issues/1126)) ([d95b140](https://github.com/wppconnect-team/wa-js/commit/d95b140164e688c2603487602283039114a9e9b0))
+- Fixed WPP.group.addParticipants function for WhatsApp >= 2.2320.4 (fix [#1114](https://github.com/wppconnect-team/wa-js/issues/1114)) ([fb7f4c6](https://github.com/wppconnect-team/wa-js/commit/fb7f4c62dc74e8fe11301cbd5a13a8f265773ce8))
