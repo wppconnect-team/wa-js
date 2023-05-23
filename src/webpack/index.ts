@@ -78,76 +78,82 @@ export function injectLoader(): void {
   const self = window as any;
   const chunk = (self[chunkName] = self[chunkName] || []);
 
+  const injectFunction = async (__webpack_require__: any) => {
+    webpackRequire = __webpack_require__;
+
+    isInjected = true;
+    debug('injected');
+    await internalEv.emitAsync('webpack.injected').catch(() => null);
+
+    const availablesRuntimes = new Array(10000)
+      .fill(1)
+      .map((v, k) => v + k)
+      .filter((v) => {
+        const filename = webpackRequire.u(v);
+        if (filename.includes('undefined')) {
+          return false;
+        }
+        if (filename.includes('locales')) {
+          return navigator.languages.some((lang) =>
+            filename.includes(`locales/${lang}`)
+          );
+        }
+        return true;
+      });
+
+    const sortWeight: [RegExp, number][] = [
+      [/locale/, 99],
+      [/vendor.*main~/, 84],
+      [/vendor.*main/, 83],
+      [/vendor/, 82],
+      [/main~/, 81],
+      [/main/, 80],
+      [/vendor.*lazy.*high/, 75],
+      [/lazy.*high.*~/, 74],
+      [/lazy.*high/, 73],
+      [/lazy.*low.*~/, 71],
+      [/lazy.*low/, 70],
+      [/lazy/, 1],
+    ];
+
+    const sortValue = (id: string) => {
+      const filename = webpackRequire.u(id);
+
+      for (const w of sortWeight) {
+        if (w[0].test(filename)) {
+          return w[1];
+        }
+      }
+
+      return 0;
+    };
+
+    const sorted = availablesRuntimes.sort(
+      (a, b) => sortValue(b) - sortValue(a)
+    );
+
+    // Use sequential file load
+    for (const v of sorted) {
+      try {
+        await webpackRequire.e(v);
+      } catch (error) {
+        debug('load file error', webpackRequire.e(v));
+      }
+    }
+
+    isReady = true;
+    debug('ready to use');
+    await internalEv.emitAsync('webpack.ready').catch(() => null);
+  };
+
   const id = Date.now();
   chunk.push([
     [id],
     {},
-    async (__webpack_require__: any) => {
+    (__webpack_require__: any) => {
       webpackRequire = __webpack_require__;
 
-      isInjected = true;
-      debug('injected');
-      await internalEv.emitAsync('webpack.injected').catch(() => null);
-
-      const availablesRuntimes = new Array(10000)
-        .fill(1)
-        .map((v, k) => v + k)
-        .filter((v) => {
-          const filename = webpackRequire.u(v);
-          if (filename.includes('undefined')) {
-            return false;
-          }
-          if (filename.includes('locales')) {
-            return navigator.languages.some((lang) =>
-              filename.includes(`locales/${lang}`)
-            );
-          }
-          return true;
-        });
-
-      const sortWeight: [RegExp, number][] = [
-        [/locale/, 99],
-        [/vendor.*main~/, 84],
-        [/vendor.*main/, 83],
-        [/vendor/, 82],
-        [/main~/, 81],
-        [/main/, 80],
-        [/vendor.*lazy.*high/, 75],
-        [/lazy.*high.*~/, 74],
-        [/lazy.*high/, 73],
-        [/lazy.*low.*~/, 71],
-        [/lazy.*low/, 70],
-        [/lazy/, 1],
-      ];
-
-      const sortValue = (id: string) => {
-        const filename = webpackRequire.u(id);
-
-        for (const w of sortWeight) {
-          if (w[0].test(filename)) {
-            return w[1];
-          }
-        }
-
-        return 0;
-      };
-
-      const sorted = availablesRuntimes.sort(
-        (a, b) => sortValue(b) - sortValue(a)
-      );
-
-      // Use sequential file load
-      for (const v of sorted) {
-        try {
-          await webpackRequire.e(v);
-        } catch (error) {
-          debug('load file error', webpackRequire.e(v));
-        }
-      }
-
-      isReady = true;
-      debug('ready to use');
-      await internalEv.emitAsync('webpack.ready').catch(() => null);
+      queueMicrotask(() => injectFunction(__webpack_require__));
     },
   ]);
 }
