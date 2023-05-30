@@ -39,9 +39,9 @@
     "watch": "webpack watch --devtool inline-source-map --mode development"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.6.3",
-    "@commitlint/config-conventional": "^17.6.3",
-    "@commitlint/prompt-cli": "^17.6.3",
+    "@commitlint/cli": "^17.6.5",
+    "@commitlint/config-conventional": "^17.6.5",
+    "@commitlint/prompt-cli": "^17.6.5",
     "@playwright/test": "^1.34.3",
     "@types/debug": "^4.1.8",
     "@types/node": "^16.18.34",
