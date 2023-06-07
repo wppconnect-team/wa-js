@@ -82,7 +82,7 @@
     "typescript": "^5.1.3",
     "typescript-debounce-decorator": "^0.0.18",
     "webpack": "^5.85.1",
-    "webpack-cli": "^5.1.3"
+    "webpack-cli": "^5.1.4"
   },
   "engines": {
     "whatsapp-web": ">=2.2245.8-beta"
