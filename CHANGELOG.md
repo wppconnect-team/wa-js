@@ -1,5 +1,5 @@
-## 2.24.2 (2023-05-23)
+## 2.24.3 (2023-06-13)
 
 ### Bug Fixes
 
-- Fixed WPP.group.addParticipants function for WhatsApp >= 2.2320.4 (fix [#1114](https://github.com/wppconnect-team/wa-js/issues/1114)) ([fb7f4c6](https://github.com/wppconnect-team/wa-js/commit/fb7f4c62dc74e8fe11301cbd5a13a8f265773ce8))
+- Fixed compatibility with WhatsApp >= 2.2325.3 ([5339618](https://github.com/wppconnect-team/wa-js/commit/53396183f624e5afc0388c2d4374d683dcc43fba))
