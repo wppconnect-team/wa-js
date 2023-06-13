@@ -75,8 +75,11 @@ export function injectLoader(): void {
 
   const chunkName = 'webpackChunkwhatsapp_web_client';
 
-  const self = window as any;
-  const chunk = (self[chunkName] = self[chunkName] || []);
+  const global = (self || window) as any;
+  const chunk = global[chunkName] || [];
+  if (typeof global[chunkName] === 'undefined') {
+    global[chunkName] = chunk;
+  }
 
   const injectFunction = async (__webpack_require__: any) => {
     webpackRequire = __webpack_require__;
