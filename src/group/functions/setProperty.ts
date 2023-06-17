@@ -96,7 +96,8 @@ export async function setProperty(
       value = 604800;
     }
 
-    if ([0, 86400, 604800, 7776000].includes(value)) {
+    // If the value is different from those allowed
+    if (![0, 86400, 604800, 7776000].includes(value)) {
       throw new WPPError(
         'invalid_ephemeral_duration',
         'Invalid ephemeral duration',
