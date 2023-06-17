@@ -16,7 +16,10 @@
 
 import * as webpack from '../../webpack';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
-import { typeAttributeFromProtobuf } from '../../whatsapp/functions';
+import {
+  mediaTypeFromProtobuf,
+  typeAttributeFromProtobuf,
+} from '../../whatsapp/functions';
 import {
   defaultSendMessageOptions,
   RawMessage,
@@ -150,6 +153,14 @@ export async function sendLocationMessage(
 }
 
 webpack.onInjected(() => {
+  wrapModuleFunction(mediaTypeFromProtobuf, (func, ...args) => {
+    const [proto] = args;
+    if (proto.locationMessage) {
+      return null;
+    }
+    return func(...args);
+  });
+
   wrapModuleFunction(typeAttributeFromProtobuf, (func, ...args) => {
     const [proto] = args;
     if (proto.locationMessage) {
