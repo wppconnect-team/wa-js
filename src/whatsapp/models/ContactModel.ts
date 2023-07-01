@@ -59,27 +59,161 @@ interface Session {
 }
 
 interface Derived {
+  /**
+   * Deprecated in favor of getNotifyName
+   * @deprecated
+   */
   notifyName?: any;
+  /**
+   * Deprecated in favor of getMentionName
+   * @deprecated
+   */
   mentionName?: any;
+  /**
+   * Deprecated in favor of getDisplayName
+   * @deprecated
+   */
   displayName?: any;
+  /**
+   * Deprecated in favor of getPnForLid
+   * @deprecated
+   */
+  pnForLid?: any;
+  /**
+   * Deprecated in favor of getPremiumMessageName
+   * @deprecated
+   */
+  premiumMessageName?: any;
+  /**
+   * Deprecated in favor of getDisplayNameOrPnForLid
+   * @deprecated
+   */
+  displayNameOrPnForLid?: any;
+  /**
+   * Deprecated in favor of getFormattedPhone
+   * @deprecated
+   */
+  formattedPhone?: any;
+  /**
+   * Deprecated in favor of getUserid
+   * @deprecated
+   */
   userid?: any;
+  /**
+   * Deprecated in favor of getUserhash
+   * @deprecated
+   */
   userhash?: any;
+  /**
+   * Deprecated in favor of getSearchName
+   * @deprecated
+   */
   searchName?: any;
+  /**
+   * Deprecated in favor of getSearchVerifiedName
+   * @deprecated
+   */
   searchVerifiedName?: any;
+  /**
+   * Deprecated in favor of getHeader
+   * @deprecated
+   */
   header?: any;
+  /**
+   * Deprecated in favor of getIsMe
+   * @deprecated
+   */
   isMe: boolean;
+  /**
+   * Deprecated in favor of getIsUser
+   * @deprecated
+   */
   isUser: boolean;
+  /**
+   * Deprecated in favor of getIsGroup
+   * @deprecated
+   */
   isGroup: boolean;
+  /**
+   * Deprecated in favor of getIsBroadcast
+   * @deprecated
+   */
   isBroadcast: boolean;
+  /**
+   * Deprecated in favor of getIsPSA
+   * @deprecated
+   */
   isPSA: boolean;
+  /**
+   * Deprecated in favor of getIsIAS
+   * @deprecated
+   */
+  isIAS: boolean;
+  /**
+   * Deprecated in favor of getIsSupportAccount
+   * @deprecated
+   */
+  isSupportAccount: boolean;
+  /**
+   * Deprecated in favor of getFormattedShortNameWithNonBreakingSpaces
+   * @deprecated
+   */
   formattedShortNameWithNonBreakingSpaces?: any;
+  /**
+   * Deprecated in favor of getFormattedShortName
+   * @deprecated
+   */
   formattedShortName?: any;
+  /**
+   * Deprecated in favor of getFormattedName
+   * @deprecated
+   */
   formattedName?: any;
+  /**
+   * Deprecated in favor of getFormattedUser
+   * @deprecated
+   */
   formattedUser?: any;
+  /**
+   * Deprecated in favor of getIsWAContact
+   * @deprecated
+   */
   isWAContact: boolean;
+  /**
+   * Deprecated in favor of getIsMyContact
+   * @deprecated
+   */
   isMyContact: boolean;
+  /**
+   * Deprecated in favor of getCanRequestPhoneNumber
+   * @deprecated
+   */
+  canRequestPhoneNumber: boolean;
+  /**
+   * Deprecated in favor of getShowBusinessCheckmarkAsPrimary
+   * @deprecated
+   */
   showBusinessCheckmarkAsPrimary?: any;
+  /**
+   * Deprecated in favor of getShowBusinessCheckmarkAsSecondary
+   * @deprecated
+   */
   showBusinessCheckmarkAsSecondary?: any;
+  /**
+   * Deprecated in favor of getShowBusinessCheckmarkInChatlist
+   * @deprecated
+   */
+  showBusinessCheckmarkInChatlist?: any;
+  /**
+   * Deprecated in favor of getIsDisplayNameApproved
+   * @deprecated
+   */
+  isDisplayNameApproved?: any;
+  /**
+   * Deprecated in favor of getShouldForceBusinessUpdate
+   * @deprecated
+   */
+  shouldForceBusinessUpdate?: any;
 }
 
 /** @whatsapp 121

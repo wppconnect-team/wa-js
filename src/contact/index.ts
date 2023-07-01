@@ -14,4 +14,6 @@
  * limitations under the License.
  */
 
+import './patch';
+
 export * from './functions';

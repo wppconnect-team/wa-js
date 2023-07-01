@@ -22,6 +22,7 @@ export * from './canEditMsg';
 export * from './canReplyMsg';
 export * from './changeOptInStatusForExternalWebBeta';
 export * from './collections';
+export * from './contactFunctions';
 export * from './createFanoutMsgStanza';
 export * from './createGroup';
 export * from './createMsgProtobuf';
