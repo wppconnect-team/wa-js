@@ -14,5 +14,17 @@
  * limitations under the License.
  */
 
-export * from './DROP_ATTR';
-export * from './SANITIZED_VERSION_STR';
+import { exportModule } from '../exportModule';
+
+/**
+ *  @whatsapp 831914
+ */
+export declare const SANITIZED_VERSION_STR: string;
+
+exportModule(
+  exports,
+  {
+    SANITIZED_VERSION_STR: ['SANITIZED_VERSION_STR'],
+  },
+  (m) => m.SANITIZED_VERSION_STR
+);

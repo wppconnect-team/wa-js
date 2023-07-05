@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
+import { compare } from 'compare-versions';
+
 import { assertWid } from '../../assert';
 import { ContactModel, ContactStore, Wid } from '../../whatsapp';
+import { SANITIZED_VERSION_STR } from '../../whatsapp/contants';
 import * as wa_functions from '../../whatsapp/functions';
 import { BlocklistResult } from '../types';
 
@@ -26,7 +29,15 @@ export async function blockContact(
 
   const contact = ContactStore.get(wid) || new ContactModel({ id: wid });
 
-  await wa_functions.blockContact(contact);
+  if (compare(SANITIZED_VERSION_STR, '2.2323.4', '>=')) {
+    await wa_functions.blockContact({
+      contact,
+      blockEntryPoint: 'block_list',
+      bizOptOutArgs: null,
+    });
+  } else {
+    await wa_functions.blockContact(contact);
+  }
 
   return {
     wid,
