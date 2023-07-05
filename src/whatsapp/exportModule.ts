@@ -18,8 +18,39 @@ import { trackException } from '../gtag';
 import { InferArgs, InferReturn, wrapFunction } from '../util';
 import * as webpack from '../webpack';
 
-const moduleIdMap = new WeakMap<any, string>();
-const functionPathMap = new WeakMap<any, string>();
+class CustomWeakMap extends WeakMap<object, string> {
+  protected stringMap = new Map<string, string>();
+
+  delete(key: object | string) {
+    if (typeof key === 'string') {
+      return this.stringMap.delete(key);
+    }
+    return super.delete(key);
+  }
+  get(key: object | string) {
+    if (typeof key === 'string') {
+      return this.stringMap.get(key);
+    }
+    return super.get(key);
+  }
+  has(key: object | string) {
+    if (typeof key === 'string') {
+      return this.stringMap.has(key);
+    }
+    return super.has(key);
+  }
+  set(key: object | string, value: string) {
+    if (typeof key === 'string') {
+      this.stringMap.set(key, value);
+      return this;
+    }
+    super.set(key, value);
+    return this;
+  }
+}
+
+const moduleIdMap = new CustomWeakMap();
+const functionPathMap = new CustomWeakMap();
 
 export const _moduleIdMap = moduleIdMap;
 
