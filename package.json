@@ -74,7 +74,7 @@
     "release-it": "^15.11.0",
     "shx": "^0.3.4",
     "ts-loader": "^9.4.4",
-    "ts-morph": "^18.0.0",
+    "ts-morph": "^19.0.0",
     "ts-node": "^10.9.1",
     "typedoc": "^0.24.8",
     "typedoc-plugin-mdn-links": "^3.0.3",
