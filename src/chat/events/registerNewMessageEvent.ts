@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-import { getMyUserId } from '../../conn';
 import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
-import { ChatStore, MsgKey, MsgModel, MsgStore } from '../../whatsapp';
-import { getQuotedMsg } from '../functions/';
+import { ChatStore, MsgModel, MsgStore } from '../../whatsapp';
+import { getQuotedMsg, getQuotedMsgKey } from '../functions/';
 
 webpack.onInjected(() => register());
 
@@ -61,12 +60,7 @@ function register() {
   if (typeof MsgModel.prototype.quotedMsgId === 'undefined') {
     Object.defineProperty(MsgModel.prototype, 'quotedMsgId', {
       get: function () {
-        const quotedMsgId = new MsgKey({
-          id: this.quotedStanzaID,
-          fromMe: getMyUserId()?.equals(this.quotedParticipant) || false,
-          remote: this.quotedRemoteJid ? this.quotedRemoteJid : this.id.remote,
-          participant: this.isGroupMsg ? this.quotedParticipant : undefined,
-        });
+        const quotedMsgId = getQuotedMsgKey(this);
 
         return quotedMsgId;
       },

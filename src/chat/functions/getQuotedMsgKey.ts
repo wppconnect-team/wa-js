@@ -14,29 +14,37 @@
  * limitations under the License.
  */
 
+import { getMyUserId } from '../../conn';
 import { WPPError } from '../../util';
-import { MsgKey, MsgModel } from '../../whatsapp';
-import { getMessageById } from './getMessageById';
-import { getQuotedMsgKey } from './getQuotedMsgKey';
+import { MsgKey, MsgModel, Wid } from '../../whatsapp';
 
 /**
  * Get a quoted message
  *
  * @category Chat
  */
-export async function getQuotedMsg(id: string | MsgKey): Promise<MsgModel> {
-  const msg = await getMessageById(id);
-
+export function getQuotedMsgKey(msg: MsgModel): MsgKey {
   if (!msg.quotedStanzaID) {
     throw new WPPError(
       'message_not_have_a_reply',
-      `Message ${id} does not have a reply`,
+      `Message ${msg.id} does not have a reply`,
       {
-        id,
+        id: msg.id,
       }
     );
   }
 
-  const quotedMsgId = getQuotedMsgKey(msg);
-  return await getMessageById(quotedMsgId);
+  const remote = msg.quotedRemoteJid ? msg.quotedRemoteJid : msg.id.remote;
+  const fromMe = getMyUserId()?.equals(msg.quotedParticipant) || false;
+
+  const quotedMsgId = new MsgKey({
+    id: msg.quotedStanzaID,
+    fromMe: fromMe,
+    remote: remote,
+    participant:
+      Wid.isGroup(msg.from!) || Wid.isGroup(msg.to!) || Wid.isStatusV3(remote)
+        ? msg.quotedParticipant
+        : undefined,
+  });
+  return quotedMsgId;
 }
