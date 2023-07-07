@@ -24,7 +24,7 @@ export declare function sendCreateGroup(
   groupName: string,
   participants: Wid[],
   ephemeral?: number,
-  dogfooding?: boolean
+  parentGroup?: Wid
 ): Promise<{
   gid: Wid;
   participants: (
@@ -60,13 +60,13 @@ webpack.injectFallbackModule('sendCreateGroup', {
     groupName: string,
     participants: Wid[],
     ephemeral?: number,
-    dogfooding?: boolean
+    parentGroup?: Wid
   ) => {
     return await createGroup(
       groupName,
       participants,
       ephemeral,
-      dogfooding
+      parentGroup
     ).then((e) => ({
       gid: e.wid,
       participants: e.participants.map((e) => ({

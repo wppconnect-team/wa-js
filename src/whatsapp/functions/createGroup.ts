@@ -24,7 +24,7 @@ export declare function createGroup(
   groupName: string,
   participants: Wid[],
   ephemeral?: number,
-  dogfooding?: boolean
+  parentGroup?: Wid
 ): Promise<{
   wid: Wid;
   participants: {

@@ -46,13 +46,17 @@ import * as wa_functions from '../../whatsapp/functions';
  * // How to send a custom invite link
  * const link = 'https://chat.whatsapp.com/' + result['number@c.us'].invite_code;
  * console.log(link);
+ *
+ * // Create a Subgroup for a community
+ * const result = await WPP.group.create('Test Group', ['number@c.us'], 'communit@g.us');
  * ```
  *
  * @category Group
  */
 export async function create(
   groupName: string,
-  participantsIds: (string | Wid) | (string | Wid)[]
+  participantsIds: (string | Wid) | (string | Wid)[],
+  parentGroup: string | Wid
 ): Promise<{
   gid: Wid;
   participants: {
@@ -99,7 +103,14 @@ export async function create(
     wids.push(info.wid);
   }
 
-  const result = await wa_functions.sendCreateGroup(groupName, wids);
+  const parentWid = parentGroup ? assertWid(parentGroup) : undefined;
+
+  const result = await wa_functions.sendCreateGroup(
+    groupName,
+    wids,
+    undefined,
+    parentWid
+  );
 
   if (result.gid) {
     const chatGroup = await Chat.find(result.gid);
