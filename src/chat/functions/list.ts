@@ -27,6 +27,7 @@ export interface ChatListOptions {
   id?: Wid;
   count?: number;
   direction?: 'after' | 'before';
+  onlyCommunities?: boolean;
   onlyGroups?: boolean;
   onlyUsers?: boolean;
   onlyWithUnreadMessage?: boolean;
@@ -52,6 +53,9 @@ export interface ChatListOptions {
  *
  * // Only groups chats
  * const chats = await WPP.chat.list({onlyGroups: true});
+ *
+ * // Only communities chats
+ * const chats = await WPP.chat.list({onlyCommunities: true});
  *
  * // Only with label Text
  * const chats = await WPP.chat.list({withLabels: ['Test']});
@@ -83,6 +87,13 @@ export async function list(
 
   if (options.onlyGroups) {
     models = models.filter((c) => c.isGroup);
+  }
+
+  if (options.onlyCommunities) {
+    models = models.filter(
+      (c) =>
+        c.isGroup && c.groupMetadata?.groupType === 'DEFAULT_ANNOUNCEMENT_GROUP'
+    );
   }
 
   if (options.onlyWithUnreadMessage) {

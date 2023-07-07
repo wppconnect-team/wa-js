@@ -28,6 +28,8 @@ interface Props {
   id: Wid;
   creation?: any;
   owner?: any;
+  subject?: string;
+  subjectTime?: any;
   desc?: string;
   descId?: string;
   descTime?: any;
@@ -36,23 +38,51 @@ interface Props {
   announce?: any;
   noFrequentlyForwarded?: any;
   ephemeralDuration?: any;
+  membershipApprovalMode?: any;
+  growthLockExpiration?: any;
+  growthLockType?: any;
+  reportToAdminMode?: any;
   size?: any;
+  numSubgroups?: any;
   support?: any;
+  suspended?: any;
+  terminated?: any;
   uniqueShortNameMap?: any;
   isLidAddressingMode: boolean;
+  isParentGroup: boolean;
+  isParentGroupClosed: boolean;
+  parentGroup?: any;
+  defaultSubgroup?: any;
+  unjoinedSubgroups?: any;
+  joinedSubgroups?: any;
+  allowNonAdminSubGroupCreation?: any;
+  lastActivityTimestamp?: any;
+  lastSeenActivityTimestamp?: any;
+  lastReportToAdminTimestamp?: any;
+  incognito?: any;
 }
 
 interface Session {
   stale?: any;
+  deviceStale?: any;
   trusted?: any;
   inviteCode?: any;
   groupInviteCodePromise?: any;
   revokeGroupInvitePromise?: any;
-  revokeGroupV4AddInvitePromise?: any;
+  participantQueryPromise?: any;
+  deviceQueryPromise?: any;
+  unjoinedSubgroupsQueryPromise?: any;
+  displayedDesc?: any;
+  revokeGroupsV4AddInvitePromise?: any;
+  cachedDeviceCount?: any;
+  cachedDeviceSizeBucket?: any;
 }
 
 interface Derived {
   groupInviteLink?: any;
+  groupType?: string;
+  isIncognitoCag?: boolean;
+  isUnnamed?: boolean;
 }
 
 /** @whatsapp 14423
