@@ -44,7 +44,7 @@ export async function ensureGroupAndParticipants(
     if (!participant) {
       throw new WPPError(
         'group_participant_not_found',
-        `Chat ${groupChat.id._serialized} is not a group`
+        `Group ${groupChat.id._serialized}: Participant '${participant}' not found`
       );
     }
 
