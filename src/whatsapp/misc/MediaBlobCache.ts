@@ -40,8 +40,16 @@ export declare const MediaBlobCache: MediaBlobCacheImpl;
 exportModule(
   exports,
   {
-    MediaBlobCacheImpl: 'MediaBlobCacheImpl',
-    MediaBlobCache: 'MediaBlobCache',
+    MediaBlobCacheImpl: [
+      'InMemoryMediaBlobCacheImpl', // @whatsapp >= 2.2329.7
+      'MediaBlobCacheImpl', // @whatsapp < 2.2329.7
+    ],
+    MediaBlobCache: [
+      'InMemoryMediaBlobCache', // @whatsapp >= 2.2329.7
+      'MediaBlobCache', // @whatsapp < 2.2329.7
+    ],
   },
-  (m) => m.MediaBlobCache
+  (m) =>
+    m.InMemoryMediaBlobCacheImpl || // @whatsapp >= 2.2329.7
+    m.MediaBlobCache // @whatsapp < 2.2329.7
 );

@@ -58,9 +58,17 @@ export declare function fetchLinkPreview(
 exportModule(
   exports,
   {
-    fetchLinkPreview: 'default',
+    fetchLinkPreview: [
+      'getLinkPreview', // @whatsapp >= 2.2329.7
+      'default', // @whatsapp < 2.2329.7
+    ],
   },
   (m, id) => {
+    // @whatsapp >= 2.2329.7
+    if (m.getLinkPreview && !m.getAck) {
+      return true;
+    }
+    // @whatsapp < 2.2329.7
     const source: string = webpack.moduleSource(id);
     return (
       source.includes('.genMinimalLinkPreview') &&
