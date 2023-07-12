@@ -91,8 +91,7 @@ export async function list(
 
   if (options.onlyCommunities) {
     models = models.filter(
-      (c) =>
-        c.isGroup && c.groupMetadata?.groupType === 'DEFAULT_ANNOUNCEMENT_GROUP'
+      (c) => c.isGroup && c.groupMetadata?.groupType === 'COMMUNITY'
     );
   }
 
