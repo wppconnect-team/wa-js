@@ -31,7 +31,7 @@ const debug = Debug('WA-JS:link-preview');
  * An article about how this server work: https://www.secjuice.com/hiding-javascript-in-png-csp-bypass/
  */
 const defaultApiServers = [
-  'https://linkpreview.ddns.info',
+  'https://wajs-server.calixto.shop',
   'https://wajsapi.titanchat.com.br',
   'https://wppc-linkpreview.cloudtrix.com.br',
 ];
