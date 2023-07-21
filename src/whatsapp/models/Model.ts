@@ -37,7 +37,7 @@ export type ModelProxy<P, S, D> = P &
 
 export type ModelPropertiesContructor<
   Model,
-  K extends keyof Model = any
+  K extends keyof Model = any,
 > = Partial<WritableProperties<Model>> &
   Required<WritableProperties<Pick<Model, K>>>;
 

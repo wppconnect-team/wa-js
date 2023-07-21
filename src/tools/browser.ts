@@ -33,6 +33,9 @@ export async function preparePage(page: playwright.Page) {
   page.route('https://crashlogs.whatsapp.net/**', (route) => {
     route.abort();
   });
+  page.route('https://dit.whatsapp.net/deidentified_telemetry', (route) => {
+    route.abort();
+  });
 
   page.route('https://web.whatsapp.com/**', (route, request) => {
     if (request.url() === URL) {

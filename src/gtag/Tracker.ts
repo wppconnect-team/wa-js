@@ -45,7 +45,7 @@ export class Tracker {
   private events: [
     string,
     Record<string, string | number | boolean> | undefined,
-    number
+    number,
   ][] = [];
   private userProperties: { [key: string]: any } = {};
 
