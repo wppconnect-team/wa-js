@@ -74,7 +74,7 @@ async function start() {
     // Remove sourcemap because it not exists in production
     content = content.replace(/\/\/# sourceMappingURL.*/g, '');
 
-    content = prettier.format(content, {
+    content = await prettier.format(content, {
       ...options!,
       parser: 'espree',
       printWidth: 120,
