@@ -18,6 +18,7 @@ import { assertWid } from '../../assert';
 import { ContactModel, ContactStore, Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
 import { BlocklistResult } from '../types';
+import { isBlocked } from './isBlocked';
 
 export async function unblockContact(
   chatId: string | Wid
@@ -30,6 +31,6 @@ export async function unblockContact(
 
   return {
     wid,
-    isBlocked: contact.isBlocked(),
+    isBlocked: isBlocked(wid),
   };
 }

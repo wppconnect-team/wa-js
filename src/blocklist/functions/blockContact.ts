@@ -21,6 +21,7 @@ import { ContactModel, ContactStore, Wid } from '../../whatsapp';
 import { SANITIZED_VERSION_STR } from '../../whatsapp/contants';
 import * as wa_functions from '../../whatsapp/functions';
 import { BlocklistResult } from '../types';
+import { isBlocked } from './isBlocked';
 
 export async function blockContact(
   chatId: string | Wid
@@ -41,6 +42,6 @@ export async function blockContact(
 
   return {
     wid,
-    isBlocked: contact.isBlocked(),
+    isBlocked: isBlocked(wid),
   };
 }

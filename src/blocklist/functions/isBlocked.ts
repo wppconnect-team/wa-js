@@ -15,12 +15,12 @@
  */
 
 import { assertWid } from '../../assert';
-import { ContactModel, ContactStore, Wid } from '../../whatsapp';
+import { BlocklistStore, Wid } from '../../whatsapp';
 
 export function isBlocked(chatId: string | Wid): boolean {
   const wid = assertWid(chatId);
 
-  const contact = ContactStore.get(wid) || new ContactModel({ id: wid });
+  const contact = BlocklistStore.get(wid);
 
-  return contact.isBlocked();
+  return !!contact;
 }
