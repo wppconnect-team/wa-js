@@ -30,12 +30,10 @@ export let isInjected = false;
  */
 export let isReady = false;
 
-export function onInjected(listener: () => void): void {
-  internalEv.on('webpack.injected', async () =>
-    Promise.resolve()
-      .then(listener)
-      .catch(() => null)
-  );
+export function onInjected(listener: () => void, delay = 0): void {
+  internalEv.on('webpack.injected', () => {
+    setTimeout(listener, delay);
+  });
 }
 
 export function onReady(listener: () => void): void {
