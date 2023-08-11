@@ -33,6 +33,6 @@ export declare class CallCollection extends Collection<CallModel> {
 }
 exportModule(
   exports,
-  { CallCollection: 'CallCollectionImpl' },
-  (m) => m.CallCollectionImpl
+  { CallCollection: ['CallCollectionImpl', 'default.constructor'] },
+  (m) => m.CallCollectionImpl || m.default.processIncomingCall
 );
