@@ -68,7 +68,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",
     "node-fetch": "^2.6.12",
-    "parse-data-url": "^5.0.0",
+    "parse-data-url": "^6.0.0",
     "playwright-chromium": "^1.36.2",
     "prettier": "^3.0.1",
     "release-it": "^16.1.3",
