@@ -67,7 +67,7 @@
     "file-type": "~16.5.4",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
-    "node-fetch": "^2.6.13",
+    "node-fetch": "^2.7.0",
     "parse-data-url": "^6.0.0",
     "playwright-chromium": "^1.37.1",
     "prettier": "^3.0.2",
