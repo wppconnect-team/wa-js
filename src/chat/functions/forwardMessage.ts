@@ -15,8 +15,8 @@
  */
 
 import { assertFindChat } from '../../assert';
-import { MsgKey, Wid } from '../../whatsapp';
-import { getMessageById, RawMessage } from '..';
+import { ChatStore, MsgKey, Wid } from '../../whatsapp';
+import { getMessageById } from '..';
 
 export interface ForwardMessagesOptions {
   displayCaptionText?: boolean;
@@ -38,14 +38,13 @@ export async function forwardMessage(
   toChatId: string | Wid,
   msgId: string | MsgKey,
   options: ForwardMessagesOptions = {}
-): Promise<RawMessage[]> {
+): Promise<boolean> {
   const chat = await assertFindChat(toChatId);
 
   const msg = await getMessageById(msgId);
-
-  return await chat.forwardMessages(
+  return await ChatStore.forwardMessagesToChats(
     [msg],
-    options.multicast,
+    [chat],
     options.displayCaptionText
   );
 }
