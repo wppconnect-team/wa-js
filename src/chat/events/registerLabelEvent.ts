@@ -26,7 +26,7 @@ import {
 } from '../../whatsapp/functions';
 import { get as getChat } from '../functions/';
 
-webpack.onInjected(() => register());
+webpack.onReady(register);
 
 function register() {
   async function processLabelEvent(event: 'add' | 'remove', ...args: any) {

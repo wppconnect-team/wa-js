@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
+import Debug from 'debug';
+
 import { trackException } from '../gtag';
 import { InferArgs, InferReturn, wrapFunction } from '../util';
 import * as webpack from '../webpack';
+
+const debug = Debug('WA-JS:export');
 
 class CustomWeakMap extends WeakMap<object, string> {
   protected stringMap = new Map<string, string>();
@@ -239,6 +243,8 @@ export function wrapModuleFunction<TFunc extends (...args: any[]) => any>(
     console.error('function path was not found');
     return;
   }
+
+  debug.extend('wrap')(`Wrapping '${functionPath} for module ${moduleId}'`);
 
   const parts = functionPath.split('.');
 

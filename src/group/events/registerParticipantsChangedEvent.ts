@@ -20,7 +20,7 @@ import { Wid } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { updateDBForGroupAction } from '../../whatsapp/functions';
 
-webpack.onInjected(() => register());
+webpack.onReady(register);
 
 function register() {
   const eventTypes = ['add', 'remove', 'demote', 'promote'];

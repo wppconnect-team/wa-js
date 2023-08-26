@@ -25,7 +25,7 @@ import {
   SimpleAckData,
 } from '../../whatsapp/functions';
 
-webpack.onInjected(() => registerAckMessageEvent());
+webpack.onReady(registerAckMessageEvent);
 
 function registerAckMessageEvent() {
   MsgStore.on('change:ack', (msg: MsgModel) => {

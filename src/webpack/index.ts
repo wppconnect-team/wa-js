@@ -36,12 +36,10 @@ export function onInjected(listener: () => void, delay = 0): void {
   });
 }
 
-export function onReady(listener: () => void): void {
-  internalEv.on('webpack.ready', () =>
-    Promise.resolve()
-      .then(listener)
-      .catch(() => null)
-  );
+export function onReady(listener: () => void, delay = 1000): void {
+  internalEv.on('webpack.ready', () => {
+    setTimeout(listener, delay);
+  });
 }
 
 export type SearchModuleCondition = (module: any, moduleId: string) => boolean;
@@ -99,7 +97,7 @@ export function injectLoader(): void {
             filename.includes(`locales/${lang}`)
           );
         }
-        return true;
+        return filename.includes('main');
       });
 
     const sortWeight: [RegExp, number][] = [

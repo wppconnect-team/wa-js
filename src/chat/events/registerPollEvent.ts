@@ -20,7 +20,7 @@ import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { upsertVotes } from '../../whatsapp/functions';
 import { getMessageById } from '../functions';
 
-webpack.onInjected(() => register());
+webpack.onReady(register);
 
 function register() {
   wrapModuleFunction(upsertVotes, async (func, ...args) => {

@@ -21,7 +21,7 @@ import { MsgKey } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { createOrUpdateReactions } from '../../whatsapp/functions';
 
-webpack.onInjected(() => register());
+webpack.onReady(register);
 
 function register() {
   wrapModuleFunction(createOrUpdateReactions, (func, ...args) => {

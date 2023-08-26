@@ -22,10 +22,7 @@ import {
   typeAttributeFromProtobuf,
 } from '../whatsapp/functions';
 
-webpack.onInjected(() => {
-  // Delay the register to ensure that is the last wrapped function
-  setTimeout(applyPatch, 1000);
-});
+webpack.onReady(applyPatch, 1000);
 
 function applyPatch() {
   wrapModuleFunction(mediaTypeFromProtobuf, (func, ...args) => {
