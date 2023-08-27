@@ -39,10 +39,10 @@ export async function getVotes(id: string | MsgKey): Promise<{
   const msgKey = MsgKey.fromString(id.toString());
   const msg = await getMessageById(msgKey);
 
-  if (!msg.asPollCreation) {
+  if (msg.type != 'poll_creation') {
     throw new WPPError(
       'msg_not_found',
-      `Message ${msgKey.toString()} not not a poll`,
+      `Message ${msgKey.toString()} not a poll`,
       {
         id: msgKey.toString(),
       }
