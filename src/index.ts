@@ -23,7 +23,7 @@ import './gtag';
 import * as webpack from './webpack';
 
 export { webpack };
-export { isInjected, isReady } from './webpack';
+export { isInjected, isReady, isFullReady } from './webpack';
 
 export { config, Config } from './config';
 

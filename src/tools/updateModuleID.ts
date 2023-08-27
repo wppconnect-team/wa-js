@@ -40,7 +40,7 @@ dirs.push(
 async function start() {
   const { browser, page } = await getPage();
 
-  await page.waitForFunction(() => window.WPP?.isReady, null, {
+  await page.waitForFunction(() => window.WPP?.isFullReady, null, {
     timeout: 0,
   });
 

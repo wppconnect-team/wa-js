@@ -17,4 +17,5 @@
 export interface WebpackEvents {
   'webpack.injected': void;
   'webpack.ready': void;
+  'webpack.full_ready': void;
 }
