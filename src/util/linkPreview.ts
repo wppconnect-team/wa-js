@@ -41,12 +41,19 @@ const apiServers = config.linkPreviewApiServers || defaultApiServers;
 const thumbHeight = 100;
 const thumbWidth = 140;
 
+const cache: { [key: string]: any } = {};
+
 shuffleArray(apiServers);
 
 /**
  * Fetch preview link data from a remote server
  */
 export async function fetchRemoteLinkPreviewData(url: string) {
+  if (cache[url]) {
+    debug(`Link preview found in the cache`, url);
+    return;
+  }
+
   const textDecoder = new TextDecoder();
 
   for (let i = apiServers.length - 1; i >= 0; i--) {
@@ -75,7 +82,7 @@ export async function fetchRemoteLinkPreviewData(url: string) {
 
     const isVideo = /^video/.test(data.mediaType);
 
-    return {
+    const result = {
       title: data.title,
       description: data.description,
       canonicalUrl: data.url,
@@ -84,6 +91,14 @@ export async function fetchRemoteLinkPreviewData(url: string) {
       doNotPlayInline: !isVideo,
       imageUrl: data.image,
     };
+
+    cache[url] = result;
+
+    setTimeout(() => {
+      delete cache[url];
+    }, 300000); // 5 minutes
+
+    return result;
   }
 
   return null;
