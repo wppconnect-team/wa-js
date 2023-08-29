@@ -67,6 +67,8 @@ export * from './markSeen';
 export * from './mediaTypeFromProtobuf';
 export * from './membershipApprovalRequestAction';
 export * from './msgFindQuery';
+export * from './processRawAudioVideo';
+export * from './processRawMedia';
 export * from './processRawSticker';
 export * from './products';
 export * from './productVisibilitySet';
