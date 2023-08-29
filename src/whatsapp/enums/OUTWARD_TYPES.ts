@@ -22,6 +22,7 @@ export declare enum OUTWARD_TYPES {
   VIDEO = 'video',
   AUDIO = 'audio',
   PTT = 'ptt',
+  PTV = 'ptv',
   STICKER = 'sticker',
   DOCUMENT = 'document',
   PRODUCT = 'product',
