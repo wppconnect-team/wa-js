@@ -41,6 +41,7 @@ export * as profile from './profile';
 export * as status from './status';
 export * as util from './util';
 export * as whatsapp from './whatsapp';
+export * as order from './order';
 
 export {
   emit,
