@@ -20,6 +20,7 @@ import { ChatEventTypes } from '../chat/events/eventTypes';
 import { ConfigEventTypes } from '../config/eventTypes';
 import { ConnEventTypes } from '../conn/events/eventTypes';
 import { GroupEventTypes } from '../group/events/eventTypes';
+import { OrderEventTypes } from '../order/events/eventTypes';
 import { StatusEventTypes } from '../status/events/eventTypes';
 import { WebpackEvents } from '../webpack/eventTypes';
 
@@ -29,6 +30,7 @@ export { ChatEventTypes } from '../chat/events/eventTypes';
 export { ConfigEventTypes } from '../config/eventTypes';
 export { ConnEventTypes } from '../conn/events/eventTypes';
 export { GroupEventTypes } from '../group/events/eventTypes';
+export { OrderEventTypes } from '../order/events/eventTypes';
 export { StatusEventTypes } from '../status/events/eventTypes';
 export { WebpackEvents } from '../webpack/eventTypes';
 
@@ -38,5 +40,6 @@ export type EventTypes = BlocklistEventTypes &
   ConfigEventTypes &
   ConnEventTypes &
   GroupEventTypes &
+  OrderEventTypes &
   StatusEventTypes &
   WebpackEvents;

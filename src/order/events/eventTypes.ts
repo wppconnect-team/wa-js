@@ -14,5 +14,23 @@
  * limitations under the License.
  */
 
-export * from './events';
-export * from './functions';
+import { MsgKey } from '../../whatsapp';
+
+export interface OrderEventTypes {
+  /**
+   * Triggered when change the active chat
+   *
+   * @example
+   * ```javascript
+   * WPP.on('order.payment_status', (order) => {
+   *   // Your code
+   * });
+   * ```
+   */
+  'order.payment_status': {
+    method: string;
+    timestamp: number;
+    reference_id: string;
+    msgId: MsgKey;
+  };
+}

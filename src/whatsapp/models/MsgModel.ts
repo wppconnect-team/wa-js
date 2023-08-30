@@ -334,6 +334,8 @@ interface Derived {
   pollOptions?: any;
   pollSelectableOptionsCount?: number;
   pollUpdateParentKey?: any;
+  nativeFlowName?: string;
+  interactivePayload?: any;
 }
 
 /** @whatsapp 17304 */

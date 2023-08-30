@@ -101,7 +101,6 @@ export async function sendOrderMessage(
         undefined,
         true
       );
-      console.log(data);
       if (typeof data === 'undefined')
         throw new WPPError(
           'product_not_found',
