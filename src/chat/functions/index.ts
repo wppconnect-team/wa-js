@@ -75,6 +75,7 @@ export {
   LocationMessageOptions,
   sendLocationMessage,
 } from './sendLocationMessage';
+export { sendOrderMessage } from './sendOrderMessage';
 export { sendRawMessage } from './sendRawMessage';
 export { sendReactionToMessage } from './sendReactionToMessage';
 export { sendTextMessage, TextMessageOptions } from './sendTextMessage';
