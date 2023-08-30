@@ -31,7 +31,9 @@ export declare function processRawMedia(data: OpaqueData): Promise<{
 exportModule(
   exports,
   {
-    processRawMedia: 'processRawMedia',
+    processRawMedia: ['processRawMedia', 'default'],
   },
-  (m) => m.processRawMedia
+  (m) =>
+    m.processRawMedia ||
+    m.default?.toString?.().includes('Received unsupported mediaType')
 );
