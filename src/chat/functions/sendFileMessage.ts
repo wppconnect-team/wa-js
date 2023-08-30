@@ -25,6 +25,8 @@ import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   generateVideoThumbsAndDuration,
   isAnimatedWebp,
+  processRawAudioVideo,
+  processRawMedia,
   processRawSticker,
 } from '../../whatsapp/functions';
 import {
@@ -102,6 +104,10 @@ export interface AudioMessageOptions extends FileMessageOptions {
    * ```
    */
   waveform?: boolean;
+}
+
+export interface PushToVideoMessageOptions extends FileMessageOptions {
+  type: 'ptv';
 }
 
 export interface DocumentMessageOptions
@@ -195,6 +201,24 @@ export interface VideoMessageOptions
  *     type: 'sticker'
  *   }
  * );
+ *
+ * // A simple video
+ * WPP.chat.sendFileMessage(
+ *  '[number]@c.us',
+ *  'data:application/msword;base64,<a long base64 file...>',
+ *  {
+ *    type: 'video',
+ *  }
+ * );
+ *
+ * // A PTV Video (micro video)
+ * WPP.chat.sendFileMessage(
+ *  '[number]@c.us',
+ *  'data:application/msword;base64,<a long base64 file...>',
+ *  {
+ *    type: 'ptv',
+ *  }
+ * );
  * ```
  * @category Message
  * @return  {SendMessageReturn} The result
@@ -209,6 +233,7 @@ export async function sendFileMessage(
     | ImageMessageOptions
     | VideoMessageOptions
     | StickerMessageOptions
+    | PushToVideoMessageOptions
 ): Promise<SendMessageReturn> {
   options = {
     ...defaultSendMessageOptions,
@@ -233,6 +258,7 @@ export async function sendFileMessage(
     isPtt?: boolean;
     asDocument?: boolean;
     asGif?: boolean;
+    isPtv?: boolean;
     isAudio?: boolean;
     asSticker?: boolean;
     precomputedFields?: {
@@ -253,6 +279,8 @@ export async function sendFileMessage(
     isViewOnce = options.isViewOnce;
   } else if (options.type === 'video') {
     rawMediaOptions.asGif = options.isGif;
+  } else if (options.type === 'ptv') {
+    rawMediaOptions.isPtv = true;
   } else if (options.type === 'document') {
     rawMediaOptions.asDocument = true;
   } else if (options.type === 'sticker') {
@@ -401,6 +429,35 @@ webpack.onReady(() => {
       }
     }
 
+    return result;
+  });
+
+  wrapModuleFunction(processRawMedia, async (func, ...args) => {
+    const [data] = args;
+
+    let result = await func(...args);
+    if ((args as any)[1]?.isPtv) {
+      result = await (processRawAudioVideo(
+        data as any,
+        false,
+        null,
+        false,
+        null,
+        data.type(),
+        true
+      ) as any);
+    }
+
+    return result;
+  });
+
+  wrapModuleFunction(processRawAudioVideo, async (func, ...args) => {
+    const [data] = args;
+    const result = await func(...args);
+
+    if (data.type() === 'video/mp4' && args[6]) {
+      result.type = 'ptv';
+    }
     return result;
   });
 });

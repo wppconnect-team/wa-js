@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,24 +15,33 @@
  */
 
 import { exportModule } from '../exportModule';
+import { OpaqueData } from '../misc';
 
-/** @whatsapp 58668 */
-export declare enum OUTWARD_TYPES {
-  IMAGE = 'image',
-  VIDEO = 'video',
-  AUDIO = 'audio',
-  PTT = 'ptt',
-  PTV = 'ptv',
-  STICKER = 'sticker',
-  DOCUMENT = 'document',
-  PRODUCT = 'product',
-  UNKNOWN = 'unknown',
-}
+/**
+ * @whatsapp 232294 >= 2.2242.6
+ */
+export declare function processRawAudioVideo(
+  mediaBlob: OpaqueData,
+  isPtt: boolean,
+  precomputedFields: any,
+  asGif: boolean,
+  m: any,
+  type: string,
+  isPtv?: boolean
+): Promise<{
+  mediaBlob: OpaqueData;
+  isPtt: boolean;
+  precomputedFields: any;
+  asGif: boolean;
+  m: any;
+  type: string;
+  isPtv?: boolean;
+}>;
 
 exportModule(
   exports,
   {
-    OUTWARD_TYPES: 'OUTWARD_TYPES',
+    processRawAudioVideo: 'processRawAudioVideo',
   },
-  (m) => m.OUTWARD_TYPES
+  (m) => m.processRawAudioVideo
 );
