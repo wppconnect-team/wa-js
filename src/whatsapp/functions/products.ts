@@ -71,10 +71,8 @@ export declare function queryProduct(
   imageWidth?: number,
   imageHeight?: number,
   i?: any,
-  s?: boolean,
-  l?: any
+  s?: boolean
 ): any;
-
 exportModule(
   exports,
   {

@@ -27,9 +27,12 @@ interface Props {
   id?: any;
   price?: any;
   currency?: any;
+  name?: string;
   quantity?: any;
   thumbnailId?: any;
   thumbnailUrl?: any;
+  isCustomItem?: boolean;
+  isQuantitySet?: boolean;
 }
 
 interface Session {

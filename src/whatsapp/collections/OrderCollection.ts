@@ -26,6 +26,7 @@ export declare class OrderCollection extends Collection<OrderModel> {
   static staleCollection?: any;
   width?: any;
   height?: any;
+  addOrder(): Promise<OrderModel>;
   findOrder(e?: any, t?: any, a?: any): any;
 }
 exportModule(
