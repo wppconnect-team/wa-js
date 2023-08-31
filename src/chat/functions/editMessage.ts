@@ -61,6 +61,7 @@ export async function editMessage(
     subtype: 'message_edit',
     protocolMessageKey: msg.id,
     body: newText.trim(),
+    editMsgType: msg.type,
   };
 
   rawMessage = await prepareRawMessage(msg.chat!, rawMessage, options);
