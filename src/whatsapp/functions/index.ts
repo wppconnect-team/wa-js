@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+export * from './addAndSendMessageEdit';
 export * from './addAndSendMsgToChat';
 export * from './addToLabelCollection';
 export * from './blockContact';
