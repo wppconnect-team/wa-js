@@ -1,9 +1,9 @@
-# 2.25.0 (2023-08-28)
+# 2.26.0 (2023-09-01)
 
 
-### Features
+### Bug Fixes
 
-* Added cache for link preview result (close [#1316](https://github.com/wppconnect-team/wa-js/issues/1316)) ([e19d4a6](https://github.com/wppconnect-team/wa-js/commit/e19d4a6f7d8a1d16435296320f2c3d991dc3d9dc))
+* Fixed group.participant_changed event for join action ([d23c557](https://github.com/wppconnect-team/wa-js/commit/d23c557f298925d7dd27b27608f166eaf532a315))
 
 
 
