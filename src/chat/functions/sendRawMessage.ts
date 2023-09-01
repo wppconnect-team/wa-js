@@ -17,14 +17,17 @@
 import Debug from 'debug';
 
 import { assertFindChat, assertGetChat } from '../../assert';
-import { addAndSendMsgToChat } from '../../whatsapp/functions';
+import {
+  addAndSendMessageEdit,
+  addAndSendMsgToChat,
+} from '../../whatsapp/functions';
 import {
   defaultSendMessageOptions,
   RawMessage,
   SendMessageOptions,
   SendMessageReturn,
 } from '..';
-import { markIsRead, prepareRawMessage } from '.';
+import { getMessageById, markIsRead, prepareRawMessage } from '.';
 
 const debug = Debug('WA-JS:message');
 
@@ -56,7 +59,14 @@ export async function sendRawMessage(
   }
 
   debug(`sending message (${rawMessage.type}) with id ${rawMessage.id}`);
-  const result = await addAndSendMsgToChat(chat, rawMessage);
+  let result = null as any;
+  if (rawMessage.type === 'protocol' && rawMessage.subtype === 'message_edit') {
+    const msg = await getMessageById(rawMessage.protocolMessageKey);
+    await addAndSendMessageEdit(msg, rawMessage);
+    result = [await getMessageById(rawMessage.protocolMessageKey), null];
+  } else {
+    result = await addAndSendMsgToChat(chat, rawMessage);
+  }
   debug(`message ${rawMessage.id} queued`);
 
   const message = await result[0];
