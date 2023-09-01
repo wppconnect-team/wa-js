@@ -29,6 +29,7 @@ export interface GroupActionParticipant {
 export interface GroupActionChange {
   action: string;
   actionType: string; // @whatsapp >= 2.2224.6
+  isLidAddressingMode?: boolean;
   isInvite?: boolean;
   isLinkedGroupJoin?: boolean;
   /**
@@ -36,6 +37,7 @@ export interface GroupActionChange {
    */
   participants: Wid[] | GroupActionParticipant[];
   prevVersion: number;
+  reason: string;
   version: number;
 }
 

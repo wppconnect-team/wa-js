@@ -38,7 +38,10 @@ function register() {
           return p;
         });
 
-        if (actionType === 'add' && action.isInvite) {
+        if (
+          actionType === 'add' &&
+          (action.isInvite || action.reason === 'invite')
+        ) {
           actionType = 'join';
         } else if (
           actionType === 'remove' &&
