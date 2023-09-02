@@ -158,6 +158,7 @@ export async function getMessages(
   }
 
   msgs = msgs.map((m: any) => {
+    if (options?.onlyUnread) m.isNewMsg = true;
     if (m instanceof MsgModel) {
       return m;
     }
