@@ -89,21 +89,23 @@ export function injectLoader(): void {
     debug('injected');
     await internalEv.emitAsync('webpack.injected').catch(() => null);
 
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     const allRuntimes = new Array(10000)
       .fill(1)
       .map((v, k) => v + k)
       .filter((v) => {
         const filename = webpackRequire.u(v);
+        if (filename.includes('locales')) {
+          return navigator.languages.some((lang) =>
+            filename.includes(`locales/${lang}`)
+          );
+        }
         return !filename.includes('undefined');
       });
 
     const mainRuntimes = allRuntimes.filter((v) => {
       const filename = webpackRequire.u(v);
-      if (filename.includes('locales')) {
-        return navigator.languages.some((lang) =>
-          filename.includes(`locales/${lang}`)
-        );
-      }
       return filename.includes('main');
     });
 
