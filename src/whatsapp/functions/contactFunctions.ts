@@ -250,7 +250,10 @@ exportModule(
   {
     getDisplayName: 'getDisplayName',
     getPnForLid: 'getPnForLid',
-    getDisplayNameOrPnForLid: 'getDisplayNameOrPnForLid',
+    getDisplayNameOrPnForLid: [
+      'getUserDisplayNameForLid',
+      'getDisplayNameOrPnForLid',
+    ],
     getFormattedPhone: 'getFormattedPhone',
     getSearchName: 'getSearchName',
     getFormattedShortNameWithNonBreakingSpaces:
