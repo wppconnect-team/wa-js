@@ -55,6 +55,7 @@
     "buffer": "^6.0.3",
     "compare-versions": "^6.1.0",
     "compressorjs": "^1.2.1",
+    "conventional-changelog-angular": "^7.0.0",
     "conventional-changelog-cli": "^4.1.0",
     "debug": "^4.3.4",
     "eslint": "^8.49.0",
