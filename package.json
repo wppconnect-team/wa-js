@@ -45,7 +45,7 @@
     "@playwright/test": "^1.38.0",
     "@types/debug": "^4.1.8",
     "@types/node": "^16.18.50",
-    "@types/node-fetch": "^2.6.4",
+    "@types/node-fetch": "^2.6.5",
     "@types/parse-data-url": "^3.0.0",
     "@types/prettier": "^2.7.3",
     "@types/shelljs": "^0.8.12",
