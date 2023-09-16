@@ -103,6 +103,18 @@ export interface SendMessageOptions {
    * ```
    */
   waitForAck?: boolean;
+  /**
+   * Delay some time (in ms) before sending message
+   * While delaying, Typing Status is used to look like a human interaction
+   * @default 0
+   * @example
+   * ```javascript
+   * WPP.chat.sendTextMessage('[number]@c.us', 'Delay with typing', {
+   *   delay: 4000
+   * })
+   * ```
+   */
+  delay?: number;
 }
 
 export interface SendMessageReturn {

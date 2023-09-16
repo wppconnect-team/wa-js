@@ -25,7 +25,12 @@ import {
   unixTime,
 } from '../../whatsapp/functions';
 import { defaultSendMessageOptions, RawMessage, SendMessageOptions } from '..';
-import { generateMessageID, getMessageById } from '.';
+import {
+  generateMessageID,
+  getMessageById,
+  markIsComposing,
+  markIsPaused,
+} from '.';
 
 /**
  * Prepare a raw message
@@ -52,6 +57,14 @@ export async function prepareRawMessage<T extends RawMessage>(
     ack: ACK.CLOCK,
     ...message,
   };
+
+  if (options.delay && message.type === 'chat') {
+    await markIsComposing(chat.id);
+    await new Promise((resolve) =>
+      setTimeout(() => resolve(true), options.delay)
+    );
+    await markIsPaused(chat.id);
+  }
 
   if (message.type !== 'protocol') {
     const ephemeral = getEphemeralFields(chat);

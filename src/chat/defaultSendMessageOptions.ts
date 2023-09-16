@@ -32,4 +32,5 @@ export const defaultSendMessageOptions: AllMessageOptions = {
   linkPreview: true,
   markIsRead: true,
   waitForAck: true,
+  delay: 0,
 };
