@@ -35,6 +35,7 @@
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Properties</h3>
 <div class="tsd-index-list"><a href="chat.SendMessageOptions.html#createChat" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>create<wbr/>Chat?</span></a>
+<a href="chat.SendMessageOptions.html#delay" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>delay?</span></a>
 <a href="chat.SendMessageOptions.html#detectMentioned" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>detect<wbr/>Mentioned?</span></a>
 <a href="chat.SendMessageOptions.html#markIsRead" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>mark<wbr/>Is<wbr/>Read?</span></a>
 <a href="chat.SendMessageOptions.html#mentionedList" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>mentioned<wbr/>List?</span></a>
@@ -58,6 +59,21 @@
 </div><aside class="tsd-sources">
 <ul>
 <li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L33">src/chat/types.ts:33</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member"><a id="delay" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>delay</span><a href="#delay" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">delay</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span></div>
+<div class="tsd-comment tsd-typography"><p>Delay some time (in ms) before sending message
+While delaying, Typing Status is used to look like a human interaction</p>
+</div>
+<div class="tsd-comment tsd-typography">
+<h4>Default</h4><pre><code class="language-ts"><span class="hl-10">0</span>
+</code><button>Copy</button></pre>
+
+<h4>Example</h4><pre><code class="language-javascript"><span class="hl-5">WPP</span><span class="hl-2">.</span><span class="hl-6">chat</span><span class="hl-2">.</span><span class="hl-1">sendTextMessage</span><span class="hl-2">(</span><span class="hl-3">&#39;[number]@c.us&#39;</span><span class="hl-2">, </span><span class="hl-3">&#39;Delay with typing&#39;</span><span class="hl-2">, {</span><br/><span class="hl-2">  </span><span class="hl-6">delay:</span><span class="hl-2"> </span><span class="hl-10">4000</span><br/><span class="hl-2">})</span>
+</code><button>Copy</button></pre>
+</div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L117">src/chat/types.ts:117</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="detectMentioned" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>detect<wbr/>Mentioned</span><a href="#detectMentioned" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">detect<wbr/>Mentioned</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -147,6 +163,7 @@ This option work better with a message with mension</p>
 <div class="tsd-accordion-details">
 <ul>
 <li><a href="#createChat" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>create<wbr/>Chat</span></a></li>
+<li><a href="#delay" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>delay</span></a></li>
 <li><a href="#detectMentioned" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>detect<wbr/>Mentioned</span></a></li>
 <li><a href="#markIsRead" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>mark<wbr/>Is<wbr/>Read</span></a></li>
 <li><a href="#mentionedList" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>mentioned<wbr/>List</span></a></li>
