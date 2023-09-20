@@ -89,7 +89,11 @@ export function injectLoader(): void {
     debug('injected');
     await internalEv.emitAsync('webpack.injected').catch(() => null);
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    if ((window as any).wppForceMainLoad) {
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+    } else {
+      await internalEv.waitFor('conn.main_loaded');
+    }
 
     const allRuntimes = new Array(10000)
       .fill(1)
