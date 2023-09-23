@@ -34,6 +34,7 @@ import {
 interface Props {
   id: MsgKey;
   rowId?: any;
+  serverId?: number;
   body?: string;
   type?: string;
   subtype?: string | null;

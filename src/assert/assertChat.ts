@@ -16,7 +16,7 @@
 
 import { chat as Chat } from '../';
 import { WPPError } from '../util';
-import { ChatModel, Wid } from '../whatsapp';
+import { ChatModel, NewsletterStore, Wid } from '../whatsapp';
 
 export class InvalidChat extends WPPError {
   constructor(readonly id: string | { _serialized: string }) {
@@ -35,7 +35,12 @@ export async function assertFindChat(id: string | Wid): Promise<ChatModel> {
 }
 
 export function assertGetChat(id: string | Wid): ChatModel {
-  const chat = (Chat as any).get(id);
+  let chat = null;
+  if (id.toString().includes('newsletter')) {
+    chat = NewsletterStore.get(id);
+  } else {
+    chat = (Chat as any).get(id);
+  }
 
   if (!chat) {
     throw new InvalidChat(id);
