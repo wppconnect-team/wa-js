@@ -49,6 +49,10 @@ export declare const ChatStore: collections.ChatCollection;
 /** @whatsapp 19380
  * @whatsapp 719380 >= 2.2222.8
  */
+export declare const NewsletterStore: collections.ChatCollection;
+/** @whatsapp 19380
+ * @whatsapp 719380 >= 2.2222.8
+ */
 export declare const ContactStore: collections.ContactCollection;
 /** @whatsapp 13185
  * @whatsapp 513185 >= 2.2222.8
@@ -133,6 +137,7 @@ const storeNames = [
   'CartStore',
   'CatalogStore',
   'ChatStore',
+  'NewsletterStore',
   'ContactStore',
   'EmojiVariantStore',
   'GroupMetadataStore',
@@ -196,4 +201,12 @@ exportModule(
     ],
   },
   (m) => m.StickerPackCollection
+);
+
+exportModule(
+  exports,
+  {
+    NewsletterStore: 'default.NewsletterCollection',
+  },
+  (m) => m.default.NewsletterCollection
 );
