@@ -40,6 +40,7 @@ export * as labels from './labels';
 export * as profile from './profile';
 export * as status from './status';
 export * as util from './util';
+export * as newsletter from './newsletter';
 export * as whatsapp from './whatsapp';
 export * as order from './order';
 

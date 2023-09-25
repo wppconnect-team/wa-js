@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-import { assertWid } from '../../assert';
-import { ChatModel, ChatStore, NewsletterStore, Wid } from '../../whatsapp';
+export async function convertURLToJPEG(pngUrl: string): Promise<string> {
+  return new Promise((resolve) => {
+    const img = new Image();
 
-/**
- * Find a chat by id
- *
- * @category Chat
- */
-export function get(chatId: string | Wid): ChatModel | undefined {
-  const wid = assertWid(chatId);
-  if (wid.server === 'newsletter') {
-    return NewsletterStore.get(wid);
-  } else {
-    return ChatStore.get(wid);
-  }
+    img.onload = function () {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      const ctx = canvas.getContext('2d');
+      ctx?.drawImage(img, 0, 0);
+
+      const data = canvas.toDataURL('image/jpeg');
+
+      resolve(data);
+    };
+
+    img.src = pngUrl;
+  });
 }
