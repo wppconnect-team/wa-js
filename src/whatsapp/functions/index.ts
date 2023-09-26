@@ -111,6 +111,7 @@ export * from './updateCartEnabled';
 export * from './updateDBForGroupAction';
 export * from './updateNewsletterMsgRecord';
 export * from './updateParticipants';
+export * from './uploadMedia';
 export * from './uploadProductImage';
 export * from './uploadThumbnail';
 export * from './upsertVotes';
