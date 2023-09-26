@@ -30,12 +30,3 @@ exportModule(
   },
   (m) => m.getAsMms // >= 2.2310.4
 );
-
-/**
- * @whatsapp < 2.2310.4
- */
-webpack.injectFallbackModule('getAsMms', {
-  getAsMms: (msg: MsgModel) => {
-    return msg.asMms;
-  },
-});

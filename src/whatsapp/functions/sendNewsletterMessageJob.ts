@@ -29,5 +29,5 @@ exportModule(
   {
     sendNewsletterMessageJob: 'sendNewsletterMessageJob',
   },
-  (m) => m.sendNewsletterMessageJob
+  (m) => m.sendNewsletterMessageJob || m.sendNewsletterMessage // <= 2.2326.x
 );
