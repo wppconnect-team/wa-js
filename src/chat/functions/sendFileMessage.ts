@@ -25,9 +25,8 @@ import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   generateVideoThumbsAndDuration,
   isAnimatedWebp,
-  processRawAudioVideo,
-  processRawMedia,
   processRawSticker,
+  uploadMedia,
 } from '../../whatsapp/functions';
 import {
   defaultSendMessageOptions,
@@ -106,10 +105,6 @@ export interface AudioMessageOptions extends FileMessageOptions {
   waveform?: boolean;
 }
 
-export interface PushToVideoMessageOptions extends FileMessageOptions {
-  type: 'ptv';
-}
-
 export interface DocumentMessageOptions
   extends FileMessageOptions,
     MessageButtonsOptions {
@@ -132,6 +127,7 @@ export interface VideoMessageOptions
     MessageButtonsOptions {
   type: 'video';
   isGif?: boolean;
+  isPtv?: boolean;
 }
 
 /**
@@ -216,7 +212,8 @@ export interface VideoMessageOptions
  *  '[number]@c.us',
  *  'data:application/msword;base64,<a long base64 file...>',
  *  {
- *    type: 'ptv',
+ *    type: 'video',
+ *    isPtv: true,
  *  }
  * );
  * ```
@@ -233,7 +230,6 @@ export async function sendFileMessage(
     | ImageMessageOptions
     | VideoMessageOptions
     | StickerMessageOptions
-    | PushToVideoMessageOptions
 ): Promise<SendMessageReturn> {
   options = {
     ...defaultSendMessageOptions,
@@ -258,7 +254,6 @@ export async function sendFileMessage(
     isPtt?: boolean;
     asDocument?: boolean;
     asGif?: boolean;
-    isPtv?: boolean;
     isAudio?: boolean;
     asSticker?: boolean;
     precomputedFields?: {
@@ -279,8 +274,6 @@ export async function sendFileMessage(
     isViewOnce = options.isViewOnce;
   } else if (options.type === 'video') {
     rawMediaOptions.asGif = options.isGif;
-  } else if (options.type === 'ptv') {
-    rawMediaOptions.isPtv = true;
   } else if (options.type === 'document') {
     rawMediaOptions.asDocument = true;
   } else if (options.type === 'sticker') {
@@ -309,6 +302,12 @@ export async function sendFileMessage(
   }
 
   await mediaPrep.waitForPrep();
+  if ((options as any)?.isPtv) {
+    (mediaPrep as any)._mediaData.type = 'ptv';
+    (mediaPrep as any)._mediaData.fullHeight = 1128;
+    (mediaPrep as any)._mediaData.fullWidth = 1128;
+  }
+  console.log(mediaPrep);
 
   debug(`sending message (${options.type}) with id ${rawMessage.id}`);
   const sendMsgResult = mediaPrep.sendToChat(chat, {
@@ -432,32 +431,13 @@ webpack.onReady(() => {
     return result;
   });
 
-  wrapModuleFunction(processRawMedia, async (func, ...args) => {
+  wrapModuleFunction(uploadMedia, async (func, ...args) => {
     const [data] = args;
-
-    let result = await func(...args);
-    if ((args as any)[1]?.isPtv) {
-      result = await (processRawAudioVideo(
-        data as any,
-        false,
-        null,
-        false,
-        null,
-        data.type(),
-        true
-      ) as any);
+    if ((data as any).mediaType == 'ptv') {
+      (data as any).mediaType = 'video';
+      return await func(data);
+    } else {
+      return await func(...args);
     }
-
-    return result;
-  });
-
-  wrapModuleFunction(processRawAudioVideo, async (func, ...args) => {
-    const [data] = args;
-    const result = await func(...args);
-
-    if (data.type() === 'video/mp4' && args[6]) {
-      result.type = 'ptv';
-    }
-    return result;
   });
 });
