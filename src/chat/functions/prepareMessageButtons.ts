@@ -196,7 +196,7 @@ export function prepareMessageButtons<T extends RawMessage>(
   return message;
 }
 
-webpack.onReady(() => {
+webpack.onFullReady(() => {
   wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
     const [message] = args;
     const r = func(...args);

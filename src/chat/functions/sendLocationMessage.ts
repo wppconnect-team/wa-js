@@ -152,7 +152,7 @@ export async function sendLocationMessage(
   return await sendRawMessage(chatId, rawMessage, options);
 }
 
-webpack.onReady(() => {
+webpack.onFullReady(() => {
   wrapModuleFunction(mediaTypeFromProtobuf, (func, ...args) => {
     const [proto] = args;
     if (proto.locationMessage) {

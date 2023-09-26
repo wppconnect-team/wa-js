@@ -105,7 +105,7 @@ export async function prepareLinkPreview<T extends RawMessage>(
   return message;
 }
 
-webpack.onReady(() => {
+webpack.onFullReady(() => {
   wrapModuleFunction(getABPropConfigValue, (func, ...args) => {
     const [key] = args;
     switch (key) {

@@ -107,7 +107,7 @@ export async function sendListMessage(
   return await sendRawMessage(chatId, message, options);
 }
 
-webpack.onReady(() => {
+webpack.onFullReady(() => {
   wrapModuleFunction(typeAttributeFromProtobuf, (func, ...args) => {
     const [proto] = args;
     if (proto.listMessage) {

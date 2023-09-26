@@ -22,7 +22,7 @@ import {
   typeAttributeFromProtobuf,
 } from '../whatsapp/functions';
 
-webpack.onReady(applyPatch, 1000);
+webpack.onFullReady(applyPatch, 1000);
 
 function applyPatch() {
   wrapModuleFunction(mediaTypeFromProtobuf, (func, ...args) => {

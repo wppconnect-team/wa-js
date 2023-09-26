@@ -386,7 +386,7 @@ function generateWhiteThumb(width: number, height: number, maxSize: number) {
   };
 }
 
-webpack.onReady(() => {
+webpack.onFullReady(() => {
   wrapModuleFunction(generateVideoThumbsAndDuration, async (func, ...args) => {
     const [data] = args;
 

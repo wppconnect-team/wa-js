@@ -20,7 +20,7 @@ import { UserPrefs } from '../whatsapp';
 import { wrapModuleFunction } from '../whatsapp/exportModule';
 import { handleSingleMsg } from '../whatsapp/functions';
 
-webpack.onReady(applyPatch);
+webpack.onFullReady(applyPatch);
 
 function applyPatch() {
   wrapModuleFunction(handleSingleMsg, async (func, ...args) => {
