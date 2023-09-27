@@ -1,5 +1,5 @@
 /*!
- * Copyright 2022 WPPConnect Team
+ * Copyright 2021 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,18 @@
  * limitations under the License.
  */
 
-export { create } from './create';
-export { destroy } from './destroy';
-export { edit } from './edit';
+import { assertGetChat } from '../../assert';
+import { WPPError } from '../../util';
+import { Wid } from '../../whatsapp';
+
+export async function ensureNewsletter(newsletterId: string | Wid) {
+  const newsletterChat = assertGetChat(newsletterId);
+
+  if (!newsletterChat.isNewsletter) {
+    throw new WPPError(
+      'not_a_newsletter',
+      `Chat ${newsletterChat.id._serialized} is not a newsletter`
+    );
+  }
+  return newsletterChat;
+}
