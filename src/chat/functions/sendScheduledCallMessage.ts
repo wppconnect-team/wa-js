@@ -58,6 +58,7 @@ export async function sendScheduledCallMessage(
   options: ScheduledCallMessageOptions
 ): Promise<SendMessageReturn> {
   options = {
+      callType: SCHEDULED_CALL_TYPE.VOICE,
     ...defaultSendMessageOptions,
     ...options,
   };
