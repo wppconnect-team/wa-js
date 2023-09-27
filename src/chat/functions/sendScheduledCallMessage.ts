@@ -36,7 +36,7 @@ export enum SCHEDULED_CALL_TYPE {
 
 export interface ScheduledCallMessageOptions extends SendMessageOptions {
   scheduledTimestampMs: number | string;
-  callType: string | SCHEDULED_CALL_TYPE;
+  callType: "video" | "voice" | SCHEDULED_CALL_TYPE;
   title: string;
 }
 
