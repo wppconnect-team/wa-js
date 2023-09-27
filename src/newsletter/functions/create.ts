@@ -27,6 +27,20 @@ export interface ResultCreateNewsletter {
   description: string | null;
   timestamp: number;
 }
+
+/**
+ * Create a newsletter
+ *
+ * @example
+ * ```javascript
+ * // To edit name
+ * WPP.newsletter.create('Name for your newsletter', {
+ * description: 'Description for that',
+ * picture: '<base64_string',
+ * });
+ * ```
+ * @category Newsletter
+ */
 export async function create(
   name: string,
   opts: { description?: string; picture?: string }

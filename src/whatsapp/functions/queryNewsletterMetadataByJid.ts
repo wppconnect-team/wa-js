@@ -14,28 +14,33 @@
  * limitations under the License.
  */
 
-import { WPPError } from '../../util';
-import { deleteNewsletter } from '../../whatsapp/functions';
+import { exportModule } from '../exportModule';
 
 /**
- * Delete a newsletter
- *
- * @example
- * ```javascript
- * const code = WPP.newsletter.destroy('[newsletter-id]@newsletter');
- * ```
- *
- * @category Newsletter
+ * @whatsapp 657987
  */
-export async function destroy(id: string): Promise<boolean> {
-  if (!id || !id.includes('newsletter'))
-    throw new WPPError(
-      'send_correctly_newsletter_id',
-      'Please, send the correct newsletter ID.'
-    );
-  try {
-    return await deleteNewsletter(id);
-  } catch (error) {
-    return false;
+export declare function queryNewsletterMetadataByJid(
+  jid: string,
+  attributes: {
+    picture?: boolean;
+    subscribers?: boolean;
+    verification?: boolean;
+    description?: boolean;
+    inviteLink?: boolean;
+    name?: boolean;
+    creationTime?: boolean;
+    handle?: boolean;
+    privacy?: boolean;
+    linkedAccounts?: boolean;
+    membership?: boolean;
+    state?: boolean;
   }
-}
+): any;
+
+exportModule(
+  exports,
+  {
+    queryNewsletterMetadataByJid: 'queryNewsletterMetadataByJid',
+  },
+  (m) => m.queryNewsletterMetadataByJid
+);

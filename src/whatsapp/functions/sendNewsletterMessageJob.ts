@@ -27,7 +27,10 @@ export declare function sendNewsletterMessageJob(data: {
 exportModule(
   exports,
   {
-    sendNewsletterMessageJob: 'sendNewsletterMessageJob',
+    sendNewsletterMessageJob: [
+      'sendNewsletterMessageJob',
+      'sendNewsletterMessage', // <= 2.2326.x
+    ],
   },
   (m) => m.sendNewsletterMessageJob || m.sendNewsletterMessage // <= 2.2326.x
 );
