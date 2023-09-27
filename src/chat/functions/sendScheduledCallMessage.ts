@@ -36,7 +36,7 @@ export enum SCHEDULED_CALL_TYPE {
 
 export interface ScheduledCallMessageOptions extends SendMessageOptions {
   scheduledTimestampMs: number | string;
-  callType: "video" | "voice" | SCHEDULED_CALL_TYPE;
+  callType: 'video' | 'voice' | SCHEDULED_CALL_TYPE;
   title: string;
 }
 
@@ -58,7 +58,7 @@ export async function sendScheduledCallMessage(
   options: ScheduledCallMessageOptions
 ): Promise<SendMessageReturn> {
   options = {
-      callType: SCHEDULED_CALL_TYPE.VOICE,
+    ...{ callType: SCHEDULED_CALL_TYPE.VOICE },
     ...defaultSendMessageOptions,
     ...options,
   };
@@ -70,7 +70,7 @@ export async function sendScheduledCallMessage(
     type: 'scheduled_call',
     title: options.title,
     callType: options.callType,
-    scheduledTimestampMs: options.scheduledTimestampMs,
+    scheduledTimestampMs: parseInt(options.scheduledTimestampMs?.toString()),
   };
 
   return await sendRawMessage(chatId, rawMessage, options);
