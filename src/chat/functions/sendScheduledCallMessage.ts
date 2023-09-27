@@ -75,7 +75,7 @@ export async function sendScheduledCallMessage(
   return await sendRawMessage(chatId, rawMessage, options);
 }
 
-webpack.onReady(() => {
+webpack.onFullReady(() => {
   wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
     const [message] = args;
     const r = func(...args);
