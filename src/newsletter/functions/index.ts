@@ -17,3 +17,4 @@
 export { create } from './create';
 export { destroy } from './destroy';
 export { edit } from './edit';
+export { mute } from './mute';
