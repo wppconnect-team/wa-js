@@ -75,6 +75,8 @@ export let webpackRequire: (<T = any>(moduleId: string) => T) & {
  */
 export const fallbackModules: { [key: string]: any } = {};
 
+const waitMainReady = internalEv.waitFor('conn.main_ready');
+
 export function injectLoader(): void {
   if (isInjected) {
     return;
@@ -131,7 +133,7 @@ export function injectLoader(): void {
     if ((window as any).wppForceMainLoad) {
       await new Promise((resolve) => setTimeout(resolve, 5000));
     } else {
-      await internalEv.waitFor('conn.main_ready');
+      await waitMainReady;
     }
 
     // Use sequential file load
