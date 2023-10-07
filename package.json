@@ -74,7 +74,7 @@
     "prettier": "^3.0.3",
     "release-it": "^16.2.1",
     "shx": "^0.3.4",
-    "ts-loader": "^9.4.4",
+    "ts-loader": "^9.5.0",
     "ts-morph": "^20.0.0",
     "ts-node": "^10.9.1",
     "typedoc": "^0.25.1",
