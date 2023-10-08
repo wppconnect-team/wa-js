@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,10 @@ export declare const CatalogStore: collections.CatalogCollection;
  * @whatsapp 669951 >= 2.2222.8
  */
 export declare const ChatStore: collections.ChatCollection;
+/** @whatsapp 19380
+ * @whatsapp 719380 >= 2.2222.8
+ */
+export declare const NewsletterStore: collections.ChatCollection;
 /** @whatsapp 19380
  * @whatsapp 719380 >= 2.2222.8
  */
@@ -133,6 +137,7 @@ const storeNames = [
   'CartStore',
   'CatalogStore',
   'ChatStore',
+  'NewsletterStore',
   'ContactStore',
   'EmojiVariantStore',
   'GroupMetadataStore',
@@ -196,4 +201,12 @@ exportModule(
     ],
   },
   (m) => m.StickerPackCollection
+);
+
+exportModule(
+  exports,
+  {
+    NewsletterStore: 'default.NewsletterCollection',
+  },
+  (m) => m.default.NewsletterCollection
 );

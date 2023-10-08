@@ -14,19 +14,28 @@
  * limitations under the License.
  */
 
-import { assertWid } from '../../assert';
-import { ChatModel, ChatStore, NewsletterStore, Wid } from '../../whatsapp';
+import { WPPError } from '../../util';
+import { deleteNewsletter } from '../../whatsapp/functions';
 
 /**
- * Find a chat by id
+ * Delete a newsletter
  *
- * @category Chat
+ * @example
+ * ```javascript
+ * const code = WPP.newsletter.destroy('[newsletter-id]@newsletter');
+ * ```
+ *
+ * @category Newsletter
  */
-export function get(chatId: string | Wid): ChatModel | undefined {
-  const wid = assertWid(chatId);
-  if (wid.server === 'newsletter') {
-    return NewsletterStore.get(wid);
-  } else {
-    return ChatStore.get(wid);
+export async function destroy(id: string): Promise<boolean> {
+  if (!id || !id.includes('newsletter'))
+    throw new WPPError(
+      'send_correctly_newsletter_id',
+      'Please, send the correct newsletter ID.'
+    );
+  try {
+    return await deleteNewsletter(id);
+  } catch (error) {
+    return false;
   }
 }

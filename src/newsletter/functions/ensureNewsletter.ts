@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2021 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-import { assertWid } from '../../assert';
-import { ChatModel, ChatStore, NewsletterStore, Wid } from '../../whatsapp';
+import { assertGetChat } from '../../assert';
+import { WPPError } from '../../util';
+import { Wid } from '../../whatsapp';
 
-/**
- * Find a chat by id
- *
- * @category Chat
- */
-export function get(chatId: string | Wid): ChatModel | undefined {
-  const wid = assertWid(chatId);
-  if (wid.server === 'newsletter') {
-    return NewsletterStore.get(wid);
-  } else {
-    return ChatStore.get(wid);
+export async function ensureNewsletter(newsletterId: string | Wid) {
+  const newsletterChat = assertGetChat(newsletterId);
+
+  if (!newsletterChat.isNewsletter) {
+    throw new WPPError(
+      'not_a_newsletter',
+      `Chat ${newsletterChat.id._serialized} is not a newsletter`
+    );
   }
+  return newsletterChat;
 }

@@ -17,9 +17,16 @@
 import Debug from 'debug';
 
 import { assertFindChat, assertGetChat } from '../../assert';
+import { WPPError } from '../../util';
+import { MsgModel } from '../../whatsapp';
+import { ACK } from '../../whatsapp/enums';
 import {
   addAndSendMessageEdit,
   addAndSendMsgToChat,
+  addNewsletterMsgsRecords,
+  msgDataFromMsgModel,
+  sendNewsletterMessageJob,
+  updateNewsletterMsgRecord,
 } from '../../whatsapp/functions';
 import {
   defaultSendMessageOptions,
@@ -60,7 +67,32 @@ export async function sendRawMessage(
 
   debug(`sending message (${rawMessage.type}) with id ${rawMessage.id}`);
   let result = null as any;
-  if (rawMessage.type === 'protocol' && rawMessage.subtype === 'message_edit') {
+  if (chat?.isNewsletter) {
+    if (rawMessage.type !== ('chat' || 'image' || 'video'))
+      throw new WPPError(
+        'type_not_valid_for_newsletter',
+        'Please, send a valid type for send message to newsletter. Valdi types: "chat", "image", "video"'
+      );
+    const msg = new MsgModel(rawMessage as any);
+    await addNewsletterMsgsRecords([await msgDataFromMsgModel(msg)]);
+    const resultNewsletter = await sendNewsletterMessageJob({
+      msgData: rawMessage,
+      newsletterJid: chat.id.toString(),
+      type: rawMessage.type == 'chat' ? 'text' : 'media',
+    });
+    chat.msgs.add(msg);
+
+    if (resultNewsletter.success) {
+      msg.t = resultNewsletter.ack.t;
+      msg.serverId = resultNewsletter.serverId;
+    }
+    msg.updateAck(ACK.SENT, true);
+    await updateNewsletterMsgRecord(msg);
+    result = [msg, 'OK'];
+  } else if (
+    rawMessage.type === 'protocol' &&
+    rawMessage.subtype === 'message_edit'
+  ) {
     const msg = await getMessageById(rawMessage.protocolMessageKey);
     await addAndSendMessageEdit(msg, rawMessage);
     result = [await getMessageById(rawMessage.protocolMessageKey), null];
@@ -70,7 +102,6 @@ export async function sendRawMessage(
   debug(`message ${rawMessage.id} queued`);
 
   const message = await result[0];
-
   if (options.waitForAck) {
     debug(`waiting ack for ${rawMessage.id}`);
 

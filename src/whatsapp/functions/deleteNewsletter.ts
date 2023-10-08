@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-import { assertWid } from '../../assert';
-import { ChatModel, ChatStore, NewsletterStore, Wid } from '../../whatsapp';
+import { exportModule } from '../exportModule';
 
 /**
- * Find a chat by id
- *
- * @category Chat
+ * @whatsapp 698436
  */
-export function get(chatId: string | Wid): ChatModel | undefined {
-  const wid = assertWid(chatId);
-  if (wid.server === 'newsletter') {
-    return NewsletterStore.get(wid);
-  } else {
-    return ChatStore.get(wid);
-  }
-}
+export declare function deleteNewsletter(id: string): any;
+
+exportModule(
+  exports,
+  {
+    deleteNewsletter: 'deleteNewsletter',
+  },
+  (m) => m.deleteNewsletter
+);

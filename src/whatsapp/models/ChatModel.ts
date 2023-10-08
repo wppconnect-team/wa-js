@@ -90,6 +90,7 @@ interface Derived {
   isPSA: boolean;
   isGroup: boolean;
   isBroadcast: boolean;
+  isNewsletter: boolean;
   canUnread: boolean;
   hasUnread: boolean;
   optimisticUnreadCount?: any;

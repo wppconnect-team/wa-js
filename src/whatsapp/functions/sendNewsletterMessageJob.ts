@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-import { assertWid } from '../../assert';
-import { ChatModel, ChatStore, NewsletterStore, Wid } from '../../whatsapp';
+import { exportModule } from '../exportModule';
 
-/**
- * Find a chat by id
- *
- * @category Chat
+/** @whatsapp 397995
  */
-export function get(chatId: string | Wid): ChatModel | undefined {
-  const wid = assertWid(chatId);
-  if (wid.server === 'newsletter') {
-    return NewsletterStore.get(wid);
-  } else {
-    return ChatStore.get(wid);
-  }
-}
+export declare function sendNewsletterMessageJob(data: {
+  msgData: any;
+  newsletterJid: string;
+  type: string;
+}): Promise<{ ack: { t: number }; serverId: number; success: boolean }>;
+
+exportModule(
+  exports,
+  {
+    sendNewsletterMessageJob: [
+      'sendNewsletterMessageJob',
+      'sendNewsletterMessage', // <= 2.2326.x
+    ],
+  },
+  (m) => m.sendNewsletterMessageJob || m.sendNewsletterMessage // <= 2.2326.x
+);
