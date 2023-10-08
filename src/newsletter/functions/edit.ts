@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { convertToFile, convertURLToJPEG } from '../../util';
+import { blobToBase64, convertToFile, downloadImage } from '../../util';
 import {
   editNewsletterMetadataAction,
   queryNewsletterMetadataByJid,
@@ -68,11 +68,11 @@ export async function edit(
     picture?: string;
   }
 ): Promise<ResultCreateNewsletter> {
-  let pic = undefined;
+  let pic: string | undefined = undefined;
   if (opts?.picture) {
-    pic = await convertToFile(opts.picture);
-    pic = URL.createObjectURL(pic);
-    pic = await convertURLToJPEG(pic);
+    const file = await convertToFile(opts.picture);
+    pic = await blobToBase64(file);
+    ({ data: pic } = await downloadImage(pic, 'image/jpeg'));
   }
 
   await editNewsletterMetadataAction(

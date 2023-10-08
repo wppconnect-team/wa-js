@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { convertToFile, convertURLToJPEG } from '../../util';
+import { blobToBase64, convertToFile, downloadImage } from '../../util';
 import { createNewsletterQuery } from '../../whatsapp/functions';
 
 export interface ResultCreateNewsletter {
@@ -47,9 +47,9 @@ export async function create(
 ): Promise<ResultCreateNewsletter> {
   let pic = undefined;
   if (opts?.picture) {
-    pic = await convertToFile(opts.picture);
-    pic = URL.createObjectURL(pic);
-    pic = await convertURLToJPEG(pic);
+    const file = await convertToFile(opts.picture);
+    pic = await blobToBase64(file);
+    ({ data: pic } = await downloadImage(pic, 'image/jpeg'));
   }
   const result = await createNewsletterQuery({
     name: name,

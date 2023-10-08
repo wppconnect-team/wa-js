@@ -17,7 +17,6 @@
 export * from './blobToArrayBuffer';
 export * from './blobToBase64';
 export * from './convertToFile';
-export * from './convertURLToJPEG';
 export * from './createWid';
 export * from './downloadImage';
 export * from './errors';
