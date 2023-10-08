@@ -33,6 +33,7 @@ export * from './editBusinessProfile';
 export * from './encodeMaybeMediaType';
 export * from './encryptAndSendGroupMsg';
 export * from './encryptAndSendMsg';
+export * from './encryptAndSendSenderKeyMsg';
 export * from './encryptMsgProtobuf';
 export * from './fetchLinkPreview';
 export * from './findChat';

@@ -21,8 +21,8 @@ import { functions, MsgKey, UserPrefs } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   createMsgProtobuf,
-  encryptAndSendGroupMsg,
   encryptAndSendMsg,
+  encryptAndSendSenderKeyMsg,
   randomHex,
 } from '../../whatsapp/functions';
 import { defaultSendStatusOptions, updateParticipants } from '..';
@@ -90,13 +90,15 @@ webpack.onInjected(() => {
 
   // Force to send as group for broadcast list
   wrapModuleFunction(encryptAndSendMsg, async (func, ...args) => {
-    const [msg] = args;
+    const [, data] = args;
 
     try {
       return await func(...args);
     } catch (error: any) {
+      const to = data.to;
+
       if (
-        !msg.to?.isStatusV3() ||
+        !to?.isStatusV3() ||
         error.message !== '[messaging] unsupported remote jid type'
       ) {
         throw error;
@@ -106,30 +108,28 @@ webpack.onInjected(() => {
         await updateParticipants();
       }
 
-      const participants = await functions.getParticipants(msg.to);
+      const participants = await functions.getParticipants(to);
 
       if (!participants || participants.participants.length === 0) {
         throw new Error('empty participants for status@broadcast');
       }
 
       await functions.markForgetSenderKey(
-        msg.to,
+        to,
         participants.participants.map(assertWid)
       );
 
-      let c;
-      if (functions.getAsMms(msg)) {
-        const t = msg.isUnsentPhoneMsg();
-        c = t ? { type: msg.type } : msg.avParams();
-      }
+      args[1].to.server = 'g.us';
 
-      if (!msg.author) {
-        msg.author = UserPrefs.getMaybeMeUser();
-      }
-
-      const proto = createMsgProtobuf(msg, c || {});
-
-      return await encryptAndSendGroupMsg(msg, proto);
+      return await func(...args);
     }
+  });
+
+  wrapModuleFunction(encryptAndSendSenderKeyMsg, async (func, ...args) => {
+    if (args[1].to.user === 'status') {
+      args[1].to.server = 'broadcast';
+    }
+
+    return await func(...args);
   });
 });
