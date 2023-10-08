@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>ProfilePicThumbStore | @wppconnect/wa-js - v2.26.1</title><meta name="description" content="Documentation for @wppconnect/wa-js"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script defer src="../assets/main.js"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>mute | @wppconnect/wa-js - v2.26.1</title><meta name="description" content="Documentation for @wppconnect/wa-js"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script defer src="../assets/main.js"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
 <div class="tsd-toolbar-contents container">
 <div class="table-cell" id="tsd-search" data-base="..">
 <div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
@@ -13,17 +13,33 @@
 <div class="tsd-page-title">
 <ul class="tsd-breadcrumb">
 <li><a href="../modules.html">@wppconnect/wa-js</a></li>
-<li><a href="../modules/whatsapp.html">whatsapp</a></li>
-<li><a href="whatsapp.ProfilePicThumbStore.html">ProfilePicThumbStore</a></li></ul>
-<h1>Variable ProfilePicThumbStore<code class="tsd-tag ts-flagConst">Const</code> </h1></div>
-<div class="tsd-signature"><span class="tsd-kind-variable">Profile<wbr/>Pic<wbr/>Thumb<wbr/>Store</span><span class="tsd-signature-symbol">:</span> <a href="../classes/whatsapp.ProfilePicThumbCollection.html" class="tsd-signature-type tsd-kind-class">ProfilePicThumbCollection</a></div>
+<li><a href="../modules/newsletter.html">newsletter</a></li>
+<li><a href="newsletter.mute.html">mute</a></li></ul>
+<h1>Function mute</h1></div>
+<section class="tsd-panel">
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="mute"><span class="tsd-kind-call-signature">mute</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">newsletterId</span>, <span class="tsd-kind-parameter">value</span><span class="tsd-signature-symbol">?</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../classes/whatsapp.ChatModel.html" class="tsd-signature-type tsd-kind-class">ChatModel</a><span class="tsd-signature-symbol">&gt;</span><a href="#mute" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Mute and unmute a newsletter</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">newsletterId</span>: <span class="tsd-signature-type">string</span></h5></li>
+<li>
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-parameter">value</span>: <span class="tsd-signature-type">boolean</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><a href="../classes/whatsapp.ChatModel.html" class="tsd-signature-type tsd-kind-class">ChatModel</a><span class="tsd-signature-symbol">&gt;</span></h4>
 <div class="tsd-comment tsd-typography">
-<h4>Whatsapp</h4><p>82039</p>
-
-<h4>Whatsapp</h4><p>582039 &gt;= 2.2222.8</p>
+<h4>Example</h4><p>// Mute</p>
+<pre><code class="language-javascript"><span class="hl-5">WPP</span><span class="hl-2">.</span><span class="hl-6">newsletter</span><span class="hl-2">.</span><span class="hl-1">mute</span><span class="hl-2">(</span><span class="hl-3">&#39;[newsletter-id]@newsletter&#39;</span><span class="hl-2">, </span><span class="hl-4">true</span><span class="hl-2">);</span>
+</code><button>Copy</button></pre>
+<p>// Unmute</p>
+<pre><code class="language-javascript"><span class="hl-5">WPP</span><span class="hl-2">.</span><span class="hl-6">newsletter</span><span class="hl-2">.</span><span class="hl-1">mute</span><span class="hl-2">(</span><span class="hl-3">&#39;[newsletter-id]@newsletter&#39;</span><span class="hl-2">, </span><span class="hl-4">false</span><span class="hl-2">);</span>
+</code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/whatsapp/stores.ts#L92">src/whatsapp/stores.ts:92</a></li></ul></aside></div>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/newsletter/functions/mute.ts#L37">src/newsletter/functions/mute.ts:37</a></li></ul></aside></li></ul></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
