@@ -22,12 +22,18 @@ import { getMessageById } from '../functions';
 
 webpack.onFullReady(register);
 
+const now = Date.now();
+
 function register() {
   wrapModuleFunction(upsertVotes, async (func, ...args) => {
     const [data] = args;
 
     for (const d of data) {
       try {
+        if (d.senderTimestampMs < now) {
+          continue;
+        }
+
         const msg = await getMessageById(d.parentMsgKey);
         const selectedOptions: any = [];
 
