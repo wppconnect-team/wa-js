@@ -23,12 +23,18 @@ import { createOrUpdateReactions } from '../../whatsapp/functions';
 
 webpack.onFullReady(register);
 
+const now = Date.now();
+
 function register() {
   wrapModuleFunction(createOrUpdateReactions, (func, ...args) => {
     const [data] = args;
 
     for (const d of data) {
       try {
+        if (d.timestamp < now) {
+          continue;
+        }
+
         internalEv.emitAsync('chat.new_reaction', {
           id: MsgKey.fromString(d.msgKey),
           orphan: d.orphan,
