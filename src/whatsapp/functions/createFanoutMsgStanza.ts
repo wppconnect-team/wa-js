@@ -22,6 +22,7 @@ import { exportModule } from '../exportModule';
  */
 export declare function createFanoutMsgStanza(
   msg: MsgModel,
+  data: any,
   proto: { [key: string]: any },
   devices: Wid[],
   options: { [key: string]: any }
