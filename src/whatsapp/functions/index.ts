@@ -40,6 +40,7 @@ export * from './encryptAndSendSenderKeyMsg';
 export * from './encryptMsgProtobuf';
 export * from './fetchLinkPreview';
 export * from './findChat';
+export * from './findCommonGroups';
 export * from './findFirstWebLink';
 export * from './frontendFireAndForget';
 export * from './generateVideoThumbsAndDuration';
