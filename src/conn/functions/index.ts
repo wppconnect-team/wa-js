@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+export { genLinkDeviceCodeForPhoneNumber } from './genLinkDeviceCodeForPhoneNumber';
 export { getAuthCode } from './getAuthCode';
 export {
   getHistorySyncProgress,
