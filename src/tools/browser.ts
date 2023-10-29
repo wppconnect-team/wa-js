@@ -93,7 +93,6 @@ export async function preparePage(page: playwright.Page) {
     setInterval(() => {
       window.onerror = console.error;
       window.onunhandledrejection = console.error;
-      (window as any).wppForceMainLoad = true;
     }, 500);
   });
 

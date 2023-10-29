@@ -40,6 +40,12 @@ dirs.push(
 async function start() {
   const { browser, page } = await getPage();
 
+  page.addInitScript(() => {
+    setInterval(() => {
+      (window as any).wppForceMainLoad = true;
+    }, 500);
+  });
+
   await page.waitForFunction(() => window.WPP?.isFullReady, null, {
     timeout: 0,
   });
