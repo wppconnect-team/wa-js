@@ -94,7 +94,7 @@ export async function sendListMessage(
     description: options.description || ' ',
     title: options.title,
     footerText: options.footer,
-    listType: 2,
+    listType: 1,
     sections,
   };
 
