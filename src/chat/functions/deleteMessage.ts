@@ -33,13 +33,13 @@ export interface DeleteMessageReturn {
  * @example
  * ```javascript
  * // Delete a message
- * WPP.chat.deleteMessage('[number]@callback.us', 'msgid');
+ * WPP.chat.deleteMessage('[number]@c.us', 'msgid');
  * // Delete a list of messages
- * WPP.chat.deleteMessage('[number]@callback.us', ['msgid1', 'msgid2]);
+ * WPP.chat.deleteMessage('[number]@c.us', ['msgid1', 'msgid2]);
  * // Delete a message and delete media
- * WPP.chat.deleteMessage('[number]@callback.us', 'msgid', true);
+ * WPP.chat.deleteMessage('[number]@c.us', 'msgid', true);
  * // Revoke a message
- * WPP.chat.deleteMessage('[number]@callback.us', 'msgid', true, true);
+ * WPP.chat.deleteMessage('[number]@c.us', 'msgid', true, true);
  * ```
  *
  * @category Message
