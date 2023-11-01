@@ -75,10 +75,17 @@ export {
   LocationMessageOptions,
   sendLocationMessage,
 } from './sendLocationMessage';
-export { sendOrderMessage } from './sendOrderMessage';
+export {
+  OrderItems,
+  OrderMessageOptions,
+  sendOrderMessage,
+} from './sendOrderMessage';
 export { sendRawMessage } from './sendRawMessage';
 export { sendReactionToMessage } from './sendReactionToMessage';
-export { sendScheduledCallMessage } from './sendScheduledCallMessage';
+export {
+  ScheduledCallMessageOptions,
+  sendScheduledCallMessage,
+} from './sendScheduledCallMessage';
 export { sendTextMessage, TextMessageOptions } from './sendTextMessage';
 export {
   sendVCardContactMessage,
