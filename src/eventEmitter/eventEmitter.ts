@@ -55,8 +55,8 @@ export interface OnOptions {
 export type ListenerType<T> = [T] extends [(...args: infer U) => any]
   ? U
   : [T] extends [void]
-  ? []
-  : [T];
+    ? []
+    : [T];
 
 export declare class EventEmitter<EventData> {
   constructor(options?: ConstructorOptions);

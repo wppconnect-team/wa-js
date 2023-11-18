@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as webpack from '../../webpack';
 import { exportModule } from '../exportModule';
 import { MsgModel } from '../models';
 
