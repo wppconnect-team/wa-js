@@ -74,6 +74,7 @@ export * from './isAuthenticated';
 export * from './isRegistered';
 export * from './isUnreadTypeMsg';
 export * from './joinGroupViaInvite';
+export * from './keepMessage';
 export * from './markSeen';
 export * from './mediaTypeFromProtobuf';
 export * from './membershipApprovalRequestAction';
