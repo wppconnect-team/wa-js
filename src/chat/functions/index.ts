@@ -37,6 +37,7 @@ export { getQuotedMsg } from './getQuotedMsg';
 export { getQuotedMsgKey } from './getQuotedMsgKey';
 export { getReactions } from './getReactions';
 export { getVotes } from './getVotes';
+export { keepMessage } from './keepMessage';
 export { ChatListOptions, list } from './list';
 export { markIsComposing } from './markIsComposing';
 export { markIsPaused } from './markIsPaused';

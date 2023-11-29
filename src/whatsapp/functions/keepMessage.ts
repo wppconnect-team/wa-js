@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,24 @@
  * limitations under the License.
  */
 
-export * from './ACK';
-export * from './CALL_STATES';
-export * from './GROUP_SETTING_TYPE';
-export * from './KIC_ENTRY_POINT_TYPE';
-export * from './LogoutReason';
-export * from './MSG_TYPE';
-export * from './OUTWARD_TYPES';
-export * from './SendMsgResult';
+import { MsgModel } from '..';
+import { exportModule } from '../exportModule';
+
+/**
+ * @whatsapp 170235
+ */
+export declare function keepMessage(msg: MsgModel, t: number): Promise<any>;
+export declare function undoKeepMessage(
+  msg: MsgModel,
+  options: { deleteExpired: boolean },
+  n: number
+): Promise<any>;
+
+exportModule(
+  exports,
+  {
+    keepMessage: 'keepMessage',
+    undoKeepMessage: 'undoKeepMessage',
+  },
+  (m) => m.keepMessage
+);
