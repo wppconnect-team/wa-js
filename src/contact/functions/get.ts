@@ -14,10 +14,24 @@
  * limitations under the License.
  */
 
-export { get } from './get';
-export { getBusinessProfile } from './getBusinessProfile';
-export { getCommonGroups } from './getCommonGroups';
-export { getProfilePictureUrl } from './getProfilePictureUrl';
-export { getStatus } from './getStatus';
-export { ContactListOptions, list } from './list';
-export { queryExists } from './queryExists';
+import { assertWid } from '../../assert';
+import { ContactModel, ContactStore, Wid } from '../../whatsapp';
+
+/**
+ * Get a contact by id
+ *
+ * @example
+ * ```javascript
+ * await WPP.contact.get('[number]@c.us');
+ * ```
+ *
+ * @category Contact
+ */
+
+export async function get(
+  contactId: string | Wid
+): Promise<ContactModel | undefined> {
+  const wid = assertWid(contactId);
+
+  return ContactStore.get(wid);
+}
