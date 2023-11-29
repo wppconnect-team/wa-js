@@ -42,7 +42,6 @@ export async function keepMessage(
   value = true
 ): Promise<MsgModel> {
   const msg = await getMessageById(msgId);
-  //const chat = get(msg.id.remote) as unknown as ContactModel;
   if (!(await iAmAdmin(msg.id.remote))) {
     throw new WPPError('you_not_group_admin', 'You is not a group admin');
   } else if (msg.isExpired()) {
