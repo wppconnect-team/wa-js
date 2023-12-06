@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+import { injectFallbackModule } from '../../webpack';
 import { exportModule } from '../exportModule';
 import { ChatModel, MsgModel } from '../models';
+import { ChatStore } from '../stores';
 
 /** @whatsapp 69951
  * @whatsapp 450192 >= 2.2353.0
@@ -30,4 +32,9 @@ exportModule(
   exports,
   { forwardMessagesToChats: 'forwardMessagesToChats' },
   (m) => m.forwardMessagesToChats
+);
+
+injectFallbackModule(
+  'forwardMessagesToChats',
+  ChatStore.forwardMessagesToChats
 );
