@@ -28,6 +28,6 @@ export declare function forwardMessagesToChats(
 
 exportModule(
   exports,
-  { ForwardMessages: 'forwardMessagesToChats' },
+  { forwardMessagesToChats: 'forwardMessagesToChats' },
   (m) => m.forwardMessagesToChats
 );
