@@ -34,7 +34,6 @@ exportModule(
   (m) => m.forwardMessagesToChats
 );
 
-injectFallbackModule(
-  'forwardMessagesToChats',
-  ChatStore.forwardMessagesToChats
-);
+injectFallbackModule('forwardMessagesToChats', {
+  forwardMessagesToChats: ChatStore.forwardMessagesToChats,
+});
