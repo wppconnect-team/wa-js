@@ -15,7 +15,8 @@
  */
 
 import { assertFindChat } from '../../assert';
-import { ChatStore, MsgKey, Wid } from '../../whatsapp';
+import { MsgKey, Wid } from '../../whatsapp';
+import { forwardMessagesToChats } from '../../whatsapp/functions';
 import { getMessageById } from '..';
 
 export interface ForwardMessagesOptions {
@@ -42,7 +43,7 @@ export async function forwardMessage(
   const chat = await assertFindChat(toChatId);
 
   const msg = await getMessageById(msgId);
-  return await ChatStore.forwardMessagesToChats(
+  return await forwardMessagesToChats(
     [msg],
     [chat],
     options.displayCaptionText
