@@ -42,6 +42,7 @@ export * from './fetchLinkPreview';
 export * from './findChat';
 export * from './findCommonGroups';
 export * from './findFirstWebLink';
+export * from './forwardMessagesToChats';
 export * from './frontendFireAndForget';
 export * from './generateVideoThumbsAndDuration';
 export * from './genLinkDeviceCodeForPhoneNumber';
