@@ -51,7 +51,7 @@
     "@types/shelljs": "^0.8.15",
     "@typescript-eslint/eslint-plugin": "^6.13.2",
     "@typescript-eslint/parser": "^6.13.2",
-    "@wppconnect/wa-version": "^1.2.162",
+    "@wppconnect/wa-version": "^1.2.163",
     "buffer": "^6.0.3",
     "compare-versions": "^6.1.0",
     "compressorjs": "^1.2.1",

@@ -35,5 +35,10 @@ exportModule(
 );
 
 injectFallbackModule('forwardMessagesToChats', {
-  forwardMessagesToChats: ChatStore.forwardMessagesToChats,
+  forwardMessagesToChats: (
+    msgs: MsgModel[],
+    chats: ChatModel[],
+    displayCaptionText?: boolean
+  ): Promise<boolean> =>
+    ChatStore.forwardMessagesToChats(msgs, chats, displayCaptionText),
 });
