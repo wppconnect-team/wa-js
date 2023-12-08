@@ -20,9 +20,11 @@ import * as webpack from '../../webpack';
 import { functions, MsgKey, UserPrefs } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
+  CHAT_JID,
   createMsgProtobuf,
   encryptAndSendMsg,
   encryptAndSendSenderKeyMsg,
+  GROUP_JID,
   randomHex,
 } from '../../whatsapp/functions';
 import { defaultSendStatusOptions, updateParticipants } from '..';
@@ -131,5 +133,11 @@ webpack.onInjected(() => {
     }
 
     return await func(...args);
+  });
+
+  wrapModuleFunction(GROUP_JID, async (func, ...args) => {
+    if (args[0].toString().includes('broadcast')) {
+      return await CHAT_JID(...args);
+    }
   });
 });
