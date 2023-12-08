@@ -139,5 +139,6 @@ webpack.onInjected(() => {
     if (args[0].toString().includes('broadcast')) {
       return await CHAT_JID(...args);
     }
+    return await func(...args);
   });
 });
