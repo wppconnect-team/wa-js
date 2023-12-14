@@ -44,12 +44,9 @@ export async function editProduct(
   params: editProductParams
 ): Promise<ProductModel> {
   const produto = await assertGetProduct(productId);
-  produto.name = params.name;
-  produto.imageCdnUrl = params.image;
-  produto.description = params.description;
-  produto.priceAmount1000 = params.price;
-  produto.isHidden = params.isHidden;
-  produto.url = params.url;
-  produto.retailerId = params.retailerId;
-  return await EditProduct(produto);
+  Object.keys(params).forEach(
+    (key) => (params as any)[key] === undefined && delete (params as any)[key]
+  );
+  const editedProduct = Object.assign(produto, params);
+  return await EditProduct(editedProduct);
 }
