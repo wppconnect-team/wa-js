@@ -20,8 +20,8 @@ import { Wid } from '../misc';
 /**
  * @whatsapp 355813
  */
-export declare function GROUP_JID(jid: Wid): Promise<any>;
-export declare function CHAT_JID(jid: Wid): Promise<any>;
+export declare function GROUP_JID(jid: Wid): any;
+export declare function CHAT_JID(jid: Wid): any;
 
 exportModule(
   exports,
