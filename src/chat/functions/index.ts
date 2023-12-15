@@ -71,6 +71,10 @@ export {
   StickerMessageOptions,
   VideoMessageOptions,
 } from './sendFileMessage';
+export {
+  GroupInviteMessage,
+  sendGroupInviteMessage,
+} from './sendGroupInviteMessage';
 export { ListMessageOptions, sendListMessage } from './sendListMessage';
 export {
   LocationMessageOptions,
