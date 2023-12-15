@@ -135,10 +135,10 @@ webpack.onInjected(() => {
     return await func(...args);
   });
 
-  wrapModuleFunction(GROUP_JID, async (func, ...args) => {
+  wrapModuleFunction(GROUP_JID, (func, ...args) => {
     if (args[0].toString().includes('broadcast')) {
-      return await CHAT_JID(...args);
+      return CHAT_JID(...args);
     }
-    return await func(...args);
+    return func(...args);
   });
 });
