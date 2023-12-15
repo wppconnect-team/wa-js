@@ -66,6 +66,7 @@ export * from './getReactions';
 export * from './getSearchContext';
 export * from './getVotes';
 export * from './getWhatsAppWebExternalBetaJoinedIdb';
+export * from './GROUP_JID';
 export * from './groupParticipants';
 export * from './handleAck';
 export * from './handleSingleMsg';
