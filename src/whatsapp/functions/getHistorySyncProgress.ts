@@ -25,7 +25,12 @@ export declare function getHistorySyncProgress(): HistorySyncProgressModel;
 exportModule(
   exports,
   {
-    getHistorySyncProgress: 'getHistorySyncProgress',
+    getHistorySyncProgress: [
+      'getHistorySyncProgressModel', // @whatsapp >= 2.2402.2
+      'getHistorySyncProgress',
+    ],
   },
-  (m) => m.getHistorySyncProgress && !m.getHistorySyncLogDetailsString
+  (m) =>
+    m.getHistorySyncProgressModel || // @whatsapp >= 2.2402.2
+    (m.getHistorySyncProgress && !m.getHistorySyncLogDetailsString)
 );
