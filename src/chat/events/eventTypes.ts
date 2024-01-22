@@ -75,6 +75,16 @@ export interface ChatEventTypes {
      */
     ids: MsgKey[];
   };
+
+  /**
+   * On Message edit
+   */
+  'chat.msg_edited': {
+    chat: Wid;
+    id: string;
+    msg: MsgModel;
+  };
+
   'chat.live_location_start': {
     id: Wid;
     msgId: MsgKey;
