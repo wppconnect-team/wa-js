@@ -16,6 +16,7 @@
 
 import { assertColor } from '../../assert';
 import { LabelModel, LabelStore } from '../../whatsapp';
+import { colorIndexToHex } from '../../whatsapp/functions';
 import { Label } from '..';
 
 export async function getAllLabels(): Promise<Label[]> {
@@ -26,7 +27,8 @@ export async function getAllLabels(): Promise<Label[]> {
       name: e.name!,
       color: e.hexColor ? assertColor(e.hexColor) : null,
       count: e.count || 0,
-      hexColor: e.hexColor,
+      hexColor: colorIndexToHex(e.colorIndex!),
+      colorIndex: e.colorIndex!,
     };
   });
 }
