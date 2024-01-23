@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-import { assertIsBusiness } from '../../assert';
-import { WPPError } from '../../util';
-import { getAllLabelColors } from '../../whatsapp/functions';
+import { exportModule } from '../exportModule';
 
 /**
- * Returns an array of color palette in hex code
+ * @whatsapp 885910
  */
-export async function getLabelColorPalette(): Promise<string[]> {
-  assertIsBusiness();
+export declare function colorIndexToHex(index: number): string;
+export declare function getAllLabelColors(): string[];
 
-  const colorPalette = getAllLabelColors();
-
-  if (!colorPalette) {
-    throw new WPPError('canot_get_color_palette', `Can't get color palette`);
-  }
-
-  return colorPalette;
-}
+exportModule(
+  exports,
+  {
+    colorIndexToHex: 'colorIndexToHex',
+    getAllLabelColors: 'getAllLabelColors',
+  },
+  (m) => m.colorIndexToHex && m.getAllLabelColors
+);
