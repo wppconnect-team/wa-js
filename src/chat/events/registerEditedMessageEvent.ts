@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-import './registerAckMessageEvent';
-import './registerActiveChatEvent';
-import './registerLiveLocationUpdateEvent';
-import './registerNewMessageEvent';
-import './registerPollEvent';
-import './registerPresenceChange';
-import './registerReactionsEvent';
-import './registerRevokeMessageEvent';
-import './registerLabelEvent';
-import './registerEditedMessageEvent';
+import { internalEv } from '../../eventEmitter';
+import * as webpack from '../../webpack';
+import { MsgModel, MsgStore } from '../../whatsapp';
+
+webpack.onFullReady(registerAckMessageEvent);
+
+function registerAckMessageEvent() {
+  MsgStore.on('change:latestEditMsgKey', (msg: MsgModel) => {
+    queueMicrotask(() => {
+      internalEv.emit('chat.msg_edited', {
+        chat: msg.to!,
+        id: msg.id.toString(),
+        msg: msg,
+      });
+    });
+  });
+}
