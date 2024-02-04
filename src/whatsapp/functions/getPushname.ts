@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,17 @@
  * limitations under the License.
  */
 
-export { editBusinessProfile } from './editBusinessProfile';
-export { getMyProfileName } from './getMyProfileName';
-export { getMyStatus } from './getMyStatus';
-export { isBusiness } from './isBusiness';
-export { removeMyProfilePicture } from './removeMyProfilePicture';
-export { setMyProfileName } from './setMyProfileName';
-export { setMyProfilePicture } from './setMyProfilePicture';
-export { setMyStatus } from './setMyStatus';
+import { exportModule } from '../exportModule';
+
+/**
+ * @whatsapp 135963 >= 2.2310.5
+ */
+export declare function getPushname(): string;
+
+exportModule(
+  exports,
+  {
+    getPushname: 'getPushname',
+  },
+  (m) => m.getPushname && m.setBrowserId
+);

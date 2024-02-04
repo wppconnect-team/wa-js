@@ -14,11 +14,19 @@
  * limitations under the License.
  */
 
-export { editBusinessProfile } from './editBusinessProfile';
-export { getMyProfileName } from './getMyProfileName';
-export { getMyStatus } from './getMyStatus';
-export { isBusiness } from './isBusiness';
-export { removeMyProfilePicture } from './removeMyProfilePicture';
-export { setMyProfileName } from './setMyProfileName';
-export { setMyProfilePicture } from './setMyProfilePicture';
-export { setMyStatus } from './setMyStatus';
+import { functions } from '../../whatsapp';
+
+/**
+ * Get your current profile name
+ *
+ * @example
+ * ```javascript
+ * const myProfileName = WPP.profile.getMyProfileName();
+ * ```
+ *
+ * @category Profile
+ */
+
+export function getMyProfileName() {
+  return functions.getPushname();
+}

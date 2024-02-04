@@ -61,6 +61,7 @@ export * from './getMembershipApprovalRequests';
 export * from './getNumChatsPinned';
 export * from './getOrderInfo';
 export * from './getParticipants';
+export * from './getPushname';
 export * from './getQuotedMsgObj';
 export * from './getReactions';
 export * from './getSearchContext';
