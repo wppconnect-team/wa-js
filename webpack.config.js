@@ -25,7 +25,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     library: {
       name: 'WPP',
-      type: 'umd',
+      type: 'global',
     },
   },
   plugins: [

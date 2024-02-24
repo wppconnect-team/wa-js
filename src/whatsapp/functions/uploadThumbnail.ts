@@ -48,6 +48,9 @@ exportModule(
     uploadThumbnail: 'default',
   },
   (m, id) => {
+    if (id === 'WAWebMediaUploadMmsThumbnail') {
+      return true;
+    }
     const source: string = webpack.moduleSource(id);
     return (
       source.includes('thumbnail') &&

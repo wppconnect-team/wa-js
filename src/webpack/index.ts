@@ -23,6 +23,11 @@ const debug = Debug('WA-JS:webpack');
 /**
  * Is setted true when the loader is injected
  */
+export let loaderType: 'meta' | 'unknown' | 'webpack' = 'unknown';
+
+/**
+ * Is setted true when the loader is injected
+ */
 export let isInjected = false;
 
 /**
@@ -55,6 +60,14 @@ export function onFullReady(listener: () => void, delay = 0): void {
 
 export type SearchModuleCondition = (module: any, moduleId: string) => boolean;
 
+export const __debug = () => {
+  const global = (self || window) as any;
+
+  return global.require('__debug') as {
+    modulesMap: { [key: string]: any };
+  };
+};
+
 export let webpackRequire: (<T = any>(moduleId: string) => T) & {
   /**
    * module list
@@ -75,6 +88,7 @@ export let webpackRequire: (<T = any>(moduleId: string) => T) & {
  */
 export const fallbackModules: { [key: string]: any } = {};
 
+const waitMainInit = internalEv.waitFor('conn.main_init');
 const waitMainReady = internalEv.waitFor('conn.main_ready');
 
 export function injectLoader(): void {
@@ -82,15 +96,77 @@ export function injectLoader(): void {
     return;
   }
 
+  const global = (self || window) as any;
+
+  /* BEGIN: For WhatsApp >= 2.3000.0 */
+  const metaTimer = setInterval(async () => {
+    if (loaderType !== 'unknown') {
+      clearInterval(metaTimer);
+      return;
+    }
+    if (!global.require || !global.__d) {
+      return;
+    }
+    loaderType = 'meta';
+
+    // A wrap to work like webpack
+    webpackRequire = function (id: string) {
+      try {
+        global.ErrorGuard.skipGuardGlobal(true);
+        return global.importNamespace(id);
+      } catch (error) {}
+      return null;
+    } as any;
+
+    Object.defineProperty(webpackRequire, 'm', {
+      get: () => {
+        const modulesMap = __debug().modulesMap;
+        const ids = Object.keys(modulesMap).filter((id) =>
+          /^(?:use)?WA/.test(id)
+        );
+        const result: any = {};
+
+        for (const id of ids) {
+          result[id] = modulesMap[id]?.factory;
+        }
+
+        return result;
+      },
+    });
+
+    isInjected = true;
+    debug('injected');
+    await internalEv.emitAsync('webpack.injected').catch(() => null);
+
+    await waitMainInit;
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    isReady = true;
+    debug('ready to use');
+    await internalEv.emitAsync('webpack.ready').catch(() => null);
+
+    if ((window as any).wppForceMainLoad) {
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+    } else {
+      await waitMainReady;
+    }
+    isFullReady = true;
+    debug('full ready to use');
+    await internalEv.emitAsync('webpack.full_ready').catch(() => null);
+  }, 1000);
+
+  /* END: For WhatsApp >= 2.3000.0 */
+
   const chunkName = 'webpackChunkwhatsapp_web_client';
 
-  const global = (self || window) as any;
   const chunk = global[chunkName] || [];
   if (typeof global[chunkName] === 'undefined') {
     global[chunkName] = chunk;
+  } else {
+    loaderType = 'webpack';
   }
 
   const injectFunction = async (__webpack_require__: any) => {
+    loaderType = 'webpack';
     webpackRequire = __webpack_require__;
 
     isInjected = true;
@@ -165,7 +241,11 @@ export function injectLoader(): void {
 const sourceModuleMap = new Map<string, boolean>();
 
 export function moduleSource(moduleId: string) {
-  if (typeof webpackRequire.m[moduleId] === 'undefined') {
+  if (loaderType !== 'webpack') {
+    return '';
+  }
+
+  if (!webpackRequire.m[moduleId]) {
     return '';
   }
 
@@ -311,7 +391,7 @@ export function modules(
 }
 
 export function loadModule<T = any>(moduleId: string) {
-  const module = /^\d+$/.test(moduleId)
+  const module = !/^fallback_/.test(moduleId)
     ? webpackRequire(moduleId)
     : fallbackModules[moduleId];
 
@@ -330,9 +410,9 @@ export function injectFallbackModule(
 ): void {
   moduleId = moduleId + '';
 
-  if (/^\d+$/.test(moduleId)) {
+  if (/^fallback_/.test(moduleId)) {
     throw new Error('Invalid fallback ID');
   }
 
-  fallbackModules[moduleId] = content;
+  fallbackModules[`fallback_${moduleId}`] = content;
 }

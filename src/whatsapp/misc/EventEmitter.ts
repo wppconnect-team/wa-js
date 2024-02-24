@@ -125,6 +125,7 @@ exportModule(
   {
     EventEmitter: 'default',
   },
-  (m) =>
+  (m, id) =>
+    id === 'WAWebEventEmitter' ||
     m.default.toString().includes('Callback parameter passed is not a function')
 );
