@@ -262,7 +262,7 @@ exportModule(
     getFormattedName: 'getFormattedName',
     getFormattedUser: 'getFormattedUser',
   },
-  (m) => m.getDisplayName
+  (m) => m.getDisplayName && m.getFormattedName
 );
 injectFallbackModule('getDisplayName', {
   getDisplayName: (contact: ContactModel) => contact.displayName,

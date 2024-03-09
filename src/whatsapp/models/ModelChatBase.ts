@@ -49,6 +49,10 @@ export declare class ModelChatBase extends Model<ChatCollection> {
   notifyMsgCollectionMerge(...args: any[]): void;
 }
 
-exportModule(exports, { ModelChatBase: 'default' }, (m) =>
-  m.default.toString().includes('onEmptyMRM not implemented')
+exportModule(
+  exports,
+  { ModelChatBase: 'default' },
+  (m, id) =>
+    id === 'WAWebSuperChatMsgs' ||
+    m.default.toString().includes('onEmptyMRM not implemented')
 );
