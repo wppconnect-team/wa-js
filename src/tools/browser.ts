@@ -15,10 +15,12 @@
  */
 
 import * as waVersion from '@wppconnect/wa-version';
+import * as crypto from 'crypto';
 import FileType from 'file-type';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as playwright from 'playwright-chromium';
+import * as url from 'url';
 
 export const URL = 'https://web.whatsapp.com/';
 export const WA_DIR = path.resolve(__dirname, '../../wa-source');
@@ -37,41 +39,70 @@ export async function preparePage(page: playwright.Page) {
     route.abort();
   });
 
-  page.route('https://web.whatsapp.com/**', (route, request) => {
-    if (request.url() === URL) {
-      return route.fulfill({
-        status: 200,
-        contentType: 'text/html',
-        body: waVersion.getPageContent(WA_VERSION),
-      });
+  page.route(
+    /^https:\/\/(web\.whatsapp\.com|static\.whatsapp\.net)\//,
+    async (route, request) => {
+      if (request.url() === URL) {
+        return route.fulfill({
+          status: 200,
+          contentType: 'text/html',
+          body: waVersion.getPageContent(WA_VERSION),
+        });
+      }
+
+      const fileName = path.basename(url.parse(request.url()).pathname!);
+      const filePathDist = path.join(
+        path.resolve(__dirname, '../../dist/'),
+        fileName
+      );
+
+      if (request.url().includes('dist') && fs.existsSync(filePathDist)) {
+        return route.fulfill({
+          status: 200,
+          contentType: 'text/javascript; charset=UTF-8',
+          body: fs.readFileSync(filePathDist, { encoding: 'utf8' }),
+        });
+      }
+
+      const filePathSource = path.join(WA_DIR, fileName);
+
+      if (fs.existsSync(filePathSource)) {
+        return route.fulfill({
+          status: 200,
+          contentType: 'text/javascript; charset=UTF-8',
+          body: fs.readFileSync(filePathSource, { encoding: 'utf8' }),
+        });
+      }
+
+      const hash = crypto
+        .createHash('md5')
+        .update(request.url())
+        .digest('hex')
+        .substring(0, 5);
+
+      const filePathSourceHash = path.join(WA_DIR, `${hash}-${fileName}`);
+
+      if (fs.existsSync(filePathSourceHash)) {
+        return route.fulfill({
+          status: 200,
+          contentType: 'text/javascript; charset=UTF-8',
+          body: fs.readFileSync(filePathSourceHash, { encoding: 'utf8' }),
+        });
+      }
+
+      if (fileName.endsWith('.js')) {
+        if (!fs.existsSync(WA_DIR)) {
+          fs.mkdirSync(WA_DIR);
+        }
+
+        const response = await route.fetch();
+        const body = await response.body();
+        fs.writeFileSync(filePathSourceHash, body);
+      }
+
+      return route.continue();
     }
-
-    const fileName = path.basename(request.url());
-    const filePathDist = path.join(
-      path.resolve(__dirname, '../../dist/'),
-      fileName
-    );
-
-    if (request.url().includes('dist') && fs.existsSync(filePathDist)) {
-      return route.fulfill({
-        status: 200,
-        contentType: 'text/javascript; charset=UTF-8',
-        body: fs.readFileSync(filePathDist, { encoding: 'utf8' }),
-      });
-    }
-
-    const filePathSource = path.join(WA_DIR, fileName);
-
-    if (fs.existsSync(filePathSource)) {
-      return route.fulfill({
-        status: 200,
-        contentType: 'text/javascript; charset=UTF-8',
-        body: fs.readFileSync(filePathSource, { encoding: 'utf8' }),
-      });
-    }
-
-    return route.continue();
-  });
+  );
 
   page.addInitScript(() => {
     // Remove existent service worker
