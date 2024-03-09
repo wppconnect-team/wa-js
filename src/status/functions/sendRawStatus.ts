@@ -128,9 +128,11 @@ webpack.onInjected(() => {
   });
 
   wrapModuleFunction(encryptAndSendSenderKeyMsg, async (func, ...args) => {
-    if (args[1].to.user === 'status') {
-      args[1].to.server = 'broadcast';
-    }
+    try {
+      if (args[1].to.user === 'status') {
+        args[1].to.server = 'broadcast';
+      }
+    } catch (error) {}
 
     return await func(...args);
   });
