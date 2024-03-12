@@ -308,7 +308,6 @@ export async function sendFileMessage(
     (mediaPrep as any)._mediaData.fullHeight = 1128;
     (mediaPrep as any)._mediaData.fullWidth = 1128;
   }
-  debug('caption by user');
   debug(`sending message (${options.type}) with id ${rawMessage.id}`);
   const sendMsgResult = mediaPrep.sendToChat(chat, {
     caption: options.caption,
