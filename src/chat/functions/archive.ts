@@ -48,8 +48,7 @@ export async function archive(chatId: string | Wid, archive = true) {
       { wid, archive }
     );
   }
-
-  await setArchive(chat, archive);
+  await setArchive([{ archive: archive, id: wid.toString() }]);
 
   return {
     wid,
