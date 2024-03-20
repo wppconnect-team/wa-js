@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+import { compare } from 'compare-versions';
+
 import { assertGetChat, assertWid } from '../../assert';
 import { WPPError } from '../../util';
-import { Wid } from '../../whatsapp';
+import { Cmd, Wid } from '../../whatsapp';
 import { setArchive } from '../../whatsapp/functions';
 
 /**
@@ -48,7 +50,11 @@ export async function archive(chatId: string | Wid, archive = true) {
       { wid, archive }
     );
   }
-  await setArchive([{ archive: archive, id: wid.toString() }]);
+  if (compare(self.Debug.VERSION, '2.3000.0', '>=')) {
+    Cmd.archiveChat(chat, archive);
+  } else {
+    await setArchive(chat, archive);
+  }
 
   return {
     wid,
