@@ -202,6 +202,7 @@ interface Props {
   totalCurrencyCode?: any;
   historySyncMetaData?: any;
   mdDowngrade?: any;
+  isCaptionByUser: boolean;
   isSendFailure: boolean;
   appStateSyncKeyShare?: any;
   appStateSyncKeyRequest?: any;
