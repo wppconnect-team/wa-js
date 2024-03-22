@@ -289,6 +289,7 @@ export async function sendFileMessage(
       caption: options.caption || filename,
       filename: filename,
       footer: options.footer,
+      isCaptionByUser: options.caption != undefined,
     },
     options
   );
@@ -307,14 +308,13 @@ export async function sendFileMessage(
     (mediaPrep as any)._mediaData.fullHeight = 1128;
     (mediaPrep as any)._mediaData.fullWidth = 1128;
   }
-
   debug(`sending message (${options.type}) with id ${rawMessage.id}`);
   const sendMsgResult = mediaPrep.sendToChat(chat, {
     caption: options.caption,
     footer: options.footer,
     isViewOnce,
     productMsgOptions: rawMessage,
-  });
+  } as any);
 
   // Wait for message register
   const message = await new Promise<MsgModel>((resolve) => {
