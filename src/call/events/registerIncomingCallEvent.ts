@@ -35,7 +35,7 @@ function register() {
     }
   });
 
-  CallStore.on('change:_state change:state', (call: CallModel) => {
+  CallStore.on('change', (call: CallModel) => {
     if (call.getState() === CALL_STATES.INCOMING_RING) {
       internalEv.emit('call.incoming_call', {
         id: call.id,
