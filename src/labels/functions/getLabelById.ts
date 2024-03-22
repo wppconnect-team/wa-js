@@ -17,6 +17,7 @@
 import { assertColor } from '../../assert';
 import { WPPError } from '../../util';
 import { LabelStore } from '../../whatsapp';
+import { colorIndexToHex } from '../../whatsapp/functions';
 import { Label } from '..';
 
 export async function getLabelById(labelId: string): Promise<Label> {
@@ -28,8 +29,9 @@ export async function getLabelById(labelId: string): Promise<Label> {
   return {
     id: label.id,
     name: label.name,
-    color: assertColor(label.hexColor),
+    color: label.hexColor ? assertColor(label.hexColor) : null,
     count: label.count || 0,
-    hexColor: label.hexColor,
+    hexColor: colorIndexToHex(label.colorIndex!),
+    colorIndex: label.colorIndex!,
   };
 }

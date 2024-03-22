@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assertColor, assertIsBusiness } from '../../assert';
+import { assertIsBusiness } from '../../assert';
 import { getLabelColorPalette } from '.';
 
 /**
@@ -33,5 +33,9 @@ export async function colorIsInLabelPalette(
   assertIsBusiness();
 
   const colorPalette = await getLabelColorPalette();
-  return colorPalette && colorPalette.includes(assertColor(color));
+  return (
+    colorPalette &&
+    (colorPalette.includes(color.toString()) ||
+      colorPalette[parseInt(color.toString())] != undefined)
+  );
 }

@@ -34,6 +34,7 @@ export declare class LabelCollection extends BaseCollection<LabelModel> {
   deleteLabel(id: string): any;
   updateLabel(e?: any, t?: any): any;
   getNewLabelColor(): any;
+  getNextAvailableColor(): any;
   getLabelColorPalette(): any;
   handleRemove(e?: any): any;
   updateChecksum(e?: any): any;

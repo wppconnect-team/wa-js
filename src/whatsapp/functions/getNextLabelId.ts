@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-export interface Label {
-  id: string;
-  name: string;
-  color: number | null;
-  count: number;
-  hexColor: string;
-  colorIndex: number;
-}
+import { exportModule } from '../exportModule';
+
+/** @whatsapp 263133
+ */
+export declare function getNextLabelId(): Promise<number>;
+exportModule(
+  exports,
+  {
+    getNextLabelId: 'getNextLabelId',
+  },
+  (m) => m.getNextLabelId
+);

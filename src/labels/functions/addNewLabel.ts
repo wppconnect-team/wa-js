@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-import { assertColor, assertIsBusiness } from '../../assert';
+import { assertIsBusiness } from '../../assert';
 import { WPPError } from '../../util';
-import { LabelStore } from '../../whatsapp';
-import { colorIsInLabelPalette, getNewLabelColor } from '.';
+import {
+  getAllLabelColors,
+  getNextLabelId,
+  labelAddAction,
+} from '../../whatsapp/functions';
+import { colorIsInLabelPalette, getLabelById, getNewLabelColor } from '.';
 
 export interface NewLabelOptions {
   /**
@@ -35,8 +39,9 @@ export interface NewLabelOptions {
  * await WPP.labels.addNewLabel(`Name of label`);
  * //or
  * await WPP.labels.addNewLabel(`Name of label`, { labelColor: '#dfaef0' });
- * //or
- * await WPP.labels.addNewLabel(`Name of label`, { labelColor: 4292849392 });
+ * ```
+ * //or with color index
+ * await WPP.labels.addNewLabel(`Name of label`, { labelColor: 16 });
  * ```
  */
 export async function addNewLabel(
@@ -45,16 +50,21 @@ export async function addNewLabel(
 ) {
   assertIsBusiness();
 
-  let labelColor: number | false;
+  let labelColor = options.labelColor || undefined;
 
-  if (['number', 'string'].includes(typeof options.labelColor)) {
-    labelColor = assertColor(options.labelColor);
-  } else {
-    labelColor = await getNewLabelColor();
+  if (!labelColor) labelColor = await getNewLabelColor();
+
+  if (typeof labelColor === 'string' && labelColor.length > 2) {
+    labelColor = getAllLabelColors().findIndex(
+      (value: string) => value === labelColor
+    );
   }
+  labelColor = parseInt(labelColor.toString());
 
   if (!(await colorIsInLabelPalette(labelColor))) {
     throw new WPPError('color_not_in_pallet', `Color not in pallet`);
   }
-  return await LabelStore.addNewLabel(labelName, labelColor.toString());
+  const labelId = await getNextLabelId();
+  await labelAddAction(labelName, labelColor);
+  return await getLabelById(labelId.toString());
 }

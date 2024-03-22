@@ -24,7 +24,7 @@ import { LabelStore } from '../../whatsapp';
 export async function getNewLabelColor(): Promise<number> {
   assertIsBusiness();
 
-  const newLabelColor = await LabelStore.getNewLabelColor();
+  const newLabelColor = await LabelStore.getNextAvailableColor();
 
   if (!newLabelColor) {
     throw new WPPError('cannot_get_color', `Can't get new label color`);

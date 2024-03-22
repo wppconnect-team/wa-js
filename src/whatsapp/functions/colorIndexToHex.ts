@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,19 @@
  * limitations under the License.
  */
 
-export interface Label {
-  id: string;
-  name: string;
-  color: number | null;
-  count: number;
-  hexColor: string;
-  colorIndex: number;
-}
+import { exportModule } from '../exportModule';
+
+/**
+ * @whatsapp 885910
+ */
+export declare function colorIndexToHex(index: number): string;
+export declare function getAllLabelColors(): string[];
+
+exportModule(
+  exports,
+  {
+    colorIndexToHex: 'colorIndexToHex',
+    getAllLabelColors: 'getAllLabelColors',
+  },
+  (m) => m.colorIndexToHex && m.getAllLabelColors
+);
