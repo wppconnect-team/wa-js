@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-import { assertColor, assertIsBusiness } from '../../assert';
+import { assertIsBusiness } from '../../assert';
 import { WPPError } from '../../util';
-import { LabelStore } from '../../whatsapp';
+import { getAllLabelColors } from '../../whatsapp/functions';
 
 /**
- * Returns an array of color palette in positive decimal
+ * Returns an array of color palette in hex code
  */
-export async function getLabelColorPalette(): Promise<number[]> {
+export async function getLabelColorPalette(): Promise<string[]> {
   assertIsBusiness();
 
-  const colorPalette = await LabelStore.getLabelColorPalette();
+  const colorPalette = getAllLabelColors();
 
   if (!colorPalette) {
     throw new WPPError('canot_get_color_palette', `Can't get color palette`);
   }
 
-  return colorPalette.map((e: string) => assertColor(Number(e)));
+  return colorPalette;
 }

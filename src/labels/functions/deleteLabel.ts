@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 import { assertIsBusiness } from '../../assert';
 import { LabelStore } from '../../whatsapp';
+import { labelDeleteAction } from '../../whatsapp/functions';
 
 export interface DeleteLabelReturn {
   id: string;
@@ -38,9 +39,17 @@ export async function deleteLabel(
 
   const results: DeleteLabelReturn[] = [];
   for (const id of ids) {
+    const label = LabelStore.get(id.toString());
+    if (label)
+      await labelDeleteAction(id.toString(), label.name, label.colorIndex!);
     results.push({
       id: id,
-      deleteLabelResult: await LabelStore.deleteLabel(id),
+      deleteLabelResult:
+        label != undefined
+          ? LabelStore.get(id.toString()) != undefined
+            ? false
+            : true
+          : false,
     });
   }
 

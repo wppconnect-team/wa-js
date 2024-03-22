@@ -99,7 +99,7 @@ import * as playwright from 'playwright-chromium';
 
 async function start() {
   const browser = await playwright.chromium.launch();
-  const page = browser.newPage();
+  const page = await browser.newPage();
 
   await page.goto('https://web.whatsapp.com/');
 
@@ -112,7 +112,7 @@ async function start() {
 
   // Evaluating code: See https://playwright.dev/docs/evaluating/
   const isAuthenticated: string = await page.evaluate(() =>
-    WPP.auth.isAuthenticated()
+    WPP.conn.isAuthenticated()
   );
 
   // Sending message: See https://playwright.dev/docs/evaluating/
