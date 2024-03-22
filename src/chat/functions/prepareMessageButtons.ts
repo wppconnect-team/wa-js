@@ -332,7 +332,7 @@ webpack.onFullReady(() => {
   });
 
   wrapModuleFunction(createFanoutMsgStanza, async (func, ...args) => {
-    const [, , proto] = args;
+    const [, proto] = args;
 
     let buttonNode: websocket.WapNode | null = null;
 
