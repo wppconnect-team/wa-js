@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2024 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-import './events';
-import './patch';
+import * as webpack from '../webpack';
 
-export * from './functions';
-export * from './types';
+webpack.onInjected(() => {
+  /**
+   * When sending logs to the WhatsApp server, it will always report that the ocVersion is true.
+   */
+  webpack.modules()['WAWebIsOfficialClient']['isOfficialClient'] = true;
+});

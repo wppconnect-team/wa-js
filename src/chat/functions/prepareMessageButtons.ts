@@ -335,7 +335,7 @@ webpack.onFullReady(() => {
     let buttonNode: websocket.WapNode | null = null;
 
     /**
-     * In version 2.2411.x the order of the proto arguments was changed, 
+     * In version 2.2411.x the order of the proto arguments was changed,
      * before it was the third argument, now it is the second
      */
     const proto = args[1].id ? args[2] : args[1];
