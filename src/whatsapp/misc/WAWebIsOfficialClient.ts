@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import * as webpack from '../../webpack';
 import { exportModule } from '../exportModule';
 
 /**
@@ -29,3 +30,21 @@ exportModule(
   'WAWebIsOfficialClient',
   (m) => m.isOfficialClient && m.isLegitErrorStack
 );
+
+const fallback = {};
+
+// Lazy load
+Object.defineProperty(fallback, 'WAWebIsOfficialClient', {
+  configurable: true,
+  enumerable: true,
+  get() {
+    return {
+      isOfficialClient: true,
+      isLegitErrorStack() {
+        return true;
+      },
+    };
+  },
+});
+
+webpack.injectFallbackModule('WAWebIsOfficialClient', fallback);
