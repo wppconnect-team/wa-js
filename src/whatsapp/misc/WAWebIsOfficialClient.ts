@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
-import * as webpack from '../webpack';
-import { WAWebIsOfficialClient } from '../whatsapp';
+import { exportModule } from '../exportModule';
 
-webpack.onInjected(() => {
-  /**
-   * When sending logs to the WhatsApp server, it will always report that the ocVersion is true.
-   */
-  WAWebIsOfficialClient.isOfficialClient = true;
-});
+/**
+ * @whatsapp >= 2.3000.x
+ */
+export declare namespace WAWebIsOfficialClient {
+  function isLegitErrorStack(): boolean;
+  let isOfficialClient: boolean;
+}
+
+exportModule(
+  exports,
+  'WAWebIsOfficialClient',
+  (m) => m.isOfficialClient && m.isLegitErrorStack
+);

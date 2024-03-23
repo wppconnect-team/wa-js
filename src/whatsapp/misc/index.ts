@@ -38,5 +38,6 @@ export * from './Socket';
 export * from './Stream';
 export * from './UserPrefs';
 export * from './VCard';
+export * from './WAWebIsOfficialClient';
 export * from './Wid';
 export * from './WidFactory';
