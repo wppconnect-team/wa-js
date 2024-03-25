@@ -22,6 +22,7 @@ export * from './Conn';
 export * from './Constants';
 export * from './EventEmitter';
 export * from './ImageUtils';
+export * from './IsOfficialClient';
 export * from './MediaBlobCache';
 export * from './MediaEntry';
 export * from './MediaObject';
