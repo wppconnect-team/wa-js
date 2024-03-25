@@ -20,21 +20,21 @@ import { exportModule } from '../exportModule';
 /**
  * @whatsapp >= 2.3000.x
  */
-export declare namespace WAWebIsOfficialClient {
+export declare namespace IsOfficialClient {
   function isLegitErrorStack(): boolean;
   let isOfficialClient: boolean;
 }
 
 exportModule(
   exports,
-  'WAWebIsOfficialClient',
+  'IsOfficialClient',
   (m) => m.isOfficialClient && m.isLegitErrorStack
 );
 
 const fallback = {};
 
 // Lazy load
-Object.defineProperty(fallback, 'WAWebIsOfficialClient', {
+Object.defineProperty(fallback, 'IsOfficialClient', {
   configurable: true,
   enumerable: true,
   get() {
@@ -47,4 +47,4 @@ Object.defineProperty(fallback, 'WAWebIsOfficialClient', {
   },
 });
 
-webpack.injectFallbackModule('WAWebIsOfficialClient', fallback);
+webpack.injectFallbackModule('IsOfficialClient', fallback);

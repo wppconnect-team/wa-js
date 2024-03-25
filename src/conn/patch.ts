@@ -15,11 +15,18 @@
  */
 
 import * as webpack from '../webpack';
-import { WAWebIsOfficialClient } from '../whatsapp';
+import { IsOfficialClient } from '../whatsapp';
+import { wrapModuleFunction } from '../whatsapp/exportModule';
 
 webpack.onInjected(() => {
   /**
    * When sending logs to the WhatsApp server, it will always report that the ocVersion is true.
    */
-  WAWebIsOfficialClient.isOfficialClient = true;
+  IsOfficialClient.isOfficialClient = true;
 });
+
+webpack.onFullReady(() => {
+  wrapModuleFunction(IsOfficialClient.isLegitErrorStack, () => {
+    return true;
+  });
+}, 1000);
