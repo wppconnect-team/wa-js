@@ -31,20 +31,7 @@ exportModule(
   (m) => m.isOfficialClient && m.isLegitErrorStack
 );
 
-const fallback = {};
-
-// Lazy load
-Object.defineProperty(fallback, 'IsOfficialClient', {
-  configurable: true,
-  enumerable: true,
-  get() {
-    return {
-      isOfficialClient: true,
-      isLegitErrorStack() {
-        return true;
-      },
-    };
-  },
+webpack.injectFallbackModule('IsOfficialClient', {
+  isOfficialClient: true,
+  isLegitErrorStack: () => true,
 });
-
-webpack.injectFallbackModule('IsOfficialClient', fallback);
