@@ -67,11 +67,14 @@ export async function mute(
     });
   }
 
-  await chat.mute.setMute(expiration);
-
+  await chat.mute.mute({
+    expiration,
+    isAutoMuted: false,
+    sendDevice: true,
+  });
   return {
     wid,
     expiration: chat.mute.expiration,
-    isMuted: chat.mute.isMuted,
+    isMuted: chat.mute.expiration !== 0,
   };
 }
