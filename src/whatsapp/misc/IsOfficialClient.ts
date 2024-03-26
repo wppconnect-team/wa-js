@@ -24,7 +24,11 @@ export declare namespace IsOfficialClient {
   let isOfficialClient: boolean;
 }
 
-exportModule(exports, 'IsOfficialClient', (m) => m.isOfficialClient);
+exportModule(
+  exports,
+  'IsOfficialClient',
+  (m) => typeof m.isOfficialClient !== 'undefined'
+);
 
 webpack.injectFallbackModule('IsOfficialClient', {
   isOfficialClient: true,
