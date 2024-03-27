@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-import * as webpack from '../webpack';
-import { IsOfficialClient } from '../whatsapp';
-import { wrapModuleFunction } from '../whatsapp/exportModule';
-import { isLegitErrorStack } from '../whatsapp/functions';
+import { exportModule } from '../exportModule';
 
-webpack.onInjected(() => {
-  /**
-   * When sending logs to the WhatsApp server, it will always report that the ocVersion is true.
-   */
-  IsOfficialClient.isOfficialClient = true;
-});
+/**
+ * @whatsapp 525438
+ */
+export declare function isLegitErrorStack(): boolean;
 
-webpack.onFullReady(() => {
-  wrapModuleFunction(isLegitErrorStack, () => {
-    return true;
-  });
-}, 1000);
+exportModule(
+  exports,
+  {
+    isLegitErrorStack: 'isLegitErrorStack',
+  },
+  (m) => m.isLegitErrorStack
+);

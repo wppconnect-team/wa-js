@@ -21,17 +21,15 @@ import { exportModule } from '../exportModule';
  * @whatsapp >= 2.3000.x
  */
 export declare namespace IsOfficialClient {
-  function isLegitErrorStack(): boolean;
   let isOfficialClient: boolean;
 }
 
 exportModule(
   exports,
   'IsOfficialClient',
-  (m) => m.isOfficialClient && m.isLegitErrorStack
+  (m) => typeof m.isOfficialClient !== 'undefined'
 );
 
 webpack.injectFallbackModule('IsOfficialClient', {
   isOfficialClient: true,
-  isLegitErrorStack: () => true,
 });
