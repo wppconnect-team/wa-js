@@ -43,6 +43,7 @@ export * as util from './util';
 export * as newsletter from './newsletter';
 export * as whatsapp from './whatsapp';
 export * as order from './order';
+export * as ui from './ui';
 
 export {
   emit,
