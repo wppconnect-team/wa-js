@@ -54,14 +54,18 @@ export declare class MuteModel extends Model<MuteCollection> {
     proterties?: ModelPropertiesContructor<MuteModel>,
     options?: ModelOptions
   );
-  setMute(e?: any, t?: any): any;
-  mute(
-    expiration: number,
-    sendAction?: boolean,
-    sequence?: number
-  ): Promise<number>;
+  setMute(
+    expiration?: number,
+    isAutoMuted?: boolean,
+    sendDevice?: boolean
+  ): any;
+  mute(args: {
+    expiration: number;
+    sendDevice?: boolean;
+    isAutoMuted?: boolean;
+  }): Promise<number>;
   canMute(): boolean;
-  unmute(sendAction?: boolean, sequence?: number): Promise<void>;
+  unmute(args: { sendDevice?: boolean }): Promise<void>;
   getCollection(): MuteCollection;
 }
 

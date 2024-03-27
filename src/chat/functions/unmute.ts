@@ -32,5 +32,5 @@ export async function unmute(chatId: string | Wid) {
 
   const chat = assertGetChat(wid);
 
-  return chat.mute.unmute(true);
+  return chat.mute.unmute({ sendDevice: true });
 }
