@@ -1,9 +1,9 @@
-## 3.0.1 (2024-03-25)
+# 3.1.0 (2024-03-28)
 
 
-### Bug Fixes
+### Reverts
 
-* Fixed isOfficialClient check ([#1769](https://github.com/wppconnect-team/wa-js/issues/1769)) ([88f1f0e](https://github.com/wppconnect-team/wa-js/commit/88f1f0e6daf18b0492ceffb6274adef02323dc35))
+* Added template to changelog ([9ebf70b](https://github.com/wppconnect-team/wa-js/commit/9ebf70b6defd370eba39cc5786bcc49df6cb5b2a))
 
 
 
