@@ -14,12 +14,20 @@
  * limitations under the License.
  */
 
-export * from './ACK';
-export * from './CALL_STATES';
-export * from './GROUP_SETTING_TYPE';
-export * from './KIC_ENTRY_POINT_TYP';
-export * from './LogoutReason';
-export * from './MSG_TYPE';
-export * from './OUTWARD_TYPES';
-export * from './PIN_STATE';
-export * from './SendMsgResult';
+import { exportModule } from '../exportModule';
+
+/** @whatsapp WAWebPinMsgConstants >= 2.3000.1012170943
+ */
+export declare enum PIN_STATE {
+  INVALID = 0,
+  PIN = 1,
+  UNPIN = 2,
+}
+
+exportModule(
+  exports,
+  {
+    PIN_STATE: 'PIN_STATE',
+  },
+  (m) => m.PIN_STATE
+);

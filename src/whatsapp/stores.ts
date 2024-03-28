@@ -128,6 +128,7 @@ export declare const StickerPackStore: collections.StickerPackCollection;
  * @whatsapp 545068 >= 2.2222.8
  */
 export declare const StickerSearchStore: collections.StickerSearchCollection;
+export declare const PinInChatStore: collections.PinInChatCollection;
 
 const storeNames = [
   'BlocklistStore',
@@ -146,6 +147,7 @@ const storeNames = [
   'MsgInfoStore',
   'MuteStore',
   'OrderStore',
+  'PinInChatStore',
   'PresenceStore',
   'ProductMessageListStore',
   'ProfilePicThumbStore',
