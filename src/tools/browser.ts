@@ -127,7 +127,7 @@ export async function preparePage(page: playwright.Page) {
     }, 500);
   });
 
-  page.on('domcontentloaded', async (page) => {
+  page.on('load', async (page) => {
     await page.addScriptTag({
       url: `${URL}dist/wppconnect-wa.js`,
     });
