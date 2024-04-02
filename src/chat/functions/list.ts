@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2024 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import {
   ChatStore,
   GroupMetadataStore,
   LabelStore,
+  NewsletterStore,
   Wid,
 } from '../../whatsapp';
 import { get } from './get';
@@ -29,6 +30,7 @@ export interface ChatListOptions {
   direction?: 'after' | 'before';
   onlyCommunities?: boolean;
   onlyGroups?: boolean;
+  onlyNewsletter?: boolean;
   onlyUsers?: boolean;
   onlyWithUnreadMessage?: boolean;
   withLabels?: string[];
@@ -57,6 +59,9 @@ export interface ChatListOptions {
  * // Only communities chats
  * const chats = await WPP.chat.list({onlyCommunities: true});
  *
+ * // Only Newsletter
+ * const chats = await WPP.chat.list({onlyNewsletter: true});
+ * 
  * // Only with label Text
  * const chats = await WPP.chat.list({withLabels: ['Test']});
  *
@@ -78,7 +83,7 @@ export async function list(
 
   // Getting All Chats.
   // IDK, why we use slice here. don't think its needed.
-  let models = ChatStore.getModelsArray().slice();
+  let models = options.onlyNewsletter ? NewsletterStore.getModelsArray().slice() : ChatStore.getModelsArray().slice();
 
   // Filtering Based on Options.
   if (options.onlyUsers) {
