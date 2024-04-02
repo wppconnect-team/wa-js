@@ -103,6 +103,7 @@ export interface AudioMessageOptions extends FileMessageOptions {
    * ```
    */
   waveform?: boolean;
+  isViewOnce?: boolean;
 }
 
 export interface DocumentMessageOptions
