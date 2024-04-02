@@ -83,10 +83,10 @@ export async function list(
 
   // Getting All Chats.
   // IDK, why we use slice here. don't think its needed.
-  let models = options.onlyNewsletter 
+  let models = options.onlyNewsletter
     ? NewsletterStore.getModelsArray().slice()
     : ChatStore.getModelsArray().slice();
-  
+
   // Filtering Based on Options.
   if (options.onlyUsers) {
     models = models.filter((c) => c.isUser);
