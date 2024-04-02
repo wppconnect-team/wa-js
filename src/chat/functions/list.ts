@@ -61,7 +61,7 @@ export interface ChatListOptions {
  *
  * // Only Newsletter
  * const chats = await WPP.chat.list({onlyNewsletter: true});
- * 
+ *
  * // Only with label Text
  * const chats = await WPP.chat.list({withLabels: ['Test']});
  *
@@ -83,8 +83,10 @@ export async function list(
 
   // Getting All Chats.
   // IDK, why we use slice here. don't think its needed.
-  let models = options.onlyNewsletter ? NewsletterStore.getModelsArray().slice() : ChatStore.getModelsArray().slice();
-
+  let models = options.onlyNewsletter 
+    ? NewsletterStore.getModelsArray().slice()
+    : ChatStore.getModelsArray().slice();
+  
   // Filtering Based on Options.
   if (options.onlyUsers) {
     models = models.filter((c) => c.isUser);
