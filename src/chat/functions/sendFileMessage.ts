@@ -266,11 +266,10 @@ export async function sendFileMessage(
   let isViewOnce: boolean | undefined;
 
   if (options.type === 'audio') {
-    if(options.isPtt) {
+    if (options.isPtt) {
       isViewOnce = options.isViewOnce;
     }
     rawMediaOptions.isPtt = options.isPtt;
-    
     rawMediaOptions.precomputedFields = await prepareAudioWaveform(
       options as any,
       file
