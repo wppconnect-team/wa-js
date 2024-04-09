@@ -42,7 +42,7 @@ function register() {
   if (typeof MsgModel.prototype.chat === 'undefined') {
     Object.defineProperty(MsgModel.prototype, 'chat', {
       get: function () {
-        return ChatStore.get(this.id.fromMe ? this.to : this.from);
+        return ChatStore.get(this.id?.fromMe ? this.to : this.from);
       },
       configurable: true,
     });
