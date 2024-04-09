@@ -122,8 +122,11 @@ export function injectLoader(): void {
     Object.defineProperty(webpackRequire, 'm', {
       get: () => {
         const modulesMap = __debug().modulesMap;
-        const ids = Object.keys(modulesMap).filter((id) =>
-          /^(?:use)?WA/.test(id)
+        const ids = Object.keys(modulesMap).filter(
+          (id) =>
+            /^(?:use)?WA/.test(id) &&
+            // Fix for error "bx(...): Unknown file path "9550""
+            id !== 'WAWebEmojiPanelContentEmojiSearchEmpty.react'
         );
         const result: any = {};
 
