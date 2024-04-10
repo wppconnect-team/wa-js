@@ -164,7 +164,7 @@ exportModule(
     getIsDisplayNameApproved: 'getIsDisplayNameApproved',
     getShouldForceBusinessUpdate: 'getShouldForceBusinessUpdate',
   },
-  (m) => m.getIsMyContact
+  (m) => m.getIsMyContact && m.getIsGroup
 );
 
 injectFallbackModule('getIsMyContact', {

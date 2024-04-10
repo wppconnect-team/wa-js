@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
+import { injectFallbackModule } from '../../webpack';
 import { exportModule } from '../exportModule';
 import { MsgKey } from '../misc';
+import { getTableVotes } from './getTableVotes';
 import { VoteData } from './upsertVotes';
+import { voteFromDbRow } from './voteFromDbRow';
 
 /**
  * @whatsapp 816349
@@ -32,3 +35,15 @@ exportModule(
   },
   (m) => m.getVotes && m.getVote
 );
+
+// Fix for version => 2.3000.1012654901
+injectFallbackModule('getVotes', {
+  getVote: (msgKey: MsgKey) => msgKey,
+  getVotes: async (keys: MsgKey[]) => {
+    const votes = await getTableVotes().anyOf(
+      ['parentMsgKey'],
+      keys.map((key) => key.toString())
+    );
+    return votes.map((vote: any) => voteFromDbRow(vote));
+  },
+});
