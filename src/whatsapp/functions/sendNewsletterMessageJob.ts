@@ -19,7 +19,8 @@ import { exportModule } from '../exportModule';
 /** @whatsapp 397995
  */
 export declare function sendNewsletterMessageJob(data: {
-  msgData: any;
+  msgData?: any;
+  msg?: any;
   newsletterJid: string;
   type: string;
 }): Promise<{ ack: { t: number }; serverId: number; success: boolean }>;

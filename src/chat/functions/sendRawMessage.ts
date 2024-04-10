@@ -71,14 +71,15 @@ export async function sendRawMessage(
     if (rawMessage.type !== ('chat' || 'image' || 'video'))
       throw new WPPError(
         'type_not_valid_for_newsletter',
-        'Please, send a valid type for send message to newsletter. Valdi types: "chat", "image", "video"'
+        'Please, send a valid type for send message to newsletter. Valid types: "chat", "image", "video"'
       );
     const msg = new MsgModel(rawMessage as any);
     await addNewsletterMsgsRecords([await msgDataFromMsgModel(msg)]);
     const resultNewsletter = await sendNewsletterMessageJob({
       msgData: rawMessage,
-      newsletterJid: chat.id.toString(),
+      msg: new MsgModel(rawMessage as any),
       type: rawMessage.type == 'chat' ? 'text' : 'media',
+      newsletterJid: chat.id.toString(),
     });
     chat.msgs.add(msg);
 
