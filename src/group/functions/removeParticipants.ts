@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+import { assertWid } from '../../assert';
 import { WPPError } from '../../util';
-import { Wid } from '../../whatsapp';
+import { ParticipantModel, Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
+import { ensureGroup } from './ensureGroup';
 import { ensureGroupAndParticipants } from './ensureGroupAndParticipants';
 
 /**
@@ -37,11 +39,24 @@ export async function removeParticipants(
   groupId: string | Wid,
   participantsIds: (string | Wid) | (string | Wid)[]
 ): Promise<void> {
-  const { groupChat, participants } = await ensureGroupAndParticipants(
-    groupId,
-    participantsIds
-  );
+  if (!Array.isArray(participantsIds)) {
+    participantsIds = [participantsIds];
+  }
+  const groupChat = await ensureGroup(groupId, true);
+  const validWids: Wid[] = [];
+  const wids = participantsIds.map(assertWid);
 
+  wids.map<ParticipantModel | any>((wid) => {
+    const participant = groupChat.groupMetadata?.participants.get(wid);
+    if (participant) validWids.push(wid);
+  });
+  if (validWids.length === 0)
+    throw new WPPError(
+      'not_valid_group_participants',
+      `No valid participants found for the group ${groupId}`
+    );
+
+  const { participants } = await ensureGroupAndParticipants(groupId, validWids);
   if (
     participants.some(
       (p) => !groupChat.groupMetadata?.participants.canRemove(p)
