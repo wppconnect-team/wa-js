@@ -15,14 +15,16 @@
  */
 
 import { exportModule } from '../exportModule';
+import { MsgModel } from '../models';
 
 /** @whatsapp 397995
  */
 export declare function sendNewsletterMessageJob(data: {
   msgData?: any;
-  msg?: any;
+  msg?: MsgModel;
   newsletterJid: string;
   type: string;
+  editType?: 'media' | 'text';
 }): Promise<{ ack: { t: number }; serverId: number; success: boolean }>;
 
 exportModule(
