@@ -72,7 +72,7 @@
     "parse-data-url": "^6.0.0",
     "playwright-chromium": "^1.43.0",
     "prettier": "^3.2.5",
-    "release-it": "^17.1.1",
+    "release-it": "^17.2.0",
     "shx": "^0.3.4",
     "ts-loader": "^9.5.1",
     "ts-morph": "^22.0.0",
