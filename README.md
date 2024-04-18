@@ -54,7 +54,7 @@ npm run wa-source
 # build javascript files
 npm run build:prd # or build:dev for development
 
-# lauch a local browser with automatic injection
+# launch a local browser with automatic injection
 npm run launch:local
 
 # or only run in VSCode
