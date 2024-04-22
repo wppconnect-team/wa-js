@@ -126,7 +126,8 @@ export function injectLoader(): void {
           (id) =>
             /^(?:use)?WA/.test(id) &&
             // Fix for error "bx(...): Unknown file path "9550""
-            id !== 'WAWebEmojiPanelContentEmojiSearchEmpty.react'
+            id !== 'WAWebEmojiPanelContentEmojiSearchEmpty.react' &&
+            !['WAWebMoment-es-do'].includes(id) // Exclude specific modules
         );
         const result: any = {};
 
