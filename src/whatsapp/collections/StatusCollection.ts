@@ -19,7 +19,10 @@ import { Wid } from '../misc';
 import { StatusModel } from '../models';
 import { BaseCollection } from '.';
 
-/** @whatsapp 46133 */
+/**
+ * @whatsapp 46133
+ * @whatsapp WAWebTextStatusCollection >= 2.3000.1013010908
+ * */
 export declare class StatusCollection extends BaseCollection<StatusModel> {
   static model: StatusModel;
   static idClass: typeof Wid;
@@ -29,6 +32,8 @@ export declare class StatusCollection extends BaseCollection<StatusModel> {
 
 exportModule(
   exports,
-  { StatusCollection: 'StatusCollectionImpl' },
-  (m) => m.StatusCollectionImpl
+  {
+    StatusCollection: ['StatusCollectionImpl', 'TextStatusCollectionImpl'],
+  },
+  (m) => m.StatusCollectionImpl || m.TextStatusCollectionImpl
 );
