@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { compare } from 'compare-versions';
 import Debug from 'debug';
 
 import { internalEv } from '../eventEmitter';
@@ -166,7 +165,7 @@ export function injectLoader(): void {
   const chunkName = 'webpackChunkwhatsapp_web_client';
 
   const chunk = global[chunkName] || [];
-  if (compare(self.Debug.VERSION, '2.3000.0', '>=')) {
+  if (!chunk || chunk?.length === 0) {
     Object.defineProperty(global, chunkName, chunk);
   } else {
     loaderType = 'webpack';
