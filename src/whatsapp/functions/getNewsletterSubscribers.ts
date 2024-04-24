@@ -15,15 +15,30 @@
  */
 
 import { exportModule } from '../exportModule';
+import { Wid } from '../misc';
 
 /**
  * @whatsapp 276084
  */
 export declare function getNewsletterSubscribers(
   jid: string,
-  param2: any,
-  view: any
-): any;
+  param2: number,
+  view: 'LIMITED'
+): Promise<{
+  subscribers: {
+    id: Wid;
+    isContact?: boolean;
+    isGroup?: boolean;
+    isOnline?: boolean;
+    isUser?: boolean;
+    shortname?: string;
+    state?: string;
+    displayName?: string;
+    phoneNumber?: string;
+    subscribeTime?: number;
+    t: number;
+  }[];
+}>;
 
 exportModule(
   exports,

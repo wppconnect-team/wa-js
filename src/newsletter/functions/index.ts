@@ -17,4 +17,5 @@
 export { create } from './create';
 export { destroy } from './destroy';
 export { edit } from './edit';
+export { getSubscribers } from './getSubscribers';
 export { mute } from './mute';
