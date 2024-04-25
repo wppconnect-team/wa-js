@@ -75,6 +75,7 @@ export interface AutoDetectMessageOptions extends FileMessageOptions {
 export interface AudioMessageOptions extends FileMessageOptions {
   type: 'audio';
   isPtt?: boolean;
+  isViewOnce?: boolean;
   /**
    * Send an audio message as a PTT with waveform
    *
@@ -128,6 +129,7 @@ export interface VideoMessageOptions
   type: 'video';
   isGif?: boolean;
   isPtv?: boolean;
+  isViewOnce?: boolean;
 }
 
 /**
@@ -266,6 +268,7 @@ export async function sendFileMessage(
 
   if (options.type === 'audio') {
     rawMediaOptions.isPtt = options.isPtt;
+    isViewOnce = options.isViewOnce;
     rawMediaOptions.precomputedFields = await prepareAudioWaveform(
       options as any,
       file
@@ -273,6 +276,7 @@ export async function sendFileMessage(
   } else if (options.type === 'image') {
     isViewOnce = options.isViewOnce;
   } else if (options.type === 'video') {
+    isViewOnce = options.isViewOnce;
     rawMediaOptions.asGif = options.isGif;
   } else if (options.type === 'document') {
     rawMediaOptions.asDocument = true;
