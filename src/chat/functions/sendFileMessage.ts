@@ -268,7 +268,12 @@ export async function sendFileMessage(
 
   if (options.type === 'audio') {
     rawMediaOptions.isPtt = options.isPtt;
-    isViewOnce = options.isViewOnce;
+
+    // Definir isViewOnce apenas se isPtt for true
+    if (options.isPtt) {
+      isViewOnce = options.isViewOnce;
+    }
+
     rawMediaOptions.precomputedFields = await prepareAudioWaveform(
       options as any,
       file
