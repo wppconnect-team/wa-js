@@ -1,9 +1,9 @@
-# 3.2.0 (2024-04-25)
+## 3.2.1 (2024-04-27)
 
 
-### Features
+### Bug Fixes
 
-* Added WPP.newsletter.getSubscribers function ([#1861](https://github.com/wppconnect-team/wa-js/issues/1861)) (close [#1746](https://github.com/wppconnect-team/wa-js/issues/1746)) ([31bdbb5](https://github.com/wppconnect-team/wa-js/commit/31bdbb5ea4aa94183b03ab0f636700d0f677aa08))
+* Fixed send some messages ([#1876](https://github.com/wppconnect-team/wa-js/issues/1876)) ([f063fa3](https://github.com/wppconnect-team/wa-js/commit/f063fa39fb0062c0542ee91f08c59755c91e3b7d))
 
 
 
