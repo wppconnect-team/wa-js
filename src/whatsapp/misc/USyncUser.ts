@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2024 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,24 @@
  * limitations under the License.
  */
 
-export { get } from './get';
-export { getBusinessProfile } from './getBusinessProfile';
-export { getCommonGroups } from './getCommonGroups';
-export { getProfilePictureUrl } from './getProfilePictureUrl';
-export { getStatus } from './getStatus';
-export { isOnWhatsapp } from './isOnWhatsapp';
-export { ContactListOptions, list } from './list';
-export { queryExists } from './queryExists';
+import { exportModule } from '../exportModule';
+
+/**
+ * @whatsapp 459857
+ */
+export declare class USyncUser {
+  constructor();
+  withPhone(a: any): any;
+  withId(a: any): any;
+  withLid(a: any): any;
+  withType(a: any): any;
+  withUsername(a: any): any;
+}
+
+exportModule(
+  exports,
+  {
+    USyncUser: 'USyncUser',
+  },
+  (m) => m.USyncUser
+);

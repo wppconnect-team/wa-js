@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2024 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,17 @@
  * limitations under the License.
  */
 
-export { get } from './get';
-export { getBusinessProfile } from './getBusinessProfile';
-export { getCommonGroups } from './getCommonGroups';
-export { getProfilePictureUrl } from './getProfilePictureUrl';
-export { getStatus } from './getStatus';
-export { isOnWhatsapp } from './isOnWhatsapp';
-export { ContactListOptions, list } from './list';
-export { queryExists } from './queryExists';
+import { exportModule } from '../exportModule';
+
+/**
+ * @whatsapp 469475
+ */
+export declare function isWid(number: string): boolean;
+
+exportModule(
+  exports,
+  {
+    isWid: 'default.isWid',
+  },
+  (m) => m.default.isWid
+);
