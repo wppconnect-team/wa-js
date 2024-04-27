@@ -59,8 +59,14 @@ export interface MessageButtonsOptions {
   /**
    * Set to use template buttons instead of reply buttons.
    * @default: undefined - auto detect
+   * @deprecated
    */
   useTemplateButtons?: boolean | null;
+  /**
+   * Set to use interactive message instead of reply buttons.
+   * @default: undefined - auto detect
+   */
+  useInteractiveMesssage?: boolean | null;
   /**
    * Footer text for buttons
    */
@@ -86,15 +92,17 @@ export function prepareMessageButtons<T extends RawMessage>(
   }
 
   if (
-    typeof options.useTemplateButtons === 'undefined' ||
-    options.useTemplateButtons === null
+    (typeof options.useTemplateButtons === 'undefined' &&
+      typeof options.useInteractiveMesssage === 'undefined') ||
+    (options.useTemplateButtons === null &&
+      options.useInteractiveMesssage === null)
   ) {
-    options.useTemplateButtons = options.buttons.some(
+    options.useInteractiveMesssage = options.buttons.some(
       (button) => 'phoneNumber' in button || 'url' in button
     );
   }
 
-  if (options.useTemplateButtons) {
+  if (options.useTemplateButtons || options.useInteractiveMesssage) {
     if (options.buttons.length === 0 || options.buttons.length > 5) {
       throw 'Buttons options must have between 1 and 5 options';
     }
@@ -107,7 +115,53 @@ export function prepareMessageButtons<T extends RawMessage>(
   message.title = options.title;
   message.footer = options.footer;
 
-  if (options.useTemplateButtons) {
+  if (options.useInteractiveMesssage) {
+    message.interactiveMessage = {
+      header: {
+        title: options.title || ' ',
+        hasMediaAttachment: false,
+      },
+      body: {
+        text: message.body || message.caption || ' ',
+      },
+      footer: {
+        text: options.footer || ' ',
+      },
+      nativeFlowMessage: {
+        buttons: options.buttons.map((button, index) => {
+          if ('phoneNumber' in button) {
+            return {
+              name: 'cta_call',
+              buttonParamsJson: JSON.stringify({
+                display_text: button.text,
+                phone_number: button.phoneNumber,
+              }),
+            };
+          }
+          if ('url' in button) {
+            return {
+              name: 'cta_url',
+              buttonParamsJson: JSON.stringify({
+                display_text: button.text,
+                url: button.url,
+                merchant_url: button.url,
+              }),
+            };
+          }
+          if ('raw' in button) {
+            return button.raw;
+          }
+          return {
+            name: 'quick_reply',
+            buttonParamsJson: JSON.stringify({
+              display_text: button.text,
+              id: button.id || `${index}`,
+            }),
+          };
+        }),
+      },
+    };
+  } else if (options.useTemplateButtons) {
     message.isFromTemplate = true;
 
     message.buttons = new TemplateButtonCollection();
@@ -283,6 +337,35 @@ webpack.onFullReady(() => {
       };
     }
 
+    if (message.interactiveMessage?.nativeFlowMessage?.buttons !== undefined) {
+      const mediaPart = [
+        'documentMessage',
+        'documentWithCaptionMessage',
+        'imageMessage',
+        'locationMessage',
+        'videoMessage',
+      ];
+      for (let part of mediaPart) {
+        if (part in r) {
+          const partName = part;
+          if (part === 'documentWithCaptionMessage') part = 'documentMessage';
+
+          message.interactiveMessage.header = {
+            ...message.interactiveMessage.header,
+            [`${part}`]: r[partName]?.message?.documentMessage || r[partName],
+            hasMediaAttachment: true,
+          };
+          delete r[partName];
+          break;
+        }
+      }
+      delete r.extendedTextMessage;
+      r.viewOnceMessage = {
+        message: {
+          interactiveMessage: message.interactiveMessage,
+        },
+      };
+    }
     return r;
   });
 
@@ -304,6 +387,24 @@ webpack.onFullReady(() => {
 
   wrapModuleFunction(typeAttributeFromProtobuf, (func, ...args) => {
     const [proto] = args;
+
+    if (proto.viewOnceMessage?.interactiveMessage) {
+      const keys = Object.keys(proto.templateMessage?.hydratedTemplate);
+
+      const messagePart = [
+        'documentMessage',
+        'documentWithCaptionMessage',
+        'imageMessage',
+        'locationMessage',
+        'videoMessage',
+      ];
+
+      if (messagePart.some((part) => keys.includes(part))) {
+        return 'media';
+      }
+
+      return 'text';
+    }
     if (proto.templateMessage?.hydratedTemplate) {
       const keys = Object.keys(proto.templateMessage?.hydratedTemplate);
 
