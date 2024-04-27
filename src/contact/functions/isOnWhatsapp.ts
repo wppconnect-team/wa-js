@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
+import { assertWid } from '../../assert';
 import { createWid } from '../../util';
 import { USyncQuery, USyncUser } from '../../whatsapp';
 import { getCurrentLid, isWid } from '../../whatsapp/functions';
+import { QueryExistsResult } from './queryExists';
+
+const cache = new Map<string, QueryExistsResult | null>();
 
 /**
  * Check number is on whatsapp by socket
@@ -29,13 +33,20 @@ import { getCurrentLid, isWid } from '../../whatsapp/functions';
  * ```
  */
 export async function isOnWhatsapp(number: string): Promise<any> {
+  const wid = assertWid(number);
+
+  const id = wid.toString();
+  if (cache.has(id)) {
+    return cache.get(id)!;
+  }
+
   const syncUser = new USyncUser();
   const syncQuery = new USyncQuery();
   syncQuery.withContactProtocol();
-  syncUser.withPhone('+' + number);
-  const f = '+' + number;
-  if (isWid(f)) {
-    const lid = getCurrentLid(createWid(f) as any);
+  syncUser.withPhone('+' + id);
+  const prependedID = '+' + id;
+  if (isWid(prependedID)) {
+    const lid = getCurrentLid(createWid(prependedID) as any);
     lid && syncUser.withLid(lid);
   }
   syncQuery.withUser(syncUser);
@@ -43,10 +54,24 @@ export async function isOnWhatsapp(number: string): Promise<any> {
   syncQuery.withDisappearingModeProtocol();
   //syncQuery.withLidProtocol();
   //syncQuery.withUsernameProtocol();
-  const result = await syncQuery.execute();
-  if (Array.isArray(result.list)) {
-    return result.list[0];
-  } else {
-    return null;
+  const get = await syncQuery.execute();
+  let result = null;
+
+  if (get?.error?.all || get?.error?.contact) {
+    result = null;
   }
+  if (Array.isArray(get.list)) {
+    result = get.list[0];
+  } else {
+    result = null;
+  }
+  cache.set(id, result);
+
+  // Delete from cache after 5min is success or 15s for failure
+  const timeout = result ? 300000 : 15000;
+  setTimeout(() => {
+    cache.delete(id);
+  }, timeout);
+
+  return result;
 }
