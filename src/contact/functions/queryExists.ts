@@ -15,8 +15,7 @@
  */
 
 import { assertWid } from '../../assert';
-import { Wid } from '../../whatsapp';
-import { sendQueryExists } from '../../whatsapp/functions';
+import { USyncQuery, USyncUser, Wid } from '../../whatsapp';
 
 export interface QueryExistsResult {
   wid: Wid;
@@ -39,8 +38,6 @@ export interface QueryExistsResult {
 
 const cache = new Map<string, QueryExistsResult | null>();
 
-let useInternationalMode: boolean | null = null;
-
 /**
  * Check if the number exists and what is correct ID
  *
@@ -60,52 +57,52 @@ export async function queryExists(
   const wid = assertWid(contactId);
 
   const id = wid.toString();
-
   if (cache.has(id)) {
     return cache.get(id)!;
   }
 
-  /**
-   * @whatsapp >= 2.2244.5
-   * Since 2.2244.5 there are a problem with queryExists function,
-   * that not prepend the `+` sign
-   */
-  if (useInternationalMode === null) {
-    const source = sendQueryExists.toString();
-
-    useInternationalMode = !/`\+\$\{\w+\.toString\(\)\}`/.test(source);
+  const syncUser = new USyncUser();
+  const syncQuery = new USyncQuery();
+  const isLid = wid.toString().includes('@lid');
+  if (isLid) {
+    syncUser.withId(wid);
+  } else {
+    syncQuery.withContactProtocol();
+    syncUser.withPhone('+' + id);
   }
+  syncQuery.withUser(syncUser);
+  syncQuery.withBusinessProtocol();
+  syncQuery.withDisappearingModeProtocol();
+  syncQuery.withStatusProtocol();
+  syncQuery.withLidProtocol();
+  const get = await syncQuery.execute();
+  let result = null;
 
-  let result: QueryExistsResult | null = null;
-
-  if (useInternationalMode) {
-    const internationalWid = assertWid(contactId);
-
-    // Make a backup of original method
-    const originalToString = internationalWid.toString;
-
-    // Change 'toString' function without enumerating it
-    Object.defineProperty(internationalWid, 'toString', {
-      configurable: true,
-      enumerable: false,
-      value: () => `+${internationalWid._serialized}`,
-    });
-
-    result = await sendQueryExists(internationalWid).catch(() => null);
-
-    // Restore 'toString' function without enumerating it
-    // Note: using `internationalWid = toString` make it enumerable
-    Object.defineProperty(internationalWid, 'toString', {
-      configurable: true,
-      enumerable: false,
-      value: originalToString,
-    });
+  if (get?.error?.all || get?.error?.contact) {
+    result = null;
   }
-
-  if (!result) {
-    result = await sendQueryExists(wid).catch(() => null);
+  if (Array.isArray(get.list)) {
+    result = get.list[0];
+    if (result?.contact?.type === 'out') {
+      result = null;
+    } else {
+      result = {
+        wid: wid,
+        biz: typeof result.business !== 'undefined',
+        bizInfo: result.business,
+        disappearingMode:
+          typeof result.disappearing_mode !== 'undefined'
+            ? {
+                duration: result.disappearing_mode?.duration,
+                settingTimestamp: result.disappearing_mode?.t,
+              }
+            : undefined,
+        status: result.status,
+      };
+    }
+  } else {
+    result = null;
   }
-
   cache.set(id, result);
 
   // Delete from cache after 5min is success or 15s for failure

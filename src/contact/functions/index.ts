@@ -19,6 +19,5 @@ export { getBusinessProfile } from './getBusinessProfile';
 export { getCommonGroups } from './getCommonGroups';
 export { getProfilePictureUrl } from './getProfilePictureUrl';
 export { getStatus } from './getStatus';
-export { isOnWhatsapp } from './isOnWhatsapp';
 export { ContactListOptions, list } from './list';
 export { queryExists } from './queryExists';
