@@ -38,6 +38,8 @@ export * from './ServerProps';
 export * from './Socket';
 export * from './Stream';
 export * from './UserPrefs';
+export * from './USyncQuery';
+export * from './USyncUser';
 export * from './VCard';
 export * from './Wid';
 export * from './WidFactory';

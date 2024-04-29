@@ -35,6 +35,9 @@ export function createWid(
     return undefined;
   }
 
+  if (/@\w*lid\b/.test(id)) {
+    return WidFactory.createUserWid(id, 'lid');
+  }
   if (/^\d+$/.test(id)) {
     return WidFactory.createUserWid(id, 'c.us');
   }

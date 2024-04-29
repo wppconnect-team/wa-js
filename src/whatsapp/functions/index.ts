@@ -81,6 +81,7 @@ export * from './isAuthenticated';
 export * from './isLegitErrorStack';
 export * from './isRegistered';
 export * from './isUnreadTypeMsg';
+export * from './isWid';
 export * from './joinGroupViaInvite';
 export * from './keepMessage';
 export * from './labelAddAction';
