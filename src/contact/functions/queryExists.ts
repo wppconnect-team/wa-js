@@ -34,6 +34,7 @@ export interface QueryExistsResult {
     duration: number;
     settingTimestamp: number;
   };
+  status?: string;
 }
 
 const cache = new Map<string, QueryExistsResult | null>();
