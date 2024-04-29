@@ -52,6 +52,7 @@ export async function isOnWhatsapp(number: string): Promise<any> {
   syncQuery.withUser(syncUser);
   syncQuery.withBusinessProtocol();
   syncQuery.withDisappearingModeProtocol();
+  syncQuery.withStatusProtocol();
   //syncQuery.withLidProtocol();
   //syncQuery.withUsernameProtocol();
   const get = await syncQuery.execute();
@@ -62,6 +63,23 @@ export async function isOnWhatsapp(number: string): Promise<any> {
   }
   if (Array.isArray(get.list)) {
     result = get.list[0];
+    if (result.contact.type === 'out') {
+      result = null;
+    } else {
+      result = {
+        wid: wid,
+        biz: typeof result.business !== 'undefined',
+        bizInfo: result.business,
+        disappearingMode:
+          typeof result.disappearing_mode !== 'undefined'
+            ? {
+                duration: result.disappearing_mode?.duration,
+                settingTimestamp: result.disappearing_mode?.t,
+              }
+            : undefined,
+        status: result.status,
+      };
+    }
   } else {
     result = null;
   }
