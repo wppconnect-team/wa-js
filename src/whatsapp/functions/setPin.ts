@@ -22,6 +22,7 @@ import { ChatModel } from '../models';
  * @whatsapp 510236 >= 2.2222.8
  * @whatsapp 742348 >= 2.2228.4
  * @whatsapp 456180 >= 2.2230.8
+ * @whatsapp WAWebSetPinChatAction >= 2.3000.x
  */
 export declare function setPin(chat: ChatModel, pin: boolean): Promise<void>;
 
@@ -30,5 +31,5 @@ exportModule(
   {
     setPin: 'setPin',
   },
-  (m) => m.setPin && !m.unpinAll
+  (m) => m.setPin && !m.unpinAll && !m.getPinLimit
 );
