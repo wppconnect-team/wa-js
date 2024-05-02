@@ -21,7 +21,8 @@ import { exportModule } from '../exportModule';
  * @whatsapp 153438
  */
 export declare function queryGroupInviteCode(
-  groupId: Wid
+  groupId: Wid,
+  iAmAdmin: boolean
 ): Promise<{ code: string }>;
 
 exportModule(

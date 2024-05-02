@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { iAmAdmin } from '../../group';
 import * as webpack from '../../webpack';
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
@@ -32,6 +33,9 @@ exportModule(
 
 webpack.injectFallbackModule('sendQueryGroupInviteCode', {
   sendQueryGroupInviteCode: async (groupId: Wid) => {
-    return await queryGroupInviteCode(groupId).then((value) => value.code);
+    const isAdmin = await iAmAdmin(groupId);
+    return await queryGroupInviteCode(groupId, isAdmin).then(
+      (value) => value.code
+    );
   },
 });
