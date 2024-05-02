@@ -26,7 +26,7 @@ export declare function getNumChatsPinned(value: any): any;
 exportModule(
   exports,
   {
-    getNumChatsPinned: 'getNumChatsPinned',
+    getNumChatsPinned: ['getNumChatsPinned', 'getNumConversationsPinned'],
   },
-  (m) => m.getNumChatsPinned
+  (m) => m.getNumChatsPinned || m.getNumConversationsPinned
 );
