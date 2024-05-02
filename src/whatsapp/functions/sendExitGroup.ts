@@ -28,5 +28,5 @@ exportModule(
   {
     sendExitGroup: 'sendExitGroup',
   },
-  (m) => m.sendExitGroup && m.localExitGroup
+  (m) => m.sendExitGroup
 );
