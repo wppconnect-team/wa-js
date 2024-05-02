@@ -87,7 +87,7 @@ export async function queryExists(
       result = null;
     } else {
       result = {
-        wid: wid,
+        wid: result.id,
         biz: typeof result.business !== 'undefined',
         bizInfo: result.business,
         disappearingMode:
