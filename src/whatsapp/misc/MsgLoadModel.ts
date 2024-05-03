@@ -14,36 +14,17 @@
  * limitations under the License.
  */
 
-import { BaseCollection } from '../collections';
-import { exportModule } from '../exportModule';
-import { Model, MsgModel } from '../models';
+import { exportProxyModel } from '../exportModule';
+import { Model } from '../models';
 
 /** @whatsapp 51612
  * @whatsapp 951612 >= 2.2222.8
  */
-export declare class MsgLoadState extends Model {
+export declare class MsgLoadModel extends Model {
   noEarlierMsgs: any;
   isLoadingEarlierMsgs: any;
   isLoadingRecentMsgs: any;
   isLoadingAroundMsgs: any;
   contextLoaded: any;
 }
-
-/** @whatsapp 51612
- * @whatsapp 951612 >= 2.2222.8
- */
-export declare class MsgLoad extends BaseCollection<MsgModel> {
-  msgLoadState: MsgLoadState;
-  loadRecentPromise?: Promise<any>;
-  loadEarlierPromise?: Promise<any>;
-  loadAroundPromise?: Promise<any>;
-}
-
-exportModule(
-  exports,
-  {
-    MsgLoadState: 'MsgLoadState',
-    MsgLoad: 'ChatMsgsCollection',
-  },
-  (m) => m.MsgLoadState
-);
+exportProxyModel(exports, 'MsgLoadModel');
