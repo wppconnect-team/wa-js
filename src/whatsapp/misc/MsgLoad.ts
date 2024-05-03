@@ -28,7 +28,6 @@ export declare class MsgLoadState extends Model {
   isLoadingAroundMsgs: any;
   contextLoaded: any;
 }
-
 /** @whatsapp 51612
  * @whatsapp 951612 >= 2.2222.8
  */
@@ -42,8 +41,7 @@ export declare class MsgLoad extends BaseCollection<MsgModel> {
 exportModule(
   exports,
   {
-    MsgLoadState: 'MsgLoadState',
     MsgLoad: 'ChatMsgsCollection',
   },
-  (m) => m.MsgLoadState
+  (m) => m.ChatMsgsCollection
 );

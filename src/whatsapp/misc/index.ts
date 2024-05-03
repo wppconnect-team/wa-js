@@ -30,7 +30,7 @@ export * from './MediaObjectUtil';
 export * from './MediaPrep';
 export * from './MediaUtils';
 export * from './MsgKey';
-export * from './MsgLoadState';
+export * from './MsgLoad';
 export * from './NetworkStatus';
 export * from './OpaqueData';
 export * from './ProductCatalogSession';
