@@ -29,7 +29,7 @@ export const waVersion = __VERSION__;
  */
 const titleParts = ['W: ', '-', ', WA-JS: ', waVersion];
 
-const mainTracker = new Tracker('G-1FXKRH7KBH');
+const mainTracker = new Tracker('G-MTQ4KY110F');
 
 const otherTracker = config.googleAnalyticsId
   ? new Tracker(config.googleAnalyticsId)
