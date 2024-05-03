@@ -16,14 +16,23 @@
 
 import { BaseCollection } from '../collections';
 import { exportModule } from '../exportModule';
-import { MsgModel } from '../models';
-import { MsgLoadModel } from './MsgLoadModel';
+import { Model, MsgModel } from '../models';
 
 /** @whatsapp 51612
  * @whatsapp 951612 >= 2.2222.8
  */
+export declare class MsgLoadState extends Model {
+  noEarlierMsgs: any;
+  isLoadingEarlierMsgs: any;
+  isLoadingRecentMsgs: any;
+  isLoadingAroundMsgs: any;
+  contextLoaded: any;
+}
+/** @whatsapp 51612
+ * @whatsapp 951612 >= 2.2222.8
+ */
 export declare class MsgLoad extends BaseCollection<MsgModel> {
-  msgLoadState: MsgLoadModel;
+  msgLoadState: MsgLoadState;
   loadRecentPromise?: Promise<any>;
   loadEarlierPromise?: Promise<any>;
   loadAroundPromise?: Promise<any>;

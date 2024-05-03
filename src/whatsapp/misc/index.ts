@@ -31,7 +31,6 @@ export * from './MediaPrep';
 export * from './MediaUtils';
 export * from './MsgKey';
 export * from './MsgLoad';
-export * from './MsgLoadModel';
 export * from './NetworkStatus';
 export * from './OpaqueData';
 export * from './ProductCatalogSession';
