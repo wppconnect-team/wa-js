@@ -42,6 +42,7 @@ const thumbHeight = 100;
 const thumbWidth = 140;
 
 const cache: { [key: string]: any } = {};
+const cacheThumb: { [key: string]: any } = {};
 
 shuffleArray(apiServers);
 
@@ -51,7 +52,7 @@ shuffleArray(apiServers);
 export async function fetchRemoteLinkPreviewData(url: string) {
   if (cache[url]) {
     debug(`Link preview found in the cache`, url);
-    return;
+    return cache[url];
   }
 
   const textDecoder = new TextDecoder();
@@ -97,7 +98,6 @@ export async function fetchRemoteLinkPreviewData(url: string) {
     setTimeout(() => {
       delete cache[url];
     }, 300000); // 5 minutes
-
     return result;
   }
 
@@ -145,6 +145,10 @@ function generateThumbnail(url: string) {
  * Generate the preview link thumbnail data
  */
 export async function generateThumbnailLinkPreviewData(url: string) {
+  if (cacheThumb[url]) {
+    debug(`Thumb for link preview found in cache.`, url);
+    return cacheThumb[url];
+  }
   if (!apiServers[0]) {
     return null;
   }
@@ -204,7 +208,7 @@ export async function generateThumbnailLinkPreviewData(url: string) {
 
   const mediaEntry = mediaData.mediaEntry;
 
-  return {
+  const result = {
     thumbnail,
     thumbnailHQ,
     mediaKey: mediaEntry.mediaKey,
@@ -215,6 +219,13 @@ export async function generateThumbnailLinkPreviewData(url: string) {
     thumbnailWidth: download.width,
     thumbnailHeight: download.height,
   };
+
+  cacheThumb[url] = result;
+
+  setTimeout(() => {
+    delete cacheThumb[url];
+  }, 300000); // 5 minutes
+  return result;
 }
 
 function shuffleArray(array: any[]) {
