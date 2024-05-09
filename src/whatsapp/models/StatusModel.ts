@@ -15,7 +15,7 @@
  */
 
 import { StatusCollection } from '../collections';
-import { exportProxyModel } from '../exportModule';
+import { exportModule } from '../exportModule';
 import { Wid } from '../misc';
 import {
   Model,
@@ -53,4 +53,12 @@ export declare class StatusModel extends Model<StatusCollection> {
   getCollection(): StatusCollection;
 }
 
-exportProxyModel(exports, 'StatusModel');
+//exportProxyModel(exports, 'StatusModel');
+
+exportModule(
+  exports,
+  {
+    StatusModel: ['default'],
+  },
+  (m) => m.default?.prototype.__props.includes('status')
+);

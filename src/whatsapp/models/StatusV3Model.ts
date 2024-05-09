@@ -15,7 +15,7 @@
  */
 
 import { StatusV3Collection } from '../collections';
-import { exportProxyModel } from '../exportModule';
+import { exportModule } from '../exportModule';
 import { Wid } from '../misc';
 import { ModelOptions, ModelPropertiesContructor, ModelProxy } from './Model';
 import { ModelChatBase, PropsChatBase, SessionChatBase } from './ModelChatBase';
@@ -70,5 +70,10 @@ export declare class StatusV3Model extends ModelChatBase {
   removeMsgsCollection(e?: any): any;
   notifyMsgCollectionMerge(e?: any, t?: any, r?: any, a?: any): any;
 }
-
-exportProxyModel(exports, 'StatusV3Model');
+exportModule(
+  exports,
+  {
+    StatusV3Model: ['default'],
+  },
+  (m) => m.default?.prototype.sendReadStatus
+);
