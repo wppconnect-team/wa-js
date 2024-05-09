@@ -220,3 +220,11 @@ exportModule(
   },
   (m) => m.StatusCollection || m.TextStatusCollection
 );
+
+exportModule(
+  exports,
+  {
+    StatusV3Store: ['StatusV3CollectionImpl', 'StatusCollection'],
+  },
+  (m) => m.StatusV3CollectionImpl || m.StatusCollection
+);
