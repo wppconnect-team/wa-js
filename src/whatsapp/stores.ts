@@ -224,7 +224,7 @@ exportModule(
 exportModule(
   exports,
   {
-    StatusV3Store: ['StatusV3CollectionImpl', 'StatusCollection'],
+    StatusV3Store: ['StatusV3Collection', 'StatusCollection'],
   },
   (m) => m.StatusV3CollectionImpl || m.StatusCollection
 );
