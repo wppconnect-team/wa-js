@@ -40,6 +40,6 @@ exportModule(
     msgFindQuery: 'msgFindQuery',
   },
   (m) =>
-    (m.msgFindQuery && m.msgFindByIds) || // @whatsapp < 2.2301.5
-    (m.msgFindQuery && m.getMsgsByMsgKey) // @whatsapp >= 2.2301.5
+    (m.msgFindQuery && m.getMsgsByMsgKey) || // @whatsapp >= 2.2301.5
+    (m.msgFindQuery && m.queryMessageType) // @whatsapp >= 2.3000.1013409128
 );
