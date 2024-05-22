@@ -36,5 +36,9 @@ module.exports = {
       __VERSION__: `'${packageJSON.version}'`,
       __SUPPORTED_WHATSAPP_WEB__: `'${packageJSON.engines['whatsapp-web']}'`,
     }),
+    new webpack.BannerPlugin({
+      banner: '/* WPPConnect v${packageJSON.version} */\n', // Your comment here
+      raw: true
+    })
   ],
 };
