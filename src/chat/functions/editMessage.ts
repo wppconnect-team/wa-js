@@ -16,7 +16,7 @@
 
 import { WPPError } from '../../util';
 import { MsgKey } from '../../whatsapp';
-import { canEditMsg } from '../../whatsapp/functions';
+import { canEditCaption, canEditMsg } from '../../whatsapp/functions';
 import {
   defaultSendMessageOptions,
   LinkPreviewOptions,
@@ -52,7 +52,8 @@ export async function editMessage(
   const msg = await getMessageById(msgId);
 
   const canEdit = canEditMsg(msg);
-  if (!canEdit) {
+  const canEditCaptionMessage = canEditCaption(msg);
+  if (!canEdit && !canEditCaptionMessage) {
     throw new WPPError(`edit_message_error`, `Cannot edit this message`);
   }
 
@@ -61,6 +62,7 @@ export async function editMessage(
     subtype: 'message_edit',
     protocolMessageKey: msg.id,
     body: newText.trim(),
+    caption: newText.trim(),
     editMsgType: msg.type,
   };
 
