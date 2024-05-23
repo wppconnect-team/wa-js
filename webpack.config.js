@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const packageJSON = require('./package.json');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   entry: './src/index.ts',
@@ -28,6 +29,17 @@ module.exports = {
       type: 'global',
     },
   },
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin({
+      terserOptions: {
+        output: {
+          comments: /WA-JS V:/, // Retain the banner comment
+        },
+      },
+      extractComments: false, // Do not extract comments to a separate file
+    })],
+  },
   plugins: [
     new webpack.ProvidePlugin({
       Buffer: ['buffer', 'Buffer'],
@@ -37,7 +49,8 @@ module.exports = {
       __SUPPORTED_WHATSAPP_WEB__: `'${packageJSON.engines['whatsapp-web']}'`,
     }),
     new webpack.BannerPlugin({
-      banner: '/* WA-JS V:${packageJSON.version} */\n',
+      banner: `/*! For license information please see wppconnect-wa.js.LICENSE.txt. WA-JS Version: ${packageJSON.version} */\n`,
+      entryOnly: true,
       raw: true
     })
   ],
