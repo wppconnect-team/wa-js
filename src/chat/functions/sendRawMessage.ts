@@ -123,7 +123,7 @@ export async function sendRawMessage(
     id: message.id.toString(),
     ack: message.ack!,
     ...(message.latestEditMsgKey && {
-      id_latestEditMsgKey: message.latestEditMsgKey._serialized,
+      latestEditMsgKey: { _serialized: message.latestEditMsgKey._serialized },
     }),
     sendMsgResult: result[1]!,
   };
