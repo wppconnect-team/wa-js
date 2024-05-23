@@ -68,13 +68,21 @@ export declare class CmdClass extends EventEmitter {
   ): void;
   sendDeleteMsgs(
     chat: ChatModel,
-    msgs: MsgModel[],
-    clearMedia?: boolean,
-    toastPosition?: any
+    msg: {
+      type: string;
+      list: MsgModel[];
+    },
+    options?: {
+      clearMedia?: boolean;
+      toastPosition?: any;
+    }
   ): void;
   sendRevokeMsgs(
     chat: ChatModel,
-    msgs: MsgModel[],
+    msg: {
+      type: string;
+      list: MsgModel[];
+    },
     options?: {
       clearMedia?: boolean;
       toastPosition?: any;

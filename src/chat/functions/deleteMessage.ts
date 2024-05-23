@@ -15,7 +15,7 @@
  */
 
 import { assertGetChat } from '../../assert';
-import { Cmd, Wid } from '../../whatsapp';
+import { Cmd } from '../../whatsapp';
 import { MSG_TYPE, SendMsgResult } from '../../whatsapp/enums';
 import { getMessageById } from '.';
 
@@ -33,19 +33,18 @@ export interface DeleteMessageReturn {
  * @example
  * ```javascript
  * // Delete a message
- * WPP.chat.deleteMessage('[number]@c.us', 'msgid');
+ * WPP.chat.deleteMessage('msgid');
  * // Delete a list of messages
- * WPP.chat.deleteMessage('[number]@c.us', ['msgid1', 'msgid2]);
+ * WPP.chat.deleteMessage(['msgid1', 'msgid2']);
  * // Delete a message and delete media
- * WPP.chat.deleteMessage('[number]@c.us', 'msgid', true);
+ * WPP.chat.deleteMessage('msgid', true);
  * // Revoke a message
- * WPP.chat.deleteMessage('[number]@c.us', 'msgid', true, true);
+ * WPP.chat.deleteMessage('msgid', true, true);
  * ```
  *
  * @category Message
  */
 export async function deleteMessage(
-  chatId: string | Wid,
   id: string,
   deleteMediaInDevice: boolean,
   revoke: boolean
@@ -56,19 +55,15 @@ export async function deleteMessage(
  * @category Message
  */
 export async function deleteMessage(
-  chatId: string | Wid,
   ids: string[],
   deleteMediaInDevice: boolean,
   revoke: boolean
 ): Promise<DeleteMessageReturn[]>;
 export async function deleteMessage(
-  chatId: string | Wid,
   ids: string | string[],
   deleteMediaInDevice = false,
   revoke = false
 ): Promise<DeleteMessageReturn | DeleteMessageReturn[]> {
-  const chat = assertGetChat(chatId);
-
   let isSingle = false;
 
   if (!Array.isArray(ids)) {
@@ -77,6 +72,8 @@ export async function deleteMessage(
   }
 
   const msgs = await getMessageById(ids);
+  const firstMsg = msgs?.[0] || msgs;
+  const chat = assertGetChat(firstMsg.id.remote._serialized);
 
   const results: any[] = [];
   for (const msg of msgs) {
@@ -94,7 +91,14 @@ export async function deleteMessage(
         (msg as any).__x_isUserCreatedType = true;
       }
 
-      Cmd.sendRevokeMsgs(chat, [msg], { clearMedia: deleteMediaInDevice });
+      Cmd.sendRevokeMsgs(
+        chat,
+        {
+          type: 'message',
+          list: [msg],
+        },
+        { clearMedia: deleteMediaInDevice }
+      );
 
       if (chat.promises.sendRevokeMsgs) {
         const result = await chat.promises.sendRevokeMsgs;
@@ -104,7 +108,14 @@ export async function deleteMessage(
       }
       isRevoked = msg.isRevokedByMe;
     } else {
-      Cmd.sendDeleteMsgs(chat, [msg], deleteMediaInDevice);
+      Cmd.sendDeleteMsgs(
+        chat,
+        {
+          type: 'message',
+          list: [msg],
+        },
+        { clearMedia: deleteMediaInDevice }
+      );
 
       if (chat.promises.sendDeleteMsgs) {
         const result = await chat.promises.sendDeleteMsgs;
