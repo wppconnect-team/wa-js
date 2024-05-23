@@ -97,8 +97,9 @@ export declare interface GroupMetadataModel
 export declare class GroupMetadataModel extends Model {
   idClass: typeof Wid;
   participants: ParticipantCollection;
+  pastParticipants: ParticipantCollection;
   constructor(
-    proterties?: ModelPropertiesContructor<GroupMetadataModel>,
+    properties?: ModelPropertiesContructor<GroupMetadataModel>,
     options?: ModelOptions
   );
   hasUniqueShortNameMention(e?: any): boolean;

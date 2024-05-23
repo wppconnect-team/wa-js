@@ -30,6 +30,7 @@ export { getGroupSizeLimit } from './getGroupSizeLimit';
 export { getInviteCode } from './getInviteCode';
 export { getMembershipRequests } from './getMembershipRequests';
 export { getParticipants } from './getParticipants';
+export { getPastParticipants } from './getPastParticipants';
 export { iAmAdmin } from './iAmAdmin';
 export { iAmMember } from './iAmMember';
 export { iAmRestrictedMember } from './iAmRestrictedMember';
