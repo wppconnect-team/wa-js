@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2024 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,10 +88,11 @@ async function start() {
       };
 
       const module = WPP.webpack.search(
-        (m) =>
-          m.deprecatedSendIq &&
-          m.sendSmaxStanza &&
-          m.deprecatedSendIqWithoutRetry
+        (m) => m.deprecatedSendIq && m.deprecatedSendIqWithoutRetry
+      );
+
+      const sockModule = WPP.webpack.search(
+        (m) => m.sendSmaxStanza && m.sendPing
       );
 
       const deprecatedSendIq = module.deprecatedSendIq;
@@ -102,8 +103,8 @@ async function start() {
         result.then((r: any) => logStanzaOutput(id, serialize(r)));
         return result;
       };
-      const sendSmaxStanza = module.sendSmaxStanza;
-      module.sendSmaxStanza = function (stanzaData: any, ...args: any[]) {
+      const sendSmaxStanza = sockModule.sendSmaxStanza;
+      sockModule.sendSmaxStanza = function (stanzaData: any, ...args: any[]) {
         const id = stanzaData?.attrs?.id || '';
         logStanzaInput(id, serialize(stanzaData));
         const result = sendSmaxStanza(stanzaData, ...args);
