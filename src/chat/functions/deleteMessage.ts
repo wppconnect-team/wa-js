@@ -83,7 +83,7 @@ export async function deleteMessage(
     let sendMsgResult: SendMsgResult = SendMsgResult.ERROR_UNKNOWN;
     let isRevoked = false;
     let isDeleted = false;
-    const isSentByMe = msg.isSentByMe;
+    const isSentByMe = msg.senderObj.isMe;
 
     if (msg.type === MSG_TYPE.REVOKED && revoke) {
       // Message is already revoked
