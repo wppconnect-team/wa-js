@@ -119,6 +119,9 @@ export interface SendMessageOptions {
 
 export interface SendMessageReturn {
   id: string;
+  from?: string;
+  to?: string;
+  latestEditMsgKey?: MsgKey;
   ack: number;
   sendMsgResult: Promise<SendMsgResult>;
 }

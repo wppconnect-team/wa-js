@@ -122,6 +122,15 @@ export async function sendRawMessage(
   return {
     id: message.id.toString(),
     ack: message.ack!,
+    ...(message.latestEditMsgKey && {
+      latestEditMsgKey: message.latestEditMsgKey,
+    }),
+    ...(message.from && {
+      from: message.from.toString(),
+    }),
+    ...(message.to && {
+      to: message.to.toString(),
+    }),
     sendMsgResult: result[1]!,
   };
 }
