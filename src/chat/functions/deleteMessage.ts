@@ -109,7 +109,7 @@ export async function deleteMessage(
           sendMsgResult = result[0];
         }
       }
-      isRevoked = msg.isRevokedByMe;
+      isRevoked = msg.type == 'revoked';
     } else {
       Cmd.sendDeleteMsgs(
         chat,
