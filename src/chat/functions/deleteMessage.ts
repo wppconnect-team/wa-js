@@ -15,7 +15,7 @@
  */
 
 import { assertGetChat } from '../../assert';
-import { Cmd } from '../../whatsapp';
+import { Cmd, Wid } from '../../whatsapp';
 import { MSG_TYPE, SendMsgResult } from '../../whatsapp/enums';
 import { getMessageById } from '.';
 
@@ -33,18 +33,19 @@ export interface DeleteMessageReturn {
  * @example
  * ```javascript
  * // Delete a message
- * WPP.chat.deleteMessage('msgid');
+ * WPP.chat.deleteMessage('[number]@c.us', 'msgid');
  * // Delete a list of messages
- * WPP.chat.deleteMessage(['msgid1', 'msgid2']);
+ * WPP.chat.deleteMessage('[number]@c.us', ['msgid1', 'msgid2]);
  * // Delete a message and delete media
- * WPP.chat.deleteMessage('msgid', true);
+ * WPP.chat.deleteMessage('[number]@c.us', 'msgid', true);
  * // Revoke a message
- * WPP.chat.deleteMessage('msgid', true, true);
+ * WPP.chat.deleteMessage('[number]@c.us', 'msgid', true, true);
  * ```
  *
  * @category Message
  */
 export async function deleteMessage(
+  chatId: string | Wid,
   id: string,
   deleteMediaInDevice: boolean,
   revoke: boolean
@@ -55,15 +56,19 @@ export async function deleteMessage(
  * @category Message
  */
 export async function deleteMessage(
+  chatId: string | Wid,
   ids: string[],
   deleteMediaInDevice: boolean,
   revoke: boolean
 ): Promise<DeleteMessageReturn[]>;
 export async function deleteMessage(
+  chatId: string | Wid,
   ids: string | string[],
   deleteMediaInDevice = false,
   revoke = false
 ): Promise<DeleteMessageReturn | DeleteMessageReturn[]> {
+  const chat = assertGetChat(chatId);
+
   let isSingle = false;
 
   if (!Array.isArray(ids)) {
@@ -72,8 +77,6 @@ export async function deleteMessage(
   }
 
   const msgs = await getMessageById(ids);
-  const firstMsg = msgs?.[0] || msgs;
-  const chat = assertGetChat(firstMsg.id.remote._serialized);
 
   const results: any[] = [];
   for (const msg of msgs) {
