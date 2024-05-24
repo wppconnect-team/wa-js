@@ -119,7 +119,12 @@ export interface SendMessageOptions {
 
 export interface SendMessageReturn {
   id: string;
+  from?: string;
+  to?: string;
   latestEditMsgKey?: {
+    fromMe?: boolean;
+    remote?: string;
+    id?: string;
     _serialized?: string;
   };
   ack: number;
