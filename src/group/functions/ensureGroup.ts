@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2024 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,9 +29,13 @@ export async function ensureGroup(groupId: string | Wid, checkIsAdmin = false) {
     );
   }
 
-  await GroupMetadataStore.find(groupChat.id);
+  const datagroup = await GroupMetadataStore.find(groupChat.id);
 
-  if (checkIsAdmin && !(await iAmAdmin(groupId))) {
+  if (
+    checkIsAdmin &&
+    !(await iAmAdmin(groupId)) &&
+    datagroup.memberAddMode !== 'all_member_add'
+  ) {
     throw new WPPError(
       'group_you_are_not_admin',
       `You are not admin in ${groupChat.id._serialized}`
