@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { compare } from 'compare-versions';
+
 import { assertGetChat } from '../../assert';
 import { Cmd, Wid } from '../../whatsapp';
 import { MSG_TYPE, SendMsgResult } from '../../whatsapp/enums';
@@ -94,14 +96,18 @@ export async function deleteMessage(
         (msg as any).__x_isUserCreatedType = true;
       }
 
-      Cmd.sendRevokeMsgs(
-        chat,
-        {
-          type: 'message',
-          list: [msg],
-        },
-        { clearMedia: deleteMediaInDevice }
-      );
+      if (compare(self.Debug.VERSION, '2.3000.0', '>=')) {
+        Cmd.sendRevokeMsgs(
+          chat,
+          {
+            type: 'message',
+            list: [msg],
+          },
+          { clearMedia: deleteMediaInDevice }
+        );
+      } else {
+        Cmd.sendRevokeMsgs(chat, [msg], { clearMedia: deleteMediaInDevice });
+      }
 
       if (chat.promises.sendRevokeMsgs) {
         const result = await chat.promises.sendRevokeMsgs;
@@ -111,14 +117,18 @@ export async function deleteMessage(
       }
       isRevoked = msg.type == 'revoked';
     } else {
-      Cmd.sendDeleteMsgs(
-        chat,
-        {
-          type: 'message',
-          list: [msg],
-        },
-        { clearMedia: deleteMediaInDevice }
-      );
+      if (compare(self.Debug.VERSION, '2.3000.0', '>=')) {
+        Cmd.sendDeleteMsgs(
+          chat,
+          {
+            type: 'message',
+            list: [msg],
+          },
+          { clearMedia: deleteMediaInDevice }
+        );
+      } else {
+        Cmd.sendDeleteMsgs(chat, [msg], { clearMedia: deleteMediaInDevice });
+      }
 
       if (chat.promises.sendDeleteMsgs) {
         const result = await chat.promises.sendDeleteMsgs;
