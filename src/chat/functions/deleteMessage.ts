@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { compare } from 'compare-versions';
+
 import { assertGetChat } from '../../assert';
 import { Cmd, Wid } from '../../whatsapp';
 import { MSG_TYPE, SendMsgResult } from '../../whatsapp/enums';
@@ -83,7 +85,7 @@ export async function deleteMessage(
     let sendMsgResult: SendMsgResult = SendMsgResult.ERROR_UNKNOWN;
     let isRevoked = false;
     let isDeleted = false;
-    const isSentByMe = msg.isSentByMe;
+    const isSentByMe = msg.senderObj.isMe;
 
     if (msg.type === MSG_TYPE.REVOKED && revoke) {
       // Message is already revoked
@@ -94,7 +96,18 @@ export async function deleteMessage(
         (msg as any).__x_isUserCreatedType = true;
       }
 
-      Cmd.sendRevokeMsgs(chat, [msg], { clearMedia: deleteMediaInDevice });
+      if (compare(self.Debug.VERSION, '2.3000.0', '>=')) {
+        Cmd.sendRevokeMsgs(
+          chat,
+          {
+            type: 'message',
+            list: [msg],
+          },
+          { clearMedia: deleteMediaInDevice }
+        );
+      } else {
+        Cmd.sendRevokeMsgs(chat, [msg], { clearMedia: deleteMediaInDevice });
+      }
 
       if (chat.promises.sendRevokeMsgs) {
         const result = await chat.promises.sendRevokeMsgs;
@@ -102,9 +115,20 @@ export async function deleteMessage(
           sendMsgResult = result[0];
         }
       }
-      isRevoked = msg.isRevokedByMe;
+      isRevoked = msg.type == 'revoked';
     } else {
-      Cmd.sendDeleteMsgs(chat, [msg], deleteMediaInDevice);
+      if (compare(self.Debug.VERSION, '2.3000.0', '>=')) {
+        Cmd.sendDeleteMsgs(
+          chat,
+          {
+            type: 'message',
+            list: [msg],
+          },
+          { clearMedia: deleteMediaInDevice }
+        );
+      } else {
+        Cmd.sendDeleteMsgs(chat, [msg], { clearMedia: deleteMediaInDevice });
+      }
 
       if (chat.promises.sendDeleteMsgs) {
         const result = await chat.promises.sendDeleteMsgs;
