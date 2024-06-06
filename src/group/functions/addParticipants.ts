@@ -34,6 +34,7 @@ const messageCodes: {
   200: 'OK',
   403: "Can't join this group because the number was restricted it.",
   409: "Can't join this group because the number is already a member of it.",
+  421: 'Member not added, awaiting approval!',
 };
 
 /**
