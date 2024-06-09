@@ -124,7 +124,7 @@ export async function deleteMessage(
             type: 'message',
             list: [msg],
           },
-          { clearMedia: deleteMediaInDevice }
+          deleteMediaInDevice
         );
       } else {
         Cmd.sendDeleteMsgs(chat, [msg], { clearMedia: deleteMediaInDevice });
