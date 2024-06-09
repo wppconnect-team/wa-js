@@ -1,9 +1,9 @@
-# 3.3.0 (2024-06-06)
+## 3.3.1 (2024-06-09)
 
 
 ### Bug Fixes
 
-* Fixed send group invite link ([#1991](https://github.com/wppconnect-team/wa-js/issues/1991)) ([1978c5c](https://github.com/wppconnect-team/wa-js/commit/1978c5c7f3d69f8b857ad9e52c317989c81e7d78))
+* Fixed delete messages for me ([5cdf157](https://github.com/wppconnect-team/wa-js/commit/5cdf157ae1c7ad02ff099979cf6a0a949c436ee0))
 
 
 
