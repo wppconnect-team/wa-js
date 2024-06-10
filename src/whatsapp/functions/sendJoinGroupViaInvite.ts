@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { getGroupInfoFromInviteCode, iAmMember } from '../../group';
 import * as webpack from '../../webpack';
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
@@ -37,6 +38,9 @@ exportModule(
  */
 webpack.injectFallbackModule('sendJoinGroupViaInvite', {
   sendJoinGroupViaInvite: async (groupId: Wid) => {
+    const group = await getGroupInfoFromInviteCode(groupId as any);
+    const isMember = await iAmMember(group.id.toString());
+    if (isMember) return group.id;
     return await joinGroupViaInvite(groupId).then((value) => value.gid);
   },
 });
