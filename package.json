@@ -71,7 +71,7 @@
     "node-fetch": "^2.7.0",
     "parse-data-url": "^6.0.0",
     "playwright-chromium": "^1.44.1",
-    "prettier": "^3.3.1",
+    "prettier": "^3.3.2",
     "release-it": "^17.3.0",
     "shx": "^0.3.4",
     "ts-loader": "^9.5.1",
