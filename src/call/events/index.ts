@@ -15,3 +15,4 @@
  */
 
 import './registerIncomingCallEvent';
+import './registerOutcomingCallEvent';
