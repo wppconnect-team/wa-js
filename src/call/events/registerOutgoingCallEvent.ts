@@ -24,7 +24,7 @@ webpack.onInjected(() => register());
 function register() {
   CallStore.on('add', (call: CallModel) => {
     if (call.isGroup) {
-      internalEv.emit('call.outcoming_call', {
+      internalEv.emit('call.outgoing_call', {
         id: call.id,
         isGroup: call.isGroup,
         isVideo: call.isVideo,
@@ -37,7 +37,7 @@ function register() {
 
   CallStore.on('change', (call: CallModel) => {
     if (call.getState() === CALL_STATES.OUTGOING_RING) {
-      internalEv.emit('call.outcoming_call', {
+      internalEv.emit('call.outgoing_call', {
         id: call.id,
         isGroup: call.isGroup,
         isVideo: call.isVideo,

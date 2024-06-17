@@ -56,18 +56,18 @@ export interface CallEventTypes {
     peerJid: Wid;
   };
   /**
-   * Triggered when you a outcoming call
+   * Triggered when you a outgoing call
    *
    * @example
    * ```javascript
-   * WPP.on('call.outcoming_call', (call) => {
+   * WPP.on('call.outgoing_call', (call) => {
    *   // Your code
-   *   //Example: End any outcoming call
+   *   //Example: End any outgoing call
    *   WPP.call.endCall(call.id);
    * });
    * ```
    */
-  'call.outcoming_call': {
+  'call.outgoing_call': {
     /**
      * The call id
      */
