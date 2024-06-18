@@ -19,18 +19,18 @@ import { CallModel, CallStore, websocket } from '../../whatsapp';
 import { CALL_STATES } from '../../whatsapp/enums';
 
 /**
- * End a outgoing call
+ * End a call
  *
  * @example
  * ```javascript
- * // End any outgoing call
+ * // End any call
  * WPP.call.end();
  *
  * // End specific call id
  * WPP.call.end(callId);
  *
- * // End any outgoing call
- * WPP.on('call.outgoing_call', (call) => {
+ * // End any incoming call
+ * WPP.on('call.incoming_call', (call) => {
  *   WPP.call.end(call.id);
  * });
  * ```
@@ -50,7 +50,7 @@ export async function end(callId?: string): Promise<boolean> {
   if (callId) {
     call = CallStore.get(callId);
   } else {
-    // First outgoing ring or call group
+    // First outcoming ring or call group
     call = CallStore.findFirst(
       (c) => callOut.includes(c.getState()) || c.isGroup
     );
@@ -68,8 +68,8 @@ export async function end(callId?: string): Promise<boolean> {
 
   if (!callOut.includes(call.getState()) && !call.isGroup) {
     throw new WPPError(
-      'call_is_not_outgoing_calling',
-      `Call ${callId || '<empty>'} is not outgoing calling`,
+      'call_is_not_outcoming_calling',
+      `Call ${callId || '<empty>'} is not incoming calling`,
       {
         callId,
         state: call.getState(),
