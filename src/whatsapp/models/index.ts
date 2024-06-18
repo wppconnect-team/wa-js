@@ -20,7 +20,6 @@ export * from './BlocklistModel';
 export * from './BusinessCategoriesResultModel';
 export * from './BusinessProfileModel';
 export * from './CallModel';
-export * from './CallParticipantModel';
 export * from './CartItemModel';
 export * from './CartModel';
 export * from './CatalogModel';
