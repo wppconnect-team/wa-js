@@ -29,6 +29,7 @@ export interface ReactionData {
 
 /** @whatsapp 7394
  * @whatsapp 307394 >= 2.2222.8
+ * @whatsapp WAWebReactionsMsgAction >= 2.3000.x
  */
 export declare function createOrUpdateReactions(
   data: ReactionData[]
@@ -37,7 +38,7 @@ export declare function createOrUpdateReactions(
 exportModule(
   exports,
   {
-    createOrUpdateReactions: 'createOrUpdateReactions',
+    createOrUpdateReactions: ['addOrUpdateReactionsModelCollection'],
   },
-  (m) => m.createOrUpdateReactions
+  (m) => m.addOrUpdateReactionsModelCollection
 );

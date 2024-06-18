@@ -23,28 +23,51 @@ import { createOrUpdateReactions } from '../../whatsapp/functions';
 
 webpack.onFullReady(register);
 
-const now = Date.now();
+const reactions: string[] = [];
 
 function register() {
   wrapModuleFunction(createOrUpdateReactions, (func, ...args) => {
-    const [data] = args;
-
-    for (const d of data) {
+    const [data]: any = args;
+    const now = Date.now();
+    if (Array.isArray(data)) {
+      for (const d of data) {
+        try {
+          if ((d as any).t < now) {
+            continue;
+          }
+          internalEv.emitAsync('chat.new_reaction', {
+            id: MsgKey.fromString((d as any).id),
+            orphan: d.orphan,
+            orphanReason: d.orphanReason,
+            msgId: MsgKey.fromString((d as any).reactionParentKey),
+            reactionText: d.reactionText,
+            read: d.read,
+            sender: createWid((d as any).from)!,
+            timestamp: (d as any).t,
+          });
+        } catch (error) {}
+      }
+    } else {
       try {
-        if (d.timestamp < now) {
-          continue;
-        }
+        const inNewReaction = (args as any)[1];
+        if (inNewReaction) {
+          if (reactions[data.msgKey]) return func(...args);
+          reactions[data.msgKey] = data;
 
-        internalEv.emitAsync('chat.new_reaction', {
-          id: MsgKey.fromString(d.msgKey),
-          orphan: d.orphan,
-          orphanReason: d.orphanReason,
-          msgId: MsgKey.fromString(d.parentMsgKey),
-          reactionText: d.reactionText,
-          read: d.read,
-          sender: createWid(d.senderUserJid)!,
-          timestamp: d.timestamp,
-        });
+          internalEv.emitAsync('chat.new_reaction', {
+            id: MsgKey.fromString(data.msgKey),
+            orphan: data.orphan,
+            orphanReason: null,
+            msgId: MsgKey.fromString(data.parentMsgKey),
+            reactionText: data.reactionText,
+            read: data.read,
+            sender: createWid(data.senderUserJid)!,
+            timestamp: data.t,
+          });
+          setTimeout(() => {
+            delete reactions[data.msgKey];
+          }, 10000);
+        }
       } catch (error) {}
     }
 
