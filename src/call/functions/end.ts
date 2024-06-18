@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2024 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,18 +19,18 @@ import { CallModel, CallStore, websocket } from '../../whatsapp';
 import { CALL_STATES } from '../../whatsapp/enums';
 
 /**
- * End a outcoming call
+ * End a outgoing call
  *
  * @example
  * ```javascript
- * // End any outcoming call
+ * // End any outgoing call
  * WPP.call.end();
  *
  * // End specific call id
  * WPP.call.end(callId);
  *
- * // End any outcoming call
- * WPP.on('call.outcoming_call', (call) => {
+ * // End any outgoing call
+ * WPP.on('call.outgoing_call', (call) => {
  *   WPP.call.end(call.id);
  * });
  * ```
@@ -50,7 +50,7 @@ export async function end(callId?: string): Promise<boolean> {
   if (callId) {
     call = CallStore.get(callId);
   } else {
-    // First outcoming ring or call group
+    // First outgoing ring or call group
     call = CallStore.findFirst(
       (c) => callOut.includes(c.getState()) || c.isGroup
     );
@@ -68,8 +68,8 @@ export async function end(callId?: string): Promise<boolean> {
 
   if (!callOut.includes(call.getState()) && !call.isGroup) {
     throw new WPPError(
-      'call_is_not_outcoming_calling',
-      `Call ${callId || '<empty>'} is not outcoming calling`,
+      'call_is_not_outgoing_calling',
+      `Call ${callId || '<empty>'} is not outgoing calling`,
       {
         callId,
         state: call.getState(),

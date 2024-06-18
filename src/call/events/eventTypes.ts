@@ -55,4 +55,42 @@ export interface CallEventTypes {
      */
     peerJid: Wid;
   };
+  /**
+   * Triggered when you a outgoing call
+   *
+   * @example
+   * ```javascript
+   * WPP.on('call.outgoing_call', (call) => {
+   *   // Your code
+   *   //Example: End any outgoing call
+   *   WPP.call.endCall(call.id);
+   * });
+   * ```
+   */
+  'call.outgoing_call': {
+    /**
+     * The call id
+     */
+    id: string;
+    /**
+     * Is a call from a group
+     */
+    isGroup: boolean;
+    /**
+     * Is call with video
+     */
+    isVideo: boolean;
+    /**
+     * timestamp of offer
+     */
+    offerTime: number;
+    /**
+     * Wid of sender without device id
+     */
+    sender: Wid;
+    /**
+     * Wid of sender with device id
+     */
+    peerJid: Wid;
+  };
 }
