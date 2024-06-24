@@ -46,24 +46,24 @@ export interface OrderMessageOptions extends SendMessageOptions {
 }
 
 /**
- * Send a order message
+ * Send a charge message
  * To send (prices, tax, shipping or discount), for example: USD 12.90, send them without dots or commas, like: 12900
  *
  * @example
  * ```javascript
- * // Send Order with a product
- * WPP.chat.sendOrderMessage('[number]@c.us', [
+ * // Send charge with a product
+ * WPP.chat.sendChargeMessage('[number]@c.us', [
  *   { type: 'product', id: '67689897878', qnt: 2 },
  *   { type: 'product', id: '37878774457', qnt: 1 },
  * ]
  *
- * // Send Order with a custom item
- * WPP.chat.sendOrderMessage('[number]@c.us', [
+ * // Send charge with a custom item
+ * WPP.chat.sendChargeMessage('[number]@c.us', [
  *   { type: 'custom', name: 'Item de cost test', price: 120000, qnt: 2 },
  * ]
  *
- * // Send Order with custom options
- * WPP.chat.sendOrderMessage('[number]@c.us', [
+ * // Send charge with custom options
+ * WPP.chat.sendChargeMessage('[number]@c.us', [
  *   { type: 'product', id: '37878774457', qnt: 1 },
  *   { type: 'custom', name: 'Item de cost test', price: 120000, qnt: 2 },
  * ],
@@ -71,7 +71,7 @@ export interface OrderMessageOptions extends SendMessageOptions {
  * ```
  * @category Message
  */
-export async function sendOrderMessage(
+export async function sendChargeMessage(
   chatId: any,
   items: OrderItems[],
   options?: OrderMessageOptions
