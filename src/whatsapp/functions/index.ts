@@ -103,6 +103,7 @@ export * from './profilePic';
 export * from './queryAllGroups';
 export * from './queryGroupInviteCode';
 export * from './queryNewsletterMetadataByJid';
+export * from './queryOrder';
 export * from './randomHex';
 export * from './randomId';
 export * from './resetGroupInviteCode';

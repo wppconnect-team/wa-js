@@ -86,6 +86,7 @@ export {
   OrderMessageOptions,
   sendOrderMessage,
 } from './sendOrderMessage';
+export { sendPixKeyMessage } from './sendPixKeyMessage';
 export { sendRawMessage } from './sendRawMessage';
 export { sendReactionToMessage } from './sendReactionToMessage';
 export {
