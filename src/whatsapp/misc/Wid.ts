@@ -59,6 +59,8 @@ export declare class Wid {
 
   isStatusV3(): boolean;
 
+  isStatus(): boolean;
+
   isUser(): boolean;
 
   isLid(): boolean;
@@ -96,6 +98,8 @@ export declare class Wid {
   static isServer(wid: string | Wid): boolean;
 
   static isStatusV3(wid: string | Wid): boolean;
+
+  static isStatus(wid: string | Wid): boolean;
 
   static isUser(wid: string | Wid): boolean;
 
