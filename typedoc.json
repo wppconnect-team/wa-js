@@ -9,5 +9,5 @@
   "out": "docs",
   "plugin": ["typedoc-plugin-mdn-links"],
   // "theme": "google-tag-manager",
-  "gaID": "G-LTZL26963K"
+  //"gaID": "G-LTZL26963K"
 }

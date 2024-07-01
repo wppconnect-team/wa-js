@@ -59,7 +59,10 @@ export async function getMessageById(
     let msg = MsgStore.get(msgKey);
 
     if (!msg) {
-      if (msgKey.remote.isStatusV3()) {
+      if (
+        msgKey.remote?.toString()?.includes('status@broadcast') ||
+        msgKey.remote?.isStatusV3()
+      ) {
         msg = StatusV3Store.getMyStatus().msgs.get(msgKey);
       } else {
         const chat = assertGetChat(msgKey.remote);

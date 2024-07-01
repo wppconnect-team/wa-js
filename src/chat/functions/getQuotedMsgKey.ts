@@ -37,12 +37,17 @@ export function getQuotedMsgKey(msg: MsgModel): MsgKey {
   const remote = msg.quotedRemoteJid ? msg.quotedRemoteJid : msg.id.remote;
   const fromMe = getMyUserId()?.equals(msg.quotedParticipant) || false;
 
+  const isStatus =
+    typeof Wid.isStatusV3 === 'function'
+      ? Wid.isStatusV3(remote)
+      : Wid.isStatus(remote);
+
   const quotedMsgId = new MsgKey({
     id: msg.quotedStanzaID,
     fromMe: fromMe,
     remote: remote,
     participant:
-      Wid.isGroup(msg.from!) || Wid.isGroup(msg.to!) || Wid.isStatusV3(remote)
+      Wid.isGroup(msg.from!) || Wid.isGroup(msg.to!) || isStatus
         ? msg.quotedParticipant
         : undefined,
   });
