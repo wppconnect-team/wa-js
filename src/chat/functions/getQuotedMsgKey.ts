@@ -37,6 +37,10 @@ export function getQuotedMsgKey(msg: MsgModel): MsgKey {
   const remote = msg.quotedRemoteJid ? msg.quotedRemoteJid : msg.id.remote;
   const fromMe = getMyUserId()?.equals(msg.quotedParticipant) || false;
 
+  if (!Wid.isStatusV3) {
+    Wid.isStatusV3 = () => false;
+  }
+
   const quotedMsgId = new MsgKey({
     id: msg.quotedStanzaID,
     fromMe: fromMe,
