@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { compare } from 'compare-versions';
+
 import * as webpack from '../../webpack';
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
@@ -62,19 +64,42 @@ webpack.injectFallbackModule('sendCreateGroup', {
     ephemeral?: number,
     parentGroup?: Wid
   ) => {
-    return await createGroup(
-      groupName,
-      participants,
-      ephemeral,
-      parentGroup
-    ).then((e) => ({
-      gid: e.wid,
-      participants: e.participants.map((e) => ({
-        userWid: e.wid,
-        code: null != e.error ? e.error.toString() : '200',
-        invite_code: e.invite_code,
-        invite_code_exp: e.invite_code_exp,
-      })),
-    }));
+    if (compare(self.Debug.VERSION, '2.3000.1014489107', '>=')) {
+      return await createGroup(
+        {
+          title: groupName,
+          ephemeralDuration: ephemeral || 0,
+          restrict: true,
+          announce: true,
+          membershipApprovalMode: false,
+          memberAddMode: true,
+          parentGroupId: parentGroup,
+        },
+        participants
+      ).then((e) => ({
+        gid: e.wid,
+        participants: e.participants.map((e) => ({
+          userWid: e.wid,
+          code: null != e.error ? e.error.toString() : '200',
+          invite_code: e.invite_code,
+          invite_code_exp: e.invite_code_exp,
+        })),
+      }));
+    } else {
+      return await createGroup(
+        groupName,
+        participants,
+        ephemeral,
+        parentGroup
+      ).then((e) => ({
+        gid: e.wid,
+        participants: e.participants.map((e) => ({
+          userWid: e.wid,
+          code: null != e.error ? e.error.toString() : '200',
+          invite_code: e.invite_code,
+          invite_code_exp: e.invite_code_exp,
+        })),
+      }));
+    }
   },
 });

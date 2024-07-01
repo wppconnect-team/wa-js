@@ -20,11 +20,34 @@ import { exportModule } from '../exportModule';
 /**
  * @whatsapp 247355
  */
+
+// @deprecated
 export declare function createGroup(
   groupName: string,
   participants: Wid[],
   ephemeral?: number,
   parentGroup?: Wid
+): Promise<{
+  wid: Wid;
+  participants: {
+    wid: Wid;
+    error: string;
+    invite_code: string | null;
+    invite_code_exp: string | null;
+  }[];
+}>;
+
+export declare function createGroup(
+  options: {
+    title: string;
+    ephemeralDuration: number;
+    restrict: boolean;
+    announce: boolean;
+    membershipApprovalMode: boolean;
+    memberAddMode: boolean;
+    parentGroupId?: Wid;
+  },
+  participants: Wid[]
 ): Promise<{
   wid: Wid;
   participants: {
