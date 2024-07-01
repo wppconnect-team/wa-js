@@ -63,10 +63,16 @@ webpack.injectFallbackModule('sendCreateGroup', {
     parentGroup?: Wid
   ) => {
     return await createGroup(
-      groupName,
-      participants,
-      ephemeral,
-      parentGroup
+      {
+        title: groupName,
+        ephemeralDuration: ephemeral || 0,
+        restrict: true,
+        announce: true,
+        membershipApprovalMode: false,
+        memberAddMode: true,
+        parentGroupId: parentGroup,
+      },
+      participants
     ).then((e) => ({
       gid: e.wid,
       participants: e.participants.map((e) => ({
