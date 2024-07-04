@@ -107,6 +107,7 @@ export * from './queryOrder';
 export * from './randomHex';
 export * from './randomId';
 export * from './resetGroupInviteCode';
+export * from './revokeStatus';
 export * from './sendClear';
 export * from './sendCreateCommunity';
 export * from './sendCreateGroup';
