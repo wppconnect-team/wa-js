@@ -18,16 +18,16 @@ import { SendMessageReturn } from '../../chat';
 import { MsgStore, StatusV3Store } from '../../whatsapp';
 
 export function postSendStatus(result: SendMessageReturn): void {
-  result.sendMsgResult.then(() => {
+  result.sendMsgResult.then(async () => {
     const msg = MsgStore.get(result.id);
 
     if (!msg) {
       return;
     }
+    StatusV3Store.addStatusMessages(msg.author as any, [msg]);
 
     // Trigger screen update
     StatusV3Store.handleUpdate(msg.attributes, null, false);
-
     const myStatus = StatusV3Store.getMyStatus();
 
     if (myStatus) {
