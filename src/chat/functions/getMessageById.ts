@@ -57,12 +57,12 @@ export async function getMessageById(
   let msgs: MsgModel[] = [];
   for (const msgKey of msgsKeys) {
     let msg = MsgStore.get(msgKey);
-
+    const isStatus =
+      typeof msgKey.remote?.isStatusV3 == 'function'
+        ? msgKey.remote?.isStatusV3()
+        : msgKey.remote?.toString()?.includes('status@broadcast');
     if (!msg) {
-      if (
-        msgKey.remote?.toString()?.includes('status@broadcast') ||
-        msgKey.remote?.isStatusV3()
-      ) {
+      if (isStatus) {
         msg = StatusV3Store.getMyStatus().msgs.get(msgKey);
       } else {
         const chat = assertGetChat(msgKey.remote);

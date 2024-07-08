@@ -17,15 +17,29 @@
 import Debug from 'debug';
 
 import { assertFindChat, assertGetChat } from '../../assert';
-import { blobToArrayBuffer, getVideoInfoFromBuffer } from '../../util';
+import {
+  blobToArrayBuffer,
+  createWid,
+  getVideoInfoFromBuffer,
+  WPPError,
+} from '../../util';
 import { convertToFile } from '../../util/convertToFile';
 import * as webpack from '../../webpack';
-import { MediaPrep, MsgModel, OpaqueData } from '../../whatsapp';
+import {
+  ChatModel,
+  MediaPrep,
+  MsgKey,
+  MsgModel,
+  OpaqueData,
+  StatusV3Store,
+} from '../../whatsapp';
+import { SendMsgResult } from '../../whatsapp/enums';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   generateVideoThumbsAndDuration,
   isAnimatedWebp,
   processRawSticker,
+  STATUS_JID,
   uploadMedia,
 } from '../../whatsapp/functions';
 import {
@@ -35,6 +49,7 @@ import {
   SendMessageReturn,
 } from '..';
 import {
+  getMessageById,
   markIsRead,
   MessageButtonsOptions,
   prepareMessageButtons,
@@ -242,9 +257,14 @@ export async function sendFileMessage(
     ...options,
   };
 
-  const chat = options.createChat
+  let chat = options.createChat
     ? await assertFindChat(chatId)
     : assertGetChat(chatId);
+  if (chatId?.toString() == 'status@broadcast') {
+    chat = new ChatModel({
+      id: createWid(STATUS_JID),
+    });
+  }
 
   const file = await convertToFile(content, options.mimetype, options.filename);
 
@@ -319,45 +339,93 @@ export async function sendFileMessage(
     caption: options.caption,
     footer: options.footer,
     isViewOnce,
-    productMsgOptions: rawMessage,
+    productMsgOptions: chatId === 'status@broadcast' ? undefined : rawMessage,
+    addEvenWhilePreparing: false,
+    type: rawMessage.type,
   } as any);
-
   // Wait for message register
-  const message = await new Promise<MsgModel>((resolve) => {
-    chat.msgs.on('add', function fn(msg: MsgModel) {
-      if (msg.id === rawMessage.id) {
-        chat.msgs.off('add', fn);
-        resolve(msg);
-      }
+  let message: any = null;
+
+  if (rawMessage.to?.toString() == 'status@broadcast') {
+    message = await new Promise<MsgModel>((resolve) => {
+      StatusV3Store.on(
+        'change:lastReceivedKey',
+        async function fn(chat: ChatModel, msgKey: MsgKey) {
+          if (chat.id.toString() == rawMessage.from?.toString()) {
+            StatusV3Store.off('change:lastReceivedKey', fn);
+            const message = await getMessageById(msgKey);
+            resolve(message);
+          }
+        }
+      );
     });
-  });
+  } else {
+    message = await new Promise<MsgModel>((resolve) => {
+      chat.msgs.on('add', function fn(msg: MsgModel) {
+        if (msg.id === rawMessage.id) {
+          chat.msgs.off('add', fn);
+          resolve(msg);
+        }
+      });
+    });
+  }
+
   debug(`message file ${message.id} queued`);
 
   function uploadStage(mediaData: any, stage: string) {
     debug(`message file ${message.id} is ${stage}`);
   }
-
   message.on('change:mediaData.mediaStage', uploadStage);
 
   sendMsgResult.finally(() => {
     message.off('change:mediaData.mediaStage', uploadStage);
   });
 
-  if (options.waitForAck) {
-    debug(`waiting ack for ${message.id}`);
+  if (chatId !== 'status@broadcast') {
+    if (options.waitForAck) {
+      debug(`waiting ack for ${message.id}`);
 
-    const sendResult = await sendMsgResult;
+      const sendResult = await sendMsgResult;
 
-    debug(
-      `ack received for ${message.id} (ACK: ${message.ack}, SendResult: ${sendResult})`
-    );
+      debug(
+        `ack received for ${message.id} (ACK: ${message.ack}, SendResult: ${sendResult})`
+      );
+    }
+
+    return {
+      id: message.id?.toString(),
+      ack: message.ack!,
+      sendMsgResult,
+    };
+  } else {
+    // Forced a mode to return the ID since sendMediaResult was giving an error when sending with certain parameters.
+    const msg = await new Promise<MsgModel>((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        reject(
+          new WPPError(
+            'timeout_on_send_status',
+            'Timeout for wait response of send media status'
+          )
+        );
+      }, 30000);
+
+      const interval = setInterval(async () => {
+        const get = await getMessageById(message.id);
+        if (get.ack! > 0) {
+          clearInterval(interval);
+          clearTimeout(timeout);
+          resolve(get);
+        }
+      }, 1500);
+    });
+    return {
+      id: msg.id?.toString(),
+      ack: msg.ack!,
+      sendMsgResult: {
+        messageSendResult: SendMsgResult.OK,
+      } as any,
+    };
   }
-
-  return {
-    id: message.id.toString(),
-    ack: message.ack!,
-    sendMsgResult,
-  };
 }
 
 /**

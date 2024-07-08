@@ -17,22 +17,25 @@
 import { assertWid } from '../../assert';
 import * as Chat from '../../chat';
 import * as webpack from '../../webpack';
-import { functions, MsgKey, UserPrefs } from '../../whatsapp';
+import { MsgKey, UserPrefs } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
-  CHAT_JID,
   createMsgProtobuf,
   encryptAndSendMsg,
-  encryptAndSendSenderKeyMsg,
-  GROUP_JID,
+  encryptAndSendStatusMsg,
+  getABPropConfigValue,
+  primaryFeatureEnabled,
   randomHex,
 } from '../../whatsapp/functions';
-import { defaultSendStatusOptions, updateParticipants } from '..';
+import { defaultSendStatusOptions } from '..';
 import { postSendStatus } from './postSendStatus';
 
 export interface SendStatusOptions {
   waitForAck?: boolean;
+  // Only for text status
   messageId?: string | MsgKey;
+  // Only image and video status
+  caption?: string;
 }
 
 export async function sendRawStatus(
@@ -52,7 +55,6 @@ export async function sendRawStatus(
     ...options,
   };
 
-  message.ctwaContext = message.ctwaContext || {};
   message.author = UserPrefs.getMaybeMeUser();
 
   const result = await Chat.sendRawMessage('status@broadcast', message, {
@@ -92,54 +94,47 @@ webpack.onInjected(() => {
 
   // Force to send as group for broadcast list
   wrapModuleFunction(encryptAndSendMsg, async (func, ...args) => {
-    const [, data] = args;
-
-    try {
-      return await func(...args);
-    } catch (error: any) {
-      const to = data.to;
-
-      if (
-        !to?.isStatusV3() ||
-        error.message !== '[messaging] unsupported remote jid type'
-      ) {
-        throw error;
+    const [msg, perf] = args;
+    if (msg.data.to?.toString() == 'status@broadcast') {
+      const proto = createMsgProtobuf(msg.data);
+      try {
+        await encryptAndSendStatusMsg(msg as any, proto, perf);
+        return {
+          t: msg.data.t,
+          sync: null,
+          phash: null,
+          addressingMode: null,
+          count: null,
+          error: null,
+        };
+      } catch (error) {
+        return null;
       }
-
-      if (localStorage.getItem('wpp-status-participants') !== 'custom') {
-        await updateParticipants();
-      }
-
-      const participants = await functions.getParticipants(to);
-
-      if (!participants || participants.participants.length === 0) {
-        throw new Error('empty participants for status@broadcast');
-      }
-
-      await functions.markForgetSenderKey(
-        to,
-        participants.participants.map(assertWid)
-      );
-
-      args[1].to.server = 'g.us';
-
-      return await func(...args);
     }
-  });
-
-  wrapModuleFunction(encryptAndSendSenderKeyMsg, async (func, ...args) => {
-    try {
-      if (args[1].to.user === 'status') {
-        args[1].to.server = 'broadcast';
-      }
-    } catch (error) {}
-
     return await func(...args);
   });
+});
 
-  wrapModuleFunction(GROUP_JID, (func, ...args) => {
-    if (args[0].toString().includes('broadcast')) {
-      return CHAT_JID(...args);
+webpack.onFullReady(() => {
+  // Force to load buttons and post status in whatsapp web
+  wrapModuleFunction(getABPropConfigValue, (func, ...args) => {
+    const [key] = args;
+    switch (key) {
+      case 'web_status_posting_enabled':
+        return 1;
+      case 'post_status_in_companion':
+        return 1;
+    }
+    return func(...args);
+  });
+
+  wrapModuleFunction(primaryFeatureEnabled, (func, ...args) => {
+    const [key] = args;
+    switch (key) {
+      case 'post_status_in_companion':
+        return true;
+      case 'text_status_creation_support':
+        return true;
     }
     return func(...args);
   });
