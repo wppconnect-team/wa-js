@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2024 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,17 @@
  * limitations under the License.
  */
 
-export { get } from './get';
-export { getMyStatus } from './getMyStatus';
-export { remove } from './remove';
-export { ImageStatusOptions, sendImageStatus } from './sendImageStatus';
-export { sendRawStatus, SendStatusOptions } from './sendRawStatus';
-export { sendReadStatus } from './sendReadStatus';
-export { sendTextStatus, TextStatusOptions } from './sendTextStatus';
-export { sendVideoStatus, VideoStatusOptions } from './sendVideoStatus';
-export { updateParticipants } from './updateParticipants';
+import { exportModule } from '../exportModule';
+
+/**
+ * @whatsapp WAWebStatusSendGatingUtils >= 2.3000.0
+ */
+export declare function primaryFeatureEnabled(key: string): boolean;
+
+exportModule(
+  exports,
+  {
+    primaryFeatureEnabled: 'primaryFeatureEnabled',
+  },
+  (m) => m.primaryFeatureEnabled
+);

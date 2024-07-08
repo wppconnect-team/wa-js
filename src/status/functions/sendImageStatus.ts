@@ -19,7 +19,6 @@ import { sendFileMessage } from '../../chat';
 import { MsgKey, UserPrefs } from '../../whatsapp';
 import { randomHex } from '../../whatsapp/functions';
 import { defaultSendStatusOptions } from '..';
-import { postSendStatus } from './postSendStatus';
 import { SendStatusOptions } from './sendRawStatus';
 
 export type ImageStatusOptions = SendStatusOptions;
@@ -54,7 +53,6 @@ export async function sendImageStatus(
     createChat: true,
     type: 'image',
   });
-  postSendStatus(result);
 
   return result;
 }

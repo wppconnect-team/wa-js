@@ -24,7 +24,6 @@ import { SendStatusOptions } from './sendRawStatus';
 export interface TextStatusOptions extends SendStatusOptions {
   font?: TextFontStyle;
   backgroundColor?: string | number;
-  textColor?: string | number; // Work only in APP
 }
 
 /**
@@ -45,14 +44,10 @@ export async function sendTextStatus(
   };
 
   let backgroundColor = assertColor('#000000');
-  let textColor = assertColor('#FFFFFF');
   let font = 0;
 
   if (['number', 'string'].includes(typeof options.backgroundColor)) {
     backgroundColor = assertColor(options.backgroundColor);
-  }
-  if (['number', 'string'].includes(typeof options.textColor)) {
-    textColor = assertColor(options.textColor);
   }
 
   if (options.font && options.font >= 0 && options.font <= 5) {
@@ -62,12 +57,10 @@ export async function sendTextStatus(
   const message: Chat.RawMessage = {
     body: content,
     type: 'chat',
-    ctwaContext: {}, //Force to send font and color
     richPreviewType: 0,
     inviteGrpType: 0,
     font,
     backgroundColor,
-    textColor,
   };
 
   return await sendRawStatus(message, options);
