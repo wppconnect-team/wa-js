@@ -56,6 +56,7 @@ export * from './getCommunityParticipants';
 export * from './getCountryShortcodeByPhone';
 export * from './getCurrentLid';
 export * from './getEphemeralFields';
+export * from './getErrorCodeFromLogoutReason';
 export * from './getFanOutList';
 export * from './getGroupSenderKeyList';
 export * from './getGroupSizeLimit';
