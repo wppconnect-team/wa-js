@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-import './registerAuthCodeChangeEvent';
-import './registerAuthenticatedEvent';
-import './registerLogoutEvent';
-import './registerLogoutReasonEvent';
-import './registerMainInit';
-import './registerMainLoadedEvent';
-import './registerMainReadyEvent';
-import './registerNeedsUpdateEvent';
-import './registerOnlineEvent';
-import './registerQRCodeIdleEvent';
-import './registerRequireAuthEvent';
+import { LOGOUT_REASON_CODE, LogoutReason } from '../enums';
+import { exportModule } from '../exportModule';
+
+/**
+ * @whatsapp WAWebLogoutReason >= 2.3000.x
+ */
+export declare function getErrorCodeFromLogoutReason(
+  type: LogoutReason
+): LOGOUT_REASON_CODE | null;
+
+exportModule(
+  exports,
+  {
+    getErrorCodeFromLogoutReason: 'getErrorCodeFromLogoutReason',
+  },
+  (m) => m.getErrorCodeFromLogoutReason
+);

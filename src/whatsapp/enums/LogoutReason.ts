@@ -19,23 +19,42 @@ import { exportModule } from '../exportModule';
 /** @whatsapp 83578
  * @whatsapp 88950 >= 2.2218.4
  * @whatsapp 788950 >= 2.2222.8
+ * @whatsapp WAWebLogoutReasonConstants >= 2.3000.x
  */
 export declare enum LogoutReason {
-  USER_INITIATED = 'user_initiated',
-  SYNCD_FAILURE = 'syncd_failure',
-  CRITICAL_SYNC_TIMEOUT = 'critical_sync_timeout',
-  UNKNOWN_COMPANION = 'unknown_companion',
-  CLIENT_VERSION_OUTDATED = 'client_version_outdated',
-  SYNCD_ERROR_DURING_BOOTSTRAP = 'syncd_error_during_bootstrap',
-  ACCOUNT_SYNC_ERROR = 'account_sync_error',
-  CLIENT_FATAL_ERROR = 'client_fatal_error',
+  UserInitiated = 'user_initiated',
+  SyncdFailure = 'syncd_failure',
+  InvalidAdvStatus = 'invalid_adv_status',
+  CriticalSyncTimeout = 'critical_sync_timeout',
+  SyncdTimeout = 'syncd_timeout',
+  HistorySyncTimeout = 'history_sync_timeout',
+  AccountSyncTimeout = 'account_sync_timeout',
+  MDOptOut = 'md_opt_out',
+  UnknownCompanion = 'unknown_companion',
+  ClientVersionOutdated = 'client_version_outdated',
+  SyncdErrorDuringBootstrap = 'syncd_error_during_bootstrap',
+  AccountSyncError = 'account_sync_error',
+  ClientFatalError = 'client_fatal_error',
+  StorageQuotaExceeded = 'storage_quota_exceeded',
+  PrimaryIdentityKeyChange = 'primary_identity_key_change',
+  MissingEncSalt = 'missing_enc_salt',
+  MissingScreenLockSalt = 'missing_screen_lock_salt',
+  AccountLocked = 'account_locked',
   UNKNOWN = 'unknown',
+}
+
+export declare enum LOGOUT_REASON_CODE {
+  CLIENT_FATAL = '0',
+  SYNC_FAIL = '1',
+  INITIAL_HISTORY_SYNC_TIMEOUT = '2',
+  ACCOUNT_LOCKED = '3',
 }
 
 exportModule(
   exports,
   {
     LogoutReason: 'LogoutReason',
+    LOGOUT_REASON_CODE: 'LOGOUT_REASON_CODE',
   },
-  (m) => m.LogoutReason
+  (m) => m.LogoutReason && m.LOGOUT_REASON_CODE
 );

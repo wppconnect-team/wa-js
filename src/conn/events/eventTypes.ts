@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { LogoutReason } from '../../whatsapp/enums';
 import { AuthCode } from '../types';
 
 export interface ConnEventTypes {
@@ -30,6 +31,7 @@ export interface ConnEventTypes {
    */
   'conn.authenticated': undefined;
   'conn.logout': undefined;
+  'conn.logout_reason': LogoutReason;
   /**
    * Triggered when the interface is booting
    *
