@@ -27,7 +27,12 @@ import { findChat } from '../../whatsapp/functions';
  */
 export async function find(chatId: string | Wid): Promise<ChatModel> {
   const wid = assertWid(chatId);
-  const chat = await findChat(wid);
+  let chat = null;
+  if (wid.isLid()) {
+    chat = await findChat(wid, 'username_contactless_search');
+  } else {
+    chat = await findChat(wid);
+  }
 
   if (chat.isGroup) {
     await GroupMetadataStore.find(chat.id);

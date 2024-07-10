@@ -14,38 +14,20 @@
  * limitations under the License.
  */
 
-import { Wid } from '..';
-import { LidOriginType } from '../enums';
 import { exportModule } from '../exportModule';
-import { ChatModel } from '../models';
 
-/** @whatsapp 50101
- * @whatsapp 650101 >= 2.2222.8
- * @whatsapp 211739 >= 2.2228.4
- * @whatsapp WAWebFindChatAction >= 2.30000.x
+/** @whatsapp WAWebUsernameTypes => 2.3000.x
  */
-export declare function findChat(
-  wid: Wid,
-  type?:
-    | 'loadLastMessagesFromDb'
-    | 'processPreviewMessageInChat'
-    | 'restoreMessagesForChat'
-    | 'username_contactless_search',
-  extra?: {
-    forceUsync?: boolean;
-    isGroupJoin?: boolean;
-    signal?: {
-      createdLocally?: boolean;
-      notSpam?: boolean;
-      lidOriginType?: LidOriginType;
-    };
-  }
-): Promise<ChatModel>;
+export declare enum LidOriginType {
+  CTWA = 'ctwa',
+  GENERAL = 'general',
+  USERNAME = 'username',
+}
 
 exportModule(
   exports,
   {
-    findChat: 'findChat',
+    LidOriginType: 'LidOriginType',
   },
-  (m) => m.findChat
+  (m) => m.LidOriginType
 );
