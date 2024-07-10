@@ -18,6 +18,7 @@ export * from './ACK';
 export * from './CALL_STATES';
 export * from './GROUP_SETTING_TYPE';
 export * from './KIC_ENTRY_POINT_TYP';
+export * from './LidOriginType';
 export * from './LogoutReason';
 export * from './MSG_TYPE';
 export * from './OUTWARD_TYPES';

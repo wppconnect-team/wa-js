@@ -14,29 +14,20 @@
  * limitations under the License.
  */
 
-import { assertWid } from '../../assert';
-import { ChatModel, GroupMetadataStore, Wid } from '../../whatsapp';
-import { findChat } from '../../whatsapp/functions';
+import { exportModule } from '../exportModule';
 
-/**
- * Find a chat by id
- *
- * This create a new chat if no one was found
- *
- * @category Chat
+/** @whatsapp WAWebUsernameTypes => 2.3000.x
  */
-export async function find(chatId: string | Wid): Promise<ChatModel> {
-  const wid = assertWid(chatId);
-  let chat = null;
-  if (wid.isLid()) {
-    chat = await findChat(wid, 'username_contactless_search');
-  } else {
-    chat = await findChat(wid);
-  }
-
-  if (chat.isGroup) {
-    await GroupMetadataStore.find(chat.id);
-  }
-
-  return chat;
+export declare enum LidOriginType {
+  CTWA = 'ctwa',
+  GENERAL = 'general',
+  USERNAME = 'username',
 }
+
+exportModule(
+  exports,
+  {
+    LidOriginType: 'LidOriginType',
+  },
+  (m) => m.LidOriginType
+);

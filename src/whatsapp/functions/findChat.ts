@@ -15,6 +15,7 @@
  */
 
 import { Wid } from '..';
+import { LidOriginType } from '../enums';
 import { exportModule } from '../exportModule';
 import { ChatModel } from '../models';
 
@@ -22,8 +23,23 @@ import { ChatModel } from '../models';
  * @whatsapp 650101 >= 2.2222.8
  * @whatsapp 211739 >= 2.2228.4
  */
-export declare function findChat(wid: Wid): Promise<ChatModel>;
-
+export declare function findChat(
+  wid: Wid,
+  type?:
+    | 'loadLastMessagesFromDb'
+    | 'processPreviewMessageInChat'
+    | 'restoreMessagesForChat'
+    | 'username_contactless_search',
+  extra?: {
+    forceUsync?: boolean;
+    isGroupJoin?: boolean;
+    signal?: {
+      createdLocally?: boolean;
+      notSpam?: boolean;
+      lidOriginType?: LidOriginType;
+    };
+  }
+): Promise<ChatModel>;
 exportModule(
   exports,
   {
