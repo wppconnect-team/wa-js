@@ -27,7 +27,7 @@ export declare function findChat(wid: Wid): Promise<ChatModel>;
 exportModule(
   exports,
   {
-    findChat: 'findChat',
+    findChat: ['findChat', 'findOrCreateLatestChat'],
   },
-  (m) => m.findChat
+  (m) => m.findChat || m.findOrCreateLatestChat
 );
