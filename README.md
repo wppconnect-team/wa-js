@@ -49,35 +49,52 @@ There are a convection name for some exported modules:
 
 ## Some Available functions
 ### General Functions
-`WPP.conn.connect` - Connect to WhatsApp Web.
-`WPP.conn.isAuthenticated` - Check if the connection is authenticated.
-`WPP.conn.logout` - Logout from WhatsApp Web.
+`WPP.conn.connect` - Connect to WhatsApp Web
+
+`WPP.conn.isAuthenticated` - Check if the connection is authenticated
+
+`WPP.conn.logout` - Logout from WhatsApp Web
 
 ### Chat Functions
-`WPP.chat.sendTextMessage` - Send a text message.
-`WPP.chat.sendImageMessage` - Send an image message.
-`WPP.chat.sendVideoMessage` - Send a video message.
-`WPP.chat.sendFileMessage` - Send a file message.
-`WPP.chat.sendAudioMessage` - Send an audio message.
-`WPP.chat.getChat` - Get chat details.
-`WPP.chat.deleteMessage` - Delete a message.
+`WPP.chat.sendTextMessage` - Send a text message
+
+`WPP.chat.sendImageMessage` - Send an image message
+
+`WPP.chat.sendVideoMessage` - Send a video message
+
+`WPP.chat.sendFileMessage` - Send a file message
+
+`WPP.chat.sendAudioMessage` - Send an audio message
+
+`WPP.chat.getChat` - Get chat details
+
+`WPP.chat.deleteMessage` - Delete a message
 
 ### Contact Functions
-`WPP.contact.getContact` - Get contact details.
-`WPP.contact.blockContact` - Block a contact.
-`WPP.contact.unblockContact` - Unblock a contact.
-`WPP.contact.getAllContacts` - Get all contacts.
+`WPP.contact.getContact` - Get contact details
+
+`WPP.contact.blockContact` - Block a contact
+
+`WPP.contact.unblockContact` - Unblock a contact
+
+`WPP.contact.getAllContacts` - Get all contacts
 
 ### Group Functions
-`WPP.group.createGroup` - Create a new group.
-`WPP.group.addParticipant` - Add a participant to a group.
+`WPP.group.createGroup` - Create a new group
+
+`WPP.group.addParticipant` - Add a participant to a group
+
 `WPP.group.removeParticipant` - Remove a participant from a group.
-`WPP.group.promoteParticipant` - Promote a participant to admin.
+
+`WPP.group.promoteParticipant` - Promote a participant to admin
+
 `WPP.group.demoteParticipant` - Demote a participant from admin.
+
 `WPP.group.getGroupInfo` - Get group information.
 
 ### Events
 `WPP.chat.on('chat.new_message')` - Event to dispatch on receive a new message
+
 To see all events, check: [https://wppconnect.io/wa-js/types/ev.EventTypes.html](https://wppconnect.io/wa-js/types/ev.EventTypes.html)
 
 ## Development
