@@ -49,10 +49,10 @@ jobs:
             let versions = allVersions.filter(
               (v) => semver.satisfies(v, supportedVersion, {includePrerelease: true})
             );
-            versions = versions.map(v => v.split('.').slice(0, -1).join('.') + '.x');
+            versions = versions.map(v => v.split(/^(\d+\.\d+\.\d{5})/).slice(0, -1).join('.') + '.x');
             versions = versions.filter((v,i,a)=>a.indexOf(v)==i);
 
-            return versions.reverse()
+            return versions.reverse();
 
     outputs:
       versions: ${{ steps.versions.outputs.result }}
