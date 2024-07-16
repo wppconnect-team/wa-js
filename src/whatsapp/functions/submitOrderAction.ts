@@ -27,7 +27,7 @@ export declare function submitOrderAction(
 exportModule(
   exports,
   {
-    submitOrderAction: 'default',
+    submitOrderAction: ['default'],
   },
-  (m) => m.default.displayName?.includes('BizSubmitOrderAction')
+  (m) => m.default?.displayName?.includes('BizSubmitOrderAction')
 );
