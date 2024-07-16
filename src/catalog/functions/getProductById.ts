@@ -15,7 +15,6 @@
  */
 
 import { createWid } from '../../util';
-import { ProductModel } from '../../whatsapp';
 import { queryProduct } from '../../whatsapp/functions';
 
 /**
@@ -33,7 +32,30 @@ import { queryProduct } from '../../whatsapp/functions';
 export async function getProductById(
   chatId: string,
   productId: number
-): Promise<ProductModel> {
+): Promise<{
+  id: string;
+  retailer_id: string;
+  name: string;
+  description: string;
+  url: string;
+  currency: string;
+  price: string;
+  is_hidden: boolean;
+  max_available: number;
+  availability: string;
+  checkmark: boolean;
+  image_hashes_for_whatsapp: string[];
+  image_cdn_urls: {
+    key: 'requested' | 'full';
+    value: string;
+  }[];
+  additional_image_cdn_urls: any[];
+  whatsapp_product_can_appeal: boolean;
+  capability_to_review_status: {
+    key: 'WHATSAPP';
+    value: 'APPROVED';
+  }[];
+}> {
   const wid = createWid(chatId);
   const { data } = await queryProduct(wid, productId);
   return data;

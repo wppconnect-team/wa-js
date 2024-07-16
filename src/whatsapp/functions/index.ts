@@ -16,6 +16,7 @@
 
 export * from './addAndSendMessageEdit';
 export * from './addAndSendMsgToChat';
+export * from './addProductToCart';
 export * from './addToLabelCollection';
 export * from './blockContact';
 export * from './calculateFilehashFromBlob';
@@ -131,6 +132,7 @@ export * from './setPushname';
 export * from './status';
 export * from './STATUS_JID';
 export * from './statusEnable';
+export * from './submitOrderAction';
 export * from './syncABPropsTask';
 export * from './typeAttributeFromProtobuf';
 export * from './unixTime';

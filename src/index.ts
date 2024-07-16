@@ -31,6 +31,7 @@ export * as blocklist from './blocklist';
 export * as call from './call';
 export * as catalog from './catalog';
 export * as chat from './chat';
+export * as cart from './cart';
 export * as conn from './conn';
 export * as contact from './contact';
 export * as ev from './eventEmitter';
