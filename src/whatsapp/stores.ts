@@ -216,9 +216,9 @@ exportModule(
 exportModule(
   exports,
   {
-    StatusStore: ['StatusCollectionImpl', 'TextStatusCollection'],
+    StatusStore: 'TextStatusCollection',
   },
-  (m) => m.StatusCollection || m.TextStatusCollection
+  (m) => m.TextStatusCollection
 );
 
 exportModule(
