@@ -16,6 +16,7 @@
 
 export * from './addAndSendMessageEdit';
 export * from './addAndSendMsgToChat';
+export * from './addProductToCart';
 export * from './addToLabelCollection';
 export * from './blockContact';
 export * from './calculateFilehashFromBlob';
@@ -30,6 +31,7 @@ export * from './createFanoutMsgStanza';
 export * from './createGroup';
 export * from './createMsgProtobuf';
 export * from './createNewsletterQuery';
+export * from './createOrder';
 export * from './createOrUpdateReactions';
 export * from './currencyForCountryShortcode';
 export * from './deleteNewsletter';
@@ -135,6 +137,7 @@ export * from './syncABPropsTask';
 export * from './typeAttributeFromProtobuf';
 export * from './unixTime';
 export * from './unmuteNewsletter';
+export * from './updateCart';
 export * from './updateCartEnabled';
 export * from './updateDBForGroupAction';
 export * from './updateNewsletterMsgRecord';
