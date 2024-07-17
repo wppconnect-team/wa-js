@@ -27,7 +27,12 @@
 
 import { createWid, WPPError } from '../../util';
 import { CartStore, ChatStore, MsgModel } from '../../whatsapp';
-import { findChat, submitOrderAction } from '../../whatsapp/functions';
+import {
+  createOrder,
+  findChat,
+  sendOrderChatAction,
+  updateCart,
+} from '../../whatsapp/functions';
 import { clear } from './';
 
 export async function submit(wid: string): Promise<any> {
@@ -41,12 +46,16 @@ export async function submit(wid: string): Promise<any> {
       }
     );
   }
-  const orderId = await submitOrderAction(
+  const chate = await findChat(createWid(wid) as any);
+  const order = await createOrder(chate.id, cart.cartItemCollection.toArray());
+  sendOrderChatAction(chate, order, cart.itemCount, '', cart.message);
+  updateCart(cart);
+  /*const orderId = await submitOrderAction(
     cart,
     (await findChat(createWid(wid) as any)) as any
-  );
+  );*/
   await clear(wid);
-  if (!orderId) {
+  if (!order.id) {
     throw new WPPError(
       'error_send_order_request',
       `Error when sending order request`
@@ -54,7 +63,7 @@ export async function submit(wid: string): Promise<any> {
   }
   const chat = ChatStore.get(wid);
   const msg = (chat?.msgs as any)?._models?.find(
-    (msg: MsgModel) => msg.orderId == orderId
+    (msg: MsgModel) => msg.orderId == order.id
   );
   return msg;
 }

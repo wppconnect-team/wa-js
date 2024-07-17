@@ -15,19 +15,20 @@
  */
 
 import { exportModule } from '../exportModule';
-import { CartModel, ChatModel } from '../models';
+import { Wid } from '../misc';
 
-/** @whatsapp WAWebBizSubmitOrderAction >= 2.3000.0
+/**
+ * @whatsapp 990553
  */
-export declare function submitOrderAction(
-  cart: CartModel,
-  chat: ChatModel
-): any;
+export declare function createOrder(
+  wid: Wid,
+  cartItems?: any
+): Promise<{ id: number }>;
 
 exportModule(
   exports,
   {
-    submitOrderAction: 'default',
+    createOrder: 'createOrder',
   },
-  (m) => m.default?.displayName?.includes('BizSubmitOrderAction')
+  (m) => m.createOrder
 );
