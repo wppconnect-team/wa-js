@@ -15,22 +15,23 @@
  */
 
 /**
- * Send a request order to biz chat
+ * Clear all items of cart
  *
  * @example
  * ```javascript
- * const cart = WPP.cart.submit('[number]@c.us');
+ * const cart = WPP.cart.add('[number]@c.us', [
+ *   { id: 'productId', qnt: 2 },
+ * ]);
  * ```
  *
  * @category Cart
  */
 
-import { createWid, WPPError } from '../../util';
-import { CartStore, ChatStore, MsgModel } from '../../whatsapp';
-import { findChat, submitOrderAction } from '../../whatsapp/functions';
-import { clear } from './';
+import { WPPError } from '../../util';
+import { CartStore } from '../../whatsapp';
+import { updateCart } from '../../whatsapp/functions';
 
-export async function submit(wid: string): Promise<any> {
+export async function clear(wid: string): Promise<void> {
   const cart = CartStore.findCart(wid);
   if (!cart || !cart?.cartItemCollection?.length) {
     throw new WPPError(
@@ -41,20 +42,8 @@ export async function submit(wid: string): Promise<any> {
       }
     );
   }
-  const orderId = await submitOrderAction(
-    cart,
-    (await findChat(createWid(wid) as any)) as any
-  );
-  await clear(wid);
-  if (!orderId) {
-    throw new WPPError(
-      'error_send_order_request',
-      `Error when sending order request`
-    );
-  }
-  const chat = ChatStore.get(wid);
-  const msg = (chat?.msgs as any)?._models?.find(
-    (msg: MsgModel) => msg.orderId == orderId
-  );
-  return msg;
+  cart.cartItemCollection?.reset();
+  cart.set('message', '');
+  cart.trigger('change:cartItemCollection');
+  updateCart(cart);
 }

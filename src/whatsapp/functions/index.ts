@@ -137,6 +137,7 @@ export * from './syncABPropsTask';
 export * from './typeAttributeFromProtobuf';
 export * from './unixTime';
 export * from './unmuteNewsletter';
+export * from './updateCart';
 export * from './updateCartEnabled';
 export * from './updateDBForGroupAction';
 export * from './updateNewsletterMsgRecord';

@@ -15,7 +15,7 @@
  */
 
 import { exportModule } from '../exportModule';
-import { CartModel, ProductModel } from '../models';
+import { ProductModel } from '../models';
 
 export declare function addProductToCart(product: ProductModel): Promise<{
   newCount: number;
@@ -32,8 +32,6 @@ export declare function deleteProductFromCart(
   chatId: string,
   productId: string
 ): Promise<any>;
-
-export declare function clearCart(cart: CartModel): Promise<void>;
 
 exportModule(
   exports,
@@ -57,12 +55,4 @@ exportModule(
     deleteProductFromCart: 'default',
   },
   (m) => m.default?.displayName?.includes('BizDeleteProductFromCartAction')
-);
-
-exportModule(
-  exports,
-  {
-    clearCart: 'default',
-  },
-  (m) => m.default?.displayName?.includes('BizClearCartAction')
 );

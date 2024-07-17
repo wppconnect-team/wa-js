@@ -14,9 +14,18 @@
  * limitations under the License.
  */
 
-export { add } from './add';
-export { clear } from './clear';
-export { get } from './get';
-export { remove } from './remove';
-export { submit } from './submit';
-export { update } from './update';
+import { exportModule } from '../exportModule';
+import { CartModel } from '../models';
+
+/**
+ * @whatsapp 990553
+ */
+export declare function updateCart(cart: CartModel, c?: number): Promise<void>;
+
+exportModule(
+  exports,
+  {
+    updateCart: 'updateCart',
+  },
+  (m) => m.updateCart
+);
