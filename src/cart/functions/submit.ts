@@ -15,7 +15,7 @@
  */
 
 /**
- * Send a request order to biz chat
+ * Send a request order to business chat
  *
  * @example
  * ```javascript
@@ -25,25 +25,32 @@
  * @category Cart
  */
 
-import { createWid, WPPError } from '../../util';
 import {
-  CartStore,
-  ChatStore,
-  MsgKey,
-  MsgModel,
-  UserPrefs,
-} from '../../whatsapp';
-import { ACK } from '../../whatsapp/enums';
+  getMessageById,
+  prepareRawMessage,
+  SendMessageOptions,
+} from '../../chat';
+import { getMyUserId } from '../../conn';
+import { createWid, WPPError } from '../../util';
+import { CartStore } from '../../whatsapp';
 import {
   addAndSendMsgToChat,
   createOrder,
   findChat,
-  unixTime,
   updateCart,
 } from '../../whatsapp/functions';
-import { clear } from './';
+import { clear, getThumbFromCart } from './';
 
-export async function submit(wid: string): Promise<any> {
+export async function submit(
+  wid: string,
+  options?: SendMessageOptions
+): Promise<any> {
+  if (wid.toString() == getMyUserId()?.toString()) {
+    throw new WPPError(
+      'can_not_submit_order_to_yourself',
+      `You can not submit order to yourself`
+    );
+  }
   const cart = CartStore.findCart(wid);
   if (!cart || !cart?.cartItemCollection?.length) {
     throw new WPPError(
@@ -54,46 +61,36 @@ export async function submit(wid: string): Promise<any> {
       }
     );
   }
-  const chate = await findChat(createWid(wid) as any);
-  const order = await createOrder(chate.id, cart.cartItemCollection.toArray());
+  const chat = await findChat(createWid(wid) as any);
+  const order = await createOrder(chat.id, cart.cartItemCollection.toArray());
 
   const totalPrice = order.price?.total;
-  const message = {
-    type: 'order',
-    ack: ACK.CLOCK,
-    from: UserPrefs.getMaybeMeUser(),
-    id: new MsgKey({
-      from: UserPrefs.getMaybeMeUser(),
-      to: chate.id,
-      id: await MsgKey.newId(),
-      participant: void 0,
-      selfDir: 'out',
-    }),
-    local: !0,
-    isNewMsg: !0,
-    t: unixTime(),
-    to: chate.id,
-    orderId: order.id,
-    token: order.token,
-    orderTitle: chate.name || chate.formattedTitle,
-    sellerJid: chate.id.toString({
-      legacy: !0,
-    }),
-    status: 1,
-    messageVersion: 2,
-    thumbnail: '',
-    itemCount: cart.itemCount,
-    message: cart.message,
-    totalAmount1000:
-      totalPrice && totalPrice.length > 0 ? parseInt(totalPrice, 10) : void 0,
-    totalCurrencyCode:
-      order.price.currency && order.price.currency.length > 0
-        ? order.price.currency
-        : 0,
-  };
-  console.log(message);
-  const orderMsg = await addAndSendMsgToChat(chate, message as any);
-  console.log(orderMsg);
+
+  const message = await prepareRawMessage(
+    chat,
+    {
+      type: 'order',
+      orderId: order.id,
+      token: order.token,
+      orderTitle: chat.name || chat.formattedTitle,
+      sellerJid: chat.id.toString({
+        legacy: !0,
+      }),
+      status: 1,
+      messageVersion: 2,
+      thumbnail: await getThumbFromCart(wid),
+      itemCount: cart.itemCount,
+      message: cart.message,
+      totalAmount1000:
+        totalPrice && totalPrice.length > 0 ? parseInt(totalPrice, 10) : void 0,
+      totalCurrencyCode:
+        order.price.currency && order.price.currency.length > 0
+          ? order.price.currency
+          : 0,
+    },
+    options
+  );
+  await addAndSendMsgToChat(chat, message as any);
   updateCart(cart);
   await clear(wid);
   if (!order.id) {
@@ -102,9 +99,5 @@ export async function submit(wid: string): Promise<any> {
       `Error when sending order request`
     );
   }
-  const chat = ChatStore.get(wid);
-  const msg = (chat?.msgs as any)?._models?.find(
-    (msg: MsgModel) => msg.orderId == order.id
-  );
-  return msg;
+  return await getMessageById((message as any).id);
 }

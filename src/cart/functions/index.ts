@@ -17,6 +17,7 @@
 export { add } from './add';
 export { clear } from './clear';
 export { get } from './get';
+export { getThumbFromCart } from './getThumbFromCart';
 export { remove } from './remove';
 export { submit } from './submit';
 export { update } from './update';
