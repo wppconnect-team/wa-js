@@ -26,11 +26,19 @@
  */
 
 import { createWid, WPPError } from '../../util';
-import { CartStore, ChatStore, MsgModel } from '../../whatsapp';
 import {
+  CartStore,
+  ChatStore,
+  MsgKey,
+  MsgModel,
+  UserPrefs,
+} from '../../whatsapp';
+import { ACK } from '../../whatsapp/enums';
+import {
+  addAndSendMsgToChat,
   createOrder,
   findChat,
-  sendOrderChatAction,
+  unixTime,
   updateCart,
 } from '../../whatsapp/functions';
 import { clear } from './';
@@ -48,12 +56,45 @@ export async function submit(wid: string): Promise<any> {
   }
   const chate = await findChat(createWid(wid) as any);
   const order = await createOrder(chate.id, cart.cartItemCollection.toArray());
-  sendOrderChatAction(chate, order, cart.itemCount, '', cart.message);
+
+  const totalPrice = order.price?.total;
+  const message = {
+    type: 'order',
+    ack: ACK.CLOCK,
+    from: UserPrefs.getMaybeMeUser(),
+    id: new MsgKey({
+      from: UserPrefs.getMaybeMeUser(),
+      to: chate.id,
+      id: await MsgKey.newId(),
+      participant: void 0,
+      selfDir: 'out',
+    }),
+    local: !0,
+    isNewMsg: !0,
+    t: unixTime(),
+    to: chate.id,
+    orderId: order.id,
+    token: order.token,
+    orderTitle: chate.name || chate.formattedTitle,
+    sellerJid: chate.id.toString({
+      legacy: !0,
+    }),
+    status: 1,
+    messageVersion: 2,
+    thumbnail: '',
+    itemCount: cart.itemCount,
+    message: cart.message,
+    totalAmount1000:
+      totalPrice && totalPrice.length > 0 ? parseInt(totalPrice, 10) : void 0,
+    totalCurrencyCode:
+      order.price.currency && order.price.currency.length > 0
+        ? order.price.currency
+        : 0,
+  };
+  console.log(message);
+  const orderMsg = await addAndSendMsgToChat(chate, message as any);
+  console.log(orderMsg);
   updateCart(cart);
-  /*const orderId = await submitOrderAction(
-    cart,
-    (await findChat(createWid(wid) as any)) as any
-  );*/
   await clear(wid);
   if (!order.id) {
     throw new WPPError(

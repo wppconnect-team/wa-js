@@ -119,7 +119,6 @@ export * from './sendExitGroup';
 export * from './sendGroupParticipants';
 export * from './sendJoinGroupViaInvite';
 export * from './sendNewsletterMessageJob';
-export * from './sendOrderChatAction';
 export * from './sendPinInChatMsg';
 export * from './sendQueryExists';
 export * from './sendQueryGroupInvite';

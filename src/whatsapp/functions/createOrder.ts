@@ -23,7 +23,7 @@ import { Wid } from '../misc';
 export declare function createOrder(
   wid: Wid,
   cartItems?: any
-): Promise<{ id: number }>;
+): Promise<{ id: number; token: any; price?: any }>;
 
 exportModule(
   exports,
