@@ -48,7 +48,7 @@ export declare class MsgKey {
   /**
    * @whatsapp >= 2.2208.7
    */
-  static newId(): string;
+  static newId(): Promise<string>;
 }
 
 exportModule(
