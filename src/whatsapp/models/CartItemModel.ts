@@ -27,6 +27,7 @@ interface Props {
   id?: any;
   priceAmount1000?: any;
   currency?: any;
+  name?: string;
   quantity?: any;
   imageHash?: any;
   imageCdnUrl?: any;
