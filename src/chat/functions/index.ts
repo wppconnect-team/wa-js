@@ -60,6 +60,11 @@ export {
 export { prepareRawMessage } from './prepareRawMessage';
 export { requestPhoneNumber } from './requestPhoneNumber';
 export {
+  OrderItems,
+  OrderMessageOptions,
+  sendChargeMessage,
+} from './sendChargeMessage';
+export {
   PoolMessageOptions,
   sendCreatePollMessage,
 } from './sendCreatePollMessage';
@@ -82,11 +87,6 @@ export {
   LocationMessageOptions,
   sendLocationMessage,
 } from './sendLocationMessage';
-export {
-  OrderItems,
-  OrderMessageOptions,
-  sendOrderMessage,
-} from './sendOrderMessage';
 export { sendPixKeyMessage } from './sendPixKeyMessage';
 export { sendRawMessage } from './sendRawMessage';
 export { sendReactionToMessage } from './sendReactionToMessage';
