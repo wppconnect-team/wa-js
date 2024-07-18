@@ -91,7 +91,7 @@ export async function deleteMessage(
       // Message is already revoked
       sendMsgResult = SendMsgResult.ERROR_UNKNOWN;
       isRevoked = true;
-    } else if (revoke) {
+    } else if (revoke && isSentByMe) {
       if (msg.type === 'list') {
         (msg as any).__x_isUserCreatedType = true;
       }
