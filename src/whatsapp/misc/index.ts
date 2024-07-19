@@ -18,6 +18,7 @@ export * from './Base64';
 export * from './Browser';
 export * from './ChatPresence';
 export * from './Cmd';
+export * from './ComposeBoxActions';
 export * from './Conn';
 export * from './Constants';
 export * from './EventEmitter';
