@@ -99,5 +99,6 @@ export {
   sendVCardContactMessage,
   VCardContact,
 } from './sendVCardContactMessage';
+export { setInputText } from './setInputText';
 export { starMessage, StarMessageReturn } from './starMessage';
 export { unmute } from './unmute';
