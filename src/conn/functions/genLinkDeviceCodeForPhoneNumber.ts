@@ -50,7 +50,6 @@ export async function genLinkDeviceCodeForPhoneNumber(
   }
 
   await functions.initializeAltDeviceLinking();
-  console.log(phone, sendPushNotification);
   return await functions.genLinkDeviceCodeForPhoneNumber(
     phone,
     sendPushNotification
