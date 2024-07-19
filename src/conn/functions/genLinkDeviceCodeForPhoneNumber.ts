@@ -36,6 +36,12 @@ export async function genLinkDeviceCodeForPhoneNumber(
   phone: string,
   sendPushNotification = true
 ): Promise<string> {
+  if (!phone || typeof phone !== 'string') {
+    throw new WPPError(
+      'send_the_phone_number_to_connect',
+      "Can't get code for without phone number param"
+    );
+  }
   if (isAuthenticated()) {
     throw new WPPError(
       'cannot_get_code_for_already_authenticated',
@@ -44,7 +50,7 @@ export async function genLinkDeviceCodeForPhoneNumber(
   }
 
   await functions.initializeAltDeviceLinking();
-
+  console.log(phone, sendPushNotification);
   return await functions.genLinkDeviceCodeForPhoneNumber(
     phone,
     sendPushNotification
