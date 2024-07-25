@@ -38,10 +38,10 @@
  * @category Privacy
  */
 
+import { PrivacyDisallowedListType } from '../../enums';
 import { WPPError } from '../../util';
 import {
   getUserPrivacySettings,
-  PrivacyDisallowedListType,
   setPrivacyForOneCategory,
 } from '../../whatsapp/functions';
 import { prepareDisallowedList } from './prepareDisallowedList';

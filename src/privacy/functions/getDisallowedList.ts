@@ -36,11 +36,9 @@
  * @category Privacy
  */
 
+import { PrivacyDisallowedListType } from '../../enums';
 import { WPPError } from '../../util';
-import {
-  getPrivacyDisallowedListTable,
-  PrivacyDisallowedListType,
-} from '../../whatsapp/functions';
+import { getPrivacyDisallowedListTable } from '../../whatsapp/functions';
 
 export async function getDisallowedList(
   type: PrivacyDisallowedListType

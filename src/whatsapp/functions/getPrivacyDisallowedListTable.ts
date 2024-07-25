@@ -16,18 +16,11 @@
 
 import { exportModule } from '../exportModule';
 
-export enum PrivacyDisallowedListType {
-  About = 'status',
-  GroupAdd = 'groupadd',
-  LastSeen = 'last',
-  ProfilePicture = 'profile',
-}
-
 declare class DisallowedListTable {
-  get(type: PrivacyDisallowedListType): Promise<{
+  get(type: 'status' | 'groupadd' | 'last' | 'profile'): Promise<{
     dhash: number;
     disallowedList: string[];
-    id: PrivacyDisallowedListType;
+    id: 'status' | 'groupadd' | 'last' | 'profile';
   } | null>;
 }
 

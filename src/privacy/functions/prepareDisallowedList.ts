@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
+import { PrivacyDisallowedListType } from '../../enums';
 import { WPPError } from '../../util';
 import { Wid } from '../../whatsapp';
-import {
-  getPrivacyDisallowedListTable,
-  PrivacyDisallowedListType,
-} from '../../whatsapp/functions';
+import { getPrivacyDisallowedListTable } from '../../whatsapp/functions';
 
 export async function prepareDisallowedList(
   type: PrivacyDisallowedListType,
