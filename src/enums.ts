@@ -22,3 +22,10 @@ export enum TextFontStyle {
   BEBASNEUE_REGULAR = 4,
   OSWALD_HEAVY = 5,
 }
+
+export enum PrivacyDisallowedListType {
+  About = 'status',
+  GroupAdd = 'groupadd',
+  LastSeen = 'last',
+  ProfilePicture = 'profile',
+}
