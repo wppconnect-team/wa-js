@@ -30,6 +30,7 @@ export { config, Config } from './config';
 export * as blocklist from './blocklist';
 export * as call from './call';
 export * as cart from './cart';
+export * as privacy from './privacy';
 export * as catalog from './catalog';
 export * as chat from './chat';
 export * as conn from './conn';
