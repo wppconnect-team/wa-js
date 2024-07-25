@@ -18,13 +18,24 @@ import { exportModule } from '../exportModule';
 
 /**
  * @whatsapp 135963 >= 2.2310.5
+ * @whatsapp WAWebUserPrefsGeneral >= 2.3000.0
  */
 export declare function getPushname(): string;
+export declare function getUserPrivacySettings(): {
+  about: string;
+  callAdd: string;
+  groupAdd: string;
+  lastSeen: string;
+  online: string;
+  profilePicture: string;
+  readReceipts: string;
+};
 
 exportModule(
   exports,
   {
     getPushname: 'getPushname',
+    getUserPrivacySettings: 'getUserPrivacySettings',
   },
-  (m) => m.getPushname && m.setBrowserId
+  (m) => m.getPushname && m.setBrowserId && m.getUserPrivacySettings
 );
