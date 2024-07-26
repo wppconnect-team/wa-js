@@ -26,9 +26,12 @@
  * @category Privacy
  */
 
-import { getUserPrivacySettings } from '../../whatsapp/functions';
+import {
+  getStatusPrivacySetting,
+  getUserPrivacySettings,
+} from '../../whatsapp/functions';
 
-export function get(): {
+export async function get(): Promise<{
   about: string;
   callAdd: string;
   groupAdd: string;
@@ -36,6 +39,10 @@ export function get(): {
   online: string;
   profilePicture: string;
   readReceipts: string;
-} {
-  return getUserPrivacySettings();
+  status: string;
+}> {
+  return {
+    ...getUserPrivacySettings(),
+    ...{ status: await getStatusPrivacySetting() },
+  };
 }
