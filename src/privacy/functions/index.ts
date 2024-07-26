@@ -22,3 +22,4 @@ export { setLastSeen } from './setLastSeen';
 export { setOnline } from './setOnline';
 export { setProfilePic } from './setProfilePic';
 export { setReadReceipts } from './setReadReceipts';
+export { setStatus } from './setStatus';
