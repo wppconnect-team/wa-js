@@ -462,7 +462,8 @@ webpack.onFullReady(() => {
       return node;
     }
 
-    const content = node.content as websocket.WapNode[];
+    const content =
+      (node.content as websocket.WapNode[]) || (node as any).stanza.content;
 
     let bizNode = content.find((c) => c.tag === 'biz');
 
