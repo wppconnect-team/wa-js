@@ -22,3 +22,4 @@ export { removeMyProfilePicture } from './removeMyProfilePicture';
 export { setMyProfileName } from './setMyProfileName';
 export { setMyProfilePicture } from './setMyProfilePicture';
 export { setMyStatus } from './setMyStatus';
+export { setUsername } from './setUsername';
