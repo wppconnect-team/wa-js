@@ -74,6 +74,7 @@ export * from './getPushname';
 export * from './getQuotedMsgObj';
 export * from './getReactions';
 export * from './getSearchContext';
+export * from './getStatusList';
 export * from './getTableVotes';
 export * from './getVotes';
 export * from './getWhatsAppWebExternalBetaJoinedIdb';
