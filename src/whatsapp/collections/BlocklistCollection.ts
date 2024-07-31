@@ -29,7 +29,7 @@ export declare class BlocklistCollection extends Collection<BlocklistModel> {
 exportModule(
   exports,
   {
-    BlocklistCollection: 'BlocklistCollectionImpl',
+    BlocklistCollection: ['BlocklistCollectionImpl', 'BlocklistCollection'],
   },
-  (m) => m.BlocklistCollectionImpl
+  (m) => m.BlocklistCollectionImpl || m.BlocklistCollection
 );

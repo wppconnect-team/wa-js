@@ -24,7 +24,7 @@ export declare function isLegitErrorStack(): boolean;
 exportModule(
   exports,
   {
-    isLegitErrorStack: 'isLegitErrorStack',
+    isLegitErrorStack: ['isLegitErrorStack', 'isOfficialClient'],
   },
-  (m) => m.isLegitErrorStack
+  (m) => m.isLegitErrorStack || m.isOfficialClient
 );

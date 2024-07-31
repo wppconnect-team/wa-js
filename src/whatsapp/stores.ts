@@ -228,3 +228,19 @@ exportModule(
   },
   (m) => m.StatusV3CollectionImpl || m.StatusCollection
 );
+
+exportModule(
+  exports,
+  {
+    BlocklistStore: ['default', 'BlocklistCollection'],
+  },
+  (m) => m.BlocklistCollection
+);
+
+exportModule(
+  exports,
+  {
+    PresenceStore: ['PresenceCollectionImpl', 'PresenceCollection'],
+  },
+  (m) => m.PresenceCollectionImpl || m.PresenceCollection
+);
