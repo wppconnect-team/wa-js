@@ -88,8 +88,7 @@ export declare class ConnModel extends Model {
 
 exportModule(
   exports,
-  {
-    ConnModel: 'ConnImpl1',
-  },
-  (m) => m.ConnImpl1
+  { Conn: 'Conn' },
+  (m) => (m.Conn && m.ConnImpl1) || (m.Conn && m.ConnImpl) || m.Conn
+);
 );

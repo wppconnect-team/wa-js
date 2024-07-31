@@ -30,6 +30,6 @@ export declare class CartCollection extends Collection<CartModel> {
 }
 exportModule(
   exports,
-  { CartCollection: 'CartCollectionImpl' },
-  (m) => m.CartCollectionImpl
+  { CartCollection: ['CartCollectionImpl', 'CartCollection'] },
+  (m) => m.CartCollectionImpl || m.CartCollection
 );

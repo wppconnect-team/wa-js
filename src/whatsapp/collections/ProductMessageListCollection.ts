@@ -27,7 +27,10 @@ export declare class ProductMessageListCollection extends Collection<ProductMess
 exportModule(
   exports,
   {
-    ProductMessageListCollection: 'ProductMessageListCollectionImpl',
+    ProductMessageListCollection: [
+      'ProductMessageListCollectionImpl',
+      'ProductMessageListCollection',
+    ],
   },
-  (m) => m.ProductMessageListCollectionImpl
+  (m) => m.ProductMessageListCollectionImpl || m.ProductMessageListCollection
 );

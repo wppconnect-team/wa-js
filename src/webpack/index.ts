@@ -348,6 +348,7 @@ export function search<T = any>(
   condition: SearchModuleCondition,
   reverse = false
 ): T | null {
+  console.log(condition);
   const moduleId = searchId(condition, reverse);
 
   if (!moduleId) {

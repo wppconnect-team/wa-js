@@ -31,7 +31,10 @@ export declare class EmojiVariantCollection extends Collection<EmojiVariantModel
 exportModule(
   exports,
   {
-    EmojiVariantCollection: 'EmojiVariantCollectionImpl',
+    EmojiVariantCollection: [
+      'EmojiVariantCollectionImpl',
+      'EmojiVariantCollection',
+    ],
   },
-  (m) => m.EmojiVariantCollectionImpl
+  (m) => m.EmojiVariantCollectionImpl || m.EmojiVariantCollection
 );

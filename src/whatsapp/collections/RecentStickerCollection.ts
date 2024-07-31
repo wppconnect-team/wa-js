@@ -32,7 +32,10 @@ export declare class RecentStickerCollection extends Collection<StickerModel> {
 exportModule(
   exports,
   {
-    RecentStickerCollection: 'RecentStickerCollectionImpl',
+    RecentStickerCollection: [
+      'RecentStickerCollectionImpl',
+      'RecentStickerCollection',
+    ],
   },
-  (m) => m.RecentStickerCollectionImpl
+  (m) => m.RecentStickerCollectionImpl || m.RecentStickerCollection
 );
