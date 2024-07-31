@@ -91,4 +91,3 @@ exportModule(
   { Conn: 'Conn' },
   (m) => (m.Conn && m.ConnImpl1) || (m.Conn && m.ConnImpl) || m.Conn
 );
-);
