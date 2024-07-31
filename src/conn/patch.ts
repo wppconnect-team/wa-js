@@ -16,8 +16,8 @@
 
 import * as webpack from '../webpack';
 import { IsOfficialClient } from '../whatsapp';
-import { wrapModuleFunction } from '../whatsapp/exportModule';
-import { isLegitErrorStack } from '../whatsapp/functions';
+//import { wrapModuleFunction } from '../whatsapp/exportModule';
+//import { isLegitErrorStack } from '../whatsapp/functions';
 
 webpack.onInjected(() => {
   /**
@@ -26,8 +26,11 @@ webpack.onInjected(() => {
   IsOfficialClient.isOfficialClient = true;
 });
 
+/*
+// Commented for >= 2.3000.1015x run, i will fix soon
 webpack.onFullReady(() => {
   wrapModuleFunction(isLegitErrorStack, () => {
     return true;
   });
 }, 1000);
+*/

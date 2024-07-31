@@ -338,3 +338,14 @@ exportModule(
   },
   (m) => m.StickerSearchCollectionImpl || m.StickerSearchCollection
 );
+
+exportModule(
+  exports,
+  {
+    BusinessProfileStore: [
+      'BusinessProfileCollectionImpl',
+      'BusinessProfileCollection',
+    ],
+  },
+  (m) => m.BusinessProfileCollectionImpl || m.BusinessProfileCollection
+);
