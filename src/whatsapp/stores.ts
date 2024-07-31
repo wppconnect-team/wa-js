@@ -244,3 +244,97 @@ exportModule(
   },
   (m) => m.PresenceCollectionImpl || m.PresenceCollection
 );
+
+exportModule(
+  exports,
+  {
+    CartStore: ['CartCollectionImpl', 'CartCollection'],
+  },
+  (m) => m.CartCollectionImpl || m.CartCollection
+);
+
+exportModule(
+  exports,
+  {
+    CatalogStore: ['CatalogCollectionImpl', 'CatalogCollection'],
+  },
+  (m) => m.CatalogCollectionImpl || m.CatalogCollection
+);
+
+exportModule(
+  exports,
+  {
+    EmojiVariantStore: ['EmojiVariantCollectionImpl', 'EmojiVariantCollection'],
+  },
+  (m) => m.EmojiVariantCollectionImpl || m.EmojiVariantCollection
+);
+
+exportModule(
+  exports,
+  {
+    LabelStore: ['LabelCollectionImpl', 'LabelCollection'],
+  },
+  (m) => m.LabelCollectionImpl || m.LabelCollection
+);
+
+exportModule(
+  exports,
+  {
+    MsgInfoStore: ['MsgInfoCollectionImpl', 'MsgInfoCollection'],
+  },
+  (m) => m.MsgInfoCollectionImpl || m.MsgInfoCollection
+);
+
+exportModule(
+  exports,
+  {
+    MuteStore: ['MuteCollectionImpl', 'MuteCollection'],
+  },
+  (m) => m.MuteCollectionImpl || m.MuteCollection
+);
+
+exportModule(
+  exports,
+  {
+    OrderStore: ['OrderCollectionImpl', 'OrderCollection'],
+  },
+  (m) => m.OrderCollectionImpl || m.OrderCollection
+);
+
+exportModule(
+  exports,
+  {
+    PinInChatStore: ['PinInChatCollectionImpl', 'PinInChatCollection'],
+  },
+  (m) => m.PinInChatCollectionImpl || m.PinInChatCollection
+);
+
+exportModule(
+  exports,
+  {
+    ProductMessageListStore: [
+      'ProductMessageListCollectionImpl',
+      'ProductMessageListCollection',
+    ],
+  },
+  (m) => m.ProductMessageListCollectionImpl || m.ProductMessageListCollection
+);
+
+exportModule(
+  exports,
+  {
+    RecentEmojiStore: ['RecentEmojiCollectionImpl', 'RecentEmojiCollection'],
+  },
+  (m) => m.RecentEmojiCollectionImpl || m.RecentEmojiCollection
+);
+
+exportModule(
+  exports,
+  {
+    StickerSearchStore: [
+      'StickerSearchCollectionImpl',
+      'StickerSearchCollection',
+    ],
+  },
+  (m) => m.StickerSearchCollectionImpl || m.StickerSearchCollection
+);

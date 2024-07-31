@@ -33,7 +33,10 @@ export declare class RecentEmojiCollection extends Collection<RecentEmojiModel> 
 exportModule(
   exports,
   {
-    RecentEmojiCollection: 'RecentEmojiCollectionImpl',
+    RecentEmojiCollection: [
+      'RecentEmojiCollectionImpl',
+      'RecentEmojiCollection',
+    ],
   },
-  (m) => m.RecentEmojiCollectionImpl
+  (m) => m.RecentEmojiCollectionImpl || m.RecentEmojiCollection
 );

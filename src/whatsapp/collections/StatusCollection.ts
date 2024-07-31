@@ -33,7 +33,7 @@ export declare class StatusCollection extends BaseCollection<StatusModel> {
 exportModule(
   exports,
   {
-    StatusCollection: 'TextStatusCollectionImpl',
+    StatusCollection: ['TextStatusCollectionImpl', 'TextStatusCollection'],
   },
-  (m) => m.TextStatusCollectionImpl
+  (m) => m.TextStatusCollectionImpl || m.TextStatusCollection
 );

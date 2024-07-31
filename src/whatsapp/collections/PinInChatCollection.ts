@@ -32,6 +32,6 @@ export declare class PinInChatCollection extends Collection<PinInChatModel> {
 }
 exportModule(
   exports,
-  { PinInChatCollection: 'PinInChatCollectionImpl' },
-  (m) => m.PinInChatCollectionImpl
+  { PinInChatCollection: ['PinInChatCollectionImpl', 'PinInChatCollection'] },
+  (m) => m.PinInChatCollectionImpl || m.PinInChatCollection
 );
