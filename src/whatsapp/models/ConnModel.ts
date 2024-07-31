@@ -89,7 +89,7 @@ export declare class ConnModel extends Model {
 exportModule(
   exports,
   {
-    ConnModel: 'ConnImpl',
+    ConnModel: 'ConnImpl1',
   },
-  (m) => m.ConnImpl
+  (m) => m.ConnImpl1
 );

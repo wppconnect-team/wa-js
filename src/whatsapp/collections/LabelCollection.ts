@@ -43,6 +43,6 @@ export declare class LabelCollection extends BaseCollection<LabelModel> {
 }
 exportModule(
   exports,
-  { LabelCollection: 'LabelCollectionImpl' },
-  (m) => m.LabelCollectionImpl
+  { LabelCollection: ['LabelCollection', 'LabelCollectionImpl'] },
+  (m) => m.LabelCollection || m.LabelCollectionImpl
 );
