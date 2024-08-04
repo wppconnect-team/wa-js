@@ -79,7 +79,7 @@
     "ts-morph": "^23.0.0",
     "ts-node": "^10.9.2",
     "typedoc": "^0.26.5",
-    "typedoc-plugin-mdn-links": "^3.2.6",
+    "typedoc-plugin-mdn-links": "^3.2.7",
     "typedoc-plugin-missing-exports": "^3.0.0",
     "typescript": "^5.5.4",
     "typescript-debounce-decorator": "^0.0.18",
