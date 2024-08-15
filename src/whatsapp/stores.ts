@@ -349,3 +349,14 @@ exportModule(
   },
   (m) => m.BusinessProfileCollectionImpl || m.BusinessProfileCollection
 );
+
+exportModule(
+  exports,
+  {
+    ProfilePicThumbStore: [
+      'ProfilePicThumbCollectionImpl',
+      'ProfilePicThumbCollection',
+    ],
+  },
+  (m) => m.ProfilePicThumbCollectionImpl || m.ProfilePicThumbCollection
+);
