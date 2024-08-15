@@ -28,7 +28,7 @@ export interface ChatEventTypes {
    * });
    * ```
    */
-  'chat.active_chat': ChatModel;
+  'chat.active_chat': ChatModel | null;
   /**
    * Triggered when new message is received
    *
