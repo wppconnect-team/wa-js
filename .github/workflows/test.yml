@@ -102,6 +102,7 @@ jobs:
           WA_VERSION: '${{matrix.versions }}'
 
   notify-on-failure:
+    needs: test
     if: failure()  
     runs-on: ubuntu-latest
     steps:
