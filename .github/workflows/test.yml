@@ -109,4 +109,5 @@ jobs:
         env:
           WA_VERSION: '${{matrix.versions }}'
           DISCORD_WEBHOOK_URL_FAILURE: '${{ secrets.DISCORD_WEBHOOK_URL_FAILURE }}'
+          SEND_WEBHOOK_FAILURE: '${{ env.SEND_WEBHOOK_FAILURE }}'
           URL_ACTION: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
