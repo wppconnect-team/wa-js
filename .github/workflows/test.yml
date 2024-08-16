@@ -57,7 +57,7 @@ jobs:
     outputs:
       versions: ${{ steps.versions.outputs.result }}
 
-  test:
+  test_wa_versions:
     needs: provide_wa_versions
     runs-on: ubuntu-latest
     strategy:
@@ -102,8 +102,9 @@ jobs:
           WA_VERSION: '${{matrix.versions }}'
 
   notify-on-failure:
-    needs: test
-    if: failure()  
+    needs: test_wa_versions
+    if: failure()
+    #if: failure() && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Send failure message to Discord
