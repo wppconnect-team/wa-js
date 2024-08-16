@@ -1,9 +1,9 @@
-## 3.8.2 (2024-08-15)
+## 3.8.3 (2024-08-16)
 
 
 ### Bug Fixes
 
-* Improvment on chat.active_chat event ([8c5ae19](https://github.com/wppconnect-team/wa-js/commit/8c5ae191a8da3fa665b3104d4ac23bfc681b7eae))
+* Mantain compatibility to 2.3000.10155x ([7cc2025](https://github.com/wppconnect-team/wa-js/commit/7cc20255e33f97d58687d456c9acac895f93f357))
 
 
 
