@@ -100,3 +100,15 @@ jobs:
           command: npm run update-module-id -- --dry-run
         env:
           WA_VERSION: '${{matrix.versions }}'
+
+  notify-on-failure:
+    if: failure()  
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send failure message to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL_FAILURE }}
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d "{\"content\": \"Build failed on branch ${{ github.ref }}. Check the logs at: <https://github.com/wppconnect-team/wa-js/actions>\"}" \
+          $DISCORD_WEBHOOK_URL_FAILURE
