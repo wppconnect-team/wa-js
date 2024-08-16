@@ -92,6 +92,14 @@ jobs:
       - name: Install Dependencies
         run: npm ci || npm install
 
+      - name: Set environment variables
+        run: |
+          if [ "${{ github.actor }}" = "renovate" ]; then
+            echo "SEND_WEBHOOK_FAILURE=true" >> $GITHUB_ENV
+          else
+            echo "SEND_WEBHOOK_FAILURE=false" >> $GITHUB_ENV
+          fi
+
       - name: Test modules resolution
         uses: nick-invision/retry@v3
         with:
@@ -101,5 +109,4 @@ jobs:
         env:
           WA_VERSION: '${{matrix.versions }}'
           DISCORD_WEBHOOK_URL_FAILURE: '${{ secrets.DISCORD_WEBHOOK_URL_FAILURE }}'
-          SEND_WEBHOOK_FAILURE: true
           URL_ACTION: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
