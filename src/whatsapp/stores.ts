@@ -354,9 +354,9 @@ exportModule(
   exports,
   {
     ProfilePicThumbStore: [
-      'ProfilePicThumbCollectionImpl',
       'ProfilePicThumbCollection',
+      'ProfilePicThumbCollectionImpl',
     ],
   },
-  (m) => m.ProfilePicThumbCollectionImpl || m.ProfilePicThumbCollection
+  (m) => m.ProfilePicThumbCollection || m.ProfilePicThumbCollectionImpl
 );
