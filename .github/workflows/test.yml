@@ -103,8 +103,8 @@ jobs:
 
   notify-on-failure:
     needs: test_wa_versions
-    if: failure()
-    #if: failure() && github.ref == 'refs/heads/main'
+    if: needs.test_wa_versions.result == 'failure'
+    #if: needs.test_wa_versions.result == 'failure' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Send failure message to Discord
