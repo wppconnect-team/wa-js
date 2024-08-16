@@ -30,7 +30,7 @@ export declare function addAndSendMsgToChat(
 exportModule(
   exports,
   {
-    addAndSendMsgToChat: 'addAndSendMsgToChatA',
+    addAndSendMsgToChat: 'addAndSendMsgToChat',
   },
-  (m) => m.addAndSendMsgToChatA
+  (m) => m.addAndSendMsgToChat
 );
