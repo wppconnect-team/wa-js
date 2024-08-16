@@ -98,15 +98,12 @@ async function start() {
 
   for (const moduleName of Object.keys(result)) {
     if (!result[moduleName]) {
-      console.log(process.env['SEND_WEBHOOK_FAILURE']);
-      console.log(process.env['DISCORD_WEBHOOK_URL_FAILURE']);
       if (
         process.env['SEND_WEBHOOK_FAILURE'] &&
         process.env['DISCORD_WEBHOOK_URL_FAILURE']
       ) {
-        console.log('Sending message to discord info');
         const message = {
-          content: `Module not found: ${moduleName}. v: ${version}`,
+          content: `**Alert:**\nModule not found: ${moduleName}. v: ${version}\n\n See more at: ${process.env['URL_ACTION']}`,
         };
 
         await fetch(process.env['DISCORD_WEBHOOK_URL_FAILURE'], {
@@ -115,11 +112,9 @@ async function start() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(message),
-        })
-          .then(() => console.log('Send notification to webhook.'))
-          .catch((error) =>
-            console.error('Error on send message to discord:', error)
-          );
+        }).catch((error) =>
+          console.error('Error on send message to discord:', error)
+        );
       }
       exitCode = 1;
       console.error(`Module not found: ${moduleName}`);

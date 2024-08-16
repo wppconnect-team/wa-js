@@ -100,5 +100,6 @@ jobs:
           command: npm run update-module-id -- --dry-run
         env:
           WA_VERSION: '${{matrix.versions }}'
-          DISCORD_WEBHOOK_URL_FAILURE: '${{secrets.DISCORD_WEBHOOK_URL_FAILURE}}'
+          DISCORD_WEBHOOK_URL_FAILURE: '${{ secrets.DISCORD_WEBHOOK_URL_FAILURE }}'
           SEND_WEBHOOK_FAILURE: true
+          URL_ACTION: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
