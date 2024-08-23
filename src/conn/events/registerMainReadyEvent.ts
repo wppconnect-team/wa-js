@@ -19,33 +19,21 @@ import * as webpack from '../../webpack';
 import { Cmd, Stream } from '../../whatsapp';
 
 webpack.onInjected(register);
+let isMainReady = false;
 
 function register() {
   const trigger = async () => {
-    internalEv.emit('conn.main_ready');
+    if (!isMainReady) {
+      isMainReady = true;
+      setTimeout(() => (isMainReady = false), 1000);
+      internalEv.emit('conn.main_ready');
+    }
   };
 
   if (Stream.mode === 'MAIN') {
     trigger();
   } else {
-    let eventRegistered = false;
-
-    try {
-      Cmd.on('main_stream_mode_ready', trigger);
-      eventRegistered = true;
-    } catch (error) {
-      console.warn('Erro ao registrar main_stream_mode_ready:', error);
-    }
-
-    if (!eventRegistered) {
-      try {
-        Cmd.on('main_stream_mode_ready_legacy', trigger);
-      } catch (error) {
-        console.error(
-          'Erro ao registrar main_stream_mode_ready_legacy:',
-          error
-        );
-      }
-    }
+    Cmd.on('main_stream_mode_ready', () => trigger);
+    Cmd.on('main_stream_mode_ready_legacy', trigger);
   }
 }
