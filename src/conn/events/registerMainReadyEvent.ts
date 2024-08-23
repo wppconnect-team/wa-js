@@ -28,6 +28,24 @@ function register() {
   if (Stream.mode === 'MAIN') {
     trigger();
   } else {
-    Cmd.on('main_stream_mode_ready_legacy', trigger);
+    let eventRegistered = false;
+
+    try {
+      Cmd.on('main_stream_mode_ready', trigger);
+      eventRegistered = true;
+    } catch (error) {
+      console.warn('Erro ao registrar main_stream_mode_ready:', error);
+    }
+
+    if (!eventRegistered) {
+      try {
+        Cmd.on('main_stream_mode_ready_legacy', trigger);
+      } catch (error) {
+        console.error(
+          'Erro ao registrar main_stream_mode_ready_legacy:',
+          error
+        );
+      }
+    }
   }
 }
