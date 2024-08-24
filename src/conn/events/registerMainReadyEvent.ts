@@ -33,7 +33,7 @@ function register() {
   if (Stream.mode === 'MAIN') {
     trigger();
   } else {
-    Cmd.on('main_stream_mode_ready', () => trigger);
+    Cmd.on('main_stream_mode_ready', trigger);
     Cmd.on('main_stream_mode_ready_legacy', trigger);
   }
 }
