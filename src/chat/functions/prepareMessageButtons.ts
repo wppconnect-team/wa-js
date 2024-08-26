@@ -66,7 +66,7 @@ export interface MessageButtonsOptions {
    * Set to use interactive message instead of reply buttons.
    * @default: undefined - auto detect
    */
-  useInteractiveMesssage?: boolean | null;
+  useInteractiveMessage?: boolean | null;
   /**
    * Footer text for buttons
    */
@@ -93,16 +93,16 @@ export function prepareMessageButtons<T extends RawMessage>(
 
   if (
     (typeof options.useTemplateButtons === 'undefined' &&
-      typeof options.useInteractiveMesssage === 'undefined') ||
+      typeof options.useInteractiveMessage === 'undefined') ||
     (options.useTemplateButtons === null &&
-      options.useInteractiveMesssage === null)
+      options.useInteractiveMessage === null)
   ) {
-    options.useInteractiveMesssage = options.buttons.some(
+    options.useInteractiveMessage = options.buttons.some(
       (button) => 'phoneNumber' in button || 'url' in button
     );
   }
 
-  if (options.useTemplateButtons || options.useInteractiveMesssage) {
+  if (options.useTemplateButtons || options.useInteractiveMessage) {
     if (options.buttons.length === 0 || options.buttons.length > 5) {
       throw 'Buttons options must have between 1 and 5 options';
     }
@@ -115,7 +115,7 @@ export function prepareMessageButtons<T extends RawMessage>(
   message.title = options.title;
   message.footer = options.footer;
 
-  if (options.useInteractiveMesssage) {
+  if (options.useInteractiveMessage) {
     message.interactiveMessage = {
       header: {
         title: options.title || ' ',
@@ -252,6 +252,7 @@ export function prepareMessageButtons<T extends RawMessage>(
 
 webpack.onFullReady(() => {
   wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
+    console.log(...args);
     const [message] = args;
     const r = func(...args);
 
@@ -359,13 +360,16 @@ webpack.onFullReady(() => {
           break;
         }
       }
-      delete r.extendedTextMessage;
+      if (typeof r.extendedTextMessage !== 'undefined')
+        delete r.extendedTextMessage;
+      if (typeof r.conversation !== 'undefined') delete r.conversation;
       r.viewOnceMessage = {
         message: {
           interactiveMessage: message.interactiveMessage,
         },
       };
     }
+    console.log(r);
     return r;
   });
 
