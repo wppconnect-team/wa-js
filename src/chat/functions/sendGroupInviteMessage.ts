@@ -47,6 +47,20 @@ export interface GroupInviteMessage extends SendMessageOptions {
  *    groupId: '789@g.us'
  *  }
  * );
+ *
+ * // After a invite
+ * const result = await WPP.group.addParticipants('789@g.us', '123@c.us');
+ * const participant = result['123@c.us'];
+ * if (participant.invite_code) {
+ *   WPP.chat.sendGroupInviteMessage(
+ *     '123@c.us',
+ *     {
+ *       inviteCode: participant.invite_code,
+ *       inviteCodeExpiration: participant.invite_code_exp,
+ *       groupId: '789@g.us'
+ *     }
+ *   );
+ * }
  * ```
  *
  * @category Message
@@ -75,21 +89,34 @@ export async function sendGroupInviteMessage(
     }
   }
   const inviteLink = `https://chat.whatsapp.com/${options.inviteCode}`;
-  const rawMessage: RawMessage = {
-    type: 'chat',
-    subtype: 'url',
-    thumbnail: options.jpegThumbnail,
-    thumbnailHeight: options.jpegThumbnail ? 100 : undefined,
-    thumbnailWidth: options.jpegThumbnail ? 100 : undefined,
-    title: options.groupName,
-    inviteGrpType: 'DEFAULT',
-    canonicalUrl: `https://chat.whatsapp.com/${options.inviteCode}`,
-    description: options.caption
-      ? `${options.caption}\n${inviteLink}`
-      : inviteLink,
-    body: options.caption ? `${options.caption}\n${inviteLink}` : inviteLink,
-    matchedText: `https://chat.whatsapp.com/${options.inviteCode}`,
-    richPreviewType: 0,
-  } as any;
+  let rawMessage: RawMessage = {};
+  if (options.inviteCodeExpiration) {
+    rawMessage = {
+      type: 'groups_v4_invite',
+      inviteGrpJpegThum: options.jpegThumbnail,
+      inviteCode: options.inviteCode,
+      inviteCodeExp: options.inviteCodeExpiration || '',
+      inviteGrp: options.groupId,
+      inviteGrpName: options.groupName,
+      comment: options.caption,
+    };
+  } else {
+    rawMessage = {
+      type: 'chat',
+      subtype: 'url',
+      thumbnail: options.jpegThumbnail,
+      thumbnailHeight: options.jpegThumbnail ? 100 : undefined,
+      thumbnailWidth: options.jpegThumbnail ? 100 : undefined,
+      title: options.groupName,
+      inviteGrpType: 'DEFAULT',
+      canonicalUrl: `https://chat.whatsapp.com/${options.inviteCode}`,
+      description: options.caption
+        ? `${options.caption}\n${inviteLink}`
+        : inviteLink,
+      body: options.caption ? `${options.caption}\n${inviteLink}` : inviteLink,
+      matchedText: `https://chat.whatsapp.com/${options.inviteCode}`,
+      richPreviewType: 0,
+    } as any;
+  }
   return await sendRawMessage(chatId, rawMessage, options);
 }
