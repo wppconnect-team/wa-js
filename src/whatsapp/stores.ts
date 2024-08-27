@@ -360,3 +360,11 @@ exportModule(
   },
   (m) => m.ProfilePicThumbCollection || m.ProfilePicThumbCollectionImpl
 );
+
+exportModule(
+  exports,
+  {
+    QuickReplyStore: ['QuickReplyCollectionImpl', 'QuickReplyCollection'],
+  },
+  (m) => m.QuickReplyCollectionImpl || m.QuickReplyCollection
+);
