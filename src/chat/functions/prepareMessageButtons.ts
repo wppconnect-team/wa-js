@@ -252,7 +252,6 @@ export function prepareMessageButtons<T extends RawMessage>(
 
 webpack.onFullReady(() => {
   wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
-    console.log(...args);
     const [message] = args;
     const r = func(...args);
 
@@ -369,7 +368,6 @@ webpack.onFullReady(() => {
         },
       };
     }
-    console.log(r);
     return r;
   });
 
