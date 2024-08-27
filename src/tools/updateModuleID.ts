@@ -15,6 +15,7 @@
  */
 
 import * as fs from 'fs';
+import fetch from 'node-fetch';
 import * as path from 'path';
 import { JSDoc, Node, Project } from 'ts-morph';
 
@@ -97,6 +98,24 @@ async function start() {
 
   for (const moduleName of Object.keys(result)) {
     if (!result[moduleName]) {
+      if (
+        process.env['SEND_WEBHOOK_FAILURE'] &&
+        process.env['DISCORD_WEBHOOK_URL_FAILURE']
+      ) {
+        const message = {
+          content: `**Alert:**\nModule not found: ${moduleName}. v: ${version}\n\n See more at: ${process.env['URL_ACTION']}`,
+        };
+
+        await fetch(process.env['DISCORD_WEBHOOK_URL_FAILURE'], {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(message),
+        }).catch((error) =>
+          console.error('Error on send message to discord:', error)
+        );
+      }
       exitCode = 1;
       console.error(`Module not found: ${moduleName}`);
     }

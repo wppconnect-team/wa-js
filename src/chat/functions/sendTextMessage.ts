@@ -39,7 +39,7 @@ export type TextMessageOptions = SendMessageOptions &
  *
  * // With Buttons
  * WPP.chat.sendTextMessage('[number]@c.us', 'Hello', {
- *   useTemplateButtons: true, // False for legacy
+ *   useInteractiveMessage: true, // False for legacy
  *   buttons: [
  *     {
  *       url: 'https://wppconnect.io/',

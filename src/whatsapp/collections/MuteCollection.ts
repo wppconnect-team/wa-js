@@ -36,6 +36,6 @@ export declare class MuteCollection extends Collection<MuteModel> {
 }
 exportModule(
   exports,
-  { MuteCollection: 'MuteCollectionImpl' },
-  (m) => m.MuteCollectionImpl
+  { MuteCollection: ['MuteCollectionImpl', 'MuteCollection'] },
+  (m) => m.MuteCollectionImpl || m.MuteCollection
 );

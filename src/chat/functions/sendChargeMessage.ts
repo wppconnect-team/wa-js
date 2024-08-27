@@ -43,6 +43,13 @@ export interface OrderMessageOptions extends SendMessageOptions {
   tax?: number;
   shipping?: number;
   offset?: number;
+  pix?: {
+    keyType: 'CNPJ' | 'CPF' | 'PHONE' | 'EMAIL' | 'EVP';
+    name: string;
+    key: string;
+  };
+  // Text for external payment (out of whatsapp)
+  payment_instruction?: string;
 }
 
 /**
@@ -68,6 +75,21 @@ export interface OrderMessageOptions extends SendMessageOptions {
  *   { type: 'custom', name: 'Item de cost test', price: 120000, qnt: 2 },
  * ],
  * { tax: 10000, shipping: 4000, discount: 10000 }
+ *
+ * // Send charge with Pix data (auto generate copy-paste pix code)
+ * WPP.chat.sendChargeMessage('[number]@c.us', [
+ *   { type: 'custom', name: 'Item de cost test', price: 120000, qnt: 2 },
+ * ],
+ * {
+ *   tax: 10000,
+ *   shipping: 4000,
+ *   discount: 10000,
+ *   pix: {
+ *     keyType: 'CPF',
+ *     key: '00555095999',
+ *     name: 'Name of seller',
+ *   },
+ * });
  * ```
  * @category Message
  */
@@ -161,6 +183,7 @@ export async function sendChargeMessage(
       value: total_amount,
       offset: Number(options.offset) || 1000,
     },
+    order_type: 'ORDER',
     order: {
       status: 'pending',
       items: products,
@@ -178,6 +201,33 @@ export async function sendChargeMessage(
         ? { value: options?.discount, offset: Number(options.offset) || 1000 }
         : null,
     },
+    payment_settings:
+      typeof options.pix !== 'undefined'
+        ? [
+            {
+              pix_static_code: {
+                key: options.pix.key,
+                key_type: options.pix.keyType,
+                merchant_name: options.pix.name,
+              },
+              type: 'pix_static_code',
+            },
+            {
+              cards: {
+                enabled: true,
+              },
+              type: 'cards',
+            },
+          ]
+        : undefined,
+    external_payment_configurations: options.payment_instruction
+      ? [
+          {
+            type: 'payment_instruction',
+            payment_instruction: options.payment_instruction,
+          },
+        ]
+      : undefined,
   };
 
   const message: RawMessage = {

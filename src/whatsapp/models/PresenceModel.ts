@@ -71,5 +71,5 @@ exportModule(
   {
     PresenceModel: 'Presence',
   },
-  (m) => m.Presence && m.ChatstateCollection
+  (m) => (m.Presence && m.ChatstateCollection) || (m.Presence && m.Chatstate)
 );

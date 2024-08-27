@@ -33,7 +33,10 @@ export declare class StickerSearchCollection extends Collection<StickerModel> {
 exportModule(
   exports,
   {
-    StickerSearchCollection: 'StickerSearchCollectionImpl',
+    StickerSearchCollection: [
+      'StickerSearchCollectionImpl',
+      'StickerSearchCollection',
+    ],
   },
-  (m) => m.StickerSearchCollectionImpl
+  (m) => m.StickerSearchCollectionImpl || m.StickerSearchCollection
 );

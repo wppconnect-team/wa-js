@@ -61,5 +61,5 @@ exportModule(
   {
     ChatstateModel: 'Chatstate',
   },
-  (m) => m.Chatstate && m.ChatstateCollection
+  (m) => (m.Chatstate && m.ChatstateCollection) || m.Chatstate
 );

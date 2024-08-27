@@ -29,7 +29,7 @@ export declare class PresenceCollection extends BaseCollection<PresenceModel> {
 exportModule(
   exports,
   {
-    PresenceCollection: 'PresenceCollectionImpl',
+    PresenceCollection: ['PresenceCollectionImpl', 'PresenceCollection'],
   },
   (m) => m.PresenceCollectionImpl || m.PresenceCollection
 );

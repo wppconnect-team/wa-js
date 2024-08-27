@@ -19,15 +19,21 @@ import * as webpack from '../../webpack';
 import { Cmd, Stream } from '../../whatsapp';
 
 webpack.onInjected(register);
+let isMainReady = false;
 
 function register() {
   const trigger = async () => {
-    internalEv.emit('conn.main_ready');
+    if (!isMainReady) {
+      isMainReady = true;
+      setTimeout(() => (isMainReady = false), 1000);
+      internalEv.emit('conn.main_ready');
+    }
   };
 
   if (Stream.mode === 'MAIN') {
     trigger();
   } else {
+    Cmd.on('main_stream_mode_ready', trigger);
     Cmd.on('main_stream_mode_ready_legacy', trigger);
   }
 }

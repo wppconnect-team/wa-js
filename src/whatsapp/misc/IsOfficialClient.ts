@@ -22,6 +22,7 @@ import { exportModule } from '../exportModule';
  */
 export declare namespace IsOfficialClient {
   let isOfficialClient: boolean;
+  function isUnofficialStanzaId(id: string): boolean;
 }
 
 exportModule(

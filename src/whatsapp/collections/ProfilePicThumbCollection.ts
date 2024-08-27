@@ -33,7 +33,10 @@ export declare class ProfilePicThumbCollection extends BaseCollection<ProfilePic
 exportModule(
   exports,
   {
-    ProfilePicThumbCollection: 'ProfilePicThumbCollectionImpl',
+    ProfilePicThumbCollection: [
+      'ProfilePicThumbCollectionImpl',
+      'ProfilePicThumbCollection',
+    ],
   },
-  (m) => m.ProfilePicThumbCollectionImpl
+  (m) => m.ProfilePicThumbCollectionImpl || m.ProfilePicThumbCollection
 );

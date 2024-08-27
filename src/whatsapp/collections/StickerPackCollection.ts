@@ -39,7 +39,10 @@ export declare class StickerPackCollection extends Collection<StickerPackModel> 
 exportModule(
   exports,
   {
-    StickerPackCollection: 'StickerPackCollectionImpl',
+    StickerPackCollection: [
+      'StickerPackCollectionImpl',
+      'StickerPackCollection',
+    ],
   },
-  (m) => m.StickerPackCollectionImpl
+  (m) => m.StickerPackCollectionImpl || m.StickerPackCollection
 );

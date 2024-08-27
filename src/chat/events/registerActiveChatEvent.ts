@@ -19,13 +19,16 @@ import * as webpack from '../../webpack';
 import { ChatModel, ChatStore } from '../../whatsapp';
 
 webpack.onInjected(() => register());
+let emitTimeout: any = null;
 
 function register() {
-  ChatStore.on('change:active', (chat: ChatModel, actve: boolean) => {
-    if (actve) {
-      queueMicrotask(() => {
-        internalEv.emit('chat.active_chat', chat);
-      });
+  ChatStore.on('change:active', (chat: ChatModel) => {
+    if (emitTimeout) {
+      clearTimeout(emitTimeout);
     }
+
+    emitTimeout = setTimeout(() => {
+      internalEv.emit('chat.active_chat', chat.active ? chat : null);
+    }, 50);
   });
 }
