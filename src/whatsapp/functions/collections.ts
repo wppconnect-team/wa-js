@@ -59,9 +59,16 @@ exportModule(
   exports,
   {
     createCollection: 'createCollection',
+  },
+  (m) => m.createCollection
+);
+
+exportModule(
+  exports,
+  {
     deleteCollection: 'deleteCollection',
     editCollection: 'editCollection',
     queryCollectionsIQ: 'queryCollectionsIQ',
   },
-  (m) => m.createCollection
+  (m) => m.deleteCollection && m.editCollection && m.queryCollectionsIQ
 );
