@@ -38,6 +38,7 @@ export type TextMessageOptions = SendMessageOptions &
  * });
  *
  * // With Buttons
+ * // Attention: The buttons are an alternative solution we found to make it work. There is no guarantee that they will continue functioning, or when they might stop: The only certainty is: They will stop, so use them responsibly.
  * WPP.chat.sendTextMessage('[number]@c.us', 'Hello', {
  *   useInteractiveMessage: true, // False for legacy
  *   buttons: [
@@ -54,7 +55,7 @@ export type TextMessageOptions = SendMessageOptions &
  *       text: 'Some text'
  *     },
  *     {
- *       id: 'another id 2',
+ *       code: '789890',
  *       text: 'Another text'
  *     }
  *   ],

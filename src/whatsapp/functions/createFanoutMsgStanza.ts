@@ -28,6 +28,15 @@ export declare function createFanoutMsgStanza(
   options: { [key: string]: any }
 ): Promise<websocket.WapNode>;
 
+export declare function createFanoutMsgStanza(
+  message: { type: string; data: MsgModel },
+  proto: { [key: string]: any },
+  devices: Wid[],
+  options: { [key: string]: any },
+  reporter: any,
+  groupData?: any
+): Promise<websocket.WapNode>;
+
 exportModule(
   exports,
   {
