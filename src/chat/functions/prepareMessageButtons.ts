@@ -27,6 +27,7 @@ import {
   createFanoutMsgStanza,
   createMsgProtobuf,
   encodeMaybeMediaType,
+  getABPropConfigValue,
   mediaTypeFromProtobuf,
   typeAttributeFromProtobuf,
 } from '../../whatsapp/functions';
@@ -400,5 +401,14 @@ webpack.onFullReady(() => {
     }
 
     return node;
+  });
+
+  wrapModuleFunction(getABPropConfigValue, (func, ...args) => {
+    const [key] = args;
+    switch (key) {
+      case 'web_unwrap_message_for_stanza_attributes':
+        return false;
+    }
+    return func(...args);
   });
 });
