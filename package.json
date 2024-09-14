@@ -9,7 +9,10 @@
     "url": "https://github.com/edgardmessias"
   },
   "exports": {
-    ".": "./dist/wppconnect-wa.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/wppconnect-wa.js"
+    }
   },
   "types": "dist/index.d.ts",
   "scripts": {
