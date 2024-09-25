@@ -17,10 +17,10 @@
 import { compare } from 'compare-versions';
 
 import { assertGetChat } from '../../assert';
+import { iAmAdmin } from '../../group';
 import { Cmd, Wid } from '../../whatsapp';
 import { MSG_TYPE, SendMsgResult } from '../../whatsapp/enums';
 import { getMessageById } from '.';
-import { iAmAdmin } from '../../group';
 
 export interface DeleteMessageReturn {
   id: string;
@@ -70,7 +70,8 @@ export async function deleteMessage(
     let isRevoked = false;
     let isDeleted = false;
     const isSentByMe = msg.senderObj.isMe;
-    const imAdmin = await iAmAdmin(chatId);
+    let imAdmin = false;
+    if (chat.isGroup) imAdmin = await iAmAdmin(chatId);
 
     const canRevoke = isSentByMe || imAdmin;
 
@@ -92,8 +93,8 @@ export async function deleteMessage(
           { clearMedia: deleteMediaInDevice }
         );
       } else {
-        await Cmd.sendRevokeMsgs(chat, [msg], { 
-          clearMedia: deleteMediaInDevice, 
+        await Cmd.sendRevokeMsgs(chat, [msg], {
+          clearMedia: deleteMediaInDevice,
         });
       }
 
@@ -110,7 +111,9 @@ export async function deleteMessage(
           deleteMediaInDevice
         );
       } else {
-        await Cmd.sendDeleteMsgs(chat, [msg], { clearMedia: deleteMediaInDevice });
+        await Cmd.sendDeleteMsgs(chat, [msg], {
+          clearMedia: deleteMediaInDevice,
+        });
       }
 
       sendMsgResult = SendMsgResult.OK;
