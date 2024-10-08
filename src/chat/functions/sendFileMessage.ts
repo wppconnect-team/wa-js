@@ -32,6 +32,7 @@ import {
   MsgModel,
   OpaqueData,
   StatusV3Store,
+  Wid,
 } from '../../whatsapp';
 import { SendMsgResult } from '../../whatsapp/enums';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
@@ -238,7 +239,7 @@ export interface VideoMessageOptions
  * @return  {SendMessageReturn} The result
  */
 export async function sendFileMessage(
-  chatId: any,
+  chatId: string | Wid,
   content: string | Blob | File,
   options:
     | AutoDetectMessageOptions
