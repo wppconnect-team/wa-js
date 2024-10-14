@@ -32,7 +32,6 @@ import {
   typeAttributeFromProtobuf,
 } from '../../whatsapp/functions';
 import { RawMessage } from '..';
-// @ts-expect-error: We cannot declare the code in this file to avoid making it easier to export the code.
 import { encryptAndParserMsgButtons } from './buttonsParser';
 
 export type MessageButtonsTypes =
