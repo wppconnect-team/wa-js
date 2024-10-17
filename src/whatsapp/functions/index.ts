@@ -110,6 +110,7 @@ export * from './queryNewsletterMetadataByJid';
 export * from './queryOrder';
 export * from './randomHex';
 export * from './randomId';
+export * from './removeStatusMessage';
 export * from './resetGroupInviteCode';
 export * from './revokeStatus';
 export * from './sendClear';
