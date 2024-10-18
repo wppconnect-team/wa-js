@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2024 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,30 +14,18 @@
  * limitations under the License.
  */
 
-import * as webpack from '../../webpack';
-import { wrapModuleFunction } from '../../whatsapp/exportModule';
-import {
-  createMsgProtobuf,
-  typeAttributeFromProtobuf,
-} from '../../whatsapp/functions';
 import {
   defaultSendMessageOptions,
-  RawMessage,
   SendMessageOptions,
   SendMessageReturn,
 } from '..';
-import { sendRawMessage } from '.';
-
-export enum SCHEDULED_CALL_TYPE {
-  UNKNOWN = 0,
-  VOICE = 1,
-  VIDEO = 2,
-}
+import { sendEventMessage } from '.';
 
 export interface ScheduledCallMessageOptions extends SendMessageOptions {
   scheduledTimestampMs: number | string;
-  callType: 'video' | 'voice' | SCHEDULED_CALL_TYPE;
+  callType: 'video' | 'voice';
   title: string;
+  description?: string;
 }
 
 /**
@@ -46,7 +34,8 @@ export interface ScheduledCallMessageOptions extends SendMessageOptions {
  * @example
  * ```javascript
  * WPP.chat.sendScheduledCallMessage('[number]@c.us', {
- *  title: "Title of event"
+ *  title: "Title of event call"
+ *  description: 'Description for Call",
  *  callType: 'voice'
  *  scheduledTimestampMs: 1696084222000
  * });
@@ -58,42 +47,16 @@ export async function sendScheduledCallMessage(
   options: ScheduledCallMessageOptions
 ): Promise<SendMessageReturn> {
   options = {
-    ...{ callType: SCHEDULED_CALL_TYPE.VOICE },
+    ...{ callType: 'voice' },
     ...defaultSendMessageOptions,
     ...options,
   };
 
-  if (typeof options.callType === 'string') {
-    options.callType = options.callType == 'voice' ? 1 : 2;
-  }
-  const rawMessage: RawMessage = {
-    type: 'scheduled_call',
-    title: options.title,
+  return await sendEventMessage(chatId, {
+    ...options,
+    name: options.title,
+    description: options?.description,
     callType: options.callType,
-    scheduledTimestampMs: parseInt(options.scheduledTimestampMs?.toString()),
-  };
-
-  return await sendRawMessage(chatId, rawMessage, options);
+    startTime: parseInt(options.scheduledTimestampMs?.toString()) / 1000,
+  });
 }
-
-webpack.onFullReady(() => {
-  wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
-    const [message] = args;
-    const r = func(...args);
-    if (message?.type == 'scheduled_call') {
-      r.scheduledCallCreationMessage = {
-        title: message.title,
-        scheduledTimestampMs: (message as any).scheduledTimestampMs,
-        callType: (message as any).callType,
-      };
-    }
-    return r;
-  });
-  wrapModuleFunction(typeAttributeFromProtobuf, (func, ...args) => {
-    const [proto] = args;
-    if (proto.scheduledCallCreationMessage) {
-      return 'text';
-    }
-    return func(...args);
-  });
-});
