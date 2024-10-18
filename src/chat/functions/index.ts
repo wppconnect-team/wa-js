@@ -68,6 +68,7 @@ export {
   PoolMessageOptions,
   sendCreatePollMessage,
 } from './sendCreatePollMessage';
+export { sendEventMessage } from './sendEventMessage';
 export {
   AudioMessageOptions,
   AutoDetectMessageOptions,
