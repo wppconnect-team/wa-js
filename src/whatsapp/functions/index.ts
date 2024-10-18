@@ -27,6 +27,7 @@ export * from './changeOptInStatusForExternalWebBeta';
 export * from './collections';
 export * from './colorIndexToHex';
 export * from './contactFunctions';
+export * from './createEventCallLink';
 export * from './createFanoutMsgStanza';
 export * from './createGroup';
 export * from './createMsgProtobuf';
