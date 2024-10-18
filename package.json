@@ -75,7 +75,7 @@
     "parse-data-url": "^6.0.0",
     "playwright-chromium": "^1.48.0",
     "prettier": "^3.3.3",
-    "release-it": "^17.7.0",
+    "release-it": "^17.10.0",
     "shx": "^0.3.4",
     "terser-webpack-plugin": "^5.3.10",
     "ts-loader": "^9.5.1",
