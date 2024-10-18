@@ -79,7 +79,7 @@
     "shx": "^0.3.4",
     "terser-webpack-plugin": "^5.3.10",
     "ts-loader": "^9.5.1",
-    "ts-morph": "^23.0.0",
+    "ts-morph": "^24.0.0",
     "ts-node": "^10.9.2",
     "typedoc": "^0.26.8",
     "typedoc-plugin-mdn-links": "^3.3.2",
