@@ -1,9 +1,9 @@
-## 3.10.2 (2024-10-14)
+# 3.11.0 (2024-10-18)
 
 
-### Bug Fixes
+### Features
 
-* Fixed error on inject ([00a7a01](https://github.com/wppconnect-team/wa-js/commit/00a7a0108814d92123239be3bff072c1613f4dd2))
+* Added WPP.profile.getMyProfilePicture (close [#2327](https://github.com/wppconnect-team/wa-js/issues/2327)) ([b863dcf](https://github.com/wppconnect-team/wa-js/commit/b863dcfe1badacdeaf8bc39ab9a877a42f7ca9bb))
 
 
 
