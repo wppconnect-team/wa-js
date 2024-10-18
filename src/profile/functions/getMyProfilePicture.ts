@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2024 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,25 @@
  * limitations under the License.
  */
 
-export { editBusinessProfile } from './editBusinessProfile';
-export { getMyProfileName } from './getMyProfileName';
-export { getMyProfilePicture } from './getMyProfilePicture';
-export { getMyStatus } from './getMyStatus';
-export { isBusiness } from './isBusiness';
-export { removeMyProfilePicture } from './removeMyProfilePicture';
-export { setMyProfileName } from './setMyProfileName';
-export { setMyProfilePicture } from './setMyProfilePicture';
-export { setMyStatus } from './setMyStatus';
+import {
+  ProfilePicThumbModel,
+  ProfilePicThumbStore,
+  UserPrefs,
+} from '../../whatsapp';
+
+/**
+ * Get your current profile picture
+ *
+ * @example
+ * ```javascript
+ * await WPP.profile.getMyProfilePicture();
+ * ```
+ *
+ * @category Profile
+ */
+
+export async function getMyProfilePicture(): Promise<ProfilePicThumbModel> {
+  const pic = await ProfilePicThumbStore.find(UserPrefs.getMaybeMeUser());
+
+  return pic;
+}
