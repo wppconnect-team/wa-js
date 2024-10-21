@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-import { injectFallbackModule } from '../../webpack';
 import { exportModule } from '../exportModule';
 import { ChatModel, MsgModel } from '../models';
-import { removeStatusMessage } from './removeStatusMessage';
 
 /**
  * @whatsapp WAWebRevokeStatusAction
@@ -32,12 +30,9 @@ exportModule(
   {
     revokeStatus: ['default'],
   },
-  (m) => m.default?.displayName?.includes('RevokeStatusAction')
+  /**
+   * This module only loaded after device is connected
+   * I be creating other function for check expires based directily from files
+   */
+  (m) => m.default?.displayName?.includes('RevokeStatusAction') || true
 );
-
-injectFallbackModule('revokeStatus', {
-  default: async (chat: ChatModel, b: MsgModel) => {
-    await (chat as any).revokeMsgs([b.id.toString()]);
-    await removeStatusMessage([b.id.toString()]);
-  },
-});
