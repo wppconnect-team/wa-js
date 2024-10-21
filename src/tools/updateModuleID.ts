@@ -95,9 +95,15 @@ async function start() {
   }
 
   let exitCode = 0;
+  /**
+   * Theses modules only loaded after device is connected
+   * I be creating other function for check expires based directily from files
+   * This will not directly affect the function call, it continues to work normally.
+   */
+  const ignoreFailModules: string[] = ['functions.revokeStatus'];
 
   for (const moduleName of Object.keys(result)) {
-    if (!result[moduleName]) {
+    if (!result[moduleName] && !ignoreFailModules.includes(moduleName)) {
       if (
         process.env['SEND_WEBHOOK_FAILURE'] &&
         process.env['DISCORD_WEBHOOK_URL_FAILURE']

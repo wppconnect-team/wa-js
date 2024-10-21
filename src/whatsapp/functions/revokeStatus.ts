@@ -34,5 +34,5 @@ exportModule(
    * This module only loaded after device is connected
    * I be creating other function for check expires based directily from files
    */
-  (m) => m.default?.displayName?.includes('RevokeStatusAction') || true
+  (m) => m.default?.displayName?.includes('RevokeStatusAction')
 );

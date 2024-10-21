@@ -98,8 +98,17 @@ export function exportModule(
 
         if (!moduleId) {
           const description = `Module ${name} was not found with ${condition.toString()}`;
-          console.error(description);
-          trackException(description);
+
+          /**
+           * Theses modules only loaded after device is connected
+           * I be creating other function for check expires based directily from files
+           * This will not directly affect the function call, it continues to work normally.
+           */
+          const ignoreFailModules: string[] = ['revokeStatus'];
+          if (!ignoreFailModules.includes(name)) {
+            console.error(description);
+            trackException(description);
+          }
           Object.defineProperty(this, name, {
             get: () => undefined,
           });
