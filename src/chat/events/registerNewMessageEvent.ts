@@ -82,10 +82,6 @@ async function addAttributesMsg(msg: any): Promise<MsgModel> {
         value: quotedMsg,
         writable: false,
       },
-      quotedMsgObj: {
-        value: quotedMsg,
-        writable: false,
-      },
       // Fixed quotedMsgId when receive messages from @lid
       quotedMsgId: {
         value: quotedMsg.id,
