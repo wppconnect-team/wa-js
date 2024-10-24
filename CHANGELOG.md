@@ -1,9 +1,9 @@
-# 3.11.0 (2024-10-18)
+# 3.12.0 (2024-10-24)
 
 
-### Features
+### Bug Fixes
 
-* Added WPP.profile.getMyProfilePicture (close [#2327](https://github.com/wppconnect-team/wa-js/issues/2327)) ([b863dcf](https://github.com/wppconnect-team/wa-js/commit/b863dcfe1badacdeaf8bc39ab9a877a42f7ca9bb))
+* Fixed 'chat.new_message' event on receive replied [@lid](https://github.com/lid) msgs ([2a40d01](https://github.com/wppconnect-team/wa-js/commit/2a40d0126c6c4f16ae27add91f4fc7d1263073af))
 
 
 
