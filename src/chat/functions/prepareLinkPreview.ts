@@ -25,6 +25,9 @@ import {
   findFirstWebLink,
   genMinimalLinkPreview,
   getABPropConfigValue,
+  isBotEnabled,
+  shouldBlockByBotTos,
+  shouldBlockByTos,
 } from '../../whatsapp/functions';
 import { RawMessage } from '..';
 
@@ -111,6 +114,26 @@ webpack.onFullReady(() => {
     switch (key) {
       case 'link_preview_wait_time':
         return 7;
+      case 'bonsai_receiver_enabled':
+        return 1;
+      case 'bonsai_enabled':
+        return 1;
+      case 'bonsai_entry_point_enabled':
+        return 7;
+      case 'bonsai_ptt_enabled':
+        return 1;
+      case 'wabai_message_rendering_enabled':
+        return 1;
+      case 'wabai_message_feedback_enabled':
+        return 1;
+      case 'bonsai_carousel_enabled':
+        return 1;
+      case 'bonsai_chat_list_entry_point_enabled':
+        return 1;
+      case 'bot_commands_1p_enabled':
+        return 1;
+      case 'ai_ugc_v1_aihome_enabled':
+        return 1;
     }
     return func(...args);
   });
@@ -151,5 +174,14 @@ webpack.onFullReady(() => {
         resolve(await func(...args));
       }
     });
+  });
+  wrapModuleFunction(isBotEnabled, () => {
+    return true;
+  });
+  wrapModuleFunction(shouldBlockByBotTos, () => {
+    return false;
+  });
+  wrapModuleFunction(shouldBlockByTos, () => {
+    return false;
   });
 });
