@@ -25,7 +25,7 @@ import { ProfilePicThumbStore, Wid } from '../../whatsapp';
  * const url = await WPP.contact.getProfilePictureUrl('[number]@c.us');
  * ```
  *
- * @category Chat
+ * @category Contact
  */
 
 export async function getProfilePictureUrl(

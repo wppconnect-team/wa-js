@@ -49,7 +49,7 @@ const cache = new Map<string, QueryExistsResult | null>();
  * console.log(result.wid); // Correct ID
  * ```
  *
- * @category Chat
+ * @category Contact
  */
 export async function queryExists(
   contactId: string | Wid
