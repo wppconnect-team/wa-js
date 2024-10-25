@@ -76,6 +76,7 @@ export * from './getReactions';
 export * from './getSearchContext';
 export * from './getStatusList';
 export * from './getTableVotes';
+export * from './getUsernameAvailability';
 export * from './getVotes';
 export * from './getWhatsAppWebExternalBetaJoinedIdb';
 export * from './GROUP_JID';
