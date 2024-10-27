@@ -89,6 +89,7 @@ interface Derived {
   isUser: boolean;
   isPSA: boolean;
   isGroup: boolean;
+  isParentGroup: boolean;
   isBroadcast: boolean;
   isNewsletter: boolean;
   canUnread: boolean;
