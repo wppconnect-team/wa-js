@@ -38,6 +38,7 @@ import {
   getMessageById,
   markIsComposing,
   markIsPaused,
+  markIsRecording,
 } from '.';
 
 /**
@@ -66,8 +67,12 @@ export async function prepareRawMessage<T extends RawMessage>(
     ...message,
   };
 
-  if (options.delay && message.type === 'chat') {
-    await markIsComposing(chat.id);
+  if (options.delay) {
+    if (message.type == 'chat') {
+      await markIsComposing(chat.id);
+    } else if ((options as any)?.isPtt) {
+      await markIsRecording(chat.id);
+    }
     await new Promise((resolve) =>
       setTimeout(() => resolve(true), options.delay)
     );
