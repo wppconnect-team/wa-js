@@ -17,10 +17,18 @@
 import { assertWid } from '../../assert';
 import { getParticipants } from '../../group';
 import { WPPError } from '../../util';
-import { ChatModel, MsgKey, MsgModel, UserPrefs, Wid } from '../../whatsapp';
+import {
+  BotProfileStore,
+  ChatModel,
+  MsgKey,
+  MsgModel,
+  UserPrefs,
+  Wid,
+} from '../../whatsapp';
 import { ACK } from '../../whatsapp/enums';
 import {
   canReplyMsg,
+  genBotMsgSecretFromMsgSecret,
   getEphemeralFields,
   unixTime,
 } from '../../whatsapp/functions';
@@ -72,6 +80,18 @@ export async function prepareRawMessage<T extends RawMessage>(
     message = {
       ...ephemeral,
       ...message,
+    };
+  }
+  /**
+   * Adding fields for Chats with bots
+   */
+  if (chat.id?.isBot()) {
+    message = {
+      ...message,
+      messageSecret: await genBotMsgSecretFromMsgSecret(
+        crypto.getRandomValues(new Uint8Array(32))
+      ),
+      botPersonaId: BotProfileStore.get(chat.id?.toString())!.personaId,
     };
   }
 

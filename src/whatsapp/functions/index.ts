@@ -50,6 +50,7 @@ export * from './findCommonGroups';
 export * from './findFirstWebLink';
 export * from './forwardMessagesToChats';
 export * from './frontendFireAndForget';
+export * from './genBotMsgSecretFromMsgSecret';
 export * from './generateVideoThumbsAndDuration';
 export * from './genLinkDeviceCodeForPhoneNumber';
 export * from './genMinimalLinkPreview';
