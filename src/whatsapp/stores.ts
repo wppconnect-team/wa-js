@@ -29,6 +29,9 @@ export declare const BusinessCategoriesResultStore: collections.BusinessCategori
  * @whatsapp 493581 >= 2.2222.8
  */
 export declare const BusinessProfileStore: collections.BusinessProfileCollection;
+/** @whatsapp WAWebBotProfileCollection
+ */
+export declare const BotProfileStore: collections.BotProfileCollection;
 /** @whatsapp 60868
  * @whatsapp 31218 >= 2.2204.13
  * @whatsapp 160868 >= 2.2222.8
@@ -350,6 +353,13 @@ exportModule(
   (m) => m.BusinessProfileCollectionImpl || m.BusinessProfileCollection
 );
 
+exportModule(
+  exports,
+  {
+    BotProfileStore: ['BotProfileCollection'],
+  },
+  (m) => m.BotProfileCollection
+);
 exportModule(
   exports,
   {

@@ -17,6 +17,7 @@
 export * from './AggReactionsModel';
 export * from './AttachMediaModel';
 export * from './BlocklistModel';
+export * from './BotProfileModel';
 export * from './BusinessCategoriesResultModel';
 export * from './BusinessProfileModel';
 export * from './CallModel';

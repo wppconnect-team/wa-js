@@ -37,6 +37,8 @@ export declare class Wid {
 
   getSignalAddress(): string;
 
+  isBot(): boolean;
+
   isBroadcast(): boolean;
 
   isCompanion(): boolean;

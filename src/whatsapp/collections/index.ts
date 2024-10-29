@@ -17,6 +17,7 @@
 export * from './AggReactionsCollection';
 export * from './BaseCollection';
 export * from './BlocklistCollection';
+export * from './BotProfileCollection';
 export * from './BusinessCategoriesResultCollection';
 export * from './BusinessProfileCollection';
 export * from './ButtonCollection';
