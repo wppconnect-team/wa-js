@@ -44,6 +44,7 @@ export * from './MsgInfoParticipantModel';
 export * from './MsgModel';
 export * from './MuteModel';
 export * from './NetworkStatusModel';
+export * from './NoteModel';
 export * from './OrderItemModel';
 export * from './OrderModel';
 export * from './ParticipantModel';

@@ -132,6 +132,7 @@ export declare const StickerPackStore: collections.StickerPackCollection;
  */
 export declare const StickerSearchStore: collections.StickerSearchCollection;
 export declare const PinInChatStore: collections.PinInChatCollection;
+export declare const NoteStore: collections.NoteCollection;
 
 const storeNames = [
   'BlocklistStore',
@@ -377,4 +378,12 @@ exportModule(
     QuickReplyStore: ['QuickReplyCollectionImpl', 'QuickReplyCollection'],
   },
   (m) => m.QuickReplyCollectionImpl || m.QuickReplyCollection
+);
+
+exportModule(
+  exports,
+  {
+    NoteStore: ['NoteCollection'],
+  },
+  (m) => m.NoteCollection
 );
