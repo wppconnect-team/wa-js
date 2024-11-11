@@ -387,3 +387,11 @@ exportModule(
   },
   (m) => m.NoteCollection
 );
+
+exportModule(
+  exports,
+  {
+    ReactionsStore: ['ReactionsCollectionImpl', 'ReactionsCollection'],
+  },
+  (m) => m.ReactionsCollectionImpl || m.ReactionsCollection
+);

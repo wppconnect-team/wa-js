@@ -36,6 +36,6 @@ export declare class ReactionsCollection extends BaseCollection<ReactionsModel> 
 
 exportModule(
   exports,
-  { ReactionsCollection: 'ReactionsCollectionImpl' },
-  (m) => m.ReactionsCollectionImpl
+  { ReactionsCollection: ['ReactionsCollectionImpl', 'ReactionsCollection'] },
+  (m) => m.ReactionsCollectionImpl || m.ReactionsCollection
 );

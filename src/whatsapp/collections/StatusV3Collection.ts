@@ -39,7 +39,11 @@ export declare class StatusV3Collection extends BaseCollection<StatusV3Model> {
 exportModule(
   exports,
   {
-    StatusV3Collection: ['StatusV3CollectionImpl', 'StatusCollectionImpl'],
+    StatusV3Collection: [
+      'StatusV3CollectionImpl',
+      'StatusCollectionImpl',
+      'StatusCollection',
+    ],
   },
   (m) =>
     m.StatusV3CollectionImpl ||
