@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { injectFallbackModule } from '../../webpack';
 import { exportModule } from '../exportModule';
 import { ChatModel } from '../models';
 
@@ -41,3 +42,11 @@ exportModule(
     m.getShowChangeNumberNotification &&
     m.getShouldShowUnreadDivider
 );
+
+injectFallbackModule('getShouldAppearInList', {
+  getShouldAppearInList: (chat: ChatModel) => chat.shouldAppearInList,
+  getPreviewMessage: (chat: ChatModel) => chat.previewMessage,
+  getShowChangeNumberNotification: (chat: ChatModel) =>
+    chat.showChangeNumberNotification,
+  getShouldShowUnreadDivider: (chat: ChatModel) => chat.shouldShowUnreadDivider,
+});
