@@ -15,6 +15,7 @@
  */
 
 import * as webpack from '../webpack';
+import { ChatModel, functions } from '../whatsapp';
 import { wrapModuleFunction } from '../whatsapp/exportModule';
 import {
   isUnreadTypeMsg,
@@ -23,6 +24,7 @@ import {
 } from '../whatsapp/functions';
 
 webpack.onFullReady(applyPatch, 1000);
+webpack.onFullReady(applyPatchModel);
 
 function applyPatch() {
   wrapModuleFunction(mediaTypeFromProtobuf, (func, ...args) => {
@@ -79,4 +81,29 @@ function applyPatch() {
 
     return func(...args);
   });
+}
+
+function applyPatchModel() {
+  const funcs: {
+    [key: string]: (...args: any[]) => any;
+  } = {
+    shouldAppearInList: functions.getShouldAppearInList,
+    isUser: functions.getIsUser,
+    isPSA: functions.getIsPSA,
+    previewMessage: functions.getPreviewMessage,
+    showChangeNumberNotification: functions.getShowChangeNumberNotification,
+    shouldShowUnreadDivider: functions.getShouldShowUnreadDivider,
+  };
+
+  for (const attr in funcs) {
+    const func = funcs[attr];
+    if (typeof (ChatModel.prototype as any)[attr] === 'undefined') {
+      Object.defineProperty(ChatModel.prototype, attr, {
+        get: function () {
+          return func(this);
+        },
+        configurable: true,
+      });
+    }
+  }
 }

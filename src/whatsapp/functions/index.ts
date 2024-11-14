@@ -76,6 +76,7 @@ export * from './getPushname';
 export * from './getQuotedMsgObj';
 export * from './getReactions';
 export * from './getSearchContext';
+export * from './getShouldAppearInList';
 export * from './getStatusList';
 export * from './getTableVotes';
 export * from './getVotes';
