@@ -18,6 +18,7 @@ import * as webpack from '../webpack';
 import { ChatModel, functions } from '../whatsapp';
 import { wrapModuleFunction } from '../whatsapp/exportModule';
 import {
+  findOrCreateLatestChat,
   isUnreadTypeMsg,
   mediaTypeFromProtobuf,
   typeAttributeFromProtobuf,
@@ -80,6 +81,23 @@ function applyPatch() {
     }
 
     return func(...args);
+  });
+
+  /**
+   * Fixed error on try send message to some lids
+   */
+  wrapModuleFunction(findOrCreateLatestChat, async (func, ...args) => {
+    const [chat, type] = args;
+
+    if (chat.isLid() && type != 'username_contactless_search') {
+      try {
+        return await func(...args);
+      } catch (error) {
+        return await func(chat, 'username_contactless_search');
+      }
+    }
+
+    return await func(...args);
   });
 }
 
