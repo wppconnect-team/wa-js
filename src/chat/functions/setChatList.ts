@@ -18,7 +18,10 @@ import { WPPError } from '../../util';
 import * as webpack from '../../webpack';
 import { Cmd } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
-import { getShouldAppearInList } from '../../whatsapp/functions';
+import {
+  getPreviewMessage,
+  getShouldAppearInList,
+} from '../../whatsapp/functions';
 
 /**
  * Set custom Chat list in panel of whatsapp
@@ -56,14 +59,14 @@ export enum FilterChatListTypes {
 }
 export async function setChatList(
   type: FilterChatListTypes,
-  ids: string | string[]
+  ids?: string | string[]
 ): Promise<{ type: FilterChatListTypes; list?: string[] }> {
   filterType = type;
   if (!type) {
     throw new WPPError('send_type_filter', `Please send a valid type filter`);
   }
   if (typeof ids == 'string') ids = [ids];
-  if (type == FilterChatListTypes.CUSTOM) {
+  if (type == FilterChatListTypes.CUSTOM && ids) {
     allowList = ids;
     Cmd.trigger('set_active_filter', 'unread');
     Cmd.trigger('set_active_filter');
@@ -85,7 +88,7 @@ export async function setChatList(
   }
 }
 
-webpack.onFullReady(applyPatch, 2000);
+webpack.onFullReady(applyPatch, 1000);
 
 function applyPatch() {
   wrapModuleFunction(getShouldAppearInList, (func, ...args) => {
@@ -99,4 +102,73 @@ function applyPatch() {
     }
     return func(...args);
   });
+}
+
+/**
+ * Custom Wrap function with the callback
+ *
+ * This is not the best way to fix the wrapper for this function;
+ * I need to improve it soon. However, the idea is to make it work.
+ * Due to the lack of time and the urgency in the WhatsApp groups,
+ * I'm committing it this way to provide a quick solution.
+ */
+export function wrapShouldAppearFunction<TFunc extends (...args: any[]) => any>(
+  func: TFunc,
+  callback: (func: TFunc, ...args: Parameters<TFunc>) => ReturnType<TFunc>
+): TFunc {
+  const wrappedFunc: any = (...args: Parameters<TFunc>) => {
+    return callback(func, ...args);
+  };
+  Object.defineProperties(wrappedFunc, Object.getOwnPropertyDescriptors(func));
+  Object.defineProperty(wrappedFunc, 'kind', {
+    get() {
+      return 'computed';
+    },
+    configurable: true,
+    enumerable: true,
+  });
+  Object.defineProperty(wrappedFunc, '$$cache', {
+    get() {
+      return (getPreviewMessage as any)['$$cache'];
+    },
+    configurable: true,
+    enumerable: true,
+  });
+  Object.defineProperty(wrappedFunc, '$$extractChangedAt', {
+    get() {
+      return (getPreviewMessage as any)['$$extractChangedAt'];
+    },
+    configurable: true,
+    enumerable: true,
+  });
+  Object.defineProperty(wrappedFunc, '$$extractResult', {
+    get() {
+      return (getPreviewMessage as any)['$$extractResult'];
+    },
+    configurable: true,
+    enumerable: true,
+  });
+  Object.defineProperty(wrappedFunc, '$$getterGroupId', {
+    get() {
+      return (getPreviewMessage as any)['$$getterGroupId'];
+    },
+    configurable: true,
+    enumerable: true,
+  });
+  Object.defineProperty(wrappedFunc, '$$recomputeIfNeeded', {
+    get() {
+      return (getPreviewMessage as any)['$$recomputeIfNeeded'];
+    },
+    configurable: true,
+    enumerable: true,
+  });
+  Object.defineProperty(wrappedFunc, '$$root', {
+    get() {
+      return (getPreviewMessage as any)['$$root'];
+    },
+    configurable: true,
+    enumerable: true,
+  });
+
+  return wrappedFunc as TFunc;
 }
