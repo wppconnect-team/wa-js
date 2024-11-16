@@ -101,6 +101,7 @@ export {
   sendVCardContactMessage,
   VCardContact,
 } from './sendVCardContactMessage';
+export { setChatList } from './setChatList';
 export { setInputText } from './setInputText';
 export { setNotes } from './setNotes';
 export { starMessage, StarMessageReturn } from './starMessage';
