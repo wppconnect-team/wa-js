@@ -27,6 +27,7 @@ export declare function getShowChangeNumberNotification(
   chat: ChatModel
 ): boolean;
 export declare function getShouldShowUnreadDivider(chat: ChatModel): boolean;
+export declare function getHasUnread(chat: ChatModel): boolean;
 
 exportModule(
   exports,
@@ -43,10 +44,22 @@ exportModule(
     m.getShouldShowUnreadDivider
 );
 
+exportModule(
+  exports,
+  {
+    getHasUnread: 'getHasUnread',
+  },
+  (m) => m.getHasUnread
+);
+
 injectFallbackModule('getShouldAppearInList', {
   getShouldAppearInList: (chat: ChatModel) => chat.shouldAppearInList,
   getPreviewMessage: (chat: ChatModel) => chat.previewMessage,
   getShowChangeNumberNotification: (chat: ChatModel) =>
     chat.showChangeNumberNotification,
   getShouldShowUnreadDivider: (chat: ChatModel) => chat.shouldShowUnreadDivider,
+});
+
+injectFallbackModule('getHasUnread', {
+  getHasUnread: (chat: ChatModel) => chat.hasUnread,
 });

@@ -110,6 +110,7 @@ function applyPatchModel() {
     isPSA: functions.getIsPSA,
     previewMessage: functions.getPreviewMessage,
     showChangeNumberNotification: functions.getShowChangeNumberNotification,
+    hasUnread: functions.getHasUnread,
   };
 
   for (const attr in funcs) {

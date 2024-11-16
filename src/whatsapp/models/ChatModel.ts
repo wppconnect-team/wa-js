@@ -101,6 +101,10 @@ interface Derived {
   isBroadcast: boolean;
   isNewsletter: boolean;
   canUnread: boolean;
+  /**
+   * Deprecated in favor of getHasUnread
+   * @deprecated
+   */
   hasUnread: boolean;
   optimisticUnreadCount?: any;
   /**
