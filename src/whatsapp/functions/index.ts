@@ -89,6 +89,7 @@ export * from './handleSingleMsg';
 export * from './initializeAltDeviceLinking';
 export * from './isAnimatedWebp';
 export * from './isAuthenticated';
+export * from './isFilterExcludedFromSearchTreatmentInInboxFlow';
 export * from './isRegistered';
 export * from './isUnreadTypeMsg';
 export * from './isWid';

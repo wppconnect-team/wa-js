@@ -21,6 +21,7 @@ import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   getPreviewMessage,
   getShouldAppearInList,
+  isFilterExcludedFromSearchTreatmentInInboxFlow,
 } from '../../whatsapp/functions';
 
 /**
@@ -102,6 +103,20 @@ function applyPatch() {
     }
     return func(...args);
   });
+  /**
+   * If a custom list is set and the user clicks on 'favorites' or 'unread,'
+   * show the correct list, not just the allowed contacts.
+   */
+  wrapModuleFunction(
+    isFilterExcludedFromSearchTreatmentInInboxFlow,
+    async (func, ...args) => {
+      const [type] = args;
+      filterType = 'all';
+      Cmd.trigger('set_active_filter', 'default');
+      Cmd.trigger('set_active_filter', type);
+      return func(...args);
+    }
+  );
 }
 
 /**
