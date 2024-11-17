@@ -19,7 +19,6 @@ import * as webpack from '../../webpack';
 import { Cmd } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
-  getPreviewMessage,
   getShouldAppearInList,
   isFilterExcludedFromSearchTreatmentInInboxFlow,
 } from '../../whatsapp/functions';
@@ -134,56 +133,10 @@ export function wrapShouldAppearFunction<TFunc extends (...args: any[]) => any>(
   const wrappedFunc: any = (...args: Parameters<TFunc>) => {
     return callback(func, ...args);
   };
-  Object.defineProperties(wrappedFunc, Object.getOwnPropertyDescriptors(func));
-  Object.defineProperty(wrappedFunc, 'kind', {
-    get() {
-      return 'computed';
-    },
-    configurable: true,
-    enumerable: true,
-  });
-  Object.defineProperty(wrappedFunc, '$$cache', {
-    get() {
-      return (getPreviewMessage as any)['$$cache'];
-    },
-    configurable: true,
-    enumerable: true,
-  });
-  Object.defineProperty(wrappedFunc, '$$extractChangedAt', {
-    get() {
-      return (getPreviewMessage as any)['$$extractChangedAt'];
-    },
-    configurable: true,
-    enumerable: true,
-  });
-  Object.defineProperty(wrappedFunc, '$$extractResult', {
-    get() {
-      return (getPreviewMessage as any)['$$extractResult'];
-    },
-    configurable: true,
-    enumerable: true,
-  });
-  Object.defineProperty(wrappedFunc, '$$getterGroupId', {
-    get() {
-      return (getPreviewMessage as any)['$$getterGroupId'];
-    },
-    configurable: true,
-    enumerable: true,
-  });
-  Object.defineProperty(wrappedFunc, '$$recomputeIfNeeded', {
-    get() {
-      return (getPreviewMessage as any)['$$recomputeIfNeeded'];
-    },
-    configurable: true,
-    enumerable: true,
-  });
-  Object.defineProperty(wrappedFunc, '$$root', {
-    get() {
-      return (getPreviewMessage as any)['$$root'];
-    },
-    configurable: true,
-    enumerable: true,
-  });
+  Object.defineProperties(
+    wrappedFunc,
+    Object.getOwnPropertyDescriptors(getShouldAppearInList)
+  );
 
   return wrappedFunc as TFunc;
 }
