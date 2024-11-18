@@ -110,8 +110,12 @@ function applyPatch() {
     isFilterExcludedFromSearchTreatmentInInboxFlow,
     async (func, ...args) => {
       const [type] = args;
-      filterType = 'all';
-      Cmd.trigger('set_active_filter', 'default');
+      if (filterType == FilterChatListTypes.CUSTOM) {
+        filterType = FilterChatListTypes.ALL;
+        Cmd.trigger('set_active_filter', 'default');
+        Cmd.trigger('set_active_filter', type);
+      }
+      filterType = FilterChatListTypes.ALL;
       Cmd.trigger('set_active_filter', type);
       return func(...args);
     }
