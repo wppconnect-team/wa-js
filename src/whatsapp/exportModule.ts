@@ -16,6 +16,7 @@
 
 import Debug from 'debug';
 
+import { wrapShouldAppearFunction } from '../chat/functions/setChatList';
 import { trackException } from '../gtag';
 import { InferArgs, InferReturn, wrapFunction } from '../util';
 import * as webpack from '../webpack';
@@ -267,11 +268,17 @@ export function wrapModuleFunction<TFunc extends (...args: any[]) => any>(
   }
 
   const baseModule = parts.reduce((a, b) => a?.[b], module);
-
-  baseModule[functionName] = wrapFunction(
-    func.bind(baseModule) as TFunc,
-    callback
-  );
+  if (functionName == 'getShouldAppearInList') {
+    baseModule[functionName] = wrapShouldAppearFunction(
+      func.bind(baseModule) as TFunc,
+      callback
+    );
+  } else {
+    baseModule[functionName] = wrapFunction(
+      func.bind(baseModule) as TFunc,
+      callback
+    );
+  }
 
   moduleIdMap.set(baseModule[functionName], moduleId);
   functionPathMap.set(baseModule[functionName], functionPath);

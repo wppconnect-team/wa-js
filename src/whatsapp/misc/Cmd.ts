@@ -201,6 +201,9 @@ export declare class CmdClass extends EventEmitter {
   showMerchantDetailsEntityTypePopup(e?: any, t?: any): void;
   showCountrySelector(e?: any, t?: any, r?: any): void;
   toggleStickerMaker(): void;
+  setActiveFilter(
+    type?: 'unread' | 'favorites' | 'personal' | 'assigned_to_you' | 'labels'
+  ): Promise<void>;
 }
 
 /** @whatsapp 88102
