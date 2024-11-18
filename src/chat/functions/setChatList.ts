@@ -38,6 +38,9 @@ import {
  *
  * // List only with groups chats
  * WPP.chat.setChatList('group');
+ *
+ * // List only labels chat
+ * WPP.chat.setChatList('labels', '454545_labelId');
  * ```
  * @category Chat
  */
@@ -55,6 +58,7 @@ export enum FilterChatListTypes {
   CONTACT = 'contact',
   BUSINESS = 'business',
   BROADCAST = 'broadcast',
+  LABELS = 'labels',
   ASSIGNED_TO_YOU = 'assigned_to_you',
 }
 export async function setChatList(
@@ -64,6 +68,10 @@ export async function setChatList(
   filterType = type;
   if (!type) {
     throw new WPPError('send_type_filter', `Please send a valid type filter`);
+  } else if (type == FilterChatListTypes.LABELS && !ids) {
+    throw new WPPError('send_labelId', `Please send a valid label id`);
+  } else if (type == FilterChatListTypes.CUSTOM && !ids) {
+    throw new WPPError('send_ids', `Please send a valid ids`);
   }
   if (typeof ids == 'string') ids = [ids];
   if (type == FilterChatListTypes.CUSTOM && ids) {
@@ -76,6 +84,11 @@ export async function setChatList(
     };
   } else if (type == FilterChatListTypes.ALL) {
     Cmd.trigger('set_active_filter');
+    return {
+      type: type as any,
+    };
+  } else if (type == FilterChatListTypes.LABELS) {
+    Cmd.trigger('set_active_filter', FilterChatListTypes.LABELS, ids![0]);
     return {
       type: type as any,
     };
@@ -110,11 +123,15 @@ function applyPatch() {
     isFilterExcludedFromSearchTreatmentInInboxFlow,
     async (func, ...args) => {
       const [type] = args;
+
+      if (type === FilterChatListTypes.LABELS) return func(...args);
+
       if (filterType == FilterChatListTypes.CUSTOM) {
         filterType = FilterChatListTypes.ALL;
         Cmd.trigger('set_active_filter', 'default');
         Cmd.trigger('set_active_filter', type);
       }
+
       filterType = FilterChatListTypes.ALL;
       Cmd.trigger('set_active_filter', type);
       return func(...args);
