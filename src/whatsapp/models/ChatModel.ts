@@ -97,6 +97,10 @@ interface Derived {
    * @deprecated
    */
   isGroup: boolean;
+  /**
+   * Deprecated in favor of getIsGroup
+   * @deprecated
+   */
   isParentGroup: boolean;
   isBroadcast: boolean;
   isNewsletter: boolean;

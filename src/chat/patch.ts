@@ -108,6 +108,7 @@ function applyPatchModel() {
     shouldAppearInList: functions.getShouldAppearInList,
     isUser: functions.getIsUser,
     isPSA: functions.getIsPSA,
+    isGroup: functions.getIsGroup,
     previewMessage: functions.getPreviewMessage,
     showChangeNumberNotification: functions.getShowChangeNumberNotification,
     hasUnread: functions.getHasUnread,
