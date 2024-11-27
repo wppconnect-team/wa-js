@@ -109,6 +109,7 @@ function applyPatchModel() {
     isUser: functions.getIsUser,
     isPSA: functions.getIsPSA,
     isGroup: functions.getIsGroup,
+    isNewsletter: functions.getIsNewsletter,
     previewMessage: functions.getPreviewMessage,
     showChangeNumberNotification: functions.getShowChangeNumberNotification,
     hasUnread: functions.getHasUnread,

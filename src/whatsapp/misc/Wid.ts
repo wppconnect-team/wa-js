@@ -37,6 +37,8 @@ export declare class Wid {
 
   getSignalAddress(): string;
 
+  isNewsletter(): boolean;
+
   isBot(): boolean;
 
   isBroadcast(): boolean;

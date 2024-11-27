@@ -76,6 +76,11 @@ export declare function getIsBroadcast(contact: ContactModel): any;
 /**
  * @whatsapp 660666 >= 2.2327.4
  */
+export declare function getIsNewsletter(contact: ContactModel): any;
+
+/**
+ * @whatsapp 660666 >= 2.2327.4
+ */
 export declare function getIsPSA(contact: ContactModel): any;
 
 /**
@@ -152,6 +157,7 @@ exportModule(
     getIsUser: 'getIsUser',
     getIsGroup: 'getIsGroup',
     getIsBroadcast: 'getIsBroadcast',
+    getIsNewsletter: 'getIsNewsletter',
     getIsPSA: 'getIsPSA',
     getIsIAS: 'getIsIAS',
     getIsSupportAccount: 'getIsSupportAccount',
@@ -178,6 +184,7 @@ injectFallbackModule('getIsMyContact', {
   getIsMe: (contact: ContactModel) => contact.isMe,
   getIsUser: (contact: ContactModel) => contact.isUser,
   getIsGroup: (contact: ContactModel) => contact.isGroup,
+  getIsNewsletter: (contact: ContactModel) => contact.isNewsletter,
   getIsBroadcast: (contact: ContactModel) => contact.isBroadcast,
   getIsPSA: (contact: ContactModel) => contact.isPSA,
   getIsIAS: (contact: ContactModel) => contact.isIAS,
