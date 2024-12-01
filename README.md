@@ -90,7 +90,7 @@ There are a convection name for some exported modules:
 
 `WPP.group.demoteParticipant` - Demote a participant from admin.
 
-`WPP.group.getGroupInfo` - Get group information.
+`WPP.group.getGroupInfoFromInviteCode` - Get group information from an invitation link or an invite code.
 
 ### Events
 `WPP.chat.on('chat.new_message')` - Event to dispatch on receive a new message
