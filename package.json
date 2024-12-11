@@ -47,7 +47,7 @@
     "@commitlint/prompt-cli": "^19.6.0",
     "@playwright/test": "^1.49.1",
     "@types/debug": "^4.1.12",
-    "@types/node": "^16.18.121",
+    "@types/node": "^16.18.122",
     "@types/node-fetch": "^2.6.12",
     "@types/parse-data-url": "^3.0.2",
     "@types/prettier": "^3.0.0",
