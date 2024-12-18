@@ -97,6 +97,7 @@ export * from './joinGroupViaInvite';
 export * from './keepMessage';
 export * from './labelAddAction';
 export * from './labelAddAction';
+export * from './listsFunctions';
 export * from './markSeen';
 export * from './mediaTypeFromProtobuf';
 export * from './membershipApprovalRequestAction';
