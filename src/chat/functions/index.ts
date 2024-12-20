@@ -60,6 +60,7 @@ export {
 } from './prepareMessageButtons';
 export { prepareRawMessage } from './prepareRawMessage';
 export { requestPhoneNumber } from './requestPhoneNumber';
+export { sendCatalogMessage } from './sendCatalogMessage';
 export {
   OrderItems,
   OrderMessageOptions,
