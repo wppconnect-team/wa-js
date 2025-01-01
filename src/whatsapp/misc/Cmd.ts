@@ -105,10 +105,10 @@ export declare class CmdClass extends EventEmitter {
     }
   ): void;
   _openChat(e?: any, t?: any): void;
-  openChatAt(
-    chat: ChatModel,
-    context: ReturnType<typeof getSearchContext>
-  ): Promise<boolean>;
+  openChatAt(params?: {
+    chat: ChatModel;
+    msgContext: ReturnType<typeof getSearchContext>;
+  }): Promise<boolean>;
   openChatFromUnread(chat: ChatModel): Promise<boolean>;
   openChatBottom(chat: ChatModel): Promise<boolean>;
   scrollToPtt(e?: any): void;
