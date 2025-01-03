@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2024 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-export { get } from './get';
-export { getBusinessProfile } from './getBusinessProfile';
-export { getCommonGroups } from './getCommonGroups';
-export { getProfilePictureUrl } from './getProfilePictureUrl';
-export { getStatus } from './getStatus';
-export { ContactListOptions, list } from './list';
-export { queryExists } from './queryExists';
-export { remove } from './remove';
-export { save } from './save';
-export { subscribePresence } from './subscribePresence';
-export { unsubscribePresence } from './unsubscribePresence';
+import { exportModule } from '../exportModule';
+
+/**
+ * @whatsapp WAWebDeleteContactAction >= 2.3000.0
+ */
+export declare function deleteContactAction(number: string): Promise<void>;
+
+exportModule(
+  exports,
+  {
+    deleteContactAction: 'deleteContactAction',
+  },
+  (m) => m.deleteContactAction
+);
