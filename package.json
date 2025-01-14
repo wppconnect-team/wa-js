@@ -44,7 +44,7 @@
   "devDependencies": {
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
-    "@commitlint/prompt-cli": "^19.6.1",
+    "@commitlint/prompt-cli": "^19.7.0",
     "@playwright/test": "^1.49.1",
     "@types/debug": "^4.1.12",
     "@types/node": "^16.18.122",
