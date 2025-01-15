@@ -23,7 +23,7 @@ import { ChatModel, MsgModel } from '../models';
  */
 export declare function getSearchContext(
   chat: ChatModel | string,
-  msg: MsgKey | string,
+  msg: MsgModel | MsgKey | string,
   options?: {
     isQuotedMsgAvailable: boolean;
   }

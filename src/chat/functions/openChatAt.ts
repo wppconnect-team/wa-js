@@ -39,7 +39,11 @@ export async function openChatAt(
 
   const msg = await getMessageById(messageId);
 
-  const msgContext = getSearchContext(chat, msg.id._serialized);
-
-  return await Cmd.openChatAt({ chat, msgContext });
+  try {
+    const msgContext = getSearchContext(chat, msg);
+    return await Cmd.openChatAt(chat, msgContext);
+  } catch (e) {
+    const msgContext = getSearchContext(chat, msg.id._serialized);
+    return await Cmd.openChatAt({ chat, msgContext });
+  }
 }
