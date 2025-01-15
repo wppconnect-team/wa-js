@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       increment:
+        type: choice
         description: 'Tipo de incremento: patch, minor, major ou pre*'
         required: true
         default: 'patch'

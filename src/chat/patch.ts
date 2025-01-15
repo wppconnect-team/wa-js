@@ -85,9 +85,10 @@ function applyPatch() {
   /**
    * Fixed error on try send message to some lids
    */
+  /*
   if (typeof Lid1X1MigrationUtils.isLidMigrated === 'function') {
     Lid1X1MigrationUtils.isLidMigrated = () => true;
-  }
+  }*/
 }
 
 function applyPatchModel() {
