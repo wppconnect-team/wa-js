@@ -14,12 +14,19 @@
  * limitations under the License.
  */
 
+import { WPPError } from '../util';
 import * as webpack from '../webpack';
-import { ChatModel, functions, Lid1X1MigrationUtils } from '../whatsapp';
+import { ChatModel, functions, WidFactory } from '../whatsapp';
 import { wrapModuleFunction } from '../whatsapp/exportModule';
 import {
+  createChat,
+  findOrCreateLatestChat,
+  getChatRecordByAccountLid,
+  getEnforceCurrentLid,
+  getExisting,
   isUnreadTypeMsg,
   mediaTypeFromProtobuf,
+  selectChatForOneOnOneMessage,
   typeAttributeFromProtobuf,
 } from '../whatsapp/functions';
 
@@ -83,12 +90,76 @@ function applyPatch() {
   });
 
   /**
-   * Fixed error on try send message to some lids
+   * Patch for fix error on try send message to lids
    */
-  /*
-  if (typeof Lid1X1MigrationUtils.isLidMigrated === 'function') {
-    Lid1X1MigrationUtils.isLidMigrated = () => true;
-  }*/
+  wrapModuleFunction(findOrCreateLatestChat, async (func, ...args) => {
+    const chatId = args[0];
+    let chatParams: any = { chatId: args[0] };
+    const context = args[1];
+    const options = (args as any)[2];
+
+    if (chatId.isLid()) {
+      const lid = getEnforceCurrentLid(chatId);
+      chatParams = await selectChatForOneOnOneMessage({ lid });
+    } else {
+      // Retorna para executar o fluxo da função normal caso não seja um LID
+      return await func(...args);
+    }
+
+    const { forceUsync, signal, nextPrivacyMode } = options ?? ({} as any);
+
+    if (signal?.aborted) {
+      throw new WPPError('signal_abort_error', 'Signal aborted');
+    }
+
+    const existingChat = await getExisting(chatParams.chatId);
+    if (existingChat) return existingChat;
+
+    const createChatParams: {
+      createdLocally: boolean;
+      notSpam?: boolean;
+      lidOriginType?: any;
+    } = {
+      createdLocally: true,
+      lidOriginType: 'general',
+    };
+    await createChat(chatParams, context, createChatParams, {
+      forceUsync,
+      nextPrivacyMode,
+    });
+
+    const newChat = await getExisting(chatParams.chatId);
+    if (!newChat) {
+      throw new Error('findChat: new chat not found');
+    }
+
+    return newChat;
+  });
+
+  wrapModuleFunction(selectChatForOneOnOneMessage, async (func, ...args) => {
+    const accountLid = args[0];
+    const chatRecords = await getChatRecordByAccountLid(accountLid);
+
+    if (chatRecords.length > 1) {
+      throw new WPPError(
+        'selectChatForOneOnOneMessageAfterMigration',
+        'selectChatForOneOnOneMessageAfterMigration: found multiple chats for unique index account_lid'
+      );
+    }
+
+    if (chatRecords.length === 1) {
+      const chatId = chatRecords[0].id;
+      return {
+        accountLid,
+        chatId: WidFactory.toUserWid(WidFactory.createWid(chatId)),
+      };
+    }
+
+    return {
+      accountLid: accountLid.lid,
+      chatId: accountLid.lid,
+    };
+  });
 }
 
 function applyPatchModel() {
