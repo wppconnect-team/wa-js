@@ -25,7 +25,11 @@ export declare function getEnforceCurrentLid(chatId: Wid): any;
 exportModule(
   exports,
   {
-    getEnforceCurrentLid: ['getEnforceCurrentLid', 'getCurrentLidForUserWid'],
+    getEnforceCurrentLid: [
+      'getEnforceCurrentLid',
+      'getCurrentLidForUserWid',
+      'toLid',
+    ],
   },
-  (m) => m.getEnforceCurrentLid || m.getCurrentLidForUserWid
+  (m) => m.getEnforceCurrentLid || m.getCurrentLidForUserWid || m.toLid
 );
