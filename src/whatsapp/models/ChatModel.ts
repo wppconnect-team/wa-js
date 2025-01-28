@@ -174,7 +174,8 @@ export declare class ChatModel extends ModelChatBase {
   isMostRecentCMC(e?: any): boolean;
   loadRecentMsgs(e?: any): any;
   getSearchContext?(
-    msg: MsgModel | MsgKey,
+    chat: ChatModel | string,
+    msg: MsgModel | MsgKey | string,
     options?: {
       isQuotedMsgAvailable: boolean;
     }
