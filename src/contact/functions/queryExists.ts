@@ -68,7 +68,7 @@ export async function queryExists(
     syncUser.withId(wid);
   } else {
     syncQuery.withContactProtocol();
-    syncUser.withPhone('+' + id);
+    syncUser.withPhone(id);
   }
   syncQuery.withUser(syncUser);
   syncQuery.withBusinessProtocol();
