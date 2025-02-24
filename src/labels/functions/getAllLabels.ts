@@ -18,15 +18,17 @@ import { assertColor } from '../../assert';
 import { LabelModel, LabelStore } from '../../whatsapp';
 import { colorIndexToHex } from '../../whatsapp/functions';
 import { Label } from '..';
+import { patchLabelCount } from '../patch';
 
 export async function getAllLabels(): Promise<Label[]> {
   const labels = LabelStore.getModelsArray();
   return labels.map((e: LabelModel) => {
+    console.log(e);
     return {
       id: e.id!,
       name: e.name!,
       color: e.hexColor ? assertColor(e.hexColor) : null,
-      count: e.count || 0,
+      count: patchLabelCount(e),
       hexColor: colorIndexToHex(e.colorIndex!),
       colorIndex: e.colorIndex!,
     };
