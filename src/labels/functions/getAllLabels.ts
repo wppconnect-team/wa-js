@@ -23,7 +23,6 @@ import { patchLabelCount } from '../patch';
 export async function getAllLabels(): Promise<Label[]> {
   const labels = LabelStore.getModelsArray();
   return labels.map((e: LabelModel) => {
-    console.log(e);
     return {
       id: e.id!,
       name: e.name!,
