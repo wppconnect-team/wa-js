@@ -77,7 +77,7 @@
     "prettier": "^3.5.3",
     "release-it": "^18.1.2",
     "shx": "^0.3.4",
-    "terser-webpack-plugin": "^5.3.13",
+    "terser-webpack-plugin": "^5.3.14",
     "ts-loader": "^9.5.2",
     "ts-morph": "^25.0.1",
     "ts-node": "^10.9.2",
