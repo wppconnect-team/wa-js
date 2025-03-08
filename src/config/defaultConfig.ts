@@ -19,7 +19,7 @@ import { Config } from './Config';
 export const defaultConfig: Config = {
   deviceName: false,
   liveLocationLimit: 10,
-  disableGoogleAnalytics: false,
+  disableGoogleAnalytics: true,
   googleAnalyticsId: null,
   googleAnalyticsUserProperty: {},
   linkPreviewApiServers: null,

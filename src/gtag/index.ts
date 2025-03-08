@@ -36,27 +36,31 @@ const otherTracker = config.googleAnalyticsId
   : null;
 
 internalEv.on('webpack.injected', () => {
-  mainTracker.documentTitle = titleParts.join('');
-
   const authenticated = conn.isAuthenticated();
   const method = conn.isMultiDevice() ? 'multidevice' : 'legacy';
 
   // Add version info
-  mainTracker.setUserProperty('method', method);
-  mainTracker.setUserProperty('wa_js', waVersion);
-  mainTracker.setUserProperty('powered_by', config.poweredBy || '-');
+  if (!config.disableGoogleAnalytics) {
+    mainTracker.documentTitle = titleParts.join('');
+
+    mainTracker.setUserProperty('method', method);
+    mainTracker.setUserProperty('wa_js', waVersion);
+    mainTracker.setUserProperty('powered_by', config.poweredBy || '-');
+  }
 
   internalEv.on('conn.main_init', () => {
     titleParts[1] = (window as any).Debug?.VERSION || '-';
 
-    mainTracker.documentTitle = titleParts.join('');
+    if (!config.disableGoogleAnalytics) {
+      mainTracker.documentTitle = titleParts.join('');
 
-    mainTracker.setUserProperty('whatsapp', titleParts[1]);
+      mainTracker.setUserProperty('whatsapp', titleParts[1]);
+    }
   });
 
-  mainTracker.trackEvent('page_view', { authenticated, method });
+  if (otherTracker && !config.disableGoogleAnalytics) {
+    mainTracker.trackEvent('page_view', { authenticated, method });
 
-  if (otherTracker) {
     otherTracker.documentTitle = titleParts.join('-');
 
     otherTracker.setUserProperty('method', method);
@@ -81,16 +85,21 @@ internalEv.on('webpack.injected', () => {
   }
 
   internalEv.on('config.update', (evt) => {
-    if (evt.path[0] === 'poweredBy') {
-      mainTracker.setUserProperty('powered_by', evt.value || '-');
-      if (otherTracker) {
-        otherTracker.setUserProperty('powered_by', evt.value || '-');
-      }
-    } else if (evt.path[0] === 'googleAnalyticsUserProperty' && otherTracker) {
-      if (typeof config.googleAnalyticsUserProperty === 'object') {
-        for (const key in config.googleAnalyticsUserProperty) {
-          const value = config.googleAnalyticsUserProperty[key];
-          otherTracker.setUserProperty(key, value);
+    if (!config.disableGoogleAnalytics) {
+      if (evt.path[0] === 'poweredBy') {
+        mainTracker.setUserProperty('powered_by', evt.value || '-');
+        if (otherTracker) {
+          otherTracker.setUserProperty('powered_by', evt.value || '-');
+        }
+      } else if (
+        evt.path[0] === 'googleAnalyticsUserProperty' &&
+        otherTracker
+      ) {
+        if (typeof config.googleAnalyticsUserProperty === 'object') {
+          for (const key in config.googleAnalyticsUserProperty) {
+            const value = config.googleAnalyticsUserProperty[key];
+            otherTracker.setUserProperty(key, value);
+          }
         }
       }
     }
