@@ -81,7 +81,7 @@ export async function sendPixKeyMessage(
       items: [
         {
           name: '',
-          retailer_id: `custom-item-${generateOrderUniqueId}`,
+          retailer_id: `custom-item-${generateOrderUniqueId()}`,
           amount: {
             offset: 1,
             value: 0,
@@ -119,11 +119,11 @@ export async function sendPixKeyMessage(
     ],
     external_payment_configurations: [
       {
-        payment_instruction: params.instructions,
+        payment_instruction: params.instructions || '',
         type: 'payment_instruction',
       },
     ],
-    additional_note: params.instructions,
+    additional_note: '',
     currency: 'BRL',
     type: 'physical-goods',
   };
@@ -142,6 +142,7 @@ export async function sendPixKeyMessage(
       ],
       messageVersion: 1,
     },
+    messageSecret: self.crypto.getRandomValues(new Uint8Array(32)),
   };
   return await sendRawMessage(chatId, message, options);
 }
