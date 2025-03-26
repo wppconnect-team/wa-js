@@ -110,7 +110,7 @@ function applyPatch() {
     }
 
     const existingChat = await getExisting(chatParams.chatId);
-    if (existingChat) return existingChat;
+    if (existingChat) return { chat: existingChat, created: false };
 
     const createChatParams: {
       createdLocally: boolean;
