@@ -27,5 +27,7 @@ exportModule(
   {
     ServerProps: 'ServerProps',
   },
-  (m) => m.getMaxFilesSizeServerProp && m.ServerProps
+  (m) =>
+    (m.getMaxFilesSizeServerProp && m.ServerProps) ||
+    (m.getMaxFilesSize && m.ServerProps)
 );

@@ -30,5 +30,5 @@ exportModule(
   {
     queryGroupInviteCode: 'queryGroupInviteCode',
   },
-  (m) => m.queryGroupInviteCode && m.resetGroupInviteCode
+  (m) => m.queryGroupInviteCode
 );

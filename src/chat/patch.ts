@@ -101,9 +101,6 @@ function applyPatch() {
     if (chatId.isLid()) {
       const lid = getEnforceCurrentLid(chatId);
       chatParams = await selectChatForOneOnOneMessage({ lid });
-    } else {
-      // Retorna para executar o fluxo da função normal caso não seja um LID
-      return await func(...args);
     }
 
     const { forceUsync, signal, nextPrivacyMode } = options ?? ({} as any);
