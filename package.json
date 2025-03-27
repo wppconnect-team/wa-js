@@ -70,7 +70,7 @@
     "eventemitter2": "^6.4.9",
     "file-type": "~16.5.4",
     "husky": "^9.1.7",
-    "lint-staged": "^15.4.3",
+    "lint-staged": "^15.5.0",
     "node-fetch": "^2.7.0",
     "parse-data-url": "^6.0.0",
     "playwright-chromium": "^1.50.1",
