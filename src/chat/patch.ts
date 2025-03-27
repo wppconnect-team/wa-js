@@ -93,6 +93,7 @@ function applyPatch() {
    * Patch for fix error on try send message to lids
    */
   wrapModuleFunction(findOrCreateLatestChat, async (func, ...args) => {
+    const type = args[1];
     const chatId = args[0];
     let chatParams: any = { chatId: args[0] };
     const context = args[1];
@@ -110,7 +111,11 @@ function applyPatch() {
     }
 
     const existingChat = await getExisting(chatParams.chatId);
-    if (existingChat) return { chat: existingChat, created: false };
+    if (existingChat) {
+      if (type == 'forwardSelectedModals')
+        return { chat: existingChat, created: false };
+      else return existingChat;
+    }
 
     const createChatParams: {
       createdLocally: boolean;
