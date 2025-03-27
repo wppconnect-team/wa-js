@@ -27,7 +27,10 @@ export declare function findOrCreateLatestChat(
     | 'forwardSelectedModals'
     | 'newChatFlow'
     | 'chatInfoTopCard'
-): Promise<ChatModel>;
+): Promise<{
+  chat: ChatModel;
+  created: boolean;
+}>;
 
 exportModule(
   exports,

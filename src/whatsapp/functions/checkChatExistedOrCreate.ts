@@ -1,5 +1,5 @@
 /*!
- * Copyright 2025 WPPConnect Team
+ * Copyright 2021 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +15,25 @@
  */
 
 import { exportModule } from '../exportModule';
-import { Wid } from '../misc';
-import { ChatModel } from '../models';
 
 /**
- * @whatsapp WAWebChatGetExistingBridge >= 2.3000.0
+ * @whatsapp WAWebCreateChat >= 2.3000.0
  */
-export declare function getExisting(chatId: Wid): Promise<ChatModel | null>;
+export declare function checkChatExistedOrCreate(options: {
+  destinationChat: any;
+  msgMeta: null;
+  chatOriginType: any;
+  initialProps: any;
+  options: {
+    forceUsync: any;
+    nextPrivacyMode: any;
+  };
+}): Promise<any>;
 
 exportModule(
   exports,
   {
-    getExisting: 'getExisting',
+    checkChatExistedOrCreate: 'checkChatExistedOrCreate',
   },
-  (m) => m.getExisting
+  (m) => m.checkChatExistedOrCreate
 );
