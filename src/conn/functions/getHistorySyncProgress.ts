@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2025 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,8 +37,8 @@ export function getHistorySyncProgress(): HistorySyncProgress {
   const info = wa_functions.getHistorySyncProgress();
 
   return {
-    progress: info.progress,
-    paused: info.paused || false,
-    inProgress: info.inProgress || false,
+    progress: info.realProgress || 0,
+    paused: (info?.remainingPausedSeconds || 0) > 0,
+    inProgress: (info?.realProgress || 0) < 100,
   };
 }

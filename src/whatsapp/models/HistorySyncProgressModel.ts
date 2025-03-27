@@ -24,15 +24,20 @@ import {
   ModelProxy,
 } from './Model';
 
-interface Props {}
+interface Props {
+  id: string;
+  incomplete: boolean;
+  realProgress: number | null;
+  fakeProgress: number;
+  remainingPausedSeconds?: number;
+  _fakePausedCompletionTimeout: number;
+  _progressIncrementTimeout: number;
+  _lastUpdateSeconds: number;
+}
 
 interface Session {}
 
-interface Derived {
-  progress: number | null;
-  paused: boolean;
-  inProgress: boolean;
-}
+interface Derived {}
 
 /**
  * @whatsapp 649959 >= 2.2244.5
@@ -50,7 +55,9 @@ export declare class HistorySyncProgressModel extends Model {
   );
   setInProgress(inProgress: boolean): void;
   setPaused(paused: boolean): void;
+  setIncomplete(value: boolean): void;
   setProgress(progress: number): void;
+  pausedExpiryCheckpoint(a?: number): void;
 }
 
 exportModule(
