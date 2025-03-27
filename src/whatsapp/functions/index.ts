@@ -24,6 +24,7 @@ export * from './canEditCaption';
 export * from './canEditMsg';
 export * from './canReplyMsg';
 export * from './changeOptInStatusForExternalWebBeta';
+export * from './checkChatExistedOrCreate';
 export * from './collections';
 export * from './colorIndexToHex';
 export * from './contactFunctions';

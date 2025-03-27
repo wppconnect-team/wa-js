@@ -19,7 +19,7 @@ import * as webpack from '../webpack';
 import { ChatModel, functions, WidFactory } from '../whatsapp';
 import { wrapModuleFunction } from '../whatsapp/exportModule';
 import {
-  createChat,
+  checkChatExistedOrCreate,
   findOrCreateLatestChat,
   getChatRecordByAccountLid,
   getEnforceCurrentLid,
@@ -93,7 +93,6 @@ function applyPatch() {
    * Patch for fix error on try send message to lids
    */
   wrapModuleFunction(findOrCreateLatestChat, async (func, ...args) => {
-    const type = args[1];
     const chatId = args[0];
     let chatParams: any = { chatId: args[0] };
     const context = args[1];
@@ -112,28 +111,24 @@ function applyPatch() {
 
     const existingChat = await getExisting(chatParams.chatId);
     if (existingChat) {
-      if (
-        type == 'forwardSelectedModals' ||
-        type == 'newChatFlow' ||
-        type == 'chatInfoTopCard'
-      ) {
+      if (typeof context !== 'undefined') {
         return { chat: existingChat, created: false };
       } else {
         return existingChat;
       }
     }
 
-    const createChatParams: {
-      createdLocally: boolean;
-      notSpam?: boolean;
-      lidOriginType?: any;
-    } = {
-      createdLocally: true,
-      lidOriginType: 'general',
-    };
-    await createChat(chatParams, context, createChatParams, {
-      forceUsync,
-      nextPrivacyMode,
+    const isExist = await checkChatExistedOrCreate({
+      destinationChat: chatParams,
+      msgMeta: null,
+      chatOriginType: context,
+      initialProps: {
+        createdLocally: false,
+      },
+      options: {
+        forceUsync,
+        nextPrivacyMode,
+      },
     });
 
     const newChat = await getExisting(chatParams.chatId);
@@ -141,7 +136,14 @@ function applyPatch() {
       throw new Error('findChat: new chat not found');
     }
 
-    return newChat;
+    if (newChat.id.isLid()) {
+      return newChat as any;
+    } else {
+      return {
+        chat: newChat,
+        created: !isExist,
+      };
+    }
   });
 
   wrapModuleFunction(selectChatForOneOnOneMessage, async (func, ...args) => {
