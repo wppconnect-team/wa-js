@@ -112,9 +112,15 @@ function applyPatch() {
 
     const existingChat = await getExisting(chatParams.chatId);
     if (existingChat) {
-      if (type == 'forwardSelectedModals')
+      if (
+        type == 'forwardSelectedModals' ||
+        type == 'newChatFlow' ||
+        type == 'chatInfoTopCard'
+      ) {
         return { chat: existingChat, created: false };
-      else return existingChat;
+      } else {
+        return existingChat;
+      }
     }
 
     const createChatParams: {

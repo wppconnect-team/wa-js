@@ -22,7 +22,11 @@ import { ChatModel } from '../models';
  */
 export declare function findOrCreateLatestChat(
   wid: Wid,
-  type?: 'username_contactless_search' | 'forwardSelectedModals'
+  type?:
+    | 'username_contactless_search'
+    | 'forwardSelectedModals'
+    | 'newChatFlow'
+    | 'chatInfoTopCard'
 ): Promise<ChatModel>;
 
 exportModule(
