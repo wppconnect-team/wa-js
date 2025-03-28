@@ -36,10 +36,28 @@ export declare enum CALL_STATES {
   NOT_ANSWERED = 'NOT_ANSWERED',
 }
 
+export declare enum CALL_STATES {
+  None = 0,
+  Calling = 1,
+  PreacceptReceived = 2,
+  ReceivedCall = 3,
+  AcceptSent = 4,
+  AcceptReceived = 5,
+  CallActive = 6,
+  CallActiveElseWhere = 7,
+  ReceivedCallWithoutOffer = 8,
+  Rejoining = 9,
+  Link = 10,
+  ConnectedLonely = 11,
+  PreCalling = 12,
+  CallStateEnding = 13,
+  CallBCallStarting = 14,
+}
+
 exportModule(
   exports,
   {
-    CALL_STATES: 'CALL_STATES',
+    CALL_STATES: ['CALL_STATES', 'CallState'],
   },
-  (m) => m.CALL_STATES
+  (m) => m.CALL_STATES || m.CallState
 );
