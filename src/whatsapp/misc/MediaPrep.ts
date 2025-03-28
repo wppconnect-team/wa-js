@@ -36,6 +36,7 @@ export declare namespace MediaPrep {
       asGif?: boolean;
       isAudio?: boolean;
       asSticker?: boolean;
+      maxDimension?: number;
     }
   ): MediaPrep;
 
