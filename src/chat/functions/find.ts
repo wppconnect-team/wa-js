@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2025 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,9 +29,9 @@ export async function find(chatId: string | Wid): Promise<ChatModel> {
   const wid = assertWid(chatId);
   const exist = await findOrCreateLatestChat(wid);
 
-  if (!wid.isLid() && exist && exist.chat.isGroup) {
+  if (!wid.isLid() && wid.isGroup() && exist.chat) {
     await GroupMetadataStore.find(exist.chat.id);
   }
 
-  return wid.isLid() ? (exist as any) : exist.chat;
+  return exist.chat;
 }

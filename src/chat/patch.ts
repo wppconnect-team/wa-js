@@ -111,11 +111,7 @@ function applyPatch() {
 
     const existingChat = await getExisting(chatParams.chatId);
     if (existingChat) {
-      if (typeof context !== 'undefined') {
-        return { chat: existingChat, created: false };
-      } else {
-        return existingChat;
-      }
+      return { chat: existingChat, created: false };
     }
 
     const isExist = await checkChatExistedOrCreate({
@@ -136,14 +132,10 @@ function applyPatch() {
       throw new Error('findChat: new chat not found');
     }
 
-    if (newChat.id.isLid()) {
-      return newChat as any;
-    } else {
-      return {
-        chat: newChat,
-        created: !isExist,
-      };
-    }
+    return {
+      chat: newChat,
+      created: !isExist,
+    };
   });
 
   wrapModuleFunction(selectChatForOneOnOneMessage, async (func, ...args) => {
