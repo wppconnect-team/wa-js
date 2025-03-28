@@ -133,6 +133,7 @@ export interface ImageMessageOptions
     MessageButtonsOptions {
   type: 'image';
   isViewOnce?: boolean;
+  isHD?: boolean;
 }
 
 export interface StickerMessageOptions extends FileMessageOptions {
@@ -146,6 +147,7 @@ export interface VideoMessageOptions
   isGif?: boolean;
   isPtv?: boolean;
   isViewOnce?: boolean;
+  isHD?: boolean;
 }
 
 /**
@@ -286,6 +288,7 @@ export async function sendFileMessage(
   } = {};
 
   let isViewOnce: boolean | undefined;
+  let maxDimension;
 
   if (options.type === 'audio') {
     rawMediaOptions.isPtt = options.isPtt;
@@ -298,6 +301,7 @@ export async function sendFileMessage(
     );
   } else if (options.type === 'image') {
     isViewOnce = options.isViewOnce;
+    maxDimension = options?.isHD ? 2560 : 1600;
   } else if (options.type === 'video') {
     isViewOnce = options.isViewOnce;
     rawMediaOptions.asGif = options.isGif;
@@ -307,7 +311,10 @@ export async function sendFileMessage(
     rawMediaOptions.asSticker = true;
   }
 
-  const mediaPrep = MediaPrep.prepRawMedia(opaqueData, rawMediaOptions);
+  const mediaPrep = MediaPrep.prepRawMedia(opaqueData, {
+    ...rawMediaOptions,
+    maxDimension,
+  });
 
   // The generated message in `sendToChat` is merged with `productMsgOptions`
   let rawMessage = await prepareRawMessage<RawMessage>(
