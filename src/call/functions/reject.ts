@@ -67,8 +67,9 @@ export async function reject(callId?: string): Promise<boolean> {
   }
 
   if (
-    (call.getState() !== CALL_STATES.INCOMING_RING && !call.isGroup) ||
-    (call.getState() !== CALL_STATES.ReceivedCall && !call.isGroup)
+    call.getState() !== CALL_STATES.INCOMING_RING &&
+    call.getState() !== CALL_STATES.ReceivedCall &&
+    !call.isGroup
   ) {
     throw new WPPError(
       'call_is_not_incoming_ring',
