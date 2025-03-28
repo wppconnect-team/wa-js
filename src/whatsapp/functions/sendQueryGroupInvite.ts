@@ -20,6 +20,7 @@ import { exportModule } from '../exportModule';
 export interface QueryGroupInviteResult {
   announce: boolean;
   creation: number;
+  /** description of the group; linebreaks are formatted using `"\n"` */
   desc: string;
   descId: string;
   descOwner?: Wid;
@@ -35,13 +36,22 @@ export interface QueryGroupInviteResult {
   }[];
   pvId?: string;
   restrict: boolean;
+  /** how many members the group currently has */
   size: number;
   status: number;
+  /** title of the group */
   subject: string;
   subjectOwner?: Wid;
   subjectTime: number;
   support: boolean;
   suspended: boolean;
+  isParentGroup: boolean;
+  isParentGroupClosed: boolean;
+  defaultSubgroup: boolean;
+  generalSubgroup: boolean;
+  membershipApprovalMode: boolean;
+  isLidAddressingMode: boolean;
+  generalChatAutoAddDisabled: boolean;
 }
 
 /** @whatsapp 10790
