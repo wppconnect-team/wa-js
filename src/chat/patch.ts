@@ -16,10 +16,11 @@
 
 import { WPPError } from '../util';
 import * as webpack from '../webpack';
-import { ChatModel, functions, WidFactory } from '../whatsapp';
+import { ChatModel, ContactStore, functions, WidFactory } from '../whatsapp';
 import { wrapModuleFunction } from '../whatsapp/exportModule';
 import {
   checkChatExistedOrCreate,
+  createChat,
   findOrCreateLatestChat,
   getChatRecordByAccountLid,
   getEnforceCurrentLid,
@@ -97,19 +98,38 @@ function applyPatch() {
     let chatParams: any = { chatId: args[0] };
     const context = args[1];
     const options = (args as any)[2];
+    const existingChat = await getExisting(chatParams.chatId);
+    const { forceUsync, signal, nextPrivacyMode } = options ?? ({} as any);
 
-    if (chatId.isLid()) {
-      const lid = getEnforceCurrentLid(chatId);
-      chatParams = await selectChatForOneOnOneMessage({ lid });
+    //It's a patch for some contacts that are in ChatStore but don't actually exist on WhatsApp Web.
+    // So, I force the creation of the contact to prevent the error of infinitely sending messages without a response.
+    const contact = ContactStore.get(chatId);
+    if (contact && !existingChat) {
+      await createChat(
+        chatParams,
+        context,
+        {
+          createdLocally: true,
+          lidOriginType: 'general',
+        },
+        {
+          forceUsync,
+          nextPrivacyMode,
+        }
+      );
+      const existingChat = await getExisting(chatParams.chatId);
+      return { chat: existingChat as ChatModel, created: false };
     }
 
-    const { forceUsync, signal, nextPrivacyMode } = options ?? ({} as any);
+    if (!chatId.isLid()) return await func(...args);
+
+    const lid = getEnforceCurrentLid(chatId);
+    chatParams = await selectChatForOneOnOneMessage({ lid });
 
     if (signal?.aborted) {
       throw new WPPError('signal_abort_error', 'Signal aborted');
     }
 
-    const existingChat = await getExisting(chatParams.chatId);
     if (existingChat) {
       return { chat: existingChat, created: false };
     }
