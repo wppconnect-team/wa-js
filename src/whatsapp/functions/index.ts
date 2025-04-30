@@ -47,6 +47,7 @@ export * from './encryptAndSendSenderKeyMsg';
 export * from './encryptAndSendStatusMsg';
 export * from './encryptMsgProtobuf';
 export * from './fetchLinkPreview';
+export * from './fetchMexGroupInviteCode';
 export * from './findChat';
 export * from './findCommonGroups';
 export * from './findFirstWebLink';

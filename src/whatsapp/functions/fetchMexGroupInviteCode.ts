@@ -14,24 +14,32 @@
  * limitations under the License.
  */
 
-import * as webpack from '../../webpack';
+import { iAmAdmin } from '../../group';
+import { injectFallbackModule } from '../../webpack';
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
-import { fetchMexGroupInviteCode } from './';
+import { queryGroupInviteCode } from './queryGroupInviteCode';
 
-/** @whatsapp 65705 */
-export declare function sendQueryGroupInviteCode(groupId: Wid): Promise<string>;
+/**
+ * @whatsapp WAWebMexFetchGroupInviteCodeJob
+ */
+export declare function fetchMexGroupInviteCode(
+  groupId: Wid
+): Promise<{ inviteCode: string }>;
 
 exportModule(
   exports,
   {
-    sendQueryGroupInviteCode: 'sendQueryGroupInviteCode',
+    fetchMexGroupInviteCode: 'fetchMexGroupInviteCode',
   },
-  (m) => m.sendQueryGroupInviteCode
+  (m) => m.fetchMexGroupInviteCode
 );
 
-webpack.injectFallbackModule('sendQueryGroupInviteCode', {
-  sendQueryGroupInviteCode: async (groupId: Wid) => {
-    return await fetchMexGroupInviteCode(groupId);
+injectFallbackModule('fetchMexGroupInviteCode', {
+  fetchMexGroupInviteCode: async (groupId: Wid) => {
+    const isAdmin = await iAmAdmin(groupId);
+    return await queryGroupInviteCode(groupId, isAdmin).then(
+      (value) => value.code
+    );
   },
 });
