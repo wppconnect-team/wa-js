@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+import { injectFallbackModule } from '../../webpack';
 import { exportModule } from '../exportModule';
 import { ServerPropsModel } from '../models';
+import { ServerPropsConstants } from './ServerPropsConstants';
 
 /** @whatsapp 8080
  * @whatsapp 608080 >= 2.2222.8
@@ -31,3 +33,9 @@ exportModule(
     (m.getMaxFilesSizeServerProp && m.ServerProps) ||
     (m.getMaxFilesSize && m.ServerProps)
 );
+
+injectFallbackModule('ServerProps', {
+  getMaxFilesSizeServerProp: () => {
+    return ServerPropsConstants.MAX_FILE_SIZE_BYTES;
+  },
+});

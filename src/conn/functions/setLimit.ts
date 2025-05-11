@@ -16,7 +16,7 @@
 
 import { WPPError } from '../../util';
 import * as webpack from '../../webpack';
-import { ServerProps } from '../../whatsapp';
+import { ServerPropsConstants } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { getNumChatsPinned } from '../../whatsapp/functions';
 
@@ -37,6 +37,7 @@ webpack.onFullReady(() => {
  *  //Change the maximum size (bytes) for uploading media (max 70MB)
  *  WPP.conn.setLimit('maxMediaSize',16777216);
  * ```
+ * @deprecated
  */
 export function setLimit(key: 'maxMediaSize', value: number): number;
 /**
@@ -67,6 +68,7 @@ export function setLimit(key: 'maxShare', value: number): number;
  *  //Change the maximum time (seconds) of a video status
  *  WPP.conn.setLimit('statusVideoMaxDuration',120);
  * ```
+ * @deprecated
  */
 export function setLimit(key: 'statusVideoMaxDuration', value: number): number;
 /**
@@ -111,8 +113,8 @@ export function setLimit(key: string, value: boolean | number): any {
             : `Maximum value is 70MB`
         );
       }
-      ServerProps.media = value;
-      return ServerProps.media;
+      //ServerProps.media = value;
+      return null;
     }
 
     case 'maxFileSize': {
@@ -124,18 +126,16 @@ export function setLimit(key: string, value: boolean | number): any {
             : `Maximum value is 1GB`
         );
       }
-      ServerProps.maxFileSize = value;
-      return ServerProps.maxFileSize;
+      ServerPropsConstants.MAX_FILE_SIZE_BYTES = value;
+      return ServerPropsConstants.MAX_FILE_SIZE_BYTES;
     }
 
     case 'maxShare': {
       if (typeof value !== 'number') {
         throw new WPPError(`maxShare_error`, `Value type invalid!`);
       }
-      ServerProps.multicastLimitGlobal = value;
-      ServerProps.frequentlyForwardedMax = value;
-      ServerProps.frequentlyForwardedThreshold = value;
-      return ServerProps.multicastLimitGlobal;
+      ServerPropsConstants.MULTICAST_LIMIT_GLOBAL = value;
+      return ServerPropsConstants.MULTICAST_LIMIT_GLOBAL;
     }
 
     case 'statusVideoMaxDuration': {
@@ -145,8 +145,8 @@ export function setLimit(key: string, value: boolean | number): any {
           `Value type invalid!`
         );
       }
-      ServerProps.statusVideoMaxDuration = value;
-      return ServerProps.statusVideoMaxDuration;
+      //ServerProps.statusVideoMaxDuration = value;
+      return null;
     }
 
     case 'unlimitedPin': {
