@@ -41,9 +41,9 @@ injectFallbackModule('ServerPropsConstants', {
   MMS_VCARD_AUTODOWNLOAD_SIZE_KB: 64,
   VCARD_AS_DOCUMENT_SIZE_KB: 64,
   VCARD_MAX_SIZE_KB: 5000,
-  MULTICAST_LIMIT_GLOBAL: ServerProps.frequentlyForwardedMax,
+  MULTICAST_LIMIT_GLOBAL: ServerProps?.frequentlyForwardedMax || 5,
   PTT_PLAYBACK_SPEED_HIDE_DELAY: 1500,
   DEFAULT_MAX_FILE_SIZE_BYTES: 100 * 1024 * 1024,
-  MAX_FILE_SIZE_BYTES: ServerProps.maxFileSize,
+  MAX_FILE_SIZE_BYTES: ServerProps?.maxFileSize || 100 * 1024 * 1024,
   UNINITIALIZED_VALUE_WEB_BIZ_PROFILE_OPTIONS: 3,
 });

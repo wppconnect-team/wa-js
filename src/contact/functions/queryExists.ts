@@ -15,7 +15,13 @@
  */
 
 import { assertWid } from '../../assert';
-import { USyncQuery, USyncUser, Wid } from '../../whatsapp';
+import {
+  ApiContact,
+  USyncQuery,
+  USyncUser,
+  Wid,
+  WidFactory,
+} from '../../whatsapp';
 
 export interface QueryExistsResult {
   wid: Wid;
@@ -63,12 +69,16 @@ export async function queryExists(
 
   const syncUser = new USyncUser();
   const syncQuery = new USyncQuery();
-  const isLid = wid.toString().includes('@lid');
+  const isLid = wid.isLid();
   if (isLid) {
     syncUser.withId(wid);
   } else {
     syncQuery.withContactProtocol();
-    syncUser.withPhone(id);
+    syncUser.withPhone(id.replace('@c.us', ''));
+    const lid = ApiContact.getCurrentLid(WidFactory.createUserWid(id));
+    if (lid) {
+      syncUser.withLid(lid);
+    }
   }
   syncQuery.withUser(syncUser);
   syncQuery.withBusinessProtocol();
