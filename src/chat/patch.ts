@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-import { WPPError } from '../util';
 import * as webpack from '../webpack';
-import { ChatModel, ContactStore, functions, WidFactory } from '../whatsapp';
+import { ChatModel, functions } from '../whatsapp';
 import { wrapModuleFunction } from '../whatsapp/exportModule';
 import {
-  checkChatExistedOrCreate,
-  createChat,
-  findOrCreateLatestChat,
-  getChatRecordByAccountLid,
-  getEnforceCurrentLid,
-  getExisting,
+  getPhoneNumber,
   isUnreadTypeMsg,
   mediaTypeFromProtobuf,
-  selectChatForOneOnOneMessage,
   typeAttributeFromProtobuf,
 } from '../whatsapp/functions';
 
@@ -90,97 +83,12 @@ function applyPatch() {
     return func(...args);
   });
 
-  /**
-   * Patch for fix error on try send message to lids
-   */
-  wrapModuleFunction(findOrCreateLatestChat, async (func, ...args) => {
-    const chatId = args[0];
-    let chatParams: any = { chatId: args[0] };
-    const context = args[1];
-    const options = (args as any)[2];
-    const existingChat = await getExisting(chatParams.chatId);
-    const { forceUsync, signal, nextPrivacyMode } = options ?? ({} as any);
-
-    //It's a patch for some contacts that are in ChatStore but don't actually exist on WhatsApp Web.
-    // So, I force the creation of the contact to prevent the error of infinitely sending messages without a response.
-    const contact = ContactStore.get(chatId);
-    if (contact && !existingChat) {
-      await createChat(
-        chatParams,
-        context,
-        {
-          createdLocally: true,
-          lidOriginType: 'general',
-        },
-        {
-          forceUsync,
-          nextPrivacyMode,
-        }
-      );
-      const existingChat = await getExisting(chatParams.chatId);
-      return { chat: existingChat as ChatModel, created: false };
+  wrapModuleFunction(getPhoneNumber, (func, ...args) => {
+    const [wid] = args;
+    if (wid.toString().includes('lid')) {
+      return wid;
     }
-
-    if (!chatId.isLid()) return await func(...args);
-
-    const lid = getEnforceCurrentLid(chatId);
-    chatParams = await selectChatForOneOnOneMessage({ lid });
-
-    if (signal?.aborted) {
-      throw new WPPError('signal_abort_error', 'Signal aborted');
-    }
-
-    if (existingChat) {
-      return { chat: existingChat, created: false };
-    }
-
-    const isExist = await checkChatExistedOrCreate({
-      destinationChat: chatParams,
-      msgMeta: null,
-      chatOriginType: context,
-      initialProps: {
-        createdLocally: false,
-      },
-      options: {
-        forceUsync,
-        nextPrivacyMode,
-      },
-    });
-
-    const newChat = await getExisting(chatParams.chatId);
-    if (!newChat) {
-      throw new Error('findChat: new chat not found');
-    }
-
-    return {
-      chat: newChat,
-      created: !isExist,
-    };
-  });
-
-  wrapModuleFunction(selectChatForOneOnOneMessage, async (func, ...args) => {
-    const accountLid = args[0];
-    const chatRecords = await getChatRecordByAccountLid(accountLid);
-
-    if (chatRecords.length > 1) {
-      throw new WPPError(
-        'selectChatForOneOnOneMessageAfterMigration',
-        'selectChatForOneOnOneMessageAfterMigration: found multiple chats for unique index account_lid'
-      );
-    }
-
-    if (chatRecords.length === 1) {
-      const chatId = chatRecords[0].id;
-      return {
-        accountLid,
-        chatId: WidFactory.toUserWid(WidFactory.createWid(chatId)),
-      };
-    }
-
-    return {
-      accountLid: accountLid.lid,
-      chatId: accountLid.lid,
-    };
+    return func(...args);
   });
 }
 
