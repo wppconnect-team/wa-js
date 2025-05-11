@@ -22,7 +22,7 @@ import { ServerProps } from './ServerProps';
  * @whatsapp WAWebServerPropConstants
  */
 
-export interface ServerPropsModel {
+interface ServerPropsModel {
   MMS_VCARD_AUTODOWNLOAD_SIZE_KB: number;
   VCARD_AS_DOCUMENT_SIZE_KB: number;
   VCARD_MAX_SIZE_KB: number;

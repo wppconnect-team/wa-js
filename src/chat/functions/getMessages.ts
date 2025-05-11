@@ -135,7 +135,9 @@ export async function getMessages(
   let msgs = [];
   if (options.media === 'all') {
     const { messages } = await msgFindQuery('media', params);
-    msgs = messages;
+    if (Array.isArray(messages)) {
+      msgs.push(...messages);
+    }
   } else if (options.media === 'image') {
     const { messages } = await msgFindQuery('media', params);
     for (const Msg of messages) {
@@ -145,7 +147,11 @@ export async function getMessages(
     }
   } else if (options.media !== undefined) {
     params.media = options.media;
-    msgs = await msgFindQuery('media', params);
+
+    const { messages } = await msgFindQuery('media', params);
+    if (Array.isArray(messages)) {
+      msgs.push(...messages);
+    }
   } else {
     msgs = await msgFindQuery(direction, params);
   }
