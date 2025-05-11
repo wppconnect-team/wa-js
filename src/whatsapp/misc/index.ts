@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+export * from './ApiContact';
 export * from './Base64';
 export * from './Browser';
 export * from './ChatPresence';
