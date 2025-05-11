@@ -34,8 +34,11 @@ exportModule(
     (m.getMaxFilesSize && m.ServerProps)
 );
 
+//This fallback is only in place to prevent errors on older versions of WhatsApp Web for now;
+// it will be removed soon, as all their attributes have either been removed or moved to different functions.
 injectFallbackModule('ServerProps', {
   getMaxFilesSizeServerProp: () => {
     return ServerPropsConstants.MAX_FILE_SIZE_BYTES;
   },
+  ServerProps: {},
 });
