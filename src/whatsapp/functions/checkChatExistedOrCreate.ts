@@ -33,7 +33,10 @@ export declare function checkChatExistedOrCreate(options: {
 exportModule(
   exports,
   {
-    checkChatExistedOrCreate: 'checkChatExistedOrCreate',
+    checkChatExistedOrCreate: [
+      'checkChatExistedOrCreate',
+      'checkChatExistsOrCreate',
+    ],
   },
-  (m) => m.checkChatExistedOrCreate
+  (m) => m.checkChatExistedOrCreate || m.checkChatExistsOrCreate
 );
