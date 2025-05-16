@@ -18,7 +18,6 @@ import * as webpack from '../webpack';
 import { ChatModel, functions } from '../whatsapp';
 import { wrapModuleFunction } from '../whatsapp/exportModule';
 import {
-  getPhoneNumber,
   isUnreadTypeMsg,
   mediaTypeFromProtobuf,
   typeAttributeFromProtobuf,
@@ -80,14 +79,6 @@ function applyPatch() {
         return true;
     }
 
-    return func(...args);
-  });
-
-  wrapModuleFunction(getPhoneNumber, (func, ...args) => {
-    const [wid] = args;
-    if (wid.toString().includes('lid')) {
-      return wid;
-    }
     return func(...args);
   });
 }

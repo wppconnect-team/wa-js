@@ -26,12 +26,19 @@ import { findOrCreateLatestChat } from '../../whatsapp/functions';
  * @category Chat
  */
 export async function find(chatId: string | Wid): Promise<ChatModel> {
+  let exist: any;
+
   const wid = assertWid(chatId);
-  const exist = await findOrCreateLatestChat(wid);
+  if (wid?.isLid()) {
+    // patch for send message to lids
+    exist = await findOrCreateLatestChat(wid, 'username_contactless_search');
+  } else {
+    exist = await findOrCreateLatestChat(wid);
+  }
 
   if (!wid.isLid() && wid.isGroup() && exist.chat) {
     await GroupMetadataStore.find(exist.chat.id);
   }
 
-  return exist.chat;
+  return exist?.chat;
 }
