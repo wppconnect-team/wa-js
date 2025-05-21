@@ -62,7 +62,7 @@ export async function queryExists(
 ): Promise<QueryExistsResult | null> {
   const wid = assertWid(contactId);
 
-  const id = wid.toString();
+  const id = `+${wid.toString()}`;
   if (cache.has(id)) {
     return cache.get(id)!;
   }
@@ -75,16 +75,20 @@ export async function queryExists(
   } else {
     syncQuery.withContactProtocol();
     syncUser.withPhone(id.replace('@c.us', ''));
-    const lid = ApiContact.getCurrentLid(WidFactory.createUserWid(id));
+    const lid = ApiContact.getCurrentLid(
+      WidFactory.createUserWid(id.replace('+', ''))
+    );
     if (lid) {
       syncUser.withLid(lid);
     }
   }
-  syncQuery.withUser(syncUser);
-  syncQuery.withBusinessProtocol();
-  syncQuery.withDisappearingModeProtocol();
-  syncQuery.withStatusProtocol();
-  syncQuery.withLidProtocol();
+  syncQuery
+    .withUser(syncUser)
+    .withBusinessProtocol()
+    .withDisappearingModeProtocol()
+    .withStatusProtocol()
+    .withLidProtocol();
+
   const get = await syncQuery.execute();
   let result = null;
 
