@@ -31,6 +31,7 @@
  * @category Cart
  */
 
+import { assertFindChat } from '../../assert';
 import {
   getMessageById,
   prepareRawMessage,
@@ -42,7 +43,6 @@ import { CartStore } from '../../whatsapp';
 import {
   addAndSendMsgToChat,
   createOrder,
-  findChat,
   updateCart,
 } from '../../whatsapp/functions';
 import { clear, getThumbFromCart } from './';
@@ -68,7 +68,7 @@ export async function submit(
       }
     );
   }
-  const chat = await findChat(createWid(wid) as any);
+  const chat = await assertFindChat(createWid(wid!)!);
   const order = await createOrder(chat.id, cart.cartItemCollection.toArray());
 
   const totalPrice = order.price?.total;
