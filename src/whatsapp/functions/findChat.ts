@@ -22,12 +22,15 @@ import { ChatModel } from '../models';
  * @whatsapp 650101 >= 2.2222.8
  * @whatsapp 211739 >= 2.2228.4
  */
-export declare function findChat(wid: Wid): Promise<ChatModel>;
+export declare function findChat(
+  wid: Wid,
+  type: 'createChat' | 'chatListUtils' | 'username_contactless_search'
+): Promise<ChatModel>;
 
 exportModule(
   exports,
   {
-    findChat: ['findChat', 'findOrCreateLatestChat'],
+    findChat: ['findChat', 'findExistingChat'],
   },
-  (m) => m.findChat || m.findOrCreateLatestChat
+  (m) => m.findChat || m.findExistingChat
 );
