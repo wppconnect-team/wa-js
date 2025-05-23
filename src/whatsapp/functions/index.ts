@@ -29,6 +29,7 @@ export * from './collections';
 export * from './colorIndexToHex';
 export * from './contactFunctions';
 export * from './createChat';
+export * from './createChatRecord';
 export * from './createEventCallLink';
 export * from './createFanoutMsgStanza';
 export * from './createGroup';
