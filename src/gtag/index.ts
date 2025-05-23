@@ -107,6 +107,11 @@ internalEv.on('webpack.injected', () => {
 });
 
 if (!config.disableGoogleAnalytics) {
+  internalEv.on('chat:chat_error' as any, (data: any) => {
+    console.log('chatError', data);
+    mainTracker.trackEvent('chatError', { data });
+  });
+
   internalEv.on('conn.authenticated', () => {
     const method = conn.isMultiDevice() ? 'multidevice' : 'legacy';
     mainTracker.trackEvent('login', { method });
