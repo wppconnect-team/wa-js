@@ -268,7 +268,10 @@ exportModule(
       'getDisplayNameOrPnForLid',
     ],
     getFormattedPhone: ['getFormattedPhone', 'getFormattedUsernameOrPhone'],
-    getFormattedUsernameOrPhone: ['getFormattedUsernameOrPhone'],
+    getFormattedUsernameOrPhone: [
+      'getFormattedUsernameOrPhone',
+      'getFormattedPhone',
+    ],
     getSearchName: 'getSearchName',
     getFormattedShortNameWithNonBreakingSpaces:
       'getFormattedShortNameWithNonBreakingSpaces',
