@@ -290,6 +290,9 @@ injectFallbackModule('getDisplayName', {
   getFormattedName: (contact: ContactModel) => contact.formattedName,
   getFormattedUser: (contact: ContactModel) => contact.formattedUser,
   getFormattedPhone: (contact: ContactModel) => contact.formattedPhone,
+});
+
+injectFallbackModule('getFormattedUsernameOrPhone', {
   getFormattedUsernameOrPhone: (contact: ContactModel) =>
     contact.formattedPhone,
 });
