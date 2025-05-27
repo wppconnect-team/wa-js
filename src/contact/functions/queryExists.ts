@@ -75,11 +75,13 @@ export async function queryExists(
   } else {
     syncQuery.withContactProtocol();
     syncUser.withPhone(id.replace('@c.us', ''));
-    const lid = ApiContact.getCurrentLid(
-      WidFactory.createUserWid(id.replace('+', ''))
-    );
-    if (lid) {
-      syncUser.withLid(lid);
+    if (wid.isUser()) {
+      const lid = ApiContact.getCurrentLid(
+        WidFactory.createUserWid(id.replace('+', ''))
+      );
+      if (lid) {
+        syncUser.withLid(lid);
+      }
     }
   }
   syncQuery
