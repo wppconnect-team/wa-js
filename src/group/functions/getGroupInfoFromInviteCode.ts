@@ -43,13 +43,13 @@ export async function getGroupInfoFromInviteCode(inviteCode: string) {
 
   return {
     ...result,
-    descOwner: result.subjectOwner?.toString(),
-    id: result.id.toString(),
-    owner: result.owner?.toString(),
+    descOwner: result.descOwner?._serialized,
+    id: result.id._serialized,
+    owner: result.owner?._serialized,
     participants: result.participants.map((p) => ({
       ...p,
-      id: p.id.toString(),
+      id: p.id._serialized,
     })),
-    subjectOwner: result.subjectOwner?.toString(),
+    subjectOwner: result.subjectOwner?._serialized,
   };
 }
