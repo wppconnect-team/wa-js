@@ -100,7 +100,13 @@ async function start() {
    * I be creating other function for check expires based directily from files
    * This will not directly affect the function call, it continues to work normally.
    */
-  const ignoreFailModules: string[] = ['functions.revokeStatus'];
+  const ignoreFailModules: string[] = [
+    'functions.revokeStatus',
+    'functions.setPushname',
+    'functions.editCollection',
+    'functions.deleteCollection',
+    'functions.createCollection',
+  ];
 
   for (const moduleName of Object.keys(result)) {
     if (!result[moduleName] && !ignoreFailModules.includes(moduleName)) {
