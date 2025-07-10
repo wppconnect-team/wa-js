@@ -337,10 +337,12 @@ export async function sendFileMessage(
   }
 
   await mediaPrep.waitForPrep();
+  const mediaData =
+    (mediaPrep as any)._mediaData || (mediaPrep as any).mediaData;
   if ((options as any)?.isPtv) {
-    (mediaPrep as any)._mediaData.type = 'ptv';
-    (mediaPrep as any)._mediaData.fullHeight = 1128;
-    (mediaPrep as any)._mediaData.fullWidth = 1128;
+    mediaData.type = 'ptv';
+    mediaData.fullHeight = 1128;
+    mediaData.fullWidth = 1128;
   }
   debug(`sending message (${options.type}) with id ${rawMessage.id}`);
   const sendMsgResult = mediaPrep.sendToChat(chat, {
