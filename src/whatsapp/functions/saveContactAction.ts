@@ -15,7 +15,6 @@
  */
 
 import { exportModule } from '../exportModule';
-import { Wid } from '../misc';
 
 /**
  * @whatsapp WAWebSaveContactAction >= 2.3000.0
@@ -33,7 +32,7 @@ export declare function saveContactAction(
   name?: any,
   surname?: any,
   syncToAddressbook?: boolean
-): Wid;
+): Promise<undefined>;
 
 exportModule(
   exports,

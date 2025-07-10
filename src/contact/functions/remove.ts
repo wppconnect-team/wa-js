@@ -16,12 +16,12 @@
 
 import { assertWid } from '../../assert';
 import { WPPError } from '../../util';
-import { Wid } from '../../whatsapp';
+import { ContactModel, Wid } from '../../whatsapp';
 import { deleteContactAction, getIsMyContact } from '../../whatsapp/functions';
 import { get } from './get';
 
 /**
- * Remove/destroy contact in the device
+ * Remove/delete contact in the device
  *
  * @example
  * ```javascript
@@ -31,7 +31,9 @@ import { get } from './get';
  * @category Contact
  */
 
-export async function remove(contactId: string | Wid): Promise<boolean> {
+export async function remove(
+  contactId: string | Wid
+): Promise<ContactModel | undefined> {
   contactId = assertWid(contactId);
   const contact = await get(contactId);
   if (!contact) throw new WPPError('contact_not_found', 'Contact not found');
@@ -43,5 +45,5 @@ export async function remove(contactId: string | Wid): Promise<boolean> {
     );
 
   await deleteContactAction(contactId.toString().split('@')[0]);
-  return !getIsMyContact(contact);
+  return await get(contactId);
 }

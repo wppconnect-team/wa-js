@@ -15,8 +15,10 @@
  */
 
 import { assertWid } from '../../assert';
-import { Wid } from '../../whatsapp';
+import { WPPError } from '../../util';
+import { ContactModel, Wid } from '../../whatsapp';
 import { saveContactAction } from '../../whatsapp/functions';
+import { get } from './get';
 
 /**
  * Create new or update a contact in the device
@@ -32,18 +34,24 @@ import { saveContactAction } from '../../whatsapp/functions';
  * @category Contact
  */
 
-export function save(
+export async function save(
   contactId: string | Wid,
   name: string,
   options?: { surname?: string; syncAdressBook?: boolean }
-): Wid {
+): Promise<ContactModel | undefined> {
+  if (!contactId || !name) {
+    throw new WPPError(
+      'send_the_required_fields',
+      'Please, send the contact id like <number@c.us> and the name for your contact'
+    );
+  }
   contactId = assertWid(contactId);
-
-  return saveContactAction(
+  await saveContactAction(
     contactId.toString().split('@')[0],
     null,
     name,
     options?.surname ?? '',
-    options?.syncAdressBook ?? false
+    options?.syncAdressBook ?? true
   );
+  return await get(contactId);
 }
