@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-import { Wid } from '..';
 import { exportModule } from '../exportModule';
 
 /**
- * @whatsapp 153438
+ * @whatsapp WAWebCreateChat >= 2.3000.0
  */
-export declare function queryGroupInviteCode(
-  groupId: Wid,
-  iAmAdmin: boolean
-): Promise<{ code: string }>;
+export declare function createChat(
+  chatParams: any,
+  context: any,
+  options: any,
+  extra: any
+): Promise<any>;
 
 exportModule(
   exports,
   {
-    queryGroupInviteCode: 'queryGroupInviteCode',
+    createChat: 'createChat',
   },
-  (m) => m.queryGroupInviteCode
+  (m) => m.createChat
 );

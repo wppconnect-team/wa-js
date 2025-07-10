@@ -16,26 +16,37 @@
 
 import { exportModule } from '../exportModule';
 import { Wid } from '../misc';
-import { ChatModel } from '../models';
 
-/** @whatsapp WAWebFindChatAction
+/**
+ * @whatsapp WAWebCreateChat >= 2.3000.0
  */
-export declare function findOrCreateLatestChat(
-  wid: Wid,
-  type?:
-    | 'username_contactless_search'
-    | 'forwardSelectedModals'
-    | 'newChatFlow'
-    | 'chatInfoTopCard'
-): Promise<{
-  chat: ChatModel;
-  created: boolean;
-}>;
+export declare function createChatRecord(
+  id: Wid,
+  chatRecord: {
+    id: string;
+    accountLid?: string;
+    bizBotSystemMsgType?: string;
+    createdLocally: boolean;
+    disappearingModeInitiatedByMe?: boolean;
+    disappearingModeInitiator?: string;
+    disappearingModeTrigger?: string;
+    ephemeralDuration?: number;
+    ephemeralSettingTimestamp?: number;
+    isAutoMuted: boolean;
+    lidOriginType?: string;
+    notSpam?: boolean;
+    t?: number;
+    tcToken: ArrayBuffer;
+    tcTokenSenderTimestamp?: number;
+    tcTokenTimestamp: number;
+    unreadCount: number;
+  }
+): Promise<undefined>;
 
 exportModule(
   exports,
   {
-    findOrCreateLatestChat: 'findOrCreateLatestChat',
+    createChatRecord: 'createChatRecord',
   },
-  (m) => m.findOrCreateLatestChat
+  (m) => m.createChatRecord
 );

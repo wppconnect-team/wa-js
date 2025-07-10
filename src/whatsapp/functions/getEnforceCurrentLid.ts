@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2025 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-import { Wid } from '..';
 import { exportModule } from '../exportModule';
+import { Wid } from '../misc';
 
 /**
- * @whatsapp 153438
+ * @whatsapp WAWebLidMigrationUtils >= 2.3000.0
  */
-export declare function queryGroupInviteCode(
-  groupId: Wid,
-  iAmAdmin: boolean
-): Promise<{ code: string }>;
+export declare function getEnforceCurrentLid(chatId: Wid): any;
 
 exportModule(
   exports,
   {
-    queryGroupInviteCode: 'queryGroupInviteCode',
+    getEnforceCurrentLid: [
+      'getEnforceCurrentLid',
+      'getCurrentLidForUserWid',
+      'toLid',
+    ],
   },
-  (m) => m.queryGroupInviteCode
+  (m) => m.getEnforceCurrentLid || m.getCurrentLidForUserWid || m.toLid
 );

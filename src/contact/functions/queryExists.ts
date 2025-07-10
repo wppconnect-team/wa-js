@@ -15,7 +15,13 @@
  */
 
 import { assertWid } from '../../assert';
-import { USyncQuery, USyncUser, Wid } from '../../whatsapp';
+import {
+  ApiContact,
+  USyncQuery,
+  USyncUser,
+  Wid,
+  WidFactory,
+} from '../../whatsapp';
 
 export interface QueryExistsResult {
   wid: Wid;
@@ -56,25 +62,35 @@ export async function queryExists(
 ): Promise<QueryExistsResult | null> {
   const wid = assertWid(contactId);
 
-  const id = wid.toString();
+  const id = `+${wid.toString()}`;
   if (cache.has(id)) {
     return cache.get(id)!;
   }
 
   const syncUser = new USyncUser();
   const syncQuery = new USyncQuery();
-  const isLid = wid.toString().includes('@lid');
+  const isLid = wid.isLid();
   if (isLid) {
     syncUser.withId(wid);
   } else {
     syncQuery.withContactProtocol();
-    syncUser.withPhone('+' + id);
+    syncUser.withPhone(id.replace('@c.us', ''));
+    if (wid.isUser()) {
+      const lid = ApiContact.getCurrentLid(
+        WidFactory.createUserWid(id.replace('+', ''))
+      );
+      if (lid) {
+        syncUser.withLid(lid);
+      }
+    }
   }
-  syncQuery.withUser(syncUser);
-  syncQuery.withBusinessProtocol();
-  syncQuery.withDisappearingModeProtocol();
-  syncQuery.withStatusProtocol();
-  syncQuery.withLidProtocol();
+  syncQuery
+    .withUser(syncUser)
+    .withBusinessProtocol()
+    .withDisappearingModeProtocol()
+    .withStatusProtocol()
+    .withLidProtocol();
+
   const get = await syncQuery.execute();
   let result = null;
 

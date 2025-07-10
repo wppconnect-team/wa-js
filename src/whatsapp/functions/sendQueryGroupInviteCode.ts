@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-import { iAmAdmin } from '../../group';
 import * as webpack from '../../webpack';
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
-import { queryGroupInviteCode } from './';
+import { fetchMexGroupInviteCode } from './';
 
 /** @whatsapp 65705 */
 export declare function sendQueryGroupInviteCode(groupId: Wid): Promise<string>;
@@ -33,9 +32,6 @@ exportModule(
 
 webpack.injectFallbackModule('sendQueryGroupInviteCode', {
   sendQueryGroupInviteCode: async (groupId: Wid) => {
-    const isAdmin = await iAmAdmin(groupId);
-    return await queryGroupInviteCode(groupId, isAdmin).then(
-      (value) => value.code
-    );
+    return await fetchMexGroupInviteCode(groupId);
   },
 });

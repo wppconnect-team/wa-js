@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2025 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,17 @@
  * limitations under the License.
  */
 
-import { Wid } from '..';
-import { exportModule } from '../exportModule';
+import { ChatStore, LabelModel } from '../whatsapp';
 
-/**
- * @whatsapp 153438
- */
-export declare function queryGroupInviteCode(
-  groupId: Wid,
-  iAmAdmin: boolean
-): Promise<{ code: string }>;
+// Fix for an error that included archived chats in the total count
+// Archived chats should not be counted since they do not appear in WhatsApp
+export function patchLabelCount(label: LabelModel): number {
+  let count = 0;
+  for (const item of (label as any).labelItemCollection._models) {
+    if (item.parentType !== 'Chat') continue;
 
-exportModule(
-  exports,
-  {
-    queryGroupInviteCode: 'queryGroupInviteCode',
-  },
-  (m) => m.queryGroupInviteCode
-);
+    const chat = ChatStore.get(item.parentId);
+    if (!chat?.archive) count += 1;
+  }
+  return count;
+}

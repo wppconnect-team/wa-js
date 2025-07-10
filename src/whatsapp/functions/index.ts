@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2025 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,12 @@ export * from './canEditMsg';
 export * from './canReplyMsg';
 export * from './canSaveAsMyContacts';
 export * from './changeOptInStatusForExternalWebBeta';
+export * from './checkChatExistedOrCreate';
 export * from './collections';
 export * from './colorIndexToHex';
 export * from './contactFunctions';
+export * from './createChat';
+export * from './createChatRecord';
 export * from './createEventCallLink';
 export * from './createFanoutMsgStanza';
 export * from './createGroup';
@@ -47,6 +50,7 @@ export * from './encryptAndSendSenderKeyMsg';
 export * from './encryptAndSendStatusMsg';
 export * from './encryptMsgProtobuf';
 export * from './fetchLinkPreview';
+export * from './fetchMexGroupInviteCode';
 export * from './findChat';
 export * from './findCommonGroups';
 export * from './findFirstWebLink';
@@ -59,11 +63,14 @@ export * from './genLinkDeviceCodeForPhoneNumber';
 export * from './genMinimalLinkPreview';
 export * from './getABPropConfigValue';
 export * from './getAsMms';
+export * from './getChatRecordByAccountLid';
 export * from './getCommunityParticipants';
 export * from './getCountryShortcodeByPhone';
 export * from './getCurrentLid';
+export * from './getEnforceCurrentLid';
 export * from './getEphemeralFields';
 export * from './getErrorCodeFromLogoutReason';
+export * from './getExisting';
 export * from './getFanOutList';
 export * from './getGroupSenderKeyList';
 export * from './getGroupSizeLimit';
@@ -74,6 +81,7 @@ export * from './getNextLabelId';
 export * from './getNumChatsPinned';
 export * from './getOrderInfo';
 export * from './getParticipants';
+export * from './getPhoneNumber';
 export * from './getPrivacyDisallowedListTable';
 export * from './getPushname';
 export * from './getQuotedMsgObj';
@@ -98,7 +106,6 @@ export * from './isWid';
 export * from './joinGroupViaInvite';
 export * from './keepMessage';
 export * from './labelAddAction';
-export * from './labelAddAction';
 export * from './markSeen';
 export * from './mediaTypeFromProtobuf';
 export * from './membershipApprovalRequestAction';
@@ -121,6 +128,7 @@ export * from './removeStatusMessage';
 export * from './resetGroupInviteCode';
 export * from './revokeStatus';
 export * from './saveContactAction';
+export * from './selectChatForOneOnOneMessage';
 export * from './sendClear';
 export * from './sendCreateCommunity';
 export * from './sendCreateGroup';

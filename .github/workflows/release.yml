@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       increment:
+        type: choice
         description: 'Tipo de incremento: patch, minor, major ou pre*'
         required: true
         default: 'patch'
@@ -26,9 +27,9 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Setup Node
-        uses: actions/setup-node@v4.1.0
+        uses: actions/setup-node@v4.3.0
         with:
-          node-version: 16.x
+          node-version: 20.19.1
 
       - name: Get npm cache directory
         id: npm-cache

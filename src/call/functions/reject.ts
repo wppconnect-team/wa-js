@@ -46,7 +46,13 @@ export async function reject(callId?: string): Promise<boolean> {
   } else {
     // First incoming ring or call group
     call = CallStore.findFirst(
-      (c) => c.getState() === CALL_STATES.INCOMING_RING || c.isGroup
+      (c) =>
+        // Fix for mantain compatibility with older versions of whatsapp web
+        c.getState() === CALL_STATES.INCOMING_RING ||
+        c.isGroup ||
+        // >= 2.3000.10213.x
+        c.getState() === CALL_STATES.ReceivedCall ||
+        c.isGroup
     );
   }
 
@@ -60,7 +66,11 @@ export async function reject(callId?: string): Promise<boolean> {
     );
   }
 
-  if (call.getState() !== 'INCOMING_RING' && !call.isGroup) {
+  if (
+    call.getState() !== CALL_STATES.INCOMING_RING &&
+    call.getState() !== CALL_STATES.ReceivedCall &&
+    !call.isGroup
+  ) {
     throw new WPPError(
       'call_is_not_incoming_ring',
       `Call ${callId || '<empty>'} is not incoming ring`,

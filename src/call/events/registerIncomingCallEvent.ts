@@ -36,7 +36,12 @@ function register() {
   });
 
   CallStore.on('change', (call: CallModel) => {
-    if (call.getState() === CALL_STATES.INCOMING_RING) {
+    if (
+      // Fix for mantain compatibility with older versions of whatsapp web
+      call.getState() === CALL_STATES.INCOMING_RING ||
+      // >= 2.3000.10213.x
+      call.getState() === CALL_STATES.ReceivedCall
+    ) {
       internalEv.emit('call.incoming_call', {
         id: call.id,
         isGroup: call.isGroup,

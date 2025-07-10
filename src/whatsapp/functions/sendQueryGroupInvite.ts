@@ -18,30 +18,43 @@ import { Wid } from '..';
 import { exportModule } from '../exportModule';
 
 export interface QueryGroupInviteResult {
-  announce: boolean;
-  creation: number;
-  desc: string;
-  descId: string;
-  descOwner?: Wid;
-  descTime: number;
-  id: Wid;
-  noFrequentlyForwarded: boolean;
-  owner?: Wid;
-  parent: boolean;
-  participants: {
+  groupInfo: {
+    announce: boolean;
+    creation: number;
+    /** description of the group; linebreaks are formatted using `"\n"` */
+    desc: string;
+    descId: string;
+    descOwner?: Wid;
+    descTime: number;
     id: Wid;
-    isAdmin: boolean;
-    isSuperAdmin: boolean;
-  }[];
-  pvId?: string;
-  restrict: boolean;
-  size: number;
+    noFrequentlyForwarded: boolean;
+    owner?: Wid;
+    parent: boolean;
+    participants: {
+      id: Wid;
+      isAdmin: boolean;
+      isSuperAdmin: boolean;
+    }[];
+    pvId?: string;
+    restrict: boolean;
+    /** how many members the group currently has */
+    size: number;
+    status: number;
+    /** title of the group */
+    subject: string;
+    subjectOwner?: Wid;
+    subjectTime: number;
+    support: boolean;
+    suspended: boolean;
+    isParentGroup: boolean;
+    isParentGroupClosed: boolean;
+    defaultSubgroup: boolean;
+    generalSubgroup: boolean;
+    membershipApprovalMode: boolean;
+    isLidAddressingMode: boolean;
+    generalChatAutoAddDisabled: boolean;
+  };
   status: number;
-  subject: string;
-  subjectOwner?: Wid;
-  subjectTime: number;
-  support: boolean;
-  suspended: boolean;
 }
 
 /** @whatsapp 10790

@@ -16,9 +16,9 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
 
       - name: Setup Node
-        uses: actions/setup-node@v4.1.0
+        uses: actions/setup-node@v4.3.0
         with:
-          node-version: 16.x
+          node-version: 19.x
 
       - name: Get npm cache directory
         id: npm-cache

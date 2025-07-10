@@ -395,3 +395,11 @@ exportModule(
   },
   (m) => m.ReactionsCollectionImpl || m.ReactionsCollection
 );
+
+exportModule(
+  exports,
+  {
+    ChatStore: ['ChatCollection'],
+  },
+  (m) => m.ChatCollection
+);

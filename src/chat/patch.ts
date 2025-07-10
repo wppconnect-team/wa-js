@@ -15,10 +15,13 @@
  */
 
 import * as webpack from '../webpack';
-import { ChatModel, functions } from '../whatsapp';
+import { ChatModel, ContactStore, functions } from '../whatsapp';
 import { wrapModuleFunction } from '../whatsapp/exportModule';
 import {
-  findOrCreateLatestChat,
+  createChat,
+  createChatRecord,
+  findChat,
+  getExisting,
   isUnreadTypeMsg,
   mediaTypeFromProtobuf,
   typeAttributeFromProtobuf,
@@ -83,20 +86,41 @@ function applyPatch() {
     return func(...args);
   });
 
-  /**
-   * Fixed error on try send message to some lids
-   */
-  wrapModuleFunction(findOrCreateLatestChat, async (func, ...args) => {
-    const [chat, type] = args;
+  wrapModuleFunction(createChatRecord, async (func, ...args) => {
+    const maxAttempts = 5;
+    let delay = 1000;
 
-    if (chat.isLid() && type != 'username_contactless_search') {
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       try {
         return await func(...args);
-      } catch (error) {
-        return await func(chat, 'username_contactless_search');
+      } catch (err) {
+        if (attempt === maxAttempts) {
+          throw err;
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        delay *= 2;
       }
     }
+  });
 
+  wrapModuleFunction(findChat, async (func, ...args) => {
+    const [chatId] = args;
+    const contact = ContactStore.get(chatId);
+    const existingChat = await getExisting(chatId);
+    if (!existingChat && contact) {
+      const chatParams: any = { chatId };
+      await createChat(
+        chatParams,
+        'createChat',
+        {
+          createdLocally: true,
+          lidOriginType: 'general',
+        },
+        {}
+      );
+      return await func(...args)!;
+    }
     return await func(...args);
   });
 }

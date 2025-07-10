@@ -1,9 +1,9 @@
-# 3.16.0 (2024-12-20)
+## 3.17.7 (2025-05-27)
 
 
-### Features
+### Bug Fixes
 
-* Added WPP.chat.sendCatalogMessage (close [#2550](https://github.com/wppconnect-team/wa-js/issues/2550)) ([95e0592](https://github.com/wppconnect-team/wa-js/commit/95e05923d15af4ef5e9eee2cf6d98bae380a2f9c))
+* improovments on queryExist ([1429676](https://github.com/wppconnect-team/wa-js/commit/14296766d99be4d76eb74fc757ce861c9833994e))
 
 
 

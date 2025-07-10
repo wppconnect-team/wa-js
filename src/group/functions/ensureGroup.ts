@@ -17,7 +17,6 @@
 import { assertGetChat } from '../../assert';
 import { WPPError } from '../../util';
 import { GroupMetadataStore, Wid } from '../../whatsapp';
-import { iAmAdmin } from '.';
 
 export async function ensureGroup(groupId: string | Wid, checkIsAdmin = false) {
   const groupChat = assertGetChat(groupId);
@@ -33,7 +32,7 @@ export async function ensureGroup(groupId: string | Wid, checkIsAdmin = false) {
 
   if (
     checkIsAdmin &&
-    !(await iAmAdmin(groupId)) &&
+    !datagroup.participants.iAmAdmin() &&
     datagroup.memberAddMode !== 'all_member_add'
   ) {
     throw new WPPError(

@@ -33,7 +33,8 @@ export async function getGroupInfoFromInviteCode(inviteCode: string) {
   inviteCode = inviteCode.replace('https://', '');
   inviteCode = inviteCode.replace('http://', '');
 
-  const result = await sendQueryGroupInvite(inviteCode).catch(() => null);
+  const result = (await sendQueryGroupInvite(inviteCode).catch(() => null))
+    ?.groupInfo;
 
   if (!result) {
     throw new WPPError('invalid_invite_code', 'Invalid Invite Code', {
@@ -43,7 +44,7 @@ export async function getGroupInfoFromInviteCode(inviteCode: string) {
 
   return {
     ...result,
-    descOwner: result.descOwner?.toString(),
+    descOwner: result.subjectOwner?.toString(),
     id: result.id.toString(),
     owner: result.owner?.toString(),
     participants: result.participants.map((p) => ({

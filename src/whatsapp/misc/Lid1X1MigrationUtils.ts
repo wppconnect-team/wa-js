@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-import { Wid } from '..';
 import { exportModule } from '../exportModule';
 
-/**
- * @whatsapp 153438
+/** @whatsapp 15688
  */
-export declare function queryGroupInviteCode(
-  groupId: Wid,
-  iAmAdmin: boolean
-): Promise<{ code: string }>;
+export declare namespace Lid1X1MigrationUtils {
+  function isLidMigrated(): boolean;
+  function isSyncdSessionMigrated(): boolean;
+  function setIsLidMigrated(a?: any): any;
+  function shouldApplyNonMigratedMessagingRules(): any;
+}
 
 exportModule(
   exports,
   {
-    queryGroupInviteCode: 'queryGroupInviteCode',
+    Lid1X1MigrationUtils: 'Lid1X1MigrationUtils',
   },
-  (m) => m.queryGroupInviteCode
+  (m) => m.Lid1X1MigrationUtils.isLidMigrated
 );

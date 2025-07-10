@@ -222,8 +222,14 @@ export declare function getDisplayNameOrPnForLid(contact: ContactModel): any;
 
 /**
  * @whatsapp 714574 >= 2.2327.4
+ * @deprecated Use getFormattedUsernameOrPhone instead
  */
 export declare function getFormattedPhone(contact: ContactModel): any;
+
+/**
+ * @whatsapp 714574 >= 2.2327.4
+ */
+export declare function getFormattedUsernameOrPhone(contact: ContactModel): any;
 
 /**
  * @whatsapp 714574 >= 2.2327.4
@@ -261,7 +267,11 @@ exportModule(
       'getUserDisplayNameForLid',
       'getDisplayNameOrPnForLid',
     ],
-    getFormattedPhone: 'getFormattedPhone',
+    getFormattedPhone: ['getFormattedPhone', 'getFormattedUsernameOrPhone'],
+    getFormattedUsernameOrPhone: [
+      'getFormattedUsernameOrPhone',
+      'getFormattedPhone',
+    ],
     getSearchName: 'getSearchName',
     getFormattedShortNameWithNonBreakingSpaces:
       'getFormattedShortNameWithNonBreakingSpaces',
@@ -276,11 +286,16 @@ injectFallbackModule('getDisplayName', {
   getPnForLid: (contact: ContactModel) => contact.pnForLid,
   getDisplayNameOrPnForLid: (contact: ContactModel) =>
     contact.displayNameOrPnForLid,
-  getFormattedPhone: (contact: ContactModel) => contact.formattedPhone,
   getSearchName: (contact: ContactModel) => contact.searchName,
   getFormattedShortNameWithNonBreakingSpaces: (contact: ContactModel) =>
     contact.formattedShortNameWithNonBreakingSpaces,
   getFormattedShortName: (contact: ContactModel) => contact.formattedShortName,
   getFormattedName: (contact: ContactModel) => contact.formattedName,
   getFormattedUser: (contact: ContactModel) => contact.formattedUser,
+  getFormattedPhone: (contact: ContactModel) => contact.formattedPhone,
+});
+
+injectFallbackModule('getFormattedUsernameOrPhone', {
+  getFormattedUsernameOrPhone: (contact: ContactModel) =>
+    contact.formattedPhone,
 });
