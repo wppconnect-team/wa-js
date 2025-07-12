@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { getMyUserId } from '../../conn';
 import { WPPError } from '../../util';
 import { createEventCallLink } from '../../whatsapp/functions';
 import {
@@ -105,7 +104,6 @@ export async function sendEventMessage(
     eventEndTime: options?.endTime || defaultEndTime,
     isEventCanceled: false,
     callType: options.callType || 0,
-    author: getMyUserId()?.toString(),
     kind: 'eventCreation',
     messageSecret: crypto.getRandomValues(new Uint8Array(32)),
     viewMode: 'VISIBLE',
