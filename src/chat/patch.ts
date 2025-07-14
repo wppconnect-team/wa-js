@@ -106,6 +106,11 @@ function applyPatch() {
 
   wrapModuleFunction(findChat, async (func, ...args) => {
     const [chatId] = args;
+
+    if (!chatId.isLid()) {
+      return await func(...args);
+    }
+
     const contact = ContactStore.get(chatId);
     const existingChat = await getExisting(chatId);
     if (!existingChat && contact) {
