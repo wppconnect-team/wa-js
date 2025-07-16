@@ -40,6 +40,7 @@ export interface QueryExistsResult {
     settingTimestamp: number;
   };
   status?: string;
+  lid?: Wid;
 }
 
 const cache = new Map<string, QueryExistsResult | null>();
@@ -92,6 +93,7 @@ export async function queryExists(
     .withLidProtocol();
 
   const get = await syncQuery.execute();
+
   let result = null;
 
   if (get?.error?.all || get?.error?.contact) {
@@ -102,6 +104,7 @@ export async function queryExists(
     if (result?.contact?.type === 'out') {
       result = null;
     } else {
+      const lid = result?.lid;
       result = {
         wid: result.id,
         biz: typeof result.business !== 'undefined',
@@ -114,6 +117,7 @@ export async function queryExists(
               }
             : undefined,
         status: result.status,
+        lid: lid ? WidFactory.createUserWid(lid, 'lid') : undefined,
       };
     }
   } else {
