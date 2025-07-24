@@ -42,8 +42,6 @@ export async function getUnreadChats(
   if (onlyNewUnreads) {
     return unreadChats;
   } else {
-    return await list().then((chats) =>
-      chats.filter((chat) => chat.unreadCount > 0)
-    );
+    return await list({onlyWithUnreadMessage: true})
   }
 }
