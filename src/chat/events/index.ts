@@ -24,3 +24,4 @@ import './registerReactionsEvent';
 import './registerRevokeMessageEvent';
 import './registerLabelEvent';
 import './registerEditedMessageEvent';
+import './registerUnreadCountEvent';
