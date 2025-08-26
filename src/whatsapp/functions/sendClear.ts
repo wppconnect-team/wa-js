@@ -31,5 +31,5 @@ exportModule(
   {
     sendClear: 'sendClear',
   },
-  (m) => m.sendClear && !m.clearStorage
+  (m) => m.sendClear && m.sendClear?.toString()?.includes('WAWebStateUtils')
 );
