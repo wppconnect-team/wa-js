@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-import { blobToBase64, convertToFile, downloadImage } from '../../util';
+import {
+  blobToBase64,
+  convertToFile,
+  downloadImage,
+  resizeImage,
+} from '../../util';
 import {
   editNewsletterMetadataAction,
   queryNewsletterMetadataByJid,
@@ -69,10 +74,20 @@ export async function edit(
   }
 ): Promise<ResultCreateNewsletter> {
   let pic: string | undefined = undefined;
+
   if (opts?.picture) {
-    const file = await convertToFile(opts.picture);
-    pic = await blobToBase64(file);
-    ({ data: pic } = await downloadImage(pic, 'image/jpeg'));
+    let base64 = opts.picture;
+    if (opts.picture.includes('http'))
+      ({ data: base64 } = await downloadImage(opts?.picture, 'image/jpeg'));
+
+    const file = await convertToFile(base64 as string);
+    const pictureFile = await resizeImage(file, {
+      width: 640,
+      height: 640,
+      mimeType: 'image/jpeg',
+      resize: 'cover',
+    });
+    pic = await blobToBase64(pictureFile);
   }
 
   await editNewsletterMetadataAction(
