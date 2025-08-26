@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { WPPError } from '../../util';
 import {
   BusinessProfileModel,
   BusinessProfileStore,
@@ -31,11 +32,11 @@ import { editBusinessProfile as editProfile } from '../../whatsapp/functions';
  * ```
  *
  * ```javascript
- * await WPP.profile.editBusinessProfile({categories: {
+ * await WPP.profile.editBusinessProfile({categories: [{
     id: "133436743388217",
     localized_display_name: "Artes e entretenimento",
     not_a_biz: false,
-  }});
+  }]});
  * ```
  *
  * ```javascript
@@ -152,31 +153,65 @@ import { editBusinessProfile as editProfile } from '../../whatsapp/functions';
  *
  * Change businessHours for Appointment Only
  * ```javascript
- * await WPP.profile.editBusinessProfile({ businessHours: { {
-    mon: {
-      mode: "appointment_only",
+ * await WPP.profile.editBusinessProfile({ {
+    "config": {
+        "mon": {
+            "mode": "specific_hours",
+            "hours": [
+                [
+                    480,
+                    1260
+                ]
+            ]
+        },
+        "tue": {
+            "mode": "specific_hours",
+            "hours": [
+                [
+                    480,
+                    1260
+                ]
+            ]
+        },
+        "wed": {
+            "mode": "specific_hours",
+            "hours": [
+                [
+                    480,
+                    1260
+                ]
+            ]
+        },
+        "thu": {
+            "mode": "specific_hours",
+            "hours": [
+                [
+                    480,
+                    1260
+                ]
+            ]
+        },
+        "fri": {
+            "mode": "specific_hours",
+            "hours": [
+                [
+                    480,
+                    1260
+                ]
+            ]
+        },
+        "sat": {
+            "mode": "specific_hours",
+            "hours": [
+                [
+                    660,
+                    1320
+                ]
+            ]
+        }
     },
-    tue: {
-      mode: "appointment_only",
-    },
-    wed: {
-      mode: "appointment_only",
-    },
-    thu: {
-      mode: "appointment_only",
-    },
-    fri: {
-      mode: "appointment_only",
-    },
-    sat: {
-      mode: "appointment_only",
-    },
-    sun: {
-      mode: "appointment_only",
-    },
-  }
-    timezone: "America/Sao_Paulo"
-  });
+    "timezone": "America/Sao_Paulo"
+});
  *
  *
  * ```
@@ -184,9 +219,13 @@ import { editBusinessProfile as editProfile } from '../../whatsapp/functions';
  */
 
 export async function editBusinessProfile(params: BusinessProfileModel) {
-  if (!Conn.isSMB) {
-    return;
+  if (!Conn.isSMB)
+    throw new WPPError('NOT_BUSINESS_PROFILE', 'Not a business profile');
+
+  if (params.website && Array.isArray(params.website)) {
+    params.website = params.website.map((i) => ({ url: i }));
   }
+
   await editProfile(params);
   const profile = await BusinessProfileStore.fetchBizProfile(
     UserPrefs.getMaybeMeUser()
