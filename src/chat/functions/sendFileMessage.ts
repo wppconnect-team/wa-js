@@ -221,7 +221,7 @@ export interface VideoMessageOptions
  * // A simple video
  * WPP.chat.sendFileMessage(
  *  '[number]@c.us',
- *  'data:application/msword;base64,<a long base64 file...>',
+ *  'data:video/mp4;base64,<a long base64 file...>',
  *  {
  *    type: 'video',
  *  }
@@ -230,7 +230,7 @@ export interface VideoMessageOptions
  * // A PTV Video (micro video)
  * WPP.chat.sendFileMessage(
  *  '[number]@c.us',
- *  'data:application/msword;base64,<a long base64 file...>',
+ *  'data:video/mp4;base64,<a long base64 file...>',
  *  {
  *    type: 'video',
  *    isPtv: true,
