@@ -40,7 +40,8 @@ export async function generateMessageID(
   let participant = undefined;
 
   if (to.isGroup()) {
-    participant = WidFactory.toUserWid(from);
+    const toUserWid = WidFactory.toUserWid || WidFactory.toUserWidOrThrow; // maintain compatibility with older versions of WhatsApp Web
+    participant = toUserWid(from);
   }
 
   return new MsgKey({
