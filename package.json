@@ -51,7 +51,7 @@
     "@types/node-fetch": "^2.6.12",
     "@types/parse-data-url": "^3.0.2",
     "@types/prettier": "^3.0.0",
-    "@types/shelljs": "^0.8.16",
+    "@types/shelljs": "^0.8.17",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "@wppconnect/wa-version": "^1.5.2104",
