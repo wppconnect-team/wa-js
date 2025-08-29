@@ -84,7 +84,7 @@
     "typedoc": "^0.28.4",
     "typedoc-plugin-mdn-links": "^5.0.2",
     "typedoc-plugin-missing-exports": "^4.0.0",
-    "typescript": "^5.8.3",
+    "typescript": "^5.9.2",
     "typescript-debounce-decorator": "^0.0.18",
     "webpack": "^5.100.1",
     "webpack-cli": "^5.1.4"
