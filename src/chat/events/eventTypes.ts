@@ -40,6 +40,20 @@ export interface ChatEventTypes {
    * ```
    */
   'chat.new_message': MsgModel;
+  'chat.unread_count_changed': {
+    /**
+     * Chat that changed the unread count
+     */
+    chat: ChatModel;
+    /**
+     * Current unread messages count
+     */
+    unreadCount: number;
+    /**
+     * Previous unread messages count
+     */
+    previousUnreadCount: number;
+  };
   'chat.msg_revoke': {
     /**
      * Author of message, only for groups
