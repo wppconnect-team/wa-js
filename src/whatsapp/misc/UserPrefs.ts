@@ -39,6 +39,7 @@ export declare namespace UserPrefs {
   function setMe(...args: any[]): any;
   function setMeDisplayName(...args: any[]): any;
   function setMeLid(...args: any[]): any;
+  function getMaybeMePnUser(...args: any[]): any;
 
   /**
    * @deprecated
@@ -47,4 +48,4 @@ export declare namespace UserPrefs {
   function getMe(...args: any[]): any;
 }
 
-exportModule(exports, 'UserPrefs', (m) => m.getMaybeMeUser);
+exportModule(exports, 'UserPrefs', (m) => m.setMeLid);

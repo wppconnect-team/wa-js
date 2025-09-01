@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { CatalogStore, UserPrefs } from '../../whatsapp';
+import { getMyUserId } from '../../conn';
+import { CatalogStore } from '../../whatsapp';
 /**
  * Get your current catalog
  *
@@ -27,5 +28,5 @@ import { CatalogStore, UserPrefs } from '../../whatsapp';
  * @return Your current catalog
  */
 export async function getMyCatalog() {
-  return CatalogStore.get(UserPrefs.getMeUser());
+  return CatalogStore.get(getMyUserId());
 }

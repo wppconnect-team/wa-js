@@ -38,6 +38,7 @@ export { getPlatformFromMessage } from './getPlatformFromMessage';
 export { getQuotedMsg } from './getQuotedMsg';
 export { getQuotedMsgKey } from './getQuotedMsgKey';
 export { getReactions } from './getReactions';
+export { getUnreadChats } from './getUnreadChats';
 export { getVotes } from './getVotes';
 export { keepMessage } from './keepMessage';
 export { ChatListOptions, list } from './list';

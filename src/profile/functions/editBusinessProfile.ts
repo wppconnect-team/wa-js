@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
+import { getMyUserId } from '../../conn';
 import { WPPError } from '../../util';
 import {
   BusinessProfileModel,
   BusinessProfileStore,
   Conn,
-  UserPrefs,
 } from '../../whatsapp';
 import { editBusinessProfile as editProfile } from '../../whatsapp/functions';
 
@@ -227,8 +227,6 @@ export async function editBusinessProfile(params: BusinessProfileModel) {
   }
 
   await editProfile(params);
-  const profile = await BusinessProfileStore.fetchBizProfile(
-    UserPrefs.getMaybeMeUser()
-  );
+  const profile = await BusinessProfileStore.fetchBizProfile(getMyUserId());
   return profile;
 }

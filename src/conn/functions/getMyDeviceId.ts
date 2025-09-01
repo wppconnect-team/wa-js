@@ -30,8 +30,8 @@ export function getMyDeviceId(): Wid | undefined {
    * @description
    * Validates if the function exists for compatibility with previous versions of WhatsApp Web
    **/
-  if (typeof UserPrefs.getMeDevicePn === 'function') {
-    return UserPrefs.getMeDevicePn();
+  if (typeof UserPrefs.getMaybeMePnUser === 'function') {
+    return UserPrefs.getMaybeMePnUser();
   } else {
     return UserPrefs.getMe(); // maintain compatibility with older versions of WhatsApp Web
   }

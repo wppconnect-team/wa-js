@@ -16,9 +16,10 @@
 
 import { assertWid } from '../../assert';
 import * as Chat from '../../chat';
+import { getMyUserId } from '../../conn';
 import * as Contact from '../../contact';
 import { WPPError } from '../../util';
-import { ContactStore, UserPrefs, Wid } from '../../whatsapp';
+import { ContactStore, Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
 
 /**
@@ -74,7 +75,7 @@ export async function create(
 
   const participantsWids = participantsIds.map(assertWid);
 
-  const meWid = UserPrefs.getMaybeMeUser();
+  const meWid = getMyUserId();
   const wids: Wid[] = [];
 
   for (const wid of participantsWids) {

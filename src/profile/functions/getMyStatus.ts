@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { StatusStore, UserPrefs } from '../../whatsapp';
+import { getMyUserId } from '../../conn';
+import { StatusStore } from '../../whatsapp';
 
 /**
  * Get your current text status
@@ -28,7 +29,7 @@ import { StatusStore, UserPrefs } from '../../whatsapp';
  */
 
 export async function getMyStatus() {
-  const myStatus = await StatusStore.find(UserPrefs.getMaybeMeUser());
+  const myStatus = await StatusStore.find(getMyUserId());
 
   return myStatus.status;
 }

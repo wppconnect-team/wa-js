@@ -16,12 +16,12 @@
 
 import { assertWid } from '../../assert';
 import { config } from '../../config';
+import { getMyUserId } from '../../conn';
 import {
   ContactStore,
   functions,
   MsgKey,
   ParticipantModel,
-  UserPrefs,
   Wid,
   WidFactory,
 } from '../../whatsapp';
@@ -51,18 +51,16 @@ export async function updateParticipants(
     ids = ContactStore.getModelsArray()
       .filter((c) => c.isMyContact && !c.isContactBlocked)
       .filter((c) => c.notifyName && !c.isMe)
-      .filter((c) => !c.id.equals(UserPrefs.getMaybeMeUser()))
+      .filter((c) => !c.id.equals(getMyUserId()))
       .map((c) => c.id);
 
     type = 'contacts';
   }
 
-  const wids = ids
-    .map(assertWid)
-    .filter((c) => !c.equals(UserPrefs.getMaybeMeUser()));
+  const wids = ids.map(assertWid).filter((c) => !c.equals(getMyUserId()));
 
   if (config.sendStatusToDevice) {
-    wids.push(UserPrefs.getMaybeMeUser());
+    wids.push(getMyUserId());
   }
 
   const participants = wids.map(

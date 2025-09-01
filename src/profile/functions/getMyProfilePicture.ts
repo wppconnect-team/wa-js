@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-import {
-  ProfilePicThumbModel,
-  ProfilePicThumbStore,
-  UserPrefs,
-} from '../../whatsapp';
+import { getMyUserId } from '../../conn';
+import { ProfilePicThumbModel, ProfilePicThumbStore } from '../../whatsapp';
 
 /**
  * Get your current profile picture
@@ -32,7 +29,7 @@ import {
  */
 
 export async function getMyProfilePicture(): Promise<ProfilePicThumbModel> {
-  const pic = await ProfilePicThumbStore.find(UserPrefs.getMaybeMeUser());
+  const pic = await ProfilePicThumbStore.find(getMyUserId());
 
   return pic;
 }

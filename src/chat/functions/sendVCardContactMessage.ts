@@ -15,10 +15,10 @@
  */
 
 import { assertWid } from '../../assert';
+import { getMyUserId } from '../../conn';
 import {
   ContactModel,
   ContactStore,
-  UserPrefs,
   VCard,
   VCardData,
   Wid,
@@ -96,7 +96,7 @@ export async function sendVCardContactMessage(
       });
     }
 
-    if (!name && contactModel.id.equals(UserPrefs.getMaybeMeUser())) {
+    if (!name && contactModel.id.equals(getMyUserId())) {
       name = contactModel.displayName;
     }
 

@@ -25,6 +25,6 @@ import { UserPrefs, Wid } from '../../whatsapp';
  * console.log(wid.toString()); // Output: 123@c.us
  * ```
  */
-export function getMyUserId(): Wid | undefined {
-  return UserPrefs.getMaybeMeUser();
+export function getMyUserId(): Wid {
+  return UserPrefs.getMaybeMePnUser();
 }

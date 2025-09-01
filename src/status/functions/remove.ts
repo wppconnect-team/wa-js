@@ -15,14 +15,15 @@
  */
 
 import { getMessageById } from '../../chat';
+import { getMyUserId } from '../../conn';
 import { WPPError } from '../../util';
-import { MsgKey, StatusV3Store, UserPrefs } from '../../whatsapp';
+import { MsgKey, StatusV3Store } from '../../whatsapp';
 import { revokeStatus } from '../../whatsapp/functions';
 
 export async function remove(msgId: string | MsgKey): Promise<boolean> {
   const msg = await getMessageById(msgId);
   try {
-    await revokeStatus(StatusV3Store.get(UserPrefs.getMeUser()) as any, msg);
+    await revokeStatus(StatusV3Store.get(getMyUserId()) as any, msg);
     return true;
   } catch (error) {
     throw new WPPError(
