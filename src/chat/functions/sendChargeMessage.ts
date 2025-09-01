@@ -112,11 +112,16 @@ export async function sendChargeMessage(
   let subtotal = 0;
   let thumbDefault = null;
 
-  const catalog = CatalogStore.get(UserPrefs.getMaybeMeUser());
+  const user =
+    typeof UserPrefs.getMaybeMeUser === 'function'
+      ? UserPrefs.getMaybeMeUser()
+      : UserPrefs.getMaybeMePnUser();
+
+  const catalog = CatalogStore.get(user);
   for (const product of items) {
     if (product.type == 'product') {
       const { data } = await queryProduct(
-        UserPrefs.getMaybeMeUser(),
+        user,
         product.id,
         100,
         100,

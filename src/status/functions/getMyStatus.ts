@@ -19,8 +19,14 @@ import { StatusV3Model, StatusV3Store, UserPrefs } from '../../whatsapp';
 export async function getMyStatus(): Promise<StatusV3Model> {
   let myStatus = StatusV3Store.getMyStatus();
 
-  if (!myStatus)
-    myStatus = await StatusV3Store.find(UserPrefs.getMaybeMeUser());
+  if (!myStatus) {
+    const me =
+      typeof UserPrefs.getMaybeMeUser === 'function'
+        ? UserPrefs.getMaybeMeUser()
+        : UserPrefs.getMaybeMePnUser();
+
+    myStatus = await StatusV3Store.find(me);
+  }
 
   return myStatus;
 }

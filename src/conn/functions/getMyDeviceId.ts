@@ -26,13 +26,10 @@ import { UserPrefs, Wid } from '../../whatsapp';
  * ```
  */
 export function getMyDeviceId(): Wid | undefined {
-  /**
-   * @description
-   * Validates if the function exists for compatibility with previous versions of WhatsApp Web
-   **/
-  if (typeof UserPrefs.getMeDevicePn === 'function') {
-    return UserPrefs.getMeDevicePn();
-  } else {
-    return UserPrefs.getMe(); // maintain compatibility with older versions of WhatsApp Web
-  }
+  const user =
+    typeof UserPrefs.getMaybeMeUser === 'function'
+      ? UserPrefs.getMaybeMeUser()
+      : UserPrefs.getMaybeMePnUser();
+
+  return user ? user : UserPrefs.getMe();
 }

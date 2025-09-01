@@ -74,7 +74,10 @@ export async function create(
 
   const participantsWids = participantsIds.map(assertWid);
 
-  const meWid = UserPrefs.getMaybeMeUser();
+  const meWid =
+    typeof UserPrefs.getMaybeMeUser === 'function'
+      ? UserPrefs.getMaybeMeUser()
+      : UserPrefs.getMaybeMePnUser();
   const wids: Wid[] = [];
 
   for (const wid of participantsWids) {

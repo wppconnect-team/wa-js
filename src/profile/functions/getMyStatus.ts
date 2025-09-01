@@ -28,7 +28,10 @@ import { StatusStore, UserPrefs } from '../../whatsapp';
  */
 
 export async function getMyStatus() {
-  const myStatus = await StatusStore.find(UserPrefs.getMaybeMeUser());
-
+  const user =
+    typeof UserPrefs.getMaybeMeUser === 'function'
+      ? UserPrefs.getMaybeMeUser()
+      : UserPrefs.getMaybeMePnUser();
+  const myStatus = await StatusStore.find(user);
   return myStatus.status;
 }

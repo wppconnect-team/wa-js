@@ -21,13 +21,14 @@ import { Wid } from './Wid';
  * @whatsapp 459857 >= 2.2310.5
  */
 export declare namespace UserPrefs {
-  function getMeDevicePn(...args: any[]): any;
+  function getMaybeMeDevicePn(...args: any[]): any;
   function assertGetMe(): Wid;
   function assertGetMeUser(): Wid;
-  function clearGetMaybeMeUserCache(...args: any[]): any;
+  function clearGetMaybeMePnUserCache(...args: any[]): any;
   function getMaybeMeDisplayName(...args: any[]): any;
-  function getMaybeMeLid(...args: any[]): any;
+  function getMaybeMeDeviceLid(...args: any[]): any;
   function getMaybeMeLidUser(...args: any[]): any;
+  function getMaybeMePnUser(): Wid;
   function getMaybeMeUser(): Wid;
   function getMePNandLIDWids(...args: any[]): any;
   function getMeUser(): Wid;
@@ -42,9 +43,26 @@ export declare namespace UserPrefs {
 
   /**
    * @deprecated
+   */
+  function clearGetMaybeMeUserCache(...args: any[]): any;
+  /**
+   * @deprecated
+   */
+  function getMeDevicePn(...args: any[]): any;
+  /**
+   * @deprecated
+   */
+  function getMaybeMeLid(...args: any[]): any;
+
+  /**
+   * @deprecated
    * @whatsapp 498050 >= 2.3000.1026
    **/
   function getMe(...args: any[]): any;
 }
 
-exportModule(exports, 'UserPrefs', (m) => m.getMaybeMeUser);
+exportModule(
+  exports,
+  'UserPrefs',
+  (m) => m.getMaybeMePnUser || m.getMaybeMeUser
+);

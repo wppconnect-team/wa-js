@@ -26,7 +26,10 @@ export async function assertGetProduct(
   productId: string
 ): Promise<ProductModel> {
   const product = await CatalogStore.findProduct({
-    catalogWid: UserPrefs.getMaybeMeUser(),
+    catalogWid:
+      typeof UserPrefs.getMaybeMeUser === 'function'
+        ? UserPrefs.getMaybeMeUser()
+        : UserPrefs.getMaybeMePnUser(),
     productId: productId,
   });
   const Product = product[0].msgProductCollection._index[productId];

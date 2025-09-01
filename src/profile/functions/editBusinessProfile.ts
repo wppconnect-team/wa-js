@@ -227,8 +227,10 @@ export async function editBusinessProfile(params: BusinessProfileModel) {
   }
 
   await editProfile(params);
-  const profile = await BusinessProfileStore.fetchBizProfile(
-    UserPrefs.getMaybeMeUser()
-  );
+  const user =
+    typeof UserPrefs.getMaybeMeUser === 'function'
+      ? UserPrefs.getMaybeMeUser()
+      : UserPrefs.getMaybeMePnUser();
+  const profile = await BusinessProfileStore.fetchBizProfile(user);
   return profile;
 }

@@ -96,7 +96,12 @@ export async function sendVCardContactMessage(
       });
     }
 
-    if (!name && contactModel.id.equals(UserPrefs.getMaybeMeUser())) {
+    const user =
+      typeof UserPrefs.getMaybeMeUser === 'function'
+        ? UserPrefs.getMaybeMeUser()
+        : UserPrefs.getMaybeMePnUser();
+
+    if (!name && contactModel.id.equals(user)) {
       name = contactModel.displayName;
     }
 

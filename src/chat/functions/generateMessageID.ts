@@ -26,7 +26,10 @@ import { randomMessageId } from '../../whatsapp/functions';
 export async function generateMessageID(
   chat: string | ChatModel | Wid
 ): Promise<MsgKey> {
-  const from = UserPrefs.getMaybeMeUser();
+  const from =
+    typeof UserPrefs.getMaybeMeUser === 'function'
+      ? UserPrefs.getMaybeMeUser()
+      : UserPrefs.getMaybeMePnUser();
   let to: Wid;
 
   if (chat instanceof Wid) {

@@ -31,7 +31,12 @@ import * as wa_functions from '../../whatsapp/functions';
 export async function setMyStatus(statusText: string) {
   await wa_functions.setMyStatus(statusText);
 
-  const myStatus = await StatusStore.find(UserPrefs.getMaybeMeUser());
+  const me =
+    typeof UserPrefs.getMaybeMeUser === 'function'
+      ? UserPrefs.getMaybeMeUser()
+      : UserPrefs.getMaybeMePnUser();
+
+  const myStatus = await StatusStore.find(me);
 
   if (myStatus) {
     myStatus.status = statusText;

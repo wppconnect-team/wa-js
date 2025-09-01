@@ -58,7 +58,10 @@ export async function prepareRawMessage<T extends RawMessage>(
 
   message = {
     t: unixTime(),
-    from: UserPrefs.getMaybeMeUser(),
+    from:
+      typeof UserPrefs.getMaybeMeUser === 'function'
+        ? UserPrefs.getMaybeMeUser()
+        : UserPrefs.getMaybeMePnUser(),
     to: chat.id,
     self: 'out',
     isNewMsg: true,

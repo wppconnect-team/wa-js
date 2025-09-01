@@ -35,10 +35,15 @@ export async function sendImageStatus(
   content: any,
   options: ImageStatusOptions = {}
 ): Promise<any> {
+  const me =
+    typeof UserPrefs.getMaybeMeUser === 'function'
+      ? UserPrefs.getMaybeMeUser()
+      : UserPrefs.getMaybeMePnUser();
+
   const messageId = new MsgKey({
     fromMe: true,
     id: randomHex(16),
-    participant: UserPrefs.getMaybeMeUser(),
+    participant: me,
     remote: assertWid('status@broadcast'),
   });
 

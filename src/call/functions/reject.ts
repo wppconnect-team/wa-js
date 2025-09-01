@@ -88,7 +88,10 @@ export async function reject(callId?: string): Promise<boolean> {
   const node = websocket.smax(
     'call',
     {
-      from: UserPrefs.getMaybeMeUser().toString({ legacy: true }),
+      from:
+        typeof UserPrefs.getMaybeMeUser === 'function'
+          ? UserPrefs.getMaybeMeUser().toString({ legacy: true })
+          : UserPrefs.getMaybeMePnUser().toString({ legacy: true }),
       to: call.peerJid.toString({ legacy: true }),
       id: websocket.generateId(),
     },

@@ -26,5 +26,10 @@ import { UserPrefs, Wid } from '../../whatsapp';
  * ```
  */
 export function getMyUserId(): Wid | undefined {
-  return UserPrefs.getMaybeMeUser();
+  const user =
+    typeof UserPrefs.getMaybeMeUser === 'function'
+      ? UserPrefs.getMaybeMeUser()
+      : UserPrefs.getMaybeMePnUser();
+
+  return user;
 }
