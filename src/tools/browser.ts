@@ -71,7 +71,11 @@ export async function preparePage(page: playwright.Page) {
         });
       }
 
-      const hash = crypto.createHash('md5').update(request.url()).digest('hex').substring(0, 12);
+      const hash = crypto
+        .createHash('md5')
+        .update(request.url())
+        .digest('hex')
+        .substring(0, 12);
       const ext = path.extname(fileName) || '.js';
       const safeFileName = `${hash}${ext}`;
       const filePathSourceHash = path.join(WA_DIR, safeFileName);
@@ -103,7 +107,7 @@ export async function preparePage(page: playwright.Page) {
       .catch(() => null);
 
     // Disable service worker registration
-    // @ts-ignore
+    // @ts-expect-error: Service worker registration is intentionally disabled
     navigator.serviceWorker.register = new Promise(() => {});
 
     setInterval(() => {
@@ -138,7 +142,9 @@ export async function preparePage(page: playwright.Page) {
 export async function getPage(options?: LaunchArguments[1]) {
   let userDataDir = path.resolve(__dirname, '../../userDataDir');
   if (Array.isArray(options?.args)) {
-    const index = options?.args.findIndex((a) => a.startsWith('--user-data-dir'));
+    const index = options?.args.findIndex((a) =>
+      a.startsWith('--user-data-dir')
+    );
     if (index > -1) {
       const param = options?.args[index];
       options.args.splice(index, 1);
@@ -146,21 +152,29 @@ export async function getPage(options?: LaunchArguments[1]) {
     }
   }
 
-  const browser = await playwright.chromium.launchPersistentContext(userDataDir, options);
-  const page = browser.pages().length ? browser.pages()[0] : await browser.newPage();
+  const browser = await playwright.chromium.launchPersistentContext(
+    userDataDir,
+    options
+  );
+  const page = browser.pages().length
+    ? browser.pages()[0]
+    : await browser.newPage();
 
   await preparePage(page);
 
   await page.goto(URL, { waitUntil: 'networkidle', timeout: 120000 });
 
   // Aguarda o WPPConnect ser carregado
-  await page.waitForFunction(() => !!(window as any).WPP?.whatsapp, { timeout: 120000 });
+  await page.waitForFunction(() => !!(window as any).WPP?.whatsapp, {
+    timeout: 120000,
+  });
 
   // Obtém versão do WhatsApp
-  const version = await page.evaluate(() => (window as any).Debug?.VERSION || (window as any).WPP?.version || null);
+  const version = await page.evaluate(
+    () => (window as any).Debug?.VERSION || (window as any).WPP?.version || null
+  );
 
   console.log('WhatsApp Version: ', version);
 
   return { browser, page, version };
 }
-
