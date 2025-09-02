@@ -32,12 +32,10 @@ type LaunchArguments = Parameters<
 >;
 
 export async function preparePage(page: playwright.Page) {
-  page.route('https://crashlogs.whatsapp.net/**', (route) => {
-    route.abort();
-  });
-  page.route('https://dit.whatsapp.net/deidentified_telemetry', (route) => {
-    route.abort();
-  });
+  page.route('https://crashlogs.whatsapp.net/**', (route) => route.abort());
+  page.route('https://dit.whatsapp.net/deidentified_telemetry', (route) =>
+    route.abort()
+  );
 
   page.route(
     /^https:\/\/(web\.whatsapp\.com|static\.whatsapp\.net)\//,
@@ -60,27 +58,20 @@ export async function preparePage(page: playwright.Page) {
         return route.fulfill({
           status: 200,
           contentType: 'text/javascript; charset=UTF-8',
-          body: fs.readFileSync(filePathDist, { encoding: 'utf8' }),
+          body: fs.readFileSync(filePathDist, 'utf8'),
         });
       }
 
       const filePathSource = path.join(WA_DIR, fileName);
-
       if (fs.existsSync(filePathSource)) {
         return route.fulfill({
           status: 200,
           contentType: 'text/javascript; charset=UTF-8',
-          body: fs.readFileSync(filePathSource, { encoding: 'utf8' }),
+          body: fs.readFileSync(filePathSource, 'utf8'),
         });
       }
 
-      // 🔥 correção para nomes muito longos
-      const hash = crypto
-        .createHash('md5')
-        .update(request.url())
-        .digest('hex')
-        .substring(0, 12); // hash de 12 caracteres para reduzir colisão
-
+      const hash = crypto.createHash('md5').update(request.url()).digest('hex').substring(0, 12);
       const ext = path.extname(fileName) || '.js';
       const safeFileName = `${hash}${ext}`;
       const filePathSourceHash = path.join(WA_DIR, safeFileName);
@@ -89,14 +80,12 @@ export async function preparePage(page: playwright.Page) {
         return route.fulfill({
           status: 200,
           contentType: 'text/javascript; charset=UTF-8',
-          body: fs.readFileSync(filePathSourceHash, { encoding: 'utf8' }),
+          body: fs.readFileSync(filePathSourceHash, 'utf8'),
         });
       }
 
       if (fileName.endsWith('.js')) {
-        if (!fs.existsSync(WA_DIR)) {
-          fs.mkdirSync(WA_DIR);
-        }
+        if (!fs.existsSync(WA_DIR)) fs.mkdirSync(WA_DIR);
 
         const response = await route.fetch();
         const body = await response.body();
@@ -108,20 +97,13 @@ export async function preparePage(page: playwright.Page) {
   );
 
   page.addInitScript(() => {
-    // Remove existent service worker
     navigator.serviceWorker
       .getRegistrations()
-      .then((registrations) => {
-        for (const registration of registrations) {
-          registration.unregister();
-        }
-      })
+      .then((regs) => regs.forEach((r) => r.unregister()))
       .catch(() => null);
 
     // Disable service worker registration
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     navigator.serviceWorker.register = new Promise(() => {});
 
     setInterval(() => {
@@ -130,28 +112,18 @@ export async function preparePage(page: playwright.Page) {
     }, 500);
   });
 
-  page.on('load', async (page) => {
-    await page.addScriptTag({
-      url: `${URL}dist/wppconnect-wa.js`,
-    });
+  page.on('load', async () => {
+    await page.addScriptTag({ url: `${URL}dist/wppconnect-wa.js` });
 
     const mediaPath = path.resolve(__dirname, '../../media/');
+    if (!fs.existsSync(mediaPath)) return;
 
-    if (!fs.existsSync(mediaPath)) {
-      return;
-    }
     fs.readdirSync(mediaPath).forEach(async (filename) => {
       const filePath = path.join(mediaPath, filename);
-      const content = fs.readFileSync(filePath, {
-        encoding: 'base64',
-      });
-
+      const content = fs.readFileSync(filePath, 'base64');
       const mime = await FileType.fromFile(filePath);
 
-      const base64 = `data:${
-        mime?.mime || 'application/octet-stream'
-      };base64,${content}`;
-
+      const base64 = `data:${mime?.mime || 'application/octet-stream'};base64,${content}`;
       page.evaluate(
         ({ filename, base64 }) => {
           (window as any).media = (window as any).media || {};
@@ -166,47 +138,29 @@ export async function preparePage(page: playwright.Page) {
 export async function getPage(options?: LaunchArguments[1]) {
   let userDataDir = path.resolve(__dirname, '../../userDataDir');
   if (Array.isArray(options?.args)) {
-    const index = options?.args.findIndex((a) =>
-      a.startsWith('--user-data-dir')
-    );
-    if (typeof index === 'number' && index > -1) {
+    const index = options?.args.findIndex((a) => a.startsWith('--user-data-dir'));
+    if (index > -1) {
       const param = options?.args[index];
-      options?.args.splice(index, 1);
-      userDataDir = param?.split('=')[1] || userDataDir;
+      options.args.splice(index, 1);
+      userDataDir = param.split('=')[1] || userDataDir;
     }
   }
 
-  const browser = await playwright.chromium.launchPersistentContext(
-    userDataDir,
-    options
-  );
-
-  const page = browser.pages().length
-    ? browser.pages()[0]
-    : await browser.newPage();
+  const browser = await playwright.chromium.launchPersistentContext(userDataDir, options);
+  const page = browser.pages().length ? browser.pages()[0] : await browser.newPage();
 
   await preparePage(page);
 
-  setTimeout(async () => {
-    await page.goto(URL, {
-      waitUntil: 'domcontentloaded',
-      timeout: 120000,
-    });
+  await page.goto(URL, { waitUntil: 'networkidle', timeout: 120000 });
 
-    await page
-      .waitForFunction(
-        () => (window as any).Debug?.VERSION,
-        {},
-        { timeout: 120000 }
-      )
-      .catch(() => null);
+  // Aguarda o WPPConnect ser carregado
+  await page.waitForFunction(() => !!(window as any).WPP?.whatsapp, { timeout: 120000 });
 
-    const version = await page
-      .evaluate(() => (window as any).Debug.VERSION)
-      .catch(() => null);
+  // Obtém versão do WhatsApp
+  const version = await page.evaluate(() => (window as any).Debug?.VERSION || (window as any).WPP?.version || null);
 
-    console.log('WhatsApp Version: ', version);
-  }, 1000);
+  console.log('WhatsApp Version: ', version);
 
-  return { browser, page };
+  return { browser, page, version };
 }
+
