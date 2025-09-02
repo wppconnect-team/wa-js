@@ -74,13 +74,16 @@ export async function preparePage(page: playwright.Page) {
         });
       }
 
+      // 🔥 correção para nomes muito longos
       const hash = crypto
         .createHash('md5')
         .update(request.url())
         .digest('hex')
-        .substring(0, 5);
+        .substring(0, 12); // hash de 12 caracteres para reduzir colisão
 
-      const filePathSourceHash = path.join(WA_DIR, `${hash}-${fileName}`);
+      const ext = path.extname(fileName) || '.js';
+      const safeFileName = `${hash}${ext}`;
+      const filePathSourceHash = path.join(WA_DIR, safeFileName);
 
       if (fs.existsSync(filePathSourceHash)) {
         return route.fulfill({
