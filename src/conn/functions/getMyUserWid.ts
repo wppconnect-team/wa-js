@@ -15,19 +15,21 @@
  */
 
 import { UserPrefs, Wid } from '../../whatsapp';
-import { getMyUserWid } from './getMyUserWid';
 
 /**
- * Return the current logged user ID with device id
+ * Return the current logged user ID without device id
  *
  * @example
  * ```javascript
- * const wid = WPP.conn.getMyDeviceId();
- * console.log(wid.toString()); // Output: 123:4@c.us
+ * const wid = WPP.conn.getMyUserId();
+ * console.log(wid.toString()); // Output: 123@c.us
  * ```
  */
-export function getMyDeviceId(): Wid | undefined {
-  const user = getMyUserWid();
+export function getMyUserWid(): Wid {
+  const user =
+    typeof UserPrefs.getMaybeMeUser === 'function'
+      ? UserPrefs.getMaybeMeUser()
+      : UserPrefs.getMaybeMePnUser();
 
-  return user ? user : UserPrefs.getMe();
+  return user;
 }

@@ -16,7 +16,8 @@
 
 import { assertWid } from '../../assert';
 import { sendFileMessage } from '../../chat';
-import { MsgKey, UserPrefs } from '../../whatsapp';
+import { getMyUserWid } from '../../conn/functions/getMyUserWid';
+import { MsgKey } from '../../whatsapp';
 import { randomHex } from '../../whatsapp/functions';
 import { defaultSendStatusOptions } from '..';
 import { SendStatusOptions } from './sendRawStatus';
@@ -35,10 +36,7 @@ export async function sendVideoStatus(
   content: any,
   options: VideoStatusOptions = {}
 ): Promise<any> {
-  const me =
-    typeof UserPrefs.getMaybeMeUser === 'function'
-      ? UserPrefs.getMaybeMeUser()
-      : UserPrefs.getMaybeMePnUser();
+  const me = getMyUserWid();
 
   const messageId = new MsgKey({
     fromMe: true,

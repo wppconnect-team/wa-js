@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import { generateOrderUniqueId, WPPError } from '../../util';
 import { CatalogStore, UserPrefs } from '../../whatsapp';
 import {
@@ -112,10 +113,7 @@ export async function sendChargeMessage(
   let subtotal = 0;
   let thumbDefault = null;
 
-  const user =
-    typeof UserPrefs.getMaybeMeUser === 'function'
-      ? UserPrefs.getMaybeMeUser()
-      : UserPrefs.getMaybeMePnUser();
+  const user = getMyUserWid();
 
   const catalog = CatalogStore.get(user);
   for (const product of items) {

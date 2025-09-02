@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { StatusStore, UserPrefs } from '../../whatsapp';
+import { getMyUserWid } from '../../conn/functions/getMyUserWid';
+import { StatusStore } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
 
 /**
@@ -30,13 +31,7 @@ import * as wa_functions from '../../whatsapp/functions';
 
 export async function setMyStatus(statusText: string) {
   await wa_functions.setMyStatus(statusText);
-
-  const me =
-    typeof UserPrefs.getMaybeMeUser === 'function'
-      ? UserPrefs.getMaybeMeUser()
-      : UserPrefs.getMaybeMePnUser();
-
-  const myStatus = await StatusStore.find(me);
+  const myStatus = await StatusStore.find(getMyUserWid());
 
   if (myStatus) {
     myStatus.status = statusText;

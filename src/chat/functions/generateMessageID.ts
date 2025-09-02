@@ -15,7 +15,8 @@
  */
 
 import { assertWid } from '../../assert';
-import { ChatModel, MsgKey, UserPrefs, Wid, WidFactory } from '../../whatsapp';
+import { getMyUserWid } from '../../conn/functions/getMyUserWid';
+import { ChatModel, MsgKey, Wid, WidFactory } from '../../whatsapp';
 import { randomMessageId } from '../../whatsapp/functions';
 
 /**
@@ -26,10 +27,7 @@ import { randomMessageId } from '../../whatsapp/functions';
 export async function generateMessageID(
   chat: string | ChatModel | Wid
 ): Promise<MsgKey> {
-  const from =
-    typeof UserPrefs.getMaybeMeUser === 'function'
-      ? UserPrefs.getMaybeMeUser()
-      : UserPrefs.getMaybeMePnUser();
+  const from = getMyUserWid();
   let to: Wid;
 
   if (chat instanceof Wid) {

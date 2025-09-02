@@ -16,12 +16,12 @@
 
 import { assertWid } from '../../assert';
 import { config } from '../../config';
+import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import {
   ContactStore,
   functions,
   MsgKey,
   ParticipantModel,
-  UserPrefs,
   Wid,
   WidFactory,
 } from '../../whatsapp';
@@ -47,10 +47,7 @@ export async function updateParticipants(
 ): Promise<void> {
   let type = 'custom';
 
-  const me =
-    typeof UserPrefs.getMaybeMeUser === 'function'
-      ? UserPrefs.getMaybeMeUser()
-      : UserPrefs.getMaybeMePnUser();
+  const me = getMyUserWid();
 
   if (!ids || ids.length === 0) {
     ids = ContactStore.getModelsArray()
