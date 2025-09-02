@@ -15,6 +15,7 @@
  */
 
 import { assertWid } from '../../assert';
+import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import { getParticipants } from '../../group';
 import { WPPError } from '../../util';
 import {
@@ -22,7 +23,6 @@ import {
   ChatModel,
   MsgKey,
   MsgModel,
-  UserPrefs,
   Wid,
 } from '../../whatsapp';
 import { ACK } from '../../whatsapp/enums';
@@ -58,7 +58,7 @@ export async function prepareRawMessage<T extends RawMessage>(
 
   message = {
     t: unixTime(),
-    from: UserPrefs.getMaybeMeUser(),
+    from: getMyUserWid(),
     to: chat.id,
     self: 'out',
     isNewMsg: true,

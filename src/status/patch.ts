@@ -15,8 +15,8 @@
  */
 
 import { config } from '..';
+import { getMyUserWid } from '../conn/functions/getMyUserWid';
 import * as webpack from '../webpack';
-import { UserPrefs } from '../whatsapp';
 import { wrapModuleFunction } from '../whatsapp/exportModule';
 import { handleSingleMsg } from '../whatsapp/functions';
 
@@ -27,7 +27,7 @@ function applyPatch() {
     const [wid, msg] = args;
 
     if (!config.syncAllStatus && wid.isStatusV3()) {
-      const me = UserPrefs.getMaybeMeUser();
+      const me = getMyUserWid();
 
       if (msg.author && !me.equals(msg.author)) {
         return;

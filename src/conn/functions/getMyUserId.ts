@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { UserPrefs, Wid } from '../../whatsapp';
+import { Wid } from '../../whatsapp';
+import { getMyUserWid } from './getMyUserWid';
 
 /**
  * Return the current logged user ID without device id
@@ -26,5 +27,6 @@ import { UserPrefs, Wid } from '../../whatsapp';
  * ```
  */
 export function getMyUserId(): Wid | undefined {
-  return UserPrefs.getMaybeMeUser();
+  const user = getMyUserWid();
+  return user;
 }

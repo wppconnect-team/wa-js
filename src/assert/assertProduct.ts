@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
+import { getMyUserWid } from '../conn/functions/getMyUserWid';
 import { WPPError } from '../util';
-import { CatalogStore, ProductModel, UserPrefs } from '../whatsapp';
+import { CatalogStore, ProductModel } from '../whatsapp';
 
 export class InvalidProduct extends WPPError {
   constructor(readonly id: string) {
@@ -26,7 +27,7 @@ export async function assertGetProduct(
   productId: string
 ): Promise<ProductModel> {
   const product = await CatalogStore.findProduct({
-    catalogWid: UserPrefs.getMaybeMeUser(),
+    catalogWid: getMyUserWid(),
     productId: productId,
   });
   const Product = product[0].msgProductCollection._index[productId];

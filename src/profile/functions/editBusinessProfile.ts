@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
+import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import { WPPError } from '../../util';
 import {
   BusinessProfileModel,
   BusinessProfileStore,
   Conn,
-  UserPrefs,
 } from '../../whatsapp';
 import { editBusinessProfile as editProfile } from '../../whatsapp/functions';
 
@@ -46,11 +46,11 @@ import { editBusinessProfile as editProfile } from '../../whatsapp/functions';
  * ```javascript
  * await WPP.profile.editBusinessProfile({adress: 'Street 01, New York'});
  * ```
- * 
+ *
  * ```javascript
  * await WPP.profile.editBusinessProfile({email: 'test@test.com.br'});
  * ```
- * 
+ *
  * Change website of profile (max 2 sites)
  * ```javascript
  * await WPP.profile.editBusinessProfile({website: [
@@ -58,10 +58,10 @@ import { editBusinessProfile as editProfile } from '../../whatsapp/functions';
   "https://www.teste2.com.br",
 ]});
  * ```
- * 
+ *
  * Change businessHours for Specific Hours
  * ```javascript
- * await WPP.profile.editBusinessProfile({ businessHours: { 
+ * await WPP.profile.editBusinessProfile({ businessHours: {
  * {
       tue: {
         mode: "specific_hours",
@@ -124,7 +124,7 @@ import { editBusinessProfile as editProfile } from '../../whatsapp/functions';
  *
  * Change businessHours for Always Opened
  * ```javascript
- * await WPP.profile.editBusinessProfile({ businessHours: { 
+ * await WPP.profile.editBusinessProfile({ businessHours: {
     {
       mon: {
         mode: "open_24h",
@@ -227,8 +227,7 @@ export async function editBusinessProfile(params: BusinessProfileModel) {
   }
 
   await editProfile(params);
-  const profile = await BusinessProfileStore.fetchBizProfile(
-    UserPrefs.getMaybeMeUser()
-  );
+  const user = getMyUserWid();
+  const profile = await BusinessProfileStore.fetchBizProfile(user);
   return profile;
 }

@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-import { StatusV3Model, StatusV3Store, UserPrefs } from '../../whatsapp';
+import { getMyUserWid } from '../../conn/functions/getMyUserWid';
+import { StatusV3Model, StatusV3Store } from '../../whatsapp';
 
 export async function getMyStatus(): Promise<StatusV3Model> {
   let myStatus = StatusV3Store.getMyStatus();
 
-  if (!myStatus)
-    myStatus = await StatusV3Store.find(UserPrefs.getMaybeMeUser());
+  if (!myStatus) {
+    myStatus = await StatusV3Store.find(getMyUserWid());
+  }
 
   return myStatus;
 }
