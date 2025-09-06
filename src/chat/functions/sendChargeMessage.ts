@@ -180,7 +180,7 @@ export async function sendChargeMessage(
     type: 'physical-goods',
     payment_configuration: 'merchant_categorization_code',
     currency: await currencyForCountryShortcode(
-      await getCountryShortcodeByPhone(UserPrefs.getMeUser().user)
+      await getCountryShortcodeByPhone(UserPrefs.getMaybeMePnUser().user)
     ),
     total_amount: {
       value: total_amount,
