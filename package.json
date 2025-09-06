@@ -74,7 +74,7 @@
     "node-fetch": "^2.7.0",
     "parse-data-url": "^6.0.0",
     "playwright-chromium": "^1.52.0",
-    "prettier": "^3.5.3",
+    "prettier": "^3.6.2",
     "release-it": "^19.0.3",
     "shx": "^0.4.0",
     "terser-webpack-plugin": "^5.3.14",
