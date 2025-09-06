@@ -46,6 +46,8 @@ export declare namespace WidFactory {
   function toUserLidOrThrow(wid: Wid): Wid;
 
   function toUserWidOrThrow(wid: Wid): Wid;
+
+  function createWid(wid: Wid): Wid;
 }
 
 exportModule(exports, 'WidFactory', (m) => m.createWid);

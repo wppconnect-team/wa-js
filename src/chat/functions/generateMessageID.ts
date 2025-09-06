@@ -41,7 +41,10 @@ export async function generateMessageID(
   let participant = undefined;
 
   if (to.isGroup()) {
-    const toUserWid = WidFactory.toUserWid || WidFactory.toUserWidOrThrow; // maintain compatibility with older versions of WhatsApp Web
+    const toUserWid =
+      WidFactory?.toUserWid ||
+      WidFactory?.toUserWidOrThrow ||
+      WidFactory?.createWid; // maintain compatibility with older versions of WhatsApp Web
     participant = toUserWid(from);
   }
 
