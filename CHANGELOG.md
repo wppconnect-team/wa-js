@@ -1,9 +1,9 @@
-## 3.18.3 (2025-09-02)
+## 3.18.4 (2025-09-09)
 
 
 ### Bug Fixes
 
-* update UserPrefs method calls for WhatsApp Web compatibility ([#2871](https://github.com/wppconnect-team/wa-js/issues/2871)) ([3ea0e80](https://github.com/wppconnect-team/wa-js/commit/3ea0e8030ebbe6898516a378dd1374b956fa8e02))
+* Fixed WidFactory.toUserWid ([#2882](https://github.com/wppconnect-team/wa-js/issues/2882)) ([e1bd67e](https://github.com/wppconnect-team/wa-js/commit/e1bd67ea5eadb573bcaecd0efcd22bb09878107f))
 
 
 
