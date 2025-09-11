@@ -61,27 +61,52 @@ export declare namespace UserPrefs {
   function getMe(...args: any[]): any;
 }
 
-exportModule(
-  exports,
-  'UserPrefs',
-  (m) => m.getMaybeMePnUser || m.getMaybeMeUser
-);
+exportModule(exports, 'UserPrefs', (m: any) => {
+  const hasNew = typeof m?.getMaybeMePnUser === 'function';
+  const hasOld = typeof m?.getMaybeMeUser === 'function';
+  if (!hasNew && !hasOld) return false; // não exporta se nenhuma existir
 
-try {
-  const anyExports = exports as any;
-  const mod = anyExports?.UserPrefs as Record<string, any> | undefined;
-
-  if (mod) {
+  try {
+    // se houver prop com tipo errado, apaga antes de setar
     if (
-      typeof mod.getMaybeMePnUser === 'function' &&
-      typeof mod.getMaybeMeUser !== 'function'
+      m &&
+      typeof m.getMaybeMeUser !== 'function' &&
+      //eslint-disable-next-line no-prototype-builtins
+      m.hasOwnProperty?.('getMaybeMeUser')
     ) {
-      mod.getMaybeMeUser = mod.getMaybeMePnUser.bind(mod);
-    } else if (
-      typeof mod.getMaybeMeUser === 'function' &&
-      typeof mod.getMaybeMePnUser !== 'function'
-    ) {
-      mod.getMaybeMePnUser = mod.getMaybeMeUser.bind(mod);
+      try {
+        delete m.getMaybeMeUser;
+      } catch {}
     }
+    if (
+      m &&
+      typeof m.getMaybeMePnUser !== 'function' &&
+      //eslint-disable-next-line no-prototype-builtins
+      m.hasOwnProperty?.('getMaybeMePnUser')
+    ) {
+      try {
+        delete m.getMaybeMePnUser;
+      } catch {}
+    }
+
+    if (hasNew && !hasOld) {
+      Object.defineProperty(m, 'getMaybeMeUser', {
+        value: m.getMaybeMePnUser.bind(m),
+        configurable: true,
+        writable: true,
+      });
+    } else if (hasOld && !hasNew) {
+      Object.defineProperty(m, 'getMaybeMePnUser', {
+        value: m.getMaybeMeUser.bind(m),
+        configurable: true,
+        writable: true,
+      });
+    }
+  } catch {
+    // silencioso: alguns módulos podem ser proxies/selados
   }
-} catch {}
+
+  // Alguns loaders usam o valor de retorno só como "truthy".
+  // Retorne 'true' ou o próprio 'm' — ambos funcionam.
+  return true;
+});
