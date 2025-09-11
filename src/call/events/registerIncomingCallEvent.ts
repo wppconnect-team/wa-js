@@ -29,7 +29,9 @@ function register() {
         isGroup: call.isGroup,
         isVideo: call.isVideo,
         offerTime: call.offerTime,
-        sender: WidFactory.toChatWid(call.peerJid),
+        sender:
+          WidFactory.toChatWid?.(call.peerJid) ??
+          WidFactory.createWid?.(call.peerJid),
         peerJid: call.peerJid,
       });
     }
@@ -47,7 +49,9 @@ function register() {
         isGroup: call.isGroup,
         isVideo: call.isVideo,
         offerTime: call.offerTime,
-        sender: WidFactory.toChatWid(call.peerJid),
+        sender:
+          WidFactory.toChatWid?.(call.peerJid) ??
+          WidFactory.createWid?.(call.peerJid),
         peerJid: call.peerJid,
       });
     }
