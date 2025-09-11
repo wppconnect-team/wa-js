@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2025 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,3 +66,22 @@ exportModule(
   'UserPrefs',
   (m) => m.getMaybeMePnUser || m.getMaybeMeUser
 );
+
+try {
+  const anyExports = exports as any;
+  const mod = anyExports?.UserPrefs as Record<string, any> | undefined;
+
+  if (mod) {
+    if (
+      typeof mod.getMaybeMePnUser === 'function' &&
+      typeof mod.getMaybeMeUser !== 'function'
+    ) {
+      mod.getMaybeMeUser = mod.getMaybeMePnUser.bind(mod);
+    } else if (
+      typeof mod.getMaybeMeUser === 'function' &&
+      typeof mod.getMaybeMePnUser !== 'function'
+    ) {
+      mod.getMaybeMePnUser = mod.getMaybeMeUser.bind(mod);
+    }
+  }
+} catch {}
