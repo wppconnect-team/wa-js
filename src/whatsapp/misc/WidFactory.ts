@@ -34,6 +34,7 @@ export declare namespace WidFactory {
 
   function isWidlike(wid: any): wid is Wid;
 
+  // @deprecated
   function toChatWid(wid: Wid): Wid;
 
   // @deprecated
