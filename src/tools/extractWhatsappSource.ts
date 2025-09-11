@@ -22,9 +22,12 @@ import * as prettier from 'prettier';
 
 import { WA_DIR } from './browser';
 
-const WA_VERSION = process.env['WA_VERSION'] || waVersion.getLatestVersion();
-
 async function start() {
+  const WA_VERSION =
+    process.env['WA_VERSION'] ||
+    (await waVersion.fetchCurrentVersion()) ||
+    waVersion.getLatestVersion();
+
   const options = await prettier.resolveConfig(process.cwd());
 
   if (!fs.existsSync(WA_DIR)) {
