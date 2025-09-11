@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2025 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,8 +61,52 @@ export declare namespace UserPrefs {
   function getMe(...args: any[]): any;
 }
 
-exportModule(
-  exports,
-  'UserPrefs',
-  (m) => m.getMaybeMePnUser || m.getMaybeMeUser
-);
+exportModule(exports, 'UserPrefs', (m: any) => {
+  const hasNew = typeof m?.getMaybeMePnUser === 'function';
+  const hasOld = typeof m?.getMaybeMeUser === 'function';
+  if (!hasNew && !hasOld) return false; // não exporta se nenhuma existir
+
+  try {
+    // se houver prop com tipo errado, apaga antes de setar
+    if (
+      m &&
+      typeof m.getMaybeMeUser !== 'function' &&
+      //eslint-disable-next-line no-prototype-builtins
+      m.hasOwnProperty?.('getMaybeMeUser')
+    ) {
+      try {
+        delete m.getMaybeMeUser;
+      } catch {}
+    }
+    if (
+      m &&
+      typeof m.getMaybeMePnUser !== 'function' &&
+      //eslint-disable-next-line no-prototype-builtins
+      m.hasOwnProperty?.('getMaybeMePnUser')
+    ) {
+      try {
+        delete m.getMaybeMePnUser;
+      } catch {}
+    }
+
+    if (hasNew && !hasOld) {
+      Object.defineProperty(m, 'getMaybeMeUser', {
+        value: m.getMaybeMePnUser.bind(m),
+        configurable: true,
+        writable: true,
+      });
+    } else if (hasOld && !hasNew) {
+      Object.defineProperty(m, 'getMaybeMePnUser', {
+        value: m.getMaybeMeUser.bind(m),
+        configurable: true,
+        writable: true,
+      });
+    }
+  } catch {
+    // silencioso: alguns módulos podem ser proxies/selados
+  }
+
+  // Alguns loaders usam o valor de retorno só como "truthy".
+  // Retorne 'true' ou o próprio 'm' — ambos funcionam.
+  return true;
+});
