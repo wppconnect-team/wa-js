@@ -42,6 +42,6 @@ export async function getUnreadChats(
   if (onlyNewUnreads) {
     return unreadChats;
   } else {
-    return await list({ onlyWithUnreadMessage: true })
+    return await list({ onlyWithUnreadMessage: true });
   }
 }
