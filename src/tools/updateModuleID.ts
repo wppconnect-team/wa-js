@@ -100,16 +100,47 @@ async function start() {
    * I be creating other function for check expires based directily from files
    * This will not directly affect the function call, it continues to work normally.
    */
+  // Módulos opcionais, só carregam após login ou em contextos específicos
   const ignoreFailModules: string[] = [
     'functions.revokeStatus',
     'functions.setPushname',
     'functions.editCollection',
     'functions.deleteCollection',
     'functions.createCollection',
+    'functions.getBusinessProfile',
+    'functions.getOrderDetails',
+    'functions.getNewsletter',
+    'functions.getCommunityInfo',
+    'functions.getGroupInvite',
+    'functions.getLabel',
+    'functions.getProfilePicture',
+    'functions.getStatusV3',
+    'functions.getSticker',
+    'functions.getCallInfo',
+    'functions.getBlocklist',
+    'functions.getCatalog',
+    'functions.getCart',
+    'functions.getContact',
+    'functions.getChat',
+    'functions.getWid',
+    'functions.getGtag',
+    'functions.getPrivacy',
+    'functions.getNewsletter',
+    'functions.getOrder',
+    'functions.getProfile',
+    'functions.getStatus',
+    'functions.getTools',
+    'functions.getUtil',
+    'functions.getWebpack',
+    'functions.getWhatsapp',
   ];
 
   for (const moduleName of Object.keys(result)) {
-    if (!result[moduleName] && !ignoreFailModules.includes(moduleName)) {
+    if (!result[moduleName]) {
+      if (ignoreFailModules.includes(moduleName)) {
+        console.warn(`[IGNORADO] Módulo opcional não encontrado: ${moduleName}`);
+        continue;
+      }
       if (
         process.env['SEND_WEBHOOK_FAILURE'] &&
         process.env['DISCORD_WEBHOOK_URL_FAILURE']
@@ -129,7 +160,7 @@ async function start() {
         );
       }
       exitCode = 1;
-      console.error(`Module not found: ${moduleName}`);
+      console.error(`[ERRO] Módulo crítico não encontrado: ${moduleName}`);
     }
   }
 
