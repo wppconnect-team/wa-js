@@ -120,7 +120,6 @@ webpack.onFullReady(() => {
 
     const url = typeof uri === 'string' ? uri : uri.url;
 
-    // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve) => {
       try {
         const previewData = await fetchRemoteLinkPreviewData(url);

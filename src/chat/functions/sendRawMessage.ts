@@ -54,7 +54,8 @@ export async function sendRawMessage(
     ...options,
   };
 
-  const chat = options.createChat
+  const chat =
+  options.createChat !== false
     ? await assertFindChat(chatId)
     : assertGetChat(chatId);
 
@@ -62,7 +63,10 @@ export async function sendRawMessage(
    * When the group is groupType 'COMMUNITY', its a instance of a group created, you can
    * not send message for this grouptype. You only can send message for linked announcement groups
    */
-  if (chat.isGroup && chat.isParentGroup) {
+
+  const isGroup = chat.isGroup;
+  const isParentGroup = chat.isParentGroup;
+  if (isGroup && isParentGroup) {
     const groupData = GroupMetadataStore.get(chat.id?.toString());
     if (groupData?.groupType == 'COMMUNITY') {
       const announceGroup = getAnnouncementGroup(groupData.id);

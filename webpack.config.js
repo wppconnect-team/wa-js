@@ -45,6 +45,9 @@ module.exports = (env, argv) => {
       ],
     } } : {})
     ,
+    performance: {
+      hints: false,
+    },
     plugins: [
       new webpack.ProvidePlugin({
         Buffer: ['buffer', 'Buffer'],

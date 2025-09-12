@@ -50,7 +50,6 @@
     "@types/node": "^16.18.126",
     "@types/node-fetch": "^2.6.12",
     "@types/parse-data-url": "^3.0.2",
-    "@types/prettier": "^3.0.0",
     "@types/shelljs": "^0.8.16",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
@@ -61,7 +60,7 @@
     "conventional-changelog-angular": "^8.0.0",
     "conventional-changelog-cli": "^5.0.0",
     "debug": "^4.4.1",
-    "eslint": "^8.57.1",
+    "eslint": "^9.35.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-header": "^3.1.1",
     "eslint-plugin-import": "^2.31.0",
@@ -91,5 +90,11 @@
   },
   "engines": {
     "whatsapp-web": ">=2.2326.10-beta"
+  },
+  "dependencies": {
+    "@eslint/config-array": "^0.21.0",
+    "@eslint/object-schema": "^2.1.6",
+    "glob": "^11.0.3",
+    "rimraf": "^6.0.1"
   }
 }

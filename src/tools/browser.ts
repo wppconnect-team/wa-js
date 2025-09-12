@@ -116,10 +116,13 @@ export async function preparePage(page: playwright.Page) {
       .catch(() => null);
 
     // Disable service worker registration
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    navigator.serviceWorker.register = new Promise(() => {});
+    navigator.serviceWorker.register = function (
+      scriptURL: string | URL,
+      options?: RegistrationOptions
+    ): Promise<ServiceWorkerRegistration> {
+      return Promise.reject(new Error('Service worker registration is disabled.')) as Promise<ServiceWorkerRegistration>;
+    };
 
     setInterval(() => {
       window.onerror = console.error;

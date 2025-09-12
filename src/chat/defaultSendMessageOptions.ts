@@ -27,7 +27,7 @@ export type AllMessageOptions = SendMessageOptions &
   Partial<ListMessageOptions>;
 
 export const defaultSendMessageOptions: AllMessageOptions = {
-  createChat: false,
+  createChat: true,
   detectMentioned: true,
   linkPreview: true,
   markIsRead: true,

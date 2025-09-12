@@ -64,14 +64,12 @@ export declare namespace UserPrefs {
 exportModule(exports, 'UserPrefs', (m: any) => {
   const hasNew = typeof m?.getMaybeMePnUser === 'function';
   const hasOld = typeof m?.getMaybeMeUser === 'function';
-  if (!hasNew && !hasOld) return false; // não exporta se nenhuma existir
+  if (!hasNew && !hasOld) return false;
 
   try {
-    // se houver prop com tipo errado, apaga antes de setar
     if (
       m &&
       typeof m.getMaybeMeUser !== 'function' &&
-      //eslint-disable-next-line no-prototype-builtins
       m.hasOwnProperty?.('getMaybeMeUser')
     ) {
       try {
@@ -81,7 +79,6 @@ exportModule(exports, 'UserPrefs', (m: any) => {
     if (
       m &&
       typeof m.getMaybeMePnUser !== 'function' &&
-      //eslint-disable-next-line no-prototype-builtins
       m.hasOwnProperty?.('getMaybeMePnUser')
     ) {
       try {
@@ -103,10 +100,8 @@ exportModule(exports, 'UserPrefs', (m: any) => {
       });
     }
   } catch {
-    // silencioso: alguns módulos podem ser proxies/selados
+   
   }
 
-  // Alguns loaders usam o valor de retorno só como "truthy".
-  // Retorne 'true' ou o próprio 'm' — ambos funcionam.
   return true;
 });
