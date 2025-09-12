@@ -54,9 +54,10 @@ export async function sendRawMessage(
     ...options,
   };
 
-  const chat = options.createChat
-    ? await assertFindChat(chatId)
-    : assertGetChat(chatId);
+  const chat =
+    (options.createChat ?? true)
+      ? await assertFindChat(chatId)
+      : assertGetChat(chatId);
 
   /**
    * When the group is groupType 'COMMUNITY', its a instance of a group created, you can
