@@ -1,3 +1,7 @@
+## [3.18.7](https://github.com/DXPRO/wa-js/compare/v3.18.6...v3.18.7) (2025-09-12)
+
+
+
 ## [3.18.6](https://github.com/DXPRO/wa-js/compare/v3.18.5...v3.18.6) (2025-09-12)
 
 
