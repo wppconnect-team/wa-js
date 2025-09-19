@@ -50,7 +50,12 @@ export async function preparePage(page: playwright.Page) {
         });
       }
 
-      const fileName = path.basename(url.parse(request.url()).pathname!);
+      const rawFileName = path.basename(url.parse(request.url()).pathname!);
+
+      let fileName = rawFileName.replace(/[^a-zA-Z0-9._-]/g, '_');
+      if (fileName.length > 50) {
+        fileName = fileName.substring(0, 50);
+      }
       const filePathDist = path.join(
         path.resolve(__dirname, '../../dist/'),
         fileName
