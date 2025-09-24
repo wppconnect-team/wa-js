@@ -34,7 +34,7 @@ export type TextMessageOptions = SendMessageOptions &
  * @example
  * ```javascript
  * WPP.chat.sendTextMessage('[number]@c.us', 'Hello new contact', {
- *   createChat: true
+ *   createChat: true // True is the pattern, if you dont want to create a chat set it to false.
  * });
  *
  * // With Buttons
