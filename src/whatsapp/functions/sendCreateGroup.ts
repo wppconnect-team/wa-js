@@ -64,7 +64,7 @@ webpack.injectFallbackModule('sendCreateGroup', {
     ephemeral?: number,
     parentGroup?: Wid
   ) => {
-    if (compare(self.Debug.VERSION, '2.3000.1014489107', '>=')) {
+    if (compare(self.Debug.VERSION, '2.3000.1027323699', '>=')) {
       return await createGroup(
         {
           title: groupName,
@@ -75,7 +75,9 @@ webpack.injectFallbackModule('sendCreateGroup', {
           memberAddMode: true,
           parentGroupId: parentGroup,
         },
-        participants
+        participants.map((p) => ({
+          phoneNumber: p,
+        }))
       ).then((e) => ({
         gid: e.wid,
         participants: e.participants.map((e) => ({
@@ -87,10 +89,16 @@ webpack.injectFallbackModule('sendCreateGroup', {
       }));
     } else {
       return await createGroup(
-        groupName,
-        participants,
-        ephemeral,
-        parentGroup
+        {
+          title: groupName,
+          ephemeralDuration: ephemeral || 0,
+          restrict: true,
+          announce: true,
+          membershipApprovalMode: false,
+          memberAddMode: true,
+          parentGroupId: parentGroup,
+        },
+        participants
       ).then((e) => ({
         gid: e.wid,
         participants: e.participants.map((e) => ({
