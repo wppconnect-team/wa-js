@@ -146,7 +146,13 @@ function applyPatch() {
 
   wrapModuleFunction(shouldHaveAccountLid, () => false);
 
-  wrapModuleFunction(isLidMigrated, () => false);
+  wrapModuleFunction(isLidMigrated, (func, ...args) => {
+    try {
+      return func(...args);
+    } catch {
+      return false;
+    }
+  });
 }
 
 function applyPatchModel() {
