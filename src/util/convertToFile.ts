@@ -17,7 +17,7 @@
 import FileType from 'file-type';
 import parseDataURL from 'parse-data-url';
 
-import { isBase64 } from '.';
+import { isBase64, isUrl } from '.';
 
 export async function convertToFile(
   data: string | Blob | File,
@@ -29,7 +29,12 @@ export async function convertToFile(
   }
 
   let blob: Blob | null = null;
-  if (typeof data === 'string') {
+
+  if (typeof data === 'string' && isUrl(data)) {
+    const response = await fetch(data);
+    const fetchedBlob = await response.blob();
+    blob = fetchedBlob;
+  } else if (typeof data === 'string') {
     let parsed = parseDataURL(data);
 
     if (!parsed && isBase64(data)) {
@@ -45,12 +50,10 @@ export async function convertToFile(
     }
 
     const buffer = parsed.toBuffer();
-    blob = new Blob(
-      [new Uint8Array(buffer, buffer.byteOffset, buffer.length)],
-      {
-        type: mimetype,
-      }
-    );
+    // Convert Buffer to Uint8Array using Buffer.from for compatibility
+    blob = new Blob([Uint8Array.from(buffer)], {
+      type: mimetype,
+    });
   } else {
     blob = data;
   }
