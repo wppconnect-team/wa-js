@@ -8,4 +8,3 @@
 /userDataDir*
 /wa-source
 yarn.lock
-coverage/
