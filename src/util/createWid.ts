@@ -16,11 +16,29 @@
 
 import { Wid, WidFactory } from '../whatsapp';
 
-const createUserWidCompat: (user: string, server?: string) => Wid =
-  (WidFactory as any).createUserWidOrThrow ||
-  (WidFactory as any).createUserWid ||
-  ((user: string, server?: string) =>
-    (WidFactory as any).createWid(server ? `${user}@${server}` : user));
+function getWidFactory(): any {
+  // Prefer the imported WidFactory but guard against circular/undefined imports.
+  if (typeof WidFactory !== 'undefined' && WidFactory) return WidFactory as any;
+  // Fallback to global (if some build attaches the factories there)
+  if (typeof globalThis !== 'undefined' && (globalThis as any).WidFactory)
+    return (globalThis as any).WidFactory;
+  return undefined;
+}
+
+const createUserWidCompat: (
+  user: string,
+  server?: string
+) => Wid | undefined = (user: string, server?: string) => {
+  const factory = getWidFactory();
+  if (!factory) return undefined;
+  if (typeof factory.createUserWidOrThrow === 'function')
+    return factory.createUserWidOrThrow(user, server);
+  if (typeof factory.createUserWid === 'function')
+    return factory.createUserWid(user, server);
+  if (typeof factory.createWid === 'function')
+    return factory.createWid(server ? `${user}@${server}` : user);
+  return undefined;
+};
 
 export function createWid(
   id: string | { _serialized: string }
@@ -29,8 +47,9 @@ export function createWid(
     return;
   }
 
-  if (WidFactory.isWidlike(id)) {
-    return WidFactory.createWidFromWidLike(id);
+  const factory = getWidFactory();
+  if (factory && factory.isWidlike && factory.isWidlike(id)) {
+    return factory.createWidFromWidLike(id);
   }
 
   if (id && typeof id === 'object' && typeof id._serialized === 'object') {
@@ -54,5 +73,9 @@ export function createWid(
     return createUserWidCompat(id, 'broadcast');
   }
 
-  return WidFactory.createWid(id);
+  if (factory && typeof factory.createWid === 'function') {
+    return factory.createWid(id);
+  }
+
+  return undefined;
 }
