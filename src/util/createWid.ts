@@ -16,6 +16,30 @@
 
 import { Wid, WidFactory } from '../whatsapp';
 
+function getWidFactory(): any {
+  // Prefer the imported WidFactory but guard against circular/undefined imports.
+  if (typeof WidFactory !== 'undefined' && WidFactory) return WidFactory as any;
+  // Fallback to global (if some build attaches the factories there)
+  if (typeof globalThis !== 'undefined' && (globalThis as any).WidFactory)
+    return (globalThis as any).WidFactory;
+  return undefined;
+}
+
+const createUserWidCompat: (
+  user: string,
+  server?: string
+) => Wid | undefined = (user: string, server?: string) => {
+  const factory = getWidFactory();
+  if (!factory) return undefined;
+  if (typeof factory.createUserWidOrThrow === 'function')
+    return factory.createUserWidOrThrow(user, server);
+  if (typeof factory.createUserWid === 'function')
+    return factory.createUserWid(user, server);
+  if (typeof factory.createWid === 'function')
+    return factory.createWid(server ? `${user}@${server}` : user);
+  return undefined;
+};
+
 export function createWid(
   id: string | { _serialized: string }
 ): Wid | undefined {
@@ -23,8 +47,9 @@ export function createWid(
     return;
   }
 
-  if (WidFactory.isWidlike(id)) {
-    return WidFactory.createWidFromWidLike(id);
+  const factory = getWidFactory();
+  if (factory && factory.isWidlike && factory.isWidlike(id)) {
+    return factory.createWidFromWidLike(id);
   }
 
   if (id && typeof id === 'object' && typeof id._serialized === 'object') {
@@ -36,17 +61,21 @@ export function createWid(
   }
 
   if (/@\w*lid\b/.test(id)) {
-    return WidFactory.createUserWid(id, 'lid');
+    return createUserWidCompat(id, 'lid');
   }
   if (/^\d+$/.test(id)) {
-    return WidFactory.createUserWid(id, 'c.us');
+    return createUserWidCompat(id, 'c.us');
   }
   if (/^\d+-\d+$/.test(id)) {
-    return WidFactory.createUserWid(id, 'g.us');
+    return createUserWidCompat(id, 'g.us');
   }
   if (/status$/.test(id)) {
-    return WidFactory.createUserWid(id, 'broadcast');
+    return createUserWidCompat(id, 'broadcast');
   }
 
-  return WidFactory.createWid(id);
+  if (factory && typeof factory.createWid === 'function') {
+    return factory.createWid(id);
+  }
+
+  return undefined;
 }
