@@ -21,12 +21,22 @@ import { Wid } from './Wid';
  * @whatsapp 58021 >= 2.2204.13
  * @whatsapp 745454 >= 2.2222.8
  */
+
+export function createUserWid(wid: string, server?: string): Wid {
+  return (WidFactory.createUserWid || WidFactory.createUserWidOrThrow)(
+    wid,
+    server
+  );
+}
+
 export declare namespace WidFactory {
   function createDeviceWid(wid: string): Wid;
 
   function createDeviceWidFromUserAndDevice(user: string, device: string): Wid;
 
   function createUserWid(user: string, server?: string): Wid;
+
+  function createUserWidOrThrow(user: string, server?: string): Wid;
 
   function createWid(wid: string): Wid;
 

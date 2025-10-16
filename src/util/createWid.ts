@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Wid, WidFactory } from '../whatsapp';
+import { createUserWid, Wid, WidFactory } from '../whatsapp';
 
 export function createWid(
   id: string | { _serialized: string }
@@ -36,16 +36,16 @@ export function createWid(
   }
 
   if (/@\w*lid\b/.test(id)) {
-    return WidFactory.createUserWid(id, 'lid');
+    return createUserWid(id, 'lid');
   }
   if (/^\d+$/.test(id)) {
-    return WidFactory.createUserWid(id, 'c.us');
+    return createUserWid(id, 'c.us');
   }
   if (/^\d+-\d+$/.test(id)) {
-    return WidFactory.createUserWid(id, 'g.us');
+    return createUserWid(id, 'g.us');
   }
   if (/status$/.test(id)) {
-    return WidFactory.createUserWid(id, 'broadcast');
+    return createUserWid(id, 'broadcast');
   }
 
   return WidFactory.createWid(id);
