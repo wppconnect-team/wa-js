@@ -16,6 +16,12 @@
 
 import { Wid, WidFactory } from '../whatsapp';
 
+const createUserWidCompat: (user: string, server?: string) => Wid =
+  (WidFactory as any).createUserWidOrThrow ||
+  (WidFactory as any).createUserWid ||
+  ((user: string, server?: string) =>
+    (WidFactory as any).createWid(server ? `${user}@${server}` : user));
+
 export function createWid(
   id: string | { _serialized: string }
 ): Wid | undefined {
@@ -36,16 +42,16 @@ export function createWid(
   }
 
   if (/@\w*lid\b/.test(id)) {
-    return WidFactory.createUserWid(id, 'lid');
+    return createUserWidCompat(id, 'lid');
   }
   if (/^\d+$/.test(id)) {
-    return WidFactory.createUserWid(id, 'c.us');
+    return createUserWidCompat(id, 'c.us');
   }
   if (/^\d+-\d+$/.test(id)) {
-    return WidFactory.createUserWid(id, 'g.us');
+    return createUserWidCompat(id, 'g.us');
   }
   if (/status$/.test(id)) {
-    return WidFactory.createUserWid(id, 'broadcast');
+    return createUserWidCompat(id, 'broadcast');
   }
 
   return WidFactory.createWid(id);
