@@ -16,7 +16,7 @@
 
 import Debug from 'debug';
 
-import { assertFindChat, assertGetChat } from '../../assert';
+import { assertFindChat, assertGetChat, InvalidChat } from '../../assert';
 import {
   blobToArrayBuffer,
   createWid,
@@ -273,9 +273,21 @@ export async function sendFileMessage(
     ...options,
   };
 
-  let chat = options.createChat
-    ? await assertFindChat(chatId)
-    : assertGetChat(chatId);
+  let chat: ChatModel;
+
+  if (options.createChat) {
+    chat = await assertFindChat(chatId);
+  } else {
+    try {
+      chat = assertGetChat(chatId);
+    } catch (error) {
+      if (error instanceof InvalidChat) {
+        chat = await assertFindChat(chatId);
+      } else {
+        throw error;
+      }
+    }
+  }
   if (chatId?.toString() == 'status@broadcast') {
     chat = new ChatModel({
       id: createWid(STATUS_JID),

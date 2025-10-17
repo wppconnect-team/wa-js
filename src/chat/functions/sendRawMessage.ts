@@ -16,10 +16,10 @@
 
 import Debug from 'debug';
 
-import { assertFindChat, assertGetChat } from '../../assert';
+import { assertFindChat, assertGetChat, InvalidChat } from '../../assert';
 import { getAnnouncementGroup } from '../../community';
 import { WPPError } from '../../util';
-import { GroupMetadataStore, MsgModel } from '../../whatsapp';
+import { ChatModel, GroupMetadataStore, MsgModel } from '../../whatsapp';
 import { ACK } from '../../whatsapp/enums';
 import {
   addAndSendMessageEdit,
@@ -54,9 +54,21 @@ export async function sendRawMessage(
     ...options,
   };
 
-  const chat = options.createChat
-    ? await assertFindChat(chatId)
-    : assertGetChat(chatId);
+  let chat: ChatModel;
+
+  if (options.createChat) {
+    chat = await assertFindChat(chatId);
+  } else {
+    try {
+      chat = assertGetChat(chatId);
+    } catch (error) {
+      if (error instanceof InvalidChat) {
+        chat = await assertFindChat(chatId);
+      } else {
+        throw error;
+      }
+    }
+  }
 
   /**
    * When the group is groupType 'COMMUNITY', its a instance of a group created, you can
