@@ -16,7 +16,6 @@
 
 import Debug from 'debug';
 
-import { assertFindChat, assertGetChat } from '../../assert';
 import {
   blobToArrayBuffer,
   createWid,
@@ -49,6 +48,7 @@ import {
   SendMessageOptions,
   SendMessageReturn,
 } from '..';
+import { ensureChat } from '../helpers/ensureChat';
 import {
   getMessageById,
   markIsRead,
@@ -273,9 +273,9 @@ export async function sendFileMessage(
     ...options,
   };
 
-  let chat = options.createChat
-    ? await assertFindChat(chatId)
-    : assertGetChat(chatId);
+  let chat: ChatModel = await ensureChat(chatId, {
+    createChat: options.createChat,
+  });
   if (chatId?.toString() == 'status@broadcast') {
     chat = new ChatModel({
       id: createWid(STATUS_JID),
