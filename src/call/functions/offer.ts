@@ -15,12 +15,12 @@
  */
 
 import { assertWid } from '../../assert';
+import { getMyUserId } from '../../conn';
 import { WPPError } from '../../util';
 import {
   CallModel,
   CallStore,
   functions,
-  UserPrefs,
   websocket,
   Wid,
 } from '../../whatsapp';
@@ -68,7 +68,11 @@ export async function offer(
   }
 
   const callId = functions.randomHex(16).substr(0, 64);
-  const me = UserPrefs.assertGetMe();
+  const me = getMyUserId();
+
+  if (!me) {
+    throw new WPPError('user_id_is_null', 'My user id is null or undefined');
+  }
 
   const content = [
     websocket.smax('audio', { enc: 'opus', rate: '16000' }, null),

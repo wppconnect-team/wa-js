@@ -407,6 +407,8 @@ webpack.onFullReady(() => {
     switch (key) {
       case 'web_unwrap_message_for_stanza_attributes':
         return false;
+      case 'enable_web_calling':
+        return true;
     }
     return func(...args);
   });
