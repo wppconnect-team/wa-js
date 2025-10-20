@@ -19,17 +19,17 @@ import { MsgKey, Wid } from '../../whatsapp';
 import { forwardMessagesToChats } from '../../whatsapp/functions';
 import { getMessageById } from '..';
 
-export interface ForwardMessagesOptions {
+export interface ForwardMessageOptions {
   displayCaptionText?: boolean;
   multicast?: boolean;
 }
 
 /**
- * Forward messages to a chat
+ * Forward message to a chat
  *
  * @example
  * ```javascript
- * // Forward messages
+ * // Forward message
  * WPP.chat.forwardMessage('[number]@c.us', 'true_[number]@c.us_ABCDEF');
  * ```
  * @category Message
@@ -38,7 +38,7 @@ export interface ForwardMessagesOptions {
 export async function forwardMessage(
   toChatId: string | Wid,
   msgId: string | MsgKey,
-  options: ForwardMessagesOptions = {}
+  options: ForwardMessageOptions = {}
 ): Promise<boolean> {
   const chat = await assertFindChat(toChatId);
 
