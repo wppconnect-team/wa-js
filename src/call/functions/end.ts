@@ -43,6 +43,7 @@ export async function end(callId?: string): Promise<boolean> {
     CALL_STATES.ACTIVE,
     CALL_STATES.OUTGOING_CALLING,
     CALL_STATES.OUTGOING_RING,
+    CALL_STATES.CallActive,
   ];
 
   let call: CallModel | undefined = undefined;
@@ -50,10 +51,7 @@ export async function end(callId?: string): Promise<boolean> {
   if (callId) {
     call = CallStore.get(callId);
   } else {
-    // First outcoming ring or call group
-    call = CallStore.findFirst(
-      (c) => callOut.includes(c.getState()) || c.isGroup
-    );
+    call = CallStore.activeCall ?? undefined;
   }
 
   if (!call) {
