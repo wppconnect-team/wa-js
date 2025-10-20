@@ -26,7 +26,6 @@ import {
   isLidMigrated,
   isUnreadTypeMsg,
   mediaTypeFromProtobuf,
-  shouldHaveAccountLid,
   toUserLid,
   typeAttributeFromProtobuf,
 } from '../whatsapp/functions';
@@ -143,8 +142,6 @@ function applyPatch() {
       return UserWid;
     }
   });
-
-  wrapModuleFunction(shouldHaveAccountLid, () => false);
 
   wrapModuleFunction(isLidMigrated, (func, ...args) => {
     try {
