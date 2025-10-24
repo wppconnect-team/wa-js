@@ -236,6 +236,19 @@ export interface VideoMessageOptions
  *    isPtv: true,
  *  }
  * );
+ *
+ * // Media using Link, the link must be public accessible
+ * // CORS must be enabled on the server and available for all domains
+ * // (Access-Control-Allow-Origin: *)
+ * // If the server does not have CORS enabled, you can use a public CORS proxy
+ * WPP.chat.sendFileMessage(
+ *  '[number]@c.us',
+ *  'https://example.com/image.jpg',
+ *  {
+ *    type: 'image',
+ *    caption: 'My image from URL', // Optional
+ *  }
+ * );
  * ```
  * @category Message
  * @return  {SendMessageReturn} The result

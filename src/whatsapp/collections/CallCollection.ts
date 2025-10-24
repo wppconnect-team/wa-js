@@ -24,12 +24,22 @@ import { Collection } from './Collection';
  */
 export declare class CallCollection extends Collection<CallModel> {
   static model: CallModel;
-  pendingOffers?: any;
-  pendingVoipCapChecks?: any;
-  handleQuery(): any;
-  processIncomingCall(e?: any, t?: any, r?: any): any;
-  cleanupPendingOffer(e?: any): any;
-  setActiveCall(e?: any): any;
+  $CallCollectionImpl$p_1?: () => any;
+  activeCall: CallModel | null;
+  isInConnectedCall: boolean;
+  pendingOffers: Record<string, any>;
+  pendingVoipCapChecks: Record<string, any>;
+  _cachePolicy: any;
+  _events: Record<string, any>;
+  _index: Record<string, any>;
+  _inflight: Record<string, any>;
+  _listenId: string;
+  _models: CallModel[];
+  _staleCollection: boolean;
+  cleanupPendingOffer(a?: any): any;
+  processIncomingCall(a?: any, b?: any, e?: any): any;
+  setActiveCall(a?: any): any;
+  setIsInConnectedCall(flag: boolean): any;
 }
 exportModule(
   exports,

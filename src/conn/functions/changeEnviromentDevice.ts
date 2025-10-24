@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-export * from './blobToArrayBuffer';
-export * from './blobToBase64';
-export * from './convertToFile';
-export * from './createWid';
-export * from './downloadImage';
-export * from './errors';
-export * from './fetchDataFromPNG';
-export * from './generateOrderUniqueId';
-export * from './getVideoInfoFromBuffer';
-export * from './isBase64';
-export * from './isUrl';
-export * from './resizeImage';
-export * from './types';
-export * from './wrapFunction';
+import { Enviroment } from '../../whatsapp';
+
+/**
+ * Change the current environment device between Web and Windows.
+ */
+export function changeEnviromentDevice() {
+  Enviroment.default.isWeb = !Enviroment.default.isWeb;
+  Enviroment.default.isWindows = !Enviroment.default.isWindows;
+}
