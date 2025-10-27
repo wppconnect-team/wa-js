@@ -1,0 +1,43 @@
+/*!
+ * Copyright 2021 WPPConnect Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { MuteCollection } from '../collections';
+import { Model, ModelOptions, ModelPropertiesContructor, ModelProxy } from './Model';
+interface Props {
+}
+interface Session {
+    online: boolean;
+    simulatedOfflineConditions: boolean;
+}
+interface Derived {
+}
+/**
+ * @whatsapp 99398 >= 2.2318.11
+ */
+export declare interface NetworkStatusModel extends ModelProxy<Props, Session, Derived> {
+}
+/**
+ * @whatsapp 99398 >= 2.2318.11
+ */
+export declare class NetworkStatusModel extends Model<MuteCollection> {
+    constructor(proterties?: ModelPropertiesContructor<NetworkStatusModel>, options?: ModelOptions);
+    waitIfOffline(options: {
+        signal: AbortSignal;
+    }): Promise<void>;
+    checkOnline(options: {
+        signal: AbortSignal;
+    }): Promise<void>;
+}
+export {};

@@ -1,0 +1,32 @@
+/*!
+ * Copyright 2023 WPPConnect Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { MsgModel, websocket, Wid } from '..';
+/**
+ *
+ */
+export declare function createFanoutMsgStanza(msg: MsgModel, data: any, proto: {
+    [key: string]: any;
+}, devices: Wid[], options: {
+    [key: string]: any;
+}): Promise<websocket.WapNode>;
+export declare function createFanoutMsgStanza(message: {
+    type: string;
+    data: MsgModel;
+}, proto: {
+    [key: string]: any;
+}, devices: Wid[], options: {
+    [key: string]: any;
+}, reporter: any, groupData?: any): Promise<websocket.WapNode>;
