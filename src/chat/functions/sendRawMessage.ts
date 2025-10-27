@@ -143,8 +143,8 @@ export async function sendRawMessage(
     ...(message.from && {
       from: message.from.toString(),
     }),
-    ...(message.to && {
-      to: message.to.toString(),
+    ...(chat && {
+      to: chat.id.toString(),
     }),
     sendMsgResult: result[1]!,
   };
