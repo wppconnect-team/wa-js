@@ -16,7 +16,7 @@
 
 import Debug from 'debug';
 
-import { assertFindChat, assertGetChat } from '../../assert';
+import { assertFindChat } from '../../assert';
 import {
   blobToArrayBuffer,
   createWid,
@@ -273,13 +273,13 @@ export async function sendFileMessage(
     ...options,
   };
 
-  let chat = options.createChat
-    ? await assertFindChat(chatId)
-    : assertGetChat(chatId);
+  let chat: ChatModel;
   if (chatId?.toString() == 'status@broadcast') {
     chat = new ChatModel({
       id: createWid(STATUS_JID),
     });
+  } else {
+    chat = await assertFindChat(chatId);
   }
 
   const file = await convertToFile(content, options.mimetype, options.filename);
