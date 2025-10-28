@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import { Wid } from '../../whatsapp';
-
 export interface CallEventTypes {
   /**
    * Triggered when you a incoming call
