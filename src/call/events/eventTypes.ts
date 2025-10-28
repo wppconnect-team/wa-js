@@ -49,10 +49,10 @@ export interface CallEventTypes {
     /**
      * Wid of sender without device id
      */
-    sender: Wid;
+    sender: any;
     /**
      * Wid of sender with device id
      */
-    peerJid: Wid;
+    peerJid: any;
   };
 }
