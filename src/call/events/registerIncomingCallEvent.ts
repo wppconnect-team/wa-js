@@ -15,10 +15,10 @@
  */
 
 import { internalEv } from '../../eventEmitter';
+import { createWid } from '../../util/createWid';
 import * as webpack from '../../webpack';
 import { CallModel, CallStore } from '../../whatsapp';
 import { CALL_STATES } from '../../whatsapp/enums';
-import { createWid } from '../../util/createWid';
 
 webpack.onInjected(() => register());
 
