@@ -224,6 +224,9 @@ function rehydrateNestedMessage(value: any): MsgModel | undefined {
 export function rehydrateMessage(payload: string): MsgModel {
   const cloned = parsePayload(payload);
 
+  // When quoting the actual message we don't care about the quote of the quote
+  delete cloned.quotedMsg;
+
   // Parse the primary message key
   const primaryKey =
     parseMsgKey(cloned.id) ??
