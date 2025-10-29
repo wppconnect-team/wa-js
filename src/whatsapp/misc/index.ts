@@ -29,6 +29,7 @@ export * from './IsOfficialClient';
 export * from './Lid1X1MigrationUtils';
 export * from './MediaBlobCache';
 export * from './MediaEntry';
+export * from './MediaGatingUtils';
 export * from './MediaObject';
 export * from './MediaObjectUtil';
 export * from './MediaPrep';
