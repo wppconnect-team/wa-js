@@ -33,6 +33,7 @@ import {
   unixTime,
 } from '../../whatsapp/functions';
 import { defaultSendMessageOptions, RawMessage, SendMessageOptions } from '..';
+import { rehydrateMessage } from '../util';
 import {
   generateMessageID,
   getMessageById,
@@ -192,6 +193,10 @@ export async function prepareRawMessage<T extends RawMessage>(
     }
 
     message.mentionedJidList = mentionedList;
+  }
+
+  if (options.quotedMsgPayload) {
+    options.quotedMsg = rehydrateMessage(options.quotedMsgPayload);
   }
 
   /**
