@@ -91,6 +91,14 @@ export interface SendMessageOptions {
   quotedMsg?: string | MsgKey | MsgModel;
 
   /**
+   * Quote a message using a previously saved payload.
+   * The payload must be the JSON string representation of a raw message.
+   * Raw messages can be obtained when using {@link getMessageById} or {@link getMessages}
+   * When provided it has priority over {@link quotedMsg}.
+   */
+  quotedMsgPayload?: string;
+
+  /**
    * Wait for send while the ACK of message is SENT(1)
    *
    * @default true
