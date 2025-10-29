@@ -15,13 +15,8 @@
  */
 
 import { assertWid } from '../../assert';
-import {
-  ApiContact,
-  USyncQuery,
-  USyncUser,
-  Wid,
-  WidFactory,
-} from '../../whatsapp';
+import { createWid } from '../../util/createWid';
+import { ApiContact, USyncQuery, USyncUser, Wid } from '../../whatsapp';
 
 export interface QueryExistsResult {
   wid: Wid;
@@ -77,9 +72,7 @@ export async function queryExists(
     syncQuery.withContactProtocol();
     syncUser.withPhone(id.replace('@c.us', ''));
     if (wid.isUser()) {
-      const lid = ApiContact.getCurrentLid(
-        WidFactory.createUserWid(id.replace('+', ''))
-      );
+      const lid = ApiContact.getCurrentLid(createWid(id.replace('+', '')));
       if (lid) {
         syncUser.withLid(lid);
       }
@@ -117,7 +110,7 @@ export async function queryExists(
               }
             : undefined,
         status: result.status,
-        lid: lid ? WidFactory.createUserWid(lid, 'lid') : undefined,
+        lid: lid ? createWid(lid) : undefined,
       };
     }
   } else {

@@ -106,6 +106,7 @@ async function start() {
     'functions.editCollection',
     'functions.deleteCollection',
     'functions.createCollection',
+    'functions.forwardMessages',
   ];
 
   for (const moduleName of Object.keys(result)) {

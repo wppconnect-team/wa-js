@@ -28,6 +28,8 @@ export declare namespace WidFactory {
 
   function createUserWid(user: string, server?: string): Wid;
 
+  function createUserWidOrThrow(user: string, server?: string): Wid;
+
   function createWid(wid: string): Wid;
 
   function createWidFromWidLike(wid: string | { _serialized: string }): Wid;

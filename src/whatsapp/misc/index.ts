@@ -22,6 +22,7 @@ export * from './Cmd';
 export * from './ComposeBoxActions';
 export * from './Conn';
 export * from './Constants';
+export * from './Enviroment';
 export * from './EventEmitter';
 export * from './ImageUtils';
 export * from './IsOfficialClient';
