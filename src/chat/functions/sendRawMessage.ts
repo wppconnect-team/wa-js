@@ -16,7 +16,7 @@
 
 import Debug from 'debug';
 
-import { assertFindChat, assertGetChat } from '../../assert';
+import { assertFindChat } from '../../assert';
 import { getAnnouncementGroup } from '../../community';
 import { WPPError } from '../../util';
 import { GroupMetadataStore, MsgModel } from '../../whatsapp';
@@ -54,9 +54,8 @@ export async function sendRawMessage(
     ...options,
   };
 
-  const chat = options.createChat
-    ? await assertFindChat(chatId)
-    : assertGetChat(chatId);
+  // Always use assertFindChat to properly handle @lid chats and other cases
+  const chat = await assertFindChat(chatId);
 
   /**
    * When the group is groupType 'COMMUNITY', its a instance of a group created, you can
@@ -144,8 +143,8 @@ export async function sendRawMessage(
     ...(message.from && {
       from: message.from.toString(),
     }),
-    ...(message.to && {
-      to: message.to.toString(),
+    ...(chat && {
+      to: chat.id.toString(),
     }),
     sendMsgResult: result[1]!,
   };
