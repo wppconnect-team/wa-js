@@ -31,7 +31,7 @@ import { Cmd, Wid } from '../../whatsapp';
  */
 export async function openChatFromUnread(
   chatId: string | Wid,
-  chatEntryPoint?: string
+  chatEntryPoint: string | undefined
 ): Promise<boolean> {
   const wid = assertWid(chatId);
 
