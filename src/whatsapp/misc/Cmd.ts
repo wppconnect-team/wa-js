@@ -111,10 +111,23 @@ export declare class CmdClass extends EventEmitter {
   ): Promise<boolean>;
   openChatAt(params?: {
     chat: ChatModel;
+    chatEntryPoint?: string;
     msgContext: ReturnType<typeof getSearchContext>;
+    onSuccess?: {
+      onScrollToQuotedCarouselCard?: void;
+      mediaMsgToOpenInMediaViewer?: void;
+    };
   }): Promise<boolean>;
   openChatFromUnread(chat: ChatModel): Promise<boolean>;
+  openChatFromUnread(params: {
+    chat: ChatModel;
+    chatEntryPoint?: string;
+  }): Promise<boolean>;
   openChatBottom(chat: ChatModel): Promise<boolean>;
+  openChatBottom(params: {
+    chat: ChatModel;
+    chatEntryPoint?: string;
+  }): Promise<boolean>;
   scrollToPtt(e?: any): void;
   _scrollToFocusedMsg(e?: any): void;
   _scrollChatToBottom(): void;
