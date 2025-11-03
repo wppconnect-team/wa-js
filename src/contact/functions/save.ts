@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2025 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+import { compare } from 'compare-versions';
+
 import { assertWid } from '../../assert';
 import { WPPError } from '../../util';
-import { ContactModel, Wid } from '../../whatsapp';
+import { ContactModel } from '../../whatsapp';
 import { saveContactAction } from '../../whatsapp/functions';
 import { get } from './get';
 
@@ -35,7 +37,7 @@ import { get } from './get';
  */
 
 export async function save(
-  contactId: string | Wid,
+  contactId: string | any,
   name: string,
   options?: { surname?: string; syncAdressBook?: boolean }
 ): Promise<ContactModel | undefined> {
@@ -46,12 +48,28 @@ export async function save(
     );
   }
   contactId = assertWid(contactId);
-  await saveContactAction(
-    contactId.toString().split('@')[0],
-    null,
-    name,
-    options?.surname ?? '',
-    options?.syncAdressBook ?? true
-  );
+  const cleanContactId = (contactId?.toString() || '').split('@')[0];
+  if (!cleanContactId) {
+    throw new WPPError('invalid_contact_id', 'Invalid contact ID format');
+  }
+  if (compare(self.Debug.VERSION, '2.3000.1029', '>=')) {
+    await saveContactAction(
+      cleanContactId,
+      null,
+      null,
+      null,
+      name,
+      options?.surname ?? '',
+      options?.syncAdressBook ?? true
+    );
+  } else {
+    await saveContactAction(
+      cleanContactId,
+      null,
+      name,
+      options?.surname ?? '',
+      options?.syncAdressBook ?? true
+    );
+  }
   return await get(contactId);
 }
