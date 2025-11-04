@@ -16,7 +16,6 @@
 
 import Debug from 'debug';
 
-import { assertFindChat, assertGetChat, InvalidChat } from '../../assert';
 import { getAnnouncementGroup } from '../../community';
 import { WPPError } from '../../util';
 import { ChatModel, GroupMetadataStore, MsgModel } from '../../whatsapp';
@@ -35,6 +34,7 @@ import {
   SendMessageOptions,
   SendMessageReturn,
 } from '..';
+import { ensureChat } from '../helpers/ensureChat';
 import { getMessageById, markIsRead, prepareRawMessage } from '.';
 
 const debug = Debug('WA-JS:message');
@@ -54,21 +54,9 @@ export async function sendRawMessage(
     ...options,
   };
 
-  let chat: ChatModel;
-
-  if (options.createChat) {
-    chat = await assertFindChat(chatId);
-  } else {
-    try {
-      chat = assertGetChat(chatId);
-    } catch (error) {
-      if (error instanceof InvalidChat) {
-        chat = await assertFindChat(chatId);
-      } else {
-        throw error;
-      }
-    }
-  }
+  const chat: ChatModel = await ensureChat(chatId, {
+    createChat: options.createChat,
+  });
 
   /**
    * When the group is groupType 'COMMUNITY', its a instance of a group created, you can

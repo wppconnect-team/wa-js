@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2022 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,5 @@
  * limitations under the License.
  */
 
-import './events';
-import './patch';
-
-export * from './defaultSendMessageOptions';
-export * from './functions';
-export * from './helpers';
-export * from './types';
+export * from './ensureChat';
+export * from './resolveChatLid';

@@ -31,6 +31,7 @@ import {
   toUserLid,
   typeAttributeFromProtobuf,
 } from '../whatsapp/functions';
+import { resolveChatLid } from './helpers/resolveChatLid';
 
 webpack.onFullReady(applyPatch, 1000);
 webpack.onFullReady(applyPatchModel);
