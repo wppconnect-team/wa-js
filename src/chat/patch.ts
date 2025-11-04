@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { queryExists } from '../contact/functions';
 import * as webpack from '../webpack';
 import { ChatModel, ContactStore, functions } from '../whatsapp';
 import { wrapModuleFunction } from '../whatsapp/exportModule';
@@ -163,6 +164,40 @@ function applyPatch() {
       return false;
     }
   });
+}
+
+async function resolveChatLid(chatId: ChatModel['id']) {
+  if (!chatId || chatId.isLid?.() || !chatId.isUser?.()) {
+    return chatId?.isLid?.() ? chatId : undefined;
+  }
+
+  const contact = ContactStore.get(chatId);
+  if (contact?.lid?.isLid?.()) {
+    return contact.lid;
+  }
+
+  try {
+    const current = functions.getCurrentLid?.(chatId);
+    if (current?.isLid?.()) {
+      return current;
+    }
+  } catch {
+    // Ignore errors from patched getCurrentLid implementations
+  }
+
+  try {
+    const exists = await queryExists(chatId);
+    if (exists?.lid?.isLid?.()) {
+      if (contact && !contact.lid) {
+        contact.lid = exists.lid;
+      }
+      return exists.lid;
+    }
+  } catch {
+    // Ignore network errors and fall through
+  }
+
+  return undefined;
 }
 
 function applyPatchModel() {
