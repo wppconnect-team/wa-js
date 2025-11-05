@@ -24,10 +24,16 @@ import { Wid } from '../misc';
  */
 export declare function canSaveAsMyContact(wid: Wid): boolean;
 
+/**
+ * @deprecated Use canSaveAsMyContact instead. This alias is kept for backward compatibility.
+ */
+export declare function canSaveAsMyContacts(wid: Wid): boolean;
+
 exportModule(
   exports,
   {
     canSaveAsMyContact: ['canSaveAsMyContact', 'canSaveAsMyContacts'],
+    canSaveAsMyContacts: ['canSaveAsMyContact', 'canSaveAsMyContacts'],
   },
   (m) => m.canSaveAsMyContact || m.canSaveAsMyContacts
 );
