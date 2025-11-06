@@ -17,7 +17,12 @@
 export { get } from './get';
 export { getBusinessProfile } from './getBusinessProfile';
 export { getCommonGroups } from './getCommonGroups';
-export { getPnLidEntry } from './getPnLidEntry';
+export {
+  getPnLidEntry,
+  InvalidWidForGetPnLidEntry,
+  PnLidContactInfo,
+  PnLidEntryResult,
+} from './getPnLidEntry';
 export { getProfilePictureUrl } from './getProfilePictureUrl';
 export { getStatus } from './getStatus';
 export { ContactListOptions, list } from './list';
