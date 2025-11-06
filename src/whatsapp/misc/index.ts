@@ -27,6 +27,7 @@ export * from './EventEmitter';
 export * from './ImageUtils';
 export * from './IsOfficialClient';
 export * from './Lid1X1MigrationUtils';
+export * from './LidPnCache';
 export * from './MediaBlobCache';
 export * from './MediaEntry';
 export * from './MediaGatingUtils';
