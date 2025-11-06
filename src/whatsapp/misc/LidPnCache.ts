@@ -38,8 +38,4 @@ export declare namespace lidPnCache {
   function remove(lidWid: Wid): void;
 }
 
-exportModule(
-  exports,
-  { lidPnCache: 'lidPnCache' },
-  (m) => m.lidPnCache && m.getLidEntry && m.getPhoneNumber && m.getCurrentLid
-);
+exportModule(exports, { lidPnCache: 'lidPnCache' }, (m) => m.lidPnCache);
