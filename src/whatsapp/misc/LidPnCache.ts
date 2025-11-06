@@ -41,5 +41,5 @@ export declare namespace lidPnCache {
 exportModule(
   exports,
   { lidPnCache: 'lidPnCache' },
-  (m) => m.lidPnCache && m.getAlternateUserWid
+  (m) => m.lidPnCache && m.getLidEntry && m.getPhoneNumber && m.getCurrentLid
 );
