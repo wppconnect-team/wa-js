@@ -22,6 +22,7 @@ export {
   InvalidWidForGetPnLidEntry,
   PnLidContactInfo,
   PnLidEntryResult,
+  PnLidWid,
 } from './getPnLidEntry';
 export { getProfilePictureUrl } from './getProfilePictureUrl';
 export { getStatus } from './getStatus';

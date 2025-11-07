@@ -18,7 +18,7 @@ import { assertWid } from '../../assert';
 import { WPPError } from '../../util';
 import { ContactStore, lidPnCache, Wid } from '../../whatsapp';
 
-export interface WidInfo {
+export interface PnLidWid {
   id: string;
   server: string;
   _serialized: string;
@@ -38,8 +38,8 @@ export interface PnLidContactInfo {
 }
 
 export interface PnLidEntryResult {
-  lid?: WidInfo;
-  phoneNumber?: WidInfo;
+  lid?: PnLidWid;
+  phoneNumber?: PnLidWid;
   contact?: PnLidContactInfo;
 }
 
