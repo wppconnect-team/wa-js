@@ -18,8 +18,13 @@ import { assertWid } from '../../assert';
 import { WPPError } from '../../util';
 import { ContactStore, lidPnCache, Wid } from '../../whatsapp';
 
+export interface WidInfo {
+  id: string;
+  server: string;
+  _serialized: string;
+}
+
 export interface PnLidContactInfo {
-  id: Wid;
   name?: string;
   shortName?: string;
   pushname?: string;
@@ -27,21 +32,14 @@ export interface PnLidContactInfo {
   verifiedName?: string;
   isBusiness?: boolean;
   isEnterprise?: boolean;
-  isSmb?: boolean;
   verifiedLevel?: number;
-  privacyMode?: {
-    actualActors?: number;
-    hostStorage?: number;
-    privacyModeTs?: number;
-  };
-  isContactSyncCompleted?: number;
-  textStatusLastUpdateTime?: number;
   syncToAddressbook?: boolean;
+  isContactSyncCompleted?: number;
 }
 
 export interface PnLidEntryResult {
-  lid?: Wid;
-  phoneNumber?: Wid;
+  lid?: WidInfo;
+  phoneNumber?: WidInfo;
   contact?: PnLidContactInfo;
 }
 
@@ -91,11 +89,39 @@ export async function getPnLidEntry(
   // This will get the contact info from ContactStore in memory
   // Avoid at any cost ContactStore.find or ContactStore.findQuery here to prevent
   // unnecessary hitting whatsapp apis
-  contact = ContactStore.get(lid || pn || wid) || undefined;
+  const contactModel = ContactStore.get(lid || pn || wid);
 
+  if (contactModel) {
+    contact = {
+      name: contactModel.name,
+      shortName: contactModel.shortName,
+      pushname: contactModel.pushname,
+      type: contactModel.type,
+      verifiedName: contactModel.verifiedName,
+      isBusiness: contactModel.isBusiness,
+      isEnterprise: contactModel.isEnterprise,
+      syncToAddressbook: (contactModel as any).syncToAddressbook,
+      isContactSyncCompleted: (contactModel as any).isContactSyncCompleted,
+    };
+  }
+
+  // Do not return Wid or ContactModel class instances directly
+  // otherwise wpp-connect will not be able to properly serialize the response
   return {
-    lid: lid || undefined,
-    phoneNumber: pn || undefined,
-    contact: contact || undefined,
+    lid: lid
+      ? {
+          id: lid.user,
+          server: lid.server,
+          _serialized: lid.toString(),
+        }
+      : undefined,
+    phoneNumber: pn
+      ? {
+          id: pn.user,
+          server: pn.server,
+          _serialized: pn.toString(),
+        }
+      : undefined,
+    contact,
   };
 }
