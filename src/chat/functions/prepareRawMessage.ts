@@ -195,8 +195,11 @@ export async function prepareRawMessage<T extends RawMessage>(
     message.mentionedJidList = mentionedList;
   }
 
+  let isQuotedRehydrated = false;
+
   if (options.quotedMsgPayload) {
     options.quotedMsg = rehydrateMessage(options.quotedMsgPayload);
+    isQuotedRehydrated = true;
   }
 
   /**
@@ -216,7 +219,11 @@ export async function prepareRawMessage<T extends RawMessage>(
       });
     }
 
-    if (!options.quotedMsg?.isStatusV3 && !canReplyMsg(options.quotedMsg)) {
+    if (
+      !options.quotedMsg?.isStatusV3 &&
+      !canReplyMsg(options.quotedMsg) &&
+      !isQuotedRehydrated
+    ) {
       throw new WPPError(
         'quoted_msg_can_not_reply',
         'QuotedMsg can not reply',
