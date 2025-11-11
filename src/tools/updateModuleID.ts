@@ -87,6 +87,9 @@ async function start() {
     .evaluate(() => (window as any).Debug.VERSION)
     .catch(() => null);
 
+  // if any pending request is hanging we unroute them to avoid errors, before browser close
+  await page.unrouteAll({ behavior: 'ignoreErrors' });
+
   await browser.close();
 
   delete result['_moduleIdMap'];
