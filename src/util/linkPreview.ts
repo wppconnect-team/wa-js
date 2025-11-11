@@ -134,7 +134,7 @@ function generateThumbnail(url: string) {
             .toDataURL('image/jpeg')
             .replace(/^data:image\/jpeg;base64,/, '')
         );
-      } catch (e) {
+      } catch (_e) {
         reject();
       }
     };

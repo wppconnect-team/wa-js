@@ -38,7 +38,7 @@ export async function delProducts(productsIds: string[]): Promise<any> {
     } else {
       await deleteProducts([productsIds]);
     }
-  } catch (error) {
+  } catch (_error) {
     status = 500;
   }
 

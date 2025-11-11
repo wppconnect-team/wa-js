@@ -70,7 +70,7 @@ export async function sendCatalogMessage(
       try {
         const download = await downloadImage(url);
         options.jpegThumbnail = download.data.split(',', 2)[1];
-      } catch (error) {}
+      } catch (_error) {}
     }
   }
 

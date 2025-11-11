@@ -110,7 +110,7 @@ webpack.onInjected(() => {
           count: null,
           error: null,
         };
-      } catch (error) {
+      } catch (_error) {
         return null;
       }
     }

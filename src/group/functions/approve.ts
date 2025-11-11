@@ -46,7 +46,7 @@ export async function approve(
 
   try {
     return await membershipApprovalRequestAction(groupId, wids, 'Approve');
-  } catch (error) {
+  } catch (_error) {
     throw new WPPError(
       'error_on_accept_membership_request',
       `Error on accept member on group ${groupId.toString()}`

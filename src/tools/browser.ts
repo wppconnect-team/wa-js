@@ -121,9 +121,7 @@ export async function preparePage(page: playwright.Page) {
       .catch(() => null);
 
     // Disable service worker registration
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    // @ts-expect-error(eslint-migration) -- Ignore
     navigator.serviceWorker.register = new Promise(() => {});
 
     setInterval(() => {

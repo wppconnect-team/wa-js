@@ -46,7 +46,7 @@ export async function reject(
 
   try {
     return await membershipApprovalRequestAction(groupId, wids, 'Reject');
-  } catch (error) {
+  } catch (_error) {
     throw new WPPError(
       'error_on_reject_membership_request',
       `Error on reject member on group ${groupId.toString()}`

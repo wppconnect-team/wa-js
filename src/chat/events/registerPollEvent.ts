@@ -51,7 +51,7 @@ function register() {
             sender: d.sender,
           })
           .catch(() => null);
-      } catch (error) {}
+      } catch (_error) {}
     }
 
     return func(...args);

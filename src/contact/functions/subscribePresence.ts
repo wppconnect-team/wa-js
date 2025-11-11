@@ -46,7 +46,7 @@ export async function subscribePresence(
       }
       await PresenceStore.find(wid);
       result.push(wid);
-    } catch (error) {}
+    } catch (_error) {}
   }
   return result;
 }

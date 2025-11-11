@@ -68,7 +68,7 @@ async function start() {
             const decoded = decoder.decode(value);
             try {
               return JSON.parse(decoded);
-            } catch (e) {
+            } catch (_e) {
               return (
                 value.constructor.name +
                 ': ' +

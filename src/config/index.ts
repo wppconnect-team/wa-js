@@ -53,7 +53,7 @@ const createHander = <T>(path: (string | number | symbol)[] = []) => ({
         target,
         value,
       });
-    } catch (error) {}
+    } catch (_error) {}
 
     return true;
   },

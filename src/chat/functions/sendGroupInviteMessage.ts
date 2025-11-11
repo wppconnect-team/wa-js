@@ -85,7 +85,7 @@ export async function sendGroupInviteMessage(
       try {
         const download = await downloadImage(url);
         options.jpegThumbnail = download.data.split(',', 2)[1];
-      } catch (error) {}
+      } catch (_error) {}
     }
   }
   const inviteLink = `https://chat.whatsapp.com/${options.inviteCode}`;

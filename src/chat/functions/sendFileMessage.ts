@@ -493,11 +493,20 @@ export async function sendFileMessage(
  * Generate a white thumbnail as WhatsApp generate for video files
  */
 function generateWhiteThumb(width: number, height: number, maxSize: number) {
-  let r = null != height ? height : maxSize,
-    i = null != width ? width : maxSize;
-  r > i
-    ? r > maxSize && ((i *= maxSize / r), (r = maxSize))
-    : i > maxSize && ((r *= maxSize / i), (i = maxSize));
+  let r = height ?? maxSize;
+  let i = width ?? maxSize;
+
+  if (r > i) {
+    if (r > maxSize) {
+      i *= maxSize / r;
+      r = maxSize;
+    }
+  } else {
+    if (i > maxSize) {
+      r *= maxSize / i;
+      i = maxSize;
+    }
+  }
 
   const bounds = { width: Math.max(r, 1), height: Math.max(i, 1) };
 

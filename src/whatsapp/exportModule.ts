@@ -170,7 +170,7 @@ export function exportModule(
             if (functionPath) {
               functionPathMap.set(value, functionPath);
             }
-          } catch (error) {}
+          } catch (_error) {}
 
           return valueFn();
         }
