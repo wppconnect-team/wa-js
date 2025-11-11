@@ -13,4 +13,4 @@ jobs:
       - name: Lint commit
         uses: wagoid/commitlint-github-action@v6.2.1
         with:
-          configFile: './.commitlintrc.js'
+          configFile: './.commitlintrc.json'
