@@ -153,7 +153,7 @@ export function setLimit(key: string, value: boolean | number): any {
       if (typeof value !== 'boolean') {
         throw new WPPError(`unlimitedPin_error`, `Value type invalid!`);
       }
-      unlimitedPin = value ? value : undefined;
+      unlimitedPin = value ? true : undefined;
       return value;
     }
 
