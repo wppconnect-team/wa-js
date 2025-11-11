@@ -35,7 +35,7 @@ export async function destroy(id: string): Promise<boolean> {
     );
   try {
     return await deleteNewsletter(id);
-  } catch (error) {
+  } catch (_error) {
     return false;
   }
 }

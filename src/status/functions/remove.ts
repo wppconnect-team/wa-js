@@ -27,7 +27,7 @@ export async function remove(msgId: string | MsgKey): Promise<boolean> {
       msg
     );
     return true;
-  } catch (error) {
+  } catch (_error) {
     throw new WPPError(
       'error_on_remove_status',
       `Error on remove status with id ${msgId.toString()}`

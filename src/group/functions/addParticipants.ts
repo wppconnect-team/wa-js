@@ -148,7 +148,7 @@ export async function addParticipants(
     if (code !== '403') {
       try {
         ContactStore.gadd(createWid(userWid) as any, { silent: true });
-      } catch (error) {}
+      } catch (_error) {}
     }
 
     data[userWid as `${number}@c.us`] = {

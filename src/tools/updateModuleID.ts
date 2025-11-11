@@ -72,7 +72,7 @@ async function start() {
         let module: any;
         try {
           module = submodules[name];
-        } catch (error) {}
+        } catch (_error) {}
 
         const resultName = dir ? `${dir}.${name}` : name;
 

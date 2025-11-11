@@ -114,7 +114,7 @@ export function injectLoader(): void {
       try {
         global.ErrorGuard.skipGuardGlobal(true);
         return global.importNamespace(id);
-      } catch (error) {}
+      } catch (_error) {}
       return null;
     } as any;
 
@@ -203,7 +203,7 @@ export function injectLoader(): void {
     for (const v of mainRuntimes) {
       try {
         await webpackRequire.e(v);
-      } catch (error) {
+      } catch (_error) {
         debug('load file error', webpackRequire.u(v));
       }
     }
@@ -222,7 +222,7 @@ export function injectLoader(): void {
     for (const v of allRuntimes) {
       try {
         await webpackRequire.e(v);
-      } catch (error) {
+      } catch (_error) {
         debug('load file error', webpackRequire.u(v));
       }
     }
@@ -314,7 +314,7 @@ export function searchId(
         clearTimeout(timer);
         return moduleId;
       }
-    } catch (error) {
+    } catch (_error) {
       continue;
     }
   }
@@ -330,7 +330,7 @@ export function searchId(
         clearTimeout(timer);
         return moduleId;
       }
-    } catch (error) {
+    } catch (_error) {
       continue;
     }
   }
@@ -383,7 +383,7 @@ export function modules(
       if (!condition || condition(module, moduleId)) {
         modules[moduleId] = module;
       }
-    } catch (error) {
+    } catch (_error) {
       continue;
     }
   }

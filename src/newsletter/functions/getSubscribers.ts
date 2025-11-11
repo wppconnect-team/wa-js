@@ -35,7 +35,7 @@ export async function getSubscribers(id: string): Promise<any> {
     );
   try {
     return (await getNewsletterSubscribers(id, 9, 'LIMITED')).subscribers;
-  } catch (error) {
+  } catch (_error) {
     return false;
   }
 }
