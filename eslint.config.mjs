@@ -69,7 +69,7 @@ export default [
           '!',
           {
             pattern: '^ \\* Copyright \\d{4} WPPConnect Team$',
-            template: ' * Copyright 2021 WPPConnect Team',
+            template: ' * Copyright 2022 WPPConnect Team',
           },
           ' *',
           ' * Licensed under the Apache License, Version 2.0 (the "License");',
