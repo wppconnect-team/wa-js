@@ -68,7 +68,7 @@ export default [
         [
           '!',
           {
-            pattern: ' \\* Copyright \\d{4} WPPConnect Team',
+            pattern: '^ \\* Copyright \\d{4} WPPConnect Team$',
             template: ' * Copyright 2021 WPPConnect Team',
           },
           ' *',
