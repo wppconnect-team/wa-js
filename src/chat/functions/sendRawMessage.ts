@@ -130,7 +130,7 @@ export async function sendRawMessage(
     const sendResult = await result[1];
 
     debug(
-      `ack received for ${rawMessage.id} (ACK: ${message.ack}, SendResult: ${sendResult})`
+      `ack received for ${rawMessage.id} (ACK: ${message.ack}, SendResult: ${sendResult.messageSendResult})`
     );
   }
 
