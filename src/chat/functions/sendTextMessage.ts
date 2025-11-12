@@ -33,9 +33,8 @@ export type TextMessageOptions = SendMessageOptions &
  *
  * @example
  * ```javascript
- * WPP.chat.sendTextMessage('[number]@c.us', 'Hello new contact', {
- *   createChat: true
- * });
+ * // Send a simple text message
+ * WPP.chat.sendTextMessage('[number]@c.us', 'Hello new contact');
  *
  * // With Buttons
  * // Attention: The buttons are an alternative solution we found to make it work. There is no guarantee that they will continue functioning, or when they might stop: The only certainty is: They will stop, so use them responsibly.

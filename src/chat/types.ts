@@ -28,6 +28,7 @@ export interface SendMessageOptions {
   /**
    * Create a new chat to a new contact
    *
+   * @deprecated This option is no longer used. Chats are automatically created when sending messages.
    * @default false
    *
    * @example

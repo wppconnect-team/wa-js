@@ -55,42 +55,79 @@ There are a convection name for some exported modules:
 
 `WPP.conn.logout` - Logout from WhatsApp Web
 
+`WPP.conn.getBuildConstants` - Current whatsapp builds constants
+
+For more up-to-date functions launch locally and run in browser console:
+
+`Object.keys(WPP.conn).sort()`
+
 ### Chat Functions
 `WPP.chat.sendTextMessage` - Send a text message
 
-`WPP.chat.sendImageMessage` - Send an image message
+`WPP.chat.sendFileMessage` - Send a file message (medias in general [video, audio, image, pdf])
 
-`WPP.chat.sendVideoMessage` - Send a video message
-
-`WPP.chat.sendFileMessage` - Send a file message
-
-`WPP.chat.sendAudioMessage` - Send an audio message
-
-`WPP.chat.getChat` - Get chat details
+`WPP.chat.get` - Get chat details
 
 `WPP.chat.deleteMessage` - Delete a message
 
+For more up-to-date functions launch locally and run in browser console:
+
+`Object.keys(WPP.chat).sort()`
+
 ### Contact Functions
-`WPP.contact.getContact` - Get contact details
-
-`WPP.contact.blockContact` - Block a contact
-
-`WPP.contact.unblockContact` - Unblock a contact
+`WPP.contact.get` - Get contact details
 
 `WPP.contact.getAllContacts` - Get all contacts
 
+`WPP.contact.getStatus` - get status (about field in profile)
+
+`WPP.contact.getCommonGroups` - get groups in common with one contact
+
+`WPP.contact.getPnLidEntry` - get PN (Phone Number), Lid and Contact from local cache
+
+For more up-to-date functions launch locally and run in browser console:
+
+`Object.keys(WPP.contact).sort()`
+
+### Blocklist Functions
+
+`WPP.blocklist.blockContact` - Block a contact
+
+`WPP.blocklist.unblockContact` - Unblock a contact
+
+`WPP.blocklist.all` - All blocked contacts
+
+`WPP.blocklist.isBlocked` - Check if contact is blocked
+
+For more up-to-date functions launch locally and run in browser console:
+
+`Object.keys(WPP.blocklist).sort()`
+
 ### Group Functions
-`WPP.group.createGroup` - Create a new group
 
-`WPP.group.addParticipant` - Add a participant to a group
+`WPP.group.create` - Create a new group
 
-`WPP.group.removeParticipant` - Remove a participant from a group.
+`WPP.group.canAdd` - Check if contact can be added to group
 
-`WPP.group.promoteParticipant` - Promote a participant to admin
+`WPP.group.addParticipants` - Add a participants to a group
 
-`WPP.group.demoteParticipant` - Demote a participant from admin.
+`WPP.group.removeParticipants` - Remove a participant from a group.
+
+`WPP.group.canPromote` - Check if contact can be promoted
+
+`WPP.group.promoteParticipants` - Promote a participant to admin
+
+`WPP.group.canDemote` - Check if contact can be demoted
+
+`WPP.group.demoteParticipants` - Demote a participant from admin.
 
 `WPP.group.getGroupInfoFromInviteCode` - Get group information from an invitation link or an invite code.
+
+`WPP.group.getAllGroups` - Get all groups
+
+For more up-to-date functions launch locally and run in browser console:
+
+`Object.keys(WPP.group).sort()`
 
 ### Events
 `WPP.chat.on('chat.new_message')` - Event to dispatch on receive a new message
