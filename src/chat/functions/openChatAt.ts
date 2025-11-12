@@ -34,7 +34,7 @@ import { getMessageById } from '.';
 export async function openChatAt(
   chatId: string | Wid,
   messageId: string,
-  chatEntryPoint: string | undefined
+  chatEntryPoint?: string | undefined
 ): Promise<boolean> {
   const wid = assertWid(chatId);
 
