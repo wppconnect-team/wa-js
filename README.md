@@ -105,16 +105,30 @@ Steps to run locally:
 # install the depencencies
 npm install
 
-# download whatsapp javascript and prettify (optional)
-npm run wa-source
-
 # build javascript files
 npm run build:prd # or build:dev for development
 
 # launch a local browser with automatic injection
+# this will also cache the files inside wa-source directory, for next requests
 npm run launch:local
 
 # or only run in VSCode
+```
+
+Note: to run specific versions run:
+
+```sh
+npm run wa-source:clean
+
+npm run build:prd
+
+WA_VERSION="2.3000.1029560485" npm run launch:local
+```
+
+To debug or inspect `wa-source` folder format the files to be easier to understand
+
+```sh
+npm run wa-source:format
 ```
 
 ## How to use this project
