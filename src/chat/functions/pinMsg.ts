@@ -52,7 +52,7 @@ export async function pinMsg(
     );
   }
 
-  if (pin && (typeof seconds !== 'number' || seconds <= 0)) {
+  if (pin && (!Number.isFinite(seconds) || seconds <= 0)) {
     throw new WPPError(
       'invalid_seconds_parameter',
       `The 'seconds' parameter must be a positive number. Received: ${seconds}`,
