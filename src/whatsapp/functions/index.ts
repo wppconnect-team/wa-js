@@ -82,6 +82,7 @@ export * from './getNextLabelId';
 export * from './getNumChatsPinned';
 export * from './getOrderInfo';
 export * from './getParticipants';
+export * from './getPhoneLangPref';
 export * from './getPhoneNumber';
 export * from './getPrivacyDisallowedListTable';
 export * from './getPushname';
