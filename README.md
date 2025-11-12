@@ -10,7 +10,7 @@
 [![Lint Status](https://img.shields.io/github/actions/workflow/status/wppconnect-team/wa-js/lint.yml??branch=main&label=lint)](https://github.com/wppconnect-team/wa-js/actions/workflows/lint.yml)
 [![release-it](https://img.shields.io/badge/%F0%9F%93%A6%F0%9F%9A%80-release--it-e10079.svg)](https://github.com/release-it/release-it)
 
-> WPPConnect/WA-JS is an open-source project with the aim of exporting functions from WhatsApp Web, which can be used to support the creation of any interaction, such as customer service, media sending, intelligence recognition based on phrases artificial and many other things, use your imagination...
+> WPPConnect/WA-JS is an open-source project with the aim of exporting functions from WhatsApp Web, which can be used to support the creation of any interaction, such as customer service, media sending, intelligence recognition based on phrases and many other things, use your imagination...
 
 ## Our online channels
 
@@ -28,20 +28,20 @@
 
 ## How does it work
 
-This project extract some functions of WhatsApp sources, that uses webpack.
+This project extracts some functions of WhatsApp sources.
 
-After build, this project generate a file `dist/wppconnect-wa.js` to be used for injection in WhatsApp Web. When injected, it will explose a global variable named `WPP`.
+After build, this project generates a file `dist/wppconnect-wa.js` to be used for injection in WhatsApp Web. When injected, it will expose a global variable named `WPP`.
 
 Some parts of `WPP` variable:
 
-- `WPP.webpack` - Scripts to exports WhatsApp functions.
+- `WPP.webpack` - Scripts to export WhatsApp functions.
 - `WPP.whatsapp` - Only exported WhatsApp functions.
 - `WPP.chat` - Chat functions and events.
 - ...
 
 ## Exported WhatsApp modules
 
-There are a convection name for some exported modules:
+There are convention names for some exported modules:
 
 - `...Model` - Class for data structure (`ClassModel`, `MsgModel`)
 - `...Collection` - Class for collection of models (`ChatCollection`, `MsgCollection`)
@@ -79,11 +79,11 @@ For the most up-to-date list of available functions, launch the project locally 
 
 `WPP.contact.getAllContacts` - Get all contacts
 
-`WPP.contact.getStatus` - get status (about field in profile)
+`WPP.contact.getStatus` - Get status (`about` field in profile)
 
-`WPP.contact.getCommonGroups` - get groups in common with one contact
+`WPP.contact.getCommonGroups` - Get groups in common with one contact
 
-`WPP.contact.getPnLidEntry` - get PN (Phone Number), Lid and Contact from local cache
+`WPP.contact.getPnLidEntry` - Get PN (Phone Number), Lid and Contact from local cache
 
 For the most up-to-date list of available functions, launch the project locally and run this in your browser console:
 
@@ -109,7 +109,7 @@ For the most up-to-date list of available functions, launch the project locally 
 
 `WPP.group.canAdd` - Check if contact can be added to group
 
-`WPP.group.addParticipants` - Add a participants to a group
+`WPP.group.addParticipants` - Add participants to a group
 
 `WPP.group.removeParticipants` - Remove a participant from a group.
 
@@ -139,7 +139,7 @@ To see all events, check: [https://wppconnect.io/wa-js/types/ev.EventTypes.html]
 Steps to run locally:
 
 ```bash
-# install the depencencies
+# install the dependencies
 npm install
 
 # build javascript files
@@ -162,7 +162,7 @@ npm run build:prd
 WA_VERSION="2.3000.1029560485" npm run launch:local
 ```
 
-To debug or inspect `wa-source` folder format the files to be easier to understand
+To debug or inspect `wa-source` folder, format the files to be easier to understand
 
 ```sh
 npm run wa-source:format
@@ -170,7 +170,7 @@ npm run wa-source:format
 
 ## How to use this project
 
-Basicaly, you need to inject the `wppconnect-wa.js` file into the browser after WhatsApp page load.
+Basically, you need to inject the `wppconnect-wa.js` file into the browser after WhatsApp page load.
 
 ### TamperMonkey or GreaseMonkey
 
