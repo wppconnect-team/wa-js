@@ -111,11 +111,11 @@ For the most up-to-date list of available functions, launch the project locally 
 
 `WPP.group.addParticipants` - Add participants to a group
 
-`WPP.group.removeParticipants` - Remove a participant from a group.
+`WPP.group.removeParticipants` - Remove participants from a group.
 
 `WPP.group.canPromote` - Check if contact can be promoted
 
-`WPP.group.promoteParticipants` - Promote a participant to admin
+`WPP.group.promoteParticipants` - Promote participants to admin
 
 `WPP.group.canDemote` - Check if contact can be demoted
 
