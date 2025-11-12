@@ -57,7 +57,7 @@ There are a convection name for some exported modules:
 
 `WPP.conn.getBuildConstants` - Current whatsapp builds constants
 
-For more up-to-date functions launch locally and run in browser console:
+For the most up-to-date list of available functions, launch the project locally and run this in your browser console:
 
 `Object.keys(WPP.conn).sort()`
 
@@ -70,7 +70,7 @@ For more up-to-date functions launch locally and run in browser console:
 
 `WPP.chat.deleteMessage` - Delete a message
 
-For more up-to-date functions launch locally and run in browser console:
+For the most up-to-date list of available functions, launch the project locally and run this in your browser console:
 
 `Object.keys(WPP.chat).sort()`
 
@@ -85,7 +85,7 @@ For more up-to-date functions launch locally and run in browser console:
 
 `WPP.contact.getPnLidEntry` - get PN (Phone Number), Lid and Contact from local cache
 
-For more up-to-date functions launch locally and run in browser console:
+For the most up-to-date list of available functions, launch the project locally and run this in your browser console:
 
 `Object.keys(WPP.contact).sort()`
 
@@ -99,7 +99,7 @@ For more up-to-date functions launch locally and run in browser console:
 
 `WPP.blocklist.isBlocked` - Check if contact is blocked
 
-For more up-to-date functions launch locally and run in browser console:
+For the most up-to-date list of available functions, launch the project locally and run this in your browser console:
 
 `Object.keys(WPP.blocklist).sort()`
 
@@ -125,7 +125,7 @@ For more up-to-date functions launch locally and run in browser console:
 
 `WPP.group.getAllGroups` - Get all groups
 
-For more up-to-date functions launch locally and run in browser console:
+For the most up-to-date list of available functions, launch the project locally and run this in your browser console:
 
 `Object.keys(WPP.group).sort()`
 
