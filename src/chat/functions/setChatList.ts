@@ -44,7 +44,7 @@ import {
  * ```
  * @category Chat
  */
-let allowList: string[] = [];
+let allowSet: Set<string> = new Set();
 let filterType: string = 'all';
 
 export enum FilterChatListTypes {
@@ -73,14 +73,17 @@ export async function setChatList(
   } else if (type == FilterChatListTypes.CUSTOM && !ids) {
     throw new WPPError('send_ids', `Please send a valid ids`);
   }
+
+  // normalize ids to array, when string it's a single id
   if (typeof ids == 'string') ids = [ids];
+
   if (type == FilterChatListTypes.CUSTOM && ids) {
-    allowList = ids;
+    allowSet = new Set<string>(ids);
     Cmd.trigger('set_active_filter', 'unread');
     Cmd.trigger('set_active_filter');
     return {
       type: type as any,
-      list: allowList,
+      list: ids,
     };
   } else if (type == FilterChatListTypes.ALL) {
     Cmd.trigger('set_active_filter');
@@ -108,7 +111,8 @@ function applyPatch() {
     const [chat] = args;
 
     if (filterType === FilterChatListTypes.CUSTOM) {
-      if (allowList.includes(chat.id?.toString())) {
+      const chatId = chat.id?.toString();
+      if (chatId && allowSet.has(chatId)) {
         return true;
       }
       return false;
