@@ -26,11 +26,11 @@ import { getMessageById } from './getMessageById';
  *
  * @example
  * ```javascript
- * // Pin a message in chat
+ * // Pin a message in chat with default duration (7 days)
  * WPP.chat.pinMsg('true_[number]@c.us_ABCDEF');
  *
  * // Pin a message in chat for 30 days
- * WPP.chat.pinMsg('true_[number]@c.us_ABCDEF', 2592000);
+ * WPP.chat.pinMsg('true_[number]@c.us_ABCDEF', true, 2592000);
  *
  * // Unpin a message
  * WPP.chat.pinMsg('true_[number]@c.us_ABCDEF', false);
@@ -44,6 +44,22 @@ export async function pinMsg(
   pin = true,
   seconds = 604800 // default 7 days
 ): Promise<{ message: MsgModel; pinned: boolean; result: SendMsgResult }> {
+  if (typeof pin !== 'boolean') {
+    throw new WPPError(
+      'invalid_pin_parameter',
+      `The 'pin' parameter must be a boolean. Received: ${typeof pin}. Use WPP.chat.pinMsg(msgId, true, seconds) to pin with custom duration.`,
+      { msgId, pin, seconds }
+    );
+  }
+
+  if (pin && (!Number.isFinite(seconds) || seconds <= 0)) {
+    throw new WPPError(
+      'invalid_seconds_parameter',
+      `The 'seconds' parameter must be a positive number. Received: ${seconds}`,
+      { msgId, pin, seconds }
+    );
+  }
+
   const msg = await getMessageById(msgId);
   const chat = assertGetChat(msg.id.remote);
   const pinned = PinInChatStore.getByParentMsgKey(msg.id);
@@ -52,13 +68,13 @@ export async function pinMsg(
     throw new WPPError(
       `${pin ? 'pin' : 'unpin'}_error`,
       `The msg ${msgId.toString()} was not pinned. Not can pin in Newsletter`,
-      { msgId, pin: pin }
+      { msgId, pin }
     );
   } else if (chat.isGroup && !chat.groupMetadata?.participants?.iAmMember()) {
     throw new WPPError(
       `${pin ? 'pin' : 'unpin'}_error`,
       `You not a member of group, to pin msg ${msgId.toString()}`,
-      { msgId, pin: pin }
+      { msgId, pin }
     );
   } else if (
     chat.isGroup &&
@@ -68,7 +84,7 @@ export async function pinMsg(
     throw new WPPError(
       `${pin ? 'pin' : 'unpin'}_error`,
       `You not have permission to pin msg ${msgId.toString()}`,
-      { msgId, pin: pin }
+      { msgId, pin }
     );
   } else if (
     msg.isNotification ||
@@ -79,7 +95,7 @@ export async function pinMsg(
     throw new WPPError(
       `${pin ? 'pin' : 'unpin'}_error`,
       `The msg ${msgId.toString()} not can be pinned`,
-      { msgId, pin: pin }
+      { msgId, pin }
     );
   } else if (
     pinned &&
@@ -88,13 +104,13 @@ export async function pinMsg(
     throw new WPPError(
       `${pin ? 'pin' : 'unpin'}_error`,
       `The msg ${msgId.toString()} is already ${pin ? 'pinned' : 'unpinned'}`,
-      { msgId, pin: pin }
+      { msgId, pin }
     );
   }
 
   const result = await sendPinInChatMsg(
     msg,
-    pin == true ? PIN_STATE.PIN : PIN_STATE.UNPIN,
+    pin === true ? PIN_STATE.PIN : PIN_STATE.UNPIN,
     pin ? seconds : undefined
   );
 
