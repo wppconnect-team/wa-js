@@ -119,7 +119,7 @@ For the most up-to-date list of available functions, launch the project locally 
 
 `WPP.group.canDemote` - Check if contact can be demoted
 
-`WPP.group.demoteParticipants` - Demote a participant from admin.
+`WPP.group.demoteParticipants` - Demote participants from admin.
 
 `WPP.group.getGroupInfoFromInviteCode` - Get group information from an invitation link or an invite code.
 
