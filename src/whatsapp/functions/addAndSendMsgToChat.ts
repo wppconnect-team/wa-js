@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { SendMsgResult } from '../enums';
 import { exportModule } from '../exportModule';
 import { ChatModel, ModelPropertiesContructor, MsgModel } from '../models';
+import { SendMsgResultObject } from '../types';
 
 /** @whatsapp 75887
  * @whatsapp 975887 >= 2.2222.8
@@ -25,7 +25,7 @@ import { ChatModel, ModelPropertiesContructor, MsgModel } from '../models';
 export declare function addAndSendMsgToChat(
   chat: ChatModel,
   message: ModelPropertiesContructor<MsgModel>
-): Promise<[Promise<MsgModel>, Promise<SendMsgResult>]>;
+): Promise<[Promise<MsgModel>, Promise<SendMsgResultObject>]>;
 
 exportModule(
   exports,
