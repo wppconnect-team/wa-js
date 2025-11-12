@@ -20,8 +20,9 @@ import {
   ModelPropertiesContructor,
   MsgModel,
 } from '..';
-import { OUTWARD_TYPES, SendMsgResult } from '../enums';
+import { OUTWARD_TYPES } from '../enums';
 import { exportModule } from '../exportModule';
+import { SendMsgResultObject } from '../types';
 import { OpaqueData } from '.';
 
 /** @whatsapp 78986
@@ -59,7 +60,7 @@ export declare namespace MediaPrep {
         ctwaContext?: any;
         isViewOnce?: boolean;
       }
-    ): Promise<SendMsgResult>;
+    ): Promise<SendMsgResultObject>;
     waitForPrep(): Promise<MediaDataModel>;
   }
 }

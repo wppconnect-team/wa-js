@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { SendMsgResult } from '../enums';
 import { PIN_STATE } from '../enums/PIN_STATE';
 import { exportModule } from '../exportModule';
 import { MsgModel } from '../models';
+import { SendMsgResultObject } from '../types';
 
 /** @whatsapp WAWebSendPinMessageAction >= 2.3000.1012170943
  */
@@ -26,11 +26,7 @@ export declare function sendPinInChatMsg(
   type: PIN_STATE,
   time?: number,
   d?: any
-): Promise<{
-  count: number;
-  messageSendResult: SendMsgResult;
-  t: number;
-}>;
+): Promise<SendMsgResultObject>;
 
 exportModule(
   exports,

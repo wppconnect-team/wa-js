@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
-import { ModelPropertiesContructor, MsgKey, MsgModel, Wid } from '../whatsapp';
-import { SendMsgResult } from '../whatsapp/enums';
+import {
+  ModelPropertiesContructor,
+  MsgKey,
+  MsgModel,
+  SendMsgResultObject,
+  Wid,
+} from '../whatsapp';
+
+export type { SendMsgResultObject };
 
 export interface SendMessageOptions {
   /**
@@ -131,7 +138,7 @@ export interface SendMessageReturn {
   to?: string;
   latestEditMsgKey?: MsgKey;
   ack: number;
-  sendMsgResult: Promise<SendMsgResult>;
+  sendMsgResult: Promise<SendMsgResultObject>;
 }
 
 export type RawMessage = ModelPropertiesContructor<MsgModel>;
