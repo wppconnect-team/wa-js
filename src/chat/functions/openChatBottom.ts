@@ -31,7 +31,7 @@ import { Cmd, Wid } from '../../whatsapp';
  */
 export async function openChatBottom(
   chatId: string | Wid,
-  chatEntryPoint: string | undefined
+  chatEntryPoint?: string | undefined
 ): Promise<boolean> {
   const wid = assertWid(chatId);
 
