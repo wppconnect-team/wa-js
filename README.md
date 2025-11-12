@@ -55,7 +55,7 @@ There are convention names for some exported modules:
 
 `WPP.conn.logout` - Logout from WhatsApp Web
 
-`WPP.conn.getBuildConstants` - Current whatsapp builds constants
+`WPP.conn.getBuildConstants` - Current WhatsApp build constants
 
 For the most up-to-date list of available functions, launch the project locally and run this in your browser console:
 
