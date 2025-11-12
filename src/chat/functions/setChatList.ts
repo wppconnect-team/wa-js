@@ -111,7 +111,8 @@ function applyPatch() {
     const [chat] = args;
 
     if (filterType === FilterChatListTypes.CUSTOM) {
-      if (allowSet.has(chat.id?.toString())) {
+      const chatId = chat.id?.toString();
+      if (chatId && allowSet.has(chatId)) {
         return true;
       }
       return false;
