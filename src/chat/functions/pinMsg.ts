@@ -18,7 +18,7 @@ import { assertGetChat } from '../../assert';
 import { WPPError } from '../../util';
 import { MsgKey, MsgModel, PinInChatStore } from '../../whatsapp';
 import { ACK, MSG_TYPE, PIN_STATE, SendMsgResult } from '../../whatsapp/enums';
-import { sendPinInChatMsg } from '../../whatsapp/functions';
+import { getPinExpiryOption, sendPinInChatMsg } from '../../whatsapp/functions';
 import { getMessageById } from './getMessageById';
 
 /**
@@ -108,10 +108,13 @@ export async function pinMsg(
     );
   }
 
+  const pinExpiryOption =
+    pin && seconds ? getPinExpiryOption(seconds) : undefined;
+
   const result = await sendPinInChatMsg(
     msg,
     pin === true ? PIN_STATE.PIN : PIN_STATE.UNPIN,
-    pin ? seconds : undefined
+    pinExpiryOption
   );
 
   return {
