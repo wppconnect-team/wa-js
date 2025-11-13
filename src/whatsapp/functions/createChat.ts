@@ -18,6 +18,8 @@ import { exportModule } from '../exportModule';
 
 /**
  * @whatsapp WAWebCreateChat >= 2.3000.0
+ * findChat internally uses this function to create a new chat
+ * to create a chat use Chat.findChat(wid) instead
  */
 export declare function createChat(
   chatParams: any,

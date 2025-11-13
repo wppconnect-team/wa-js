@@ -62,7 +62,11 @@ export async function preparePage(page: playwright.Page) {
         fileName
       );
 
-      if (request.url().includes('dist') && fs.existsSync(filePathDist)) {
+      if (
+        request.url().includes('dist') &&
+        fs.existsSync(filePathDist) &&
+        fs.statSync(filePathDist).isFile()
+      ) {
         console.log('📦 Serving from dist/:', fileName);
         return route.fulfill({
           status: 200,
@@ -73,7 +77,10 @@ export async function preparePage(page: playwright.Page) {
 
       const filePathSource = path.join(WA_DIR, fileName);
 
-      if (fs.existsSync(filePathSource)) {
+      if (
+        fs.existsSync(filePathSource) &&
+        fs.statSync(filePathSource).isFile()
+      ) {
         console.log('💾 Serving from wa-source/:', fileName);
         return route.fulfill({
           status: 200,
@@ -90,7 +97,10 @@ export async function preparePage(page: playwright.Page) {
 
       const filePathSourceHash = path.join(WA_DIR, `${hash}-${fileName}`);
 
-      if (fs.existsSync(filePathSourceHash)) {
+      if (
+        fs.existsSync(filePathSourceHash) &&
+        fs.statSync(filePathSourceHash).isFile()
+      ) {
         console.log(
           '💾 Serving from wa-source/ (hashed):',
           `${hash}-${fileName}`

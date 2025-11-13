@@ -53,7 +53,6 @@ export async function sendImageStatus(
 
   const result = await sendFileMessage('status@broadcast', content, {
     ...options,
-    createChat: true,
     type: 'image',
   });
 
