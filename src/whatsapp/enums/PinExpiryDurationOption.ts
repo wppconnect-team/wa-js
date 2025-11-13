@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2025 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,23 @@
  * limitations under the License.
  */
 
-export * from './ACK';
-export * from './CALL_STATES';
-export * from './GROUP_SETTING_TYPE';
-export * from './KIC_ENTRY_POINT_TYP';
-export * from './LogoutReason';
-export * from './MSG_TYPE';
-export * from './OUTWARD_TYPES';
-export * from './PIN_STATE';
-export * from './PinExpiryDurationOption';
-export * from './SendMsgResult';
+import { exportModule } from '../exportModule';
+
+/** @whatsapp WAWebPinMsgConstants >= 2.3000.1029839609
+ */
+export declare enum PinExpiryDurationOption {
+  FiveSeconds = 'FiveSeconds',
+  FifteenSeconds = 'FifteenSeconds',
+  OneMinute = 'OneMinute',
+  OneDay = 'OneDay',
+  SevenDays = 'SevenDays',
+  ThirtyDays = 'ThirtyDays',
+}
+
+exportModule(
+  exports,
+  {
+    PinExpiryDurationOption: 'PinExpiryDurationOption',
+  },
+  (m) => m.PinExpiryDurationOption
+);
