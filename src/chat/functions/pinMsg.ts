@@ -117,6 +117,14 @@ export async function pinMsg(
     pinExpiryOption
   );
 
+  if (!result) {
+    throw new WPPError(
+      'pin_send_error',
+      `Failed to ${pin ? 'pin' : 'unpin'} message ${msgId.toString()}`,
+      { msgId, pin }
+    );
+  }
+
   return {
     message: msg,
     pinned: result.messageSendResult === SendMsgResult.OK ? pin : !pin,
