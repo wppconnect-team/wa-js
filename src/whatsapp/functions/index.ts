@@ -77,7 +77,6 @@ export * from './getGroupSenderKeyList';
 export * from './getGroupSizeLimit';
 export * from './getHistorySyncProgress';
 export * from './getMembershipApprovalRequests';
-export * from './getMigrationState';
 export * from './getNewsletterSubscribers';
 export * from './getNextLabelId';
 export * from './getNumChatsPinned';

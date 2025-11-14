@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import { Lid1X1MigrationUtils, UserPrefs, Wid } from '../misc';
-import { isLidMigrated } from './isLidMigrated';
-import { shouldHaveAccountLid } from './shouldHaveAccountLid';
+import { isLidMigrated, shouldHaveAccountLid } from '../../whatsapp/functions';
+import { Lid1X1MigrationUtils, UserPrefs, Wid } from '../../whatsapp/misc';
 
 /**
  * Migration state information for the current WhatsApp account
@@ -47,11 +46,12 @@ export interface MigrationState {
  *
  * @example
  * ```typescript
- * const state = WPP.whatsapp.functions.getMigrationState();
+ * const state = WPP.conn.getMigrationState();
  * console.log('Account migrated:', state.isLidMigrated);
  * console.log('Current LID:', state.currentLid);
  * console.log('Should have LID:', state.shouldHaveAccountLid);
  * ```
+ * @category Connection
  */
 export function getMigrationState(): MigrationState {
   const state: MigrationState = {
