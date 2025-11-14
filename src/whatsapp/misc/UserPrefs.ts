@@ -51,11 +51,23 @@ export declare namespace UserPrefs {
   /**
    * @deprecated
    */
+  function assertGetMe(): Wid;
+  /**
+   * @deprecated
+   */
+  function assertGetMeUser(): Wid;
+  /**
+   * @deprecated
+   */
   function clearGetMaybeMeUserCache(...args: any[]): any;
   /**
    * @deprecated
    */
   function getMeDevicePn(...args: any[]): any;
+  /**
+   * @deprecated
+   */
+  function getMeUser(): Wid;
   /**
    * @deprecated
    */
