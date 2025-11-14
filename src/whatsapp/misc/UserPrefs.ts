@@ -33,7 +33,7 @@ export declare namespace UserPrefs {
   function getMeDevicePnOrThrow(...args: any[]): any;
   function getMeDisplayNameOrThrow(...args: any[]): any;
   function getMeLidUserOrThrow(...args: any[]): any;
-  function getMePNandLIDWids(...args: any[]): any[];
+  function getMePNandLIDWids(...args: any[]): (Wid & { device: number })[];
   function getMePnUserOrThrow(...args: any[]): any;
   function getUnknownId(...args: any[]): any;
   function isMeAccount(...args: any[]): any;
