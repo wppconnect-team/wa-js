@@ -34,8 +34,7 @@ import { getMessageById } from './getMessageById';
  * @param pin - True to pin, false to unpin
  * @param duration - Pin duration option. Use PinExpiryDurationOption enum for precise control.
  *
- * @remarks
- * **DEPRECATION NOTICE**: The previous `seconds` parameter (number) is deprecated.
+ * @since 3.18.9 - BREAKING CHANGE: The `seconds` parameter (number) has been replaced with `PinExpiryDurationOption` enum.
  * For backward compatibility, numbers are still accepted but will ALWAYS default to 7 days,
  * regardless of the value passed. Use `PinExpiryDurationOption` enum for precise duration control.
  *
@@ -51,7 +50,7 @@ import { getMessageById } from './getMessageById';
  * WPP.chat.pinMsg('true_[number]@c.us_ABCDEF', true, WPP.whatsapp.PinExpiryDurationOption.OneDay);
  *
  * // DEPRECATED: Passing numbers (always results in 7 days)
- * WPP.chat.pinMsg('true_[number]@c.us_ABCDEF', true, 2592000); // ⚠️ Ignored, defaults to 7 days
+ * WPP.chat.pinMsg('true_[number]@c.us_ABCDEF', true, 2592000); // Ignored, defaults to 7 days
  *
  * // Unpin a message
  * WPP.chat.pinMsg('true_[number]@c.us_ABCDEF', false);
