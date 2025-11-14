@@ -19,7 +19,7 @@ import { exportModule } from '../exportModule';
 /**
  * @whatsapp WAWebLidMigrationUtils >= 2.3000.x
  */
-export declare function isLidMigrated(): boolean | (() => any);
+export declare function isLidMigrated(): boolean;
 
 exportModule(
   exports,
