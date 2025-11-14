@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-import { PIN_STATE } from '../enums/PIN_STATE';
+import { ACK, PIN_STATE, PinExpiryDurationOption } from '../enums';
 import { exportModule } from '../exportModule';
 import { MsgModel } from '../models';
 import { SendMsgResultObject } from '../types';
 
-/** @whatsapp WAWebSendPinMessageAction >= 2.3000.1012170943
+/** @whatsapp WAWebSendPinMessageAction >= 2.3000.1029839609
  */
 export declare function sendPinInChatMsg(
   msg: MsgModel,
   type: PIN_STATE,
-  time?: number,
-  d?: any
-): Promise<SendMsgResultObject>;
+  pinExpiryOption?: PinExpiryDurationOption,
+  ack?: ACK
+): Promise<SendMsgResultObject | null>;
 
 exportModule(
   exports,
