@@ -22,6 +22,7 @@ export {
   getHistorySyncProgress,
   HistorySyncProgress,
 } from './getHistorySyncProgress';
+export { getMigrationState, MigrationState } from './getMigrationState';
 export { getMyDeviceId } from './getMyDeviceId';
 export { getMyUserId } from './getMyUserId';
 export { getPlatform } from './getPlatform';

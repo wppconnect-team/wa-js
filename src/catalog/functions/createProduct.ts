@@ -70,7 +70,11 @@ export async function createProduct(
 
   const Product = new ProductModel();
   Product.name = params.name.toString();
-  Product.catalogWid = UserPrefs.getMeUser();
+
+  const mePNWid = UserPrefs.getMaybeMePnUser();
+  const meLIDWid = UserPrefs.getMaybeMeLidUser();
+
+  Product.catalogWid = mePNWid || meLIDWid;
   Product.imageCdnUrl = url;
   Product.productImageCollection = new ProductImageModel({
     mediaUrl: url,
@@ -85,6 +89,4 @@ export async function createProduct(
   if (params.retailerId) Product.retailerId = params.retailerId;
 
   return await addProduct(Product, 100, 100);
-  /*const catalog = CatalogStore.get(UserPrefs.getMeUser());
-  return catalog?.addProduct(Product)*/
 }
