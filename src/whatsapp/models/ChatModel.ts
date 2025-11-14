@@ -26,7 +26,7 @@ interface Props extends PropsChatBase {
   lastReceivedKey?: MsgKey;
   t?: number;
   unreadCount: number;
-  archive?: any;
+  archive?: boolean;
   isReadOnly: boolean;
   isAnnounceGrpRestrict: boolean;
   modifyTag?: any;
