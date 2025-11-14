@@ -56,14 +56,6 @@ function registerAckMessageEvent() {
       mePNWid?.equals(ackData.recipient) ||
       meLIDWid?.equals(ackData.recipient);
 
-    console.log({
-      ackData,
-      mePNWid,
-      meLIDWid,
-      remote,
-      fromMe,
-    });
-
     // Ignore non my messages ACK events
     if (!fromMe) {
       return;

@@ -16,9 +16,11 @@
 
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 35470
- * @whatsapp 69618 >= 2.2204.13
- * @whatsapp 535470 >= 2.2222.8
+/**
+ * Versions when this enum was added/modified/revalidated:
+ * @whatsapp >= 2.2204.13
+ * @whatsapp >= 2.2222.8
+ * @whatsapp >= 2.3000.1029594945
  */
 export declare enum ACK {
   MD_DOWNGRADE = -7,
