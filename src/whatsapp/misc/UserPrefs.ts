@@ -18,28 +18,35 @@ import { exportModule } from '../exportModule';
 import { Wid } from './Wid';
 
 /**
- * @whatsapp 459857 >= 2.2310.5
+ * @whatsapp >= 2.3000
  */
 export declare namespace UserPrefs {
-  function getMaybeMeDevicePn(...args: any[]): any;
-  function assertGetMe(): Wid;
-  function assertGetMeUser(): Wid;
+  function clearGetMaybeLidUserCache(...args: any[]): any;
   function clearGetMaybeMePnUserCache(...args: any[]): any;
-  function getMaybeMeDisplayName(...args: any[]): any;
   function getMaybeMeDeviceLid(...args: any[]): any;
+  function getMaybeMeDevicePn(...args: any[]): any;
+  function getMaybeMeDisplayName(...args: any[]): any;
   function getMaybeMeLidUser(...args: any[]): any;
   function getMaybeMePnUser(): Wid;
   function getMaybeMeUser(): Wid;
-  function getMePNandLIDWids(...args: any[]): any;
-  function getMeUser(): Wid;
+  function getMeDeviceLidOrThrow(...args: any[]): any;
+  function getMeDevicePnOrThrow(...args: any[]): any;
+  function getMeDisplayNameOrThrow(...args: any[]): any;
+  function getMeLidUserOrThrow(...args: any[]): any;
+  function getMePNandLIDWids(...args: any[]): any[];
+  function getMePnUserOrThrow(...args: any[]): any;
+  function getUnknownId(...args: any[]): any;
   function isMeAccount(...args: any[]): any;
+  function isMeAccountNonLid(...args: any[]): any;
   function isMeDevice(...args: any[]): any;
   function isMePrimary(...args: any[]): any;
   function isMePrimaryNonLid(...args: any[]): any;
+  function isMeUser(...args: any[]): any;
   function isSerializedWidMe(...args: any[]): any;
   function setMe(...args: any[]): any;
   function setMeDisplayName(...args: any[]): any;
   function setMeLid(...args: any[]): any;
+  function setUnknownId(...args: any[]): any;
 
   /**
    * @deprecated
