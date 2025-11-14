@@ -33,6 +33,8 @@ export declare namespace UserPrefs {
   function getMeDevicePnOrThrow(...args: any[]): any;
   function getMeDisplayNameOrThrow(...args: any[]): any;
   function getMeLidUserOrThrow(...args: any[]): any;
+  // getMePNandLIDWids function returns _serialized with device ID,
+  // to don't need to normalize use getMaybeMeLidUser and getMaybeMePnUser
   function getMePNandLIDWids(
     ...args: any[]
   ): [Wid | undefined, Wid | undefined];

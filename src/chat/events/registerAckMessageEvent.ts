@@ -47,13 +47,22 @@ function registerAckMessageEvent() {
     const chatId: Wid = ackData.from;
     const sender: Wid | undefined = ackData.participant || undefined;
 
-    const [mePNWid, meLIDWid] = UserPrefs.getMePNandLIDWids();
+    const mePNWid = UserPrefs.getMaybeMePnUser();
+    const meLIDWid = UserPrefs.getMaybeMeLidUser();
 
     const remote = ackData.from;
     const fromMe =
       !ackData.recipient ||
       mePNWid?.equals(ackData.recipient) ||
       meLIDWid?.equals(ackData.recipient);
+
+    console.log({
+      ackData,
+      mePNWid,
+      meLIDWid,
+      remote,
+      fromMe,
+    });
 
     // Ignore non my messages ACK events
     if (!fromMe) {

@@ -90,10 +90,9 @@ export function getMigrationState(): MigrationState {
 
   // Try to get current LID and PN
   try {
-    // Get me user's WID
-    const [pnWid, lidWid] = UserPrefs.getMePNandLIDWids();
-    state.currentLid = lidWid;
-    state.currentPn = pnWid;
+    // Get me user's WID (without device ID)
+    state.currentPn = UserPrefs.getMaybeMePnUser();
+    state.currentLid = UserPrefs.getMaybeMeLidUser();
   } catch (_) {
     // Functions might not be available or migration not complete
   }

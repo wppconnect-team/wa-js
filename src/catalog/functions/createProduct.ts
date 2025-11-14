@@ -71,7 +71,8 @@ export async function createProduct(
   const Product = new ProductModel();
   Product.name = params.name.toString();
 
-  const [mePNWid, meLIDWid] = UserPrefs.getMePNandLIDWids();
+  const mePNWid = UserPrefs.getMaybeMePnUser();
+  const meLIDWid = UserPrefs.getMaybeMeLidUser();
 
   Product.catalogWid = mePNWid || meLIDWid;
   Product.imageCdnUrl = url;
