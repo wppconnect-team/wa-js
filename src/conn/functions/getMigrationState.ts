@@ -65,36 +65,45 @@ export function getMigrationState(): MigrationState {
     // Get basic migration flags
     state.isLidMigrated = isLidMigrated();
   } catch (_) {
-    // Function might not be available
+    console.warn('isLidMigrated function is not available');
   }
 
   try {
     state.isSyncdSessionMigrated =
       Lid1X1MigrationUtils.isSyncdSessionMigrated();
   } catch (_) {
-    // Function might not be available
+    console.warn('isSyncdSessionMigrated function is not available');
   }
 
   try {
     state.shouldApplyNonMigratedMessagingRules =
       Lid1X1MigrationUtils.shouldApplyNonMigratedMessagingRules();
   } catch (_) {
-    // Function might not be available
+    console.warn(
+      'shouldApplyNonMigratedMessagingRules function is not available'
+    );
   }
 
   try {
     state.shouldHaveAccountLid = shouldHaveAccountLid();
   } catch (_) {
-    // Function might not be available
+    console.warn('shouldHaveAccountLid function is not available');
   }
 
-  // Try to get current LID and PN
+  // Try to get current LID
+  try {
+    // Get me user's WID (without device ID)
+    state.currentLid = UserPrefs.getMaybeMeLidUser();
+  } catch (_) {
+    console.warn('getMaybeMeLidUser function is not available');
+  }
+
+  // Try to get current PN
   try {
     // Get me user's WID (without device ID)
     state.currentPn = UserPrefs.getMaybeMePnUser();
-    state.currentLid = UserPrefs.getMaybeMeLidUser();
   } catch (_) {
-    // Functions might not be available or migration not complete
+    console.warn('getMaybeMePnUser function is not available');
   }
 
   return state;
