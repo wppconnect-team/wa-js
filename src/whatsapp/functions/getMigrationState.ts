@@ -32,6 +32,7 @@ export interface MigrationState {
   shouldHaveAccountLid: boolean;
   /** The current user's LID, if available */
   currentLid?: Wid;
+  /** The current user's PN, if available */
   currentPn?: Wid;
 }
 
