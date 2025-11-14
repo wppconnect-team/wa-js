@@ -33,6 +33,7 @@ export interface ChatListOptions {
   onlyNewsletter?: boolean;
   onlyUsers?: boolean;
   onlyWithUnreadMessage?: boolean;
+  onlyArchived?: boolean;
   withLabels?: string[];
 }
 
@@ -70,6 +71,9 @@ export interface ChatListOptions {
  *
  * // Only with label with one of text or id
  * const chats = await WPP.chat.list({withLabels: ['Alfa','5']});
+ *
+ * // Only archived chats
+ * const chats = await WPP.chat.list({onlyArchived: true});
  * ```
  *
  * @category Chat
@@ -104,6 +108,10 @@ export async function list(
 
   if (options.onlyWithUnreadMessage) {
     models = models.filter((c) => c.hasUnread);
+  }
+
+  if (options.onlyArchived) {
+    models = models.filter((c) => c.archive);
   }
 
   if (options.withLabels) {
