@@ -84,7 +84,6 @@ export * from './getOrderInfo';
 export * from './getParticipants';
 export * from './getPhoneLangPref';
 export * from './getPhoneNumber';
-export * from './getPinExpiryOption';
 export * from './getPrivacyDisallowedListTable';
 export * from './getPushname';
 export * from './getQuotedMsgObj';
