@@ -170,7 +170,7 @@ export async function prepareRawMessage<T extends RawMessage>(
           continue;
         }
 
-        // AFAIK, groups are only LID doesn't matter if account is migrated or not
+        // AFAIK, groups are only LID. Doesn't matter if account is migrated or not
         // But will keep support for pnWid just in case
         if (participants.includes(lidWid)) {
           options.mentionedList.push(lidWid);
