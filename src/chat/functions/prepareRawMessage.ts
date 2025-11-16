@@ -163,11 +163,16 @@ export async function prepareRawMessage<T extends RawMessage>(
       );
 
       for (const id of ids) {
-        const wid = `${id}@c.us`;
-        if (!participants.includes(wid)) {
-          continue;
+        const lidWid = `${id}@lid`;
+        const pnWid = `${id}@c.us`;
+
+        // AFAIK, groups are only LID. Doesn't matter if account is migrated or not
+        // But will keep support for pnWid just in case
+        if (participants.includes(lidWid)) {
+          options.mentionedList.push(lidWid);
+        } else if (participants.includes(pnWid)) {
+          options.mentionedList.push(pnWid);
         }
-        options.mentionedList.push(wid);
       }
     }
   }

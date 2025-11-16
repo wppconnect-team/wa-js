@@ -65,6 +65,14 @@ export declare class Wid {
 
   isStatus(): boolean;
 
+  /**
+   * @whatsapp >= 2.3000.1029594945
+   * this.server==="c.us" ||
+   * this.server==="lid" ||
+   * this.server==="bot" ||
+   * this.server==="hosted" || (probably used for cloud api)
+   * this.server==="hosted.lid" (probably used for cloud api)
+   */
   isUser(): boolean;
 
   isLid(): boolean;
