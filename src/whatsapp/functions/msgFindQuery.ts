@@ -28,9 +28,11 @@ export interface MsgFindQueryParams {
   media?: 'url' | 'document';
 }
 
-/** @whatsapp 76581 */
+/**
+ * @whatsapp WAWebDBMessageFindLocal >= 2.3000.1029x
+ */
 export declare function msgFindQuery(
-  direction: 'after' | 'before' | 'media',
+  type: 'after' | 'before' | 'call_log' | 'event' | 'media' | 'search' | 'star',
   params: MsgFindQueryParams
 ): Promise<ModelPropertiesContructor<MsgModel>[] | any>;
 
