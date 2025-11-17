@@ -14,6 +14,7 @@
 
 ## Our online channels
 
+[![Discussions](https://img.shields.io/github/discussions/wppconnect-team/wa-js?label=Discussions&logo=github)](https://github.com/wppconnect-team/wa-js/discussions)
 [![Discord](https://img.shields.io/discord/844351092758413353?color=blueviolet&label=Discord&logo=discord&style=flat)](https://discord.gg/JU5JGGKGNG)
 [![YouTube](https://img.shields.io/youtube/channel/subscribers/UCD7J9LG08PmGQrF5IS7Yv9A?label=YouTube)](https://www.youtube.com/c/wppconnect)
 [![WhatsApp Group](https://img.shields.io/badge/WhatsApp-Group-25D366?logo=whatsapp)](https://chat.whatsapp.com/LJaQu6ZyNvnBPNAVRbX00K)
