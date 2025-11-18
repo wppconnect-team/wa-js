@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/wppconnect-team/wa-js/discussions
+    about: Ask questions and discuss with the community
+  - name: 📚 Documentation
+    url: https://wppconnect-team.github.io/wa-js/
+    about: Browse the official documentation
+  - name: 💭 Discord Community
+    url: https://discord.gg/JU5JGGKGNG
+    about: Join our Discord server for real-time chat
