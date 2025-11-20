@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2025 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,19 @@
  * limitations under the License.
  */
 
-export * from './events';
-export * from './functions';
-export * from './types';
+import { exportModule } from '../exportModule';
+import { MsgKey } from '../misc';
+
+/** @whatsapp WAWebDBUpdateMessageTable */
+export declare function updateMessageTable(
+  msgKey: MsgKey,
+  updateFields: Record<string, any>
+): Promise<void>;
+
+exportModule(
+  exports,
+  {
+    updateMessageTable: 'updateMessageTable',
+  },
+  (m) => m.updateMessageTable
+);

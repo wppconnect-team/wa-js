@@ -14,4 +14,7 @@
  * limitations under the License.
  */
 
+export { accept } from './accept';
+export { decline } from './decline';
 export { get } from './get';
+export { update } from './update';
