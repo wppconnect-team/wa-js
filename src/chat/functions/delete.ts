@@ -15,8 +15,9 @@
  */
 
 import { assertGetChat, assertWid } from '../../assert';
+import { getPnLidEntry } from '../../contact';
 import { Wid } from '../../whatsapp';
-import { sendDelete } from '../../whatsapp/functions';
+import { isLidMigrated, sendDelete } from '../../whatsapp/functions';
 
 /**
  * Delete a chat
@@ -24,7 +25,13 @@ import { sendDelete } from '../../whatsapp/functions';
  * @category Chat
  */
 async function _delete(chatId: string | Wid) {
-  const wid = assertWid(chatId);
+  let wid = assertWid(chatId);
+
+  if (!isLidMigrated() && wid.server === 'lid') {
+    const pnWid = await getPnLidEntry(wid);
+
+    if (pnWid?.phoneNumber) wid = assertWid(pnWid.phoneNumber?._serialized);
+  }
 
   const chat = assertGetChat(wid);
 
