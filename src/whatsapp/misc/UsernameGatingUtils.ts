@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2025 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,20 @@
 
 import { exportModule } from '../exportModule';
 
-export declare function isFilterExcludedFromSearchTreatmentInInboxFlow(
-  type?: string
-): boolean;
+/**
+ * @whatsapp WAWebUsernameGatingUtils
+ */
+export declare namespace UsernameGatingUtils {
+  /**
+   * Check if username feature is supported
+   * @whatsapp >= 2.3000.1030318976
+   * @returns true if username feature is supported
+   */
+  function usernameSupported(): boolean;
+}
 
 exportModule(
   exports,
-  {
-    isFilterExcludedFromSearchTreatmentInInboxFlow:
-      'isFilterExcludedFromSearchTreatmentInInboxFlow',
-  },
-  (m) => m.isFilterExcludedFromSearchTreatmentInInboxFlow
+  'UsernameGatingUtils',
+  (m) => m.usernameSupported && typeof m.usernameSupported === 'function'
 );

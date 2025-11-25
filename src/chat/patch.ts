@@ -175,10 +175,10 @@ function applyPatchModel() {
     [key: string]: (...args: any[]) => any;
   } = {
     shouldAppearInList: functions.getShouldAppearInList,
-    isUser: functions.getIsUser,
-    isPSA: functions.getIsPSA,
-    isGroup: functions.getIsGroup,
-    isNewsletter: functions.getIsNewsletter,
+    isUser: (chat: ChatModel) => chat.id.isUser(),
+    isPSA: (chat: ChatModel) => chat.id.isPSA(),
+    isGroup: (chat: ChatModel) => chat.id.isGroup(),
+    isNewsletter: (chat: ChatModel) => chat.id.isNewsletter(),
     previewMessage: functions.getPreviewMessage,
     showChangeNumberNotification: functions.getShowChangeNumberNotification,
     hasUnread: functions.getHasUnread,

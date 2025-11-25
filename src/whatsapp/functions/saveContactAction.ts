@@ -17,9 +17,10 @@
 import { exportModule } from '../exportModule';
 
 /**
+ * Save contact action (legacy positional parameters API)
  * @whatsapp WAWebSaveContactAction >= 2.3000.0
- */
-/**
+ * @deprecated Use saveContactActionV2 instead for versions >= 2.3000.1030209354
+ * @whatsapp WAWebSaveContactAction >= 2.3000.0, < 2.3000.1030209354
  * @param user 5521980809090
  * @param userToDelete 5521980809090
  * @param e_fullName Contact Full Name
@@ -38,10 +39,33 @@ export declare function saveContactAction(
   syncToAddressbook?: boolean
 ): Promise<undefined>;
 
+/**
+ * Object parameter interface for saveContactActionV2 (>= 2.3000.1030209354)
+ */
+export interface SaveContactActionParamsV2 {
+  phoneNumber?: string | null;
+  prevPhoneNumber?: string | null;
+  lid?: string | null;
+  username?: string | null;
+  firstName: string;
+  lastName: string;
+  syncToAddressbook?: boolean;
+}
+
+/**
+ * Save contact action (new object parameter API)
+ * @whatsapp WAWebSaveContactAction >= 2.3000.1030209354
+ * @param params Contact parameters object
+ */
+export declare function saveContactActionV2(
+  params: SaveContactActionParamsV2
+): Promise<undefined>;
+
 exportModule(
   exports,
   {
     saveContactAction: 'saveContactAction',
+    saveContactActionV2: 'saveContactAction',
   },
   (m) => m.saveContactAction
 );

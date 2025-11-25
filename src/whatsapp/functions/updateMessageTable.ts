@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2025 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,18 @@
  */
 
 import { exportModule } from '../exportModule';
+import { MsgKey } from '../misc';
 
-export declare function isFilterExcludedFromSearchTreatmentInInboxFlow(
-  type?: string
-): boolean;
+/** @whatsapp WAWebDBUpdateMessageTable */
+export declare function updateMessageTable(
+  msgKey: MsgKey,
+  updateFields: Record<string, any>
+): Promise<void>;
 
 exportModule(
   exports,
   {
-    isFilterExcludedFromSearchTreatmentInInboxFlow:
-      'isFilterExcludedFromSearchTreatmentInInboxFlow',
+    updateMessageTable: 'updateMessageTable',
   },
-  (m) => m.isFilterExcludedFromSearchTreatmentInInboxFlow
+  (m) => m.updateMessageTable
 );

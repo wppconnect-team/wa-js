@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-import { injectFallbackModule } from '../../webpack';
 import { exportModule } from '../exportModule';
 import { ContactModel } from '../models';
-
-/**
- * @whatsapp 660666 >= 2.2327.4
- */
-export declare function getMentionName(contact: ContactModel): string;
 
 /**
  * @whatsapp 660666 >= 2.2327.4
@@ -101,11 +95,6 @@ export declare function getIsWAContact(contact: ContactModel): any;
 /**
  * @whatsapp 660666 >= 2.2327.4
  */
-export declare function getIsMyContact(contact: ContactModel): boolean;
-
-/**
- * @whatsapp 660666 >= 2.2327.4
- */
 export declare function getCanRequestPhoneNumber(
   contact: ContactModel
 ): boolean;
@@ -143,11 +132,11 @@ export declare function getShouldForceBusinessUpdate(
   contact: ContactModel
 ): any;
 
+// WAWebContactGetters functions
 exportModule(
   exports,
   {
     getNotifyName: 'getNotifyName',
-    getMentionName: 'getMentionName',
     getPremiumMessageName: 'getPremiumMessageName',
     getUserid: 'getUserid',
     getUserhash: 'getUserhash',
@@ -162,7 +151,6 @@ exportModule(
     getIsIAS: 'getIsIAS',
     getIsSupportAccount: 'getIsSupportAccount',
     getIsWAContact: 'getIsWAContact',
-    getIsMyContact: 'getIsMyContact',
     getCanRequestPhoneNumber: 'getCanRequestPhoneNumber',
     getShowBusinessCheckmarkAsPrimary: 'getShowBusinessCheckmarkAsPrimary',
     getShowBusinessCheckmarkAsSecondary: 'getShowBusinessCheckmarkAsSecondary',
@@ -170,40 +158,8 @@ exportModule(
     getIsDisplayNameApproved: 'getIsDisplayNameApproved',
     getShouldForceBusinessUpdate: 'getShouldForceBusinessUpdate',
   },
-  (m) => m.getIsMyContact && m.getIsGroup
+  (m) => m.getNotifyName && m.getIsMe && m.getUserid
 );
-
-injectFallbackModule('getIsMyContact', {
-  getNotifyName: (contact: ContactModel) => contact.notifyName,
-  getMentionName: (contact: ContactModel) => contact.mentionName,
-  getPremiumMessageName: (contact: ContactModel) => contact.premiumMessageName,
-  getUserid: (contact: ContactModel) => contact.userid,
-  getUserhash: (contact: ContactModel) => contact.userhash,
-  getSearchVerifiedName: (contact: ContactModel) => contact.searchVerifiedName,
-  getHeader: (contact: ContactModel) => contact.header,
-  getIsMe: (contact: ContactModel) => contact.isMe,
-  getIsUser: (contact: ContactModel) => contact.isUser,
-  getIsGroup: (contact: ContactModel) => contact.isGroup,
-  getIsNewsletter: (contact: ContactModel) => contact.isNewsletter,
-  getIsBroadcast: (contact: ContactModel) => contact.isBroadcast,
-  getIsPSA: (contact: ContactModel) => contact.isPSA,
-  getIsIAS: (contact: ContactModel) => contact.isIAS,
-  getIsSupportAccount: (contact: ContactModel) => contact.isSupportAccount,
-  getIsWAContact: (contact: ContactModel) => contact.isWAContact,
-  getIsMyContact: (contact: ContactModel) => contact.isMyContact,
-  getCanRequestPhoneNumber: (contact: ContactModel) =>
-    contact.canRequestPhoneNumber,
-  getShowBusinessCheckmarkAsPrimary: (contact: ContactModel) =>
-    contact.showBusinessCheckmarkAsPrimary,
-  getShowBusinessCheckmarkAsSecondary: (contact: ContactModel) =>
-    contact.showBusinessCheckmarkAsSecondary,
-  getShowBusinessCheckmarkInChatlist: (contact: ContactModel) =>
-    contact.showBusinessCheckmarkInChatlist,
-  getIsDisplayNameApproved: (contact: ContactModel) =>
-    contact.isDisplayNameApproved,
-  getShouldForceBusinessUpdate: (contact: ContactModel) =>
-    contact.shouldForceBusinessUpdate,
-});
 
 /**
  * @whatsapp 714574 >= 2.2327.4
@@ -258,6 +214,17 @@ export declare function getFormattedName(contact: ContactModel): any;
  */
 export declare function getFormattedUser(contact: ContactModel): any;
 
+/**
+ * @whatsapp >= 2.3000.1030318976 (last check)
+ */
+export declare function getIsMyContact(contact: ContactModel): boolean;
+
+/**
+ * @whatsapp >= 2.3000.1030318976 (last check)
+ */
+export declare function getMentionName(contact: ContactModel): string;
+
+// WAWebFrontendContactGetters functions
 exportModule(
   exports,
   {
@@ -272,30 +239,26 @@ exportModule(
       'getFormattedUsernameOrPhone',
       'getFormattedPhone',
     ],
-    getSearchName: 'getSearchName',
     getFormattedShortNameWithNonBreakingSpaces:
       'getFormattedShortNameWithNonBreakingSpaces',
     getFormattedShortName: 'getFormattedShortName',
     getFormattedName: 'getFormattedName',
     getFormattedUser: 'getFormattedUser',
+    getSearchName: 'getSearchName',
   },
-  (m) => m.getDisplayName && m.getFormattedName
+  (m) => m.getPhoneNumber && m.getTextStatusString && m.getPnForLid
 );
-injectFallbackModule('getDisplayName', {
-  getDisplayName: (contact: ContactModel) => contact.displayName,
-  getPnForLid: (contact: ContactModel) => contact.pnForLid,
-  getDisplayNameOrPnForLid: (contact: ContactModel) =>
-    contact.displayNameOrPnForLid,
-  getSearchName: (contact: ContactModel) => contact.searchName,
-  getFormattedShortNameWithNonBreakingSpaces: (contact: ContactModel) =>
-    contact.formattedShortNameWithNonBreakingSpaces,
-  getFormattedShortName: (contact: ContactModel) => contact.formattedShortName,
-  getFormattedName: (contact: ContactModel) => contact.formattedName,
-  getFormattedUser: (contact: ContactModel) => contact.formattedUser,
-  getFormattedPhone: (contact: ContactModel) => contact.formattedPhone,
-});
 
-injectFallbackModule('getFormattedUsernameOrPhone', {
-  getFormattedUsernameOrPhone: (contact: ContactModel) =>
-    contact.formattedPhone,
-});
+// These two functions where moved from WAWebContactGetters to WAWebFrontendContactGetters module
+// So we will export them separately here
+// in versions >= 2.3000.1030318976 will get from WAWebFrontendContactGetters
+// in older versions will get from WAWebContactGetters
+// TODO(manfe): move this to WAWebFrontendContactGetters when dropping support for older versions
+exportModule(
+  exports,
+  {
+    getIsMyContact: 'getIsMyContact',
+    getMentionName: 'getMentionName',
+  },
+  (m) => m.getIsMyContact && m.getMentionName
+);
