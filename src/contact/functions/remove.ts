@@ -50,7 +50,7 @@ export async function remove(
     );
 
   // Version 2.3000.1030110621+ uses the new object-based API
-  if (isWhatsAppVersionGTE(2, 3000, 1030110621)) {
+  if (isWhatsAppVersionGTE('2.3000.1030110621')) {
     if (contactId.isLid()) {
       // Username contact - needs both lid and username
       const username = contact.username;
