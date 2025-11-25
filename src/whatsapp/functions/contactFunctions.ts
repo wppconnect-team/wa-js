@@ -20,11 +20,6 @@ import { ContactModel } from '../models';
 /**
  * @whatsapp 660666 >= 2.2327.4
  */
-export declare function getMentionName(contact: ContactModel): string;
-
-/**
- * @whatsapp 660666 >= 2.2327.4
- */
 export declare function getNotifyName(contact: ContactModel): string;
 
 /**
@@ -96,11 +91,6 @@ export declare function getIsSupportAccount(contact: ContactModel): any;
  * @whatsapp 660666 >= 2.2327.4
  */
 export declare function getIsWAContact(contact: ContactModel): any;
-
-/**
- * @whatsapp 660666 >= 2.2327.4
- */
-export declare function getIsMyContact(contact: ContactModel): boolean;
 
 /**
  * @whatsapp 660666 >= 2.2327.4
@@ -224,6 +214,16 @@ export declare function getFormattedName(contact: ContactModel): any;
  */
 export declare function getFormattedUser(contact: ContactModel): any;
 
+/**
+ * @whatsapp >= 2.3000.1030318976 (last check)
+ */
+export declare function getIsMyContact(contact: ContactModel): boolean;
+
+/**
+ * @whatsapp >= 2.3000.1030318976 (last check)
+ */
+export declare function getMentionName(contact: ContactModel): string;
+
 // WAWebFrontendContactGetters functions
 exportModule(
   exports,
@@ -248,5 +248,5 @@ exportModule(
     getMentionName: 'getMentionName',
     getSearchName: 'getSearchName',
   },
-  (m) => m.getIsMyContact && m.getFormattedName
+  (m) => m.getPhoneNumber && m.getTextStatusString && m.getPnForLid
 );
