@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 
 export declare function isFilterExcludedFromSearchTreatmentInInboxFlow(
   type?: string
-): void;
+): boolean;
 
 exportModule(
   exports,
