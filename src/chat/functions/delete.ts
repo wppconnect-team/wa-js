@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import { assertGetChat, assertWid } from '../../assert';
-import { getPnLidEntry } from '../../contact';
+import { assertFindChat, assertWid } from '../../assert';
 import { Wid } from '../../whatsapp';
-import { isLidMigrated, sendDelete } from '../../whatsapp/functions';
+import { sendDelete } from '../../whatsapp/functions';
 
 /**
  * Delete a chat
@@ -25,15 +24,9 @@ import { isLidMigrated, sendDelete } from '../../whatsapp/functions';
  * @category Chat
  */
 async function _delete(chatId: string | Wid) {
-  let wid = assertWid(chatId);
+  const wid = assertWid(chatId);
 
-  if (!isLidMigrated() && wid.server === 'lid') {
-    const pnWid = await getPnLidEntry(wid);
-
-    if (pnWid?.phoneNumber) wid = assertWid(pnWid.phoneNumber?._serialized);
-  }
-
-  const chat = assertGetChat(wid);
+  const chat = await assertFindChat(wid);
 
   sendDelete(chat);
 
