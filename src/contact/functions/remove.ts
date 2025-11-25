@@ -64,7 +64,7 @@ export async function remove(
     }
   } else {
     // Legacy API for older versions
-    await deleteContactAction(contactId.toString().split('@')[0]);
+    await deleteContactAction(contactId.user);
   }
 
   return await get(contactId);
