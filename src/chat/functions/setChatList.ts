@@ -120,24 +120,19 @@ function applyPatch() {
     return func(...args);
   });
   /**
-   * If a custom list is set and the user clicks on 'favorites' or 'unread,'
-   * show the correct list, not just the allowed contacts.
+   * Reset custom filter when user switches to another filter type
    */
   wrapModuleFunction(
     isFilterExcludedFromSearchTreatmentInInboxFlow,
-    async (func, ...args) => {
+    (func, ...args) => {
       const [type] = args;
 
-      if (type === FilterChatListTypes.LABELS) return func(...args);
-
-      if (filterType == FilterChatListTypes.CUSTOM) {
+      // If we have a custom filter active and user is switching to a different filter,
+      // reset our custom filter state
+      if (filterType === FilterChatListTypes.CUSTOM && type !== undefined) {
         filterType = FilterChatListTypes.ALL;
-        Cmd.trigger('set_active_filter', 'default');
-        Cmd.trigger('set_active_filter', type);
       }
 
-      filterType = FilterChatListTypes.ALL;
-      Cmd.trigger('set_active_filter', type);
       return func(...args);
     }
   );
