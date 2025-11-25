@@ -40,6 +40,7 @@ interface Props {
   labels?: string[];
   disappearingModeDuration?: any;
   disappearingModeSettingTimestamp?: any;
+  username?: string;
 }
 
 interface Session {

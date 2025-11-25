@@ -23,9 +23,8 @@ import * as playwright from 'playwright-chromium';
 import * as url from 'url';
 
 export const URL = 'https://web.whatsapp.com/';
-export const WA_DIR = path.resolve(__dirname, '../../wa-source');
-
 const WA_VERSION = process.env['WA_VERSION'] || waVersion.getLatestVersion();
+export const WA_DIR = path.resolve(__dirname, `../../wa-source/${WA_VERSION}`);
 
 type LaunchArguments = Parameters<
   typeof playwright.chromium.launchPersistentContext
@@ -114,7 +113,7 @@ export async function preparePage(page: playwright.Page) {
 
       if (fileName.endsWith('.js')) {
         if (!fs.existsSync(WA_DIR)) {
-          fs.mkdirSync(WA_DIR);
+          fs.mkdirSync(WA_DIR, { recursive: true });
         }
 
         console.log('🌐 Downloading from remote and caching:', fileName);
