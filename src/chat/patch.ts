@@ -177,7 +177,9 @@ function applyPatchModel() {
     shouldAppearInList: functions.getShouldAppearInList,
     isUser: (chat: ChatModel) => chat.id.isUser(),
     isPSA: (chat: ChatModel) => chat.id.isPSA(),
-    isGroup: (chat: ChatModel) => chat.id.isGroup(),
+    // Fixed: Avoid infinite recursion by checking ID format directly
+    // Group IDs end with @g.us, contact IDs end with @c.us
+    isGroup: (chat: ChatModel) => chat.id.toString().includes('@g.us'),
     isNewsletter: (chat: ChatModel) => chat.id.isNewsletter(),
     previewMessage: functions.getPreviewMessage,
     showChangeNumberNotification: functions.getShowChangeNumberNotification,
