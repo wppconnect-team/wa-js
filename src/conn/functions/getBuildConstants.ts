@@ -61,13 +61,14 @@ export function getBuildConstants(): BuildConstants | null {
     return null;
   }
 
-  buildConstants.PARSED = {
-    PRIMARY: parseInt(buildConstants.VERSION_PRIMARY, 10),
-    SECONDARY: parseInt(buildConstants.VERSION_SECONDARY, 10),
-    TERTIARY: parseInt(buildConstants.VERSION_TERTIARY, 10),
+  return {
+    ...buildConstants,
+    PARSED: {
+      PRIMARY: parseInt(buildConstants.VERSION_PRIMARY, 10),
+      SECONDARY: parseInt(buildConstants.VERSION_SECONDARY, 10),
+      TERTIARY: parseInt(buildConstants.VERSION_TERTIARY, 10),
+    },
   };
-
-  return buildConstants;
 }
 
 /**
