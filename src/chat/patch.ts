@@ -189,8 +189,8 @@ function applyPatchModel() {
     [key: string]: (...args: any[]) => any;
   } = {
     shouldAppearInList: functions.getShouldAppearInList,
-    isUser: functions.getIsUser,
-    isPSA: functions.getIsPSA,
+isUser: (chat: ChatModel) => chat.id.isUser()
+isPSA: (chat: ChatModel) => chat.id.isPSA()
     isGroup: patchIsGroup,
     isNewsletter: patchIsNewsletter,
     previewMessage: functions.getPreviewMessage,
