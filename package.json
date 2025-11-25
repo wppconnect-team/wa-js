@@ -1,6 +1,6 @@
 {
   "name": "@wppconnect/wa-js",
-  "version": "3.18.8",
+  "version": "3.19.0",
   "description": "WPPConnect/WA-JS is an open-source project with the aim of exporting functions from WhatsApp Web",
   "license": "Apache-2.0",
   "author": {
@@ -52,7 +52,7 @@
     "@types/shelljs": "^0.8.17",
     "@typescript-eslint/eslint-plugin": "^8.48.0",
     "@typescript-eslint/parser": "^8.48.0",
-    "@wppconnect/wa-version": "^1.5.2709",
+    "@wppconnect/wa-version": "^1.5.2713",
     "buffer": "^6.0.3",
     "compare-versions": "^6.1.1",
     "compressorjs": "^1.2.1",

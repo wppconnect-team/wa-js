@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { compare } from 'compare-versions';
+
 import * as webpack from '../../webpack';
 
 export interface BuildConstants {
@@ -59,13 +61,14 @@ export function getBuildConstants(): BuildConstants | null {
     return null;
   }
 
-  buildConstants.PARSED = {
-    PRIMARY: parseInt(buildConstants.VERSION_PRIMARY, 10),
-    SECONDARY: parseInt(buildConstants.VERSION_SECONDARY, 10),
-    TERTIARY: parseInt(buildConstants.VERSION_TERTIARY, 10),
+  return {
+    ...buildConstants,
+    PARSED: {
+      PRIMARY: parseInt(buildConstants.VERSION_PRIMARY, 10),
+      SECONDARY: parseInt(buildConstants.VERSION_SECONDARY, 10),
+      TERTIARY: parseInt(buildConstants.VERSION_TERTIARY, 10),
+    },
   };
-
-  return buildConstants;
 }
 
 /**
@@ -74,33 +77,17 @@ export function getBuildConstants(): BuildConstants | null {
  * @example
  * ```javascript
  * // Check if version is >= 2.3000.1030110621
- * if (WPP.conn.isWhatsAppVersionGTE(2, 3000, 1030110621)) {
+ * if (WPP.conn.isWhatsAppVersionGTE('2.3000.1030110621')) {
  *   console.log('Using new API');
  * }
  * ```
  *
- * @param primary - Primary version number (e.g., 2)
- * @param secondary - Secondary version number (e.g., 3000)
- * @param tertiary - Tertiary version number (e.g., 1030110621)
+ * @param version - Version string to compare against (e.g., "2.3000.1029")
  * @returns {boolean} True if current version is >= specified version
  */
-export function isWhatsAppVersionGTE(
-  primary: number,
-  secondary: number,
-  tertiary: number
-): boolean {
+export function isWhatsAppVersionGTE(version: string): boolean {
   const buildConstants = getBuildConstants();
-  const {
-    PRIMARY = 0,
-    SECONDARY = 0,
-    TERTIARY = 0,
-  } = buildConstants?.PARSED || {};
+  const currentVersion = buildConstants?.VERSION_STR || '0.0.0';
 
-  if (PRIMARY > primary) return true;
-  if (PRIMARY < primary) return false;
-
-  if (SECONDARY > secondary) return true;
-  if (SECONDARY < secondary) return false;
-
-  return TERTIARY >= tertiary;
+  return compare(currentVersion, version, '>=');
 }
