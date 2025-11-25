@@ -170,6 +170,20 @@ function applyPatch() {
   });
 }
 
+function patchIsGroup(chat: ChatModel) {
+  if (typeof chat.groupMetadata !== 'undefined') {
+    return true;
+  }
+  return false;
+}
+
+function patchIsNewsletter(chat: ChatModel) {
+  if (typeof chat.newsletterMetadata !== 'undefined') {
+    return true;
+  }
+  return false;
+}
+
 function applyPatchModel() {
   const funcs: {
     [key: string]: (...args: any[]) => any;
@@ -177,8 +191,8 @@ function applyPatchModel() {
     shouldAppearInList: functions.getShouldAppearInList,
     isUser: functions.getIsUser,
     isPSA: functions.getIsPSA,
-    isGroup: functions.getIsGroup,
-    isNewsletter: functions.getIsNewsletter,
+    isGroup: patchIsGroup,
+    isNewsletter: patchIsNewsletter,
     previewMessage: functions.getPreviewMessage,
     showChangeNumberNotification: functions.getShowChangeNumberNotification,
     hasUnread: functions.getHasUnread,

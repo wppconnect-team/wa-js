@@ -67,7 +67,10 @@ interface Session extends SessionChatBase {
   composeQuotedMsg?: any;
   composeQuotedMsgRemoteJid?: any;
   quotedMsgAdminGroupJid?: any;
+  groupSafetyChecked?: boolean;
   groupMetadata?: GroupMetadataModel;
+  groupType?: any;
+  newsletterMetadata?: any;
   presence?: any;
   mute: MuteModel;
   contact?: any;
