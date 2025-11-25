@@ -17,12 +17,8 @@
 import { exportModule } from '../exportModule';
 
 /**
- * @whatsapp WAWebSaveContactAction >= 2.3000.0
- */
-/**
-
-/**
  * Save contact action (legacy positional parameters API)
+ * @whatsapp WAWebSaveContactAction >= 2.3000.0
  * @deprecated Use saveContactActionV2 instead for versions >= 2.3000.1030209354
  * @whatsapp WAWebSaveContactAction >= 2.3000.0, < 2.3000.1030209354
  * @param user 5521980809090

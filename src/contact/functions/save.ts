@@ -17,7 +17,7 @@
 import { assertWid } from '../../assert';
 import { isWhatsAppVersionGTE } from '../../conn/functions';
 import { WPPError } from '../../util';
-import { ContactModel } from '../../whatsapp';
+import { ApiContact, ContactModel } from '../../whatsapp';
 import {
   saveContactAction,
   saveContactActionV2,
@@ -64,12 +64,24 @@ export async function save(
   }
 
   const wid = assertWid(contactId);
+  const alternateWid = ApiContact.getAlternateUserWid(wid);
 
-  const cleanContactId = wid.user || '';
-
-  if (!cleanContactId) {
+  if (!wid) {
     throw new WPPError('invalid_contact_id', 'Invalid contact ID format');
   }
+
+  const lid = wid.isLid()
+    ? wid.user
+    : alternateWid.isLid()
+      ? alternateWid.user
+      : null;
+
+  const phoneNumber =
+    wid.server === 'c.us'
+      ? wid.user
+      : alternateWid.server === 'c.us'
+        ? alternateWid.user
+        : null;
 
   const syncToAddressbook =
     options?.syncAddressBook ?? options?.syncAdressBook ?? true;
@@ -79,17 +91,26 @@ export async function save(
   // Version >= 2.3000.1030209354 uses object parameter API
   if (isWhatsAppVersionGTE('2.3000.1030209354')) {
     await saveContactActionV2({
-      phoneNumber: cleanContactId,
+      phoneNumber,
       prevPhoneNumber: null,
+      lid,
+      username: null,
       firstName,
       lastName,
       syncToAddressbook,
     });
   } else {
+    if (!phoneNumber) {
+      throw new WPPError(
+        'invalid_contact_id_for_legacy_version',
+        'For WhatsApp versions below 2.3000.1030209354, only phone number contacts are supported'
+      );
+    }
+
     // Version < 2.3000.1030209354 uses positional parameters
     // saveContactAction(phoneNumber, prevPhoneNumber, lid, username, firstName, lastName, syncToAddressbook)
     await saveContactAction(
-      cleanContactId,
+      phoneNumber,
       null,
       null,
       null,
