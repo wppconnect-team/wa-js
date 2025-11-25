@@ -15,9 +15,14 @@
  */
 
 import { assertWid } from '../../assert';
+import { isWhatsAppVersionGTE } from '../../conn/functions';
 import { WPPError } from '../../util';
 import { ContactModel, Wid } from '../../whatsapp';
-import { deleteContactAction, getIsMyContact } from '../../whatsapp/functions';
+import {
+  deleteContactAction,
+  deleteContactActionV2,
+  getIsMyContact,
+} from '../../whatsapp/functions';
 import { get } from './get';
 
 /**
@@ -44,6 +49,23 @@ export async function remove(
       `The number ${contactId._serialized} is not your contact`
     );
 
-  await deleteContactAction(contactId.toString().split('@')[0]);
+  // Version 2.3000.1030110621+ uses the new object-based API
+  if (isWhatsAppVersionGTE('2.3000.1030110621')) {
+    if (contactId.isLid()) {
+      // Username contact - needs both lid and username
+      const username = contact.username;
+      await deleteContactActionV2({
+        lid: contactId.toString(),
+        username: username,
+      });
+    } else {
+      // Regular contact
+      await deleteContactActionV2({ phoneNumber: contactId });
+    }
+  } else {
+    // Legacy API for older versions
+    await deleteContactAction(contactId.user);
+  }
+
   return await get(contactId);
 }
