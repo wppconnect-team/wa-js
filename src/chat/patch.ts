@@ -171,11 +171,11 @@ function applyPatch() {
 }
 
 function patchIsGroup(chat: ChatModel) {
- return chat.id.isGroup()
+  return chat.id.isGroup();
 }
 
 function patchIsNewsletter(chat: ChatModel) {
-  chat.id.isNewsletter()
+  chat.id.isNewsletter();
 }
 
 function applyPatchModel() {
@@ -183,8 +183,8 @@ function applyPatchModel() {
     [key: string]: (...args: any[]) => any;
   } = {
     shouldAppearInList: functions.getShouldAppearInList,
-isUser: (chat: ChatModel) => chat.id.isUser()
-isPSA: (chat: ChatModel) => chat.id.isPSA()
+    isUser: (chat: ChatModel) => chat.id.isUser(),
+    isPSA: (chat: ChatModel) => chat.id.isPSA(),
     isGroup: patchIsGroup,
     isNewsletter: patchIsNewsletter,
     previewMessage: functions.getPreviewMessage,
