@@ -44,6 +44,7 @@ export * from './ServerProps';
 export * from './ServerPropsConstants';
 export * from './Socket';
 export * from './Stream';
+export * from './UsernameGatingUtils';
 export * from './UserPrefs';
 export * from './USyncQuery';
 export * from './USyncUser';
