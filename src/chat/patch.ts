@@ -171,10 +171,7 @@ function applyPatch() {
 }
 
 function patchIsGroup(chat: ChatModel) {
-  if (typeof chat.groupMetadata !== 'undefined') {
-    return true;
-  }
-  return false;
+ return chat.id.isGroup()
 }
 
 function patchIsNewsletter(chat: ChatModel) {
