@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import { Wid } from '../../whatsapp';
-
 export interface CallEventTypes {
   /**
    * Triggered when you a incoming call
@@ -49,10 +47,10 @@ export interface CallEventTypes {
     /**
      * Wid of sender without device id
      */
-    sender: Wid;
+    sender: any;
     /**
      * Wid of sender with device id
      */
-    peerJid: Wid;
+    peerJid: any;
   };
 }

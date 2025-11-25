@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2024 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
+import { WPPError } from '../../util';
 import * as webpack from '../../webpack';
 import {
-  ButtonCollection,
-  ReplyButtonModel,
   TemplateButtonCollection,
   TemplateButtonModel,
   websocket,
@@ -28,10 +27,12 @@ import {
   createFanoutMsgStanza,
   createMsgProtobuf,
   encodeMaybeMediaType,
+  getABPropConfigValue,
   mediaTypeFromProtobuf,
   typeAttributeFromProtobuf,
 } from '../../whatsapp/functions';
 import { RawMessage } from '..';
+import { encryptAndParserMsgButtons } from './buttonsParser';
 
 export type MessageButtonsTypes =
   | {
@@ -45,6 +46,10 @@ export type MessageButtonsTypes =
   | {
       url: string;
       text: string;
+    }
+  | {
+      code: string;
+      text: string;
     };
 
 export interface MessageButtonsOptions {
@@ -57,17 +62,6 @@ export interface MessageButtonsOptions {
    */
   title?: string;
   /**
-   * Set to use template buttons instead of reply buttons.
-   * @default: undefined - auto detect
-   * @deprecated
-   */
-  useTemplateButtons?: boolean | null;
-  /**
-   * Set to use interactive message instead of reply buttons.
-   * @default: undefined - auto detect
-   */
-  useInteractiveMessage?: boolean | null;
-  /**
    * Footer text for buttons
    */
   footer?: string;
@@ -79,6 +73,7 @@ export interface MessageButtonsOptions {
  * @category Message
  * @internal
  */
+
 export function prepareMessageButtons<T extends RawMessage>(
   message: T,
   options: MessageButtonsOptions
@@ -88,164 +83,156 @@ export function prepareMessageButtons<T extends RawMessage>(
   }
 
   if (!Array.isArray(options.buttons)) {
-    throw 'Buttons options is not a array';
-  }
-
-  if (
-    (typeof options.useTemplateButtons === 'undefined' &&
-      typeof options.useInteractiveMessage === 'undefined') ||
-    (options.useTemplateButtons === null &&
-      options.useInteractiveMessage === null)
-  ) {
-    options.useInteractiveMessage = options.buttons.some(
-      (button) => 'phoneNumber' in button || 'url' in button
+    throw new WPPError('buttons_not_a_array', 'Buttons options is not a array');
+  } else if (message.type !== 'chat' && options.buttons.length > 2) {
+    throw new WPPError(
+      'not_alowed_more_then_three_buttons',
+      'Not allowed more then three buttons in file messages'
     );
-  }
-
-  if (options.useTemplateButtons || options.useInteractiveMessage) {
-    if (options.buttons.length === 0 || options.buttons.length > 5) {
-      throw 'Buttons options must have between 1 and 5 options';
-    }
-  } else {
-    if (options.buttons.length === 0 || options.buttons.length > 3) {
-      throw 'Buttons options must have between 1 and 3 options';
-    }
+  } else if (options.buttons.length === 0 || options.buttons.length > 3) {
+    throw new WPPError(
+      'buttons_must_between_1_and_3_options',
+      'Buttons options must have between 1 and 3 options'
+    );
+  } else if (
+    options.buttons.find((i: any) => i.phoneNumber || i.url) &&
+    options.buttons.find((i: any) => i.id && i.text)
+  ) {
+    throw new WPPError(
+      'reply_and_cta_btn_not_allowed',
+      'It is not possible to send reply buttons and action buttons togetherButtons options must have between 1 and 3 options'
+    );
   }
 
   message.title = options.title;
   message.footer = options.footer;
 
-  if (options.useInteractiveMessage) {
-    message.interactiveMessage = {
-      header: {
-        title: options.title || ' ',
-        hasMediaAttachment: false,
-      },
-      body: {
-        text: message.body || message.caption || ' ',
-      },
-      footer: {
-        text: options.footer || ' ',
-      },
-      nativeFlowMessage: {
-        buttons: options.buttons.map((button, index) => {
-          if ('phoneNumber' in button) {
-            return {
-              name: 'cta_call',
-              buttonParamsJson: JSON.stringify({
-                display_text: button.text,
-                phone_number: button.phoneNumber,
-              }),
-            };
-          }
-          if ('url' in button) {
-            return {
-              name: 'cta_url',
-              buttonParamsJson: JSON.stringify({
-                display_text: button.text,
-                url: button.url,
-                merchant_url: button.url,
-              }),
-            };
-          }
-          if ('raw' in button) {
-            return button.raw;
-          }
+  message.interactiveMessage = {
+    header: {
+      title: options.title || ' ',
+      hasMediaAttachment: false,
+    },
+    body: {
+      text: message.body || message.caption || ' ',
+    },
+    footer: {
+      text: options.footer || ' ',
+    },
+    nativeFlowMessage: {
+      buttons: options.buttons.map((button, index) => {
+        if ('phoneNumber' in button) {
           return {
-            name: 'quick_reply',
+            name: 'cta_call',
             buttonParamsJson: JSON.stringify({
               display_text: button.text,
-              id: button.id || `${index}`,
+              phone_number: button.phoneNumber,
             }),
           };
-        }),
-      },
-    };
-  } else if (options.useTemplateButtons) {
-    message.isFromTemplate = true;
-
-    message.buttons = new TemplateButtonCollection();
-
-    message.hydratedButtons = options.buttons.map((button, index) => {
-      if ('phoneNumber' in button) {
+        }
+        if ('url' in button) {
+          return {
+            name: 'cta_url',
+            buttonParamsJson: JSON.stringify({
+              display_text: button.text,
+              url: button.url,
+              merchant_url: button.url,
+            }),
+          };
+        }
+        if ('code' in button) {
+          return {
+            name: 'cta_copy',
+            buttonParamsJson: JSON.stringify({
+              display_text: button.text,
+              copy_code: button.code,
+            }),
+          };
+        }
+        if ('raw' in button) {
+          return button.raw;
+        }
         return {
-          index: index,
-          callButton: {
-            displayText: button.text,
-            phoneNumber: button.phoneNumber,
-          },
+          name: 'quick_reply',
+          buttonParamsJson: JSON.stringify({
+            display_text: button.text,
+            id: button.id || `${index}`,
+          }),
         };
-      }
-      if ('url' in button) {
-        return {
-          index: index,
-          urlButton: {
-            displayText: button.text,
-            url: button.url,
-          },
-        };
-      }
+      }),
+    },
+  };
 
+  // This code is only for see buttons on sended device
+  message.isFromTemplate = true;
+  message.buttons = new TemplateButtonCollection();
+  message.hydratedButtons = options.buttons.map((button, index) => {
+    if ('phoneNumber' in button) {
       return {
         index: index,
-        quickReplyButton: {
+        callButton: {
           displayText: button.text,
-          id: button.id || `${index}`,
+          phoneNumber: button.phoneNumber,
         },
       };
-    });
+    }
+    if ('url' in button) {
+      return {
+        index: index,
+        urlButton: {
+          displayText: button.text,
+          url: button.url,
+        },
+      };
+    }
+    if ('code' in button) {
+      return {
+        index: index,
+        urlButton: {
+          displayText: button.text,
+          url: `https://www.whatsapp.com/otp/code/?otp_type=COPY_CODE&code=otp${button.code}`,
+        },
+      };
+    }
 
-    message.buttons.add(
-      message.hydratedButtons.map((e, t: number) => {
-        const i = `${null != e.index ? e.index : t}`;
+    return {
+      index: index,
+      quickReplyButton: {
+        displayText: button.text,
+        id: button.id || `${index}`,
+      },
+    };
+  });
 
-        if (e.urlButton) {
-          return new TemplateButtonModel({
-            id: i,
-            displayText: e.urlButton?.displayText,
-            url: e.urlButton?.url,
-            subtype: 'url',
-          });
-        }
+  message.buttons.add(
+    message.hydratedButtons.map((e, t: number) => {
+      const i = `${null != e.index ? e.index : t}`;
 
-        if (e.callButton) {
-          return new TemplateButtonModel({
-            id: i,
-            displayText: e.callButton.displayText,
-            phoneNumber: e.callButton.phoneNumber,
-            subtype: 'call',
-          });
-        }
-
+      if (e.urlButton) {
         return new TemplateButtonModel({
           id: i,
-          displayText: e.quickReplyButton?.displayText,
-          selectionId: e.quickReplyButton?.id,
-          subtype: 'quick_reply',
+          displayText: e.urlButton?.displayText,
+          url: e.urlButton?.url,
+          subtype: 'url',
         });
-      })
-    );
-  } else {
-    message.isDynamicReplyButtonsMsg = true;
+      }
 
-    message.dynamicReplyButtons = options.buttons.map((button, index) => ({
-      buttonId: (button as any).id || `${index}`,
-      buttonText: { displayText: button.text },
-      type: 1,
-    }));
+      if (e.callButton) {
+        return new TemplateButtonModel({
+          id: i,
+          displayText: e.callButton.displayText,
+          phoneNumber: e.callButton.phoneNumber,
+          subtype: 'call',
+        });
+      }
 
-    // For UI only
-    message.replyButtons = new ButtonCollection();
-    message.replyButtons.add(
-      message.dynamicReplyButtons.map(
-        (b) =>
-          new ReplyButtonModel({
-            id: b.buttonId,
-            displayText: b.buttonText?.displayText || undefined,
-          })
-      )
-    );
-  }
+      return new TemplateButtonModel({
+        id: i,
+        displayText: e.quickReplyButton?.displayText,
+        selectionId: e.quickReplyButton?.id,
+        subtype: 'quick_reply',
+      });
+    })
+  );
 
   return message;
 }
@@ -254,89 +241,6 @@ webpack.onFullReady(() => {
   wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
     const [message] = args;
     const r = func(...args);
-
-    if (message.hydratedButtons) {
-      const hydratedTemplate: any = {
-        hydratedButtons: message.hydratedButtons,
-      };
-
-      if (message.footer) {
-        hydratedTemplate.hydratedFooterText = message.footer;
-      }
-
-      if (message.caption) {
-        hydratedTemplate.hydratedContentText = message.caption;
-      }
-
-      if (message.title) {
-        hydratedTemplate.hydratedTitleText = message.title;
-      }
-
-      if (r.conversation) {
-        hydratedTemplate.hydratedContentText = r.conversation;
-        delete r.conversation;
-      } else if (r.extendedTextMessage?.text) {
-        hydratedTemplate.hydratedContentText = r.extendedTextMessage.text;
-        delete r.extendedTextMessage;
-      } else {
-        // Search media part in message
-        let found;
-        const mediaPart = [
-          'documentMessage',
-          'imageMessage',
-          'locationMessage',
-          'videoMessage',
-        ];
-        for (const part of mediaPart) {
-          if (part in r) {
-            found = part;
-            break;
-          }
-        }
-
-        if (!found) {
-          return r;
-        }
-
-        // Media message doesn't allow title
-        hydratedTemplate[found] = r[found];
-
-        // Copy title to caption if not setted
-        if (
-          hydratedTemplate.hydratedTitleText &&
-          !hydratedTemplate.hydratedContentText
-        ) {
-          hydratedTemplate.hydratedContentText =
-            hydratedTemplate.hydratedTitleText;
-        }
-
-        // Remove title for media messages
-        delete hydratedTemplate.hydratedTitleText;
-
-        if (found === 'locationMessage') {
-          if (
-            !hydratedTemplate.hydratedContentText &&
-            (r[found].name || r[found].address)
-          ) {
-            hydratedTemplate.hydratedContentText =
-              r[found].name && r[found].address
-                ? `${r[found].name}\n${r[found].address}`
-                : r[found].name || r[found].address || '';
-          }
-        }
-
-        // Ensure a content text;
-        hydratedTemplate.hydratedContentText =
-          hydratedTemplate.hydratedContentText || ' ';
-
-        delete r[found];
-      }
-
-      r.templateMessage = {
-        hydratedTemplate,
-      };
-    }
-
     if (message.interactiveMessage?.nativeFlowMessage?.buttons !== undefined) {
       const mediaPart = [
         'documentMessage',
@@ -381,8 +285,14 @@ webpack.onFullReady(() => {
 
   wrapModuleFunction(mediaTypeFromProtobuf, (func, ...args) => {
     const [proto] = args;
-    if (proto.templateMessage?.hydratedTemplate) {
-      return func(proto.templateMessage.hydratedTemplate);
+    if (
+      proto.documentWithCaptionMessage?.message?.templateMessage
+        ?.hydratedTemplate
+    ) {
+      return func(
+        proto.documentWithCaptionMessage?.message?.templateMessage
+          ?.hydratedTemplate
+      );
     }
     return func(...args);
   });
@@ -390,8 +300,8 @@ webpack.onFullReady(() => {
   wrapModuleFunction(typeAttributeFromProtobuf, (func, ...args) => {
     const [proto] = args;
 
-    if (proto.viewOnceMessage?.interactiveMessage) {
-      const keys = Object.keys(proto.templateMessage?.hydratedTemplate);
+    if (proto?.viewOnceMessage?.interactiveMessage) {
+      const keys = Object.keys(proto?.viewOnceMessage?.interactiveMessage);
 
       const messagePart = [
         'documentMessage',
@@ -406,9 +316,14 @@ webpack.onFullReady(() => {
       }
 
       return 'text';
-    }
-    if (proto.templateMessage?.hydratedTemplate) {
-      const keys = Object.keys(proto.templateMessage?.hydratedTemplate);
+    } else if (
+      proto?.documentWithCaptionMessage?.message?.templateMessage
+        ?.hydratedTemplate
+    ) {
+      const keys = Object.keys(
+        proto?.documentWithCaptionMessage?.message?.templateMessage
+          ?.hydratedTemplate
+      );
 
       const messagePart = [
         'documentMessage',
@@ -425,8 +340,8 @@ webpack.onFullReady(() => {
     }
 
     if (
-      proto.buttonsMessage?.headerType === 1 ||
-      proto.buttonsMessage?.headerType === 2
+      proto?.buttonsMessage?.headerType === 1 ||
+      proto?.buttonsMessage?.headerType === 2
     ) {
       return 'text';
     }
@@ -436,12 +351,7 @@ webpack.onFullReady(() => {
 
   wrapModuleFunction(createFanoutMsgStanza, async (func, ...args) => {
     let buttonNode: websocket.WapNode | null = null;
-
-    /**
-     * In version 2.2411.x the order of the proto arguments was changed,
-     * before it was the third argument, now it is the second
-     */
-    const proto = args[1].id ? args[2] : args[1];
+    const proto: any = args[1].id ? args[2] : args[1];
 
     if (proto.buttonsMessage) {
       buttonNode = websocket.smax('buttons');
@@ -458,7 +368,10 @@ webpack.onFullReady(() => {
       });
     }
 
-    const node = await func(...args);
+    let node = await func(...args);
+    if (proto?.viewOnceMessage?.message?.interactiveMessage) {
+      node = await encryptAndParserMsgButtons(...args, func);
+    }
 
     if (!buttonNode) {
       return node;
@@ -487,5 +400,16 @@ webpack.onFullReady(() => {
     }
 
     return node;
+  });
+
+  wrapModuleFunction(getABPropConfigValue, (func, ...args) => {
+    const [key] = args;
+    switch (key) {
+      case 'web_unwrap_message_for_stanza_attributes':
+        return false;
+      /*case 'enable_web_calling':
+        return true;*/
+    }
+    return func(...args);
   });
 });

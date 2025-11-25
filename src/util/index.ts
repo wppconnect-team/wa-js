@@ -24,6 +24,7 @@ export * from './fetchDataFromPNG';
 export * from './generateOrderUniqueId';
 export * from './getVideoInfoFromBuffer';
 export * from './isBase64';
+export * from './isUrl';
 export * from './resizeImage';
 export * from './types';
 export * from './wrapFunction';

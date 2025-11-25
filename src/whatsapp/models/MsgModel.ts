@@ -210,7 +210,23 @@ interface Props {
   broadcastParticipants?: any;
   broadcastEphSettings?: any;
   broadcastId?: any;
-  ctwaContext?: any;
+  ctwaContext?: {
+    conversionSource?: string;
+    conversionData?: object;
+    sourceUrl?: string;
+    description?: string;
+    title?: string;
+    thumbnail?: string;
+    thumbnailUrl?: string;
+    mediaType?: number;
+    adContextPreviewDismissed?: boolean;
+    sourceApp?: string;
+    greetingMessageBody?: string;
+    automatedGreetingMessageShown?: boolean;
+    sourceId?: string;
+    originalImageUrl?: string;
+    mediaUrl?: string;
+  };
   list?: {
     buttonText: string;
     description: string;

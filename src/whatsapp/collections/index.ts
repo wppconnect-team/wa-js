@@ -17,6 +17,7 @@
 export * from './AggReactionsCollection';
 export * from './BaseCollection';
 export * from './BlocklistCollection';
+export * from './BotProfileCollection';
 export * from './BusinessCategoriesResultCollection';
 export * from './BusinessProfileCollection';
 export * from './ButtonCollection';
@@ -38,6 +39,7 @@ export * from './MsgCollection';
 export * from './MsgInfoCollection';
 export * from './MsgInfoParticipantCollection';
 export * from './MuteCollection';
+export * from './NoteCollection';
 export * from './OrderCollection';
 export * from './OrderItemCollection';
 export * from './ParticipantCollection';

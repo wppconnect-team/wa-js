@@ -28,7 +28,11 @@ export declare function revokeStatus(
 exportModule(
   exports,
   {
-    revokeStatus: 'default',
+    revokeStatus: ['default'],
   },
+  /**
+   * This module only loaded after device is connected
+   * I be creating other function for check expires based directily from files
+   */
   (m) => m.default?.displayName?.includes('RevokeStatusAction')
 );

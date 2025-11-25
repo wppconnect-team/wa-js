@@ -107,10 +107,27 @@ export declare class CmdClass extends EventEmitter {
   _openChat(e?: any, t?: any): void;
   openChatAt(
     chat: ChatModel,
-    context: ReturnType<typeof getSearchContext>
+    msgContext: ReturnType<typeof getSearchContext>
   ): Promise<boolean>;
+  openChatAt(params?: {
+    chat: ChatModel;
+    chatEntryPoint?: string;
+    msgContext: ReturnType<typeof getSearchContext>;
+    onSuccess?: {
+      onScrollToQuotedCarouselCard?: void;
+      mediaMsgToOpenInMediaViewer?: void;
+    };
+  }): Promise<boolean>;
   openChatFromUnread(chat: ChatModel): Promise<boolean>;
+  openChatFromUnread(params: {
+    chat: ChatModel;
+    chatEntryPoint?: string;
+  }): Promise<boolean>;
   openChatBottom(chat: ChatModel): Promise<boolean>;
+  openChatBottom(params: {
+    chat: ChatModel;
+    chatEntryPoint?: string;
+  }): Promise<boolean>;
   scrollToPtt(e?: any): void;
   _scrollToFocusedMsg(e?: any): void;
   _scrollChatToBottom(): void;
@@ -201,6 +218,9 @@ export declare class CmdClass extends EventEmitter {
   showMerchantDetailsEntityTypePopup(e?: any, t?: any): void;
   showCountrySelector(e?: any, t?: any, r?: any): void;
   toggleStickerMaker(): void;
+  setActiveFilter(
+    type?: 'unread' | 'favorites' | 'personal' | 'assigned_to_you' | 'labels'
+  ): Promise<void>;
 }
 
 /** @whatsapp 88102

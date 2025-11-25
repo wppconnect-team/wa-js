@@ -22,8 +22,8 @@ import { ChatModel, MsgModel } from '../models';
  * @whatsapp 738599 >= 2.2242.5
  */
 export declare function getSearchContext(
-  chat: ChatModel,
-  msg: MsgModel | MsgKey,
+  chat: ChatModel | string,
+  msg: MsgModel | MsgKey | string,
   options?: {
     isQuotedMsgAvailable: boolean;
   }

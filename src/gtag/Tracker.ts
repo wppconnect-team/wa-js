@@ -26,7 +26,7 @@ function randomNumber(min = 0, max = 2147483647) {
  * @see https://www.thyngster.com/ga4-measurement-protocol-cheatsheet/
  */
 export class Tracker {
-  static collectURL = 'https://www.google-analytics.com/g/collect';
+  static collectURL = 'https://analytics.google.com/g/collect';
   static pageLoadHash = randomNumber();
 
   static get clientState() {

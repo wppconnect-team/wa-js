@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ChatStore } from '../../whatsapp';
+import { ChatStore, NewsletterStore } from '../../whatsapp';
 
 /**
  * Return the current active chat
@@ -31,7 +31,9 @@ import { ChatStore } from '../../whatsapp';
  * @category Chat
  */
 export function getActiveChat() {
-  const chat = ChatStore.findFirst((c) => c.active);
+  const chat =
+    ChatStore.findFirst((c) => c.active) ||
+    NewsletterStore.findFirst((c) => c.active);
 
   return chat;
 }

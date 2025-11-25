@@ -55,7 +55,7 @@ function registerRevokeMessageEvent() {
             });
           }
         }
-      } catch (error) {}
+      } catch (_error) {}
 
       // Call the original method
       processMultipleMessages

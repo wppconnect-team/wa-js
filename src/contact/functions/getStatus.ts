@@ -26,7 +26,7 @@ import { queryExists } from './queryExists';
  * await WPP.contact.getStatus('[number]@c.us');
  * ```
  *
- * @category Chat
+ * @category Contact
  */
 
 export async function getStatus(contactId: string | Wid) {

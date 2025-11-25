@@ -16,8 +16,9 @@
 
 import { assertWid } from '../../assert';
 import * as Chat from '../../chat';
+import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import * as webpack from '../../webpack';
-import { MsgKey, UserPrefs } from '../../whatsapp';
+import { MsgKey } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   createMsgProtobuf,
@@ -42,10 +43,12 @@ export async function sendRawStatus(
   message: Chat.RawMessage,
   options: SendStatusOptions = {}
 ) {
+  const me = getMyUserWid();
+
   const messageId = new MsgKey({
     fromMe: true,
     id: randomHex(16),
-    participant: UserPrefs.getMaybeMeUser(),
+    participant: me,
     remote: assertWid('status@broadcast'),
   });
 
@@ -55,11 +58,10 @@ export async function sendRawStatus(
     ...options,
   };
 
-  message.author = UserPrefs.getMaybeMeUser();
+  message.author = me;
 
   const result = await Chat.sendRawMessage('status@broadcast', message, {
     ...options,
-    createChat: true,
   });
 
   postSendStatus(result);
@@ -107,7 +109,7 @@ webpack.onInjected(() => {
           count: null,
           error: null,
         };
-      } catch (error) {
+      } catch (_error) {
         return null;
       }
     }

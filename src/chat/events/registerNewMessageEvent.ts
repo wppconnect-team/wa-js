@@ -17,7 +17,8 @@
 import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
 import { ChatStore, MsgModel, MsgStore } from '../../whatsapp';
-import { getQuotedMsg, getQuotedMsgKey } from '../functions/';
+import { getQuotedMsgObj } from '../../whatsapp/functions';
+import { getQuotedMsgKey } from '../functions/';
 
 webpack.onInjected(() => register());
 
@@ -74,10 +75,16 @@ async function addAttributesMsg(msg: any): Promise<MsgModel> {
    * @todo, remove this
    */
   if (!(typeof msg.quotedStanzaID === 'undefined')) {
-    const replyMsg = await getQuotedMsg(msg.id);
+    const quotedMsg = getQuotedMsgObj(msg);
+    if (!quotedMsg) return msg;
     Object.defineProperties(msg, {
       _quotedMsgObj: {
-        value: replyMsg,
+        value: quotedMsg,
+        writable: false,
+      },
+      // Fixed quotedMsgId when receive messages from @lid
+      quotedMsgId: {
+        value: quotedMsg.id,
         writable: false,
       },
     });

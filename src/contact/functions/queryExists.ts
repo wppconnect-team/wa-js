@@ -15,7 +15,8 @@
  */
 
 import { assertWid } from '../../assert';
-import { USyncQuery, USyncUser, Wid } from '../../whatsapp';
+import { createWid } from '../../util/createWid';
+import { ApiContact, USyncQuery, USyncUser, Wid } from '../../whatsapp';
 
 export interface QueryExistsResult {
   wid: Wid;
@@ -34,6 +35,7 @@ export interface QueryExistsResult {
     settingTimestamp: number;
   };
   status?: string;
+  lid?: Wid;
 }
 
 const cache = new Map<string, QueryExistsResult | null>();
@@ -49,33 +51,42 @@ const cache = new Map<string, QueryExistsResult | null>();
  * console.log(result.wid); // Correct ID
  * ```
  *
- * @category Chat
+ * @category Contact
  */
 export async function queryExists(
   contactId: string | Wid
 ): Promise<QueryExistsResult | null> {
   const wid = assertWid(contactId);
 
-  const id = wid.toString();
+  const id = `+${wid.toString()}`;
   if (cache.has(id)) {
     return cache.get(id)!;
   }
 
   const syncUser = new USyncUser();
   const syncQuery = new USyncQuery();
-  const isLid = wid.toString().includes('@lid');
+  const isLid = wid.isLid();
   if (isLid) {
     syncUser.withId(wid);
   } else {
     syncQuery.withContactProtocol();
-    syncUser.withPhone('+' + id);
+    syncUser.withPhone(id.replace('@c.us', ''));
+    if (wid.isUser()) {
+      const lid = ApiContact.getCurrentLid(createWid(id.replace('+', '')));
+      if (lid) {
+        syncUser.withLid(lid);
+      }
+    }
   }
-  syncQuery.withUser(syncUser);
-  syncQuery.withBusinessProtocol();
-  syncQuery.withDisappearingModeProtocol();
-  syncQuery.withStatusProtocol();
-  syncQuery.withLidProtocol();
+  syncQuery
+    .withUser(syncUser)
+    .withBusinessProtocol()
+    .withDisappearingModeProtocol()
+    .withStatusProtocol()
+    .withLidProtocol();
+
   const get = await syncQuery.execute();
+
   let result = null;
 
   if (get?.error?.all || get?.error?.contact) {
@@ -86,6 +97,7 @@ export async function queryExists(
     if (result?.contact?.type === 'out') {
       result = null;
     } else {
+      const lid = result?.lid;
       result = {
         wid: result.id,
         biz: typeof result.business !== 'undefined',
@@ -98,6 +110,7 @@ export async function queryExists(
               }
             : undefined,
         status: result.status,
+        lid: lid ? createWid(lid) : undefined,
       };
     }
   } else {

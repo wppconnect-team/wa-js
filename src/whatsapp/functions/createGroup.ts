@@ -23,10 +23,16 @@ import { exportModule } from '../exportModule';
 
 // @deprecated
 export declare function createGroup(
-  groupName: string,
-  participants: Wid[],
-  ephemeral?: number,
-  parentGroup?: Wid
+  options: {
+    title: string;
+    ephemeralDuration: number;
+    restrict: boolean;
+    announce: boolean;
+    membershipApprovalMode: boolean;
+    memberAddMode: boolean;
+    parentGroupId?: Wid;
+  },
+  participants: Wid[]
 ): Promise<{
   wid: Wid;
   participants: {
@@ -47,7 +53,7 @@ export declare function createGroup(
     memberAddMode: boolean;
     parentGroupId?: Wid;
   },
-  participants: Wid[]
+  participants: { phoneNumber: Wid }[]
 ): Promise<{
   wid: Wid;
   participants: {

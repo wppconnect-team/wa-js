@@ -25,14 +25,21 @@ import { Cmd, Wid } from '../../whatsapp';
  * await WPP.chat.openChatFromUnread('[number]@c.us');
  * ```
  *
+ * @argument chatEntryPoint Optional chat entry point: "Chatlist" for any existing chat in the left panel, undefined for any other case.
+ *
  * @category Chat
  */
 export async function openChatFromUnread(
-  chatId: string | Wid
+  chatId: string | Wid,
+  chatEntryPoint?: string | undefined
 ): Promise<boolean> {
   const wid = assertWid(chatId);
 
   const chat = await assertFindChat(wid);
 
-  return await Cmd.openChatFromUnread(chat);
+  try {
+    return await Cmd.openChatFromUnread(chat);
+  } catch {
+    return await Cmd.openChatFromUnread({ chat, chatEntryPoint });
+  }
 }

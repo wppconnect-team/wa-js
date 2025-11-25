@@ -15,7 +15,6 @@
  */
 
 /* eslint-disable simple-import-sort/exports */
-/* eslint-disable simple-import-sort/imports */
 import './config';
 import './deviceName';
 import './gtag';

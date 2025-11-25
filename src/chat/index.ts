@@ -20,3 +20,4 @@ import './patch';
 export * from './defaultSendMessageOptions';
 export * from './functions';
 export * from './types';
+export * from './util';

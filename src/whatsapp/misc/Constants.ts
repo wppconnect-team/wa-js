@@ -53,5 +53,5 @@ export declare const Constants: {
 exportModule(
   exports,
   { Constants: 'default' },
-  (m) => m.default.IMG_THUMB_MAX_EDGE
+  (m) => m.default.IMG_THUMB_MAX_EDGE || m.default.WA_COMMERCE_POLICY_URL
 );

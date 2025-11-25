@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
+export { changeEnviromentDevice } from './changeEnviromentDevice';
 export { genLinkDeviceCodeForPhoneNumber } from './genLinkDeviceCodeForPhoneNumber';
 export { getAuthCode } from './getAuthCode';
+export { getBuildConstants } from './getBuildConstants';
 export {
   getHistorySyncProgress,
   HistorySyncProgress,
 } from './getHistorySyncProgress';
+export { getMigrationState, MigrationState } from './getMigrationState';
 export { getMyDeviceId } from './getMyDeviceId';
 export { getMyUserId } from './getMyUserId';
 export { getPlatform } from './getPlatform';

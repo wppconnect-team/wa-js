@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2025 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+export * from './ApiContact';
 export * from './Base64';
 export * from './Browser';
 export * from './ChatPresence';
@@ -21,11 +22,15 @@ export * from './Cmd';
 export * from './ComposeBoxActions';
 export * from './Conn';
 export * from './Constants';
+export * from './Enviroment';
 export * from './EventEmitter';
 export * from './ImageUtils';
 export * from './IsOfficialClient';
+export * from './Lid1X1MigrationUtils';
+export * from './LidPnCache';
 export * from './MediaBlobCache';
 export * from './MediaEntry';
+export * from './MediaGatingUtils';
 export * from './MediaObject';
 export * from './MediaObjectUtil';
 export * from './MediaPrep';
@@ -36,6 +41,7 @@ export * from './NetworkStatus';
 export * from './OpaqueData';
 export * from './ProductCatalogSession';
 export * from './ServerProps';
+export * from './ServerPropsConstants';
 export * from './Socket';
 export * from './Stream';
 export * from './UserPrefs';

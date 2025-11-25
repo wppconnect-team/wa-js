@@ -29,5 +29,5 @@ exportModule(
     GROUP_JID: 'GROUP_JID',
     CHAT_JID: 'CHAT_JID',
   },
-  (m) => m.GROUP_JID && m.CHAT_JID && m.wapNodeToVoipXml
+  (m) => m.GROUP_JID && m.CHAT_JID
 );

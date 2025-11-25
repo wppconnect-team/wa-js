@@ -1,5 +1,5 @@
 /*!
- * Copyright 2022 WPPConnect Team
+ * Copyright 2025 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,9 @@
  */
 
 import { internalEv } from '../../eventEmitter';
+import { createWid } from '../../util/createWid';
 import * as webpack from '../../webpack';
-import { CallModel, CallStore, WidFactory } from '../../whatsapp';
+import { CallModel, CallStore } from '../../whatsapp';
 import { CALL_STATES } from '../../whatsapp/enums';
 
 webpack.onInjected(() => register());
@@ -29,20 +30,25 @@ function register() {
         isGroup: call.isGroup,
         isVideo: call.isVideo,
         offerTime: call.offerTime,
-        sender: WidFactory.toChatWid(call.peerJid),
+        sender: createWid(call.peerJid),
         peerJid: call.peerJid,
       });
     }
   });
 
   CallStore.on('change', (call: CallModel) => {
-    if (call.getState() === CALL_STATES.INCOMING_RING) {
+    if (
+      // Fix for mantain compatibility with older versions of whatsapp web
+      call.getState() === CALL_STATES.INCOMING_RING ||
+      // >= 2.3000.10213.x
+      call.getState() === CALL_STATES.ReceivedCall
+    ) {
       internalEv.emit('call.incoming_call', {
         id: call.id,
         isGroup: call.isGroup,
         isVideo: call.isVideo,
         offerTime: call.offerTime,
-        sender: WidFactory.toChatWid(call.peerJid),
+        sender: createWid(call.peerJid),
         peerJid: call.peerJid,
       });
     }

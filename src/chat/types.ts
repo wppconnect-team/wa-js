@@ -14,13 +14,21 @@
  * limitations under the License.
  */
 
-import { ModelPropertiesContructor, MsgKey, MsgModel, Wid } from '../whatsapp';
-import { SendMsgResult } from '../whatsapp/enums';
+import {
+  ModelPropertiesContructor,
+  MsgKey,
+  MsgModel,
+  SendMsgResultObject,
+  Wid,
+} from '../whatsapp';
+
+export type { SendMsgResultObject };
 
 export interface SendMessageOptions {
   /**
    * Create a new chat to a new contact
    *
+   * @deprecated This option is no longer used. Chats are automatically created when sending messages.
    * @default false
    *
    * @example
@@ -91,6 +99,14 @@ export interface SendMessageOptions {
   quotedMsg?: string | MsgKey | MsgModel;
 
   /**
+   * Quote a message using a previously saved payload.
+   * The payload must be the JSON string representation of a raw message.
+   * Raw messages can be obtained when using {@link getMessageById} or {@link getMessages}
+   * When provided it has priority over {@link quotedMsg}.
+   */
+  quotedMsgPayload?: string;
+
+  /**
    * Wait for send while the ACK of message is SENT(1)
    *
    * @default true
@@ -123,7 +139,7 @@ export interface SendMessageReturn {
   to?: string;
   latestEditMsgKey?: MsgKey;
   ack: number;
-  sendMsgResult: Promise<SendMsgResult>;
+  sendMsgResult: Promise<SendMsgResultObject>;
 }
 
 export type RawMessage = ModelPropertiesContructor<MsgModel>;

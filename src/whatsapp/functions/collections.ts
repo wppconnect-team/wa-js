@@ -59,9 +59,25 @@ exportModule(
   exports,
   {
     createCollection: 'createCollection',
-    deleteCollection: 'deleteCollection',
-    editCollection: 'editCollection',
-    queryCollectionsIQ: 'queryCollectionsIQ',
   },
   (m) => m.createCollection
+);
+
+exportModule(
+  exports,
+  {
+    deleteCollection: 'deleteCollection',
+    editCollection: 'editCollection',
+  },
+  (m) => m.deleteCollection && m.editCollection
+);
+
+exportModule(
+  exports,
+  {
+    queryCollectionsIQ: ['queryCollectionsIQ', 'default'],
+  },
+  (m) =>
+    m.queryCollectionsIQ ||
+    m.default?.displayName?.toString().includes('QueryProductCollections')
 );

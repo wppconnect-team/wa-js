@@ -22,9 +22,12 @@ import { revokeStatus } from '../../whatsapp/functions';
 export async function remove(msgId: string | MsgKey): Promise<boolean> {
   const msg = await getMessageById(msgId);
   try {
-    await revokeStatus(StatusV3Store.get(UserPrefs.getMeUser()) as any, msg);
+    await revokeStatus(
+      StatusV3Store.get(UserPrefs.getMaybeMePnUser()) as any,
+      msg
+    );
     return true;
-  } catch (error) {
+  } catch (_error) {
     throw new WPPError(
       'error_on_remove_status',
       `Error on remove status with id ${msgId.toString()}`

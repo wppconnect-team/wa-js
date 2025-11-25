@@ -23,4 +23,5 @@ export * from './misc';
 export * from './models';
 export * as multidevice from './multidevice';
 export * from './stores';
+export * from './types';
 export * as websocket from './websocket';

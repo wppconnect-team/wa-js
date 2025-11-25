@@ -16,6 +16,7 @@
 
 import Debug from 'debug';
 
+import { wrapShouldAppearFunction } from '../chat/functions/setChatList';
 import { trackException } from '../gtag';
 import { InferArgs, InferReturn, wrapFunction } from '../util';
 import * as webpack from '../webpack';
@@ -98,8 +99,17 @@ export function exportModule(
 
         if (!moduleId) {
           const description = `Module ${name} was not found with ${condition.toString()}`;
-          console.error(description);
-          trackException(description);
+
+          /**
+           * Theses modules only loaded after device is connected
+           * I be creating other function for check expires based directily from files
+           * This will not directly affect the function call, it continues to work normally.
+           */
+          const ignoreFailModules: string[] = ['revokeStatus'];
+          if (!ignoreFailModules.includes(name)) {
+            console.error(description);
+            trackException(description);
+          }
           Object.defineProperty(this, name, {
             get: () => undefined,
           });
@@ -160,7 +170,7 @@ export function exportModule(
             if (functionPath) {
               functionPathMap.set(value, functionPath);
             }
-          } catch (error) {}
+          } catch (_error) {}
 
           return valueFn();
         }
@@ -258,11 +268,17 @@ export function wrapModuleFunction<TFunc extends (...args: any[]) => any>(
   }
 
   const baseModule = parts.reduce((a, b) => a?.[b], module);
-
-  baseModule[functionName] = wrapFunction(
-    func.bind(baseModule) as TFunc,
-    callback
-  );
+  if (functionName == 'getShouldAppearInList') {
+    baseModule[functionName] = wrapShouldAppearFunction(
+      func.bind(baseModule) as TFunc,
+      callback
+    );
+  } else {
+    baseModule[functionName] = wrapFunction(
+      func.bind(baseModule) as TFunc,
+      callback
+    );
+  }
 
   moduleIdMap.set(baseModule[functionName], moduleId);
   functionPathMap.set(baseModule[functionName], functionPath);

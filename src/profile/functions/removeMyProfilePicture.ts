@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { functions, UserPrefs } from '../../whatsapp';
+import { getMyUserWid } from '../../conn/functions/getMyUserWid';
+import { functions } from '../../whatsapp';
 
 /**
  * Remove your profile picture
@@ -28,8 +29,6 @@ import { functions, UserPrefs } from '../../whatsapp';
  */
 
 export async function removeMyProfilePicture(): Promise<boolean> {
-  const me = UserPrefs.getMaybeMeUser();
-  const result = await functions.requestDeletePicture(me);
-
+  const result = await functions.requestDeletePicture(getMyUserWid());
   return result.status === 200;
 }

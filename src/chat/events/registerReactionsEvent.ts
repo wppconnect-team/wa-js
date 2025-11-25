@@ -45,7 +45,7 @@ function register() {
             sender: createWid((d as any).from)!,
             timestamp: (d as any).t,
           });
-        } catch (error) {}
+        } catch (_error) {}
       }
     } else {
       try {
@@ -68,7 +68,7 @@ function register() {
             delete reactions[data.msgKey];
           }, 10000);
         }
-      } catch (error) {}
+      } catch (_error) {}
     }
 
     return func(...args);

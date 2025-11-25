@@ -90,7 +90,7 @@ export async function prepareLinkPreview<T extends RawMessage>(
             options.linkPreview = { ...preview.data, ...override };
           }
         }
-      } catch (error) {}
+      } catch (_error) {}
     }
   }
 
@@ -147,7 +147,7 @@ webpack.onFullReady(() => {
         };
 
         resolve(result);
-      } catch (error) {
+      } catch (_error) {
         resolve(await func(...args));
       }
     });

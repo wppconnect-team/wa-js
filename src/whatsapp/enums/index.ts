@@ -22,4 +22,5 @@ export * from './LogoutReason';
 export * from './MSG_TYPE';
 export * from './OUTWARD_TYPES';
 export * from './PIN_STATE';
+export * from './PinExpiryDurationOption';
 export * from './SendMsgResult';

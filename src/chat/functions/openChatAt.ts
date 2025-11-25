@@ -27,11 +27,14 @@ import { getMessageById } from '.';
  * await WPP.chat.openChatAt('[number]@c.us', <message_id>);
  * ```
  *
+ * @argument chatEntryPoint Optional chat entry point: "Chatlist" for any existing chat in the left panel, undefined for any other case.
+ *
  * @category Chat
  */
 export async function openChatAt(
   chatId: string | Wid,
-  messageId: string
+  messageId: string,
+  chatEntryPoint?: string | undefined
 ): Promise<boolean> {
   const wid = assertWid(chatId);
 
@@ -39,7 +42,11 @@ export async function openChatAt(
 
   const msg = await getMessageById(messageId);
 
-  const result = getSearchContext(chat, msg);
-
-  return await Cmd.openChatAt(chat, result);
+  try {
+    const msgContext = getSearchContext(chat, msg);
+    return await Cmd.openChatAt(chat, msgContext);
+  } catch (_e) {
+    const msgContext = getSearchContext(chat, msg.id._serialized);
+    return await Cmd.openChatAt({ chat, msgContext, chatEntryPoint });
+  }
 }

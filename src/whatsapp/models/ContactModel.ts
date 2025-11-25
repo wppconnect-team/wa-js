@@ -140,6 +140,11 @@ interface Derived {
    */
   isBroadcast: boolean;
   /**
+   * Deprecated in favor of getIsBroadcast
+   * @deprecated
+   */
+  isNewsletter: boolean;
+  /**
    * Deprecated in favor of getIsPSA
    * @deprecated
    */

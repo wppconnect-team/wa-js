@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2025 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,11 @@ import { findChat } from '../../whatsapp/functions';
  */
 export async function find(chatId: string | Wid): Promise<ChatModel> {
   const wid = assertWid(chatId);
-  const chat = await findChat(wid);
+
+  const chat = await findChat(
+    wid,
+    wid.isLid() ? 'username_contactless_search' : 'createChat'
+  );
 
   if (chat.isGroup) {
     await GroupMetadataStore.find(chat.id);

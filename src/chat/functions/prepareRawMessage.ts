@@ -15,21 +15,31 @@
  */
 
 import { assertWid } from '../../assert';
+import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import { getParticipants } from '../../group';
 import { WPPError } from '../../util';
-import { ChatModel, MsgKey, MsgModel, UserPrefs, Wid } from '../../whatsapp';
+import {
+  BotProfileStore,
+  ChatModel,
+  MsgKey,
+  MsgModel,
+  Wid,
+} from '../../whatsapp';
 import { ACK } from '../../whatsapp/enums';
 import {
   canReplyMsg,
+  genBotMsgSecretFromMsgSecret,
   getEphemeralFields,
   unixTime,
 } from '../../whatsapp/functions';
 import { defaultSendMessageOptions, RawMessage, SendMessageOptions } from '..';
+import { rehydrateMessage } from '../util';
 import {
   generateMessageID,
   getMessageById,
   markIsComposing,
   markIsPaused,
+  markIsRecording,
 } from '.';
 
 /**
@@ -49,7 +59,7 @@ export async function prepareRawMessage<T extends RawMessage>(
 
   message = {
     t: unixTime(),
-    from: UserPrefs.getMaybeMeUser(),
+    from: getMyUserWid(),
     to: chat.id,
     self: 'out',
     isNewMsg: true,
@@ -58,8 +68,12 @@ export async function prepareRawMessage<T extends RawMessage>(
     ...message,
   };
 
-  if (options.delay && message.type === 'chat') {
-    await markIsComposing(chat.id);
+  if (options.delay) {
+    if (message.type == 'chat') {
+      await markIsComposing(chat.id);
+    } else if ((options as any)?.isPtt) {
+      await markIsRecording(chat.id);
+    }
     await new Promise((resolve) =>
       setTimeout(() => resolve(true), options.delay)
     );
@@ -72,6 +86,18 @@ export async function prepareRawMessage<T extends RawMessage>(
     message = {
       ...ephemeral,
       ...message,
+    };
+  }
+  /**
+   * Adding fields for Chats with bots
+   */
+  if (chat.id?.isBot()) {
+    message = {
+      ...message,
+      messageSecret: await genBotMsgSecretFromMsgSecret(
+        crypto.getRandomValues(new Uint8Array(32))
+      ),
+      botPersonaId: BotProfileStore.get(chat.id?.toString())!.personaId,
     };
   }
 
@@ -137,11 +163,16 @@ export async function prepareRawMessage<T extends RawMessage>(
       );
 
       for (const id of ids) {
-        const wid = `${id}@c.us`;
-        if (!participants.includes(wid)) {
-          continue;
+        const lidWid = `${id}@lid`;
+        const pnWid = `${id}@c.us`;
+
+        // AFAIK, groups are only LID. Doesn't matter if account is migrated or not
+        // But will keep support for pnWid just in case
+        if (participants.includes(lidWid)) {
+          options.mentionedList.push(lidWid);
+        } else if (participants.includes(pnWid)) {
+          options.mentionedList.push(pnWid);
         }
-        options.mentionedList.push(wid);
       }
     }
   }
@@ -169,6 +200,13 @@ export async function prepareRawMessage<T extends RawMessage>(
     message.mentionedJidList = mentionedList;
   }
 
+  let isQuotedRehydrated = false;
+
+  if (options.quotedMsgPayload) {
+    options.quotedMsg = rehydrateMessage(options.quotedMsgPayload);
+    isQuotedRehydrated = true;
+  }
+
   /**
    * Quote a message, like a reply message
    */
@@ -186,7 +224,11 @@ export async function prepareRawMessage<T extends RawMessage>(
       });
     }
 
-    if (!options.quotedMsg?.isStatusV3 && !canReplyMsg(options.quotedMsg)) {
+    if (
+      !options.quotedMsg?.isStatusV3 &&
+      !canReplyMsg(options.quotedMsg) &&
+      !isQuotedRehydrated
+    ) {
       throw new WPPError(
         'quoted_msg_can_not_reply',
         'QuotedMsg can not reply',

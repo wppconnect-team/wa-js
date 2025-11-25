@@ -17,6 +17,7 @@
 export * from './AggReactionsModel';
 export * from './AttachMediaModel';
 export * from './BlocklistModel';
+export * from './BotProfileModel';
 export * from './BusinessCategoriesResultModel';
 export * from './BusinessProfileModel';
 export * from './CallModel';
@@ -43,6 +44,7 @@ export * from './MsgInfoParticipantModel';
 export * from './MsgModel';
 export * from './MuteModel';
 export * from './NetworkStatusModel';
+export * from './NoteModel';
 export * from './OrderItemModel';
 export * from './OrderModel';
 export * from './ParticipantModel';

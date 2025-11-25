@@ -17,7 +17,18 @@
 export { get } from './get';
 export { getBusinessProfile } from './getBusinessProfile';
 export { getCommonGroups } from './getCommonGroups';
+export {
+  getPnLidEntry,
+  InvalidWidForGetPnLidEntry,
+  PnLidContactInfo,
+  PnLidEntryResult,
+  PnLidWid,
+} from './getPnLidEntry';
 export { getProfilePictureUrl } from './getProfilePictureUrl';
 export { getStatus } from './getStatus';
 export { ContactListOptions, list } from './list';
 export { queryExists } from './queryExists';
+export { remove } from './remove';
+export { save } from './save';
+export { subscribePresence } from './subscribePresence';
+export { unsubscribePresence } from './unsubscribePresence';

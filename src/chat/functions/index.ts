@@ -25,7 +25,8 @@ export { deleteMessage, DeleteMessageReturn } from './deleteMessage';
 export { downloadMedia } from './downloadMedia';
 export { editMessage } from './editMessage';
 export { find } from './find';
-export { forwardMessage, ForwardMessagesOptions } from './forwardMessage';
+export { forwardMessage, ForwardMessageOptions } from './forwardMessage';
+export { forwardMessages, ForwardMessagesOptions } from './forwardMessages';
 export { generateMessageID } from './generateMessageID';
 export { get } from './get';
 export { getActiveChat } from './getActiveChat';
@@ -33,10 +34,12 @@ export { getLastSeen } from './getLastSeen';
 export { getMessageACK } from './getMessageACK';
 export { getMessageById } from './getMessageById';
 export { getMessages, GetMessagesOptions } from './getMessages';
+export { getNotes } from './getNotes';
 export { getPlatformFromMessage } from './getPlatformFromMessage';
 export { getQuotedMsg } from './getQuotedMsg';
 export { getQuotedMsgKey } from './getQuotedMsgKey';
 export { getReactions } from './getReactions';
+export { getUnreadChats } from './getUnreadChats';
 export { getVotes } from './getVotes';
 export { keepMessage } from './keepMessage';
 export { ChatListOptions, list } from './list';
@@ -59,6 +62,7 @@ export {
 } from './prepareMessageButtons';
 export { prepareRawMessage } from './prepareRawMessage';
 export { requestPhoneNumber } from './requestPhoneNumber';
+export { sendCatalogMessage } from './sendCatalogMessage';
 export {
   OrderItems,
   OrderMessageOptions,
@@ -68,6 +72,7 @@ export {
   PoolMessageOptions,
   sendCreatePollMessage,
 } from './sendCreatePollMessage';
+export { sendEventMessage } from './sendEventMessage';
 export {
   AudioMessageOptions,
   AutoDetectMessageOptions,
@@ -99,6 +104,8 @@ export {
   sendVCardContactMessage,
   VCardContact,
 } from './sendVCardContactMessage';
+export { setChatList } from './setChatList';
 export { setInputText } from './setInputText';
+export { setNotes } from './setNotes';
 export { starMessage, StarMessageReturn } from './starMessage';
 export { unmute } from './unmute';

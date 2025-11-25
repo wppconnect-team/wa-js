@@ -16,9 +16,10 @@
 
 import Debug from 'debug';
 
-import { assertFindChat, assertGetChat } from '../../assert';
+import { assertFindChat } from '../../assert';
+import { getAnnouncementGroup } from '../../community';
 import { WPPError } from '../../util';
-import { MsgModel } from '../../whatsapp';
+import { GroupMetadataStore, MsgModel } from '../../whatsapp';
 import { ACK } from '../../whatsapp/enums';
 import {
   addAndSendMessageEdit,
@@ -53,9 +54,23 @@ export async function sendRawMessage(
     ...options,
   };
 
-  const chat = options.createChat
-    ? await assertFindChat(chatId)
-    : assertGetChat(chatId);
+  // Always use assertFindChat to properly handle @lid chats and other cases
+  const chat = await assertFindChat(chatId);
+
+  /**
+   * When the group is groupType 'COMMUNITY', its a instance of a group created, you can
+   * not send message for this grouptype. You only can send message for linked announcement groups
+   */
+  if (chat.isGroup && chat.isParentGroup) {
+    const groupData = GroupMetadataStore.get(chat.id?.toString());
+    if (groupData?.groupType == 'COMMUNITY') {
+      const announceGroup = getAnnouncementGroup(groupData.id);
+      throw new WPPError(
+        'can_not_send_message_to_this_groupType',
+        `You can not send message to this groupType 'COMMUNITY', send for Announcement Group. Correct announcement groupId: ${announceGroup?.toString()}`
+      );
+    }
+  }
 
   rawMessage = await prepareRawMessage(chat, rawMessage, options);
 
@@ -115,7 +130,7 @@ export async function sendRawMessage(
     const sendResult = await result[1];
 
     debug(
-      `ack received for ${rawMessage.id} (ACK: ${message.ack}, SendResult: ${sendResult})`
+      `ack received for ${rawMessage.id} (ACK: ${message.ack}, SendResult: ${sendResult.messageSendResult})`
     );
   }
 
@@ -128,8 +143,8 @@ export async function sendRawMessage(
     ...(message.from && {
       from: message.from.toString(),
     }),
-    ...(message.to && {
-      to: message.to.toString(),
+    ...(chat && {
+      to: chat.id.toString(),
     }),
     sendMsgResult: result[1]!,
   };

@@ -28,15 +28,16 @@ export declare function queryOrder(
   createdAt: number;
   products: {
     id: string;
-    price: number;
-    thumbnailId: string;
-    thumbnailUrl: string;
-    currency: string;
+    price: number | null;
+    thumbnailId: string | null;
+    thumbnailUrl: string | null;
+    currency: string | null;
     name: string;
-    quantity: number;
+    quantity: number | null;
+    properties: [string, string][];
   }[];
-  subtotal: number;
-  total: number;
+  subtotal: number | null;
+  total: number | null;
   tax: number | null;
 }>;
 

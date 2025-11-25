@@ -17,6 +17,7 @@
 import { assertGetChat } from '../../assert';
 import { isMultiDevice } from '../../conn';
 import { MsgKey, MsgModel, MsgStore, Wid } from '../../whatsapp';
+import { MSG_TYPE } from '../../whatsapp/enums';
 import { msgFindQuery, MsgFindQueryParams } from '../../whatsapp/functions';
 import { RawMessage } from '..';
 
@@ -26,6 +27,7 @@ export interface GetMessagesOptions {
   id?: string;
   onlyUnread?: boolean;
   media?: 'url' | 'document' | 'all' | 'image';
+  includeCallMessages?: boolean;
 }
 
 /**
@@ -85,6 +87,12 @@ export interface GetMessagesOptions {
  *   count: 20,
  *   media: 'url',
  * });
+ *
+ * // Include call messages along with chat messages
+ * WPP.chat.getMessages('[number]@c.us', {
+ *   count: 20,
+ *   includeCallMessages: true,
+ * });
  * ```
  * @category Message
  * @return  {RawMessage[]} List of raw messages
@@ -135,7 +143,9 @@ export async function getMessages(
   let msgs = [];
   if (options.media === 'all') {
     const { messages } = await msgFindQuery('media', params);
-    msgs = messages;
+    if (Array.isArray(messages)) {
+      msgs.push(...messages);
+    }
   } else if (options.media === 'image') {
     const { messages } = await msgFindQuery('media', params);
     for (const Msg of messages) {
@@ -145,7 +155,11 @@ export async function getMessages(
     }
   } else if (options.media !== undefined) {
     params.media = options.media;
-    msgs = await msgFindQuery('media', params);
+
+    const { messages } = await msgFindQuery('media', params);
+    if (Array.isArray(messages)) {
+      msgs.push(...messages);
+    }
   } else {
     msgs = await msgFindQuery(direction, params);
   }
@@ -164,6 +178,42 @@ export async function getMessages(
     }
     return MsgStore.get(m) || new MsgModel(m);
   });
+
+  // Include call messages if requested
+  // WhatsApp's msgFindQuery excludes call_log messages by default
+  if (options.includeCallMessages) {
+    try {
+      const callMsgs = await msgFindQuery(MSG_TYPE.CALL_LOG, params);
+
+      if (callMsgs && callMsgs.length > 0) {
+        // Map call messages to MsgModel instances
+        const mappedCallMsgs = callMsgs.map((m: any) => {
+          if (m instanceof MsgModel) {
+            return m;
+          }
+          return MsgStore.get(m) || new MsgModel(m);
+        });
+
+        // Merge call messages with regular messages
+        msgs.push(...mappedCallMsgs);
+
+        // Sort messages by timestamp to maintain chronological order
+        msgs.sort((a: any, b: any) => {
+          const timeA = a.t || a.timestamp || 0;
+          const timeB = b.t || b.timestamp || 0;
+          return direction === 'before' ? timeB - timeA : timeA - timeB;
+        });
+
+        // Limit to the requested count
+        if (count > 0 && count !== Infinity) {
+          msgs = msgs.slice(0, count);
+        }
+      }
+    } catch (e) {
+      // Silently fail if call messages can't be retrieved
+      console.warn('Could not retrieve call messages:', e);
+    }
+  }
 
   return msgs;
 }

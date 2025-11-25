@@ -35,6 +35,6 @@ export async function setProductVisibility(
   productId: any,
   isHidden: boolean
 ): Promise<any> {
-  await productVisibilitySet([{ isHidden: isHidden, productId: productId }]);
+  await productVisibilitySet(productId, isHidden);
   return await assertGetProduct(productId);
 }

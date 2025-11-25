@@ -72,7 +72,7 @@ async function start() {
         let module: any;
         try {
           module = submodules[name];
-        } catch (error) {}
+        } catch (_error) {}
 
         const resultName = dir ? `${dir}.${name}` : name;
 
@@ -87,6 +87,9 @@ async function start() {
     .evaluate(() => (window as any).Debug.VERSION)
     .catch(() => null);
 
+  // if any pending request is hanging we unroute them to avoid errors, before browser close
+  await page.unrouteAll({ behavior: 'ignoreErrors' });
+
   await browser.close();
 
   delete result['_moduleIdMap'];
@@ -95,9 +98,22 @@ async function start() {
   }
 
   let exitCode = 0;
+  /**
+   * Theses modules only loaded after device is connected
+   * I be creating other function for check expires based directily from files
+   * This will not directly affect the function call, it continues to work normally.
+   */
+  const ignoreFailModules: string[] = [
+    'functions.revokeStatus',
+    'functions.setPushname',
+    'functions.editCollection',
+    'functions.deleteCollection',
+    'functions.createCollection',
+    'functions.forwardMessages',
+  ];
 
   for (const moduleName of Object.keys(result)) {
-    if (!result[moduleName]) {
+    if (!result[moduleName] && !ignoreFailModules.includes(moduleName)) {
       if (
         process.env['SEND_WEBHOOK_FAILURE'] &&
         process.env['DISCORD_WEBHOOK_URL_FAILURE']

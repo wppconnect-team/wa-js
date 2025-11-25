@@ -25,12 +25,21 @@ import { Cmd, Wid } from '../../whatsapp';
  * await WPP.chat.openChatBottom('[number]@c.us');
  * ```
  *
+ * @argument chatEntryPoint Optional chat entry point: "Chatlist" for any existing chat in the left panel, undefined for any other case.
+ *
  * @category Chat
  */
-export async function openChatBottom(chatId: string | Wid): Promise<boolean> {
+export async function openChatBottom(
+  chatId: string | Wid,
+  chatEntryPoint?: string | undefined
+): Promise<boolean> {
   const wid = assertWid(chatId);
 
   const chat = await assertFindChat(wid);
 
-  return await Cmd.openChatBottom(chat);
+  try {
+    return await Cmd.openChatBottom(chat);
+  } catch {
+    return await Cmd.openChatBottom({ chat, chatEntryPoint });
+  }
 }

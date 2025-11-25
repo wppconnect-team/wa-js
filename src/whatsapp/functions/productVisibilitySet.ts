@@ -23,7 +23,8 @@ export interface ProductVisibilitySetParams {
 
 /** @whatsapp 621374 >= 2.2228.14 */
 export declare function productVisibilitySet(
-  params: ProductVisibilitySetParams[]
+  productId: string,
+  isHidden: boolean
 ): any;
 
 exportModule(

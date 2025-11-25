@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       increment:
+        type: choice
         description: 'Tipo de incremento: patch, minor, major ou pre*'
         required: true
         default: 'patch'
@@ -16,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
         with:
           token: ${{ secrets.PERSONAL_TOKEN }}
 
@@ -26,9 +27,9 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Setup Node
-        uses: actions/setup-node@v4.0.3
+        uses: actions/setup-node@v6.0.0
         with:
-          node-version: 16.x
+          node-version: 24.11.1
 
       - name: Get npm cache directory
         id: npm-cache

@@ -16,15 +16,20 @@
 
 import Debug from 'debug';
 
-import { assertFindChat, assertGetChat } from '../../assert';
+import { assertFindChat } from '../../assert';
 import {
   blobToArrayBuffer,
+  convertToFile,
   createWid,
   getVideoInfoFromBuffer,
   WPPError,
 } from '../../util';
-import { convertToFile } from '../../util/convertToFile';
+import {
+  formatFileSize,
+  getMediaTypeForValidation,
+} from '../../util/fileHelpers';
 import * as webpack from '../../webpack';
+import * as whatsapp from '../../whatsapp';
 import {
   ChatModel,
   MediaPrep,
@@ -32,6 +37,7 @@ import {
   MsgModel,
   OpaqueData,
   StatusV3Store,
+  Wid,
 } from '../../whatsapp';
 import { SendMsgResult } from '../../whatsapp/enums';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
@@ -132,6 +138,7 @@ export interface ImageMessageOptions
     MessageButtonsOptions {
   type: 'image';
   isViewOnce?: boolean;
+  isHD?: boolean;
 }
 
 export interface StickerMessageOptions extends FileMessageOptions {
@@ -145,6 +152,7 @@ export interface VideoMessageOptions
   isGif?: boolean;
   isPtv?: boolean;
   isViewOnce?: boolean;
+  isHD?: boolean;
 }
 
 /**
@@ -218,7 +226,7 @@ export interface VideoMessageOptions
  * // A simple video
  * WPP.chat.sendFileMessage(
  *  '[number]@c.us',
- *  'data:application/msword;base64,<a long base64 file...>',
+ *  'data:video/mp4;base64,<a long base64 file...>',
  *  {
  *    type: 'video',
  *  }
@@ -227,10 +235,23 @@ export interface VideoMessageOptions
  * // A PTV Video (micro video)
  * WPP.chat.sendFileMessage(
  *  '[number]@c.us',
- *  'data:application/msword;base64,<a long base64 file...>',
+ *  'data:video/mp4;base64,<a long base64 file...>',
  *  {
  *    type: 'video',
  *    isPtv: true,
+ *  }
+ * );
+ *
+ * // Media using Link, the link must be public accessible
+ * // CORS must be enabled on the server and available for all domains
+ * // (Access-Control-Allow-Origin: *)
+ * // If the server does not have CORS enabled, you can use a public CORS proxy
+ * WPP.chat.sendFileMessage(
+ *  '[number]@c.us',
+ *  'https://example.com/image.jpg',
+ *  {
+ *    type: 'image',
+ *    caption: 'My image from URL', // Optional
  *  }
  * );
  * ```
@@ -238,7 +259,7 @@ export interface VideoMessageOptions
  * @return  {SendMessageReturn} The result
  */
 export async function sendFileMessage(
-  chatId: any,
+  chatId: string | Wid,
   content: string | Blob | File,
   options:
     | AutoDetectMessageOptions
@@ -257,18 +278,51 @@ export async function sendFileMessage(
     ...options,
   };
 
-  let chat = options.createChat
-    ? await assertFindChat(chatId)
-    : assertGetChat(chatId);
+  let chat: ChatModel;
   if (chatId?.toString() == 'status@broadcast') {
     chat = new ChatModel({
       id: createWid(STATUS_JID),
     });
+  } else {
+    chat = await assertFindChat(chatId);
   }
 
   const file = await convertToFile(content, options.mimetype, options.filename);
 
   const filename = file.name;
+
+  // Determine media type for file size validation
+  const mediaType = getMediaTypeForValidation(options.type, file.type);
+  const isStatusMedia = chatId?.toString() === 'status@broadcast';
+
+  // Validate file size before processing
+  try {
+    const isStatusOrigin = isStatusMedia
+      ? 'STATUS_TAB_CAMERA_PHOTO_LIBRARY'
+      : null;
+
+    const limit = whatsapp.MediaGatingUtils.getUploadLimit(
+      mediaType,
+      isStatusOrigin
+    );
+
+    debug(
+      `Validating file size: ${file.size} bytes, limit for ${mediaType}: ${limit} bytes`
+    );
+
+    if (file.size > limit) {
+      throw new WPPError(
+        'file_too_large',
+        `File size ${formatFileSize(file.size)} exceeds the upload limit of ${formatFileSize(limit)} for ${mediaType} files`,
+        { fileSize: file.size, limit, mediaType }
+      );
+    }
+  } catch (error) {
+    // If it's already our WPPError, re-throw it
+    if (error instanceof WPPError) {
+      throw error;
+    }
+  }
 
   const opaqueData = await OpaqueData.createFromData(file, file.type);
 
@@ -285,6 +339,7 @@ export async function sendFileMessage(
   } = {};
 
   let isViewOnce: boolean | undefined;
+  let maxDimension;
 
   if (options.type === 'audio') {
     rawMediaOptions.isPtt = options.isPtt;
@@ -297,6 +352,7 @@ export async function sendFileMessage(
     );
   } else if (options.type === 'image') {
     isViewOnce = options.isViewOnce;
+    maxDimension = options?.isHD ? 2560 : 1600;
   } else if (options.type === 'video') {
     isViewOnce = options.isViewOnce;
     rawMediaOptions.asGif = options.isGif;
@@ -306,7 +362,10 @@ export async function sendFileMessage(
     rawMediaOptions.asSticker = true;
   }
 
-  const mediaPrep = MediaPrep.prepRawMedia(opaqueData, rawMediaOptions);
+  const mediaPrep = MediaPrep.prepRawMedia(opaqueData, {
+    ...rawMediaOptions,
+    maxDimension,
+  });
 
   // The generated message in `sendToChat` is merged with `productMsgOptions`
   let rawMessage = await prepareRawMessage<RawMessage>(
@@ -329,10 +388,12 @@ export async function sendFileMessage(
   }
 
   await mediaPrep.waitForPrep();
+  const mediaData =
+    (mediaPrep as any)._mediaData || (mediaPrep as any).mediaData;
   if ((options as any)?.isPtv) {
-    (mediaPrep as any)._mediaData.type = 'ptv';
-    (mediaPrep as any)._mediaData.fullHeight = 1128;
-    (mediaPrep as any)._mediaData.fullWidth = 1128;
+    mediaData.type = 'ptv';
+    mediaData.fullHeight = 1128;
+    mediaData.fullWidth = 1128;
   }
   debug(`sending message (${options.type}) with id ${rawMessage.id}`);
   const sendMsgResult = mediaPrep.sendToChat(chat, {
@@ -388,7 +449,7 @@ export async function sendFileMessage(
       const sendResult = await sendMsgResult;
 
       debug(
-        `ack received for ${message.id} (ACK: ${message.ack}, SendResult: ${sendResult})`
+        `ack received for ${message.id} (ACK: ${message.ack}, SendResult: ${JSON.stringify(sendResult)})`
       );
     }
 
@@ -432,11 +493,20 @@ export async function sendFileMessage(
  * Generate a white thumbnail as WhatsApp generate for video files
  */
 function generateWhiteThumb(width: number, height: number, maxSize: number) {
-  let r = null != height ? height : maxSize,
-    i = null != width ? width : maxSize;
-  r > i
-    ? r > maxSize && ((i *= maxSize / r), (r = maxSize))
-    : i > maxSize && ((r *= maxSize / i), (i = maxSize));
+  let r = height ?? maxSize;
+  let i = width ?? maxSize;
+
+  if (r > i) {
+    if (r > maxSize) {
+      i *= maxSize / r;
+      r = maxSize;
+    }
+  } else {
+    if (i > maxSize) {
+      r *= maxSize / i;
+      i = maxSize;
+    }
+  }
 
   const bounds = { width: Math.max(r, 1), height: Math.max(i, 1) };
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 
 export type InferArgs<T> = T extends (...t: [...infer Arg]) => any
   ? Arg

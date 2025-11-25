@@ -26,7 +26,7 @@ interface Props extends PropsChatBase {
   lastReceivedKey?: MsgKey;
   t?: number;
   unreadCount: number;
-  archive?: any;
+  archive?: boolean;
   isReadOnly: boolean;
   isAnnounceGrpRestrict: boolean;
   modifyTag?: any;
@@ -87,16 +87,49 @@ interface Session extends SessionChatBase {
 interface Derived {
   kind?: any;
   isUser: boolean;
+  /**
+   * Deprecated in favor of getIsUser
+   * @deprecated
+   */
   isPSA: boolean;
+  /**
+   * Deprecated in favor of getIsPSA
+   * @deprecated
+   */
   isGroup: boolean;
+  /**
+   * Deprecated in favor of getIsGroup
+   * @deprecated
+   */
+  isParentGroup: boolean;
   isBroadcast: boolean;
   isNewsletter: boolean;
   canUnread: boolean;
+  /**
+   * Deprecated in favor of getHasUnread
+   * @deprecated
+   */
   hasUnread: boolean;
   optimisticUnreadCount?: any;
+  /**
+   * Deprecated in favor of getShouldShowUnreadDivider
+   * @deprecated
+   */
   shouldShowUnreadDivider?: any;
+  /**
+   * Deprecated in favor of getShouldAppearInList
+   * @deprecated
+   */
   shouldAppearInList?: any;
+  /**
+   * Deprecated in favor of getPreviewMessage
+   * @deprecated
+   */
   previewMessage?: any;
+  /**
+   * Deprecated in favor of getShowChangeNumberNotification
+   * @deprecated
+   */
   showChangeNumberNotification?: any;
   shouldShowUnreadInTitle?: any;
 }
@@ -141,7 +174,8 @@ export declare class ChatModel extends ModelChatBase {
   isMostRecentCMC(e?: any): boolean;
   loadRecentMsgs(e?: any): any;
   getSearchContext?(
-    msg: MsgModel | MsgKey,
+    chat: ChatModel | string,
+    msg: MsgModel | MsgKey | string,
     options?: {
       isQuotedMsgAvailable: boolean;
     }
