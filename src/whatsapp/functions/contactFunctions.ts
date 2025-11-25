@@ -244,9 +244,21 @@ exportModule(
     getFormattedShortName: 'getFormattedShortName',
     getFormattedName: 'getFormattedName',
     getFormattedUser: 'getFormattedUser',
-    getIsMyContact: 'getIsMyContact',
-    getMentionName: 'getMentionName',
     getSearchName: 'getSearchName',
   },
   (m) => m.getPhoneNumber && m.getTextStatusString && m.getPnForLid
+);
+
+// These two functions where moved from WAWebContactGetters to WAWebFrontendContactGetters module
+// So we will export them separately here
+// in versions >= 2.3000.1030318976 will get from WAWebFrontendContactGetters
+// in older versions will get from WAWebContactGetters
+// TODO(manfe): remove this when dropping support for older versions
+exportModule(
+  exports,
+  {
+    getIsMyContact: 'getIsMyContact',
+    getMentionName: 'getMentionName',
+  },
+  (m) => m.getIsMyContact && m.getMentionName
 );
