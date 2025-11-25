@@ -65,5 +65,42 @@ export function getBuildConstants(): BuildConstants | null {
     TERTIARY: parseInt(buildConstants.VERSION_TERTIARY, 10),
   };
 
-  return buildConstants || null;
+  return buildConstants;
+}
+
+/**
+ * Check if the current WhatsApp version is greater than or equal to a specified version
+ *
+ * @example
+ * ```javascript
+ * // Check if version is >= 2.3000.1030110621
+ * if (WPP.conn.isWhatsAppVersionGTE(2, 3000, 1030110621)) {
+ *   console.log('Using new API');
+ * }
+ * ```
+ *
+ * @param primary - Primary version number (e.g., 2)
+ * @param secondary - Secondary version number (e.g., 3000)
+ * @param tertiary - Tertiary version number (e.g., 1030110621)
+ * @returns {boolean} True if current version is >= specified version
+ */
+export function isWhatsAppVersionGTE(
+  primary: number,
+  secondary: number,
+  tertiary: number
+): boolean {
+  const buildConstants = getBuildConstants();
+  const {
+    PRIMARY = 0,
+    SECONDARY = 0,
+    TERTIARY = 0,
+  } = buildConstants?.PARSED || {};
+
+  if (PRIMARY > primary) return true;
+  if (PRIMARY < primary) return false;
+
+  if (SECONDARY > secondary) return true;
+  if (SECONDARY < secondary) return false;
+
+  return TERTIARY >= tertiary;
 }

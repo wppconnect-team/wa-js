@@ -17,7 +17,7 @@
 export { changeEnviromentDevice } from './changeEnviromentDevice';
 export { genLinkDeviceCodeForPhoneNumber } from './genLinkDeviceCodeForPhoneNumber';
 export { getAuthCode } from './getAuthCode';
-export { getBuildConstants } from './getBuildConstants';
+export { getBuildConstants, isWhatsAppVersionGTE } from './getBuildConstants';
 export {
   getHistorySyncProgress,
   HistorySyncProgress,

@@ -15,7 +15,7 @@
  */
 
 import { assertWid } from '../../assert';
-import { getBuildConstants } from '../../conn/functions';
+import { isWhatsAppVersionGTE } from '../../conn/functions';
 import { WPPError } from '../../util';
 import { ContactModel, Wid } from '../../whatsapp';
 import {
@@ -49,12 +49,8 @@ export async function remove(
       `The number ${contactId._serialized} is not your contact`
     );
 
-  // Check WhatsApp version to determine which API to use
-  const buildConstants = getBuildConstants();
-  const { SECONDARY = 0, TERTIARY = 0 } = buildConstants?.PARSED || {};
-
   // Version 2.3000.1030110621+ uses the new object-based API
-  if (SECONDARY >= 3000 && TERTIARY >= 1030110621) {
+  if (isWhatsAppVersionGTE(2, 3000, 1030110621)) {
     if (contactId.isLid()) {
       // Username contact - needs both lid and username
       const username = contact.username;
