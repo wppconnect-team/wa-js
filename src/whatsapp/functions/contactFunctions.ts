@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { injectFallbackModule } from '../../webpack';
 import { exportModule } from '../exportModule';
 import { ContactModel } from '../models';
 
@@ -143,6 +142,7 @@ export declare function getShouldForceBusinessUpdate(
   contact: ContactModel
 ): any;
 
+// WAWebContactGetters functions
 exportModule(
   exports,
   {
@@ -162,7 +162,6 @@ exportModule(
     getIsIAS: 'getIsIAS',
     getIsSupportAccount: 'getIsSupportAccount',
     getIsWAContact: 'getIsWAContact',
-    getIsMyContact: 'getIsMyContact',
     getCanRequestPhoneNumber: 'getCanRequestPhoneNumber',
     getShowBusinessCheckmarkAsPrimary: 'getShowBusinessCheckmarkAsPrimary',
     getShowBusinessCheckmarkAsSecondary: 'getShowBusinessCheckmarkAsSecondary',
@@ -170,40 +169,8 @@ exportModule(
     getIsDisplayNameApproved: 'getIsDisplayNameApproved',
     getShouldForceBusinessUpdate: 'getShouldForceBusinessUpdate',
   },
-  (m) => m.getIsMyContact && m.getIsGroup
+  (m) => m.getNotifyName && m.getIsMe && m.getUserid
 );
-
-injectFallbackModule('getIsMyContact', {
-  getNotifyName: (contact: ContactModel) => contact.notifyName,
-  getMentionName: (contact: ContactModel) => contact.mentionName,
-  getPremiumMessageName: (contact: ContactModel) => contact.premiumMessageName,
-  getUserid: (contact: ContactModel) => contact.userid,
-  getUserhash: (contact: ContactModel) => contact.userhash,
-  getSearchVerifiedName: (contact: ContactModel) => contact.searchVerifiedName,
-  getHeader: (contact: ContactModel) => contact.header,
-  getIsMe: (contact: ContactModel) => contact.isMe,
-  getIsUser: (contact: ContactModel) => contact.isUser,
-  getIsGroup: (contact: ContactModel) => contact.isGroup,
-  getIsNewsletter: (contact: ContactModel) => contact.isNewsletter,
-  getIsBroadcast: (contact: ContactModel) => contact.isBroadcast,
-  getIsPSA: (contact: ContactModel) => contact.isPSA,
-  getIsIAS: (contact: ContactModel) => contact.isIAS,
-  getIsSupportAccount: (contact: ContactModel) => contact.isSupportAccount,
-  getIsWAContact: (contact: ContactModel) => contact.isWAContact,
-  getIsMyContact: (contact: ContactModel) => contact.isMyContact,
-  getCanRequestPhoneNumber: (contact: ContactModel) =>
-    contact.canRequestPhoneNumber,
-  getShowBusinessCheckmarkAsPrimary: (contact: ContactModel) =>
-    contact.showBusinessCheckmarkAsPrimary,
-  getShowBusinessCheckmarkAsSecondary: (contact: ContactModel) =>
-    contact.showBusinessCheckmarkAsSecondary,
-  getShowBusinessCheckmarkInChatlist: (contact: ContactModel) =>
-    contact.showBusinessCheckmarkInChatlist,
-  getIsDisplayNameApproved: (contact: ContactModel) =>
-    contact.isDisplayNameApproved,
-  getShouldForceBusinessUpdate: (contact: ContactModel) =>
-    contact.shouldForceBusinessUpdate,
-});
 
 /**
  * @whatsapp 714574 >= 2.2327.4
@@ -258,6 +225,7 @@ export declare function getFormattedName(contact: ContactModel): any;
  */
 export declare function getFormattedUser(contact: ContactModel): any;
 
+// WAWebFrontendContactGetters functions
 exportModule(
   exports,
   {
@@ -272,30 +240,13 @@ exportModule(
       'getFormattedUsernameOrPhone',
       'getFormattedPhone',
     ],
-    getSearchName: 'getSearchName',
     getFormattedShortNameWithNonBreakingSpaces:
       'getFormattedShortNameWithNonBreakingSpaces',
     getFormattedShortName: 'getFormattedShortName',
     getFormattedName: 'getFormattedName',
     getFormattedUser: 'getFormattedUser',
+    getIsMyContact: 'getIsMyContact',
+    getSearchName: 'getSearchName',
   },
-  (m) => m.getDisplayName && m.getFormattedName
+  (m) => m.getIsMyContact && m.getFormattedName
 );
-injectFallbackModule('getDisplayName', {
-  getDisplayName: (contact: ContactModel) => contact.displayName,
-  getPnForLid: (contact: ContactModel) => contact.pnForLid,
-  getDisplayNameOrPnForLid: (contact: ContactModel) =>
-    contact.displayNameOrPnForLid,
-  getSearchName: (contact: ContactModel) => contact.searchName,
-  getFormattedShortNameWithNonBreakingSpaces: (contact: ContactModel) =>
-    contact.formattedShortNameWithNonBreakingSpaces,
-  getFormattedShortName: (contact: ContactModel) => contact.formattedShortName,
-  getFormattedName: (contact: ContactModel) => contact.formattedName,
-  getFormattedUser: (contact: ContactModel) => contact.formattedUser,
-  getFormattedPhone: (contact: ContactModel) => contact.formattedPhone,
-});
-
-injectFallbackModule('getFormattedUsernameOrPhone', {
-  getFormattedUsernameOrPhone: (contact: ContactModel) =>
-    contact.formattedPhone,
-});
