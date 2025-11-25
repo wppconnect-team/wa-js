@@ -59,16 +59,12 @@ export async function save(
 
   if (options?.syncAdressBook !== undefined) {
     console.warn(
-      '[WPPConnect Warning] The "syncAdressBook" option is deprecated. Please use "syncAddressBook" instead.'
+      '[WPPConnect Warning] The "syncAdressBook" option is deprecated due to a typo. Please use "syncAddressBook" instead.'
     );
   }
 
   const wid = assertWid(contactId);
   const alternateWid = ApiContact.getAlternateUserWid(wid);
-
-  if (!wid) {
-    throw new WPPError('invalid_contact_id', 'Invalid contact ID format');
-  }
 
   const lid = wid.isLid()
     ? wid.user
