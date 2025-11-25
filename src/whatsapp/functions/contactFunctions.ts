@@ -147,7 +147,6 @@ exportModule(
   exports,
   {
     getNotifyName: 'getNotifyName',
-    getMentionName: 'getMentionName',
     getPremiumMessageName: 'getPremiumMessageName',
     getUserid: 'getUserid',
     getUserhash: 'getUserhash',
@@ -246,6 +245,7 @@ exportModule(
     getFormattedName: 'getFormattedName',
     getFormattedUser: 'getFormattedUser',
     getIsMyContact: 'getIsMyContact',
+    getMentionName: 'getMentionName',
     getSearchName: 'getSearchName',
   },
   (m) => m.getIsMyContact && m.getFormattedName
