@@ -253,7 +253,7 @@ exportModule(
 // So we will export them separately here
 // in versions >= 2.3000.1030318976 will get from WAWebFrontendContactGetters
 // in older versions will get from WAWebContactGetters
-// TODO(manfe): remove this when dropping support for older versions
+// TODO(manfe): move this to WAWebFrontendContactGetters when dropping support for older versions
 exportModule(
   exports,
   {
