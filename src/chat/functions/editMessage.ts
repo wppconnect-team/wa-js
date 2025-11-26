@@ -29,10 +29,10 @@ import { getMessageById, prepareRawMessage, sendRawMessage } from '.';
 export type EditMessageOptions = SendMessageOptions & LinkPreviewOptions;
 
 /**
- * Send a text message
+ * Edit a message previously sent.
  *
  * @example
- * WPP.chat.editMessage('[number]@c.us', 'New text for message', {
+ * WPP.chat.editMessage('true_[number]@c.us_[msgId]', 'New text for message', {
  *   linkPreview: true,
  *   mentionedJidList: ['5521985232287@c.us']
  * });

@@ -18,9 +18,10 @@ import { exportModule } from '../exportModule';
 import { ChatModel, ModelPropertiesContructor, MsgModel } from '../models';
 import { SendMsgResultObject } from '../types';
 
-/** @whatsapp 75887
+/**
  * @whatsapp 975887 >= 2.2222.8
  * @whatsapp 623631 >= 2.2228.4
+ * @whatsapp >= 2.3000.1030351223
  */
 export declare function addAndSendMsgToChat(
   chat: ChatModel,
