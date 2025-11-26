@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assertGetChat, assertWid } from '../../assert';
+import { assertFindChat, assertWid } from '../../assert';
 import { Wid } from '../../whatsapp';
 import { sendDelete } from '../../whatsapp/functions';
 
@@ -26,7 +26,7 @@ import { sendDelete } from '../../whatsapp/functions';
 async function _delete(chatId: string | Wid) {
   const wid = assertWid(chatId);
 
-  const chat = assertGetChat(wid);
+  const chat = await assertFindChat(wid);
 
   sendDelete(chat);
 
