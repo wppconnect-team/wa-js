@@ -34,6 +34,7 @@ import {
   RawMessage,
   SendMessageOptions,
   SendMessageReturn,
+  SendMsgResultObject,
 } from '..';
 import { getMessageById, markIsRead, prepareRawMessage } from '.';
 
@@ -121,16 +122,22 @@ export async function sendRawMessage(
   } else {
     result = await addAndSendMsgToChat(chat, rawMessage);
   }
+
   debug(`message ${rawMessage.id} queued`);
 
   const message = await result[0];
+
+  let sendMsgResult: SendMsgResultObject | null = null;
+
   if (options.waitForAck) {
     debug(`waiting ack for ${rawMessage.id}`);
 
-    const sendResult = await result[1];
+    if (result[1]) {
+      sendMsgResult = await result[1];
+    }
 
     debug(
-      `ack received for ${rawMessage.id} (ACK: ${message.ack}, SendResult: ${sendResult.messageSendResult})`
+      `ack received for ${rawMessage.id} (ACK: ${message.ack}, SendResult: ${sendMsgResult?.messageSendResult})`
     );
   }
 
@@ -146,6 +153,6 @@ export async function sendRawMessage(
     ...(chat && {
       to: chat.id.toString(),
     }),
-    sendMsgResult: result[1]!,
+    sendMsgResult: sendMsgResult!,
   };
 }

@@ -16,14 +16,16 @@
 
 import { exportModule } from '../exportModule';
 import { ModelPropertiesContructor, MsgModel } from '../models';
-import { SendMsgResultObject } from '../types';
 
-/** @whatsapp 375399
+/**
+ * @whatsapp >= 2.3000.1027602471
+ * @note Since WhatsApp Web version ~2.3000.1027602471, this function no longer returns
+ *       a send result object. It only returns void after sending the edit message.
  */
 export declare function addAndSendMessageEdit(
   editMsg: MsgModel,
   message: ModelPropertiesContructor<MsgModel>
-): Promise<[Promise<MsgModel>, Promise<SendMsgResultObject>]>;
+): Promise<void>;
 
 exportModule(
   exports,
