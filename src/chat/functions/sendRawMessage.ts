@@ -132,7 +132,9 @@ export async function sendRawMessage(
   if (options.waitForAck) {
     debug(`waiting ack for ${rawMessage.id}`);
 
-    sendMsgResult = await result[1];
+    if (result[1]) {
+      sendMsgResult = await result[1];
+    }
 
     debug(
       `ack received for ${rawMessage.id} (ACK: ${message.ack}, SendResult: ${sendMsgResult?.messageSendResult})`
