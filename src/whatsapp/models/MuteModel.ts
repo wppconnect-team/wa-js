@@ -41,8 +41,11 @@ interface Derived {
 /** @whatsapp 40214
  * @whatsapp 440214 >= 2.2222.8
  */
-export declare interface MuteModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface MuteModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 40214
  * @whatsapp 440214 >= 2.2222.8

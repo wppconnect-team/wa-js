@@ -29,7 +29,8 @@ interface Option {
  * @whatsapp 631727 >= 2.2222.8
  */
 export declare interface Collection<M>
-  extends EventEmitter,
+  extends
+    EventEmitter,
     Pick<
       Array<M>,
       | 'indexOf'

@@ -44,8 +44,11 @@ interface Derived {
 /** @whatsapp 47896
  * @whatsapp 547896 >= 2.2222.8
  */
-export declare interface StatusV3Model
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface StatusV3Model extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 47896
  * @whatsapp 547896 >= 2.2222.8

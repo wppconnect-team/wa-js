@@ -48,8 +48,11 @@ interface Derived {
 /** @whatsapp 93836
  * @whatsapp 793836 >= 2.2222.8
  */
-export declare interface ProfilePicThumbModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface ProfilePicThumbModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 93836
  * @whatsapp 793836 >= 2.2222.8

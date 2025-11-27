@@ -38,8 +38,11 @@ interface Derived {}
 /** @whatsapp 24137
  * @whatsapp 724137 >= 2.2222.8
  */
-export declare interface LabelItemModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface LabelItemModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 24137
  * @whatsapp 724137 >= 2.2222.8

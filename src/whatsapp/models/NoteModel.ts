@@ -38,8 +38,11 @@ interface Session {
 
 interface Derived {}
 
-export declare interface NoteModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface NoteModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 86761
  */

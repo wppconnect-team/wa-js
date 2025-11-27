@@ -128,14 +128,12 @@ export interface AudioMessageOptions extends FileMessageOptions {
 }
 
 export interface DocumentMessageOptions
-  extends FileMessageOptions,
-    MessageButtonsOptions {
+  extends FileMessageOptions, MessageButtonsOptions {
   type: 'document';
 }
 
 export interface ImageMessageOptions
-  extends FileMessageOptions,
-    MessageButtonsOptions {
+  extends FileMessageOptions, MessageButtonsOptions {
   type: 'image';
   isViewOnce?: boolean;
   isHD?: boolean;
@@ -146,8 +144,7 @@ export interface StickerMessageOptions extends FileMessageOptions {
 }
 
 export interface VideoMessageOptions
-  extends FileMessageOptions,
-    MessageButtonsOptions {
+  extends FileMessageOptions, MessageButtonsOptions {
   type: 'video';
   isGif?: boolean;
   isPtv?: boolean;

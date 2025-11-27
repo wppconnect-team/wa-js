@@ -42,8 +42,11 @@ interface Derived {}
 /**
  * @whatsapp 649959 >= 2.2244.5
  */
-export declare interface HistorySyncProgressModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface HistorySyncProgressModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /**
  * @whatsapp 649959 >= 2.2244.5

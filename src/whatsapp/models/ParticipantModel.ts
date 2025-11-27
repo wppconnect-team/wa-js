@@ -40,8 +40,11 @@ interface Derived {}
 /** @whatsapp 45077
  * @whatsapp 245077 >= 2.2222.8
  */
-export declare interface ParticipantModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface ParticipantModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 45077
  * @whatsapp 245077 >= 2.2222.8

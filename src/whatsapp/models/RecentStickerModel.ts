@@ -38,8 +38,11 @@ interface Derived {}
 /** @whatsapp 20238
  * @whatsapp 620238 >= 2.2222.8
  */
-export declare interface RecentStickerModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface RecentStickerModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 20238
  * @whatsapp 620238 >= 2.2222.8

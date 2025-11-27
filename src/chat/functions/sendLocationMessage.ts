@@ -33,8 +33,7 @@ import {
 } from './prepareMessageButtons';
 
 export interface LocationMessageOptions
-  extends SendMessageOptions,
-    MessageButtonsOptions {
+  extends SendMessageOptions, MessageButtonsOptions {
   /**
    * latitude in degrees
    */

@@ -53,8 +53,11 @@ interface Derived {
 /** @whatsapp 74470
  * @whatsapp 574470 >= 2.2222.8
  */
-export declare interface StickerPackModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface StickerPackModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 74470
  * @whatsapp 574470 >= 2.2222.8

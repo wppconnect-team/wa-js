@@ -37,8 +37,11 @@ interface Derived {}
 /** @whatsapp 52846
  * @whatsapp 252846 >= 2.2222.8
  */
-export declare interface MsgButtonReplyMsgModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface MsgButtonReplyMsgModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 52846
  * @whatsapp 252846 >= 2.2222.8

@@ -37,8 +37,11 @@ interface Derived {}
 /** @whatsapp 89310
  * @whatsapp 689310 >= 2.2222.8
  */
-export declare interface BlocklistModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface BlocklistModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 89310
  * @whatsapp 689310 >= 2.2222.8

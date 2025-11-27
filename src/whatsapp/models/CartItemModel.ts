@@ -42,8 +42,11 @@ interface Derived {}
 /** @whatsapp 9581
  * @whatsapp 109581 >= 2.2222.8
  */
-export declare interface CartItemModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface CartItemModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 9581
  * @whatsapp 109581 >= 2.2222.8

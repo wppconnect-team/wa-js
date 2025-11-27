@@ -36,8 +36,11 @@ interface Derived {}
 /** @whatsapp 20472
  * @whatsapp 120472 >= 2.2222.8
  */
-export declare interface EmojiVariantModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface EmojiVariantModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 20472
  * @whatsapp 120472 >= 2.2222.8

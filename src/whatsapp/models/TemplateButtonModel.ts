@@ -41,8 +41,11 @@ interface Derived {}
 /** @whatsapp 11897
  * @whatsapp 311897 >= 2.2222.8
  */
-export declare interface TemplateButtonModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface TemplateButtonModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 11897
  * @whatsapp 311897 >= 2.2222.8

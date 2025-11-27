@@ -67,8 +67,11 @@ interface Derived {
 /** @whatsapp 17239
  * @whatsapp 317239 >= 2.2222.8
  */
-export declare interface ConnModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface ConnModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 17239
  * @whatsapp 317239 >= 2.2222.8
