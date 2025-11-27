@@ -89,8 +89,11 @@ interface Derived {
 /** @whatsapp 14423
  * @whatsapp 614423 >= 2.2222.8
  */
-export declare interface GroupMetadataModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface GroupMetadataModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 14423
  * @whatsapp 614423 >= 2.2222.8

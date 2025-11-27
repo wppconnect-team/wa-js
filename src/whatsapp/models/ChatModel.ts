@@ -138,8 +138,11 @@ interface Derived {
 }
 
 /** @whatsapp 63183 */
-export declare interface ChatModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface ChatModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 63183 */
 export declare class ChatModel extends ModelChatBase {

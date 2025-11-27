@@ -36,8 +36,11 @@ interface Derived {}
 /** @whatsapp 41809
  * @whatsapp 441809 >= 2.2222.8
  */
-export declare interface UnreadMentionModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface UnreadMentionModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 41809
  * @whatsapp 441809 >= 2.2222.8

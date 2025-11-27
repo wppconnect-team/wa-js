@@ -43,8 +43,11 @@ interface Derived {
 /** @whatsapp 47169
  * @whatsapp 947169 >= 2.2222.8
  */
-export declare interface QuickReplyModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface QuickReplyModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 47169
  * @whatsapp 947169 >= 2.2222.8

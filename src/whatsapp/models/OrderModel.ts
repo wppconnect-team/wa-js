@@ -46,8 +46,11 @@ interface Derived {
 /** @whatsapp 86761
  * @whatsapp 286761 >= 2.2222.8
  */
-export declare interface OrderModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface OrderModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 86761
  * @whatsapp 286761 >= 2.2222.8

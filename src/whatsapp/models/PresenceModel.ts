@@ -49,8 +49,11 @@ interface Derived {
 /** @whatsapp 30000
  * @whatsapp 330000 >= 2.2222.8
  */
-export declare interface PresenceModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface PresenceModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 30000
  * @whatsapp 330000 >= 2.2222.8

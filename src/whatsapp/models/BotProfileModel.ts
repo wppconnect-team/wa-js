@@ -50,8 +50,11 @@ interface Derived {}
 
 /** @whatsapp WAWebBotProfileModel
  */
-export declare interface BotProfileModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface BotProfileModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp WAWebBotProfileModel
  */

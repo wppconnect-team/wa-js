@@ -41,8 +41,11 @@ interface Derived {
 /** @whatsapp 8803
  * @whatsapp 208803 >= 2.2222.8
  */
-export declare interface LabelModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface LabelModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 8803
  * @whatsapp 208803 >= 2.2222.8

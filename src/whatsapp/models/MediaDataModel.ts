@@ -77,8 +77,11 @@ interface Derived {
 /** @whatsapp 2320
  * @whatsapp 502320 >= 2.2222.8
  */
-export declare interface MediaDataModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface MediaDataModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 2320
  * @whatsapp 502320 >= 2.2222.8

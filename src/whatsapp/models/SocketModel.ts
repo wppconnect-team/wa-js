@@ -64,8 +64,11 @@ interface Session {
 interface Derived {}
 
 /** @whatsapp 65044 */
-export declare interface SocketModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface SocketModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /** @whatsapp 65044 */
 export declare class SocketModel extends Model {

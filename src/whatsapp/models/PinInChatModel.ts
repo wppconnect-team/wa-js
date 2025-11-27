@@ -45,8 +45,11 @@ interface Derived {}
 /**
  * @whatsapp WAWebPinInChatModel >= 2.3000.1012170943
  */
-export declare interface PinInChatModel
-  extends ModelProxy<Props, Session, Derived> {}
+export declare interface PinInChatModel extends ModelProxy<
+  Props,
+  Session,
+  Derived
+> {}
 
 /**
  * @whatsapp WAWebPinInChatModel >= 2.3000.1012170943
