@@ -61,6 +61,10 @@ export {
   prepareMessageButtons,
 } from './prepareMessageButtons';
 export { prepareRawMessage } from './prepareRawMessage';
+export {
+  ButtonReplyOptions,
+  replyToButtonMessage,
+} from './replyToButtonMessage';
 export { requestPhoneNumber } from './requestPhoneNumber';
 export { sendCatalogMessage } from './sendCatalogMessage';
 export {
