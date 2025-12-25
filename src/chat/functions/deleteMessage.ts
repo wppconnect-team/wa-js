@@ -69,7 +69,7 @@ export async function deleteMessage(
     let sendMsgResult: SendMsgResult = SendMsgResult.ERROR_UNKNOWN;
     let isRevoked = false;
     let isDeleted = false;
-    const isSentByMe = msg.senderObj.isMe;
+    const isSentByMe = msg.senderObj?.isMe || msg.id.fromMe;
     let imAdmin = false;
     if (chat.isGroup) imAdmin = await iAmAdmin(chatId);
 
