@@ -14,13 +14,9 @@
  * limitations under the License.
  */
 
+import { getMyUserId, getMyUserLid } from '../../conn';
 import { convertToFile } from '../../util';
-import {
-  OpaqueData,
-  ProductImageModel,
-  ProductModel,
-  UserPrefs,
-} from '../../whatsapp';
+import { OpaqueData, ProductImageModel, ProductModel } from '../../whatsapp';
 import {
   addProduct,
   calculateFilehashFromBlob,
@@ -71,8 +67,8 @@ export async function createProduct(
   const Product = new ProductModel();
   Product.name = params.name.toString();
 
-  const mePNWid = UserPrefs.getMaybeMePnUser();
-  const meLIDWid = UserPrefs.getMaybeMeLidUser();
+  const mePNWid = getMyUserId();
+  const meLIDWid = getMyUserLid();
 
   Product.catalogWid = mePNWid || meLIDWid;
   Product.imageCdnUrl = url;

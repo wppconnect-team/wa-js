@@ -14,28 +14,17 @@
  * limitations under the License.
  */
 
-import { getMyUserId } from '../../conn';
-import { WPPError } from '../../util';
-import { CatalogStore } from '../../whatsapp';
+import { UserPrefs, Wid } from '../../whatsapp';
+
 /**
- * Get your current catalog
+ * Return the current logged user LID
  *
  * @example
  * ```javascript
- * // Get your current catalog
- * const myCatalog = await WPP.catalog.getMyCatalog();
+ * const lid = WPP.conn.getMyUserLid();
+ * console.log(lid.toString()); // Output: 123@lid
  * ```
- *
- * @return Your current catalog
  */
-export async function getMyCatalog() {
-  const wid = getMyUserId();
-
-  if (!wid)
-    throw new WPPError(
-      'no_self_user_wid_found_on_get_my_catalog',
-      `The logged account id is not found`
-    );
-
-  return CatalogStore.get(wid);
+export function getMyUserLid(): Wid | undefined {
+  return UserPrefs.getMaybeMeLidUser();
 }

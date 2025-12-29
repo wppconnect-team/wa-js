@@ -15,17 +15,23 @@
  */
 
 import { getMessageById } from '../../chat';
+import { getMyUserId } from '../../conn';
 import { WPPError } from '../../util';
-import { MsgKey, StatusV3Store, UserPrefs } from '../../whatsapp';
+import { MsgKey, StatusV3Store } from '../../whatsapp';
 import { revokeStatus } from '../../whatsapp/functions';
 
 export async function remove(msgId: string | MsgKey): Promise<boolean> {
   const msg = await getMessageById(msgId);
   try {
-    await revokeStatus(
-      StatusV3Store.get(UserPrefs.getMaybeMePnUser()) as any,
-      msg
-    );
+    const wid = getMyUserId();
+
+    if (!wid)
+      throw new WPPError(
+        'no_self_user_wid_found_on_remove_status',
+        `The logged account id is not found`
+      );
+
+    await revokeStatus(StatusV3Store.get(wid) as any, msg);
     return true;
   } catch (_error) {
     throw new WPPError(

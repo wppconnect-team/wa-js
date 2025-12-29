@@ -29,6 +29,7 @@ export {
 export { getMigrationState, MigrationState } from './getMigrationState';
 export { getMyDeviceId } from './getMyDeviceId';
 export { getMyUserId } from './getMyUserId';
+export { getMyUserLid } from './getMyUserLid';
 export { getPlatform } from './getPlatform';
 export { isAuthenticated } from './isAuthenticated';
 export { isIdle } from './isIdle';

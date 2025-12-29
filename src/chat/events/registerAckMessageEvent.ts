@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+import { getMyUserId, getMyUserLid } from '../../conn';
 import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
-import { MsgKey, MsgModel, MsgStore, UserPrefs, Wid } from '../../whatsapp';
+import { MsgKey, MsgModel, MsgStore, Wid } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   handleChatSimpleReceipt,
@@ -47,8 +48,8 @@ function registerAckMessageEvent() {
     const chatId: Wid = ackData.from;
     const sender: Wid | undefined = ackData.participant || undefined;
 
-    const mePNWid = UserPrefs.getMaybeMePnUser();
-    const meLIDWid = UserPrefs.getMaybeMeLidUser();
+    const mePNWid = getMyUserId();
+    const meLIDWid = getMyUserLid();
 
     const remote = ackData.from;
     const fromMe =
