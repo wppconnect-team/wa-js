@@ -35,6 +35,7 @@ export interface ChatListOptions {
   onlyWithUnreadMessage?: boolean;
   onlyArchived?: boolean;
   withLabels?: string[];
+  ignoreGroupMetadata?: boolean;
 }
 
 /**
@@ -86,7 +87,7 @@ export async function list(
   const direction = options.direction === 'before' ? 'before' : 'after';
 
   // Getting All Chats.
-  // IDK, why we use slice here. don't think its needed.
+  // Slice is used here to duplicate the array, then we can modify it without change the WhatsApp internal variables.
   let models = options.onlyNewsletter
     ? NewsletterStore.getModelsArray().slice()
     : ChatStore.getModelsArray().slice();
@@ -138,9 +139,11 @@ export async function list(
   }
 
   // Attaching Group Metadata on Found Chats.
-  for (const chat of models) {
-    if (chat.isGroup) {
-      await GroupMetadataStore.find(chat.id);
+  if (!options?.ignoreGroupMetadata) {
+    for (const chat of models) {
+      if (chat.isGroup) {
+        await GroupMetadataStore.find(chat.id);
+      }
     }
   }
 
