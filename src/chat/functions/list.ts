@@ -75,6 +75,9 @@ export interface ChatListOptions {
  *
  * // Only archived chats
  * const chats = await WPP.chat.list({onlyArchived: true});
+ *
+ * // Ignore group metadata search
+ * const chats = await WPP.chat.list({ignoreGroupMetadata: true})
  * ```
  *
  * @category Chat
