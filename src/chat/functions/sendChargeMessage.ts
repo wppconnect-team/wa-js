@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+import { getMyUserId } from '../../conn';
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import { generateOrderUniqueId, WPPError } from '../../util';
-import { CatalogStore, UserPrefs } from '../../whatsapp';
+import { CatalogStore } from '../../whatsapp';
 import {
   currencyForCountryShortcode,
   getCountryShortcodeByPhone,
@@ -180,7 +181,7 @@ export async function sendChargeMessage(
     type: 'physical-goods',
     payment_configuration: 'merchant_categorization_code',
     currency: await currencyForCountryShortcode(
-      await getCountryShortcodeByPhone(UserPrefs.getMaybeMePnUser().user)
+      await getCountryShortcodeByPhone(getMyUserId()?.user)
     ),
     total_amount: {
       value: total_amount,

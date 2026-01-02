@@ -15,7 +15,9 @@
  */
 
 import { isLidMigrated, shouldHaveAccountLid } from '../../whatsapp/functions';
-import { Lid1X1MigrationUtils, UserPrefs, Wid } from '../../whatsapp/misc';
+import { Lid1X1MigrationUtils, Wid } from '../../whatsapp/misc';
+import { getMyUserId } from './getMyUserId';
+import { getMyUserLid } from './getMyUserLid';
 
 /**
  * Migration state information for the current WhatsApp account
@@ -93,7 +95,7 @@ export function getMigrationState(): MigrationState {
   // Try to get current LID
   try {
     // Get me user's WID (without device ID)
-    state.currentLid = UserPrefs.getMaybeMeLidUser();
+    state.currentLid = getMyUserLid();
   } catch (_) {
     console.warn('getMaybeMeLidUser function is not available');
   }
@@ -101,7 +103,7 @@ export function getMigrationState(): MigrationState {
   // Try to get current PN
   try {
     // Get me user's WID (without device ID)
-    state.currentPn = UserPrefs.getMaybeMePnUser();
+    state.currentPn = getMyUserId();
   } catch (_) {
     console.warn('getMaybeMePnUser function is not available');
   }
