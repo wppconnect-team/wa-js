@@ -5,6 +5,10 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  id-token: write
+  contents: write
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -20,10 +24,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v6.1.0
         with:
-          node-version: 19.x
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Get npm cache directory
         id: npm-cache
@@ -41,12 +43,9 @@ jobs:
         run: npm ci || npm install
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish in NPM
         run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Generate Changelog
         id: generate_changelog

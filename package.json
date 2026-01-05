@@ -8,6 +8,10 @@
     "email": "edgardmessias@gmail.com",
     "url": "https://github.com/edgardmessias"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wppconnect-team/wa-js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
