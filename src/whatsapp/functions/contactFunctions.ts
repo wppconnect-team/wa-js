@@ -157,8 +157,6 @@ exportModule(
     getShowBusinessCheckmarkInChatlist: 'getShowBusinessCheckmarkInChatlist',
     getIsDisplayNameApproved: 'getIsDisplayNameApproved',
     getShouldForceBusinessUpdate: 'getShouldForceBusinessUpdate',
-    getIsMyContact: 'getIsMyContact',
-    getMentionName: 'getMentionName',
   },
   (m) => m.getNotifyName && m.getIsMe && m.getUserid
 );
@@ -217,12 +215,12 @@ export declare function getFormattedName(contact: ContactModel): any;
 export declare function getFormattedUser(contact: ContactModel): any;
 
 /**
- * @whatsapp >= 2.3000.1029492367 (last check)
+ * @whatsapp >= 2.3000.1030825052 (last check)
  */
 export declare function getIsMyContact(contact: ContactModel): boolean;
 
 /**
- * @whatsapp >= 2.3000.1029492367 (last check)
+ * @whatsapp >= 2.3000.1030825052 (last check)
  */
 export declare function getMentionName(contact: ContactModel): string;
 
@@ -247,6 +245,8 @@ exportModule(
     getFormattedName: 'getFormattedName',
     getFormattedUser: 'getFormattedUser',
     getSearchName: 'getSearchName',
+    getIsMyContact: 'getIsMyContact',
+    getMentionName: 'getMentionName',
   },
   (m) => m.getPhoneNumber && m.getTextStatusString && m.getPnForLid
 );
