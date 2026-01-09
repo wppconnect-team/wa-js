@@ -24,7 +24,6 @@ function applyPatch() {
     [key: string]: (...args: any[]) => any;
   } = {
     isMyContact: functions.getIsMyContact,
-    mentionName: functions.getMentionName,
     notifyName: functions.getNotifyName,
     pnForLid: functions.getPnForLid,
     displayNameOrPnForLid: functions.getDisplayNameOrPnForLid,
