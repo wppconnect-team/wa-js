@@ -215,12 +215,12 @@ export declare function getFormattedName(contact: ContactModel): any;
 export declare function getFormattedUser(contact: ContactModel): any;
 
 /**
- * @whatsapp >= 2.3000.1030318976 (last check)
+ * @whatsapp >= 2.3000.1030825052 (last check)
  */
 export declare function getIsMyContact(contact: ContactModel): boolean;
 
 /**
- * @whatsapp >= 2.3000.1030318976 (last check)
+ * @whatsapp >= 2.3000.1030825052 (last check)
  */
 export declare function getMentionName(contact: ContactModel): string;
 
@@ -245,20 +245,8 @@ exportModule(
     getFormattedName: 'getFormattedName',
     getFormattedUser: 'getFormattedUser',
     getSearchName: 'getSearchName',
-  },
-  (m) => m.getPhoneNumber && m.getTextStatusString && m.getPnForLid
-);
-
-// These two functions where moved from WAWebContactGetters to WAWebFrontendContactGetters module
-// So we will export them separately here
-// in versions >= 2.3000.1030318976 will get from WAWebFrontendContactGetters
-// in older versions will get from WAWebContactGetters
-// TODO(manfe): move this to WAWebFrontendContactGetters when dropping support for older versions
-exportModule(
-  exports,
-  {
     getIsMyContact: 'getIsMyContact',
     getMentionName: 'getMentionName',
   },
-  (m) => m.getIsMyContact && m.getMentionName
+  (m) => m.getPhoneNumber && m.getTextStatusString && m.getPnForLid
 );
