@@ -217,12 +217,12 @@ export declare function getFormattedName(contact: ContactModel): any;
 export declare function getFormattedUser(contact: ContactModel): any;
 
 /**
- * @whatsapp >= 2.3000.1030318976 (last check)
+ * @whatsapp >= 2.3000.1029492367 (last check)
  */
 export declare function getIsMyContact(contact: ContactModel): boolean;
 
 /**
- * @whatsapp 660666 >= 2.2327.4
+ * @whatsapp >= 2.3000.1029492367 (last check)
  */
 export declare function getMentionName(contact: ContactModel): string;
 
