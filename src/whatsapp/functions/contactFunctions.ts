@@ -157,6 +157,8 @@ exportModule(
     getShowBusinessCheckmarkInChatlist: 'getShowBusinessCheckmarkInChatlist',
     getIsDisplayNameApproved: 'getIsDisplayNameApproved',
     getShouldForceBusinessUpdate: 'getShouldForceBusinessUpdate',
+    getIsMyContact: 'getIsMyContact',
+    getMentionName: 'getMentionName',
   },
   (m) => m.getNotifyName && m.getIsMe && m.getUserid
 );
@@ -219,6 +221,11 @@ export declare function getFormattedUser(contact: ContactModel): any;
  */
 export declare function getIsMyContact(contact: ContactModel): boolean;
 
+/**
+ * @whatsapp 660666 >= 2.2327.4
+ */
+export declare function getMentionName(contact: ContactModel): string;
+
 // WAWebFrontendContactGetters functions
 exportModule(
   exports,
@@ -240,7 +247,6 @@ exportModule(
     getFormattedName: 'getFormattedName',
     getFormattedUser: 'getFormattedUser',
     getSearchName: 'getSearchName',
-    getIsMyContact: 'getIsMyContact',
   },
   (m) => m.getPhoneNumber && m.getTextStatusString && m.getPnForLid
 );
