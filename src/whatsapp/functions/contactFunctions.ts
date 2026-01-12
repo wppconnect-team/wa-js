@@ -258,7 +258,7 @@ exportModule(
   exports,
   {
     getIsMyContact: 'getIsMyContact',
-    getMentionName: 'getMentionName',
+    getMentionName: ['getMentionName', 'getFormattedShortName'], // getMentionName was removed in newer versions, fallback to getFormattedShortName
   },
-  (m) => m.getIsMyContact && m.getMentionName
+  (m) => m.getIsMyContact
 );
