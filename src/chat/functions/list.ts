@@ -91,7 +91,7 @@ export async function list(
 
   // Getting All Chats.
   // Slice is used here to duplicate the array, then we can modify it without change the WhatsApp internal variables.
-  // Also known as "shallow copy"
+  // Also known as "shallow copy".
   let models = options.onlyNewsletter
     ? NewsletterStore.getModelsArray().slice()
     : ChatStore.getModelsArray().slice();
