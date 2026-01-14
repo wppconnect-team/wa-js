@@ -68,7 +68,7 @@ export async function save(
 
   const lid = wid.isLid()
     ? wid.user
-    : alternateWid.isLid()
+    : alternateWid?.isLid()
       ? alternateWid.user
       : null;
 
