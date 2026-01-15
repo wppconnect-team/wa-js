@@ -18,14 +18,22 @@ import { exportModule } from '../exportModule';
 import { Wid } from '../misc';
 
 /**
+ * @deprecated Use toUserLidOrThrow instead. This function will be removed in future versions.
+ * This function was removed from WhatsApp Web since (2.3000.1031992593~) but is still available here for backward compatibility.
  * @whatsapp WAWebLidMigrationUtils >= 2.3000.x
  */
 export declare function toUserLid(wid: Wid): Wid;
 
+/**
+ * @whatsapp WAWebLidMigrationUtils >= 2.3000.1032013519
+ */
+export declare function toUserLidOrThrow(wid: Wid): Wid;
+
 exportModule(
   exports,
   {
-    toUserLid: ['toUserLid'],
+    toUserLid: ['toUserLid', 'toUserLidOrThrow'],
+    toUserLidOrThrow: 'toUserLidOrThrow',
   },
-  (m) => m.toUserLid
+  (m) => m.toUserLid || m.toUserLidOrThrow
 );
