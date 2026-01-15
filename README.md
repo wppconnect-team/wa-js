@@ -169,6 +169,28 @@ To debug or inspect `wa-source` folder, format the files to be easier to underst
 npm run wa-source:format
 ```
 
+### Comparing WhatsApp Web Versions
+
+To compare changes between two WhatsApp Web versions, use the helper script:
+
+Note: You need to run locally in multiple versions to download the scripts to wa-source folder, otherwise will not have anything to compare. To do it use: `WA_VERSION="<version-here>" npm run launch:local`
+
+```bash
+# Compare two versions (overview of module differences)
+./scripts/compare-wa-versions.sh 2.3000.1031980585 2.3000.1031992593
+
+# Compare a specific module between versions
+./scripts/compare-wa-versions.sh 2.3000.1031980585 2.3000.1031992593 WAWebUpdateUnreadChatAction
+
+# List available versions
+./scripts/compare-wa-versions.sh
+```
+
+This is useful for:
+- Tracking API changes between WhatsApp Web updates
+- Identifying when function signatures changed
+- Finding new or removed modules
+
 ## How to use this project
 
 Basically, you need to inject the `wppconnect-wa.js` file into the browser after WhatsApp page load.
