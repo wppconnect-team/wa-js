@@ -14,24 +14,15 @@
  * limitations under the License.
  */
 
-import * as webpack from '../../webpack';
+import * as abPropsCache from '../../whatsapp/functions/abPropsCache';
+import { RawABPropConfig } from '../../whatsapp/functions/abPropsCache';
 
 /**
  * A/B test property configuration
  */
-export interface ABPropConfig {
+export interface ABPropConfig extends RawABPropConfig {
   /** The human-readable config name (e.g., "web_pwa_background_sync") */
   name: string | null;
-  /** The internal config code (numeric key) */
-  configCode: string;
-  /** The actual value of the config (string, number, boolean) */
-  configValue: any;
-  /** Exposure key for analytics tracking */
-  configExpoKey?: string;
-  /** Whether this config has been accessed during this session */
-  hasAccessed?: boolean;
-  /** Override value if set via URL parameter */
-  overriddenConfigValue?: any;
 }
 
 /**
@@ -53,15 +44,13 @@ export interface ABPropConfig {
  * @returns {ABPropConfig[]} Array of A/B property configurations with names
  */
 export function getABProps(): ABPropConfig[] {
-  const abPropsCache = webpack.search((m) => m.getAllABPropConfigs);
+  const configs = abPropsCache.getAllABPropConfigs();
 
-  if (!abPropsCache || !abPropsCache.getAllABPropConfigs) {
+  if (!configs) {
     return [];
   }
 
-  const configs = abPropsCache.getAllABPropConfigs();
-
-  return configs.map((config: ABPropConfig) => ({
+  return configs.map((config: RawABPropConfig) => ({
     ...config,
     name: getABPropName(String(config.configCode)),
   }));
@@ -94,16 +83,15 @@ export function getABProps(): ABPropConfig[] {
  * @returns {Map<string, ABPropConfig>} Map of config code to A/B property configuration with names
  */
 export function getABPropsMap(): Map<string, ABPropConfig> {
-  const abPropsCache = webpack.search((m) => m.getAllABPropsMap);
+  const originalMap = abPropsCache.getAllABPropsMap();
 
-  if (!abPropsCache || !abPropsCache.getAllABPropsMap) {
+  if (!originalMap) {
     return new Map();
   }
 
-  const originalMap = abPropsCache.getAllABPropsMap();
   const result = new Map<string, ABPropConfig>();
 
-  originalMap.forEach((config: ABPropConfig, key: string) => {
+  originalMap.forEach((config: RawABPropConfig, key: string) => {
     result.set(key, {
       ...config,
       name: getABPropName(String(config.configCode)),
@@ -127,11 +115,5 @@ export function getABPropsMap(): Map<string, ABPropConfig> {
  * @returns {string|null} The human-readable config name or null if not found
  */
 export function getABPropName(configCode: string): string | null {
-  const abPropsCache = webpack.search((m) => m.getABPropConfigNameFromCode);
-
-  if (!abPropsCache || !abPropsCache.getABPropConfigNameFromCode) {
-    return null;
-  }
-
-  return abPropsCache.getABPropConfigNameFromCode(configCode);
+  return abPropsCache.getABPropConfigNameFromCode(configCode) || null;
 }
