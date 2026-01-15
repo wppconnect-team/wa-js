@@ -16,7 +16,7 @@
 
 import { assertWid } from '../../assert';
 import { ChatModel, GroupMetadataStore, Wid } from '../../whatsapp';
-import { findChat } from '../../whatsapp/functions';
+import { findOrCreateLatestChat } from '../../whatsapp/functions';
 
 /**
  * Find a chat by id
@@ -28,10 +28,9 @@ import { findChat } from '../../whatsapp/functions';
 export async function find(chatId: string | Wid): Promise<ChatModel> {
   const wid = assertWid(chatId);
 
-  const chat = await findChat(
-    wid,
-    wid.isLid() ? 'username_contactless_search' : 'createChat'
-  );
+  // Use findOrCreateLatestChat to match WhatsApp Web's native behavior
+  // This ensures the chat is properly initialized and can be opened/clicked
+  const { chat } = await findOrCreateLatestChat(wid, 'newChatFlow');
 
   if (chat.isGroup) {
     await GroupMetadataStore.find(chat.id);

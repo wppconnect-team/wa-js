@@ -91,3 +91,24 @@ export function isWhatsAppVersionGTE(version: string): boolean {
 
   return compare(currentVersion, version, '>=');
 }
+
+/**
+ * Check if the current WhatsApp version is less than or equal to a specified version
+ *
+ * @example
+ * ```javascript
+ * // Check if version is <= 2.3000.1029960097
+ * if (WPP.conn.isWhatsAppVersionLTE('2.3000.1029960097')) {
+ *   console.log('Using legacy API');
+ * }
+ * ```
+ *
+ * @param version - Version string to compare against (e.g., "2.3000.1029")
+ * @returns {boolean} True if current version is <= specified version
+ */
+export function isWhatsAppVersionLTE(version: string): boolean {
+  const buildConstants = getBuildConstants();
+  const currentVersion = buildConstants?.VERSION_STR || '0.0.0';
+
+  return compare(currentVersion, version, '<=');
+}
