@@ -27,6 +27,15 @@ export declare function markUnread(
 ): Promise<ChatModel>;
 
 /**
+ * @whatsapp >= 2.2228.4
+ * @deprecated Use sendSeen({chat}) for versions >= 2.3000.1032013519
+ */
+export declare function sendSeen(
+  chat: ChatModel,
+  whenAvailable: boolean
+): Promise<ChatModel>;
+
+/**
  * @whatsapp WAWebUpdateUnreadChatAction >= 2.3000.1032013519
  */
 export declare function sendSeen(options: {
