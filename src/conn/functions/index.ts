@@ -16,6 +16,12 @@
 
 export { changeEnviromentDevice } from './changeEnviromentDevice';
 export { genLinkDeviceCodeForPhoneNumber } from './genLinkDeviceCodeForPhoneNumber';
+export {
+  ABPropConfig,
+  getABPropName,
+  getABProps,
+  getABPropsMap,
+} from './getABProps';
 export { getAuthCode } from './getAuthCode';
 export {
   BuildConstants,
