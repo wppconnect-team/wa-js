@@ -17,21 +17,32 @@
 import { exportModule } from '../exportModule';
 import { ChatModel, MsgModel } from '../models';
 
-/** @whatsapp 9609
- * @whatsapp 561498 >= 2.2228.4
+/**
+ * @whatsapp WAWebUpdateUnreadChatAction >= 2.3000.1031992593
  */
 export declare function markUnread(
   chat: ChatModel,
-  whenAvailable: boolean
+  whenAvailable: boolean,
+  showToast?: boolean
 ): Promise<ChatModel>;
 
-/** @whatsapp 9609
+/**
  * @whatsapp 561498 >= 2.2228.4
+ * @deprecated Use sendSeen({chat}) for versions >= 2.3000.1031992593
  */
 export declare function sendSeen(
   chat: ChatModel,
   whenAvailable: boolean
 ): Promise<ChatModel>;
+
+/**
+ * @whatsapp WAWebUpdateUnreadChatAction >= 2.3000.1031992593
+ */
+export declare function sendSeen(options: {
+  chat: ChatModel;
+  threadId?: string | null;
+  afterAvailable?: boolean;
+}): Promise<void>;
 
 /** @whatsapp 30734
  * @whatsapp 730734 >= 2.2222.8

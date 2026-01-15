@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
+import { compare } from 'compare-versions';
+
 import { assertGetChat } from '../../assert';
 import { Wid } from '../../whatsapp';
+import { SANITIZED_VERSION_STR } from '../../whatsapp/contants';
 import { sendSeen } from '../../whatsapp/functions';
 
 /**
@@ -33,7 +36,11 @@ export async function markIsRead(chatId: string | Wid) {
 
   const unreadCount = chat.unreadCount!;
 
-  await sendSeen(chat, false);
+  if (compare(SANITIZED_VERSION_STR, '2.3000.1031992593', '>=')) {
+    await sendSeen({ chat });
+  } else {
+    await sendSeen(chat, false);
+  }
 
   return {
     wid: chat.id,
