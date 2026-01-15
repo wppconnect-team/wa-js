@@ -33,7 +33,7 @@ export async function markIsRead(chatId: string | Wid) {
 
   const unreadCount = chat.unreadCount!;
 
-  await sendSeen(chat, false);
+  await sendSeen({ chat });
 
   return {
     wid: chat.id,
