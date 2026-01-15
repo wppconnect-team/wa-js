@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 import { ChatModel, MsgModel } from '../models';
 
 /**
- * @whatsapp WAWebUpdateUnreadChatAction >= 2.3000.1032013519
+ * @whatsapp WAWebUpdateUnreadChatAction >= 2.3000.1031992593
  */
 export declare function markUnread(
   chat: ChatModel,
@@ -27,8 +27,8 @@ export declare function markUnread(
 ): Promise<ChatModel>;
 
 /**
- * @whatsapp >= 2.2228.4
- * @deprecated Use sendSeen({chat}) for versions >= 2.3000.1032013519
+ * @whatsapp 561498 >= 2.2228.4
+ * @deprecated Use sendSeen({chat}) for versions >= 2.3000.1031992593
  */
 export declare function sendSeen(
   chat: ChatModel,
@@ -36,7 +36,7 @@ export declare function sendSeen(
 ): Promise<ChatModel>;
 
 /**
- * @whatsapp WAWebUpdateUnreadChatAction >= 2.3000.1032013519
+ * @whatsapp WAWebUpdateUnreadChatAction >= 2.3000.1031992593
  */
 export declare function sendSeen(options: {
   chat: ChatModel;
