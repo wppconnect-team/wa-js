@@ -15,18 +15,31 @@
  */
 
 import { exportModule } from '../exportModule';
-import { Wid } from '../misc';
+import { Wid } from './Wid';
+
+interface LidPnMapping {
+  lid: Wid;
+  pn: Wid;
+}
+
+interface CreateLidPnMappingsParams {
+  mappings: LidPnMapping[];
+  flushImmediately: boolean;
+  learningSource: string;
+}
 
 /**
- * Check if a given Wid should have an account LID based on migration status
- * @whatsapp WAWebLidMigrationUtils >= 2.3000.x
+ * @whatsapp WAWebDBCreateLidPnMappings
+ * Last verified >= 2.3000.1032022795
  */
-export declare function shouldHaveAccountLid(wid: Wid): boolean;
+export declare function createLidPnMappings(
+  params: CreateLidPnMappingsParams
+): Promise<void>;
 
 exportModule(
   exports,
   {
-    shouldHaveAccountLid: ['shouldHaveAccountLid'],
+    createLidPnMappings: 'createLidPnMappings',
   },
-  (m) => typeof m.shouldHaveAccountLid === 'function'
+  (m) => m.createLidPnMappings
 );
