@@ -17,6 +17,7 @@
 import { assertWid } from '../../assert';
 import { WPPError } from '../../util';
 import { ContactStore, lidPnCache, Wid } from '../../whatsapp';
+import { queryExists } from './queryExists';
 
 export interface PnLidWid {
   id: string;
@@ -84,6 +85,14 @@ export async function getPnLidEntry(
   } else if (wid.server === 'c.us') {
     pn = wid;
     lid = lidPnCache.getCurrentLid(wid) || undefined;
+
+    // If no LID found locally, query the server to get it
+    if (!lid) {
+      const queryResult = await queryExists(wid);
+      if (queryResult?.lid) {
+        lid = queryResult.lid;
+      }
+    }
   }
 
   // This will get the contact info from ContactStore in memory
