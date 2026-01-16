@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { isLidMigrated, shouldHaveAccountLid } from '../../whatsapp/functions';
+import { isLidMigrated } from '../../whatsapp/functions';
 import { Lid1X1MigrationUtils, UserPrefs, Wid } from '../../whatsapp/misc';
 
 /**
@@ -27,8 +27,6 @@ export interface MigrationState {
   isSyncdSessionMigrated: boolean;
   /** Whether old messaging rules should still be applied */
   shouldApplyNonMigratedMessagingRules: boolean;
-  /** Whether the account should have an account LID */
-  shouldHaveAccountLid: boolean;
   /** The current user's LID, if available */
   currentLid?: Wid;
   /** The current user's PN, if available */
@@ -58,7 +56,6 @@ export function getMigrationState(): MigrationState {
     isLidMigrated: false,
     isSyncdSessionMigrated: false,
     shouldApplyNonMigratedMessagingRules: false,
-    shouldHaveAccountLid: false,
   };
 
   try {
@@ -82,12 +79,6 @@ export function getMigrationState(): MigrationState {
     console.warn(
       'shouldApplyNonMigratedMessagingRules function is not available'
     );
-  }
-
-  try {
-    state.shouldHaveAccountLid = shouldHaveAccountLid();
-  } catch (_) {
-    console.warn('shouldHaveAccountLid function is not available');
   }
 
   // Try to get current LID

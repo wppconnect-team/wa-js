@@ -17,6 +17,7 @@
 import { assertWid } from '../../assert';
 import { createWid } from '../../util/createWid';
 import { ApiContact, USyncQuery, USyncUser, Wid } from '../../whatsapp';
+import * as DBCreateLidPnMappings from '../../whatsapp/misc/DBCreateLidPnMappings';
 
 export interface QueryExistsResult {
   wid: Wid;
@@ -112,6 +113,16 @@ export async function queryExists(
         status: result.status,
         lid: lid ? createWid(lid) : undefined,
       };
+
+      // Update the lidPnCache with the PN→LID mapping using native createLidPnMappings
+      // This updates BOTH IndexedDB and in-memory cache
+      if (result.lid && wid.isUser() && !wid.isLid()) {
+        await DBCreateLidPnMappings.createLidPnMappings({
+          mappings: [{ lid: result.lid, pn: wid }],
+          flushImmediately: true,
+          learningSource: 'usync',
+        });
+      }
     }
   } else {
     result = null;

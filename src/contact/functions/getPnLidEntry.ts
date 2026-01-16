@@ -14,9 +14,14 @@
  * limitations under the License.
  */
 
+import Debug from 'debug';
+
 import { assertWid } from '../../assert';
 import { WPPError } from '../../util';
 import { ContactStore, lidPnCache, Wid } from '../../whatsapp';
+import { queryExists } from './queryExists';
+
+const debug = Debug('WA-JS:contact:getPnLidEntry');
 
 export interface PnLidWid {
   id: string;
@@ -84,6 +89,20 @@ export async function getPnLidEntry(
   } else if (wid.server === 'c.us') {
     pn = wid;
     lid = lidPnCache.getCurrentLid(wid) || undefined;
+
+    // If no LID found locally, query the server to get it
+    if (!lid) {
+      debug(`LID not found in cache for ${wid.toString()}, querying server...`);
+      const queryResult = await queryExists(wid);
+      if (queryResult?.lid) {
+        lid = queryResult.lid;
+        debug(`LID retrieved from server: ${lid.toString()}`);
+      } else {
+        debug(`No LID returned from server for ${wid.toString()}`);
+      }
+    } else {
+      debug(`LID found in cache: ${lid.toString()}`);
+    }
   }
 
   // This will get the contact info from ContactStore in memory
@@ -107,7 +126,7 @@ export async function getPnLidEntry(
 
   // Do not return Wid or ContactModel class instances directly
   // otherwise wpp-connect will not be able to properly serialize the response
-  return {
+  const result = {
     lid: lid
       ? {
           id: lid.user,
@@ -124,4 +143,8 @@ export async function getPnLidEntry(
       : undefined,
     contact,
   };
+
+  debug(`getPnLidEntry result for ${wid.toString()}`, result);
+
+  return result;
 }
