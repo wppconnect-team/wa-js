@@ -37,7 +37,7 @@ export async function markIsRead(chatId: string | Wid) {
   const unreadCount = chat.unreadCount!;
 
   if (compare(SANITIZED_VERSION_STR, '2.3000.1031992593', '>=')) {
-    await sendSeen({ chat });
+    await sendSeen({ chat, afterAvailable: false });
   } else {
     await sendSeen(chat, false);
   }
