@@ -118,7 +118,7 @@ export async function queryExists(
       // This updates BOTH IndexedDB and in-memory cache
       if (result.lid && wid.isUser() && !wid.isLid()) {
         await DBCreateLidPnMappings.createLidPnMappings({
-          mappings: [{ lid: result.lid, pn: wid }],
+          mappings: [{ lid: result.lid, pn: result.wid }],
           flushImmediately: true,
           learningSource: 'usync',
         });
