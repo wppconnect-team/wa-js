@@ -28,10 +28,10 @@ import { Theme } from './getTheme';
  * await WPP.conn.setTheme(Theme.DARK);
  * await WPP.conn.setTheme(Theme.SYSTEM);
  *
- * // Using numbers (0 = light, 1 = dark, 2 = system)
- * await WPP.conn.setTheme(0);
- * await WPP.conn.setTheme(1);
- * await WPP.conn.setTheme(2);
+ * // Using string ("light", "dark", "system")
+ * await WPP.conn.setTheme("light");
+ * await WPP.conn.setTheme("dark");
+ * await WPP.conn.setTheme("system");
  * ```
  *
  * @category Config
