@@ -41,13 +41,13 @@ export interface AutoDownloadSettings {
  * @example
  * ```javascript
  * // Disable video and document auto-download
- * await WPP.whatsapp.setAutoDownloadSettings({
+ * await WPP.conn.setAutoDownloadSettings({
  *   videos: false,
  *   documents: false
  * });
  *
  * // Enable only photos
- * await WPP.whatsapp.setAutoDownloadSettings({
+ * await WPP.conn.setAutoDownloadSettings({
  *   photos: true,
  *   audio: false,
  *   videos: false,
