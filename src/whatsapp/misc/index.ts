@@ -46,6 +46,7 @@ export * from './Socket';
 export * from './Stream';
 export * from './UsernameGatingUtils';
 export * from './UserPrefs';
+export * from './UserPrefsGeneral';
 export * from './USyncQuery';
 export * from './USyncUser';
 export * from './VCard';
