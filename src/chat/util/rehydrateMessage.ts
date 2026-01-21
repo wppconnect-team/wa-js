@@ -66,6 +66,14 @@ export function rehydrateMessage(value: any): MsgModel | undefined {
     );
   }
 
+  // Remove problematic fields that might cause issues during model creation
+  // Mainly fields that are related to mentions in groups for quoted messages
+  delete msgData.rowId;
+  delete msgData.labels;
+  delete msgData.groupMentions;
+  delete msgData.nonJidMentions;
+  delete msgData.mentionedJidList;
+
   const msg = new MsgModel(msgData);
 
   // Wrap msgContextInfo to remove problematic fields (mainly for quoted medias)
