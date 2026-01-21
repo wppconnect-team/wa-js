@@ -37,6 +37,7 @@ export { getMigrationState, MigrationState } from './getMigrationState';
 export { getMyDeviceId } from './getMyDeviceId';
 export { getMyUserId } from './getMyUserId';
 export { getPlatform } from './getPlatform';
+export { getTheme, Theme } from './getTheme';
 export { isAuthenticated } from './isAuthenticated';
 export { isIdle } from './isIdle';
 export { isMainInit } from './isMainInit';
@@ -57,3 +58,4 @@ export {
 export { setKeepAlive } from './setKeepAlive';
 export { setLimit } from './setLimit';
 export { setMultiDevice } from './setMultiDevice';
+export { setTheme } from './setTheme';

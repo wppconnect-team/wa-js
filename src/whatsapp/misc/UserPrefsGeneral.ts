@@ -64,6 +64,20 @@ export declare function getAutoDownloadDocuments(): boolean;
  */
 export declare function setAutoDownloadDocuments(value: boolean): void;
 
+/**
+ * Get theme setting
+ * @whatsapp WAWebUserPrefsGeneral >= 2.3000.1032022795
+ * @returns Theme value: "light" or "dark"
+ */
+export declare function getTheme(): string;
+
+/**
+ * Set theme setting
+ * @whatsapp WAWebUserPrefsGeneral >= 2.3000.1032022795
+ * @param value Theme value: "light" or "dark"
+ */
+export declare function setTheme(value: string): void;
+
 exportModule(
   exports,
   {
@@ -75,6 +89,8 @@ exportModule(
     setAutoDownloadVideos: 'setAutoDownloadVideos',
     getAutoDownloadDocuments: 'getAutoDownloadDocuments',
     setAutoDownloadDocuments: 'setAutoDownloadDocuments',
+    getTheme: 'getTheme',
+    setTheme: 'setTheme',
   },
-  (m) => m.getAutoDownloadPhotos && m.setAutoDownloadPhotos
+  (m) => m.getAutoDownloadPhotos && m.setAutoDownloadPhotos && m.getTheme
 );
