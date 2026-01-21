@@ -1,9 +1,9 @@
-## 3.19.9 (2026-01-21)
+# 3.20.0 (2026-01-21)
 
 
-### Bug Fixes
+### Features
 
-* remove problematic fields from msgData during message rehydration ([#3230](https://github.com/wppconnect-team/wa-js/issues/3230)) ([cab8e41](https://github.com/wppconnect-team/wa-js/commit/cab8e41f0ac23aa038e536c4e853d71ee15fb329))
+* Ability to manage whatsapp theme  ([#3233](https://github.com/wppconnect-team/wa-js/issues/3233)) ([9530a49](https://github.com/wppconnect-team/wa-js/commit/9530a497db49704215668fa068b5a0c1fe06b9f8))
 
 
 
