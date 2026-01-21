@@ -23,6 +23,7 @@ export {
   getABPropsMap,
 } from './getABProps';
 export { getAuthCode } from './getAuthCode';
+export { getAutoDownloadSettings } from './getAutoDownloadSettings';
 export {
   BuildConstants,
   getBuildConstants,
@@ -49,6 +50,10 @@ export { logout } from './logout';
 export { markAvailable, markUnavailable } from './markAvailable';
 export { needsUpdate } from './needsUpdate';
 export { refreshQR } from './refreshQR';
+export {
+  AutoDownloadSettings,
+  setAutoDownloadSettings,
+} from './setAutoDownloadSettings';
 export { setKeepAlive } from './setKeepAlive';
 export { setLimit } from './setLimit';
 export { setMultiDevice } from './setMultiDevice';
