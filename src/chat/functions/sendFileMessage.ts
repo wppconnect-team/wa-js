@@ -384,7 +384,8 @@ export async function sendFileMessage(
     await markIsRead(chat.id).catch(() => null);
   }
 
-  await mediaPrep.waitForPrep();
+  // Commenting waitForPrep in favor of addEvenWhilePreparing[true] in sendToChat
+  // await mediaPrep.waitForPrep();
   const mediaData =
     (mediaPrep as any)._mediaData || (mediaPrep as any).mediaData;
   if ((options as any)?.isPtv) {
@@ -398,7 +399,7 @@ export async function sendFileMessage(
     footer: options.footer,
     isViewOnce,
     productMsgOptions: chatId === 'status@broadcast' ? undefined : rawMessage,
-    addEvenWhilePreparing: false,
+    addEvenWhilePreparing: true,
     type: rawMessage.type,
   } as any);
   // Wait for message register

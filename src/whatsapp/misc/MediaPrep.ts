@@ -25,8 +25,8 @@ import { exportModule } from '../exportModule';
 import { SendMsgResultObject } from '../types';
 import { OpaqueData } from '.';
 
-/** @whatsapp 78986
- * @whatsapp 778986 >= 2.2222.8
+/**
+ * @whatsapp >= 2.3000.1032022795
  */
 export declare namespace MediaPrep {
   function prepRawMedia(
@@ -37,7 +37,13 @@ export declare namespace MediaPrep {
       asGif?: boolean;
       isAudio?: boolean;
       asSticker?: boolean;
+      asStickerPack?: boolean;
       maxDimension?: number;
+      minDimension?: number;
+      transparency?: any;
+      isVcardOverMmsDocument?: boolean;
+      filename?: string;
+      documentPageCount?: number;
     }
   ): MediaPrep;
 
@@ -53,13 +59,26 @@ export declare namespace MediaPrep {
         productMsgOptions?: ModelPropertiesContructor<MsgModel>;
         type?: null | string;
         mentionedJidList?: any;
+        groupMentions?: any;
         isForwarded?: boolean;
         forwardingScore?: any;
         multicast?: any;
         forwardedFromWeb?: boolean;
+        forwardedNewsletterMessageInfo?: any;
         ctwaContext?: any;
         isViewOnce?: boolean;
-      }
+        isAvatar?: boolean;
+        viewMode?: any;
+        parentMsgKey?: any;
+        associationType?: any;
+        isQuestion?: boolean;
+        questionReplyQuotedMessage?: any;
+        addEvenWhilePreparing?: boolean;
+        placeholderProps?: any;
+        useBasePropsType?: boolean;
+        isWamoSub?: boolean;
+      },
+      earlyUpload?: any // This is effectively Promise<UploadResult> (used mainly for ptt audios)
     ): Promise<SendMsgResultObject>;
     waitForPrep(): Promise<MediaDataModel>;
   }
