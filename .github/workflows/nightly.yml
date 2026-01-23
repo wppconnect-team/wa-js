@@ -5,6 +5,10 @@ on:
     branches:
       - 'main'
 
+permissions:
+  id-token: write
+  contents: write
+
 jobs:
   nightly:
     runs-on: ubuntu-latest
@@ -21,7 +25,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v6.2.0
         with:
-          node-version: 19.x
+          node-version: 24.13.0
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Get npm cache directory
         id: npm-cache
@@ -41,7 +46,15 @@ jobs:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
 
       - name: Update version to alpha
-        run: npm version prerelease --preid=alpha --no-git --no-git-tag-version
+        id: version
+        run: |
+          npm version prerelease --preid=alpha --no-git --no-git-tag-version
+          echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Publish to NPM with alpha tag
+        run: npm publish --access public --tag alpha
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build NPM package
         run: npm pack && mv wppconnect-wa-js-*.tgz wppconnect-nightly.tgz
@@ -51,6 +64,11 @@ jobs:
         run: |
           changelog=$(npm run changelog:preview --silent)
           echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "## Version: ${{ steps.version.outputs.version }}" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "**NPM:** https://www.npmjs.com/package/@wppconnect/wa-js/v/${{ steps.version.outputs.version }}" >> $GITHUB_OUTPUT
+          echo "**Install:** \`npm install @wppconnect/wa-js@${{ steps.version.outputs.version }}\`" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
           echo "${changelog}" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
