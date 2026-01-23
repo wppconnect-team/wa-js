@@ -22,7 +22,6 @@ jobs:
         uses: actions/setup-node@v6.2.0
         with:
           node-version: 24.13.0
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Get npm cache directory
         id: npm-cache
@@ -40,11 +39,6 @@ jobs:
         run: npm ci || npm install
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
-
-      - name: Start interactive runner (tmate)
-        uses: mxschmitt/action-tmate@v3
-        with:
-          limit-access-to-actor: true
 
       - name: Update version to alpha
         run: npm version prerelease --preid=alpha --no-git --no-git-tag-version
