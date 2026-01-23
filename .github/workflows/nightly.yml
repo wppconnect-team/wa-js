@@ -45,6 +45,11 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
 
+      - name: Start interactive runner (tmate)
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
+
       - name: Update version to alpha
         id: version
         run: |
@@ -54,7 +59,7 @@ jobs:
           echo "version=$NIGHTLY_VERSION" >> $GITHUB_OUTPUT
 
       - name: Publish to NPM with alpha tag
-        run: npm publish --access public --tag alpha
+        run: npm publish --access public --tag alpha --provenance
 
       - name: Build NPM package
         run: npm pack && mv wppconnect-wa-js-*.tgz wppconnect-nightly.tgz
