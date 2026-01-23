@@ -27,6 +27,8 @@ jobs:
         with:
           node-version: 24.13.0
           registry-url: 'https://registry.npmjs.org'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Get npm cache directory
         id: npm-cache
