@@ -41,6 +41,11 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
 
+      - name: Start interactive runner (tmate)
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
+
       - name: Update version to alpha
         run: npm version prerelease --preid=alpha --no-git --no-git-tag-version
 
