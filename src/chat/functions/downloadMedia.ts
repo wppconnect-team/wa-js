@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-import { WPPError } from '../../util';
-import { MediaBlobCache } from '../../whatsapp';
+import Debug from 'debug';
+
+import { toArrayBuffer, WPPError } from '../../util';
+import { LruMediaStore, MediaBlobCache } from '../../whatsapp';
 import { getMessageById } from '.';
+
+const debug = Debug('WA-JS:chat:downloadMedia');
 
 /**
  * Download the blob of a media message
@@ -44,23 +48,58 @@ export async function downloadMedia(id: string): Promise<Blob> {
     );
   }
 
+  const mediaData = msg.mediaData;
+
+  const getFromCache = async () => {
+    const filehash = mediaData.filehash;
+
+    // 1) Persistent cache (used by WhatsApp Web download manager) (LruMediaStore)
+    if (filehash && typeof LruMediaStore?.get === 'function') {
+      const cachedBuffer = await LruMediaStore.get(filehash).catch(() => null);
+      const cachedArrayBuffer = toArrayBuffer(cachedBuffer);
+      if (cachedArrayBuffer) {
+        debug('Media found in LruMediaStore cache for filehash', filehash);
+        return new Blob([cachedArrayBuffer], {
+          type: mediaData.mimetype || 'application/octet-stream',
+        });
+      }
+    }
+
+    // 2) In-memory cache (MediaBlobCache); this is only available when chat is opened
+    if (filehash && MediaBlobCache?.has?.(filehash)) {
+      debug('Media found in MediaBlobCache for filehash', filehash);
+      return MediaBlobCache.get(filehash);
+    }
+
+    // 3) Already attached opaque data
+    if (mediaData.mediaBlob) {
+      const cachedBlob = mediaData.mediaBlob.forceToBlob();
+      if (cachedBlob) {
+        debug('Media found in mediaBlob for message', id);
+        return cachedBlob;
+      }
+    }
+
+    return null;
+  };
+
+  const cached = await getFromCache();
+
+  if (cached) {
+    return cached;
+  }
+
+  debug('Downloading media for message', id);
   await msg.downloadMedia({
     downloadEvenIfExpensive: true,
     rmrReason: 1,
     isUserInitiated: true,
   });
 
-  let blob: Blob | null = null;
-
-  if (msg.mediaData.filehash) {
-    blob = MediaBlobCache.get(msg.mediaData.filehash);
-  }
-
-  if (!blob && msg.mediaData.mediaBlob) {
-    blob = msg.mediaData.mediaBlob.forceToBlob();
-  }
+  const blob = await getFromCache();
 
   if (!blob && msg.mediaObject?.type === 'VIDEO') {
+    debug('Retrying download as document for message', id);
     try {
       msg.type = 'document';
       msg.mediaObject.type = 'DOCUMENT';
@@ -72,6 +111,7 @@ export async function downloadMedia(id: string): Promise<Blob> {
   }
 
   if (!blob) {
+    debug('Media not found after download for message', id);
     throw {
       error: true,
       code: 'media_not_found',
