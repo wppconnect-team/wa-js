@@ -26,5 +26,6 @@ export * from './getVideoInfoFromBuffer';
 export * from './isBase64';
 export * from './isUrl';
 export * from './resizeImage';
+export * from './toArrayBuffer';
 export * from './types';
 export * from './wrapFunction';
