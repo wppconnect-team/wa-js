@@ -140,8 +140,6 @@ exportModule(
     getPremiumMessageName: 'getPremiumMessageName',
     getUserid: 'getUserid',
     getUserhash: 'getUserhash',
-    getSearchVerifiedName: 'getSearchVerifiedName',
-    getHeader: 'getHeader',
     getIsMe: 'getIsMe',
     getIsUser: 'getIsUser',
     getIsGroup: 'getIsGroup',
@@ -249,7 +247,7 @@ exportModule(
   (m) => m.getPhoneNumber && m.getTextStatusString && m.getPnForLid
 );
 
-// These two functions where moved from WAWebContactGetters to WAWebFrontendContactGetters module
+// These functions where moved from WAWebContactGetters to WAWebFrontendContactGetters module
 // So we will export them separately here
 // in versions >= 2.3000.1030318976 will get from WAWebFrontendContactGetters
 // in older versions will get from WAWebContactGetters
@@ -257,8 +255,21 @@ exportModule(
 exportModule(
   exports,
   {
-    getIsMyContact: 'getIsMyContact',
+    getIsMyContact: 'getIsMyContact', // moved from WAWebContactGetters to WAWebFrontendContactGetters
     getMentionName: ['getMentionName', 'getFormattedShortName'], // getMentionName was removed in newer versions, fallback to getFormattedShortName
   },
   (m) => m.getIsMyContact
+);
+
+// Since we have this in two modules now, and to maintain backward compatibility
+// We will keep separate exports to not break existing code
+// TODO(manfe): when version 2.3000.1032373751 drops supports move to above exportModule
+// Grouping it with all other WAWebFrontendContactGetters functions
+exportModule(
+  exports,
+  {
+    getSearchVerifiedName: 'getSearchVerifiedName', // moved from WAWebContactGetters to WAWebFrontendContactGetters (~2.3000.1032373751)
+    getHeader: 'getHeader', // moved from WAWebContactGetters to WAWebFrontendContactGetters (~2.3000.1032373751)
+  },
+  (m) => m.getSearchVerifiedName && m.getHeader
 );
