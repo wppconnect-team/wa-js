@@ -65,7 +65,7 @@ export async function downloadMedia(id: string): Promise<Blob> {
       }
     }
 
-    // 2) In-memory cache (MediaBlobCache) this only available when chat is opened
+    // 2) In-memory cache (MediaBlobCache); this is only available when chat is opened
     if (filehash && MediaBlobCache?.has?.(filehash)) {
       debug('Media found in MediaBlobCache for filehash', filehash);
       return MediaBlobCache.get(filehash);

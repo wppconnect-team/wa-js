@@ -22,7 +22,7 @@ export declare interface LruMediaStore {
   del(key: string): Promise<void>;
   clear(): Promise<void>;
   count(): Promise<number>;
-  has?(key: string): Promise<boolean>;
+  has(key: string): Promise<boolean>;
 }
 export declare const LruMediaStore: LruMediaStore;
 
