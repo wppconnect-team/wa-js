@@ -27,8 +27,6 @@ jobs:
         with:
           node-version: 24.13.0
           registry-url: 'https://registry.npmjs.org'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Get npm cache directory
         id: npm-cache
@@ -54,7 +52,7 @@ jobs:
           echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
 
       - name: Publish to NPM with alpha tag
-        run: npm publish --access public --tag alpha
+        run: npm publish --access public --tag alpha --provenance
 
       - name: Build NPM package
         run: npm pack && mv wppconnect-wa-js-*.tgz wppconnect-nightly.tgz
