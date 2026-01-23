@@ -257,8 +257,19 @@ exportModule(
   {
     getIsMyContact: 'getIsMyContact', // moved from WAWebContactGetters to WAWebFrontendContactGetters
     getMentionName: ['getMentionName', 'getFormattedShortName'], // getMentionName was removed in newer versions, fallback to getFormattedShortName
+  },
+  (m) => m.getIsMyContact
+);
+
+// Since we have this in two modules now, and to maintain backward compatibility
+// We will keep separate exports to not break existing code
+// TODO(manfe): when version 2.3000.1032373751 drops supports move to above exportModule
+// Grouping it with all other WAWebFrontendContactGetters functions
+exportModule(
+  exports,
+  {
     getSearchVerifiedName: 'getSearchVerifiedName', // moved from WAWebContactGetters to WAWebFrontendContactGetters (~2.3000.1032373751)
     getHeader: 'getHeader', // moved from WAWebContactGetters to WAWebFrontendContactGetters (~2.3000.1032373751)
   },
-  (m) => m.getIsMyContact
+  (m) => m.getSearchVerifiedName && m.getHeader
 );
