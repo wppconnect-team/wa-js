@@ -5,10 +5,6 @@ on:
     branches:
       - 'main'
 
-permissions:
-  id-token: write
-  contents: write
-
 jobs:
   nightly:
     runs-on: ubuntu-latest
@@ -51,15 +47,7 @@ jobs:
           limit-access-to-actor: true
 
       - name: Update version to alpha
-        id: version
-        run: |
-          BASE_VERSION=$(node -p "require('./package.json').version.split('-')[0]")
-          NIGHTLY_VERSION="${BASE_VERSION}-alpha.${{ github.run_number }}"
-          npm version "$NIGHTLY_VERSION" --no-git-tag-version
-          echo "version=$NIGHTLY_VERSION" >> $GITHUB_OUTPUT
-
-      - name: Publish to NPM with alpha tag
-        run: npm publish --access public --tag alpha
+        run: npm version prerelease --preid=alpha --no-git --no-git-tag-version
 
       - name: Build NPM package
         run: npm pack && mv wppconnect-wa-js-*.tgz wppconnect-nightly.tgz
@@ -69,11 +57,6 @@ jobs:
         run: |
           changelog=$(npm run changelog:preview --silent)
           echo "changelog<<EOF" >> $GITHUB_OUTPUT
-          echo "## Version: ${{ steps.version.outputs.version }}" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "**NPM:** https://www.npmjs.com/package/@wppconnect/wa-js/v/${{ steps.version.outputs.version }}" >> $GITHUB_OUTPUT
-          echo "**Install:** \`npm install @wppconnect/wa-js@${{ steps.version.outputs.version }}\`" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
           echo "${changelog}" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
