@@ -48,11 +48,13 @@ jobs:
       - name: Update version to alpha
         id: version
         run: |
-          npm version prerelease --preid=alpha --no-git --no-git-tag-version
-          echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+          BASE_VERSION=$(node -p "require('./package.json').version.split('-')[0]")
+          NIGHTLY_VERSION="${BASE_VERSION}-alpha.${{ github.run_number }}"
+          npm version "$NIGHTLY_VERSION" --no-git-tag-version
+          echo "version=$NIGHTLY_VERSION" >> $GITHUB_OUTPUT
 
       - name: Publish to NPM with alpha tag
-        run: npm publish --access public --tag alpha --provenance
+        run: npm publish --access public --tag alpha
 
       - name: Build NPM package
         run: npm pack && mv wppconnect-wa-js-*.tgz wppconnect-nightly.tgz
