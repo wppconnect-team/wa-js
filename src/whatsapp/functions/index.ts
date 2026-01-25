@@ -160,6 +160,7 @@ export * from './STATUS_JID';
 export * from './statusEnable';
 export * from './subscribePresence';
 export * from './syncABPropsTask';
+export * from './toggleNewsletterAdminActivityMuteStateAction';
 export * from './toUserLid';
 export * from './typeAttributeFromProtobuf';
 export * from './unixTime';
