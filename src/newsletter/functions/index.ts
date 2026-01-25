@@ -17,5 +17,8 @@
 export { create } from './create';
 export { destroy } from './destroy';
 export { edit } from './edit';
+export { follow } from './follow';
 export { getSubscribers } from './getSubscribers';
 export { mute } from './mute';
+export { search } from './search';
+export { unfollow } from './unfollow';
