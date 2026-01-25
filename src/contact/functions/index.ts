@@ -29,6 +29,7 @@ export { getStatus } from './getStatus';
 export { ContactListOptions, list } from './list';
 export { queryExists } from './queryExists';
 export { remove } from './remove';
+export { reportContact, ReportContactResult } from './reportContact';
 export { save } from './save';
 export { subscribePresence } from './subscribePresence';
 export { unsubscribePresence } from './unsubscribePresence';
