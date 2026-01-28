@@ -71,7 +71,7 @@ export async function deleteMessage(
     let isDeleted = false;
     const isSentByMe = msg.senderObj.isMe;
     let imAdmin = false;
-    if (chat.isGroup) imAdmin = await iAmAdmin(chatId);
+    if (chat.id.isGroup()) imAdmin = await iAmAdmin(chatId);
 
     const canRevoke = isSentByMe || imAdmin;
 

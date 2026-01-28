@@ -21,7 +21,7 @@ import { GroupMetadataStore, Wid } from '../../whatsapp';
 export async function ensureGroup(groupId: string | Wid, checkIsAdmin = false) {
   const groupChat = assertGetChat(groupId);
 
-  if (!groupChat.isGroup) {
+  if (!groupChat.id.isGroup()) {
     throw new WPPError(
       'not_a_group',
       `Chat ${groupChat.id._serialized} is not a group`

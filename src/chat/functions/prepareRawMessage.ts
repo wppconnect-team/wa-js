@@ -148,7 +148,7 @@ export async function prepareRawMessage<T extends RawMessage>(
    */
   if (
     options.detectMentioned &&
-    chat.isGroup &&
+    chat.id.isGroup() &&
     (!options.mentionedList || !options.mentionedList.length)
   ) {
     const text = message.type === 'chat' ? message.body : message.caption;

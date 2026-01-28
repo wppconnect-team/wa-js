@@ -52,7 +52,7 @@ function register() {
   if (typeof MsgModel.prototype.isGroupMsg === 'undefined') {
     Object.defineProperty(MsgModel.prototype, 'isGroupMsg', {
       get: function () {
-        return this?.chat?.isGroup;
+        return this?.chat?.id?.isGroup();
       },
       configurable: true,
     });
