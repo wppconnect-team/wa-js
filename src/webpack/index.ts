@@ -151,8 +151,10 @@ export function injectLoader(): void {
     await internalEv.emitAsync('webpack.ready').catch(() => null);
 
     if ((window as any).wppForceMainLoad) {
+      debug('wppForceMainLoad is set, waiting 5 seconds');
       await new Promise((resolve) => setTimeout(resolve, 5000));
     } else {
+      debug('waiting main ready');
       await waitMainReady;
     }
     isFullReady = true;
@@ -212,11 +214,15 @@ export function injectLoader(): void {
     debug('ready to use');
     await internalEv.emitAsync('webpack.ready').catch(() => null);
 
+    debug('wppForceMainLoad', (window as any).wppForceMainLoad);
+
     if ((window as any).wppForceMainLoad) {
       await new Promise((resolve) => setTimeout(resolve, 5000));
     } else {
       await waitMainReady;
     }
+
+    debug('loading full runtime files');
 
     // Use sequential file load
     for (const v of allRuntimes) {
@@ -226,6 +232,8 @@ export function injectLoader(): void {
         debug('load file error', webpackRequire.u(v));
       }
     }
+
+    debug('all runtime files loaded');
 
     isFullReady = true;
     debug('full ready to use');
