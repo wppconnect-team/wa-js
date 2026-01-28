@@ -1,5 +1,5 @@
 /*!
- * Copyright 2022 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,23 @@
  * limitations under the License.
  */
 
-export { create } from './create';
-export { destroy } from './destroy';
-export { edit } from './edit';
-export { follow } from './follow';
-export { getSubscribers } from './getSubscribers';
-export { mute } from './mute';
-export { search } from './search';
-export { unfollow } from './unfollow';
+import { exportModule } from '../exportModule';
+
+/**
+ * @whatsapp WAWebMexFetchNewsletterDirectorySearchResultsJob
+ */
+export declare function mexFetchNewsletterDirectorySearchResults(params: {
+  searchText: string;
+  categories: string[];
+  limit: number;
+  cursorToken?: string;
+}): Promise<any>;
+
+exportModule(
+  exports,
+  {
+    mexFetchNewsletterDirectorySearchResults:
+      'mexFetchNewsletterDirectorySearchResults',
+  },
+  (m) => m.mexFetchNewsletterDirectorySearchResults
+);
