@@ -275,6 +275,9 @@ export function moduleSource(moduleId: string) {
 
 const pureComponentMap = new Map<string, boolean>();
 
+// Cache for searchId results based on condition function reference
+const searchIdCache = new Map<SearchModuleCondition, string | null>();
+
 export function isReactComponent(moduleId: string) {
   if (pureComponentMap.has(moduleId)) {
     return pureComponentMap.get(moduleId);
@@ -299,6 +302,11 @@ export function searchId(
   condition: SearchModuleCondition,
   reverse = false
 ): string | null {
+  // Check cache first
+  if (searchIdCache.has(condition)) {
+    return searchIdCache.get(condition)!;
+  }
+
   let ids = Object.keys(webpackRequire.m);
 
   if (reverse) {
@@ -320,6 +328,7 @@ export function searchId(
       if (condition(module, moduleId)) {
         debug(`Module found: ${moduleId} - ${condition.toString()}`);
         clearTimeout(timer);
+        searchIdCache.set(condition, moduleId);
         return moduleId;
       }
     } catch (_error) {
@@ -336,6 +345,7 @@ export function searchId(
       if (condition(module, moduleId)) {
         debug(`Fallback Module found: ${moduleId} - ${condition.toString()}`);
         clearTimeout(timer);
+        searchIdCache.set(condition, moduleId);
         return moduleId;
       }
     } catch (_error) {
@@ -344,6 +354,7 @@ export function searchId(
   }
 
   debug(`Module not found: ${condition.toString()}`);
+  searchIdCache.set(condition, null);
   return null;
 }
 

@@ -21,7 +21,6 @@ async function start() {
 
   const { page } = await getPage({
     headless: false,
-    devtools: true,
     viewport: null,
     args,
   });
