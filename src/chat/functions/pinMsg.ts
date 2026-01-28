@@ -99,20 +99,23 @@ export async function pinMsg(
   const chat = assertGetChat(msg.id.remote);
   const pinned = PinInChatStore.getByParentMsgKey(msg.id);
 
-  if (chat.isNewsletter) {
+  if (chat.id.isNewsletter()) {
     throw new WPPError(
       `${pin ? 'pin' : 'unpin'}_error`,
       `The msg ${msgId.toString()} was not pinned. Not can pin in Newsletter`,
       { msgId, pin }
     );
-  } else if (chat.isGroup && !chat.groupMetadata?.participants?.iAmMember()) {
+  } else if (
+    chat.id.isGroup() &&
+    !chat.groupMetadata?.participants?.iAmMember()
+  ) {
     throw new WPPError(
       `${pin ? 'pin' : 'unpin'}_error`,
       `You not a member of group, to pin msg ${msgId.toString()}`,
       { msgId, pin }
     );
   } else if (
-    chat.isGroup &&
+    chat.id.isGroup() &&
     (chat.groupMetadata?.restrict || chat.groupMetadata?.announce) &&
     !chat.groupMetadata?.participants.iAmAdmin()
   ) {

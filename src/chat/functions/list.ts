@@ -102,12 +102,12 @@ export async function list(
   }
 
   if (options.onlyGroups) {
-    models = models.filter((c) => c.isGroup);
+    models = models.filter((c) => c.id.isGroup());
   }
 
   if (options.onlyCommunities) {
     models = models.filter(
-      (c) => c.isGroup && c.groupMetadata?.groupType === 'COMMUNITY'
+      (c) => c.id.isGroup() && c.groupMetadata?.groupType === 'COMMUNITY'
     );
   }
 
@@ -145,7 +145,7 @@ export async function list(
   // Attaching Group Metadata on Found Chats.
   if (!options?.ignoreGroupMetadata) {
     for (const chat of models) {
-      if (chat.isGroup) {
+      if (chat.id.isGroup()) {
         await GroupMetadataStore.find(chat.id);
       }
     }

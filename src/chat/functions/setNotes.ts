@@ -47,7 +47,7 @@ export async function setNotes(
       'missing_content_for_notes',
       `Missing content for notes`
     );
-  } else if (chat.isGroup) {
+  } else if (chat.id.isGroup()) {
     throw new WPPError(
       'can_not_set_notes_for_groups',
       `You can not set notes for groups. ChatId: ${chatId}`

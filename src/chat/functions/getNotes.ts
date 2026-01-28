@@ -38,7 +38,7 @@ export async function getNotes(
       'connected_device_not_is_business',
       `Connected device not is business account`
     );
-  } else if (chat.isGroup) {
+  } else if (chat.id.isGroup()) {
     throw new WPPError(
       'can_not_get_notes_for_groups',
       `You can not get notes for groups. ChatId: ${chatId}`

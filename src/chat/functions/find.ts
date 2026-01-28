@@ -32,7 +32,7 @@ export async function find(chatId: string | Wid): Promise<ChatModel> {
   // This ensures the chat is properly initialized and can be opened/clicked
   const { chat } = await findOrCreateLatestChat(wid, 'newChatFlow');
 
-  if (chat.isGroup) {
+  if (chat.id.isGroup()) {
     await GroupMetadataStore.find(chat.id);
   }
 
