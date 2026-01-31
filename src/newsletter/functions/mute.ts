@@ -14,9 +14,18 @@
  * limitations under the License.
  */
 
+import { WPPError } from '../../util';
 import { ChatModel, NewsletterStore } from '../../whatsapp';
-import { muteNewsletter, unmuteNewsletter } from '../../whatsapp/functions';
+import { CHANNEL_EVENT_SURFACE } from '../../whatsapp/enums';
+import {
+  muteNewsletter,
+  toggleNewsletterAdminActivityMuteStateAction,
+  unmuteNewsletter,
+} from '../../whatsapp/functions';
 import { ensureNewsletter } from './ensureNewsletter';
+
+const NEWSLETTER_MUTED_STATE = -1;
+const NEWSLETTER_UNMUTED_STATE = 0;
 
 /**
  * Mute and unmute a newsletter
@@ -38,12 +47,27 @@ export async function mute(
   newsletterId: string,
   value?: boolean
 ): Promise<ChatModel> {
-  await ensureNewsletter(newsletterId);
-  if (value === false) {
+  const chat = await ensureNewsletter(newsletterId);
+
+  if (value != null && typeof value !== 'boolean') {
+    throw new WPPError('invalid_mute_value', 'Mute value must be boolean');
+  }
+
+  const eventSurface = CHANNEL_EVENT_SURFACE?.CHANNEL_UPDATES_HOME ?? 1;
+  const muteExpirationValue =
+    value === false ? NEWSLETTER_UNMUTED_STATE : NEWSLETTER_MUTED_STATE;
+
+  if (toggleNewsletterAdminActivityMuteStateAction) {
+    await toggleNewsletterAdminActivityMuteStateAction(
+      chat.id,
+      muteExpirationValue,
+      { eventSurface }
+    );
+  } else if (value === false) {
     await unmuteNewsletter([newsletterId]);
-    return NewsletterStore.get(newsletterId) as ChatModel;
   } else {
     await muteNewsletter([newsletterId]);
-    return NewsletterStore.get(newsletterId) as ChatModel;
   }
+
+  return NewsletterStore.get(newsletterId) as ChatModel;
 }

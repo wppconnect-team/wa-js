@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,25 @@
  * limitations under the License.
  */
 
-export * from './ACK';
-export * from './CALL_STATES';
-export * from './CHANNEL_EVENT_SURFACE';
-export * from './GROUP_SETTING_TYPE';
-export * from './KIC_ENTRY_POINT_TYP';
-export * from './LogoutReason';
-export * from './MSG_TYPE';
-export * from './OUTWARD_TYPES';
-export * from './PIN_STATE';
-export * from './PinExpiryDurationOption';
-export * from './SendMsgResult';
+import { exportModule } from '../exportModule';
+
+/** @whatsapp WAWebWamEnumChannelEventSurface >= 2.3000.1032373751
+ */
+export declare enum CHANNEL_EVENT_SURFACE {
+  CHANNEL_UPDATES_HOME = 1,
+  CHANNEL_THREAD = 2,
+  CHANNEL_DIRECTORY = 3,
+  CHANNEL_DIRECTORY_SEARCH = 4,
+  CHANNEL_PROFILE = 5,
+  CHANNEL_UPDATES_HOME_SEARCH = 6,
+  CHANNEL_DIRECTORY_CATEGORIES = 7,
+  CHANNEL_DIRECTORY_CATEGORIES_SEARCH = 8,
+}
+
+exportModule(
+  exports,
+  {
+    CHANNEL_EVENT_SURFACE: 'CHANNEL_EVENT_SURFACE',
+  },
+  (m) => m.CHANNEL_EVENT_SURFACE
+);

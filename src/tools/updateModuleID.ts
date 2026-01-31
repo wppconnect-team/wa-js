@@ -112,6 +112,7 @@ async function start() {
     'functions.revokeStatus',
     'functions.muteNewsletter', // removed in version 2.3000.1032373751
     'functions.unmuteNewsletter', // removed in version 2.3000.1032373751
+    'functions.toggleNewsletterAdminActivityMuteStateAction', // new in version >= 2.3000.1032373751
   ];
 
   for (const moduleName of Object.keys(result)) {
