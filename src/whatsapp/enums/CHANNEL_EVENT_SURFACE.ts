@@ -1,5 +1,5 @@
 /*!
- * Copyright 2025 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,23 @@
 
 import { exportModule } from '../exportModule';
 
-/**
- * @whatsapp WAWebUsernameGatingUtils
+/** @whatsapp WAWebWamEnumChannelEventSurface >= 2.3000.1032373751
  */
-export declare namespace UsernameGatingUtils {
-  /**
-   * Check if username feature is supported
-   * @whatsapp >= 2.3000.1030318976
-   * @returns true if username feature is supported
-   */
-  function usernameSupported(): boolean;
+export declare enum CHANNEL_EVENT_SURFACE {
+  CHANNEL_UPDATES_HOME = 1,
+  CHANNEL_THREAD = 2,
+  CHANNEL_DIRECTORY = 3,
+  CHANNEL_DIRECTORY_SEARCH = 4,
+  CHANNEL_PROFILE = 5,
+  CHANNEL_UPDATES_HOME_SEARCH = 6,
+  CHANNEL_DIRECTORY_CATEGORIES = 7,
+  CHANNEL_DIRECTORY_CATEGORIES_SEARCH = 8,
 }
 
 exportModule(
   exports,
-  'UsernameGatingUtils',
-  (m) => m.usernameSupported && typeof m.usernameSupported === 'function'
+  {
+    CHANNEL_EVENT_SURFACE: 'CHANNEL_EVENT_SURFACE',
+  },
+  (m) => m.CHANNEL_EVENT_SURFACE
 );

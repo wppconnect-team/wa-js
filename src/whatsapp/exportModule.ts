@@ -105,7 +105,10 @@ export function exportModule(
            * I be creating other function for check expires based directily from files
            * This will not directly affect the function call, it continues to work normally.
            */
-          const ignoreFailModules: string[] = ['revokeStatus'];
+          const ignoreFailModules: string[] = [
+            'revokeStatus',
+            'toggleNewsletterAdminActivityMuteStateAction',
+          ];
           if (!ignoreFailModules.includes(name)) {
             console.error(description);
             trackException(description);
