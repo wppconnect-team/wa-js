@@ -62,6 +62,7 @@ export default [
           caughtErrorsIgnorePattern: '^_',
         },
       ],
+      'no-useless-assignment': 'off',
       'header/header': [
         'error',
         'block',
