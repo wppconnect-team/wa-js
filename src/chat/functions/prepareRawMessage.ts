@@ -15,7 +15,7 @@
  */
 
 import { assertWid } from '../../assert';
-import { getMyUserWid } from '../../conn/functions/getMyUserWid';
+import { getMyUserLid, getMyUserWid } from '../../conn';
 import { getParticipants } from '../../group';
 import { WPPError } from '../../util';
 import {
@@ -57,9 +57,12 @@ export async function prepareRawMessage<T extends RawMessage>(
     ...options,
   };
 
+  // For group messages, use LID format for the 'from' field
+  const fromWid = chat.id.isGroup() ? getMyUserLid() : getMyUserWid();
+
   message = {
     t: unixTime(),
-    from: getMyUserWid(),
+    from: fromWid,
     to: chat.id,
     self: 'out',
     isNewMsg: true,
