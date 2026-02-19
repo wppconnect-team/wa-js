@@ -44,9 +44,9 @@
     "watch": "webpack watch --devtool inline-source-map --mode development"
   },
   "devDependencies": {
-    "@commitlint/cli": "^20.4.1",
-    "@commitlint/config-conventional": "^20.4.1",
-    "@commitlint/prompt-cli": "^20.4.1",
+    "@commitlint/cli": "^20.4.2",
+    "@commitlint/config-conventional": "^20.4.2",
+    "@commitlint/prompt-cli": "^20.4.2",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.58.2",
     "@tony.ganchev/eslint-plugin-header": "^3.2.2",
