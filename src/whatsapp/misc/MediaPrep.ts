@@ -65,6 +65,17 @@ export declare namespace MediaPrep {
     constructor(type: OUTWARD_TYPES, p: any);
 
     sendToChat(params: SendToChatProps): Promise<SendMsgResultObject>;
+    /**
+     * @deprecated Use sendToChat(params: SendToChatProps) instead
+     *
+     * @param chat
+     * @param params
+     */
+    sendToChat(
+      chat: ChatModel,
+      params: Omit<SendToChatProps, 'chat'>
+    ): Promise<SendMsgResultObject>;
+
     waitForPrep(): Promise<MediaDataModel>;
   }
 }
