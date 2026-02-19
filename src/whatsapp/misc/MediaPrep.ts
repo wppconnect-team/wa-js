@@ -39,7 +39,8 @@ export declare namespace MediaPrep {
   class MediaPrep {
     constructor(type: OUTWARD_TYPES, p: any);
 
-    sendToChat(...params: any): Promise<SendMsgResultObject>;
+ 
+    sendToChat(...params: sendToChatProps): Promise<SendMsgResultObject>;
     waitForPrep(): Promise<MediaDataModel>;
   }
 }
