@@ -393,14 +393,24 @@ export async function sendFileMessage(
     mediaData.fullWidth = 1128;
   }
   debug(`sending message (${options.type}) with id ${rawMessage.id}`);
-  const sendMsgResult = mediaPrep.sendToChat(chat, {
+
+  const processedOptions: any = {
     caption: options.caption,
     footer: options.footer,
     isViewOnce,
     productMsgOptions: chatId === 'status@broadcast' ? undefined : rawMessage,
     addEvenWhilePreparing: false,
     type: rawMessage.type,
-  } as any);
+  };
+
+  let sendMsgResult;
+
+  if (mediaPrep.sendToChat.length === 1) {
+    sendMsgResult = mediaPrep.sendToChat({ chat, options: processedOptions });
+  } else {
+    sendMsgResult = mediaPrep.sendToChat(chat, processedOptions);
+  }
+
   // Wait for message register
   let message: any = null;
 

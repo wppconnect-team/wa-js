@@ -14,12 +14,7 @@
  * limitations under the License.
  */
 
-import {
-  ChatModel,
-  MediaDataModel,
-  ModelPropertiesContructor,
-  MsgModel,
-} from '..';
+import { MediaDataModel } from '..';
 import { OUTWARD_TYPES } from '../enums';
 import { exportModule } from '../exportModule';
 import { SendMsgResultObject } from '../types';
@@ -44,23 +39,7 @@ export declare namespace MediaPrep {
   class MediaPrep {
     constructor(type: OUTWARD_TYPES, p: any);
 
-    sendToChat(
-      e: ChatModel,
-      options: {
-        caption?: string;
-        footer?: string;
-        quotedMsg?: MsgModel;
-        productMsgOptions?: ModelPropertiesContructor<MsgModel>;
-        type?: null | string;
-        mentionedJidList?: any;
-        isForwarded?: boolean;
-        forwardingScore?: any;
-        multicast?: any;
-        forwardedFromWeb?: boolean;
-        ctwaContext?: any;
-        isViewOnce?: boolean;
-      }
-    ): Promise<SendMsgResultObject>;
+    sendToChat(...params: any): Promise<SendMsgResultObject>;
     waitForPrep(): Promise<MediaDataModel>;
   }
 }
