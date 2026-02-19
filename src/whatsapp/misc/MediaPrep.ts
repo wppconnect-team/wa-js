@@ -14,11 +14,36 @@
  * limitations under the License.
  */
 
-import { MediaDataModel } from '..';
+import {
+  ChatModel,
+  MediaDataModel,
+  ModelPropertiesContructor,
+  MsgModel,
+  OpaqueData,
+} from '..';
 import { OUTWARD_TYPES } from '../enums';
 import { exportModule } from '../exportModule';
 import { SendMsgResultObject } from '../types';
-import { OpaqueData } from '.';
+
+export type SendToChatProps = {
+  chat: ChatModel;
+  earlyUpload?: Promise<any>;
+  options?: {
+    caption?: string;
+    footer?: string;
+    quotedMsg?: MsgModel;
+    productMsgOptions?: ModelPropertiesContructor<MsgModel>;
+    type?: null | string;
+    mentionedJidList?: any;
+    isForwarded?: boolean;
+    forwardingScore?: any;
+    multicast?: any;
+    forwardedFromWeb?: boolean;
+    ctwaContext?: any;
+    isViewOnce?: boolean;
+    addEvenWhilePreparing?: boolean;
+  };
+};
 
 /** @whatsapp 78986
  * @whatsapp 778986 >= 2.2222.8
@@ -39,8 +64,7 @@ export declare namespace MediaPrep {
   class MediaPrep {
     constructor(type: OUTWARD_TYPES, p: any);
 
- 
-    sendToChat(...params: sendToChatProps): Promise<SendMsgResultObject>;
+    sendToChat(params: SendToChatProps): Promise<SendMsgResultObject>;
     waitForPrep(): Promise<MediaDataModel>;
   }
 }
