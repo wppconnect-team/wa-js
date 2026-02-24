@@ -15,6 +15,7 @@
  */
 
 export { accept } from './accept';
+export { enableCallInterface } from './enableCallInterface';
 export { end } from './end';
 export { offer } from './offer';
 export { reject, reject as rejectCall } from './reject';
