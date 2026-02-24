@@ -23,14 +23,43 @@ import * as playwright from 'playwright-chromium';
 import * as url from 'url';
 
 export const URL = 'https://web.whatsapp.com/';
-const WA_VERSION = process.env['WA_VERSION'] || waVersion.getLatestVersion();
-export const WA_DIR = path.resolve(__dirname, `../../wa-source/${WA_VERSION}`);
+const WA_VERSION_ENV = process.env['WA_VERSION'];
+const WA_VERSION =
+  WA_VERSION_ENV === 'latest' || !WA_VERSION_ENV
+    ? waVersion.getLatestVersion()
+    : WA_VERSION_ENV;
+const WA_VERSION_DIR = WA_VERSION_ENV === 'latest' ? 'latest' : WA_VERSION;
+export const WA_DIR = path.resolve(
+  __dirname,
+  `../../wa-source/${WA_VERSION_DIR}`
+);
 
 type LaunchArguments = Parameters<
   typeof playwright.chromium.launchPersistentContext
 >;
 
 export async function preparePage(page: playwright.Page) {
+  if (WA_VERSION_ENV === 'latest') {
+    page.on('response', async (response) => {
+      if (
+        response.url() === URL &&
+        response.request().resourceType() === 'document'
+      ) {
+        try {
+          const body = await response.text();
+          if (!fs.existsSync(WA_DIR)) {
+            fs.mkdirSync(WA_DIR, { recursive: true });
+          }
+          const htmlFilePath = path.join(WA_DIR, 'index.html');
+          fs.writeFileSync(htmlFilePath, body);
+          console.log('💾 Saved HTML to wa-source/latest');
+        } catch (e) {
+          console.error('Failed to save latest HTML:', e);
+        }
+      }
+    });
+  }
+
   page.route('https://crashlogs.whatsapp.net/**', (route) => {
     route.abort();
   });
@@ -42,11 +71,26 @@ export async function preparePage(page: playwright.Page) {
     /^https:\/\/(web\.whatsapp\.com|static\.whatsapp\.net)\//,
     async (route, request) => {
       if (request.url() === URL) {
+        if (!fs.existsSync(WA_DIR)) {
+          fs.mkdirSync(WA_DIR, { recursive: true });
+        }
+        const htmlFilePath = path.join(WA_DIR, 'index.html');
+
+        if (WA_VERSION_ENV === 'latest') {
+          console.log('🌐 Passing through to web.whatsapp.com (latest)');
+          return route.continue();
+        }
+
         console.log('📄 Serving HTML from wa-version package:', WA_VERSION);
+        const htmlContent = waVersion.getPageContent(WA_VERSION);
+        if (!fs.existsSync(htmlFilePath)) {
+          fs.writeFileSync(htmlFilePath, htmlContent);
+          console.log('💾 Saved HTML to wa-source/', WA_VERSION_DIR);
+        }
         return route.fulfill({
           status: 200,
           contentType: 'text/html',
-          body: waVersion.getPageContent(WA_VERSION),
+          body: htmlContent,
         });
       }
 

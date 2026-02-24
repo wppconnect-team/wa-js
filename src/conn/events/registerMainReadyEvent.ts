@@ -36,11 +36,13 @@ function register() {
     }
   };
 
-  if (Stream.mode === 'MAIN') {
-    debug('Stream.mode is already MAIN, triggering immediately');
+  const isReadyMode = (mode: string) => mode === 'MAIN' || mode === 'QR';
+
+  if (isReadyMode(Stream.mode)) {
+    debug('Stream.mode is already ready:', Stream.mode);
     trigger();
   } else {
-    debug('Stream.mode is not MAIN, registering listeners');
+    debug('Stream.mode is not ready, registering listeners');
     Cmd.on('main_stream_mode_ready', () => {
       debug('main_stream_mode_ready event received');
       trigger();
@@ -53,8 +55,8 @@ function register() {
     // Also listen for Stream mode changes in case events were missed
     const checkMode = () => {
       debug('Stream.mode changed to:', Stream.mode);
-      if (Stream.mode === 'MAIN') {
-        debug('Stream.mode is now MAIN, triggering');
+      if (isReadyMode(Stream.mode)) {
+        debug('Stream.mode is now ready:', Stream.mode);
         trigger();
       }
     };
@@ -69,7 +71,7 @@ function register() {
       // Try polling as fallback
       const pollInterval = setInterval(() => {
         debug('Polling Stream.mode:', Stream.mode);
-        if (Stream.mode === 'MAIN') {
+        if (isReadyMode(Stream.mode)) {
           clearInterval(pollInterval);
           trigger();
         }
