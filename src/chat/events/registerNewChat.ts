@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-import './registerAckMessageEvent';
-import './registerActiveChatEvent';
-import './registerEditedMessageEvent';
-import './registerLabelEvent';
-import './registerLiveLocationUpdateEvent';
-import './registerNewChat';
-import './registerNewMessageEvent';
-import './registerPollEvent';
-import './registerPresenceChange';
-import './registerReactionsEvent';
-import './registerRevokeMessageEvent';
-import './registerUnreadCountEvent';
+import { internalEv } from '../../eventEmitter';
+import * as webpack from '../../webpack';
+import { ChatModel, ChatStore } from '../../whatsapp';
+
+webpack.onInjected(() => registerNewChat());
+
+function registerNewChat() {
+  ChatStore.on('add', (chat: ChatModel) => {
+    queueMicrotask(() => {
+      internalEv.emit('chat.new_chat', chat);
+    });
+  });
+}

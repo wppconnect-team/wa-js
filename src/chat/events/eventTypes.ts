@@ -30,6 +30,17 @@ export interface ChatEventTypes {
    */
   'chat.active_chat': ChatModel | null;
   /**
+   * Triggered when a new chat is created
+   *
+   * @example
+   * ```javascript
+   * WPP.on('chat.new_chat', (chat) => {
+   *   // Your code
+   * });
+   * ```
+   */
+  'chat.new_chat': ChatModel;
+  /**
    * Triggered when new message is received
    *
    * @example
