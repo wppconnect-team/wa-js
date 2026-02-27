@@ -56,6 +56,11 @@ export function createWid(
     id = id._serialized;
   }
 
+  // If id is an object with _serialized string, extract it
+  if (id && typeof id === 'object' && typeof id._serialized === 'string') {
+    id = id._serialized;
+  }
+
   if (typeof id !== 'string') {
     return undefined;
   }

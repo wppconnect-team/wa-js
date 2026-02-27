@@ -39,10 +39,13 @@ export async function openChatFromUnread(
 
   // Use findOrCreateLatestChat to match WhatsApp Web's native behavior
   // This ensures the correct chat is found or created before opening
-  await findOrCreateLatestChat(wid, 'newChatFlow');
+  // Returns { chat: plain object with id, created: boolean }
+  const result = await findOrCreateLatestChat(wid, 'newChatFlow');
 
-  // Get the actual ChatModel instance from ChatStore
-  const chat = ChatStore.get(wid);
+  // result.chat is a plain object, not a ChatModel instance
+  // Use ChatStore.get with the chat id to get the actual ChatModel
+  // This works for both regular contacts and @lid contacts
+  const chat = ChatStore.get(result.chat.id);
 
   if (!chat) {
     throw new Error(`Chat not found in ChatStore for ${wid.toString()}`);
