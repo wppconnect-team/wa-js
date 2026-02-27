@@ -16,7 +16,7 @@
 
 import { assertWid } from '../../assert';
 import { isWhatsAppVersionLTE } from '../../conn/functions/getBuildConstants';
-import { Cmd, Wid } from '../../whatsapp';
+import { ChatStore, Cmd, Wid } from '../../whatsapp';
 import { findOrCreateLatestChat } from '../../whatsapp/functions';
 
 /**
@@ -39,7 +39,14 @@ export async function openChatBottom(
 
   // Use findOrCreateLatestChat to match WhatsApp Web's native behavior
   // This ensures the correct chat is found or created before opening
-  const { chat } = await findOrCreateLatestChat(wid, 'newChatFlow');
+  await findOrCreateLatestChat(wid, 'newChatFlow');
+
+  // Get the actual ChatModel instance from ChatStore
+  const chat = ChatStore.get(wid);
+
+  if (!chat) {
+    throw new Error(`Chat not found in ChatStore for ${wid.toString()}`);
+  }
 
   // WhatsApp changed from positional to named params in version 2.3000.1029960097
   if (isWhatsAppVersionLTE('2.3000.1029960097')) {
