@@ -1,0 +1,58 @@
+/*!
+ * Copyright 2021 WPPConnect Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { MsgKey } from '..';
+import { exportModule } from '../exportModule';
+import { ModelPropertiesContructor, MsgModel } from '../models';
+
+export interface MsgFindDirectionParams {
+  anchor: MsgKey;
+  count: number;
+}
+
+/**
+ * Find messages before a specific message
+ * @whatsapp WAWebDBMessageFindLocal >= 2.3000.1034162388
+ */
+export declare function msgFindBefore(
+  params: MsgFindDirectionParams
+): Promise<ModelPropertiesContructor<MsgModel>[]>;
+
+/**
+ * Find messages after a specific message
+ * @whatsapp WAWebDBMessageFindLocal >= 2.3000.1034162388
+ */
+export declare function msgFindAfter(
+  params: MsgFindDirectionParams
+): Promise<ModelPropertiesContructor<MsgModel>[]>;
+
+/**
+ * Find messages by direction (before or after)
+ * @whatsapp WAWebDBMessageFindLocal >= 2.3000.1034162388
+ */
+export declare function msgFindByDirection(
+  params: MsgFindDirectionParams & { direction: 'before' | 'after' }
+): Promise<ModelPropertiesContructor<MsgModel>[]>;
+
+exportModule(
+  exports,
+  {
+    msgFindBefore: 'msgFindBefore',
+    msgFindAfter: 'msgFindAfter',
+    msgFindByDirection: 'msgFindByDirection',
+  },
+  (m) => m.msgFindByDirection && m.msgFindBefore && m.msgFindAfter
+);

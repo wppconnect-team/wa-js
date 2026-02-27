@@ -18,7 +18,12 @@ import { assertGetChat } from '../../assert';
 import { isMultiDevice } from '../../conn';
 import { MsgKey, MsgModel, MsgStore, Wid } from '../../whatsapp';
 import { MSG_TYPE } from '../../whatsapp/enums';
-import { msgFindQuery, MsgFindQueryParams } from '../../whatsapp/functions';
+import {
+  msgFindByDirection,
+  msgFindCallLog,
+  msgFindMedia,
+  msgFindQuery,
+} from '../../whatsapp/functions';
 import { RawMessage } from '..';
 
 export interface GetMessagesOptions {
@@ -131,37 +136,111 @@ export async function getMessages(
     count--;
   }
 
-  const params: MsgFindQueryParams = id
-    ? (MsgKey.fromString(id) as any)
-    : {
-        remote: chat.id,
-      };
+  // Build params object - use different structure for legacy vs new API
+  // TODO: Remove legacy API support after 2026-06-26
+  const useLegacyAPI = typeof msgFindQuery === 'function';
 
-  params.count = count;
-  params.direction = direction;
+  // Legacy API uses MsgKey with added properties
+  // New API uses { anchor: MsgKey, count: number }
+  const params: any =
+    useLegacyAPI && id
+      ? (MsgKey.fromString(id) as any)
+      : {
+          remote: chat.id,
+          count,
+          direction,
+        };
+
+  if (useLegacyAPI) {
+    params.count = count;
+    params.direction = direction;
+  }
+
+  // For new API, prepare anchor parameter
+  const newAPIAnchor = id ? MsgKey.fromString(id) : undefined;
 
   let msgs = [];
   if (options.media === 'all') {
-    const { messages } = await msgFindQuery('media', params);
-    if (Array.isArray(messages)) {
-      msgs.push(...messages);
+    // TODO: Remove legacy API support after 2026-06-26
+    if (useLegacyAPI) {
+      const { messages } = await msgFindQuery('media', params);
+      if (Array.isArray(messages)) {
+        msgs.push(...messages);
+      }
+    } else {
+      const result = await msgFindMedia({
+        anchor: newAPIAnchor,
+        count,
+        mediaType: 'allMedia',
+        direction,
+        chat: chat.id,
+      });
+      if (Array.isArray(result)) {
+        msgs.push(...result);
+      } else if (result?.messages) {
+        msgs.push(...result.messages);
+      }
     }
   } else if (options.media === 'image') {
-    const { messages } = await msgFindQuery('media', params);
-    for (const Msg of messages) {
-      if (Msg.type === 'image') {
-        msgs.push(Msg);
+    if (useLegacyAPI) {
+      const { messages } = await msgFindQuery('media', params);
+      for (const Msg of messages) {
+        if (Msg.type === 'image') {
+          msgs.push(Msg);
+        }
+      }
+    } else {
+      const result = await msgFindMedia({
+        anchor: newAPIAnchor,
+        count,
+        mediaType: 'allMedia',
+        direction,
+        chat: chat.id,
+      });
+      const messages = Array.isArray(result) ? result : result?.messages || [];
+      for (const Msg of messages) {
+        if (Msg.type === 'image') {
+          msgs.push(Msg);
+        }
       }
     }
   } else if (options.media !== undefined) {
-    params.media = options.media;
-
-    const { messages } = await msgFindQuery('media', params);
-    if (Array.isArray(messages)) {
-      msgs.push(...messages);
+    if (useLegacyAPI) {
+      params.media = options.media;
+      const { messages } = await msgFindQuery('media', params);
+      if (Array.isArray(messages)) {
+        msgs.push(...messages);
+      }
+    } else {
+      const result = await msgFindMedia({
+        anchor: newAPIAnchor,
+        count,
+        mediaType:
+          options.media === 'document'
+            ? 'allDocs'
+            : options.media === 'url'
+              ? 'allLinks'
+              : undefined,
+        direction,
+        chat: chat.id,
+      });
+      if (Array.isArray(result)) {
+        msgs.push(...result);
+      } else if (result?.messages) {
+        msgs.push(...result.messages);
+      }
     }
   } else {
-    msgs = await msgFindQuery(direction, params);
+    // TODO: Remove legacy API support after 2026-06-26
+    if (useLegacyAPI) {
+      msgs = await msgFindQuery(direction, params);
+    } else {
+      msgs = await msgFindByDirection({
+        anchor: newAPIAnchor!,
+        count,
+        direction,
+      });
+    }
   }
 
   if (!options.id && id) {
@@ -183,7 +262,17 @@ export async function getMessages(
   // WhatsApp's msgFindQuery excludes call_log messages by default
   if (options.includeCallMessages) {
     try {
-      const callMsgs = await msgFindQuery(MSG_TYPE.CALL_LOG, params);
+      let callMsgs;
+
+      // TODO: Remove legacy API support after 2026-06-26
+      if (useLegacyAPI) {
+        callMsgs = await msgFindQuery(MSG_TYPE.CALL_LOG, params);
+      } else {
+        callMsgs = await msgFindCallLog({
+          anchor: newAPIAnchor,
+          count,
+        });
+      }
 
       if (callMsgs && callMsgs.length > 0) {
         // Map call messages to MsgModel instances
