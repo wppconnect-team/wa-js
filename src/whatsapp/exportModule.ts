@@ -108,6 +108,15 @@ export function exportModule(
           const ignoreFailModules: string[] = [
             'revokeStatus',
             'toggleNewsletterAdminActivityMuteStateAction',
+            'msgFindQuery', // stopped working in WA version ~2.3000.1034162388
+            'msgFindBefore', // added in WA version 2.3000.1034162388, but not available in older versions, remove this line when older versions are no longer supported
+            'msgFindAfter', // added in WA version 2.3000.1034162388, but not available in older versions, remove this line when older versions are no longer supported
+            'msgFindByDirection', // added in WA version 2.3000.1034162388, but not available in older versions, remove this line when older versions are no longer supported
+            'msgFindCallLog', // added in WA version 2.3000.1034162388, but not available in older versions, remove this line when older versions are no longer supported
+            'msgFindEvents', // added in WA version 2.3000.1034162388, but not available in older versions, remove this line when older versions are no longer supported
+            'msgFindMedia', // added in WA version 2.3000.1034162388, but not available in older versions, remove this line when older versions are no longer supported
+            'msgFindSearch', // added in WA version 2.3000.1034162388, but not available in older versions, remove this line when older versions are no longer supported
+            'msgFindStarred', // added in WA version 2.3000.1034162388, but not available in older versions, remove this line when older versions are no longer supported
           ];
           if (!ignoreFailModules.includes(name)) {
             console.error(description);
