@@ -83,7 +83,7 @@
 <p><code>Object.keys(WPP.group).sort()</code></p>
 <h3 id="events" class="tsd-anchor-link">Events<a href="#events" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <h4 id="connection-events" class="tsd-anchor-link">Connection Events<a href="#connection-events" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4>
-<p><code>WPP.on('conn.stream_mode', callback)</code> - Triggered when the connection mode changes</p>
+<p><code>WPP.on('conn.stream_mode_changed', callback)</code> - Triggered when the connection mode changes</p>
 <p>Stream modes:</p>
 <ul>
 <li><code>QR</code> - QR code is displayed, waiting for scan</li>
@@ -96,10 +96,10 @@
 <li><code>SMB_TOS_BLOCK</code> - SMB blocked for Terms of Service violation</li>
 <li><code>DEPRECATED_VERSION</code> - WhatsApp version is deprecated</li>
 </ul>
-<pre><code class="javascript"><span class="hl-0">WPP</span><span class="hl-1">.</span><span class="hl-2">on</span><span class="hl-1">(</span><span class="hl-3">&#39;conn.stream_mode&#39;</span><span class="hl-1">, (</span><span class="hl-4">mode</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-2">log</span><span class="hl-1">(</span><span class="hl-3">&#39;Connection mode:&#39;</span><span class="hl-1">, </span><span class="hl-4">mode</span><span class="hl-1">);</span><br/><span class="hl-1">  </span><span class="hl-6">if</span><span class="hl-1"> (</span><span class="hl-4">mode</span><span class="hl-1"> === </span><span class="hl-3">&#39;MAIN&#39;</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-2">log</span><span class="hl-1">(</span><span class="hl-3">&#39;WhatsApp is ready!&#39;</span><span class="hl-1">);</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">});</span>
+<pre><code class="javascript"><span class="hl-0">WPP</span><span class="hl-1">.</span><span class="hl-2">on</span><span class="hl-1">(</span><span class="hl-3">&#39;conn.stream_mode_changed&#39;</span><span class="hl-1">, (</span><span class="hl-4">mode</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-2">log</span><span class="hl-1">(</span><span class="hl-3">&#39;Connection mode:&#39;</span><span class="hl-1">, </span><span class="hl-4">mode</span><span class="hl-1">);</span><br/><span class="hl-1">  </span><span class="hl-6">if</span><span class="hl-1"> (</span><span class="hl-4">mode</span><span class="hl-1"> === </span><span class="hl-3">&#39;MAIN&#39;</span><span class="hl-1">) {</span><br/><span class="hl-1">    </span><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-2">log</span><span class="hl-1">(</span><span class="hl-3">&#39;WhatsApp is ready!&#39;</span><span class="hl-1">);</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">});</span>
 </code><button type="button">Copy</button></pre>
 
-<p><code>WPP.on('conn.stream_info', callback)</code> - Triggered when the internal connection state changes</p>
+<p><code>WPP.on('conn.stream_info_changed', callback)</code> - Triggered when the internal connection state changes</p>
 <p>Stream info states:</p>
 <ul>
 <li><code>OFFLINE</code> - Connection is offline</li>
@@ -110,7 +110,7 @@
 <li><code>CONNECTING</code> - Connecting to server</li>
 <li><code>NORMAL</code> - Normal operation</li>
 </ul>
-<pre><code class="javascript"><span class="hl-0">WPP</span><span class="hl-1">.</span><span class="hl-2">on</span><span class="hl-1">(</span><span class="hl-3">&#39;conn.stream_info&#39;</span><span class="hl-1">, (</span><span class="hl-4">info</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-2">log</span><span class="hl-1">(</span><span class="hl-3">&#39;Connection state:&#39;</span><span class="hl-1">, </span><span class="hl-4">info</span><span class="hl-1">);</span><br/><span class="hl-1">});</span>
+<pre><code class="javascript"><span class="hl-0">WPP</span><span class="hl-1">.</span><span class="hl-2">on</span><span class="hl-1">(</span><span class="hl-3">&#39;conn.stream_info_changed&#39;</span><span class="hl-1">, (</span><span class="hl-4">info</span><span class="hl-1">) </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-4">console</span><span class="hl-1">.</span><span class="hl-2">log</span><span class="hl-1">(</span><span class="hl-3">&#39;Connection state:&#39;</span><span class="hl-1">, </span><span class="hl-4">info</span><span class="hl-1">);</span><br/><span class="hl-1">});</span>
 </code><button type="button">Copy</button></pre>
 
 <h4 id="chat-events" class="tsd-anchor-link">Chat Events<a href="#chat-events" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4>
