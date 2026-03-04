@@ -1,9 +1,9 @@
-# 3.23.0 (2026-03-04)
+## 3.23.1 (2026-03-04)
 
 
 ### Bug Fixes
 
-* handle case when newAPIAnchor is not provided in getMessages ([#3369](https://github.com/wppconnect-team/wa-js/issues/3369)) ([b4452a2](https://github.com/wppconnect-team/wa-js/commit/b4452a2cdf98cfd5880ab2d1e2f53541f6021a0e))
+* event name to follow project pattern ([#3371](https://github.com/wppconnect-team/wa-js/issues/3371)) ([217158d](https://github.com/wppconnect-team/wa-js/commit/217158dc21dc1586168c254a564bd50f9b32cb43))
 
 
 
