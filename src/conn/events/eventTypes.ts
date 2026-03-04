@@ -15,6 +15,7 @@
  */
 
 import { LogoutReason } from '../../whatsapp/enums';
+import { StreamInfo, StreamMode } from '../../whatsapp/models';
 import { AuthCode } from '../types';
 
 export interface ConnEventTypes {
@@ -94,4 +95,28 @@ export interface ConnEventTypes {
   'conn.online': boolean;
   'conn.qrcode_idle': undefined;
   'conn.require_auth': undefined;
+
+  /**
+   * Triggered when the stream mode changes
+   *
+   * @example
+   * ```javascript
+   * WPP.on('conn.stream_mode', (mode) => {
+   *   console.log('Stream mode changed to:', mode);
+   * });
+   * ```
+   */
+  'conn.stream_mode': StreamMode;
+
+  /**
+   * Triggered when the stream info changes
+   *
+   * @example
+   * ```javascript
+   * WPP.on('conn.stream_info', (info) => {
+   *   console.log('Stream info changed to:', info);
+   * });
+   * ```
+   */
+  'conn.stream_info': StreamInfo;
 }

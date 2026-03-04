@@ -22,24 +22,54 @@ import {
   ModelProxy,
 } from './Model';
 
+/**
+ * StreamMode represents the connection state mode
+ * @whatsapp 2.3000.x
+ */
+export enum StreamMode {
+  QR = 'QR',
+  MAIN = 'MAIN',
+  SYNCING = 'SYNCING',
+  OFFLINE = 'OFFLINE',
+  CONFLICT = 'CONFLICT',
+  PROXYBLOCK = 'PROXYBLOCK',
+  TOS_BLOCK = 'TOS_BLOCK',
+  SMB_TOS_BLOCK = 'SMB_TOS_BLOCK',
+  DEPRECATED_VERSION = 'DEPRECATED_VERSION',
+}
+
+/**
+ * StreamInfo represents the internal connection state
+ * @whatsapp 2.3000.x
+ */
+export enum StreamInfo {
+  OFFLINE = 'OFFLINE',
+  OPENING = 'OPENING',
+  PAIRING = 'PAIRING',
+  SYNCING = 'SYNCING',
+  RESUMING = 'RESUMING',
+  CONNECTING = 'CONNECTING',
+  NORMAL = 'NORMAL',
+}
+
 interface Props {}
 
 interface Session {
-  info?: any;
-  mode: string;
+  info?: StreamInfo;
+  mode: StreamMode;
   obscurity?: any;
   needsUpdate?: any;
-  clientExpired?: any;
-  hardExpired?: any;
+  isHardRefresh?: boolean;
   lastSyncStart?: any;
   needsManualDownload?: any;
   couldForce?: any;
   uiActive?: any;
+  isInConnectedCall?: boolean;
   available?: any;
   unavailableShiftTimer?: any;
+  unavailableAutoLockTimer?: any;
   unavailableLogoutTimer?: any;
   unobscureShiftTimer?: any;
-  timeoutEvent?: any;
   resumeCount?: any;
   phoneAuthed?: any;
 }
@@ -65,16 +95,13 @@ export declare class StreamModel extends Model {
     proterties?: ModelPropertiesContructor<StreamModel>,
     options?: ModelOptions
   );
+  initialize(): void;
+  delete(): void;
   markAvailable(): void;
   markUnavailable(e?: any): void;
-  onSelfUpdate(): void;
-  onSocketUpdate(): void;
   unobscure(): void;
-  onPhoneAuthedUpdate(): void;
-  onAvailableUpdate(): void;
   sendAvailability(e?: any): void;
   updateCouldForce(): void;
-  updateHardExpire(): void;
   logPageResume(): void;
   updateWamLog(): void;
   logModeChange(): void;
