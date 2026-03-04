@@ -35,10 +35,10 @@ function register() {
       debug('emitting conn.main_ready');
       internalEv.emit('conn.main_ready');
       // Remove listener after first emission
-      internalEv.off('conn.stream_mode', checkMode);
+      internalEv.off('conn.stream_mode_changed', checkMode);
     }
   };
 
   // Listen to stream mode changes (includes current value on registration)
-  internalEv.on('conn.stream_mode', checkMode);
+  internalEv.on('conn.stream_mode_changed', checkMode);
 }

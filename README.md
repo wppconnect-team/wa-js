@@ -136,7 +136,7 @@ For the most up-to-date list of available functions, launch the project locally 
 
 #### Connection Events
 
-`WPP.on('conn.stream_mode', callback)` - Triggered when the connection mode changes
+`WPP.on('conn.stream_mode_changed', callback)` - Triggered when the connection mode changes
 
 Stream modes:
 - `QR` - QR code is displayed, waiting for scan
@@ -150,7 +150,7 @@ Stream modes:
 - `DEPRECATED_VERSION` - WhatsApp version is deprecated
 
 ```javascript
-WPP.on('conn.stream_mode', (mode) => {
+WPP.on('conn.stream_mode_changed', (mode) => {
   console.log('Connection mode:', mode);
   if (mode === 'MAIN') {
     console.log('WhatsApp is ready!');
@@ -158,7 +158,7 @@ WPP.on('conn.stream_mode', (mode) => {
 });
 ```
 
-`WPP.on('conn.stream_info', callback)` - Triggered when the internal connection state changes
+`WPP.on('conn.stream_info_changed', callback)` - Triggered when the internal connection state changes
 
 Stream info states:
 - `OFFLINE` - Connection is offline
@@ -170,7 +170,7 @@ Stream info states:
 - `NORMAL` - Normal operation
 
 ```javascript
-WPP.on('conn.stream_info', (info) => {
+WPP.on('conn.stream_info_changed', (info) => {
   console.log('Connection state:', info);
 });
 ```
