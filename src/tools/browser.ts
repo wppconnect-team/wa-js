@@ -29,10 +29,35 @@ const WA_VERSION =
     ? waVersion.getLatestVersion()
     : WA_VERSION_ENV;
 const WA_VERSION_DIR = WA_VERSION_ENV === 'latest' ? 'latest' : WA_VERSION;
-export const WA_DIR = path.resolve(
-  __dirname,
-  `../../wa-source/${WA_VERSION_DIR}`
-);
+let WA_DIR = path.resolve(__dirname, `../../wa-source/${WA_VERSION_DIR}`);
+
+/**
+ * Extract version from HTML content
+ */
+function extractVersionFromHtml(html: string): string | null {
+  // Look for script filenames like: 1034485183_main
+  const match = html.match(/(\d{10,})_main/);
+  if (match) {
+    return `2.3000.${match[1]}`;
+  }
+  return null;
+}
+
+/**
+ * Get the current WA source directory
+ */
+export function getWADir(): string {
+  return WA_DIR;
+}
+
+/**
+ * Backward compatibility export for WA_DIR
+ */
+export const WA_DIR_GETTER = {
+  get value() {
+    return WA_DIR;
+  },
+};
 
 type LaunchArguments = Parameters<
   typeof playwright.chromium.launchPersistentContext
@@ -47,12 +72,26 @@ export async function preparePage(page: playwright.Page) {
       ) {
         try {
           const body = await response.text();
+
+          // Extract version first
+          const version = extractVersionFromHtml(body);
+          if (version) {
+            // Update WA_DIR to the versioned folder
+            const versionDir = path.resolve(
+              __dirname,
+              `../../wa-source/${version}`
+            );
+            WA_DIR = versionDir;
+            console.log(`📁 Using wa-source/${version}`);
+          }
+
+          // Now save to the correct directory
           if (!fs.existsSync(WA_DIR)) {
             fs.mkdirSync(WA_DIR, { recursive: true });
           }
           const htmlFilePath = path.join(WA_DIR, 'index.html');
           fs.writeFileSync(htmlFilePath, body);
-          console.log('💾 Saved HTML to wa-source/latest');
+          console.log('💾 Saved HTML to', WA_DIR.split('wa-source/')[1]);
         } catch (e) {
           console.error('Failed to save latest HTML:', e);
         }
@@ -71,10 +110,11 @@ export async function preparePage(page: playwright.Page) {
     /^https:\/\/(web\.whatsapp\.com|static\.whatsapp\.net)\//,
     async (route, request) => {
       if (request.url() === URL) {
-        if (!fs.existsSync(WA_DIR)) {
-          fs.mkdirSync(WA_DIR, { recursive: true });
+        const currentWADir = WA_DIR; // Get current directory
+        if (!fs.existsSync(currentWADir)) {
+          fs.mkdirSync(currentWADir, { recursive: true });
         }
-        const htmlFilePath = path.join(WA_DIR, 'index.html');
+        const htmlFilePath = path.join(currentWADir, 'index.html');
 
         if (WA_VERSION_ENV === 'latest') {
           console.log('🌐 Passing through to web.whatsapp.com (latest)');
@@ -118,7 +158,9 @@ export async function preparePage(page: playwright.Page) {
         });
       }
 
-      const filePathSource = path.join(WA_DIR, fileName);
+      // Always get current WA_DIR for file operations
+      const currentWADir = WA_DIR;
+      const filePathSource = path.join(currentWADir, fileName);
 
       if (
         fs.existsSync(filePathSource) &&
@@ -138,7 +180,7 @@ export async function preparePage(page: playwright.Page) {
         .digest('hex')
         .substring(0, 5);
 
-      const filePathSourceHash = path.join(WA_DIR, `${hash}-${fileName}`);
+      const filePathSourceHash = path.join(currentWADir, `${hash}-${fileName}`);
 
       if (
         fs.existsSync(filePathSourceHash) &&
@@ -156,14 +198,15 @@ export async function preparePage(page: playwright.Page) {
       }
 
       if (fileName.endsWith('.js')) {
-        if (!fs.existsSync(WA_DIR)) {
-          fs.mkdirSync(WA_DIR, { recursive: true });
+        if (!fs.existsSync(currentWADir)) {
+          fs.mkdirSync(currentWADir, { recursive: true });
         }
 
         console.log('🌐 Downloading from remote and caching:', fileName);
         const response = await route.fetch();
         const body = await response.body();
-        fs.writeFileSync(filePathSourceHash, body);
+        const targetPath = path.join(currentWADir, `${hash}-${fileName}`);
+        fs.writeFileSync(targetPath, body);
       }
 
       return route.continue();

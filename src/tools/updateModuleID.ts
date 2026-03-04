@@ -104,6 +104,8 @@ async function start() {
    * This will not directly affect the function call, it continues to work normally.
    */
   const ignoreFailModules: string[] = [
+    'enums.StreamInfo', // Plain TypeScript enum, not a webpack module
+    'enums.StreamMode', // Plain TypeScript enum, not a webpack module
     'functions.createCollection',
     'functions.deleteCollection',
     'functions.editCollection',
