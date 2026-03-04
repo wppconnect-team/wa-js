@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import { LogoutReason } from '../../whatsapp/enums';
-import { StreamInfo, StreamMode } from '../../whatsapp/models';
+import { LogoutReason, StreamInfo, StreamMode } from '../../whatsapp/enums';
 import { AuthCode } from '../types';
 
 export interface ConnEventTypes {

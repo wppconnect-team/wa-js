@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { StreamInfo, StreamMode } from '../enums';
 import { exportModule } from '../exportModule';
 import {
   Model,
@@ -21,36 +22,6 @@ import {
   ModelPropertiesContructor,
   ModelProxy,
 } from './Model';
-
-/**
- * StreamMode represents the connection state mode
- * @whatsapp 2.3000.x
- */
-export enum StreamMode {
-  QR = 'QR',
-  MAIN = 'MAIN',
-  SYNCING = 'SYNCING',
-  OFFLINE = 'OFFLINE',
-  CONFLICT = 'CONFLICT',
-  PROXYBLOCK = 'PROXYBLOCK',
-  TOS_BLOCK = 'TOS_BLOCK',
-  SMB_TOS_BLOCK = 'SMB_TOS_BLOCK',
-  DEPRECATED_VERSION = 'DEPRECATED_VERSION',
-}
-
-/**
- * StreamInfo represents the internal connection state
- * @whatsapp 2.3000.x
- */
-export enum StreamInfo {
-  OFFLINE = 'OFFLINE',
-  OPENING = 'OPENING',
-  PAIRING = 'PAIRING',
-  SYNCING = 'SYNCING',
-  RESUMING = 'RESUMING',
-  CONNECTING = 'CONNECTING',
-  NORMAL = 'NORMAL',
-}
 
 interface Props {}
 

@@ -18,7 +18,7 @@ import Debug from 'debug';
 
 import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
-import { StreamMode } from '../../whatsapp';
+import { StreamMode } from '../../whatsapp/enums';
 
 const debug = Debug('WA-JS:conn:main_ready');
 
@@ -34,6 +34,8 @@ function register() {
     if (isReadyMode(mode)) {
       debug('emitting conn.main_ready');
       internalEv.emit('conn.main_ready');
+      // Remove listener after first emission
+      internalEv.off('conn.stream_mode', checkMode);
     }
   };
 

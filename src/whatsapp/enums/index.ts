@@ -25,3 +25,5 @@ export * from './OUTWARD_TYPES';
 export * from './PIN_STATE';
 export * from './PinExpiryDurationOption';
 export * from './SendMsgResult';
+export * from './StreamInfo';
+export * from './StreamMode';

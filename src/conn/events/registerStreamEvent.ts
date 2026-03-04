@@ -16,7 +16,8 @@
 
 import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
-import { Stream, StreamInfo, StreamMode, StreamModel } from '../../whatsapp';
+import { Stream, StreamModel } from '../../whatsapp';
+import { StreamInfo, StreamMode } from '../../whatsapp/enums';
 
 webpack.onInjected(register);
 

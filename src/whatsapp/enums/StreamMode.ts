@@ -14,27 +14,18 @@
  * limitations under the License.
  */
 
-import { Stream } from '../../whatsapp';
-import { StreamInfo, StreamMode } from '../../whatsapp/enums';
-
-export interface StreamData {
-  mode: StreamMode;
-  info: StreamInfo | undefined;
-}
-
 /**
- * Get current stream mode and info
- *
- * @example
- * ```javascript
- * const streamData = WPP.conn.getStreamData();
- * console.log(streamData.mode); // 'MAIN', 'QR', 'SYNCING', etc.
- * console.log(streamData.info); // 'NORMAL', 'OPENING', 'SYNCING', etc.
- * ```
+ * StreamMode represents the connection state mode
+ * @whatsapp 2.3000.x
  */
-export function getStreamData(): StreamData {
-  return {
-    mode: Stream.mode,
-    info: Stream.info,
-  };
+export enum StreamMode {
+  QR = 'QR',
+  MAIN = 'MAIN',
+  SYNCING = 'SYNCING',
+  OFFLINE = 'OFFLINE',
+  CONFLICT = 'CONFLICT',
+  PROXYBLOCK = 'PROXYBLOCK',
+  TOS_BLOCK = 'TOS_BLOCK',
+  SMB_TOS_BLOCK = 'SMB_TOS_BLOCK',
+  DEPRECATED_VERSION = 'DEPRECATED_VERSION',
 }
