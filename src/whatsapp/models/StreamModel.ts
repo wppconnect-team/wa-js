@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { StreamInfo, StreamMode } from '../enums';
 import { exportModule } from '../exportModule';
 import {
   Model,
@@ -25,21 +26,21 @@ import {
 interface Props {}
 
 interface Session {
-  info?: any;
-  mode: string;
+  info?: StreamInfo;
+  mode: StreamMode;
   obscurity?: any;
   needsUpdate?: any;
-  clientExpired?: any;
-  hardExpired?: any;
+  isHardRefresh?: boolean;
   lastSyncStart?: any;
   needsManualDownload?: any;
   couldForce?: any;
   uiActive?: any;
+  isInConnectedCall?: boolean;
   available?: any;
   unavailableShiftTimer?: any;
+  unavailableAutoLockTimer?: any;
   unavailableLogoutTimer?: any;
   unobscureShiftTimer?: any;
-  timeoutEvent?: any;
   resumeCount?: any;
   phoneAuthed?: any;
 }
@@ -65,16 +66,13 @@ export declare class StreamModel extends Model {
     proterties?: ModelPropertiesContructor<StreamModel>,
     options?: ModelOptions
   );
+  initialize(): void;
+  delete(): void;
   markAvailable(): void;
   markUnavailable(e?: any): void;
-  onSelfUpdate(): void;
-  onSocketUpdate(): void;
   unobscure(): void;
-  onPhoneAuthedUpdate(): void;
-  onAvailableUpdate(): void;
   sendAvailability(e?: any): void;
   updateCouldForce(): void;
-  updateHardExpire(): void;
   logPageResume(): void;
   updateWamLog(): void;
   logModeChange(): void;

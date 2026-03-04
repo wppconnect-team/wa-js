@@ -1,5 +1,5 @@
 /*!
- * Copyright 2026 WPPConnect Team
+ * Copyright 2021 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,31 +14,31 @@
  * limitations under the License.
  */
 
-import Debug from 'debug';
-
 import { internalEv } from '../../eventEmitter';
 import * as webpack from '../../webpack';
-import { StreamMode } from '../../whatsapp/enums';
-
-const debug = Debug('WA-JS:conn:main_ready');
+import { Stream, StreamModel } from '../../whatsapp';
+import { StreamInfo, StreamMode } from '../../whatsapp/enums';
 
 webpack.onInjected(register);
 
 function register() {
-  const isReadyMode = (mode: StreamMode) =>
-    mode === StreamMode.MAIN ||
-    mode === StreamMode.QR ||
-    mode === StreamMode.SYNCING;
+  // Emit current StreamMode immediately
+  if (Stream.mode) {
+    internalEv.emit('conn.stream_mode', Stream.mode);
+  }
 
-  const checkMode = (mode: StreamMode) => {
-    if (isReadyMode(mode)) {
-      debug('emitting conn.main_ready');
-      internalEv.emit('conn.main_ready');
-      // Remove listener after first emission
-      internalEv.off('conn.stream_mode', checkMode);
-    }
-  };
+  // Emit current StreamInfo immediately
+  if (Stream.info) {
+    internalEv.emit('conn.stream_info', Stream.info);
+  }
 
-  // Listen to stream mode changes (includes current value on registration)
-  internalEv.on('conn.stream_mode', checkMode);
+  // Listen to StreamMode changes
+  Stream.on('change:mode', (model: StreamModel, mode: StreamMode) => {
+    internalEv.emit('conn.stream_mode', mode);
+  });
+
+  // Listen to StreamInfo changes
+  Stream.on('change:info', (model: StreamModel, info: StreamInfo) => {
+    internalEv.emit('conn.stream_info', info);
+  });
 }

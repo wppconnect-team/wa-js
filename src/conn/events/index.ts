@@ -25,3 +25,4 @@ import './registerNeedsUpdateEvent';
 import './registerOnlineEvent';
 import './registerQRCodeIdleEvent';
 import './registerRequireAuthEvent';
+import './registerStreamEvent';

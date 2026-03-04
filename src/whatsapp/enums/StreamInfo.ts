@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-export * from './ACK';
-export * from './CALL_STATES';
-export * from './CHANNEL_EVENT_SURFACE';
-export * from './GROUP_SETTING_TYPE';
-export * from './KIC_ENTRY_POINT_TYP';
-export * from './LogoutReason';
-export * from './MSG_TYPE';
-export * from './OUTWARD_TYPES';
-export * from './PIN_STATE';
-export * from './PinExpiryDurationOption';
-export * from './SendMsgResult';
-export * from './StreamInfo';
-export * from './StreamMode';
+/**
+ * StreamInfo represents the internal connection state
+ * @whatsapp 2.3000.x
+ */
+export enum StreamInfo {
+  OFFLINE = 'OFFLINE',
+  OPENING = 'OPENING',
+  PAIRING = 'PAIRING',
+  SYNCING = 'SYNCING',
+  RESUMING = 'RESUMING',
+  CONNECTING = 'CONNECTING',
+  NORMAL = 'NORMAL',
+}
