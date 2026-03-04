@@ -58,6 +58,8 @@ There are convention names for some exported modules:
 
 `WPP.conn.getBuildConstants` - Current WhatsApp build constants
 
+`WPP.conn.getStreamData` - Get current stream mode and info (connection state)
+
 For the most up-to-date list of available functions, launch the project locally and run this in your browser console:
 
 `Object.keys(WPP.conn).sort()`
@@ -131,6 +133,50 @@ For the most up-to-date list of available functions, launch the project locally 
 `Object.keys(WPP.group).sort()`
 
 ### Events
+
+#### Connection Events
+
+`WPP.on('conn.stream_mode', callback)` - Triggered when the connection mode changes
+
+Stream modes:
+- `QR` - QR code is displayed, waiting for scan
+- `MAIN` - Main interface is loaded and ready
+- `SYNCING` - Syncing messages and data
+- `OFFLINE` - Connection is offline
+- `CONFLICT` - Login conflict detected
+- `PROXYBLOCK` - Blocked by proxy
+- `TOS_BLOCK` - Blocked for Terms of Service violation
+- `SMB_TOS_BLOCK` - SMB blocked for Terms of Service violation
+- `DEPRECATED_VERSION` - WhatsApp version is deprecated
+
+```javascript
+WPP.on('conn.stream_mode', (mode) => {
+  console.log('Connection mode:', mode);
+  if (mode === 'MAIN') {
+    console.log('WhatsApp is ready!');
+  }
+});
+```
+
+`WPP.on('conn.stream_info', callback)` - Triggered when the internal connection state changes
+
+Stream info states:
+- `OFFLINE` - Connection is offline
+- `OPENING` - Opening connection
+- `PAIRING` - Pairing with phone
+- `SYNCING` - Syncing messages
+- `RESUMING` - Resuming connection
+- `CONNECTING` - Connecting to server
+- `NORMAL` - Normal operation
+
+```javascript
+WPP.on('conn.stream_info', (info) => {
+  console.log('Connection state:', info);
+});
+```
+
+#### Chat Events
+
 `WPP.chat.on('chat.new_message')` - Event to dispatch on receive a new message
 
 To see all events, check: [https://wppconnect.io/wa-js/types/ev.EventTypes.html](https://wppconnect.io/wa-js/types/ev.EventTypes.html)
