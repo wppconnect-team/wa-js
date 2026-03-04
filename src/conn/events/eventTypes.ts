@@ -100,22 +100,22 @@ export interface ConnEventTypes {
    *
    * @example
    * ```javascript
-   * WPP.on('conn.stream_mode', (mode) => {
+   * WPP.on('conn.stream_mode_changed', (mode) => {
    *   console.log('Stream mode changed to:', mode);
    * });
    * ```
    */
-  'conn.stream_mode': StreamMode;
+  'conn.stream_mode_changed': StreamMode;
 
   /**
    * Triggered when the stream info changes
    *
    * @example
    * ```javascript
-   * WPP.on('conn.stream_info', (info) => {
+   * WPP.on('conn.stream_info_changed', (info) => {
    *   console.log('Stream info changed to:', info);
    * });
    * ```
    */
-  'conn.stream_info': StreamInfo;
+  'conn.stream_info_changed': StreamInfo;
 }

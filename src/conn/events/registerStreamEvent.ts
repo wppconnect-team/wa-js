@@ -24,21 +24,21 @@ webpack.onInjected(register);
 function register() {
   // Emit current StreamMode immediately
   if (Stream.mode) {
-    internalEv.emit('conn.stream_mode', Stream.mode);
+    internalEv.emit('conn.stream_mode_changed', Stream.mode);
   }
 
   // Emit current StreamInfo immediately
   if (Stream.info) {
-    internalEv.emit('conn.stream_info', Stream.info);
+    internalEv.emit('conn.stream_info_changed', Stream.info);
   }
 
   // Listen to StreamMode changes
   Stream.on('change:mode', (model: StreamModel, mode: StreamMode) => {
-    internalEv.emit('conn.stream_mode', mode);
+    internalEv.emit('conn.stream_mode_changed', mode);
   });
 
   // Listen to StreamInfo changes
   Stream.on('change:info', (model: StreamModel, info: StreamInfo) => {
-    internalEv.emit('conn.stream_info', info);
+    internalEv.emit('conn.stream_info_changed', info);
   });
 }
