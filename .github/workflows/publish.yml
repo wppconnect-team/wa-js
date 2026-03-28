@@ -40,7 +40,15 @@ jobs:
 
       # seu prepare já roda no publish (prepare -> husky install + clean + build:prd)
       - name: Publish to npm (OIDC)
-        run: npm publish --access public --provenance
+        run: |
+          VERSION="${{ github.ref_name }}"
+          # Extract prerelease identifier from tag (e.g. "alpha" from "v1.0.0-alpha.0")
+          PRERELEASE=$(echo "$VERSION" | sed -n 's/^v[0-9]*\.[0-9]*\.[0-9]*-\([a-zA-Z]*\).*/\1/p')
+          if [ -n "$PRERELEASE" ]; then
+            npm publish --access public --provenance --tag "$PRERELEASE"
+          else
+            npm publish --access public --provenance
+          fi
         env:
           NODE_AUTH_TOKEN: ""
           NPM_TOKEN: ""
