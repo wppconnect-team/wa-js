@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,30 @@
  */
 
 import { compare } from 'compare-versions';
+import { z } from 'zod';
 
 import { assertWid } from '../../assert';
 import { ContactModel, ContactStore, Wid } from '../../whatsapp';
 import { SANITIZED_VERSION_STR } from '../../whatsapp/contants';
 import * as wa_functions from '../../whatsapp/functions';
-import { BlocklistResult } from '../types';
 import { isBlocked } from './isBlocked';
 
+export const blockContactSchema = z.object({
+  chatId: z.string(),
+});
+
+export type BlockContactInput = z.infer<typeof blockContactSchema>;
+
+export type BlockContactOutput = {
+  wid: Wid;
+  isBlocked: boolean;
+};
+
 export async function blockContact(
-  chatId: string | Wid
-): Promise<BlocklistResult> {
+  params: BlockContactInput
+): Promise<BlockContactOutput> {
+  const { chatId } = blockContactSchema.parse(params);
+
   const wid = assertWid(chatId);
 
   const contact = ContactStore.get(wid) || new ContactModel({ id: wid });
@@ -42,6 +55,6 @@ export async function blockContact(
 
   return {
     wid,
-    isBlocked: isBlocked(wid),
+    isBlocked: isBlocked({ chatId: wid._serialized }),
   };
 }

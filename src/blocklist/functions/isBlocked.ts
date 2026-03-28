@@ -14,10 +14,22 @@
  * limitations under the License.
  */
 
-import { assertWid } from '../../assert';
-import { BlocklistStore, Wid } from '../../whatsapp';
+import { z } from 'zod';
 
-export function isBlocked(chatId: string | Wid): boolean {
+import { assertWid } from '../../assert';
+import { BlocklistStore } from '../../whatsapp';
+
+const isBlockedSchema = z.object({
+  chatId: z.string(),
+});
+
+export type IsBlockedInput = z.infer<typeof isBlockedSchema>;
+
+export type IsBlockedOutput = boolean;
+
+export function isBlocked(params: IsBlockedInput): IsBlockedOutput {
+  const { chatId } = isBlockedSchema.parse(params);
+
   const wid = assertWid(chatId);
 
   const contact = BlocklistStore.get(wid);

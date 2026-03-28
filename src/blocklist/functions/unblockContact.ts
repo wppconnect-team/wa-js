@@ -14,15 +14,29 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
 import { ContactModel, ContactStore, Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
-import { BlocklistResult } from '../types';
 import { isBlocked } from './isBlocked';
 
+export const unblockContactSchema = z.object({
+  chatId: z.string(),
+});
+
+export type UnblockContactInput = z.infer<typeof unblockContactSchema>;
+
+export type UnblockContactOutput = {
+  wid: Wid;
+  isBlocked: boolean;
+};
+
 export async function unblockContact(
-  chatId: string | Wid
-): Promise<BlocklistResult> {
+  params: UnblockContactInput
+): Promise<UnblockContactOutput> {
+  const { chatId } = unblockContactSchema.parse(params);
+
   const wid = assertWid(chatId);
 
   const contact = ContactStore.get(wid) || new ContactModel({ id: wid });
@@ -31,6 +45,6 @@ export async function unblockContact(
 
   return {
     wid,
-    isBlocked: isBlocked(wid),
+    isBlocked: isBlocked({ chatId: wid._serialized }),
   };
 }

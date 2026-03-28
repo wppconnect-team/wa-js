@@ -16,6 +16,8 @@
 
 import { BlocklistStore, Wid } from '../../whatsapp';
 
-export function all(): Wid[] {
+export type BlockListAllOutput = Wid[];
+
+export function all(): BlockListAllOutput {
   return BlocklistStore.getModelsArray().map((b) => b.id);
 }

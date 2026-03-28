@@ -20,13 +20,13 @@ import { createWid } from '../../util';
 import { ProductCollModel } from '../../whatsapp';
 import { queryCollectionsIQ } from '../../whatsapp/functions';
 
-const GetCollectionsSchema = z.object({
+const getCollectionsSchema = z.object({
   chatId: z.string(),
   limit: z.number().optional(),
   productsCount: z.number().optional(),
 });
 
-export type GetCollectionsInput = z.infer<typeof GetCollectionsSchema>;
+export type GetCollectionsInput = z.infer<typeof getCollectionsSchema>;
 
 export type GetCollectionsOutput = ProductCollModel[];
 
@@ -47,7 +47,7 @@ export type GetCollectionsOutput = ProductCollModel[];
 export async function getCollections(
   params: GetCollectionsInput
 ): Promise<GetCollectionsOutput> {
-  const { chatId, limit, productsCount } = GetCollectionsSchema.parse(params);
+  const { chatId, limit, productsCount } = getCollectionsSchema.parse(params);
   const { collections } = await queryCollectionsIQ({
     afterCursor: '',
     catalogWid: createWid(chatId),

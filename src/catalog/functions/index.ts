@@ -22,7 +22,11 @@ export { deleteCollection } from './deleteCollection';
 export { delProducts } from './deleteProduct';
 export { editCollection } from './editCollection';
 export { editProduct } from './editProduct';
-export { getCollections } from './getCollections';
+export {
+  getCollections,
+  GetCollectionsInput,
+  GetCollectionsOutput,
+} from './getCollections';
 export { getMyCatalog } from './getMyCatalog';
 export { getProductById } from './getProductById';
 export { getProducts } from './getProducts';
