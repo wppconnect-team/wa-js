@@ -14,22 +14,36 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
-import { Wid } from '../../whatsapp';
 import { getCommunityParticipants as GetCommunityParticipants } from '../../whatsapp/functions';
+
+const communityGetParticipantsSchema = z.object({
+  communityId: z.string(),
+});
+
+export type CommunityGetParticipantsInput = z.infer<
+  typeof communityGetParticipantsSchema
+>;
+
+export type CommunityGetParticipantsOutput = any;
 
 /**
  * Get all participants of a community
  *
  * @example
  * ```javascript
- * await WPP.community.getParticipants('123456@g.us');
+ * const participants = await WPP.community.getParticipants({ communityId: '123456@g.us' });
  * ```
  *
  * @category Community
  */
+export async function getParticipants(
+  params: CommunityGetParticipantsInput
+): Promise<CommunityGetParticipantsOutput> {
+  const { communityId } = communityGetParticipantsSchema.parse(params);
 
-export async function getParticipants(communityId: string | Wid): Promise<any> {
   const wid = assertWid(communityId);
   return GetCommunityParticipants(wid);
 }

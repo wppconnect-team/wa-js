@@ -14,12 +14,44 @@
  * limitations under the License.
  */
 
-export { addSubgroups } from './addSubgroups';
-export { create } from './create';
-export { deactivate } from './deactivate';
-export { demoteParticipants } from './demoteParticipants';
-export { getAnnouncementGroup } from './getAnnouncementGroup';
-export { getParticipants } from './getParticipants';
-export { getSubgroups } from './getSubgroups';
-export { promoteParticipants } from './promoteParticipants';
-export { removeSubgroups } from './removeSubgroups';
+export {
+  addSubgroups,
+  CommunityAddSubgroupsInput,
+  CommunityAddSubgroupsOutput,
+} from './addSubgroups';
+export { CommunityCreateInput, CommunityCreateOutput, create } from './create';
+export {
+  CommunityDeactivateInput,
+  CommunityDeactivateOutput,
+  deactivate,
+} from './deactivate';
+export {
+  CommunityDemoteParticipantsInput,
+  CommunityDemoteParticipantsOutput,
+  demoteParticipants,
+} from './demoteParticipants';
+export {
+  CommunityGetAnnouncementGroupInput,
+  CommunityGetAnnouncementGroupOutput,
+  getAnnouncementGroup,
+} from './getAnnouncementGroup';
+export {
+  CommunityGetParticipantsInput,
+  CommunityGetParticipantsOutput,
+  getParticipants,
+} from './getParticipants';
+export {
+  CommunityGetSubgroupsInput,
+  CommunityGetSubgroupsOutput,
+  getSubgroups,
+} from './getSubgroups';
+export {
+  CommunityPromoteParticipantsInput,
+  CommunityPromoteParticipantsOutput,
+  promoteParticipants,
+} from './promoteParticipants';
+export {
+  CommunityRemoveSubgroupsInput,
+  CommunityRemoveSubgroupsOutput,
+  removeSubgroups,
+} from './removeSubgroups';

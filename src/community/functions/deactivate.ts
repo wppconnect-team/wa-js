@@ -14,22 +14,36 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
-import { Wid } from '../../whatsapp';
 import { sendDeactivateCommunity as SendDeactivateCommunity } from '../../whatsapp/functions';
 
+const communityDeactivateSchema = z.object({
+  communityId: z.string(),
+});
+
+export type CommunityDeactivateInput = z.infer<
+  typeof communityDeactivateSchema
+>;
+
+export type CommunityDeactivateOutput = any;
+
 /**
- * Deactivated a community
+ * Deactivate a community
  *
  * @example
  * ```javascript
- * await WPP.community.deactivate('123456@g.us');
+ * await WPP.community.deactivate({ communityId: '123456@g.us' });
  * ```
  *
  * @category Community
  */
+export async function deactivate(
+  params: CommunityDeactivateInput
+): Promise<CommunityDeactivateOutput> {
+  const { communityId } = communityDeactivateSchema.parse(params);
 
-export async function deactivate(communityId: string | Wid): Promise<any> {
   const wid = assertWid(communityId);
   return SendDeactivateCommunity({
     parentGroupId: wid,

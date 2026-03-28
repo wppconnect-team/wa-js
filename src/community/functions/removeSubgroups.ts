@@ -14,32 +14,45 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
-import { Wid } from '../../whatsapp';
 import { sendUnlinkSubgroups as SendUnlinkSubgroups } from '../../whatsapp/functions';
 
+const communityRemoveSubgroupsSchema = z.object({
+  communityId: z.string(),
+  subgroupIds: z.array(z.string()),
+});
+
+export type CommunityRemoveSubgroupsInput = z.infer<
+  typeof communityRemoveSubgroupsSchema
+>;
+
+export type CommunityRemoveSubgroupsOutput = {
+  failedGroups: { error: string; jid: string }[];
+  linkedGroupJids: string[];
+};
+
 /**
- * Remove groups from community
+ * Remove groups from a community
  *
  * @example
  * ```javascript
- * await WPP.community.sendUnlinkSubgroups('123456@g.us', ['123456@g.us', '123456@g.us']);
+ * await WPP.community.removeSubgroups({
+ *   communityId: '123456@g.us',
+ *   subgroupIds: ['[groupId1]', '[groupId2]'],
+ * });
  * ```
  *
  * @category Community
  */
-
 export async function removeSubgroups(
-  parentGroupId: string | Wid,
-  subgroupIds: (string | Wid) | (string | Wid)[]
-): Promise<{
-  failedGroups: { error: string; jid: string }[];
-  linkedGroupJids: string[];
-}> {
-  if (!Array.isArray(subgroupIds)) {
-    subgroupIds = [subgroupIds];
-  }
-  const parentWid = assertWid(parentGroupId);
+  params: CommunityRemoveSubgroupsInput
+): Promise<CommunityRemoveSubgroupsOutput> {
+  const { communityId, subgroupIds } =
+    communityRemoveSubgroupsSchema.parse(params);
+
+  const parentWid = assertWid(communityId);
   const subGroupsWids = subgroupIds.map(assertWid);
   return await SendUnlinkSubgroups({
     parentGroupId: parentWid,

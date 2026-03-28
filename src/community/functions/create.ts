@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,36 +14,48 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
-import { Wid } from '../../whatsapp';
 import {
   sendCreateCommunity,
   sendLinkSubgroups,
 } from '../../whatsapp/functions';
+
+const communityCreateSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  subgroupIds: z.array(z.string()),
+});
+
+export type CommunityCreateInput = z.infer<typeof communityCreateSchema>;
+
+export type CommunityCreateOutput = any; // TODO: define output type based on sendCreateCommunity and sendLinkSubgroups results
 
 /**
  * Create a community
  *
  * @example
  * ```javascript
- * await WPP.community.create('Name for community', 'description for community', ['123456@g.us', '123456@g.us']);
+ * const community = await WPP.community.create({
+ *   name: 'My Community',
+ *   description: 'Community description',
+ *   subgroupIds: ['[groupId1]', '[groupId2]'],
+ * });
  * ```
  *
  * @category Community
  */
 export async function create(
-  name: string,
-  desc: string,
-  subGroupsIds: (string | Wid) | (string | Wid)[]
-): Promise<any> {
-  if (!Array.isArray(subGroupsIds)) {
-    subGroupsIds = [subGroupsIds];
-  }
+  params: CommunityCreateInput
+): Promise<CommunityCreateOutput> {
+  const { name, description, subgroupIds } =
+    communityCreateSchema.parse(params);
 
-  const subGroupsWids = subGroupsIds.map(assertWid);
+  const subGroupsWids = subgroupIds.map(assertWid);
   const result = await sendCreateCommunity({
-    name: name,
-    desc: desc,
+    name,
+    desc: description,
     closed: false,
   });
   const linkGroups = await sendLinkSubgroups({

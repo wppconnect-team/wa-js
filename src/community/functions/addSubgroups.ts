@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,45 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
-import { Wid } from '../../whatsapp';
 import { sendLinkSubgroups as SendLinkSubgroups } from '../../whatsapp/functions';
 
+const communityAddSubgroupsSchema = z.object({
+  communityId: z.string(),
+  subgroupIds: z.array(z.string()),
+});
+
+export type CommunityAddSubgroupsInput = z.infer<
+  typeof communityAddSubgroupsSchema
+>;
+
+export type CommunityAddSubgroupsOutput = {
+  failedGroups: { error: string; jid: string }[];
+  linkedGroupJids: string[];
+};
+
 /**
- * Add groups do community
+ * Add groups to a community
  *
  * @example
  * ```javascript
- * await WPP.community.addSubgroups('123456@g.us', ['123456@g.us', '123456@g.us']);
+ * await WPP.community.addSubgroups({
+ *   communityId: '123456@g.us',
+ *   subgroupIds: ['[groupId1]', '[groupId2]'],
+ * });
  * ```
  *
  * @category Community
  */
-
 export async function addSubgroups(
-  parentGroupId: string | Wid,
-  subgroupIds: (string | Wid) | (string | Wid)[]
-): Promise<{
-  failedGroups: { error: string; jid: string }[];
-  linkedGroupJids: string[];
-}> {
-  if (!Array.isArray(subgroupIds)) {
-    subgroupIds = [subgroupIds];
-  }
-  const parentWid = assertWid(parentGroupId);
+  params: CommunityAddSubgroupsInput
+): Promise<CommunityAddSubgroupsOutput> {
+  const { communityId, subgroupIds } =
+    communityAddSubgroupsSchema.parse(params);
+
+  const parentWid = assertWid(communityId);
   const subGroupsWids = subgroupIds.map(assertWid);
   return await SendLinkSubgroups({
     parentGroupId: parentWid,

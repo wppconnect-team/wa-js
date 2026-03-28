@@ -14,25 +14,39 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { GroupMetadataStore, Wid } from '../../whatsapp';
 import { getSubgroups } from './getSubgroups';
 
+const communityGetAnnouncementGroupSchema = z.object({
+  communityId: z.string(),
+});
+
+export type CommunityGetAnnouncementGroupInput = z.infer<
+  typeof communityGetAnnouncementGroupSchema
+>;
+
+export type CommunityGetAnnouncementGroupOutput = Wid | undefined;
+
 /**
  * Get the default announcement group of a community
- * You can pass any group id inside a community
+ *
+ * You can pass any group ID inside a community
  *
  * @example
  * ```javascript
- * WPP.community.getAnnouncementGroup('123456@g.us');
+ * const group = WPP.community.getAnnouncementGroup({ communityId: '123456@g.us' });
  * ```
  *
  * @category Community
  */
-
 export function getAnnouncementGroup(
-  communityId: string | Wid
-): Wid | undefined {
-  const allGroups = getSubgroups(communityId);
+  params: CommunityGetAnnouncementGroupInput
+): CommunityGetAnnouncementGroupOutput {
+  const { communityId } = communityGetAnnouncementGroupSchema.parse(params);
+
+  const allGroups = getSubgroups({ communityId });
   for (const group of allGroups) {
     const groupData = GroupMetadataStore.get(group.toString());
     if (groupData?.groupType == 'LINKED_ANNOUNCEMENT_GROUP') {

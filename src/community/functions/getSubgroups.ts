@@ -14,22 +14,38 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
 import { GroupMetadataStore, Wid } from '../../whatsapp';
 
+const communityGetSubgroupsSchema = z.object({
+  communityId: z.string(),
+});
+
+export type CommunityGetSubgroupsInput = z.infer<
+  typeof communityGetSubgroupsSchema
+>;
+
+export type CommunityGetSubgroupsOutput = Wid[];
+
 /**
  * Get all subgroups of a community
- * You can pass id of group community, or id of a inside a grupo
+ *
+ * You can pass the community ID or the ID of any group inside the community
  *
  * @example
  * ```javascript
- * await WPP.community.getSubgroups('123456@g.us');
+ * const subgroups = WPP.community.getSubgroups({ communityId: '123456@g.us' });
  * ```
  *
  * @category Community
  */
+export function getSubgroups(
+  params: CommunityGetSubgroupsInput
+): CommunityGetSubgroupsOutput {
+  const { communityId } = communityGetSubgroupsSchema.parse(params);
 
-export function getSubgroups(communityId: string | Wid): Wid[] {
   const groupData = GroupMetadataStore.get(communityId.toString());
   if (!groupData) {
     throw new WPPError(

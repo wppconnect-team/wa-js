@@ -14,25 +14,41 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { ensureGroupAndParticipants } from '../../group';
-import { Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
 
+const communityDemoteParticipantsSchema = z.object({
+  communityId: z.string(),
+  participantsIds: z.array(z.string()),
+});
+
+export type CommunityDemoteParticipantsInput = z.infer<
+  typeof communityDemoteParticipantsSchema
+>;
+
+export type CommunityDemoteParticipantsOutput = any;
+
 /**
- * Remove admin of community participant
+ * Remove admin role from community participants
  *
  * @example
  * ```javascript
- * await WPP.community.demoteParticipants('123456@g.us', '123456@c.us');
+ * await WPP.community.demoteParticipants({
+ *   communityId: '[chatId]',
+ *   participantsIds: ['[number]@[c.us | lid]'],
+ * });
  * ```
  *
  * @category Community
  */
-
 export async function demoteParticipants(
-  communityId: string | Wid,
-  participantsIds: (string | Wid) | (string | Wid)[]
-): Promise<any> {
+  params: CommunityDemoteParticipantsInput
+): Promise<CommunityDemoteParticipantsOutput> {
+  const { communityId, participantsIds } =
+    communityDemoteParticipantsSchema.parse(params);
+
   const { groupChat, participants } = await ensureGroupAndParticipants(
     communityId,
     participantsIds

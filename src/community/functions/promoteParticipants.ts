@@ -14,25 +14,41 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { ensureGroupAndParticipants } from '../../group';
-import { Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
 
+const communityPromoteParticipantsSchema = z.object({
+  communityId: z.string(),
+  participantsIds: z.array(z.string()),
+});
+
+export type CommunityPromoteParticipantsInput = z.infer<
+  typeof communityPromoteParticipantsSchema
+>;
+
+export type CommunityPromoteParticipantsOutput = any;
+
 /**
- * Promote participant of community to admin
+ * Promote community participants to admin
  *
  * @example
  * ```javascript
- * await WPP.community.promoteParticipants('123456@g.us', '123456@c.us');
+ * await WPP.community.promoteParticipants({
+ *   communityId: '123456@g.us',
+ *   participantsIds: ['[number]@c.us', '[number]@lid'],
+ * });
  * ```
  *
  * @category Community
  */
-
 export async function promoteParticipants(
-  communityId: string | Wid,
-  participantsIds: (string | Wid) | (string | Wid)[]
-): Promise<any> {
+  params: CommunityPromoteParticipantsInput
+): Promise<CommunityPromoteParticipantsOutput> {
+  const { communityId, participantsIds } =
+    communityPromoteParticipantsSchema.parse(params);
+
   const { groupChat, participants } = await ensureGroupAndParticipants(
     communityId,
     participantsIds
