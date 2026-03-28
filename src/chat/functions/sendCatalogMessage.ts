@@ -23,6 +23,7 @@ import {
   defaultSendMessageOptions,
   RawMessage,
   SendMessageOptions,
+  sendMessageOptionsSchema,
   SendMessageReturn,
 } from '..';
 import { sendRawMessage } from '.';
@@ -34,10 +35,17 @@ export interface CatalogMessageOptions extends SendMessageOptions {
   textMessage?: string;
 }
 
+const catalogMessageOptionsSchema = sendMessageOptionsSchema.extend({
+  jpegThumbnail: z.string().optional(),
+  title: z.string().optional(),
+  description: z.string().optional(),
+  textMessage: z.string().optional(),
+});
+
 const chatSendCatalogMessageSchema = z.object({
   toChatId: z.string(),
   fromChatId: z.string(),
-  options: z.custom<CatalogMessageOptions>().optional(),
+  options: catalogMessageOptionsSchema.optional(),
 });
 export type ChatSendCatalogMessageInput = z.infer<
   typeof chatSendCatalogMessageSchema

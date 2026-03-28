@@ -28,6 +28,7 @@ import {
   defaultSendMessageOptions,
   RawMessage,
   SendMessageOptions,
+  sendMessageOptionsSchema,
   SendMessageReturn,
 } from '..';
 import { sendRawMessage } from '.';
@@ -55,10 +56,26 @@ export interface OrderMessageOptions extends SendMessageOptions {
   payment_instruction?: string;
 }
 
+const orderMessageOptionsSchema = sendMessageOptionsSchema.extend({
+  notes: z.string().optional(),
+  discount: z.number().optional(),
+  tax: z.number().optional(),
+  shipping: z.number().optional(),
+  offset: z.number().optional(),
+  pix: z
+    .object({
+      keyType: z.enum(['CNPJ', 'CPF', 'PHONE', 'EMAIL', 'EVP']),
+      name: z.string(),
+      key: z.string(),
+    })
+    .optional(),
+  payment_instruction: z.string().optional(),
+});
+
 const chatSendChargeMessageSchema = z.object({
   chatId: z.string(),
   items: z.array(z.any()),
-  options: z.custom<OrderMessageOptions>().optional(),
+  options: orderMessageOptionsSchema.optional(),
 });
 export type ChatSendChargeMessageInput = z.infer<
   typeof chatSendChargeMessageSchema

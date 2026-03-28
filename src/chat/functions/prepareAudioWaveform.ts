@@ -17,12 +17,23 @@
 import Debug from 'debug';
 import { z } from 'zod';
 
-import type { AudioMessageOptions } from './sendFileMessage';
+import { sendMessageOptionsSchema } from '..';
 
 const debug = Debug('WA-JS:chat:sendFileMessage');
 
+const audioMessageOptionsSchema = sendMessageOptionsSchema.extend({
+  type: z.literal('audio'),
+  caption: z.string().optional(),
+  footer: z.string().optional(),
+  filename: z.string().optional(),
+  mimetype: z.string().optional(),
+  isPtt: z.boolean().optional(),
+  isViewOnce: z.boolean().optional(),
+  waveform: z.boolean().optional(),
+});
+
 const chatPrepareAudioWaveformSchema = z.object({
-  options: z.custom<AudioMessageOptions>(),
+  options: audioMessageOptionsSchema,
   file: z.custom<File>(),
 });
 export type ChatPrepareAudioWaveformInput = z.infer<
@@ -42,10 +53,8 @@ export async function prepareAudioWaveform(
   params: ChatPrepareAudioWaveformInput
 ): Promise<ChatPrepareAudioWaveformOutput> {
   const { options, file } = chatPrepareAudioWaveformSchema.parse(params);
-  const audioOpts = options;
-  const fileObj = file;
 
-  if (!audioOpts.isPtt || !audioOpts.waveform) {
+  if (!options.isPtt || !options.waveform) {
     return;
   }
 
@@ -53,7 +62,7 @@ export async function prepareAudioWaveform(
    * @see https://css-tricks.com/making-an-audio-waveform-visualizer-with-vanilla-javascript/
    */
   try {
-    const audioData = await fileObj.arrayBuffer();
+    const audioData = await file.arrayBuffer();
     const audioContext = new AudioContext();
     const audioBuffer = await audioContext.decodeAudioData(audioData);
 

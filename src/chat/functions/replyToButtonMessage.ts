@@ -28,6 +28,11 @@ export interface ButtonReplyOptions {
   buttonIndex: number;
 }
 
+const buttonReplyOptionsSchema = z.object({
+  /** The index of the button to reply to (0-based) */
+  buttonIndex: z.number(),
+});
+
 /**
  * Reply to a button message by clicking a specific button
  *
@@ -52,7 +57,7 @@ export interface ButtonReplyOptions {
 const chatReplyToButtonMessageSchema = z.object({
   chatId: z.string(),
   messageId: z.string(),
-  options: z.custom<ButtonReplyOptions>(),
+  options: buttonReplyOptionsSchema,
 });
 export type ChatReplyToButtonMessageInput = z.infer<
   typeof chatReplyToButtonMessageSchema
@@ -64,7 +69,7 @@ export async function replyToButtonMessage(
 ): Promise<ChatReplyToButtonMessageOutput> {
   const { chatId, messageId, options } =
     chatReplyToButtonMessageSchema.parse(params);
-  const { buttonIndex } = options as ButtonReplyOptions;
+  const { buttonIndex } = options;
 
   // Get the chat
   const chat = get({ chatId: chatId });

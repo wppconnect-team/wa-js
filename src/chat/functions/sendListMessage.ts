@@ -24,6 +24,7 @@ import {
   defaultSendMessageOptions,
   RawMessage,
   SendMessageOptions,
+  sendMessageOptionsSchema,
   SendMessageReturn,
 } from '..';
 import { sendRawMessage } from '.';
@@ -43,9 +44,28 @@ export interface ListMessageOptions extends SendMessageOptions {
   }>;
 }
 
+const listMessageOptionsSchema = sendMessageOptionsSchema.extend({
+  buttonText: z.string(),
+  description: z.string(),
+  title: z.string().optional(),
+  footer: z.string().optional(),
+  sections: z.array(
+    z.object({
+      title: z.string(),
+      rows: z.array(
+        z.object({
+          rowId: z.string(),
+          title: z.string(),
+          description: z.string(),
+        })
+      ),
+    })
+  ),
+});
+
 const chatSendListMessageSchema = z.object({
   chatId: z.string(),
-  options: z.custom<ListMessageOptions>(),
+  options: listMessageOptionsSchema,
 });
 export type ChatSendListMessageInput = z.infer<
   typeof chatSendListMessageSchema

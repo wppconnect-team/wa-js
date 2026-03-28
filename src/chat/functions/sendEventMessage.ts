@@ -22,6 +22,7 @@ import {
   defaultSendMessageOptions,
   RawMessage,
   SendMessageOptions,
+  sendMessageOptionsSchema,
   SendMessageReturn,
 } from '..';
 import { sendRawMessage } from '.';
@@ -39,9 +40,24 @@ export interface EventMessageOptions extends SendMessageOptions {
   };
 }
 
+const eventMessageOptionsSchema = sendMessageOptionsSchema.extend({
+  callType: z.enum(['video', 'voice']).optional(),
+  name: z.string(),
+  description: z.string().optional(),
+  startTime: z.number(),
+  endTime: z.number().optional(),
+  location: z
+    .object({
+      degreesLatitude: z.number(),
+      degreesLongitude: z.number(),
+      name: z.string(),
+    })
+    .optional(),
+});
+
 const chatSendEventMessageSchema = z.object({
   chatId: z.string(),
-  options: z.custom<EventMessageOptions>().optional(),
+  options: eventMessageOptionsSchema.optional(),
 });
 export type ChatSendEventMessageInput = z.infer<
   typeof chatSendEventMessageSchema

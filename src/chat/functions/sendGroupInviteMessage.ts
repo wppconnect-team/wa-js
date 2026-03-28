@@ -23,6 +23,7 @@ import {
   defaultSendMessageOptions,
   RawMessage,
   SendMessageOptions,
+  sendMessageOptionsSchema,
   SendMessageReturn,
 } from '..';
 import { sendRawMessage } from '.';
@@ -36,9 +37,18 @@ export interface GroupInviteMessageOptions extends SendMessageOptions {
   caption?: string;
 }
 
+const groupInviteMessageOptionsSchema = sendMessageOptionsSchema.extend({
+  jpegThumbnail: z.string().optional(),
+  inviteCode: z.string(),
+  inviteCodeExpiration: z.number().optional(),
+  groupId: z.string(),
+  groupName: z.string().optional(),
+  caption: z.string().optional(),
+});
+
 const chatSendGroupInviteMessageSchema = z.object({
   chatId: z.string(),
-  options: z.custom<GroupInviteMessageOptions>(),
+  options: groupInviteMessageOptionsSchema,
 });
 export type ChatSendGroupInviteMessageInput = z.infer<
   typeof chatSendGroupInviteMessageSchema

@@ -34,6 +34,7 @@ import {
   defaultSendMessageOptions,
   RawMessage,
   SendMessageOptions,
+  sendMessageOptionsSchema,
   SendMessageReturn,
   SendMsgResultObject,
 } from '..';
@@ -44,7 +45,7 @@ const debug = Debug('WA-JS:message');
 const chatSendRawMessageSchema = z.object({
   chatId: z.string(),
   rawMessage: z.custom<RawMessage>(),
-  options: z.custom<SendMessageOptions>().optional(),
+  options: sendMessageOptionsSchema.optional(),
 });
 export type ChatSendRawMessageInput = z.infer<typeof chatSendRawMessageSchema>;
 export type ChatSendRawMessageOutput = SendMessageReturn;

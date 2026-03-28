@@ -27,11 +27,13 @@ import {
   defaultSendMessageOptions,
   RawMessage,
   SendMessageOptions,
+  sendMessageOptionsSchema,
   SendMessageReturn,
 } from '..';
 import { sendRawMessage } from '.';
 import {
   MessageButtonsOptions,
+  messageButtonsOptionsSchema,
   prepareMessageButtons,
 } from './prepareMessageButtons';
 
@@ -59,9 +61,18 @@ export interface LocationMessageOptions
   url?: string;
 }
 
+const locationMessageOptionsSchema = sendMessageOptionsSchema.extend({
+  ...messageButtonsOptionsSchema.shape,
+  lat: z.union([z.number(), z.string()]),
+  lng: z.union([z.number(), z.string()]),
+  address: z.string().optional(),
+  name: z.string().optional(),
+  url: z.string().optional(),
+});
+
 const chatSendLocationMessageSchema = z.object({
   chatId: z.union([dmChatIdSchema, groupIdSchema]),
-  options: z.custom<LocationMessageOptions>(),
+  options: locationMessageOptionsSchema,
 });
 export type ChatSendLocationMessageInput = z.infer<
   typeof chatSendLocationMessageSchema

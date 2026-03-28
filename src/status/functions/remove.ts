@@ -18,11 +18,11 @@ import { z } from 'zod';
 
 import { getMessageById } from '../../chat';
 import { WPPError } from '../../util';
-import { MsgKey, StatusV3Store, UserPrefs } from '../../whatsapp';
+import { StatusV3Store, UserPrefs } from '../../whatsapp';
 import { revokeStatus } from '../../whatsapp/functions';
 
 const statusRemoveSchema = z.object({
-  msgId: z.custom<string | MsgKey>(),
+  msgId: z.string(),
 });
 
 export type StatusRemoveInput = z.infer<typeof statusRemoveSchema>;
@@ -41,7 +41,7 @@ export async function remove(
   params: StatusRemoveInput
 ): Promise<StatusRemoveOutput> {
   const { msgId } = statusRemoveSchema.parse(params);
-  const msg = await getMessageById(msgId);
+  const msg = await getMessageById({ id: msgId });
   try {
     await revokeStatus(
       StatusV3Store.get(UserPrefs.getMaybeMePnUser()) as any,

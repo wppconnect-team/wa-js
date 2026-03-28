@@ -69,9 +69,27 @@ export interface MessageButtonsOptions {
   footer?: string;
 }
 
+export const messageButtonsOptionsSchema = z.object({
+  /** List of buttons, with at least 1 option and a maximum of 3 */
+  buttons: z
+    .array(
+      z.union([
+        z.object({ id: z.string(), text: z.string() }),
+        z.object({ phoneNumber: z.string(), text: z.string() }),
+        z.object({ url: z.string(), text: z.string() }),
+        z.object({ code: z.string(), text: z.string() }),
+      ])
+    )
+    .optional(),
+  /** Title for buttons, only for text message */
+  title: z.string().optional(),
+  /** Footer text for buttons */
+  footer: z.string().optional(),
+});
+
 const chatPrepareMessageButtonsSchema = z.object({
   message: z.custom<RawMessage>(),
-  options: z.custom<MessageButtonsOptions>(),
+  options: messageButtonsOptionsSchema,
 });
 export type ChatPrepareMessageButtonsInput = z.infer<
   typeof chatPrepareMessageButtonsSchema

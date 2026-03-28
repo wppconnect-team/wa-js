@@ -28,7 +28,12 @@ import {
   getEphemeralFields,
   unixTime,
 } from '../../whatsapp/functions';
-import { defaultSendMessageOptions, RawMessage, SendMessageOptions } from '..';
+import {
+  defaultSendMessageOptions,
+  RawMessage,
+  SendMessageOptions,
+  sendMessageOptionsSchema,
+} from '..';
 import { rehydrateMessage } from '../util';
 import {
   generateMessageID,
@@ -42,7 +47,7 @@ import {
 const chatPrepareRawMessageSchema = z.object({
   chat: z.any(),
   message: z.any(),
-  options: z.custom<SendMessageOptions>().optional(),
+  options: sendMessageOptionsSchema.optional(),
 });
 export type ChatPrepareRawMessageInput = z.infer<
   typeof chatPrepareRawMessageSchema

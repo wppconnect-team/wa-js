@@ -5,6 +5,12 @@
     "editor.guides.bracketPairs": false,
     "editor.stickyScroll.enabled": false
   },
+  "[typescript]": {
+    "editor.formatOnSave": false
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
   "search.useIgnoreFiles": false,
   "search.exclude": {
     "**/node_modules": true,

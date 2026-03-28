@@ -20,7 +20,7 @@ import { assertFindChat } from '../../assert';
 import {
   getMessageById,
   prepareRawMessage,
-  SendMessageOptions,
+  sendMessageOptionsSchema,
 } from '../../chat';
 import { getMyUserId } from '../../conn';
 import { createWid, WPPError } from '../../util';
@@ -35,7 +35,7 @@ import { clear, getThumbFromCart } from './';
 const cartSubmitSchema = z.object({
   chatId: z.string(),
   msg: z.string().optional(),
-  options: z.custom<SendMessageOptions>().optional(),
+  options: sendMessageOptionsSchema.optional(),
 });
 
 export type CartSubmitInput = z.infer<typeof cartSubmitSchema>;
@@ -87,9 +87,9 @@ export async function submit(
 
   const totalPrice = order.price?.total;
 
-  const message = await prepareRawMessage(
+  const message = await prepareRawMessage({
     chat,
-    {
+    message: {
       type: 'order',
       orderId: order.id,
       token: order.token,
@@ -109,8 +109,8 @@ export async function submit(
           ? order.price.currency
           : 0,
     },
-    options
-  );
+    options,
+  });
   await addAndSendMsgToChat(chat, message as any);
   updateCart(cart);
   await clear({ chatId });

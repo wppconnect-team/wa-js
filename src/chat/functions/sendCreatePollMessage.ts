@@ -20,6 +20,7 @@ import {
   defaultSendMessageOptions,
   RawMessage,
   SendMessageOptions,
+  sendMessageOptionsSchema,
   SendMessageReturn,
 } from '..';
 import { sendRawMessage } from '.';
@@ -28,11 +29,15 @@ export interface PoolMessageOptions extends SendMessageOptions {
   selectableCount?: number;
 }
 
+const poolMessageOptionsSchema = sendMessageOptionsSchema.extend({
+  selectableCount: z.number().optional(),
+});
+
 const chatSendCreatePollMessageSchema = z.object({
   chatId: z.string(),
   name: z.string(),
   choices: z.array(z.string()),
-  options: z.custom<PoolMessageOptions>().optional(),
+  options: poolMessageOptionsSchema.optional(),
 });
 export type ChatSendCreatePollMessageInput = z.infer<
   typeof chatSendCreatePollMessageSchema

@@ -29,6 +29,7 @@ import {
   defaultSendMessageOptions,
   RawMessage,
   SendMessageOptions,
+  sendMessageOptionsSchema,
   SendMessageReturn,
 } from '..';
 import { sendRawMessage } from '.';
@@ -43,7 +44,7 @@ const vCardContactSchema = z.object({ id: z.string(), name: z.string() });
 const chatSendVCardContactMessageSchema = z.object({
   chatId: z.string(),
   contacts: z.array(vCardContactSchema),
-  options: z.custom<SendMessageOptions>().optional(),
+  options: sendMessageOptionsSchema.optional(),
 });
 export type ChatSendVCardContactMessageInput = z.infer<
   typeof chatSendVCardContactMessageSchema
