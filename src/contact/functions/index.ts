@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,58 @@
  * limitations under the License.
  */
 
-export { get } from './get';
-export { getBusinessProfile } from './getBusinessProfile';
-export { getCommonGroups } from './getCommonGroups';
+export { ContactGetInput, ContactGetOutput, get } from './get';
 export {
+  ContactGetBusinessProfileInput,
+  ContactGetBusinessProfileOutput,
+  getBusinessProfile,
+} from './getBusinessProfile';
+export {
+  ContactGetCommonGroupsInput,
+  ContactGetCommonGroupsOutput,
+  getCommonGroups,
+} from './getCommonGroups';
+export {
+  ContactGetPnLidEntryInput,
+  ContactGetPnLidEntryOutput,
   getPnLidEntry,
   InvalidWidForGetPnLidEntry,
   PnLidContactInfo,
   PnLidEntryResult,
   PnLidWid,
 } from './getPnLidEntry';
-export { getProfilePictureUrl } from './getProfilePictureUrl';
-export { getStatus } from './getStatus';
-export { ContactListOptions, list } from './list';
-export { queryExists } from './queryExists';
-export { remove } from './remove';
-export { reportContact, ReportContactResult } from './reportContact';
-export { save } from './save';
-export { subscribePresence } from './subscribePresence';
-export { unsubscribePresence } from './unsubscribePresence';
+export {
+  ContactGetProfilePictureUrlInput,
+  ContactGetProfilePictureUrlOutput,
+  getProfilePictureUrl,
+} from './getProfilePictureUrl';
+export {
+  ContactGetStatusInput,
+  ContactGetStatusOutput,
+  getStatus,
+} from './getStatus';
+export { ContactListInput, ContactListOutput, list } from './list';
+export {
+  ContactQueryExistsInput,
+  ContactQueryExistsOutput,
+  queryExists,
+  QueryExistsResult,
+} from './queryExists';
+export { ContactRemoveInput, ContactRemoveOutput, remove } from './remove';
+export {
+  ContactReportContactInput,
+  ContactReportContactOutput,
+  reportContact,
+  ReportContactResult,
+} from './reportContact';
+export { ContactSaveInput, ContactSaveOutput, save } from './save';
+export {
+  ContactSubscribePresenceInput,
+  ContactSubscribePresenceOutput,
+  subscribePresence,
+} from './subscribePresence';
+export {
+  ContactUnsubscribePresenceInput,
+  ContactUnsubscribePresenceOutput,
+  unsubscribePresence,
+} from './unsubscribePresence';

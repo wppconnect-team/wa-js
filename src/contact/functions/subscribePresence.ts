@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,36 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { PresenceStore, Wid, WidFactory } from '../../whatsapp';
 import { subscribePresence as sendSubscribePresence } from '../../whatsapp/functions';
 
+const contactSubscribePresenceSchema = z.object({
+  ids: z.array(z.string()),
+});
+
+export type ContactSubscribePresenceInput = z.infer<
+  typeof contactSubscribePresenceSchema
+>;
+
+export type ContactSubscribePresenceOutput = Wid[];
+
 /**
- * Subscribe presente from a contact
+ * Subscribe presence from a contact
  *
  * @example
  * ```javascript
- * await WPP.contact.subscribePresence('[number]@c.us');
+ * await WPP.contact.subscribePresence({ ids: ['[chatId]'] });
  * ```
  *
  * @category Contact
  */
 
 export async function subscribePresence(
-  ids: string | string[]
-): Promise<Wid[]> {
-  if (!Array.isArray(ids)) {
-    ids = [ids];
-  }
+  params: ContactSubscribePresenceInput
+): Promise<ContactSubscribePresenceOutput> {
+  const { ids } = contactSubscribePresenceSchema.parse(params);
 
   const result = [];
   for (const id of ids) {

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { ContactModel, ContactStore, LabelStore } from '../../whatsapp';
 
-export interface ContactListOptions {
-  onlyMyContacts?: boolean;
-  withLabels?: string[];
-}
+const contactListSchema = z.object({
+  onlyMyContacts: z.boolean().optional(),
+  withLabels: z.array(z.string()).optional(),
+});
+
+export type ContactListInput = z.infer<typeof contactListSchema>;
+
+export type ContactListOutput = ContactModel[];
 
 /**
  * Return a list of contacts
@@ -27,34 +33,36 @@ export interface ContactListOptions {
  * @example
  * ```javascript
  * // All contacts
- * const contats = await WPP.contact.list();
+ * const contats = await WPP.contact.list({});
  *
  * // Only my contacts
- * const contacts = await WPP.contact.list({onlyMyContacts: true});
+ * const contacts = await WPP.contact.list({ onlyMyContacts: true });
  *
  * // Only with label Text
- * const contacts = await WPP.contact.list({withLabels: ['Test']});
+ * const contacts = await WPP.contact.list({ withLabels: ['Test'] });
  *
  * // Only with label id
- * const contacts = await WPP.contact.list({withLabels: ['1']});
+ * const contacts = await WPP.contact.list({ withLabels: ['1'] });
  *
  * // Only with label with one of text or id
- * const contacts = await WPP.contact.list({withLabels: ['Alfa','5']});
+ * const contacts = await WPP.contact.list({ withLabels: ['Alfa','5'] });
  * ```
  *
  * @category Contact
  */
 export async function list(
-  options: ContactListOptions = {}
-): Promise<ContactModel[]> {
+  params: ContactListInput = {}
+): Promise<ContactListOutput> {
+  const { onlyMyContacts, withLabels } = contactListSchema.parse(params);
+
   let models = ContactStore.getModelsArray().slice();
 
-  if (options.onlyMyContacts) {
+  if (onlyMyContacts) {
     models = models.filter((c) => c.isMyContact);
   }
 
-  if (options.withLabels) {
-    const ids = options.withLabels.map((value) => {
+  if (withLabels) {
+    const ids = withLabels.map((value) => {
       const label = LabelStore.findFirst((l) => l.name === value);
 
       if (label) {

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import { z } from 'zod';
 
 import { assertWid } from '../../assert';
 import { createWid } from '../../util/createWid';
@@ -41,6 +43,14 @@ export interface QueryExistsResult {
 
 const cache = new Map<string, QueryExistsResult | null>();
 
+const contactQueryExistsSchema = z.object({
+  chatId: z.string(),
+});
+
+export type ContactQueryExistsInput = z.infer<typeof contactQueryExistsSchema>;
+
+export type ContactQueryExistsOutput = QueryExistsResult | null;
+
 /**
  * Check if the number exists and what is correct ID
  *
@@ -48,16 +58,18 @@ const cache = new Map<string, QueryExistsResult | null>();
  *
  * @example
  * ```javascript
- * const result = await WPP.contact.queryExists('[number]@c.us');
+ * const result = await WPP.contact.queryExists({ chatId: '[chatId]' });
  * console.log(result.wid); // Correct ID
  * ```
  *
  * @category Contact
  */
 export async function queryExists(
-  contactId: string | Wid
-): Promise<QueryExistsResult | null> {
-  const wid = assertWid(contactId);
+  params: ContactQueryExistsInput
+): Promise<ContactQueryExistsOutput> {
+  const { chatId } = contactQueryExistsSchema.parse(params);
+
+  const wid = assertWid(chatId);
 
   const id = `+${wid.toString()}`;
   if (cache.has(id)) {

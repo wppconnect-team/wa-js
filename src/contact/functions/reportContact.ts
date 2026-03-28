@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
-import { ChatModel, ChatStore, MsgModel, Wid } from '../../whatsapp';
+import { ChatModel, ChatStore, Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
 
 export interface ReportContactResult {
@@ -24,6 +26,18 @@ export interface ReportContactResult {
   errorCode?: number;
   errorText?: string;
 }
+
+const contactReportContactSchema = z.object({
+  chatId: z.string(),
+  spamFlow: z.string().optional(),
+  msg: z.any().optional(),
+});
+
+export type ContactReportContactInput = z.infer<
+  typeof contactReportContactSchema
+>;
+
+export type ContactReportContactOutput = ReportContactResult;
 
 /**
  * Report a contact or chat to WhatsApp
@@ -41,35 +55,32 @@ export interface ReportContactResult {
  * @example
  * ```javascript
  * // Basic contact report
- * const result = await WPP.contact.reportContact('5511999999999@c.us');
+ * const result = await WPP.contact.reportContact({ chatId: '[chatId]' });
  * console.log('Report ID:', result.reportId);
  * ```
  *
  * @example
  * ```javascript
  * // Report with specific type
- * await WPP.contact.reportContact('5511999999999@c.us', 'ChatFmxCardSafetyToolsReportSuspicious');
- * ```
- *
- * @example
- * ```javascript
- * // Report specific message
- * const msg = await WPP.chat.getMessageById('msgId');
- * await WPP.contact.reportContact('5511999999999@c.us', 'MessageMenu', msg);
+ * await WPP.contact.reportContact({ chatId: '[chatId]', spamFlow: 'ChatFmxCardSafetyToolsReportSuspicious' });
  * ```
  *
  * @category Contact
- * @param contactId - Contact ID or Wid to report
- * @param spamFlow - Optional spam flow type (default: 'ChatInfoReport')
- * @param msg - Optional specific message to report
+ * @param params.chatId - Contact ID or Wid to report
+ * @param params.spamFlow - Optional spam flow type (default: 'ChatInfoReport')
+ * @param params.msg - Optional specific message to report
  * @returns Promise with report result containing reportId or error details
  */
 export async function reportContact(
-  contactId: string | Wid,
-  spamFlow: string = 'ChatInfoReport',
-  msg?: MsgModel
-): Promise<ReportContactResult> {
-  const wid = assertWid(contactId);
+  params: ContactReportContactInput
+): Promise<ContactReportContactOutput> {
+  const {
+    chatId,
+    spamFlow = 'ChatInfoReport',
+    msg,
+  } = contactReportContactSchema.parse(params);
+
+  const wid = assertWid(chatId);
 
   const chat = ChatStore.get(wid) || new ChatModel({ id: wid });
 

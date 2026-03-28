@@ -1,5 +1,5 @@
 /*!
- * Copyright 2025 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
 import { isWhatsAppVersionGTE } from '../../conn/functions';
 import { WPPError } from '../../util';
@@ -24,13 +26,30 @@ import {
 } from '../../whatsapp/functions';
 import { get } from './get';
 
+const contactSaveSchema = z.object({
+  contactId: z.string(),
+  firstName: z.string(),
+  /** @deprecated Use lastName instead */
+  surname: z.string().optional(),
+  /** @deprecated Use syncAddressBook instead, this one with typo was updated */
+  syncAdressBook: z.boolean().optional(),
+  lastName: z.string().optional(),
+  syncAddressBook: z.boolean().optional(),
+});
+
+export type ContactSaveInput = z.infer<typeof contactSaveSchema>;
+
+export type ContactSaveOutput = ContactModel | undefined;
+
 /**
  * Create new or update a contact in the device
  *
  * @example
  * ```javascript
- * await WPP.contact.save('5533999999999@c.us', 'John', {
- *   surname: 'Doe',
+ * await WPP.contact.save({
+ *   contactId: '[chatId]',
+ *   firstName: 'John',
+ *   lastName: 'Doe',
  *   syncAddressBook: true,
  * });
  * ```
@@ -39,17 +58,16 @@ import { get } from './get';
  */
 
 export async function save(
-  contactId: string | any,
-  firstName: string,
-  options?: {
-    /** @deprecated Use lastName instead */
-    surname?: string;
-    /** @deprecated Use syncAddressBook instead, this one with typo was updated */
-    syncAdressBook?: boolean;
-    lastName?: string;
-    syncAddressBook?: boolean;
-  }
-): Promise<ContactModel | undefined> {
+  params: ContactSaveInput
+): Promise<ContactSaveOutput> {
+  const {
+    contactId,
+    firstName,
+    surname,
+    syncAdressBook,
+    lastName,
+    syncAddressBook,
+  } = contactSaveSchema.parse(params);
   if (!contactId || !firstName) {
     throw new WPPError(
       'send_the_required_fields',
@@ -57,7 +75,7 @@ export async function save(
     );
   }
 
-  if (options?.syncAdressBook !== undefined) {
+  if (syncAdressBook !== undefined) {
     console.warn(
       '[WPPConnect Warning] The "syncAdressBook" option is deprecated due to a typo. Please use "syncAddressBook" instead.'
     );
@@ -79,20 +97,19 @@ export async function save(
         ? alternateWid.user
         : null;
 
-  const syncToAddressbook =
-    options?.syncAddressBook ?? options?.syncAdressBook ?? true;
+  const syncToAddressbook = syncAddressBook ?? syncAdressBook ?? true;
 
-  const lastName = options?.lastName ?? options?.surname ?? '';
+  const lastNameValue = lastName ?? surname ?? '';
 
   // Version >= 2.3000.1030209354 uses object parameter API
-  if (isWhatsAppVersionGTE('2.3000.1030209354')) {
+  if (isWhatsAppVersionGTE({ version: '2.3000.1030209354' })) {
     await saveContactActionV2({
       phoneNumber,
       prevPhoneNumber: null,
       lid,
       username: null,
       firstName,
-      lastName,
+      lastName: lastNameValue,
       syncToAddressbook,
     });
   } else {
@@ -111,9 +128,9 @@ export async function save(
       null,
       null,
       firstName,
-      lastName,
+      lastNameValue,
       syncToAddressbook
     );
   }
-  return await get(contactId);
+  return await get({ chatId: wid.toString() });
 }

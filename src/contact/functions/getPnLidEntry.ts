@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 
 import Debug from 'debug';
+import { z } from 'zod';
 
 import { assertWid } from '../../assert';
 import { WPPError } from '../../util';
@@ -57,22 +58,33 @@ export class InvalidWidForGetPnLidEntry extends WPPError {
   }
 }
 
+const contactGetPnLidEntrySchema = z.object({
+  chatId: z.string(),
+});
+
+export type ContactGetPnLidEntryInput = z.infer<
+  typeof contactGetPnLidEntrySchema
+>;
+
+export type ContactGetPnLidEntryOutput = PnLidEntryResult;
+
 /**
  * Get LID/PhoneNumber mapping and Contact information
  *
  * @example
  * ```javascript
- * await WPP.contact.getPnLidEntry('[number]@c.us');
- * await WPP.contact.getPnLidEntry('[number]@lid');
+ * await WPP.contact.getPnLidEntry({ chatId: '[chatId]' });
  * ```
  *
  * @category Contact
  */
 
 export async function getPnLidEntry(
-  contactId: string | Wid
-): Promise<PnLidEntryResult> {
-  const wid = assertWid(contactId);
+  params: ContactGetPnLidEntryInput
+): Promise<ContactGetPnLidEntryOutput> {
+  const { chatId } = contactGetPnLidEntrySchema.parse(params);
+
+  const wid = assertWid(chatId);
 
   let lid: Wid | undefined = undefined;
   let pn: Wid | undefined = undefined;
@@ -93,7 +105,7 @@ export async function getPnLidEntry(
     // If no LID found locally, query the server to get it
     if (!lid) {
       debug(`LID not found in cache for ${wid.toString()}, querying server...`);
-      const queryResult = await queryExists(wid);
+      const queryResult = await queryExists({ chatId: wid.toString() });
       if (queryResult?.lid) {
         lid = queryResult.lid;
         debug(`LID retrieved from server: ${lid.toString()}`);

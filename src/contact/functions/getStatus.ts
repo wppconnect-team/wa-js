@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,39 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
-import { StatusStore, Wid } from '../../whatsapp';
+import { StatusStore } from '../../whatsapp';
 import { queryExists } from './queryExists';
+
+const contactGetStatusSchema = z.object({
+  chatId: z.string(),
+});
+
+export type ContactGetStatusInput = z.infer<typeof contactGetStatusSchema>;
+
+export type ContactGetStatusOutput = string | null;
 
 /**
  * Get the current text status
  *
  * @example
  * ```javascript
- * await WPP.contact.getStatus('[number]@c.us');
+ * await WPP.contact.getStatus({ chatId: '[chatId]' });
  * ```
  *
  * @category Contact
  */
 
-export async function getStatus(contactId: string | Wid) {
-  const wid = assertWid(contactId);
+export async function getStatus(
+  params: ContactGetStatusInput
+): Promise<ContactGetStatusOutput> {
+  const { chatId } = contactGetStatusSchema.parse(params);
 
-  const exists = await queryExists(wid);
+  const wid = assertWid(chatId);
+
+  const exists = await queryExists({ chatId: wid.toString() });
 
   if (!exists) {
     return null;

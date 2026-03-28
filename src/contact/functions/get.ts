@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,34 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
-import { ContactModel, ContactStore, Wid } from '../../whatsapp';
+import { ContactModel, ContactStore } from '../../whatsapp';
+
+const contactGetSchema = z.object({
+  chatId: z.string(),
+});
+
+export type ContactGetInput = z.infer<typeof contactGetSchema>;
+
+export type ContactGetOutput = ContactModel | undefined;
 
 /**
- * Get a contact by id
+ * Get a contact by chatId
  *
  * @example
  * ```javascript
- * await WPP.contact.get('[number]@c.us');
- * await WPP.contact.get('[number]@lid');
- * await WPP.contact.get('[number]@g.us');
+ * await WPP.contact.get({ chatId: '[chatId]' });
  * ```
  *
  * @category Contact
  */
 
-export async function get(
-  contactId: string | Wid
-): Promise<ContactModel | undefined> {
-  const wid = assertWid(contactId);
+export async function get(params: ContactGetInput): Promise<ContactGetOutput> {
+  const { chatId } = contactGetSchema.parse(params);
+
+  const wid = assertWid(chatId);
 
   return ContactStore.get(wid);
 }

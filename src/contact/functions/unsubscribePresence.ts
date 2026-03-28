@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,36 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { PresenceStore, Wid, WidFactory } from '../../whatsapp';
+
+const contactUnsubscribePresenceSchema = z.object({
+  ids: z.array(z.string()),
+});
+
+export type ContactUnsubscribePresenceInput = z.infer<
+  typeof contactUnsubscribePresenceSchema
+>;
+
+export type ContactUnsubscribePresenceOutput = Wid[];
 
 /**
  * Unsubscribe presence of a contact
  *
  * @example
  * ```javascript
- * await WPP.contact.unsubscribePresence('[number]@c.us');
+ * await WPP.contact.unsubscribePresence({ ids: ['[chatId]'] });
+ * await WPP.contact.unsubscribePresence({ ids: ['[chatId]', '[chatId]'] });
  * ```
  *
  * @category Contact
  */
 
 export async function unsubscribePresence(
-  ids: string | string[]
-): Promise<Wid[]> {
-  if (!Array.isArray(ids)) {
-    ids = [ids];
-  }
+  params: ContactUnsubscribePresenceInput
+): Promise<ContactUnsubscribePresenceOutput> {
+  const { ids } = contactUnsubscribePresenceSchema.parse(params);
 
   const result = [];
   for (const id of ids) {

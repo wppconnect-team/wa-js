@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,28 +14,38 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
-import {
-  BusinessProfileModel,
-  BusinessProfileStore,
-  Wid,
-} from '../../whatsapp';
+import { BusinessProfileModel, BusinessProfileStore } from '../../whatsapp';
+
+const contactGetBusinessProfileSchema = z.object({
+  chatId: z.string(),
+});
+
+export type ContactGetBusinessProfileInput = z.infer<
+  typeof contactGetBusinessProfileSchema
+>;
+
+export type ContactGetBusinessProfileOutput = BusinessProfileModel;
 
 /**
- * Get the current text status
+ * Get the business profile of a contact
  *
  * @example
  * ```javascript
- * const url = await WPP.contact.getBusinessProfile('[number]@c.us');
+ * const url = await WPP.contact.getBusinessProfile({ chatId: '[chatId]' });
  * ```
  *
  * @category Contact
  */
 
 export async function getBusinessProfile(
-  contactId: string | Wid
-): Promise<BusinessProfileModel> {
-  const wid = assertWid(contactId);
+  params: ContactGetBusinessProfileInput
+): Promise<ContactGetBusinessProfileOutput> {
+  const { chatId } = contactGetBusinessProfileSchema.parse(params);
+
+  const wid = assertWid(chatId);
 
   const profile = await BusinessProfileStore.fetchBizProfile(wid);
 
