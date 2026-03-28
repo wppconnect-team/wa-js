@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,10 @@
 
 import { Conn } from '../../whatsapp';
 
+export type ProfileIsBusinessOutput = boolean;
+
 /**
- * Return the current logged user is Bussiness or not
+ * Return the current logged user is Business or not
  *
  * @example
  * ```javascript
@@ -25,6 +27,6 @@ import { Conn } from '../../whatsapp';
  * ```
  * @category Profile
  */
-export function isBusiness(): boolean | undefined {
-  return Conn.isSMB;
+export function isBusiness(): ProfileIsBusinessOutput {
+  return Conn.isSMB || false;
 }

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,34 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { functions } from '../../whatsapp';
+
+const profileSetMyProfileNameSchema = z.object({
+  name: z.string(),
+});
+
+export type ProfileSetMyProfileNameInput = z.infer<
+  typeof profileSetMyProfileNameSchema
+>;
+
+export type ProfileSetMyProfileNameOutput = boolean;
 
 /**
  * Update your current profile name
  *
  * @example
  * ```javascript
- * await WPP.profile.setMyProfileName('My new name');
+ * await WPP.profile.setMyProfileName({ name: 'My new name' });
  * ```
  *
  * @category Profile
  */
-
-export async function setMyProfileName(name: string) {
+export async function setMyProfileName(
+  params: ProfileSetMyProfileNameInput
+): Promise<ProfileSetMyProfileNameOutput> {
+  const { name } = profileSetMyProfileNameSchema.parse(params);
   await functions.setPushname(name);
-
   return true;
 }

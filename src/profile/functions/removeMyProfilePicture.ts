@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import { functions } from '../../whatsapp';
 
+export type ProfileRemoveMyProfilePictureOutput = boolean;
+
 /**
  * Remove your profile picture
  *
@@ -27,8 +29,7 @@ import { functions } from '../../whatsapp';
  *
  * @category Profile
  */
-
-export async function removeMyProfilePicture(): Promise<boolean> {
+export async function removeMyProfilePicture(): Promise<ProfileRemoveMyProfilePictureOutput> {
   const result = await functions.requestDeletePicture(getMyUserWid());
   return result.status === 200;
 }

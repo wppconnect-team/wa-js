@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import { WPPError } from '../../util';
 import {
@@ -22,6 +24,30 @@ import {
   Conn,
 } from '../../whatsapp';
 import { editBusinessProfile as editProfile } from '../../whatsapp/functions';
+
+const profileEditBusinessProfileSchema = z.object({
+  description: z.string().optional(),
+  categories: z
+    .array(
+      z.object({
+        id: z.string(),
+        localized_display_name: z.string(),
+        not_a_biz: z.boolean(),
+      })
+    )
+    .optional(),
+  address: z.string().optional(),
+  email: z.string().optional(),
+  website: z.array(z.string()).optional(),
+  businessHours: z.record(z.string(), z.any()).optional(),
+  timezone: z.string().optional(),
+});
+
+export type ProfileEditBusinessProfileInput = z.infer<
+  typeof profileEditBusinessProfileSchema
+>;
+
+export type ProfileEditBusinessProfileOutput = BusinessProfileModel;
 
 /**
  * Update your business profile
@@ -40,11 +66,11 @@ import { editBusinessProfile as editProfile } from '../../whatsapp/functions';
  * ```
  *
  * ```javascript
- * await WPP.profile.editBusinessProfile({adress: 'Street 01, New York'});
+ * await WPP.profile.editBusinessProfile({ address: 'Street 01, New York' });
  * ```
  *
  * ```javascript
- * await WPP.profile.editBusinessProfile({adress: 'Street 01, New York'});
+ * await WPP.profile.editBusinessProfile({ address: 'Street 01, New York' });
  * ```
  *
  * ```javascript
@@ -218,15 +244,20 @@ import { editBusinessProfile as editProfile } from '../../whatsapp/functions';
  * @category Profile
  */
 
-export async function editBusinessProfile(params: BusinessProfileModel) {
+export async function editBusinessProfile(
+  params: ProfileEditBusinessProfileInput
+): Promise<ProfileEditBusinessProfileOutput> {
+  const parsed = profileEditBusinessProfileSchema.parse(params);
+
   if (!Conn.isSMB)
     throw new WPPError('NOT_BUSINESS_PROFILE', 'Not a business profile');
 
-  if (params.website && Array.isArray(params.website)) {
-    params.website = params.website.map((i) => ({ url: i }));
+  const profileParams: any = { ...parsed };
+  if (parsed.website) {
+    profileParams.website = parsed.website.map((url) => ({ url }));
   }
 
-  await editProfile(params);
+  await editProfile(profileParams);
   const user = getMyUserWid();
   const profile = await BusinessProfileStore.fetchBizProfile(user);
   return profile;

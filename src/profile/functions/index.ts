@@ -14,12 +14,37 @@
  * limitations under the License.
  */
 
-export { editBusinessProfile } from './editBusinessProfile';
-export { getMyProfileName } from './getMyProfileName';
-export { getMyProfilePicture } from './getMyProfilePicture';
-export { getMyStatus } from './getMyStatus';
-export { isBusiness } from './isBusiness';
-export { removeMyProfilePicture } from './removeMyProfilePicture';
-export { setMyProfileName } from './setMyProfileName';
-export { setMyProfilePicture } from './setMyProfilePicture';
-export { setMyStatus } from './setMyStatus';
+export {
+  editBusinessProfile,
+  ProfileEditBusinessProfileInput,
+  ProfileEditBusinessProfileOutput,
+} from './editBusinessProfile';
+export {
+  getMyProfileName,
+  ProfileGetMyProfileNameOutput,
+} from './getMyProfileName';
+export {
+  getMyProfilePicture,
+  ProfileGetMyProfilePictureOutput,
+} from './getMyProfilePicture';
+export { getMyStatus, ProfileGetMyStatusOutput } from './getMyStatus';
+export { isBusiness, ProfileIsBusinessOutput } from './isBusiness';
+export {
+  ProfileRemoveMyProfilePictureOutput,
+  removeMyProfilePicture,
+} from './removeMyProfilePicture';
+export {
+  ProfileSetMyProfileNameInput,
+  ProfileSetMyProfileNameOutput,
+  setMyProfileName,
+} from './setMyProfileName';
+export {
+  ProfileSetMyProfilePictureInput,
+  ProfileSetMyProfilePictureOutput,
+  setMyProfilePicture,
+} from './setMyProfilePicture';
+export {
+  ProfileSetMyStatusInput,
+  ProfileSetMyStatusOutput,
+  setMyStatus,
+} from './setMyStatus';

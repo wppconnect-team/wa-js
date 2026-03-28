@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import { ProfilePicThumbModel, ProfilePicThumbStore } from '../../whatsapp';
 
+export type ProfileGetMyProfilePictureOutput = ProfilePicThumbModel;
+
 /**
  * Get your current profile picture
  *
@@ -27,8 +29,7 @@ import { ProfilePicThumbModel, ProfilePicThumbStore } from '../../whatsapp';
  *
  * @category Profile
  */
-
-export async function getMyProfilePicture(): Promise<ProfilePicThumbModel> {
+export async function getMyProfilePicture(): Promise<ProfileGetMyProfilePictureOutput> {
   const user = getMyUserWid();
   const pic = await ProfilePicThumbStore.find(user);
   return pic;

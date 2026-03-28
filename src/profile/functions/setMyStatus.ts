@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,34 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import { StatusStore } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
+
+const profileSetMyStatusSchema = z.object({
+  statusText: z.string(),
+});
+
+export type ProfileSetMyStatusInput = z.infer<typeof profileSetMyStatusSchema>;
+
+export type ProfileSetMyStatusOutput = boolean;
 
 /**
  * Update your current text status
  *
  * @example
  * ```javascript
- * await WPP.profile.setMyStatus('Example text');
+ * await WPP.profile.setMyStatus({ statusText: 'Example text' });
  * ```
  *
  * @category Profile
  */
-
-export async function setMyStatus(statusText: string) {
+export async function setMyStatus(
+  params: ProfileSetMyStatusInput
+): Promise<ProfileSetMyStatusOutput> {
+  const { statusText } = profileSetMyStatusSchema.parse(params);
   await wa_functions.setMyStatus(statusText);
   const myStatus = await StatusStore.find(getMyUserWid());
 

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import { StatusStore } from '../../whatsapp';
 
+export type ProfileGetMyStatusOutput = string | undefined;
+
 /**
  * Get your current text status
  *
@@ -27,8 +29,7 @@ import { StatusStore } from '../../whatsapp';
  *
  * @category Profile
  */
-
-export async function getMyStatus() {
+export async function getMyStatus(): Promise<ProfileGetMyStatusOutput> {
   const myStatus = await StatusStore.find(getMyUserWid());
-  return myStatus.status;
+  return myStatus?.status;
 }

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,28 +14,43 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import { blobToBase64, convertToFile, resizeImage } from '../../util';
 import { sendSetPicture } from '../../whatsapp/functions';
+
+const profileSetMyProfilePictureSchema = z.object({
+  content: z.string(),
+});
+
+export type ProfileSetMyProfilePictureInput = z.infer<
+  typeof profileSetMyProfilePictureSchema
+>;
+
+export type ProfileSetMyProfilePictureOutput = {
+  eurl: string;
+  status: number;
+  tag: string;
+  token: string;
+  _duplicate: boolean;
+};
 
 /**
  * Update your profile picture
  *
  * @example
  * ```javascript
- * await WPP.profile.setMyProfilePicture('data:image/jpeg;base64,.....');
+ * await WPP.profile.setMyProfilePicture({ content: 'data:image/jpeg;base64,.....' });
  * ```
  *
  * @category Profile
  */
+export async function setMyProfilePicture(
+  params: ProfileSetMyProfilePictureInput
+): Promise<ProfileSetMyProfilePictureOutput> {
+  const { content } = profileSetMyProfilePictureSchema.parse(params);
 
-export async function setMyProfilePicture(content: string): Promise<{
-  eurl: string;
-  status: number;
-  tag: string;
-  token: string;
-  _duplicate: boolean;
-}> {
   const file = await convertToFile(content);
 
   const thumbFile = await resizeImage(file, {
