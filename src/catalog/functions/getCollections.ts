@@ -14,9 +14,21 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { createWid } from '../../util';
 import { ProductCollModel } from '../../whatsapp';
 import { queryCollectionsIQ } from '../../whatsapp/functions';
+
+const GetCollectionsSchema = z.object({
+  chatId: z.string(),
+  limit: z.number().optional(),
+  productsCount: z.number().optional(),
+});
+
+export type GetCollectionsInput = z.infer<typeof GetCollectionsSchema>;
+
+export type GetCollectionsOutput = ProductCollModel[];
 
 /**
  * Get collections of catalog
@@ -24,26 +36,25 @@ import { queryCollectionsIQ } from '../../whatsapp/functions';
  * @example
  * ```javascript
  * // Retrieve 20 collections of chat
- * const myCatalog = await WPP.catalog.getCollections('552198554578@c.us', '20');
+ * const myCatalog = await WPP.catalog.getCollections({ chatId: '552198554578@c.us', limit: 20 });
  *
  * // Retrieve 20 collections of chat and products arrays limit with 10 products
- * const myCatalog = await WPP.catalog.getCollections('552198554578@c.us', '20', '10');
+ * const myCatalog = await WPP.catalog.getCollections({ chatId: '552198554578@c.us', limit: 20, productsCount: 10 });
  * ```
  *
  * @return Your collections of products
  */
 export async function getCollections(
-  chatId: string,
-  qnt?: number,
-  productsCount?: number
-): Promise<ProductCollModel[]> {
+  params: GetCollectionsInput
+): Promise<GetCollectionsOutput> {
+  const { chatId, limit, productsCount } = GetCollectionsSchema.parse(params);
   const { collections } = await queryCollectionsIQ({
     afterCursor: '',
     catalogWid: createWid(chatId),
     height: 100,
     width: 100,
-    limit: qnt || 10,
-    productsCount: productsCount || 10,
+    limit: limit ?? 10,
+    productsCount: productsCount ?? 10,
   });
   return collections;
 }

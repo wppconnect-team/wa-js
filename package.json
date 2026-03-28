@@ -94,5 +94,8 @@
   },
   "engines": {
     "whatsapp-web": ">=2.2326.10-beta"
+  },
+  "dependencies": {
+    "zod": "^4.3.6"
   }
 }
