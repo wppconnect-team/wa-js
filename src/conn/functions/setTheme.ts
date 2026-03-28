@@ -14,8 +14,18 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { setTheme as setThemePref } from '../../whatsapp/misc/UserPrefsGeneral';
 import { Theme } from './getTheme';
+
+const connSetThemeSchema = z.object({
+  theme: z.enum(Theme),
+});
+
+export type ConnSetThemeInput = z.infer<typeof connSetThemeSchema>;
+
+export type ConnSetThemeOutput = void;
 
 /**
  * Set theme and reload the page to apply changes
@@ -24,25 +34,22 @@ import { Theme } from './getTheme';
  * ```javascript
  * // Using Enum
  * import { Theme } from '@wppconnect/wa-js';
- * await WPP.conn.setTheme(Theme.LIGHT);
- * await WPP.conn.setTheme(Theme.DARK);
- * await WPP.conn.setTheme(Theme.SYSTEM);
+ * await WPP.conn.setTheme({ theme: Theme.LIGHT });
+ * await WPP.conn.setTheme({ theme: Theme.DARK });
+ * await WPP.conn.setTheme({ theme: Theme.SYSTEM });
  *
  * // Using string ("light", "dark", "system")
- * await WPP.conn.setTheme("light");
- * await WPP.conn.setTheme("dark");
- * await WPP.conn.setTheme("system");
+ * await WPP.conn.setTheme({ theme: 'light' });
+ * await WPP.conn.setTheme({ theme: 'dark' });
+ * await WPP.conn.setTheme({ theme: 'system' });
  * ```
  *
  * @category Config
  */
-export async function setTheme(theme: Theme): Promise<void> {
-  // validate theme value
-  if (!Object.values(Theme).includes(theme)) {
-    throw new Error(
-      'Invalid theme value. Use Theme.LIGHT, Theme.DARK, or Theme.SYSTEM.'
-    );
-  }
+export async function setTheme(
+  params: ConnSetThemeInput
+): Promise<ConnSetThemeOutput> {
+  const { theme } = connSetThemeSchema.parse(params);
 
   setThemePref(theme);
 

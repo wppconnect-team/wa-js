@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 
 import { compare } from 'compare-versions';
+import { z } from 'zod';
 
 import * as webpack from '../../webpack';
 
@@ -32,6 +33,8 @@ export interface BuildConstants {
   };
   [key: string]: any;
 }
+
+export type ConnGetBuildConstantsOutput = BuildConstants | null;
 
 /**
  * Get the WhatsApp Web build constants
@@ -54,7 +57,7 @@ export interface BuildConstants {
  * - WINDOWS_BUILD: Windows build number (if applicable)
  * - And other build-related constants
  */
-export function getBuildConstants(): BuildConstants | null {
+export function getBuildConstants(): ConnGetBuildConstantsOutput {
   const buildConstants = webpack.search((m) => m.VERSION_STR);
 
   if (!buildConstants) {
@@ -71,26 +74,49 @@ export function getBuildConstants(): BuildConstants | null {
   };
 }
 
+const connIsWhatsAppVersionGTESchema = z.object({
+  version: z.string(),
+});
+
+export type ConnIsWhatsAppVersionGTEInput = z.infer<
+  typeof connIsWhatsAppVersionGTESchema
+>;
+
+export type ConnIsWhatsAppVersionGTEOutput = boolean;
+
 /**
  * Check if the current WhatsApp version is greater than or equal to a specified version
  *
  * @example
  * ```javascript
  * // Check if version is >= 2.3000.1030110621
- * if (WPP.conn.isWhatsAppVersionGTE('2.3000.1030110621')) {
+ * if (WPP.conn.isWhatsAppVersionGTE({ version: '2.3000.1030110621' })) {
  *   console.log('Using new API');
  * }
  * ```
  *
- * @param version - Version string to compare against (e.g., "2.3000.1029")
+ * @param params.version - Version string to compare against (e.g., "2.3000.1029")
  * @returns {boolean} True if current version is >= specified version
  */
-export function isWhatsAppVersionGTE(version: string): boolean {
+export function isWhatsAppVersionGTE(
+  params: ConnIsWhatsAppVersionGTEInput
+): ConnIsWhatsAppVersionGTEOutput {
+  const { version } = connIsWhatsAppVersionGTESchema.parse(params);
   const buildConstants = getBuildConstants();
   const currentVersion = buildConstants?.VERSION_STR || '0.0.0';
 
   return compare(currentVersion, version, '>=');
 }
+
+const connIsWhatsAppVersionLTESchema = z.object({
+  version: z.string(),
+});
+
+export type ConnIsWhatsAppVersionLTEInput = z.infer<
+  typeof connIsWhatsAppVersionLTESchema
+>;
+
+export type ConnIsWhatsAppVersionLTEOutput = boolean;
 
 /**
  * Check if the current WhatsApp version is less than or equal to a specified version
@@ -98,15 +124,18 @@ export function isWhatsAppVersionGTE(version: string): boolean {
  * @example
  * ```javascript
  * // Check if version is <= 2.3000.1029960097
- * if (WPP.conn.isWhatsAppVersionLTE('2.3000.1029960097')) {
+ * if (WPP.conn.isWhatsAppVersionLTE({ version: '2.3000.1029960097' })) {
  *   console.log('Using legacy API');
  * }
  * ```
  *
- * @param version - Version string to compare against (e.g., "2.3000.1029")
+ * @param params.version - Version string to compare against (e.g., "2.3000.1029")
  * @returns {boolean} True if current version is <= specified version
  */
-export function isWhatsAppVersionLTE(version: string): boolean {
+export function isWhatsAppVersionLTE(
+  params: ConnIsWhatsAppVersionLTEInput
+): ConnIsWhatsAppVersionLTEOutput {
+  const { version } = connIsWhatsAppVersionLTESchema.parse(params);
   const buildConstants = getBuildConstants();
   const currentVersion = buildConstants?.VERSION_STR || '0.0.0';
 

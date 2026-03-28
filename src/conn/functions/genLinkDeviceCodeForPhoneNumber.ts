@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,22 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
 import { functions } from '../../whatsapp';
 import { isAuthenticated } from '.';
+
+const connGenLinkDeviceCodeForPhoneNumberSchema = z.object({
+  phone: z.string(),
+  sendPushNotification: z.boolean().optional(),
+});
+
+export type ConnGenLinkDeviceCodeForPhoneNumberInput = z.infer<
+  typeof connGenLinkDeviceCodeForPhoneNumberSchema
+>;
+
+export type ConnGenLinkDeviceCodeForPhoneNumberOutput = string;
 
 /**
  * Alternative login method using code
@@ -24,18 +37,20 @@ import { isAuthenticated } from '.';
  *
  * @example
  * ```javascript
- * const code = await WPP.conn.genLinkDeviceCodeForPhoneNumber('[number]');
+ * const code = await WPP.conn.genLinkDeviceCodeForPhoneNumber({ phone: '[number]' });
  *
  * // Disable push notification
- * const code = await WPP.conn.genLinkDeviceCodeForPhoneNumber('[number]', false);
+ * const code = await WPP.conn.genLinkDeviceCodeForPhoneNumber({ phone: '[number]', sendPushNotification: false });
  * ```
  *
  * @category Conn
  */
 export async function genLinkDeviceCodeForPhoneNumber(
-  phone: string,
-  sendPushNotification = true
-): Promise<string> {
+  params: ConnGenLinkDeviceCodeForPhoneNumberInput
+): Promise<ConnGenLinkDeviceCodeForPhoneNumberOutput> {
+  const { phone, sendPushNotification = true } =
+    connGenLinkDeviceCodeForPhoneNumberSchema.parse(params);
+
   if (!phone || typeof phone !== 'string') {
     throw new WPPError(
       'send_the_phone_number_to_connect',

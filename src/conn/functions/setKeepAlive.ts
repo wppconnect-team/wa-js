@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,18 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 const originalHasFocus = document.hasFocus;
 let interval: any;
+
+const connSetKeepAliveSchema = z.object({
+  enable: z.boolean().optional(),
+});
+
+export type ConnSetKeepAliveInput = z.infer<typeof connSetKeepAliveSchema>;
+
+export type ConnSetKeepAliveOutput = boolean;
 
 /**
  * Set keep alive state, that will force the focused and online state
@@ -23,13 +33,17 @@ let interval: any;
  * @example
  * ```javascript
  * // To enable
- * await WPP.conn.setKeepAlive();
+ * await WPP.conn.setKeepAlive({ enable: true });
  *
  * // To disable
- * await WPP.conn.setKeepAlive(false);
+ * await WPP.conn.setKeepAlive({ enable: false });
  * ```
  */
-export function setKeepAlive(enable = true) {
+export function setKeepAlive(
+  params: ConnSetKeepAliveInput = {}
+): ConnSetKeepAliveOutput {
+  const { enable = true } = connSetKeepAliveSchema.parse(params);
+
   if (enable) {
     document.hasFocus = () => true;
     interval = setInterval(

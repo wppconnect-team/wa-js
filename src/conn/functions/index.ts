@@ -14,51 +14,93 @@
  * limitations under the License.
  */
 
-export { changeEnviromentDevice } from './changeEnviromentDevice';
-export { genLinkDeviceCodeForPhoneNumber } from './genLinkDeviceCodeForPhoneNumber';
+export {
+  changeEnviromentDevice,
+  ConnChangeEnviromentDeviceOutput,
+} from './changeEnviromentDevice';
+export {
+  ConnGenLinkDeviceCodeForPhoneNumberInput,
+  ConnGenLinkDeviceCodeForPhoneNumberOutput,
+  genLinkDeviceCodeForPhoneNumber,
+} from './genLinkDeviceCodeForPhoneNumber';
 export {
   ABPropConfig,
+  ConnGetABPropNameInput,
+  ConnGetABPropNameOutput,
+  ConnGetABPropsMapOutput,
+  ConnGetABPropsOutput,
   getABPropName,
   getABProps,
   getABPropsMap,
 } from './getABProps';
-export { getAuthCode } from './getAuthCode';
-export { getAutoDownloadSettings } from './getAutoDownloadSettings';
+export { ConnGetAuthCodeOutput, getAuthCode } from './getAuthCode';
+export {
+  ConnGetAutoDownloadSettingsOutput,
+  getAutoDownloadSettings,
+} from './getAutoDownloadSettings';
 export {
   BuildConstants,
+  ConnGetBuildConstantsOutput,
+  ConnIsWhatsAppVersionGTEInput,
+  ConnIsWhatsAppVersionGTEOutput,
+  ConnIsWhatsAppVersionLTEInput,
+  ConnIsWhatsAppVersionLTEOutput,
   getBuildConstants,
   isWhatsAppVersionGTE,
+  isWhatsAppVersionLTE,
 } from './getBuildConstants';
 export {
+  ConnGetHistorySyncProgressOutput,
   getHistorySyncProgress,
-  HistorySyncProgress,
 } from './getHistorySyncProgress';
-export { getMigrationState, MigrationState } from './getMigrationState';
-export { getMyDeviceId } from './getMyDeviceId';
-export { getMyUserId } from './getMyUserId';
-export { getMyUserLid } from './getMyUserLid';
-export { getMyUserWid } from './getMyUserWid';
-export { getPlatform } from './getPlatform';
-export { getStreamData, StreamData } from './getStreamData';
-export { getTheme, Theme } from './getTheme';
-export { isAuthenticated } from './isAuthenticated';
-export { isIdle } from './isIdle';
-export { isMainInit } from './isMainInit';
-export { isMainLoaded } from './isMainLoaded';
-export { isMainReady } from './isMainReady';
-export { isMultiDevice } from './isMultiDevice';
-export { isOnline } from './isOnline';
-export { isRegistered } from './isRegistered';
-export { joinWebBeta } from './joinWebBeta';
-export { logout } from './logout';
-export { markAvailable, markUnavailable } from './markAvailable';
-export { needsUpdate } from './needsUpdate';
-export { refreshQR } from './refreshQR';
 export {
-  AutoDownloadSettings,
+  ConnGetMigrationStateOutput,
+  getMigrationState,
+} from './getMigrationState';
+export { ConnGetMyDeviceIdOutput, getMyDeviceId } from './getMyDeviceId';
+export { ConnGetMyUserIdOutput, getMyUserId } from './getMyUserId';
+export { ConnGetMyUserLidOutput, getMyUserLid } from './getMyUserLid';
+export { ConnGetMyUserWidOutput, getMyUserWid } from './getMyUserWid';
+export { ConnGetPlatformOutput, getPlatform } from './getPlatform';
+export { ConnGetStreamDataOutput, getStreamData } from './getStreamData';
+export { ConnGetThemeOutput, getTheme, Theme } from './getTheme';
+export { ConnIsAuthenticatedOutput, isAuthenticated } from './isAuthenticated';
+export { ConnIsIdleOutput, isIdle } from './isIdle';
+export { ConnIsMainInitOutput, isMainInit } from './isMainInit';
+export { ConnIsMainLoadedOutput, isMainLoaded } from './isMainLoaded';
+export { ConnIsMainReadyOutput, isMainReady } from './isMainReady';
+export { ConnIsMultiDeviceOutput, isMultiDevice } from './isMultiDevice';
+export { ConnIsOnlineOutput, isOnline } from './isOnline';
+export { ConnIsRegisteredOutput, isRegistered } from './isRegistered';
+export {
+  ConnJoinWebBetaInput,
+  ConnJoinWebBetaOutput,
+  joinWebBeta,
+} from './joinWebBeta';
+export { ConnLogoutOutput, logout } from './logout';
+export {
+  ConnMarkAvailableInput,
+  ConnMarkAvailableOutput,
+  ConnMarkUnavailableOutput,
+  markAvailable,
+  markUnavailable,
+} from './markAvailable';
+export { ConnNeedsUpdateOutput, needsUpdate } from './needsUpdate';
+export { ConnRefreshQROutput, refreshQR } from './refreshQR';
+export {
+  ConnSetAutoDownloadSettingsInput,
+  ConnSetAutoDownloadSettingsOutput,
   setAutoDownloadSettings,
 } from './setAutoDownloadSettings';
-export { setKeepAlive } from './setKeepAlive';
-export { setLimit } from './setLimit';
-export { setMultiDevice } from './setMultiDevice';
-export { setTheme } from './setTheme';
+export {
+  ConnSetKeepAliveInput,
+  ConnSetKeepAliveOutput,
+  setKeepAlive,
+} from './setKeepAlive';
+export { ConnSetLimitInput, ConnSetLimitOutput, setLimit } from './setLimit';
+export {
+  ConnSetMultiDeviceInput,
+  ConnSetMultiDeviceOutput,
+  setMultiDevice,
+} from './setMultiDevice';
+export { ConnSetThemeInput, ConnSetThemeOutput, setTheme } from './setTheme';

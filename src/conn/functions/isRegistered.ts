@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 import * as wa_functions from '../../whatsapp/functions';
 
+export type ConnIsRegisteredOutput = boolean;
+
 /**
  * Check is the current browser is logged before loading
  *
@@ -24,6 +26,6 @@ import * as wa_functions from '../../whatsapp/functions';
  * const isRegistered = WPP.conn.isRegistered();
  * ```
  */
-export function isRegistered(): boolean {
+export function isRegistered(): ConnIsRegisteredOutput {
   return wa_functions.isRegistered();
 }

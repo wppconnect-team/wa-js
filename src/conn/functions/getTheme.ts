@@ -22,6 +22,8 @@ export enum Theme {
   SYSTEM = 'system',
 }
 
+export type ConnGetThemeOutput = Theme;
+
 /**
  * Get current theme setting
  *
@@ -40,7 +42,7 @@ export enum Theme {
  *
  * @category Config
  */
-export function getTheme(): Theme {
+export function getTheme(): ConnGetThemeOutput {
   const themeValue = getThemePref();
 
   // Convert string to enum

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2025 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 import * as wa_functions from '../../whatsapp/functions';
 
-export interface HistorySyncProgress {
+export type ConnGetHistorySyncProgressOutput = {
   progress: number | null;
   paused: boolean;
   inProgress: boolean;
-}
+};
 
 /**
  * Return the current state of syncing old messages progress
@@ -33,7 +33,7 @@ export interface HistorySyncProgress {
  * console.log(info.inProgress); // Output: true
  * ```
  */
-export function getHistorySyncProgress(): HistorySyncProgress {
+export function getHistorySyncProgress(): ConnGetHistorySyncProgressOutput {
   const info = wa_functions.getHistorySyncProgress();
 
   return {

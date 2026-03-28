@@ -21,6 +21,13 @@ import {
   getAutoDownloadVideos,
 } from '../../whatsapp/misc/UserPrefsGeneral';
 
+export type ConnGetAutoDownloadSettingsOutput = {
+  photos: boolean;
+  audio: boolean;
+  videos: boolean;
+  documents: boolean;
+};
+
 /**
  * Get auto-download settings for media types
  *
@@ -34,12 +41,7 @@ import {
  *
  * @category Config
  */
-export function getAutoDownloadSettings(): {
-  photos: boolean;
-  audio: boolean;
-  videos: boolean;
-  documents: boolean;
-} {
+export function getAutoDownloadSettings(): ConnGetAutoDownloadSettingsOutput {
   return {
     photos: getAutoDownloadPhotos(),
     audio: getAutoDownloadAudio(),

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,9 @@
 
 import { Cmd, Socket } from '../../whatsapp';
 
-export async function logout(): Promise<boolean> {
+export type ConnLogoutOutput = boolean;
+
+export async function logout(): Promise<ConnLogoutOutput> {
   Socket.logout();
 
   await new Promise((resolve) => {

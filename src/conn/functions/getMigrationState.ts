@@ -1,5 +1,5 @@
 /*!
- * Copyright 2025 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import { Lid1X1MigrationUtils, UserPrefs, Wid } from '../../whatsapp/misc';
 /**
  * Migration state information for the current WhatsApp account
  */
-export interface MigrationState {
+export type ConnGetMigrationStateOutput = {
   /** Whether the account has been migrated to LID (Linked Identity) system */
   isLidMigrated: boolean;
   /** Whether the sync session has been migrated */
@@ -31,7 +31,7 @@ export interface MigrationState {
   currentLid?: Wid;
   /** The current user's PN, if available */
   currentPn?: Wid;
-}
+};
 
 /**
  * Get comprehensive migration state information for debugging and monitoring
@@ -51,8 +51,8 @@ export interface MigrationState {
  * ```
  * @category Connection
  */
-export function getMigrationState(): MigrationState {
-  const state: MigrationState = {
+export function getMigrationState(): ConnGetMigrationStateOutput {
+  const state: ConnGetMigrationStateOutput = {
     isLidMigrated: false,
     isSyncdSessionMigrated: false,
     shouldApplyNonMigratedMessagingRules: false,

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@
  * const isMainInit = WPP.conn.isMainInit();
  * ```
  */
-export function isMainInit(): boolean {
+export type ConnIsMainInitOutput = boolean;
+
+export function isMainInit(): ConnIsMainInitOutput {
   return Boolean((window as any).Debug?.VERSION);
 }

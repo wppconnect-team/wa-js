@@ -1,5 +1,5 @@
 /*!
- * Copyright 2022 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 import { Conn } from '../../whatsapp';
 
+export type ConnGetPlatformOutput = string | undefined;
+
 /**
  * Check what's device platform is connected
  * @returns android | iphone | wp
@@ -25,6 +27,6 @@ import { Conn } from '../../whatsapp';
  * const getPlatform = WPP.conn.getPlatform();
  * ```
  */
-export function getPlatform(): any {
+export function getPlatform(): ConnGetPlatformOutput {
   return Conn.platform;
 }

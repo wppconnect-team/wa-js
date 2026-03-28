@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 import * as wa_functions from '../../whatsapp/functions';
 
-export function isAuthenticated(): boolean {
+export type ConnIsAuthenticatedOutput = boolean;
+
+export function isAuthenticated(): ConnIsAuthenticatedOutput {
   return wa_functions.isAuthenticated();
 }

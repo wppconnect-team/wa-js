@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,33 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { Stream } from '../../whatsapp';
+
+const connMarkAvailableSchema = z.object({
+  available: z.boolean().optional(),
+});
+
+export type ConnMarkAvailableInput = z.infer<typeof connMarkAvailableSchema>;
+
+export type ConnMarkAvailableOutput = boolean;
+
+export type ConnMarkUnavailableOutput = boolean;
 
 /**
  * Set the online state to online
  *
  * @example
  * ```javascript
- * await WPP.conn.markAvailable();
+ * await WPP.conn.markAvailable({ available: true });
  * ```
  */
-export async function markAvailable(available = true): Promise<boolean> {
+export async function markAvailable(
+  params: ConnMarkAvailableInput = {}
+): Promise<ConnMarkAvailableOutput> {
+  const { available = true } = connMarkAvailableSchema.parse(params);
+
   Object.defineProperty(Stream, 'available', {
     get: () => available,
     set: (v) => {
@@ -53,6 +69,6 @@ export async function markAvailable(available = true): Promise<boolean> {
  * await WPP.conn.markUnavailable();
  * ```
  */
-export async function markUnavailable(): Promise<boolean> {
-  return markAvailable(false);
+export async function markUnavailable(): Promise<ConnMarkUnavailableOutput> {
+  return markAvailable({ available: false });
 }

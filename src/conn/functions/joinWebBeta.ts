@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,21 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
 import {
   changeOptInStatusForExternalWebBeta,
   getWhatsAppWebExternalBetaJoinedIdb,
 } from '../../whatsapp/functions';
+
+const connJoinWebBetaSchema = z.object({
+  value: z.boolean(),
+});
+
+export type ConnJoinWebBetaInput = z.infer<typeof connJoinWebBetaSchema>;
+
+export type ConnJoinWebBetaOutput = boolean;
 
 /**
  * Join or leave of WhatsApp Web beta program.
@@ -27,13 +37,17 @@ import {
  * @example
  * ```javascript
  * // For join on Beta
- * WPP.conn.joinWebBeta(true);
+ * WPP.conn.joinWebBeta({ value: true });
  *
  * // For leave of Beta
- * WPP.conn.joinWebBeta(true);
+ * WPP.conn.joinWebBeta({ value: false });
  * ```
  */
-export async function joinWebBeta(value: boolean): Promise<boolean> {
+export async function joinWebBeta(
+  params: ConnJoinWebBetaInput
+): Promise<ConnJoinWebBetaOutput> {
+  const { value } = connJoinWebBetaSchema.parse(params);
+
   const initialValue = await getWhatsAppWebExternalBetaJoinedIdb();
   if (initialValue === value) return initialValue;
 

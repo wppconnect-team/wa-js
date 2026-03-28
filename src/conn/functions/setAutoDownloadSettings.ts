@@ -14,26 +14,22 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import * as UserPrefsGeneral from '../../whatsapp/misc/UserPrefsGeneral';
 
-export interface AutoDownloadSettings {
-  /**
-   * Enable/disable auto-download for photos
-   */
-  photos?: boolean;
-  /**
-   * Enable/disable auto-download for audio
-   */
-  audio?: boolean;
-  /**
-   * Enable/disable auto-download for videos
-   */
-  videos?: boolean;
-  /**
-   * Enable/disable auto-download for documents
-   */
-  documents?: boolean;
-}
+const connSetAutoDownloadSettingsSchema = z.object({
+  photos: z.boolean().optional(),
+  audio: z.boolean().optional(),
+  videos: z.boolean().optional(),
+  documents: z.boolean().optional(),
+});
+
+export type ConnSetAutoDownloadSettingsInput = z.infer<
+  typeof connSetAutoDownloadSettingsSchema
+>;
+
+export type ConnSetAutoDownloadSettingsOutput = void;
 
 /**
  * Set auto-download settings for media types
@@ -58,22 +54,25 @@ export interface AutoDownloadSettings {
  * @category Config
  */
 export async function setAutoDownloadSettings(
-  settings: AutoDownloadSettings
-): Promise<void> {
-  if (settings.photos !== undefined) {
-    UserPrefsGeneral.setAutoDownloadPhotos(settings.photos);
+  params: ConnSetAutoDownloadSettingsInput
+): Promise<ConnSetAutoDownloadSettingsOutput> {
+  const { photos, audio, videos, documents } =
+    connSetAutoDownloadSettingsSchema.parse(params);
+
+  if (photos !== undefined) {
+    UserPrefsGeneral.setAutoDownloadPhotos(photos);
   }
 
-  if (settings.audio !== undefined) {
-    UserPrefsGeneral.setAutoDownloadAudio(settings.audio);
+  if (audio !== undefined) {
+    UserPrefsGeneral.setAutoDownloadAudio(audio);
   }
 
-  if (settings.videos !== undefined) {
-    UserPrefsGeneral.setAutoDownloadVideos(settings.videos);
+  if (videos !== undefined) {
+    UserPrefsGeneral.setAutoDownloadVideos(videos);
   }
 
-  if (settings.documents !== undefined) {
-    UserPrefsGeneral.setAutoDownloadDocuments(settings.documents);
+  if (documents !== undefined) {
+    UserPrefsGeneral.setAutoDownloadDocuments(documents);
   }
 
   // Reload the page to ensure settings are applied immediately

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-export function isMultiDevice(): boolean {
+export type ConnIsMultiDeviceOutput = boolean;
+
+export function isMultiDevice(): ConnIsMultiDeviceOutput {
   /**
    * always true for >= 2.2241.6
    */

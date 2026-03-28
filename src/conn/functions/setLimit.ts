@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import { z } from 'zod';
 
 import { WPPError } from '../../util';
 import * as webpack from '../../webpack';
@@ -29,136 +31,71 @@ webpack.onFullReady(() => {
   });
 });
 
+const connSetLimitSchema = z.discriminatedUnion('key', [
+  z.object({ key: z.literal('maxMediaSize'), value: z.number() }),
+  z.object({ key: z.literal('maxFileSize'), value: z.number() }),
+  z.object({ key: z.literal('maxShare'), value: z.number() }),
+  z.object({ key: z.literal('statusVideoMaxDuration'), value: z.number() }),
+  z.object({ key: z.literal('unlimitedPin'), value: z.boolean() }),
+]);
+
+export type ConnSetLimitInput = z.infer<typeof connSetLimitSchema>;
+
+export type ConnSetLimitOutput = number | boolean | null;
+
 /**
- * Change the limit of MediaSize
+ * Change a limit
  *
  * @example
  * ```javascript
  *  //Change the maximum size (bytes) for uploading media (max 70MB)
- *  WPP.conn.setLimit('maxMediaSize',16777216);
- * ```
- * @deprecated
- */
-export function setLimit(key: 'maxMediaSize', value: number): number;
-/**
- * Change the limit of FileSize
- *
- * @example
- * ```javascript
- *  //Change the maximum size (bytes) for uploading files (max 1GB)
- *  WPP.conn.setLimit('maxFileSize',104857600);
- * ```
- */
-export function setLimit(key: 'maxFileSize', value: number): number;
-/**
- * Change the limit of Share
- *
- * @example
- * ```javascript
- *  //Change the maximum number of contacts that can be selected when sharing (Default 5)
- *  WPP.conn.setLimit('maxShare',100);
- * ```
- */
-export function setLimit(key: 'maxShare', value: number): number;
-/**
- * Change the limit of Status Video Duration
- *
- * @example
- * ```javascript
- *  //Change the maximum time (seconds) of a video status
- *  WPP.conn.setLimit('statusVideoMaxDuration',120);
- * ```
- * @deprecated
- */
-export function setLimit(key: 'statusVideoMaxDuration', value: number): number;
-/**
- * Change the limit of Pin
- *
- * @example
- * ```javascript
- *  //Remove pinned conversation limit (only whatsapp web) (Default 3)
- *  WPP.conn.setLimit('unlimitedPin',true);
- * ```
- */
-export function setLimit(key: 'unlimitedPin', value: boolean): boolean;
-/**
- * Change the limits
- *
- * @example
- * ```javascript
- *  //Change the maximum size (bytes) for uploading media (max 70MB)
- *  WPP.conn.setLimit('maxMediaSize',16777216);
+ *  WPP.conn.setLimit({ key: 'maxMediaSize', value: 16777216 });
  *
  *  //Change the maximum size (bytes) for uploading files (max 1GB)
- *  WPP.conn.setLimit('maxFileSize',104857600);
+ *  WPP.conn.setLimit({ key: 'maxFileSize', value: 104857600 });
  *
  *  //Change the maximum number of contacts that can be selected when sharing (Default 5)
- *  WPP.conn.setLimit('maxShare',100);
+ *  WPP.conn.setLimit({ key: 'maxShare', value: 100 });
  *
  *  //Change the maximum time (seconds) of a video status
- *  WPP.conn.setLimit('statusVideoMaxDuration',120);
+ *  WPP.conn.setLimit({ key: 'statusVideoMaxDuration', value: 120 });
  *
  *  //Remove pinned conversation limit (only whatsapp web) (Default 3)
- *  WPP.conn.setLimit('unlimitedPin',true);
+ *  WPP.conn.setLimit({ key: 'unlimitedPin', value: true });
  * ```
  */
-export function setLimit(key: string, value: boolean | number): any {
-  switch (key) {
+export function setLimit(params: ConnSetLimitInput): ConnSetLimitOutput {
+  connSetLimitSchema.parse(params);
+  switch (params.key) {
     case 'maxMediaSize': {
-      if (typeof value !== 'number' || value > 73400320) {
-        throw new WPPError(
-          `maxMediaSize_error`,
-          typeof value !== 'number'
-            ? `Value type invalid!`
-            : `Maximum value is 70MB`
-        );
+      if (params.value > 73400320) {
+        throw new WPPError(`maxMediaSize_error`, `Maximum value is 70MB`);
       }
-      //ServerProps.media = value;
+      //ServerProps.media = params.value;
       return null;
     }
 
     case 'maxFileSize': {
-      if (typeof value !== 'number' || value > 1073741824) {
-        throw new WPPError(
-          `maxFileSize_error`,
-          typeof value !== 'number'
-            ? `Value type invalid!`
-            : `Maximum value is 1GB`
-        );
+      if (params.value > 1073741824) {
+        throw new WPPError(`maxFileSize_error`, `Maximum value is 1GB`);
       }
-      ServerPropsConstants.MAX_FILE_SIZE_BYTES = value;
+      ServerPropsConstants.MAX_FILE_SIZE_BYTES = params.value;
       return ServerPropsConstants.MAX_FILE_SIZE_BYTES;
     }
 
     case 'maxShare': {
-      if (typeof value !== 'number') {
-        throw new WPPError(`maxShare_error`, `Value type invalid!`);
-      }
-      ServerPropsConstants.MULTICAST_LIMIT_GLOBAL = value;
+      ServerPropsConstants.MULTICAST_LIMIT_GLOBAL = params.value;
       return ServerPropsConstants.MULTICAST_LIMIT_GLOBAL;
     }
 
     case 'statusVideoMaxDuration': {
-      if (typeof value !== 'number') {
-        throw new WPPError(
-          `statusVideoMaxDuration_error`,
-          `Value type invalid!`
-        );
-      }
-      //ServerProps.statusVideoMaxDuration = value;
+      //ServerProps.statusVideoMaxDuration = params.value;
       return null;
     }
 
     case 'unlimitedPin': {
-      if (typeof value !== 'boolean') {
-        throw new WPPError(`unlimitedPin_error`, `Value type invalid!`);
-      }
-      unlimitedPin = value ? true : undefined;
-      return value;
-    }
-
-    default: {
-      throw new WPPError(`setLimit_error`, `Key type invalid!`);
+      unlimitedPin = params.value ? true : undefined;
+      return params.value;
     }
   }
 }

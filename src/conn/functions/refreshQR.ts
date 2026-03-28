@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ import { Cmd, Socket } from '../../whatsapp';
 import { AuthCode } from '..';
 import { isAuthenticated, isMultiDevice } from '.';
 
+export type ConnRefreshQROutput = AuthCode | null;
+
 /**
  * Refresh the current QRCode when is waiting for scan and return the current code
  *
@@ -30,7 +32,7 @@ import { isAuthenticated, isMultiDevice } from '.';
  * await WPP.conn.refreshQR();
  * ```
  */
-export async function refreshQR(): Promise<AuthCode | null> {
+export async function refreshQR(): Promise<ConnRefreshQROutput> {
   if (isAuthenticated()) {
     return null;
   }

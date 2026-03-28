@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import * as abPropsCache from '../../whatsapp/functions/abPropsCache';
 import { RawABPropConfig } from '../../whatsapp/functions/abPropsCache';
 
@@ -24,6 +26,8 @@ export interface ABPropConfig extends RawABPropConfig {
   /** The human-readable config name (e.g., "web_pwa_background_sync") */
   name: string | null;
 }
+
+export type ConnGetABPropsOutput = ABPropConfig[];
 
 /**
  * Get all A/B test property configurations for the current session
@@ -43,7 +47,7 @@ export interface ABPropConfig extends RawABPropConfig {
  *
  * @returns {ABPropConfig[]} Array of A/B property configurations with names
  */
-export function getABProps(): ABPropConfig[] {
+export function getABProps(): ConnGetABPropsOutput {
   const configs = abPropsCache.getAllABPropConfigs();
 
   if (!configs) {
@@ -52,9 +56,11 @@ export function getABProps(): ABPropConfig[] {
 
   return configs.map((config: RawABPropConfig) => ({
     ...config,
-    name: getABPropName(String(config.configCode)),
+    name: getABPropName({ configCode: String(config.configCode) }),
   }));
 }
+
+export type ConnGetABPropsMapOutput = Map<string, ABPropConfig>;
 
 /**
  * Get all A/B test property configurations as a Map
@@ -82,7 +88,7 @@ export function getABProps(): ABPropConfig[] {
  *
  * @returns {Map<string, ABPropConfig>} Map of config code to A/B property configuration with names
  */
-export function getABPropsMap(): Map<string, ABPropConfig> {
+export function getABPropsMap(): ConnGetABPropsMapOutput {
   const originalMap = abPropsCache.getAllABPropsMap();
 
   if (!originalMap) {
@@ -94,12 +100,22 @@ export function getABPropsMap(): Map<string, ABPropConfig> {
   originalMap.forEach((config: RawABPropConfig, key: string) => {
     result.set(key, {
       ...config,
-      name: getABPropName(String(config.configCode)),
+      name: getABPropName({
+        configCode: String(config.configCode),
+      }),
     });
   });
 
   return result;
 }
+
+const connGetABPropNameSchema = z.object({
+  configCode: z.string(),
+});
+
+export type ConnGetABPropNameInput = z.infer<typeof connGetABPropNameSchema>;
+
+export type ConnGetABPropNameOutput = string | null;
 
 /**
  * Get the human-readable name of an A/B config from its code
@@ -107,13 +123,16 @@ export function getABPropsMap(): Map<string, ABPropConfig> {
  * @example
  * ```javascript
  * // Get name from config code
- * const name = WPP.conn.getABPropName('12345');
+ * const name = WPP.conn.getABPropName({ configCode: '12345' });
  * console.log('Config name:', name);
  * ```
  *
- * @param configCode - The numeric config code
+ * @param params.configCode - The numeric config code
  * @returns {string|null} The human-readable config name or null if not found
  */
-export function getABPropName(configCode: string): string | null {
+export function getABPropName(
+  params: ConnGetABPropNameInput
+): ConnGetABPropNameOutput {
+  const { configCode } = connGetABPropNameSchema.parse(params);
   return abPropsCache.getABPropConfigNameFromCode(configCode) || null;
 }

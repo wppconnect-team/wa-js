@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 import { UserPrefs, Wid } from '../../whatsapp';
 
+export type ConnGetMyUserWidOutput = Wid;
+
 /**
  * Return the current logged user ID without device id
  *
@@ -25,7 +27,7 @@ import { UserPrefs, Wid } from '../../whatsapp';
  * console.log(wid.toString()); // Output: 123@c.us
  * ```
  */
-export function getMyUserWid(): Wid {
+export function getMyUserWid(): ConnGetMyUserWidOutput {
   const user =
     typeof UserPrefs.getMaybeMeUser === 'function'
       ? UserPrefs.getMaybeMeUser()

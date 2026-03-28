@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,30 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { Cmd } from '../../whatsapp';
 
+const connSetMultiDeviceSchema = z.object({
+  md: z.boolean().optional(),
+});
+
+export type ConnSetMultiDeviceInput = z.infer<typeof connSetMultiDeviceSchema>;
+
+export type ConnSetMultiDeviceOutput = boolean;
+
 /**
- * @param md If it's true, WhatsApp WEB will switch to MD. If it's false, WhatsApp WEB will switch to Legacy.
+ * @param params.md If it's true, WhatsApp WEB will switch to MD. If it's false, WhatsApp WEB will switch to Legacy.
  * @example
  * ```javascript
- * WPP.conn.setMultiDevice(true)
+ * WPP.conn.setMultiDevice({ md: true })
  * ```
  */
-export function setMultiDevice(md = true): boolean {
+export function setMultiDevice(
+  params: ConnSetMultiDeviceInput = {}
+): ConnSetMultiDeviceOutput {
+  const { md = true } = connSetMultiDeviceSchema.parse(params);
+
   if (md) {
     Cmd.upgradeToMDProd();
   } else {

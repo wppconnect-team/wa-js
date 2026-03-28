@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ import { adv, waNoiseInfo, waSignalStore } from '../../whatsapp/multidevice';
 import { AuthCode } from '..';
 import { isAuthenticated, isMultiDevice, isRegistered } from '.';
 
+export type ConnGetAuthCodeOutput = AuthCode | null;
+
 /**
  * Return the current auth code
  *
@@ -30,7 +32,7 @@ import { isAuthenticated, isMultiDevice, isRegistered } from '.';
  *
  * @return  {Promise<AuthCode>}[return description]
  */
-export async function getAuthCode(): Promise<AuthCode | null> {
+export async function getAuthCode(): Promise<ConnGetAuthCodeOutput> {
   if (!Conn.ref || Conn.connected || isAuthenticated() || isRegistered()) {
     return null;
   }

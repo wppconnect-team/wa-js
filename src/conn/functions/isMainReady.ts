@@ -1,5 +1,5 @@
 /*!
- * Copyright 2022 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,8 @@ internalEv.once('conn.main_ready', () => {
  * const isMainReady = WPP.conn.isMainReady();
  * ```
  */
-export function isMainReady(): boolean {
+export type ConnIsMainReadyOutput = boolean;
+
+export function isMainReady(): ConnIsMainReadyOutput {
   return isReady;
 }

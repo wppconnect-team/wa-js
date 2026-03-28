@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 import { Cmd } from '../../whatsapp';
 
+export type ConnIsMainLoadedOutput = boolean;
+
 /**
  * Check is main interface is authenticated and loaded, bot not synced
  *
@@ -24,6 +26,6 @@ import { Cmd } from '../../whatsapp';
  * const isMainLoaded = WPP.conn.isMainLoaded();
  * ```
  */
-export function isMainLoaded(): boolean {
+export function isMainLoaded(): ConnIsMainLoadedOutput {
   return Cmd.isMainLoaded;
 }

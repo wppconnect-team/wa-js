@@ -17,10 +17,10 @@
 import { Stream } from '../../whatsapp';
 import { StreamInfo, StreamMode } from '../../whatsapp/enums';
 
-export interface StreamData {
+export type ConnGetStreamDataOutput = {
   mode: StreamMode;
   info: StreamInfo | undefined;
-}
+};
 
 /**
  * Get current stream mode and info
@@ -32,7 +32,7 @@ export interface StreamData {
  * console.log(streamData.info); // 'NORMAL', 'OPENING', 'SYNCING', etc.
  * ```
  */
-export function getStreamData(): StreamData {
+export function getStreamData(): ConnGetStreamDataOutput {
   return {
     mode: Stream.mode,
     info: Stream.info,

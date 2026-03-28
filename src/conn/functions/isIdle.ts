@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 import { Socket } from '../../whatsapp';
 import { SOCKET_STATE } from '../../whatsapp/enums/SOCKET_STATE';
 
-export function isIdle(): boolean {
+export type ConnIsIdleOutput = boolean;
+
+export function isIdle(): ConnIsIdleOutput {
   return Socket.state === SOCKET_STATE.UNPAIRED_IDLE;
 }

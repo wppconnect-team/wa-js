@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 import { NetworkStatus } from '../../whatsapp';
 
+export type ConnIsOnlineOutput = boolean;
+
 /**
  * Check is online
  *
@@ -24,6 +26,6 @@ import { NetworkStatus } from '../../whatsapp';
  * const isOnline = WPP.conn.isOnline();
  * ```
  */
-export function isOnline(): boolean {
+export function isOnline(): ConnIsOnlineOutput {
   return NetworkStatus.online;
 }

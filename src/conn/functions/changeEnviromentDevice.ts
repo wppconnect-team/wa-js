@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,12 @@
 
 import { Enviroment } from '../../whatsapp';
 
+export type ConnChangeEnviromentDeviceOutput = void;
+
 /**
  * Change the current environment device between Web and Windows.
  */
-export function changeEnviromentDevice() {
+export function changeEnviromentDevice(): ConnChangeEnviromentDeviceOutput {
   Enviroment.default.isWeb = !Enviroment.default.isWeb;
   Enviroment.default.isWindows = !Enviroment.default.isWindows;
 }

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2022 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 import { Stream } from '../../whatsapp';
 
+export type ConnNeedsUpdateOutput = boolean;
+
 /**
  * Check if whatsapp web is asking for update
  *
@@ -24,6 +26,6 @@ import { Stream } from '../../whatsapp';
  * const needsUpdate = WPP.conn.needsUpdate();
  * ```
  */
-export function needsUpdate(): boolean {
+export function needsUpdate(): ConnNeedsUpdateOutput {
   return Stream.needsUpdate;
 }
