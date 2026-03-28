@@ -14,10 +14,19 @@
  * limitations under the License.
  */
 
-import { Stringable } from '../../types';
-import { MsgKey, MsgModel } from '../../whatsapp';
+import { z } from 'zod';
+
 import { sendReactionToMsg } from '../../whatsapp/functions';
 import { getMessageById } from './getMessageById';
+
+const chatSendReactionToMessageSchema = z.object({
+  messageId: z.string(),
+  reaction: z.union([z.string(), z.literal(false), z.null()]),
+});
+export type ChatSendReactionToMessageInput = z.infer<
+  typeof chatSendReactionToMessageSchema
+>;
+export type ChatSendReactionToMessageOutput = { sendMsgResult: any };
 
 /**
  * Send a reaction to a message
@@ -27,34 +36,23 @@ import { getMessageById } from './getMessageById';
  * @example
  * ```javascript
  * // to react a message
- * WPP.chat.sendReactionToMessage('[message_id]', '🤯');
+ * WPP.chat.sendReactionToMessage({ messageId: '[message_id]', reaction: '🤯' });
  *
  * // to remove
- * WPP.chat.sendReactionToMessage('[message_id]', false);
+ * WPP.chat.sendReactionToMessage({ messageId: '[message_id]', reaction: false });
  *
  * ```
  * @category Message
  */
 export async function sendReactionToMessage(
-  messageId: string | MsgKey | MsgModel | Stringable,
-  reaction: string | false | null
-) {
-  if (
-    !(messageId instanceof MsgModel) &&
-    typeof messageId !== 'string' &&
-    typeof messageId.toString === 'function'
-  ) {
-    messageId = messageId.toString();
-  }
+  params: ChatSendReactionToMessageInput
+): Promise<ChatSendReactionToMessageOutput> {
+  const { messageId, reaction: rawReaction } =
+    chatSendReactionToMessageSchema.parse(params);
 
-  const msg =
-    messageId instanceof MsgModel
-      ? messageId
-      : await getMessageById(messageId.toString());
+  const msg = await getMessageById({ id: messageId });
 
-  if (!reaction) {
-    reaction = '';
-  }
+  const reaction = rawReaction || '';
 
   const sendMsgResult = await sendReactionToMsg(msg, reaction);
 

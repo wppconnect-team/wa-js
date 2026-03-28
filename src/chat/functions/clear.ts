@@ -14,16 +14,30 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertGetChat, assertWid } from '../../assert';
 import { Wid } from '../../whatsapp';
 import { sendClear } from '../../whatsapp/functions';
+
+const chatClearSchema = z.object({
+  chatId: z.string(),
+  keepStarred: z.boolean().optional(),
+});
+export type ChatClearInput = z.infer<typeof chatClearSchema>;
+export type ChatClearOutput = {
+  wid: Wid;
+  status: number;
+  keepStarred: boolean;
+};
 
 /**
  * Clear a chat message
  *
  * @category Chat
  */
-export async function clear(chatId: string | Wid, keepStarred = true) {
+export async function clear(params: ChatClearInput): Promise<ChatClearOutput> {
+  const { chatId, keepStarred = true } = chatClearSchema.parse(params);
   const wid = assertWid(chatId);
 
   const chat = assertGetChat(wid);
@@ -36,7 +50,7 @@ export async function clear(chatId: string | Wid, keepStarred = true) {
     const result = await chat.promises.sendClear.catch(() => ({
       status: 500,
     }));
-    status = result.status || status;
+    status = (result as any).status || status;
   }
 
   return {

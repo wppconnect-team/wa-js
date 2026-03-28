@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import {
   defaultSendMessageOptions,
   LinkPreviewOptions,
@@ -28,50 +30,37 @@ export type TextMessageOptions = SendMessageOptions &
   MessageButtonsOptions &
   LinkPreviewOptions;
 
+const chatSendTextMessageSchema = z.object({
+  chatId: z.any(),
+  content: z.any(),
+  options: z.any().optional(),
+});
+export type ChatSendTextMessageInput = z.infer<
+  typeof chatSendTextMessageSchema
+>;
+export type ChatSendTextMessageOutput = SendMessageReturn;
+
 /**
  * Send a text message
  *
  * @example
  * ```javascript
  * // Send a simple text message
- * WPP.chat.sendTextMessage('[number]@c.us', 'Hello new contact');
- *
- * // With Buttons
- * // Attention: The buttons are an alternative solution we found to make it work. There is no guarantee that they will continue functioning, or when they might stop: The only certainty is: They will stop, so use them responsibly.
- * WPP.chat.sendTextMessage('[number]@c.us', 'Hello', {
- *   useInteractiveMessage: true, // False for legacy
- *   buttons: [
- *     {
- *       url: 'https://wppconnect.io/',
- *       text: 'WPPConnect Site'
- *     },
- *     {
- *       phoneNumber: '+55 11 22334455',
- *       text: 'Call me'
- *     },
- *     {
- *       id: 'your custom id 1',
- *       text: 'Some text'
- *     },
- *     {
- *       code: '789890',
- *       text: 'Another text'
- *     }
- *   ],
- *   title: 'Title text', // Optional
- *   footer: 'Footer text' // Optional
- * });
+ * WPP.chat.sendTextMessage({ chatId: '<chatId>', content: 'Hello new contact' });
  * ```
  * @category Message
  */
 export async function sendTextMessage(
-  chatId: any,
-  content: any,
-  options: TextMessageOptions = {}
-): Promise<SendMessageReturn> {
-  options = {
+  params: ChatSendTextMessageInput
+): Promise<ChatSendTextMessageOutput> {
+  const {
+    chatId,
+    content,
+    options: opts = {},
+  } = chatSendTextMessageSchema.parse(params);
+  const options: TextMessageOptions = {
     ...defaultSendMessageOptions,
-    ...options,
+    ...(opts as TextMessageOptions),
   };
 
   let rawMessage: RawMessage = {
@@ -82,8 +71,8 @@ export async function sendTextMessage(
     urlNumber: null,
   };
 
-  rawMessage = prepareMessageButtons(rawMessage, options);
-  rawMessage = await prepareLinkPreview(rawMessage, options);
+  rawMessage = prepareMessageButtons({ message: rawMessage, options });
+  rawMessage = await prepareLinkPreview({ message: rawMessage, options });
 
-  return await sendRawMessage(chatId, rawMessage, options);
+  return await sendRawMessage({ chatId, rawMessage, options });
 }

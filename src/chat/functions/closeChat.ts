@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 import { Cmd } from '../../whatsapp';
 import { getActiveChat } from '.';
 
+export type ChatCloseChatOutput = boolean;
+
 /**
  * Close the chat tab
  *
@@ -27,7 +29,7 @@ import { getActiveChat } from '.';
  *
  * @category Chat
  */
-export async function closeChat(): Promise<boolean> {
+export async function closeChat(): Promise<ChatCloseChatOutput> {
   const active = getActiveChat();
   if (!active) return false;
   Cmd.closeChat(active);

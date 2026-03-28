@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { getProfilePictureUrl } from '../../contact';
 import { ensureGroup } from '../../group';
 import { downloadImage } from '../../util';
-import { Wid } from '../../whatsapp';
 import {
   defaultSendMessageOptions,
   RawMessage,
@@ -26,61 +27,74 @@ import {
 } from '..';
 import { sendRawMessage } from '.';
 
-export interface GroupInviteMessage extends SendMessageOptions {
+export interface GroupInviteMessageOptions extends SendMessageOptions {
   jpegThumbnail?: string;
   inviteCode: string;
   inviteCodeExpiration?: number;
-  groupId: string | Wid;
+  groupId: string;
   groupName?: string;
   caption?: string;
 }
+
+const chatSendGroupInviteMessageSchema = z.object({
+  chatId: z.string(),
+  options: z.custom<GroupInviteMessageOptions>(),
+});
+export type ChatSendGroupInviteMessageInput = z.infer<
+  typeof chatSendGroupInviteMessageSchema
+>;
+export type ChatSendGroupInviteMessageOutput = SendMessageReturn;
 
 /**
  * Send a group invite message
  *
  * @example
  * ```javascript
- * WPP.chat.sendGroupInviteMessage(
- *  '[number]@c.us',
- *  {
- *    inviteCode: '123',
- *    groupId: '789@g.us'
- *  }
- * );
+ * WPP.chat.sendGroupInviteMessage({
+ *   chatId: '[number]@c.us',
+ *   options: {
+ *     inviteCode: '123',
+ *     groupId: '789@g.us'
+ *   }
+ * });
  *
  * // After a invite
- * const result = await WPP.group.addParticipants('789@g.us', '123@c.us');
+ * const result = await WPP.group.addParticipants({ groupId: '789@g.us', participantsIds: ['123@c.us'] });
  * const participant = result['123@c.us'];
  * if (participant.invite_code) {
- *   WPP.chat.sendGroupInviteMessage(
- *     '123@c.us',
- *     {
+ *   WPP.chat.sendGroupInviteMessage({
+ *     chatId: '123@c.us',
+ *     options: {
  *       inviteCode: participant.invite_code,
  *       inviteCodeExpiration: participant.invite_code_exp,
  *       groupId: '789@g.us'
  *     }
- *   );
+ *   });
  * }
  * ```
  *
  * @category Message
  */
 export async function sendGroupInviteMessage(
-  chatId: any,
-  options: GroupInviteMessage
-): Promise<SendMessageReturn> {
-  options = {
+  params: ChatSendGroupInviteMessageInput
+): Promise<ChatSendGroupInviteMessageOutput> {
+  const { chatId, options: opts } =
+    chatSendGroupInviteMessageSchema.parse(params);
+  const options: GroupInviteMessageOptions = {
     ...defaultSendMessageOptions,
-    ...options,
+    ...(opts as GroupInviteMessageOptions),
   };
 
   if (!options.groupName) {
-    const group = await ensureGroup(options.groupId);
+    const group = await ensureGroup({ groupId: options.groupId.toString() });
     options.groupName = group.name;
   }
 
   if (!options.jpegThumbnail) {
-    const url = await getProfilePictureUrl(options.groupId, false);
+    const url = await getProfilePictureUrl({
+      chatId: options.groupId,
+      full: false,
+    });
     if (url) {
       try {
         const download = await downloadImage(url);
@@ -118,5 +132,5 @@ export async function sendGroupInviteMessage(
       richPreviewType: 0,
     } as any;
   }
-  return await sendRawMessage(chatId, rawMessage, options);
+  return await sendRawMessage({ chatId, rawMessage, options });
 }

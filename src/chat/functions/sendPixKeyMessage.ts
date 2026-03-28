@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
+import { dmChatIdSchema, groupIdSchema } from '../../types';
 import { generateOrderUniqueId, WPPError } from '../../util';
 import {
   defaultSendMessageOptions,
@@ -39,41 +42,55 @@ export interface OrderMessageOptions extends SendMessageOptions {
   offset?: number;
 }
 
+const chatSendPixKeyMessageSchema = z.object({
+  chatId: z.union([groupIdSchema, dmChatIdSchema]),
+  params: z.object({
+    keyType: z.enum(['CNPJ', 'CPF', 'PHONE', 'EMAIL', 'EVP']),
+    name: z.string(),
+    key: z.string(),
+    instructions: z.string().optional(),
+  }),
+  options: z.any().optional(),
+});
+export type ChatSendPixKeyMessageInput = z.infer<
+  typeof chatSendPixKeyMessageSchema
+>;
+export type ChatSendPixKeyMessageOutput = SendMessageReturn;
+
 /**
- * Send a invoice message
+ * Send a PIX key invoice message (Brazil Pix Key)
  * To send (prices, tax, shipping or discount), for example: USD 12.90, send them without dots or commas, like: 12900
  *
  * @example
  * ```javascript
- * // Send PIX Key Message (Brazil Pix Key)
- * WPP.chat.sendPixKeyMessage('[number]@c.us', {
+ * WPP.chat.sendPixKeyMessage({
+ *   chatId: '[number]@c.us',
+ *   params: {
  *     keyType: 'CNPJ',
  *     name: 'WPPCONNECT-TEAM',
  *     key: '33460516000178',
  *     instructions: 'Pay text for instructions here',
+ *   }
  * });
- *
  * ```
  * @category Message
  */
 export async function sendPixKeyMessage(
-  chatId: any,
-  params: {
-    keyType: 'CNPJ' | 'CPF' | 'PHONE' | 'EMAIL' | 'EVP';
-    name: string;
-    key: string;
-    instructions?: string;
-  },
-  options?: SendMessageOptions
-): Promise<SendMessageReturn> {
+  input: ChatSendPixKeyMessageInput
+): Promise<ChatSendPixKeyMessageOutput> {
+  const {
+    chatId,
+    params,
+    options: opts,
+  } = chatSendPixKeyMessageSchema.parse(input);
   if (!chatId || !params.keyType || !params.name || !params.key)
     throw new WPPError(
       'parameter_not_fount',
       'Please, send all the required parameters'
     );
-  options = {
+  const options: SendMessageOptions = {
     ...defaultSendMessageOptions,
-    ...options,
+    ...(opts as SendMessageOptions),
   };
 
   const buttonParamsJson = {
@@ -144,5 +161,5 @@ export async function sendPixKeyMessage(
     },
     messageSecret: self.crypto.getRandomValues(new Uint8Array(32)),
   };
-  return await sendRawMessage(chatId, message, options);
+  return await sendRawMessage({ chatId, rawMessage: message, options });
 }

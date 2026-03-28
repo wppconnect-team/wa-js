@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { createWid } from '../../util';
 import { MsgKey } from '../../whatsapp';
 import { getReactions as GetReaction } from '../../whatsapp/functions';
 
-/**
- * Get all reactions in a message
- * @example
- * ```javascript
- * WPP.chat.getReactions('true_[number]@c.us_ABCDEF');
- * ```
- * @category Chat
- */
-
-export async function getReactions(msgId: string): Promise<{
+const chatGetReactionsSchema = z.object({
+  msgId: z.string(),
+});
+export type ChatGetReactionsInput = z.infer<typeof chatGetReactionsSchema>;
+export type ChatGetReactionsOutput = {
   reactionByMe: {
     id: MsgKey;
     orphan: number;
@@ -50,7 +47,21 @@ export async function getReactions(msgId: string): Promise<{
       timestamp: number;
     }[];
   }[];
-}> {
+};
+
+/**
+ * Get all reactions in a message
+ * @example
+ * ```javascript
+ * WPP.chat.getReactions('true_[number]@c.us_ABCDEF');
+ * ```
+ * @category Chat
+ */
+
+export async function getReactions(
+  params: ChatGetReactionsInput
+): Promise<ChatGetReactionsOutput> {
+  const { msgId } = chatGetReactionsSchema.parse(params);
   const reactions = await GetReaction(msgId);
 
   const returnData: any = [];

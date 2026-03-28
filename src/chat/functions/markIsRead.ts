@@ -15,11 +15,17 @@
  */
 
 import { compare } from 'compare-versions';
+import { z } from 'zod';
 
 import { assertGetChat } from '../../assert';
-import { Wid } from '../../whatsapp';
 import { SANITIZED_VERSION_STR } from '../../whatsapp/contants';
 import { sendSeen } from '../../whatsapp/functions';
+
+const chatMarkIsReadSchema = z.object({
+  chatId: z.string(),
+});
+export type ChatMarkIsReadInput = z.infer<typeof chatMarkIsReadSchema>;
+export type ChatMarkIsReadOutput = { unreadCount: number };
 
 /**
  * Mark a chat as read and send SEEN event
@@ -31,7 +37,10 @@ import { sendSeen } from '../../whatsapp/functions';
  * ```
  * @category Chat
  */
-export async function markIsRead(chatId: string | Wid) {
+export async function markIsRead(
+  params: ChatMarkIsReadInput
+): Promise<ChatMarkIsReadOutput> {
+  const { chatId } = chatMarkIsReadSchema.parse(params);
   const chat = assertGetChat(chatId);
 
   const unreadCount = chat.unreadCount!;
@@ -43,7 +52,6 @@ export async function markIsRead(chatId: string | Wid) {
   }
 
   return {
-    wid: chat.id,
     unreadCount,
   };
 }

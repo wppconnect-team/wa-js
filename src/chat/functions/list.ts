@@ -14,29 +14,36 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import {
   ChatModel,
   ChatStore,
   GroupMetadataStore,
   LabelStore,
   NewsletterStore,
-  Wid,
 } from '../../whatsapp';
 import { get } from './get';
 
-export interface ChatListOptions {
-  id?: Wid;
-  count?: number;
-  direction?: 'after' | 'before';
-  onlyCommunities?: boolean;
-  onlyGroups?: boolean;
-  onlyNewsletter?: boolean;
-  onlyUsers?: boolean;
-  onlyWithUnreadMessage?: boolean;
-  onlyArchived?: boolean;
-  withLabels?: string[];
-  ignoreGroupMetadata?: boolean;
-}
+const chatListSchema = z.object({
+  options: z
+    .object({
+      id: z.string().optional(),
+      count: z.number().optional(),
+      direction: z.enum(['after', 'before']).optional(),
+      onlyCommunities: z.boolean().optional(),
+      onlyGroups: z.boolean().optional(),
+      onlyNewsletter: z.boolean().optional(),
+      onlyUsers: z.boolean().optional(),
+      onlyWithUnreadMessage: z.boolean().optional(),
+      onlyArchived: z.boolean().optional(),
+      withLabels: z.array(z.string()).optional(),
+      ignoreGroupMetadata: z.boolean().optional(),
+    })
+    .optional(),
+});
+export type ChatListInput = z.infer<typeof chatListSchema>;
+export type ChatListOutput = ChatModel[];
 
 /**
  * Return a list of chats
@@ -47,46 +54,38 @@ export interface ChatListOptions {
  * const chats = await WPP.chat.list();
  *
  * // Some chats
- * const chats = WPP.chat.list({count: 20});
+ * const chats = await WPP.chat.list({ options: { count: 20 } });
  *
  * // 20 chats before specific chat
- * const chats = WPP.chat.list({count: 20, direction: 'before', id: '[number]@c.us'});
+ * const chats = await WPP.chat.list({ options: { count: 20, direction: 'before', id: '[number]@c.us' } });
  *
  * // Only users chats
- * const chats = await WPP.chat.list({onlyUsers: true});
+ * const chats = await WPP.chat.list({ options: { onlyUsers: true } });
  *
  * // Only groups chats
- * const chats = await WPP.chat.list({onlyGroups: true});
+ * const chats = await WPP.chat.list({ options: { onlyGroups: true } });
  *
  * // Only communities chats
- * const chats = await WPP.chat.list({onlyCommunities: true});
+ * const chats = await WPP.chat.list({ options: { onlyCommunities: true } });
  *
  * // Only Newsletter
- * const chats = await WPP.chat.list({onlyNewsletter: true});
+ * const chats = await WPP.chat.list({ options: { onlyNewsletter: true } });
  *
- * // Only with label Text
- * const chats = await WPP.chat.list({withLabels: ['Test']});
- *
- * // Only with label id
- * const chats = await WPP.chat.list({withLabels: ['1']});
- *
- * // Only with label with one of text or id
- * const chats = await WPP.chat.list({withLabels: ['Alfa','5']});
+ * // Only with label text
+ * const chats = await WPP.chat.list({ options: { withLabels: ['Test'] } });
  *
  * // Only archived chats
- * const chats = await WPP.chat.list({onlyArchived: true});
- *
- * // Ignore group metadata search
- * const chats = await WPP.chat.list({ignoreGroupMetadata: true})
+ * const chats = await WPP.chat.list({ options: { onlyArchived: true } });
  * ```
  *
  * @category Chat
  */
 export async function list(
-  options: ChatListOptions = {}
-): Promise<ChatModel[]> {
+  params: ChatListInput = {}
+): Promise<ChatListOutput> {
+  const { options = {} } = chatListSchema.parse(params);
   // Setting the check to null, so it doesn't break existing codes.
-  const count = options.count == null ? Infinity : options.count;
+  const count = options.count == null ? Infinity : options.count!;
   const direction = options.direction === 'before' ? 'before' : 'after';
 
   // Getting All Chats.
@@ -120,7 +119,7 @@ export async function list(
   }
 
   if (options.withLabels) {
-    const ids = options.withLabels.map((value) => {
+    const ids = options.withLabels!.map((value) => {
       const label = LabelStore.findFirst((l) => l.name === value);
       return label ? label.id : value;
     });
@@ -130,7 +129,7 @@ export async function list(
 
   // Getting The Chat to start from.
   // Searching for chat (index) here, so it gets applied after all filtering.
-  const indexChat = options?.id ? get(options.id) : null;
+  const indexChat = options.id ? get({ chatId: options.id!.toString() }) : null;
   const startIndex = indexChat ? models.indexOf(indexChat as any) : 0;
 
   if (direction === 'before') {
@@ -143,7 +142,7 @@ export async function list(
   }
 
   // Attaching Group Metadata on Found Chats.
-  if (!options?.ignoreGroupMetadata) {
+  if (!options.ignoreGroupMetadata) {
     for (const chat of models) {
       if (chat.id.isGroup()) {
         await GroupMetadataStore.find(chat.id);

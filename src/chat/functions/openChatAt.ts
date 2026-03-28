@@ -14,17 +14,27 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertFindChat, assertWid } from '../../assert';
-import { Cmd, Wid } from '../../whatsapp';
+import { Cmd } from '../../whatsapp';
 import { getSearchContext } from '../../whatsapp/functions';
 import { getMessageById } from '.';
+
+const chatOpenChatAtSchema = z.object({
+  chatId: z.string(),
+  messageId: z.string(),
+  chatEntryPoint: z.string().optional(),
+});
+export type ChatOpenChatAtInput = z.infer<typeof chatOpenChatAtSchema>;
+export type ChatOpenChatAtOutput = boolean;
 
 /**
  * Open the chat in the WhatsApp interface in a specific message
  *
  * @example
  * ```javascript
- * await WPP.chat.openChatAt('[number]@c.us', <message_id>);
+ * await WPP.chat.openChatAt({ chatId: '[number]@c.us', messageId: '<message_id>' });
  * ```
  *
  * @argument chatEntryPoint Optional chat entry point: "Chatlist" for any existing chat in the left panel, undefined for any other case.
@@ -32,15 +42,15 @@ import { getMessageById } from '.';
  * @category Chat
  */
 export async function openChatAt(
-  chatId: string | Wid,
-  messageId: string,
-  chatEntryPoint?: string | undefined
-): Promise<boolean> {
+  params: ChatOpenChatAtInput
+): Promise<ChatOpenChatAtOutput> {
+  const { chatId, messageId, chatEntryPoint } =
+    chatOpenChatAtSchema.parse(params);
   const wid = assertWid(chatId);
 
   const chat = await assertFindChat(wid);
 
-  const msg = await getMessageById(messageId);
+  const msg = await getMessageById({ id: messageId });
 
   try {
     const msgContext = getSearchContext(chat, msg);

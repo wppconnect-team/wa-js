@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertGetChat } from '../../assert';
 import { isMultiDevice } from '../../conn';
-import { MsgKey, MsgModel, MsgStore, Wid } from '../../whatsapp';
+import { MsgKey, MsgModel, MsgStore } from '../../whatsapp';
 import { MSG_TYPE } from '../../whatsapp/enums';
 import {
   msgFindByDirection,
@@ -26,14 +28,21 @@ import {
 } from '../../whatsapp/functions';
 import { RawMessage } from '..';
 
-export interface GetMessagesOptions {
-  count?: number;
-  direction?: 'after' | 'before';
-  id?: string;
-  onlyUnread?: boolean;
-  media?: 'url' | 'document' | 'all' | 'image';
-  includeCallMessages?: boolean;
-}
+const chatGetMessagesSchema = z.object({
+  chatId: z.string(),
+  options: z
+    .object({
+      count: z.number().int().min(-1).default(20),
+      direction: z.enum(['after', 'before']).default('before'),
+      id: z.string().optional(),
+      onlyUnread: z.boolean().optional(),
+      media: z.enum(['url', 'document', 'all', 'image']).optional(),
+      includeCallMessages: z.boolean().optional(),
+    })
+    .optional(),
+});
+export type ChatGetMessagesInput = z.infer<typeof chatGetMessagesSchema>;
+export type ChatGetMessagesOutput = RawMessage[];
 
 /**
  * Fetch messages from a chat
@@ -41,78 +50,44 @@ export interface GetMessagesOptions {
  * @example
  * ```javascript
  * // Some messages
- * WPP.chat.getMessages('[number]@c.us', {
- *   count: 20,
- * });
+ * WPP.chat.getMessages({ chatId: '[number]@c.us', options: { count: 20 } });
  *
  * // All messages
- * WPP.chat.getMessages('[number]@c.us', {
- *   count: -1,
- * });
+ * WPP.chat.getMessages({ chatId: '[number]@c.us', options: { count: -1 } });
  *
  * // Last 20 unread messages
- * WPP.chat.getMessages('[number]@c.us', {
- *   count: 20,
- *   onlyUnread: true,
- * });
+ * WPP.chat.getMessages({ chatId: '[number]@c.us', options: { count: 20, onlyUnread: true } });
  *
  * // All unread messages
- * WPP.chat.getMessages('[number]@c.us', {
- *   count: -1,
- *   onlyUnread: true,
- * });
+ * WPP.chat.getMessages({ chatId: '[number]@c.us', options: { count: -1, onlyUnread: true } });
  *
  * // 20 messages before specific message
- * WPP.chat.getMessages('[number]@c.us', {
- *   count: 20,
- *   direction: 'before',
- *   id: '<full message id>'
- * });
+ * WPP.chat.getMessages({ chatId: '[number]@c.us', options: { count: 20, direction: 'before', id: '<full message id>' } });
  *
  * // Only media messages (url, document and links)
- * WPP.chat.getMessages('[number]@c.us', {
- *   count: 20,
- *   media: 'all',
- * });
+ * WPP.chat.getMessages({ chatId: '[number]@c.us', options: { count: 20, media: 'all' } });
  *
  * // Only image messages
- * WPP.chat.getMessages('[number]@c.us', {
- *   count: 20,
- *   media: 'image',
- * });
+ * WPP.chat.getMessages({ chatId: '[number]@c.us', options: { count: 20, media: 'image' } });
  *
  * // Only document messages
- * WPP.chat.getMessages('[number]@c.us', {
- *   count: 20,
- *   media: 'document',
- * });
- *
- * // Only link (url) messages
- * WPP.chat.getMessages('[number]@c.us', {
- *   count: 20,
- *   media: 'url',
- * });
- *
- * // Include call messages along with chat messages
- * WPP.chat.getMessages('[number]@c.us', {
- *   count: 20,
- *   includeCallMessages: true,
- * });
+ * WPP.chat.getMessages({ chatId: '[number]@c.us', options: { count: 20, media: 'document' } });
  * ```
+ *
  * @category Message
  * @return  {RawMessage[]} List of raw messages
  */
 export async function getMessages(
-  chatId: string | Wid,
-  options: GetMessagesOptions = {}
-): Promise<RawMessage[]> {
+  input: ChatGetMessagesInput
+): Promise<ChatGetMessagesOutput> {
+  const { chatId, options } = chatGetMessagesSchema.parse(input);
   const chat = assertGetChat(chatId);
 
-  let count = options.count || 20;
-  const direction = options.direction === 'after' ? 'after' : 'before';
-  const id = options.id || chat.lastReceivedKey?.toString();
+  let count = options?.count || 20;
+  const direction = options?.direction === 'after' ? 'after' : 'before';
+  const id = options?.id || chat.lastReceivedKey?.toString();
 
-  if (options.onlyUnread) {
+  if (options?.onlyUnread) {
     if (!chat.hasUnread) {
       return [];
     }
@@ -132,7 +107,7 @@ export async function getMessages(
     count = Infinity;
   }
 
-  if (!options.id && id) {
+  if (!options?.id && id) {
     count--;
   }
 
@@ -160,7 +135,7 @@ export async function getMessages(
   const newAPIAnchor = id ? MsgKey.fromString(id) : undefined;
 
   let msgs = [];
-  if (options.media === 'all') {
+  if (options?.media === 'all') {
     // TODO: Remove legacy API support after 2026-06-26
     if (useLegacyAPI) {
       const { messages } = await msgFindQuery('media', params);
@@ -181,7 +156,7 @@ export async function getMessages(
         msgs.push(...result.messages);
       }
     }
-  } else if (options.media === 'image') {
+  } else if (options?.media === 'image') {
     if (useLegacyAPI) {
       const { messages } = await msgFindQuery('media', params);
       for (const Msg of messages) {
@@ -204,7 +179,7 @@ export async function getMessages(
         }
       }
     }
-  } else if (options.media !== undefined) {
+  } else if (options?.media !== undefined) {
     if (useLegacyAPI) {
       params.media = options.media;
       const { messages } = await msgFindQuery('media', params);
@@ -253,7 +228,7 @@ export async function getMessages(
     }
   }
 
-  if (!options.id && id) {
+  if (!options?.id && id) {
     const msg = MsgStore.get(id);
     if (msg) {
       msgs.push(msg.attributes);
@@ -270,7 +245,7 @@ export async function getMessages(
 
   // Include call messages if requested
   // WhatsApp's msgFindQuery excludes call_log messages by default
-  if (options.includeCallMessages) {
+  if (options?.includeCallMessages) {
     try {
       let callMsgs;
 

@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertGetChat, assertWid } from '../../assert';
 import { WPPError } from '../../util';
-import { Wid } from '../../whatsapp';
 import { setPin } from '../../whatsapp/functions';
+
+const chatPinSchema = z.object({
+  chatId: z.string(),
+  pin: z.boolean().optional(),
+});
+export type ChatPinInput = z.infer<typeof chatPinSchema>;
+export type ChatPinOutput = { wid: import('../../whatsapp').Wid; pin: boolean };
 
 /**
  * Pin a chat
@@ -25,33 +33,34 @@ import { setPin } from '../../whatsapp/functions';
  * @example
  * ```javascript
  * // Pin a chat
- * WPP.chat.pin('[number]@c.us');
+ * WPP.chat.pin({ chatId: '[number]@c.us' });
  *
  * // Unpin a chat
- * WPP.chat.pin('[number]@c.us', false);
+ * WPP.chat.pin({ chatId: '[number]@c.us', pin: false });
  * // or
- * WPP.chat.unpin('[number]@c.us');
+ * WPP.chat.unpin({ chatId: '[number]@c.us' });
  * ```
  * @category Chat
  */
-export async function pin(chatId: string | Wid, pin = true) {
+export async function pin(params: ChatPinInput): Promise<ChatPinOutput> {
+  const { chatId, pin: pinFlag = true } = chatPinSchema.parse(params);
   const wid = assertWid(chatId);
 
   const chat = assertGetChat(wid);
 
-  if (chat.pin === pin) {
+  if (chat.pin === pinFlag) {
     throw new WPPError(
-      `${pin ? 'pin' : 'unpin'}_error`,
-      `The chat ${wid.toString()} is already ${pin ? 'pinned' : 'unpinned'}`,
-      { wid, pin: pin }
+      `${pinFlag ? 'pin' : 'unpin'}_error`,
+      `The chat ${wid.toString()} is already ${pinFlag ? 'pinned' : 'unpinned'}`,
+      { wid, pin: pinFlag }
     );
   }
 
-  await setPin(chat, pin);
+  await setPin(chat, pinFlag);
 
   return {
     wid,
-    pin: pin,
+    pin: pinFlag,
   };
 }
 
@@ -60,16 +69,8 @@ export async function pin(chatId: string | Wid, pin = true) {
  *
  * @alias pin
  *
- * @example
- * ```javascript
- * // Unpin a chat
- * WPP.chat.unpin('[number]@c.us');
- *
- * // Alias for
- * WPP.chat.pin('[number]@c.us', false);
- * ```
  * @category Chat
  */
-export async function unpin(chatId: string | Wid) {
-  return pin(chatId, false);
+export async function unpin(params: { chatId: string }) {
+  return pin({ ...params, pin: false });
 }

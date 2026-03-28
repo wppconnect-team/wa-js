@@ -15,6 +15,7 @@
  */
 
 import Debug from 'debug';
+import { z } from 'zod';
 
 import { assertFindChat } from '../../assert';
 import { getAnnouncementGroup } from '../../community';
@@ -40,19 +41,30 @@ import { getMessageById, markIsRead, prepareRawMessage } from '.';
 
 const debug = Debug('WA-JS:message');
 
+const chatSendRawMessageSchema = z.object({
+  chatId: z.string(),
+  rawMessage: z.custom<RawMessage>(),
+  options: z.custom<SendMessageOptions>().optional(),
+});
+export type ChatSendRawMessageInput = z.infer<typeof chatSendRawMessageSchema>;
+export type ChatSendRawMessageOutput = SendMessageReturn;
+
 /**
  * Send a raw message
  *
  * @category Message
  */
 export async function sendRawMessage(
-  chatId: any,
-  rawMessage: RawMessage,
-  options: SendMessageOptions = {}
-): Promise<SendMessageReturn> {
-  options = {
+  params: ChatSendRawMessageInput
+): Promise<ChatSendRawMessageOutput> {
+  const {
+    chatId,
+    rawMessage: rawMsg,
+    options: opts = {},
+  } = chatSendRawMessageSchema.parse(params);
+  const options: SendMessageOptions = {
     ...defaultSendMessageOptions,
-    ...options,
+    ...opts,
   };
 
   // Always use assertFindChat to properly handle @lid chats and other cases
@@ -75,12 +87,16 @@ export async function sendRawMessage(
     }
   }
 
-  rawMessage = await prepareRawMessage(chat, rawMessage, options);
+  const rawMessage = await prepareRawMessage({
+    chat,
+    message: rawMsg,
+    options,
+  });
 
   if (options.markIsRead) {
     debug(`marking chat is read before send message`);
     // Try to mark is read and ignore errors
-    await markIsRead(chat.id).catch(() => null);
+    await markIsRead({ chatId: chat.id._serialized }).catch(() => null);
   }
 
   debug(`sending message (${rawMessage.type}) with id ${rawMessage.id}`);
@@ -118,9 +134,14 @@ export async function sendRawMessage(
     rawMessage.type === 'protocol' &&
     rawMessage.subtype === 'message_edit'
   ) {
-    const msg = await getMessageById(rawMessage.protocolMessageKey);
+    const msg = await getMessageById({
+      id: rawMessage.protocolMessageKey,
+    });
     await addAndSendMessageEdit(msg, rawMessage);
-    result = [await getMessageById(rawMessage.protocolMessageKey), null];
+    result = [
+      (await getMessageById({ id: rawMessage.protocolMessageKey })) as MsgModel,
+      null,
+    ];
   } else {
     result = await addAndSendMsgToChat(chat, rawMessage);
   }

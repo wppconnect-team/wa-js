@@ -14,10 +14,19 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertGetChat, assertWid } from '../../assert';
 import { WPPError } from '../../util';
 import { Wid } from '../../whatsapp';
 import { unixTime } from '../../whatsapp/functions';
+
+const chatMuteSchema = z.object({
+  chatId: z.string(),
+  time: z.any(),
+});
+export type ChatMuteInput = z.infer<typeof chatMuteSchema>;
+export type ChatMuteOutput = { wid: Wid; expiration: number; isMuted: boolean };
 
 /**
  * Mute a chat, you can use duration or expiration
@@ -39,24 +48,23 @@ import { unixTime } from '../../whatsapp/functions';
  *
  * @category Chat
  */
-export async function mute(
-  chatId: string | Wid,
-  time: { expiration: number | Date } | { duration: number }
-) {
+export async function mute(params: ChatMuteInput): Promise<ChatMuteOutput> {
+  const { chatId, time } = chatMuteSchema.parse(params);
   const wid = assertWid(chatId);
 
   const chat = assertGetChat(wid);
 
   let expiration = 0;
 
-  if ('expiration' in time) {
-    if (typeof time.expiration === 'number') {
-      expiration = time.expiration;
+  if ('expiration' in (time as any)) {
+    const t = time as { expiration: number | Date };
+    if (typeof t.expiration === 'number') {
+      expiration = t.expiration;
     } else {
-      expiration = time.expiration.getTime() / 1000;
+      expiration = t.expiration.getTime() / 1000;
     }
-  } else if ('duration' in time) {
-    expiration = unixTime() + time.duration;
+  } else if ('duration' in (time as any)) {
+    expiration = unixTime() + (time as { duration: number }).duration;
   } else {
     throw new WPPError('invalid_time_mute', 'Invalid time for mute', { time });
   }

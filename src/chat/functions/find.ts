@@ -14,9 +14,17 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
-import { ChatModel, ChatStore, GroupMetadataStore, Wid } from '../../whatsapp';
+import { ChatModel, ChatStore, GroupMetadataStore } from '../../whatsapp';
 import { findOrCreateLatestChat } from '../../whatsapp/functions';
+
+const chatFindSchema = z.object({
+  chatId: z.string(),
+});
+export type ChatFindInput = z.infer<typeof chatFindSchema>;
+export type ChatFindOutput = ChatModel;
 
 /**
  * Find a chat by id
@@ -25,7 +33,8 @@ import { findOrCreateLatestChat } from '../../whatsapp/functions';
  *
  * @category Chat
  */
-export async function find(chatId: string | Wid): Promise<ChatModel> {
+export async function find(params: ChatFindInput): Promise<ChatFindOutput> {
+  const { chatId } = chatFindSchema.parse(params);
   const wid = assertWid(chatId);
 
   // Use findOrCreateLatestChat to match WhatsApp Web's native behavior

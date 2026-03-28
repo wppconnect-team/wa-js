@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
 import { downloadImage } from '../../util';
-import { CatalogStore, Wid } from '../../whatsapp';
+import { CatalogStore } from '../../whatsapp';
 import {
   defaultSendMessageOptions,
   RawMessage,
@@ -32,36 +34,49 @@ export interface CatalogMessageOptions extends SendMessageOptions {
   textMessage?: string;
 }
 
+const chatSendCatalogMessageSchema = z.object({
+  toChatId: z.string(),
+  fromChatId: z.string(),
+  options: z.custom<CatalogMessageOptions>().optional(),
+});
+export type ChatSendCatalogMessageInput = z.infer<
+  typeof chatSendCatalogMessageSchema
+>;
+export type ChatSendCatalogMessageOutput = SendMessageReturn;
+
 /**
  * Send catalog message
  *
  * @example
  * ```javascript
- * WPP.chat.sendCatalogMessage(
- *  '[number]@c.us',
- *  '[number]@c.us',
- * {
- *   title: 'My Catalog',
- *   description: 'This is my catalog',
- *   textMessage: 'Check out my catalog',
- *   jpegThumbnail: 'data:image/jpeg;base64,...'
- * }
- * );
+ * WPP.chat.sendCatalogMessage({
+ *   toChatId: '[number]@c.us',
+ *   fromChatId: '[number]@c.us',
+ *   options: {
+ *     title: 'My Catalog',
+ *     description: 'This is my catalog',
+ *     textMessage: 'Check out my catalog',
+ *     jpegThumbnail: 'data:image/jpeg;base64,...'
+ *   }
+ * });
  * ```
  *
  * @category Message
  */
 export async function sendCatalogMessage(
-  chatToSend: string | Wid,
-  chatFromCatalog: string | Wid,
-  opts: CatalogMessageOptions
-): Promise<SendMessageReturn> {
-  const options = {
+  params: ChatSendCatalogMessageInput
+): Promise<ChatSendCatalogMessageOutput> {
+  const {
+    fromChatId: rawChatFromCatalog,
+    toChatId: rawChatToSend,
+    options: opts,
+  } = chatSendCatalogMessageSchema.parse(params);
+  const options: CatalogMessageOptions = {
     ...defaultSendMessageOptions,
-    ...opts,
+    ...(opts as CatalogMessageOptions),
   };
-  chatToSend = assertWid(chatToSend);
-  chatFromCatalog = assertWid(chatFromCatalog);
+  const chatToSend = assertWid(rawChatToSend);
+  const chatFromCatalog = assertWid(rawChatFromCatalog);
   const catalog = CatalogStore.get(chatFromCatalog);
 
   if (!options.jpegThumbnail) {
@@ -90,5 +105,9 @@ export async function sendCatalogMessage(
       : catalogLink,
     richPreviewType: 0,
   } as any;
-  return await sendRawMessage(chatToSend, rawMessage, options);
+  return await sendRawMessage({
+    chatId: chatToSend._serialized,
+    rawMessage,
+    options,
+  });
 }

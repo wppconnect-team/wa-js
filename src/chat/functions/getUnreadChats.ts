@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { on } from '../../eventEmitter';
 import { ChatModel } from '../../whatsapp';
 import { list } from './list';
@@ -30,6 +32,12 @@ on('chat.unread_count_changed', (params) => {
   }
 });
 
+const chatGetUnreadChatsSchema = z.object({
+  onlyNewUnreads: z.boolean().optional(),
+});
+export type ChatGetUnreadChatsInput = z.infer<typeof chatGetUnreadChatsSchema>;
+export type ChatGetUnreadChatsOutput = Array<ChatModel>;
+
 /**
  * Get all chats that have unread messages
  *
@@ -37,11 +45,12 @@ on('chat.unread_count_changed', (params) => {
  *
  */
 export async function getUnreadChats(
-  onlyNewUnreads: boolean
-): Promise<Array<ChatModel>> {
+  params: ChatGetUnreadChatsInput = {}
+): Promise<ChatGetUnreadChatsOutput> {
+  const { onlyNewUnreads } = chatGetUnreadChatsSchema.parse(params);
   if (onlyNewUnreads) {
     return unreadChats;
   } else {
-    return await list({ onlyWithUnreadMessage: true });
+    return await list({ options: { onlyWithUnreadMessage: true } });
   }
 }

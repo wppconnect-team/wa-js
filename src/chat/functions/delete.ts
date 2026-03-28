@@ -14,16 +14,25 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertFindChat, assertWid } from '../../assert';
 import { Wid } from '../../whatsapp';
 import { sendDelete } from '../../whatsapp/functions';
+
+const chatDeleteSchema = z.object({
+  chatId: z.string(),
+});
+export type ChatDeleteInput = z.infer<typeof chatDeleteSchema>;
+export type ChatDeleteOutput = { wid: Wid; status: number };
 
 /**
  * Delete a chat
  *
  * @category Chat
  */
-async function _delete(chatId: string | Wid) {
+async function _delete(params: ChatDeleteInput): Promise<ChatDeleteOutput> {
+  const { chatId } = chatDeleteSchema.parse(params);
   const wid = assertWid(chatId);
 
   const chat = await assertFindChat(wid);
@@ -36,7 +45,7 @@ async function _delete(chatId: string | Wid) {
     const result = await chat.promises.sendDelete.catch(() => ({
       status: 500,
     }));
-    status = result.status || status;
+    status = (result as any).status || status;
   }
 
   return {

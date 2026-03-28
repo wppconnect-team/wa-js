@@ -14,28 +14,46 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { getMyUserId } from '../../conn';
 import { WPPError } from '../../util';
-import { MsgKey, MsgModel, Wid } from '../../whatsapp';
+import { MsgKey, Wid } from '../../whatsapp';
+import { getMessageById } from './getMessageById';
+
+const chatGetQuotedMsgKeySchema = z.object({
+  msgId: z.string(),
+});
+export type ChatGetQuotedMsgKeyInput = z.infer<
+  typeof chatGetQuotedMsgKeySchema
+>;
+export type ChatGetQuotedMsgKeyOutput = MsgKey;
 
 /**
  * Get a quoted message
  *
  * @category Chat
  */
-export function getQuotedMsgKey(msg: MsgModel): MsgKey {
-  if (!msg.quotedStanzaID) {
+export async function getQuotedMsgKey(
+  params: ChatGetQuotedMsgKeyInput
+): Promise<ChatGetQuotedMsgKeyOutput> {
+  const { msgId } = chatGetQuotedMsgKeySchema.parse(params);
+  const msgModel = await getMessageById({ id: msgId });
+
+  if (!msgModel.quotedStanzaID) {
     throw new WPPError(
       'message_not_have_a_reply',
-      `Message ${msg.id} does not have a reply`,
+      `Message ${msgModel.id} does not have a reply`,
       {
-        id: msg.id,
+        id: msgModel.id,
       }
     );
   }
 
-  const remote = msg.quotedRemoteJid ? msg.quotedRemoteJid : msg.id.remote;
-  const fromMe = getMyUserId()?.equals(msg.quotedParticipant) || false;
+  const remote = msgModel.quotedRemoteJid
+    ? msgModel.quotedRemoteJid
+    : msgModel.id.remote;
+  const fromMe = getMyUserId()?.equals(msgModel.quotedParticipant) || false;
 
   const isStatus =
     typeof Wid.isStatusV3 === 'function'
@@ -43,12 +61,12 @@ export function getQuotedMsgKey(msg: MsgModel): MsgKey {
       : Wid.isStatus(remote);
 
   const quotedMsgId = new MsgKey({
-    id: msg.quotedStanzaID,
+    id: msgModel.quotedStanzaID,
     fromMe: fromMe,
     remote: remote,
     participant:
-      Wid.isGroup(msg.from!) || Wid.isGroup(msg.to!) || isStatus
-        ? msg.quotedParticipant
+      Wid.isGroup(msgModel.from!) || Wid.isGroup(msgModel.to!) || isStatus
+        ? msgModel.quotedParticipant
         : undefined,
   });
   return quotedMsgId;

@@ -14,10 +14,20 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
 import { getMyUserLid, getMyUserWid } from '../../conn';
-import { ChatModel, MsgKey, Wid } from '../../whatsapp';
+import { MsgKey } from '../../whatsapp';
 import { randomMessageId } from '../../whatsapp/functions';
+
+const chatGenerateMessageIDSchema = z.object({
+  chatId: z.string(),
+});
+export type ChatGenerateMessageIDInput = z.infer<
+  typeof chatGenerateMessageIDSchema
+>;
+export type ChatGenerateMessageIDOutput = MsgKey;
 
 /**
  * Generate a new message ID
@@ -25,25 +35,19 @@ import { randomMessageId } from '../../whatsapp/functions';
  * @category Message
  */
 export async function generateMessageID(
-  chat: string | ChatModel | Wid
-): Promise<MsgKey> {
-  let to: Wid;
+  params: ChatGenerateMessageIDInput
+): Promise<ChatGenerateMessageIDOutput> {
+  const { chatId } = chatGenerateMessageIDSchema.parse(params);
 
-  if (chat instanceof Wid) {
-    to = chat;
-  } else if (chat instanceof ChatModel) {
-    to = chat.id;
-  } else {
-    to = assertWid(chat);
-  }
+  const wid = assertWid(chatId);
 
   // For group messages, use LID format for both 'from' and 'participant'
-  const from = to.isGroup() ? getMyUserLid() : getMyUserWid();
-  const participant = to.isGroup() ? from : undefined;
+  const from = wid.isGroup() ? getMyUserLid() : getMyUserWid();
+  const participant = wid.isGroup() ? from : undefined;
 
   return new MsgKey({
     from,
-    to,
+    to: wid,
     id: await Promise.resolve(randomMessageId()),
     participant,
     selfDir: 'out',

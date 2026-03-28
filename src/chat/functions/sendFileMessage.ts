@@ -15,6 +15,7 @@
  */
 
 import Debug from 'debug';
+import { z } from 'zod';
 
 import { assertFindChat } from '../../assert';
 import {
@@ -37,7 +38,6 @@ import {
   MsgModel,
   OpaqueData,
   StatusV3Store,
-  Wid,
 } from '../../whatsapp';
 import { SendMsgResult } from '../../whatsapp/enums';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
@@ -255,24 +255,37 @@ export interface VideoMessageOptions
  * @category Message
  * @return  {SendMessageReturn} The result
  */
+const chatSendFileMessageSchema = z.object({
+  chatId: z.any(),
+  content: z.any(),
+  options: z.any(),
+});
+export type ChatSendFileMessageInput = z.infer<
+  typeof chatSendFileMessageSchema
+>;
+export type ChatSendFileMessageOutput = SendMessageReturn;
+
 export async function sendFileMessage(
-  chatId: string | Wid,
-  content: string | Blob | File,
-  options:
+  params: ChatSendFileMessageInput
+): Promise<ChatSendFileMessageOutput> {
+  const {
+    chatId,
+    content,
+    options: rawOptions,
+  } = chatSendFileMessageSchema.parse(params);
+  const options:
     | AutoDetectMessageOptions
     | AudioMessageOptions
     | DocumentMessageOptions
     | ImageMessageOptions
     | VideoMessageOptions
-    | StickerMessageOptions
-): Promise<SendMessageReturn> {
-  options = {
+    | StickerMessageOptions = {
     ...defaultSendMessageOptions,
     ...{
       type: 'auto-detect',
       waveform: true,
     },
-    ...options,
+    ...rawOptions,
   };
 
   let chat: ChatModel;
@@ -343,10 +356,10 @@ export async function sendFileMessage(
     if (options.isPtt) {
       isViewOnce = options.isViewOnce;
     }
-    rawMediaOptions.precomputedFields = await prepareAudioWaveform(
-      options as any,
-      file
-    );
+    rawMediaOptions.precomputedFields = await prepareAudioWaveform({
+      options: options as any,
+      file,
+    });
   } else if (options.type === 'image') {
     isViewOnce = options.isViewOnce;
     maxDimension = options?.isHD ? 2560 : 1600;
@@ -365,23 +378,26 @@ export async function sendFileMessage(
   });
 
   // The generated message in `sendToChat` is merged with `productMsgOptions`
-  let rawMessage = await prepareRawMessage<RawMessage>(
+  let rawMessage = await prepareRawMessage<RawMessage>({
     chat,
-    {
+    message: {
       caption: options.caption || filename,
       filename: filename,
       footer: options.footer,
       isCaptionByUser: options.caption != undefined,
     },
-    options
-  );
+    options,
+  });
 
-  rawMessage = prepareMessageButtons(rawMessage, options as any);
+  rawMessage = prepareMessageButtons({
+    message: rawMessage,
+    options: options as any,
+  });
 
   if (options.markIsRead) {
     debug(`marking chat is read before send file`);
     // Try to mark is read and ignore errors
-    await markIsRead(chat.id).catch(() => null);
+    await markIsRead({ chatId: chat.id.toString() }).catch(() => null);
   }
 
   await mediaPrep.waitForPrep();
@@ -421,7 +437,7 @@ export async function sendFileMessage(
         async function fn(chat: ChatModel, msgKey: MsgKey) {
           if (chat.id.toString() == rawMessage.from?.toString()) {
             StatusV3Store.off('change:lastReceivedKey', fn);
-            const message = await getMessageById(msgKey);
+            const message = await getMessageById({ id: msgKey._serialized });
             resolve(message);
           }
         }
@@ -478,7 +494,7 @@ export async function sendFileMessage(
       }, 30000);
 
       const interval = setInterval(async () => {
-        const get = await getMessageById(message.id);
+        const get = (await getMessageById({ id: message.id })) as MsgModel;
         if (get.ack! > 0) {
           clearInterval(interval);
           clearTimeout(timeout);

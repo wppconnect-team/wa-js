@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import {
   fetchRemoteLinkPreviewData,
   generateThumbnailLinkPreviewData,
@@ -28,7 +30,7 @@ import {
 } from '../../whatsapp/functions';
 import { RawMessage } from '..';
 
-export interface LinkPreviewOptions {
+export const linkPreviewOptionsSchema = z.object({
   /**
    * Send text message with link preview
    *
@@ -48,18 +50,32 @@ export interface LinkPreviewOptions {
    * });
    * ```
    */
-  linkPreview?:
-    | boolean
-    | {
-        title?: string;
-        description?: string;
-        canonicalUrl?: string;
-        matchedText?: string;
-        richPreviewType?: number;
-        thumbnail?: string;
-        doNotPlayInline: boolean;
-      };
-}
+  linkPreview: z
+    .union([
+      z.boolean(),
+      z.object({
+        title: z.string().optional(),
+        description: z.string().optional(),
+        canonicalUrl: z.string().optional(),
+        matchedText: z.string().optional(),
+        richPreviewType: z.number().optional(),
+        thumbnail: z.string().optional(),
+        doNotPlayInline: z.boolean(),
+      }),
+    ])
+    .optional(),
+});
+
+export type LinkPreviewOptions = z.infer<typeof linkPreviewOptionsSchema>;
+
+const chatPrepareLinkPreviewSchema = z.object({
+  message: z.custom<RawMessage>(),
+  options: linkPreviewOptionsSchema,
+});
+export type ChatPrepareLinkPreviewInput = z.infer<
+  typeof chatPrepareLinkPreviewSchema
+>;
+export type ChatPrepareLinkPreviewOutput = RawMessage;
 
 /**
  * Prepare a message for link preview
@@ -67,12 +83,16 @@ export interface LinkPreviewOptions {
  * @category Message
  * @internal
  */
-export async function prepareLinkPreview<T extends RawMessage>(
-  message: T,
-  options: LinkPreviewOptions
-): Promise<T> {
+export async function prepareLinkPreview(
+  params: ChatPrepareLinkPreviewInput
+): Promise<ChatPrepareLinkPreviewOutput> {
+  const { message: rawMessage, options } =
+    chatPrepareLinkPreviewSchema.parse(params);
+
+  let message: RawMessage = rawMessage;
+
   if (!options.linkPreview) {
-    return message as any;
+    return message;
   }
 
   if (options.linkPreview) {
@@ -98,7 +118,7 @@ export async function prepareLinkPreview<T extends RawMessage>(
     message.subtype = 'url';
     message = {
       ...message,
-      ...options.linkPreview,
+      ...(options.linkPreview as Partial<RawMessage>),
     };
   }
 

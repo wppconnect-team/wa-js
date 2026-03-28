@@ -14,35 +14,32 @@
  * limitations under the License.
  */
 
-import { Stringable } from '../../types';
-import { MsgKey, MsgModel } from '../../whatsapp';
+import { z } from 'zod';
+
 import { canReplyMsg } from '../../whatsapp/functions';
 import { getMessageById } from './getMessageById';
+
+const chatCanReplySchema = z.object({
+  messageId: z.string(),
+});
+export type ChatCanReplyInput = z.infer<typeof chatCanReplySchema>;
+export type ChatCanReplyOutput = boolean;
 
 /**
  * Get if message can reply
  *
  * @example
  * ```javascript
- * WPP.chat.canReply('[message_id]');
+ * WPP.chat.canReply({ messageId: '[message_id]' });
  * ```
  * @category Message
  */
 export async function canReply(
-  messageId: string | MsgKey | MsgModel | Stringable
-): Promise<boolean> {
-  if (
-    !(messageId instanceof MsgModel) &&
-    typeof messageId !== 'string' &&
-    typeof messageId.toString === 'function'
-  ) {
-    messageId = messageId.toString();
-  }
+  params: ChatCanReplyInput
+): Promise<ChatCanReplyOutput> {
+  const { messageId } = chatCanReplySchema.parse(params);
 
-  const msg =
-    messageId instanceof MsgModel
-      ? messageId
-      : await getMessageById(messageId.toString());
+  const msg = await getMessageById({ id: messageId });
 
   return canReplyMsg(msg);
 }

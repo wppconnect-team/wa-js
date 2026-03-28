@@ -15,10 +15,11 @@
  */
 
 import { compare } from 'compare-versions';
+import { z } from 'zod';
 
 import { assertGetChat } from '../../assert';
 import { iAmAdmin } from '../../group';
-import { Cmd, Wid } from '../../whatsapp';
+import { Cmd } from '../../whatsapp';
 import { MSG_TYPE, SendMsgResult } from '../../whatsapp/enums';
 import { getMessageById } from '.';
 
@@ -30,39 +31,44 @@ export interface DeleteMessageReturn {
   isSentByMe: boolean;
 }
 
+const chatDeleteMessageSchema = z.object({
+  chatId: z.string(),
+  ids: z.array(z.string()),
+  deleteMediaInDevice: z.boolean().optional(),
+  revoke: z.boolean().optional(),
+});
+export type ChatDeleteMessageInput = z.infer<typeof chatDeleteMessageSchema>;
+export type ChatDeleteMessageOutput = DeleteMessageReturn[];
+
 /**
  * Delete a message
  *
  * @example
  * ```javascript
  * // Delete a message
- * WPP.chat.deleteMessage('[number]@c.us', 'msgid');
+ * WPP.chat.deleteMessage({ chatId: '[number]@c.us', ids: ['msgid'] });
  * // Delete a list of messages
- * WPP.chat.deleteMessage('[number]@c.us', ['msgid1', 'msgid2]);
+ * WPP.chat.deleteMessage({ chatId: '[number]@c.us', ids: ['msgid1', 'msgid2'] });
  * // Delete a message and delete media
- * WPP.chat.deleteMessage('[number]@c.us', 'msgid', true);
+ * WPP.chat.deleteMessage({ chatId: '[number]@c.us', ids: ['msgid'], deleteMediaInDevice: true });
  * // Revoke a message
- * WPP.chat.deleteMessage('[number]@c.us', 'msgid', true, true);
+ * WPP.chat.deleteMessage({ chatId: '[number]@c.us', ids: ['msgid'], deleteMediaInDevice: true, revoke: true });
  * ```
  *
  * @category Message
  */
-export async function deleteMessage(
-  chatId: string | Wid,
-  ids: string | string[],
-  deleteMediaInDevice = false,
-  revoke = false
-): Promise<DeleteMessageReturn | DeleteMessageReturn[]> {
+export async function deleteMessages(
+  params: ChatDeleteMessageInput
+): Promise<ChatDeleteMessageOutput> {
+  const {
+    chatId,
+    ids,
+    deleteMediaInDevice = false,
+    revoke = false,
+  } = chatDeleteMessageSchema.parse(params);
   const chat = assertGetChat(chatId);
 
-  let isSingle = false;
-
-  if (!Array.isArray(ids)) {
-    isSingle = true;
-    ids = [ids];
-  }
-
-  const msgs = await getMessageById(ids);
+  const msgs = await Promise.all(ids.map((id) => getMessageById({ id })));
 
   const results: DeleteMessageReturn[] = [];
   for (const msg of msgs) {
@@ -71,7 +77,9 @@ export async function deleteMessage(
     let isDeleted = false;
     const isSentByMe = msg.senderObj.isMe;
     let imAdmin = false;
-    if (chat.id.isGroup()) imAdmin = await iAmAdmin(chatId);
+    if (chat.id.isGroup()) {
+      imAdmin = await iAmAdmin({ groupId: chatId });
+    }
 
     const canRevoke = isSentByMe || imAdmin;
 
@@ -129,5 +137,5 @@ export async function deleteMessage(
     });
   }
 
-  return isSingle ? results[0] : results;
+  return results;
 }

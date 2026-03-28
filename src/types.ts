@@ -14,6 +14,43 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 export interface Stringable {
   toString(): string;
 }
+
+/** Zod schema for a WhatsApp group/community chat ID (ends with `@g.us`) */
+export const groupIdSchema = z
+  .string()
+  .regex(/^.+@g\.us$/, 'Invalid group ID: must end with @g.us');
+export type GroupId = z.infer<typeof groupIdSchema>;
+
+/** Zod schema for a WhatsApp DM chat ID (ends with `@c.us` or `@lid`) */
+export const dmChatIdSchema = z
+  .string()
+  .regex(/^.+@(c\.us|lid)$/, 'Invalid DM chat ID: must end with @c.us or @lid');
+export type DMChatId = z.infer<typeof dmChatIdSchema>;
+
+/** Zod schema for a WhatsApp Newsletter channel ID (ends with `@newsletter`) */
+export const newsletterIdSchema = z
+  .string()
+  .regex(/^.+@newsletter$/, 'Invalid newsletter ID: must end with @newsletter');
+export type NewsletterId = z.infer<typeof newsletterIdSchema>;
+
+/** Zod schema for a WhatsApp Status broadcast ID (`status@broadcast`) */
+export const statusIdSchema = z.literal('status@broadcast');
+export type StatusId = z.infer<typeof statusIdSchema>;
+
+/**
+ * Zod schema for any valid WhatsApp chat ID.
+ * Accepts DMs (`@c.us`, `@lid`), groups/communities (`@g.us`),
+ * newsletters (`@newsletter`), and status (`status@broadcast`).
+ */
+export const chatIdSchema = z.union([
+  dmChatIdSchema,
+  groupIdSchema,
+  newsletterIdSchema,
+  statusIdSchema,
+]);
+export type ChatId = z.infer<typeof chatIdSchema>;

@@ -14,8 +14,16 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
-import { ChatStore, Wid } from '../../whatsapp';
+import { ChatStore } from '../../whatsapp';
+
+const chatGetLastSeenSchema = z.object({
+  chatId: z.string(),
+});
+export type ChatGetLastSeenInput = z.infer<typeof chatGetLastSeenSchema>;
+export type ChatGetLastSeenOutput = number | boolean;
 
 /**
  * Get timestamp of last seen
@@ -26,8 +34,9 @@ import { ChatStore, Wid } from '../../whatsapp';
  * @category Chat
  */
 export async function getLastSeen(
-  chatId: string | Wid
-): Promise<number | boolean> {
+  params: ChatGetLastSeenInput
+): Promise<ChatGetLastSeenOutput> {
+  const { chatId } = chatGetLastSeenSchema.parse(params);
   const wid = assertWid(chatId);
   const chat = await ChatStore.get(wid);
   if (!chat) {

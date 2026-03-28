@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
-import { compare } from 'compare-versions';
+import { z } from 'zod';
 
 import { assertGetChat, assertWid } from '../../assert';
 import { WPPError } from '../../util';
-import { Cmd, Wid } from '../../whatsapp';
-import { setArchive } from '../../whatsapp/functions';
+import { Cmd } from '../../whatsapp';
+
+const chatArchiveSchema = z.object({
+  chatId: z.string(),
+  archive: z.boolean().optional(),
+});
+export type ChatArchiveInput = z.infer<typeof chatArchiveSchema>;
+export type ChatArchiveOutput = void;
 
 /**
  * Archive a chat
@@ -27,39 +33,36 @@ import { setArchive } from '../../whatsapp/functions';
  * @example
  * ```javascript
  * // Archive a chat
- * WPP.chat.archive('[number]@c.us');
+ * WPP.chat.archive({ chatId: '[number]@c.us' });
  *
  * // Unarchive a chat
- * WPP.chat.archive('[number]@c.us', false);
+ * WPP.chat.archive({ chatId: '[number]@c.us', archive: false });
  * // or
- * WPP.chat.unarchive('[number]@c.us');
+ * WPP.chat.unarchive({ chatId: '[number]@c.us' });
  * ```
  * @category Chat
  */
-export async function archive(chatId: string | Wid, archive = true) {
+export async function archive(
+  params: ChatArchiveInput
+): Promise<ChatArchiveOutput> {
+  const { chatId, archive: archiveFlag = true } =
+    chatArchiveSchema.parse(params);
   const wid = assertWid(chatId);
 
   const chat = assertGetChat(wid);
 
-  if (chat.archive === archive) {
+  if (chat.archive === archiveFlag) {
     throw new WPPError(
-      `${archive ? 'archive' : 'unarchive'}_error`,
+      `${archiveFlag ? 'archive' : 'unarchive'}_error`,
       `The chat ${wid.toString()} is already ${
-        archive ? 'archived' : 'unarchived'
+        archiveFlag ? 'archived' : 'unarchived'
       }`,
-      { wid, archive }
+      { wid, archive: archiveFlag }
     );
   }
-  if (compare(self.Debug.VERSION, '2.3000.0', '>=')) {
-    Cmd.archiveChat(chat, archive);
-  } else {
-    await setArchive(chat, archive);
-  }
+  Cmd.archiveChat(chat, archiveFlag);
 
-  return {
-    wid,
-    archive,
-  };
+  return;
 }
 
 /**
@@ -67,16 +70,8 @@ export async function archive(chatId: string | Wid, archive = true) {
  *
  * @alias archive
  *
- * @example
- * ```javascript
- * // Unarchive a chat
- * WPP.chat.unarchive('[number]@c.us');
- *
- * // Alias for
- * WPP.chat.archive('[number]@c.us', false);
- * ```
  * @category Chat
  */
-export async function unarchive(chatId: string | Wid) {
-  return archive(chatId, false);
+export async function unarchive(params: { chatId: string }) {
+  return archive({ ...params, archive: false });
 }

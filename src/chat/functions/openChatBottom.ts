@@ -14,10 +14,19 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
 import { isWhatsAppVersionLTE } from '../../conn/functions/getBuildConstants';
-import { ChatStore, Cmd, Wid } from '../../whatsapp';
+import { ChatStore, Cmd } from '../../whatsapp';
 import { findOrCreateLatestChat } from '../../whatsapp/functions';
+
+const chatOpenChatBottomSchema = z.object({
+  chatId: z.string(),
+  chatEntryPoint: z.string().optional(),
+});
+export type ChatOpenChatBottomInput = z.infer<typeof chatOpenChatBottomSchema>;
+export type ChatOpenChatBottomOutput = boolean;
 
 /**
  * Open the chat in the WhatsApp interface in bottom position
@@ -32,9 +41,9 @@ import { findOrCreateLatestChat } from '../../whatsapp/functions';
  * @category Chat
  */
 export async function openChatBottom(
-  chatId: string | Wid,
-  chatEntryPoint?: string | undefined
-): Promise<boolean> {
+  params: ChatOpenChatBottomInput
+): Promise<ChatOpenChatBottomOutput> {
+  const { chatId, chatEntryPoint } = chatOpenChatBottomSchema.parse(params);
   const wid = assertWid(chatId);
 
   // Use findOrCreateLatestChat to match WhatsApp Web's native behavior
@@ -56,7 +65,7 @@ export async function openChatBottom(
   }
 
   // WhatsApp changed from positional to named params in version 2.3000.1029960097
-  if (isWhatsAppVersionLTE('2.3000.1029960097')) {
+  if (isWhatsAppVersionLTE({ version: '2.3000.1029960097' })) {
     // Legacy: use positional params for older versions
     return await Cmd.openChatBottom(chat, chatEntryPoint);
   }

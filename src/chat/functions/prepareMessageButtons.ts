@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
 import * as webpack from '../../webpack';
 import {
@@ -67,6 +69,14 @@ export interface MessageButtonsOptions {
   footer?: string;
 }
 
+const chatPrepareMessageButtonsSchema = z.object({
+  message: z.custom<RawMessage>(),
+  options: z.custom<MessageButtonsOptions>(),
+});
+export type ChatPrepareMessageButtonsInput = z.infer<
+  typeof chatPrepareMessageButtonsSchema
+>;
+
 /**
  * Prepare a message for buttons
  *
@@ -75,9 +85,10 @@ export interface MessageButtonsOptions {
  */
 
 export function prepareMessageButtons<T extends RawMessage>(
-  message: T,
-  options: MessageButtonsOptions
+  params: ChatPrepareMessageButtonsInput
 ): T {
+  const { message, options } = chatPrepareMessageButtonsSchema.parse(params);
+
   if (!options.buttons) {
     return message as any;
   }
@@ -234,7 +245,7 @@ export function prepareMessageButtons<T extends RawMessage>(
     })
   );
 
-  return message;
+  return message as T;
 }
 
 webpack.onFullReady(() => {

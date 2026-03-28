@@ -15,6 +15,7 @@
  */
 
 import Debug from 'debug';
+import { z } from 'zod';
 
 import { toArrayBuffer, WPPError } from '../../util';
 import { LruMediaStore, MediaBlobCache } from '../../whatsapp';
@@ -22,28 +23,37 @@ import { getMessageById } from '.';
 
 const debug = Debug('WA-JS:chat:downloadMedia');
 
+const chatDownloadMediaSchema = z.object({
+  msgId: z.string(),
+});
+export type ChatDownloadMediaInput = z.infer<typeof chatDownloadMediaSchema>;
+export type ChatDownloadMediaOutput = Blob;
+
 /**
  * Download the blob of a media message
  *
  * ```javascript
  * // Get a blob file
- * await WPP.chat.downloadMedia('true_[number]@c.us_ABCDEF');
+ * await WPP.chat.downloadMedia({ msgId: 'true_[number]@c.us_ABCDEF' });
  *
  * // Get a base64Content
- * await WPP.chat.downloadMedia('true_[number]@c.us_ABCDEF').then(WPP.util.blobToBase64);
+ * await WPP.chat.downloadMedia({ msgId: 'true_[number]@c.us_ABCDEF' }).then(WPP.util.blobToBase64);
  * ```
  *
  * @category Message
  */
-export async function downloadMedia(id: string): Promise<Blob> {
-  const msg = await getMessageById(id);
+export async function downloadMedia(
+  params: ChatDownloadMediaInput
+): Promise<ChatDownloadMediaOutput> {
+  const { msgId } = chatDownloadMediaSchema.parse(params);
+  const msg = await getMessageById({ id: msgId });
 
   if (!msg.mediaData) {
     throw new WPPError(
       'message_not_contains_media',
-      `Message ${id} not contains media`,
+      `Message ${msgId} not contains media`,
       {
-        id,
+        msgId,
       }
     );
   }
@@ -75,7 +85,7 @@ export async function downloadMedia(id: string): Promise<Blob> {
     if (mediaData.mediaBlob) {
       const cachedBlob = mediaData.mediaBlob.forceToBlob();
       if (cachedBlob) {
-        debug('Media found in mediaBlob for message', id);
+        debug('Media found in mediaBlob for message', msgId);
         return cachedBlob;
       }
     }
@@ -89,7 +99,7 @@ export async function downloadMedia(id: string): Promise<Blob> {
     return cached;
   }
 
-  debug('Downloading media for message', id);
+  debug('Downloading media for message', msgId);
   await msg.downloadMedia({
     downloadEvenIfExpensive: true,
     rmrReason: 1,
@@ -99,11 +109,11 @@ export async function downloadMedia(id: string): Promise<Blob> {
   const blob = await getFromCache();
 
   if (!blob && msg.mediaObject?.type === 'VIDEO') {
-    debug('Retrying download as document for message', id);
+    debug('Retrying download as document for message', msgId);
     try {
       msg.type = 'document';
       msg.mediaObject.type = 'DOCUMENT';
-      return await downloadMedia(id);
+      return await downloadMedia({ msgId });
     } finally {
       msg.type = 'video';
       msg.mediaObject.type = 'VIDEO';
@@ -111,7 +121,7 @@ export async function downloadMedia(id: string): Promise<Blob> {
   }
 
   if (!blob) {
-    debug('Media not found after download for message', id);
+    debug('Media not found after download for message', msgId);
     throw {
       error: true,
       code: 'media_not_found',

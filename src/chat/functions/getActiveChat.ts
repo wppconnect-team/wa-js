@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import { ChatStore, NewsletterStore } from '../../whatsapp';
+import { ChatModel, ChatStore, NewsletterStore } from '../../whatsapp';
+
+export type ChatGetActiveChatOutput = ChatModel | undefined;
 
 /**
  * Return the current active chat
@@ -30,7 +32,7 @@ import { ChatStore, NewsletterStore } from '../../whatsapp';
  * ```
  * @category Chat
  */
-export function getActiveChat() {
+export function getActiveChat(): ChatGetActiveChatOutput {
   const chat =
     ChatStore.findFirst((c) => c.active) ||
     NewsletterStore.findFirst((c) => c.active);

@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
-import { ChatModel, ChatStore, NewsletterStore, Wid } from '../../whatsapp';
+import { ChatModel, ChatStore, NewsletterStore } from '../../whatsapp';
+
+const chatGetSchema = z.object({
+  chatId: z.string(),
+});
+export type ChatGetInput = z.infer<typeof chatGetSchema>;
+export type ChatGetOutput = ChatModel | undefined;
 
 /**
  * Find a chat by id
  *
  * @category Chat
  */
-export function get(chatId: string | Wid): ChatModel | undefined {
+export function get(params: ChatGetInput): ChatGetOutput {
+  const { chatId } = chatGetSchema.parse(params);
   const wid = assertWid(chatId);
   if (wid.server === 'newsletter') {
     return NewsletterStore.get(wid);

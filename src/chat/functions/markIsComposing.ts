@@ -14,9 +14,20 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertGetChat } from '../../assert';
-import { ChatPresence, Wid } from '../../whatsapp';
+import { ChatPresence } from '../../whatsapp';
 import { markIsPaused } from '.';
+
+const chatMarkIsComposingSchema = z.object({
+  chatId: z.string(),
+  duration: z.number().optional(),
+});
+export type ChatMarkIsComposingInput = z.infer<
+  typeof chatMarkIsComposingSchema
+>;
+export type ChatMarkIsComposingOutput = void;
 
 /**
  * Mark a chat to composing state
@@ -32,7 +43,10 @@ import { markIsPaused } from '.';
  * ```
  * @category Chat
  */
-export async function markIsComposing(chatId: string | Wid, duration?: number) {
+export async function markIsComposing(
+  params: ChatMarkIsComposingInput
+): Promise<ChatMarkIsComposingOutput> {
+  const { chatId, duration } = chatMarkIsComposingSchema.parse(params);
   const chat = assertGetChat(chatId);
 
   await chat.presence.subscribe();
@@ -47,7 +61,7 @@ export async function markIsComposing(chatId: string | Wid, duration?: number) {
   if (duration) {
     await new Promise<void>((resolve) => {
       chat.pausedTimerId = setTimeout(() => {
-        markIsPaused(chatId).then(resolve, resolve);
+        markIsPaused({ chatId }).then(resolve, resolve);
       }, duration);
     });
   }

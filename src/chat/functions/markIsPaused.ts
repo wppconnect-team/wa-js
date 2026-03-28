@@ -14,8 +14,16 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertGetChat } from '../../assert';
-import { ChatPresence, Wid } from '../../whatsapp';
+import { ChatPresence } from '../../whatsapp';
+
+const chatMarkIsPausedSchema = z.object({
+  chatId: z.string(),
+});
+export type ChatMarkIsPausedInput = z.infer<typeof chatMarkIsPausedSchema>;
+export type ChatMarkIsPausedOutput = void;
 
 /**
  * Mark a chat is paused state
@@ -27,7 +35,10 @@ import { ChatPresence, Wid } from '../../whatsapp';
  * ```
  * @category Chat
  */
-export async function markIsPaused(chatId: string | Wid) {
+export async function markIsPaused(
+  params: ChatMarkIsPausedInput
+): Promise<ChatMarkIsPausedOutput> {
+  const { chatId } = chatMarkIsPausedSchema.parse(params);
   const chat = assertGetChat(chatId);
 
   await chat.presence.subscribe();

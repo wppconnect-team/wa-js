@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
+import { dmChatIdSchema, groupIdSchema } from '../../types';
 import {
   defaultSendMessageOptions,
   SendMessageOptions,
@@ -28,35 +31,51 @@ export interface ScheduledCallMessageOptions extends SendMessageOptions {
   description?: string;
 }
 
+const chatSendScheduledCallMessageSchema = z.object({
+  chatId: z.union([dmChatIdSchema, groupIdSchema]),
+  options: z.any(),
+});
+export type ChatSendScheduledCallMessageInput = z.infer<
+  typeof chatSendScheduledCallMessageSchema
+>;
+export type ChatSendScheduledCallMessageOutput = SendMessageReturn;
+
 /**
  * Send a scheduled call message
  *
  * @example
  * ```javascript
- * WPP.chat.sendScheduledCallMessage('[number]@c.us', {
- *  title: "Title of event call"
- *  description: 'Description for Call",
- *  callType: 'voice'
- *  scheduledTimestampMs: 1696084222000
+ * WPP.chat.sendScheduledCallMessage({
+ *   chatId: '[number]@c.us',
+ *   options: {
+ *     title: 'Title of event call',
+ *     description: 'Description for Call',
+ *     callType: 'voice',
+ *     scheduledTimestampMs: 1696084222000
+ *   }
  * });
  * ```
  * @category Message
  */
 export async function sendScheduledCallMessage(
-  chatId: any,
-  options: ScheduledCallMessageOptions
-): Promise<SendMessageReturn> {
-  options = {
-    ...{ callType: 'voice' },
+  params: ChatSendScheduledCallMessageInput
+): Promise<ChatSendScheduledCallMessageOutput> {
+  const { chatId, options: opts } =
+    chatSendScheduledCallMessageSchema.parse(params);
+  const options: ScheduledCallMessageOptions = {
+    ...{ callType: 'voice' as const },
     ...defaultSendMessageOptions,
-    ...options,
+    ...(opts as ScheduledCallMessageOptions),
   };
 
-  return await sendEventMessage(chatId, {
-    ...options,
-    name: options.title,
-    description: options?.description,
-    callType: options.callType,
-    startTime: parseInt(options.scheduledTimestampMs?.toString()) / 1000,
+  return await sendEventMessage({
+    chatId,
+    options: {
+      ...options,
+      name: options.title,
+      description: options?.description,
+      callType: options.callType,
+      startTime: parseInt(options.scheduledTimestampMs?.toString()) / 1000,
+    },
   });
 }

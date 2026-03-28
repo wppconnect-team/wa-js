@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
+import { dmChatIdSchema, groupIdSchema } from '../../types';
 import * as webpack from '../../webpack';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
@@ -56,73 +59,48 @@ export interface LocationMessageOptions
   url?: string;
 }
 
+const chatSendLocationMessageSchema = z.object({
+  chatId: z.union([dmChatIdSchema, groupIdSchema]),
+  options: z.custom<LocationMessageOptions>(),
+});
+export type ChatSendLocationMessageInput = z.infer<
+  typeof chatSendLocationMessageSchema
+>;
+export type ChatSendLocationMessageOutput = SendMessageReturn;
+
 /**
  * Send a location message
  *
  * @example
  * ```javascript
  * // full example
- * WPP.chat.sendLocationMessage('[number]@c.us', {
- *  lat: -22.95201,
- *  lng: -43.2102601,
- *  name: 'Cristo Rendentor', // optional
- *  address: 'Parque Nacional da Tijuca - Alto da Boa Vista, Rio de Janeiro - RJ', // optional
- *  url: 'https://santuariocristoredentor.com.br/' // optional
+ * WPP.chat.sendLocationMessage({
+ *   chatId: '[number]@c.us',
+ *   options: {
+ *     lat: -22.95201,
+ *     lng: -43.2102601,
+ *     name: 'Cristo Rendentor',
+ *     address: 'Parque Nacional da Tijuca - Alto da Boa Vista, Rio de Janeiro - RJ',
+ *     url: 'https://santuariocristoredentor.com.br/'
+ *   }
  * });
  *
  * // minimal
- * WPP.chat.sendLocationMessage('[number]@c.us', {
- *  lat: -22.95201,
- *  lng: -43.2102601,
- * });
- *
- * // name and address
- * WPP.chat.sendLocationMessage('[number]@c.us', {
- *  lat: -22.95201,
- *  lng: -43.2102601,
- *  name: 'Cristo Rendentor',
- *  address: 'Parque Nacional da Tijuca - Alto da Boa Vista, Rio de Janeiro - RJ'
- * });
- *
- * // with buttons
- * WPP.chat.sendLocationMessage('[number]@c.us', {
- *  lat: -22.95201,
- *  lng: -43.2102601,
- *  name: 'Cristo Rendentor',
- *  address: 'Parque Nacional da Tijuca - Alto da Boa Vista, Rio de Janeiro - RJ',
- *  buttons: [
- *      {
- *          url: 'https://example.test/',
- *          text: 'URL example'
- *      },
- *      {
- *          phoneNumber: '+55 12 3456 7777',
- *          text: 'Phone Number'
- *      },
- *      {
- *          id: 'id1',
- *          text: 'First'
- *      },
- *      {
- *          id: 'id2',
- *          text: 'Second'
- *      },
- *      {
- *          id: 'other',
- *          text: 'Other'
- *      }
- *  ],
+ * WPP.chat.sendLocationMessage({
+ *   chatId: '[number]@c.us',
+ *   options: { lat: -22.95201, lng: -43.2102601 }
  * });
  * ```
+ *
  * @category Message
  */
 export async function sendLocationMessage(
-  chatId: any,
-  options: LocationMessageOptions
-): Promise<SendMessageReturn> {
-  options = {
+  params: ChatSendLocationMessageInput
+): Promise<ChatSendLocationMessageOutput> {
+  const { chatId, options: opts } = chatSendLocationMessageSchema.parse(params);
+  const options: LocationMessageOptions = {
     ...defaultSendMessageOptions,
-    ...options,
+    ...(opts as LocationMessageOptions),
   };
 
   const location =
@@ -146,9 +124,12 @@ export async function sendLocationMessage(
     clientUrl: options.url,
   };
 
-  rawMessage = prepareMessageButtons(rawMessage, options as any);
+  rawMessage = prepareMessageButtons({
+    message: rawMessage,
+    options: options as any,
+  });
 
-  return await sendRawMessage(chatId, rawMessage, options);
+  return await sendRawMessage({ chatId, rawMessage, options });
 }
 
 webpack.onFullReady(() => {

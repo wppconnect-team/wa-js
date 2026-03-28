@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertGetChat } from '../../assert';
 import { WPPError } from '../../util';
-import { MsgKey, MsgModel, PinInChatStore } from '../../whatsapp';
+import { MsgModel, PinInChatStore } from '../../whatsapp';
 import {
   ACK,
   MSG_TYPE,
@@ -26,6 +28,21 @@ import {
 } from '../../whatsapp/enums';
 import { sendPinInChatMsg } from '../../whatsapp/functions';
 import { getMessageById } from './getMessageById';
+
+const chatPinMsgSchema = z.object({
+  msgId: z.string(),
+  pin: z.boolean().optional(),
+  duration: z
+    .enum(PinExpiryDurationOption)
+    .default(PinExpiryDurationOption.SevenDays)
+    .optional(),
+});
+export type ChatPinMsgInput = z.infer<typeof chatPinMsgSchema>;
+export type ChatPinMsgOutput = {
+  message: MsgModel;
+  pinned: boolean;
+  result: SendMsgResult;
+};
 
 /**
  * Pin a message in chat
@@ -60,42 +77,11 @@ import { getMessageById } from './getMessageById';
  * @category Chat
  */
 export async function pinMsg(
-  msgId: string | MsgKey,
-  pin = true,
-  duration: number | PinExpiryDurationOption = PinExpiryDurationOption.SevenDays
-): Promise<{ message: MsgModel; pinned: boolean; result: SendMsgResult }> {
-  let normalizedDuration: PinExpiryDurationOption =
-    PinExpiryDurationOption.SevenDays;
+  params: ChatPinMsgInput
+): Promise<ChatPinMsgOutput> {
+  const { msgId, pin = true, duration } = chatPinMsgSchema.parse(params);
 
-  if (typeof duration === 'number') {
-    console.warn(
-      `[WPP.chat.pinMsg] DEPRECATION WARNING: Passing numbers as duration is deprecated. ` +
-        `The value ${duration} will be ignored and default to 7 days. ` +
-        `Please use PinExpiryDurationOption enum instead (e.g., PinExpiryDurationOption.SevenDays).`
-    );
-    normalizedDuration = PinExpiryDurationOption.SevenDays;
-  } else {
-    const validOptions = Object.values(PinExpiryDurationOption);
-    if (!validOptions.includes(duration)) {
-      console.warn(
-        `[WPP.chat.pinMsg] Invalid PinExpiryDurationOption: ${duration}. ` +
-          `Falling back to SevenDays. Valid options: ${validOptions.join(', ')}`
-      );
-      normalizedDuration = PinExpiryDurationOption.SevenDays;
-    } else {
-      normalizedDuration = duration;
-    }
-  }
-
-  if (typeof pin !== 'boolean') {
-    throw new WPPError(
-      'invalid_pin_parameter',
-      `The 'pin' parameter must be a boolean. Received: ${typeof pin}`,
-      { msgId, pin, duration }
-    );
-  }
-
-  const msg = await getMessageById(msgId);
+  const msg = await getMessageById({ id: msgId });
   const chat = assertGetChat(msg.id.remote);
   const pinned = PinInChatStore.getByParentMsgKey(msg.id);
 
@@ -146,7 +132,7 @@ export async function pinMsg(
     );
   }
 
-  const pinExpiryOption = pin ? normalizedDuration : undefined;
+  const pinExpiryOption = pin ? duration : undefined;
 
   const result = await sendPinInChatMsg(
     msg,
@@ -184,6 +170,6 @@ export async function pinMsg(
  * ```
  * @category Chat
  */
-export async function unpinMsg(msgId: string | MsgKey) {
-  return pinMsg(msgId, false);
+export async function unpinMsg(msgId: string) {
+  return pinMsg({ msgId, pin: false });
 }

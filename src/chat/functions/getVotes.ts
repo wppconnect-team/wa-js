@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
 import { MsgKey, Wid } from '../../whatsapp';
 import { getVotes as GetVotes } from '../../whatsapp/functions';
 import { getMessageById } from './getMessageById';
 
-/**
- * Get votes of a poll
- * @example
- * ```javascript
- * WPP.chat.getVotes('true_[number]@c.us_ABCDEF');
- * ```
- * @category Chat
- */
-export async function getVotes(id: string | MsgKey): Promise<{
+const chatGetVotesSchema = z.object({
+  msgId: z.string(),
+});
+export type ChatGetVotesInput = z.infer<typeof chatGetVotesSchema>;
+export type ChatGetVotesOutput = {
   msgId: MsgKey;
   chatId: Wid;
   votes: {
@@ -35,19 +33,29 @@ export async function getVotes(id: string | MsgKey): Promise<{
     timestamp: number;
     sender: Wid;
   }[];
-}> {
-  const msgKey = MsgKey.fromString(id.toString());
-  const msg = await getMessageById(msgKey);
+};
+
+/**
+ * Get votes of a poll
+ * @example
+ * ```javascript
+ * WPP.chat.getVotes({ msgId: 'true_[number]@c.us_ABCDEF' });
+ * ```
+ * @category Chat
+ */
+export async function getVotes(
+  params: ChatGetVotesInput
+): Promise<ChatGetVotesOutput> {
+  const { msgId } = chatGetVotesSchema.parse(params);
+  const msg = await getMessageById({ id: msgId });
 
   if (msg.type != 'poll_creation') {
-    throw new WPPError(
-      'msg_not_found',
-      `Message ${msgKey.toString()} not a poll`,
-      {
-        id: msgKey.toString(),
-      }
-    );
+    throw new WPPError('msg_not_found', `Message ${msgId} not a poll`, {
+      msgId,
+    });
   }
+
+  const msgKey = MsgKey.fromString(msgId);
 
   const votes = await GetVotes([msgKey]);
   const returnData = {

@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
 import { getMyUserLid, getMyUserWid } from '../../conn';
 import { getParticipants } from '../../group';
 import { WPPError } from '../../util';
-import {
-  BotProfileStore,
-  ChatModel,
-  MsgKey,
-  MsgModel,
-  Wid,
-} from '../../whatsapp';
+import { BotProfileStore, MsgKey, MsgModel, Wid } from '../../whatsapp';
 import { ACK } from '../../whatsapp/enums';
 import {
   canReplyMsg,
@@ -42,19 +38,34 @@ import {
   markIsRecording,
 } from '.';
 
+// Since this is used internally, we can be more flexible with params validation
+const chatPrepareRawMessageSchema = z.object({
+  chat: z.any(),
+  message: z.any(),
+  options: z.custom<SendMessageOptions>().optional(),
+});
+export type ChatPrepareRawMessageInput = z.infer<
+  typeof chatPrepareRawMessageSchema
+>;
+export type ChatPrepareRawMessageOutput = any;
+
 /**
  * Prepare a raw message
  * @category Message
  * @internal
  */
 export async function prepareRawMessage<T extends RawMessage>(
-  chat: ChatModel,
-  message: T,
-  options: SendMessageOptions = {}
+  params: ChatPrepareRawMessageInput
 ): Promise<T> {
-  options = {
+  const {
+    chat,
+    message: rawMsg,
+    options: opts,
+  } = chatPrepareRawMessageSchema.parse(params);
+  let message = rawMsg as T;
+  const options: SendMessageOptions = {
     ...defaultSendMessageOptions,
-    ...options,
+    ...(opts || {}),
   };
 
   // For group messages, use LID format for the 'from' field
@@ -73,14 +84,14 @@ export async function prepareRawMessage<T extends RawMessage>(
 
   if (options.delay) {
     if (message.type == 'chat') {
-      await markIsComposing(chat.id);
+      await markIsComposing({ chatId: chat.id._serialized });
     } else if ((options as any)?.isPtt) {
-      await markIsRecording(chat.id);
+      await markIsRecording({ chatId: chat.id._serialized });
     }
     await new Promise((resolve) =>
       setTimeout(() => resolve(true), options.delay)
     );
-    await markIsPaused(chat.id);
+    await markIsPaused({ chatId: chat.id._serialized });
   }
 
   if (message.type !== 'protocol') {
@@ -133,7 +144,7 @@ export async function prepareRawMessage<T extends RawMessage>(
   }
 
   if (!message.id) {
-    message.id = await generateMessageID(chat);
+    message.id = await generateMessageID({ chat });
   }
 
   if (options.mentionedList && !Array.isArray(options.mentionedList)) {
@@ -161,9 +172,9 @@ export async function prepareRawMessage<T extends RawMessage>(
     const ids = text?.match(/(?<=@)(\d+)\b/g) || [];
 
     if (ids.length > 0) {
-      const participants = (await getParticipants(chat.id)).map((p) =>
-        p.id.toString()
-      );
+      const participants = (
+        await getParticipants({ groupId: chat.id._serialized })
+      ).map((p) => p.id._serialized);
 
       for (const id of ids) {
         const lidWid = `${id}@lid`;
@@ -218,7 +229,9 @@ export async function prepareRawMessage<T extends RawMessage>(
       options.quotedMsg = MsgKey.fromString(options.quotedMsg);
     }
     if (options.quotedMsg instanceof MsgKey) {
-      options.quotedMsg = await getMessageById(options.quotedMsg);
+      options.quotedMsg = await getMessageById({
+        id: options.quotedMsg._serialized,
+      });
     }
 
     if (!(options.quotedMsg instanceof MsgModel)) {

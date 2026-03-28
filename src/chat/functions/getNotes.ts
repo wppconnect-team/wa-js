@@ -14,11 +14,19 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertGetChat } from '../../assert';
 import { isBusiness } from '../../profile';
 import { WPPError } from '../../util';
-import { NoteModel, Wid } from '../../whatsapp';
+import { NoteModel } from '../../whatsapp';
 import { retrieveOnlyNoteForChatJid } from '../../whatsapp/functions/addOrEditNoteAction';
+
+const chatGetNotesSchema = z.object({
+  chatId: z.string(),
+});
+export type ChatGetNotesInput = z.infer<typeof chatGetNotesSchema>;
+export type ChatGetNotesOutput = NoteModel | null;
 
 /**
  * Get notes from a contact
@@ -30,8 +38,9 @@ import { retrieveOnlyNoteForChatJid } from '../../whatsapp/functions/addOrEditNo
  * @category Chat
  */
 export async function getNotes(
-  chatId: string | Wid
-): Promise<NoteModel | null> {
+  params: ChatGetNotesInput
+): Promise<ChatGetNotesOutput> {
+  const { chatId } = chatGetNotesSchema.parse(params);
   const chat = assertGetChat(chatId);
   if (!isBusiness()) {
     throw new WPPError(

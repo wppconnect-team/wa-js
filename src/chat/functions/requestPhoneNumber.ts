@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
 import { WPPError } from '../../util';
 import {
@@ -24,24 +26,31 @@ import {
 } from '..';
 import { sendRawMessage } from '.';
 
+const chatRequestPhoneNumberSchema = z.object({
+  chatId: z.string(),
+});
+export type ChatRequestPhoneNumberInput = z.infer<
+  typeof chatRequestPhoneNumberSchema
+>;
+export type ChatRequestPhoneNumberOutput = SendMessageReturn;
+
 /**
  * Request the real phone number for a LID chat ([number]@lid)
  *
  * @example
  * ```javascript
  * // Request
- * WPP.chat.requestPhoneNumber('[number]@lid');
+ * WPP.chat.requestPhoneNumber({ chatId: '[number]@lid' });
  * ```
  *
  * @category Message
  */
 export async function requestPhoneNumber(
-  chatId: any,
-  options: SendMessageOptions = {}
-): Promise<SendMessageReturn> {
-  options = {
+  params: ChatRequestPhoneNumberInput
+): Promise<ChatRequestPhoneNumberOutput> {
+  const { chatId } = chatRequestPhoneNumberSchema.parse(params);
+  const options: SendMessageOptions = {
     ...defaultSendMessageOptions,
-    ...options,
   };
 
   const wid = assertWid(chatId);
@@ -57,5 +66,5 @@ export async function requestPhoneNumber(
     type: 'request_phone_number',
   };
 
-  return await sendRawMessage(chatId, rawMessage, options);
+  return await sendRawMessage({ chatId, rawMessage, options });
 }

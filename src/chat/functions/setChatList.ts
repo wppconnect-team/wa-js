@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { WPPError } from '../../util';
+import { z } from 'zod';
+
 import * as webpack from '../../webpack';
 import { Cmd } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
@@ -61,29 +62,29 @@ export enum FilterChatListTypes {
   LABELS = 'labels',
   ASSIGNED_TO_YOU = 'assigned_to_you',
 }
+const chatSetChatListSchema = z.object({
+  type: z.enum(FilterChatListTypes),
+  chatIds: z.array(z.string()),
+});
+export type ChatSetChatListInput = z.infer<typeof chatSetChatListSchema>;
+export type ChatSetChatListOutput = {
+  type: FilterChatListTypes;
+  list?: string[];
+};
+
 export async function setChatList(
-  type: FilterChatListTypes,
-  ids?: string | string[]
-): Promise<{ type: FilterChatListTypes; list?: string[] }> {
+  params: ChatSetChatListInput
+): Promise<ChatSetChatListOutput> {
+  const { type, chatIds } = chatSetChatListSchema.parse(params);
   filterType = type;
-  if (!type) {
-    throw new WPPError('send_type_filter', `Please send a valid type filter`);
-  } else if (type == FilterChatListTypes.LABELS && !ids) {
-    throw new WPPError('send_labelId', `Please send a valid label id`);
-  } else if (type == FilterChatListTypes.CUSTOM && !ids) {
-    throw new WPPError('send_ids', `Please send a valid ids`);
-  }
 
-  // normalize ids to array, when string it's a single id
-  if (typeof ids == 'string') ids = [ids];
-
-  if (type == FilterChatListTypes.CUSTOM && ids) {
-    allowSet = new Set<string>(ids);
+  if (type == FilterChatListTypes.CUSTOM && chatIds) {
+    allowSet = new Set<string>(chatIds);
     Cmd.trigger('set_active_filter', 'unread');
     Cmd.trigger('set_active_filter');
     return {
       type: type as any,
-      list: ids,
+      list: chatIds,
     };
   } else if (type == FilterChatListTypes.ALL) {
     Cmd.trigger('set_active_filter');
@@ -91,7 +92,7 @@ export async function setChatList(
       type: type as any,
     };
   } else if (type == FilterChatListTypes.LABELS) {
-    Cmd.trigger('set_active_filter', FilterChatListTypes.LABELS, ids![0]);
+    Cmd.trigger('set_active_filter', FilterChatListTypes.LABELS, chatIds![0]);
     return {
       type: type as any,
     };

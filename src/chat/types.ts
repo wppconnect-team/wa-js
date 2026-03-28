@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import {
   ModelPropertiesContructor,
   MsgKey,
@@ -24,7 +26,7 @@ import {
 
 export type { SendMsgResultObject };
 
-export interface SendMessageOptions {
+export const sendMessageOptionsSchema = z.object({
   /**
    * Create a new chat to a new contact
    *
@@ -38,7 +40,7 @@ export interface SendMessageOptions {
    * });
    * ```
    */
-  createChat?: boolean;
+  createChat: z.boolean().optional(),
 
   /**
    * Automatic detect and add the mentioned contacts with @[number]
@@ -52,7 +54,7 @@ export interface SendMessageOptions {
    * });
    * ```
    */
-  detectMentioned?: boolean;
+  detectMentioned: z.boolean().optional(),
 
   /**
    * Automatically mark chat is read after send a message
@@ -66,16 +68,16 @@ export interface SendMessageOptions {
    * });
    * ```
    */
-  markIsRead?: boolean;
+  markIsRead: z.boolean().optional(),
 
   /**
-   *
+   * Override the generated message ID
    */
-  messageId?: string | MsgKey;
+  messageId: z.union([z.string(), z.custom<MsgKey>()]).optional(),
 
   /**
-   * Define a mentioned list for a message
-   * This option work better with a message with mension
+   * Define a mentioned list for a message.
+   * This option works better with a message with mention.
    *
    * @example
    * ```javascript
@@ -84,7 +86,7 @@ export interface SendMessageOptions {
    * })
    * ```
    */
-  mentionedList?: (string | Wid)[];
+  mentionedList: z.array(z.union([z.string(), z.custom<Wid>()])).optional(),
 
   /**
    * Quote a message, like a reply message
@@ -96,15 +98,17 @@ export interface SendMessageOptions {
    * })
    * ```
    */
-  quotedMsg?: string | MsgKey | MsgModel;
+  quotedMsg: z
+    .union([z.string(), z.custom<MsgKey>(), z.custom<MsgModel>()])
+    .optional(),
 
   /**
    * Quote a message using a previously saved payload.
    * The payload must be the JSON string representation of a raw message.
-   * Raw messages can be obtained when using {@link getMessageById} or {@link getMessages}
+   * Raw messages can be obtained when using {@link getMessageById} or {@link getMessages}.
    * When provided it has priority over {@link quotedMsg}.
    */
-  quotedMsgPayload?: string;
+  quotedMsgPayload: z.string().optional(),
 
   /**
    * Wait for send while the ACK of message is SENT(1)
@@ -118,11 +122,14 @@ export interface SendMessageOptions {
    * })
    * ```
    */
-  waitForAck?: boolean;
+  waitForAck: z.boolean().optional(),
+
   /**
-   * Delay some time (in ms) before sending message
-   * While delaying, Typing Status is used to look like a human interaction
+   * Delay some time (in ms) before sending message.
+   * While delaying, Typing Status is used to look like a human interaction.
+   *
    * @default 0
+   *
    * @example
    * ```javascript
    * WPP.chat.sendTextMessage('[number]@c.us', 'Delay with typing', {
@@ -130,8 +137,10 @@ export interface SendMessageOptions {
    * })
    * ```
    */
-  delay?: number;
-}
+  delay: z.number().optional(),
+});
+
+export type SendMessageOptions = z.infer<typeof sendMessageOptionsSchema>;
 
 export interface SendMessageReturn {
   id: string;

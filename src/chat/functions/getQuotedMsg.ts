@@ -14,29 +14,40 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
-import { MsgKey, MsgModel } from '../../whatsapp';
+import { MsgModel } from '../../whatsapp';
 import { getMessageById } from './getMessageById';
 import { getQuotedMsgKey } from './getQuotedMsgKey';
+
+const chatGetQuotedMsgSchema = z.object({
+  msgId: z.string(),
+});
+export type ChatGetQuotedMsgInput = z.infer<typeof chatGetQuotedMsgSchema>;
+export type ChatGetQuotedMsgOutput = MsgModel;
 
 /**
  * Get a quoted message
  *
  * @category Chat
  */
-export async function getQuotedMsg(id: string | MsgKey): Promise<MsgModel> {
-  const msg = await getMessageById(id);
+export async function getQuotedMsg(
+  params: ChatGetQuotedMsgInput
+): Promise<ChatGetQuotedMsgOutput> {
+  const { msgId } = chatGetQuotedMsgSchema.parse(params);
+  const msg = await getMessageById({ id: msgId });
 
   if (!msg.quotedStanzaID) {
     throw new WPPError(
       'message_not_have_a_reply',
-      `Message ${id} does not have a reply`,
+      `Message ${msgId} does not have a reply`,
       {
-        id,
+        msgId,
       }
     );
   }
 
-  const quotedMsgId = getQuotedMsgKey(msg);
-  return await getMessageById(quotedMsgId);
+  const quotedMsgId = await getQuotedMsgKey({ msgId });
+  return await getMessageById({ id: quotedMsgId._serialized });
 }

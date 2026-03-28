@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
 import { sendTextMsgToChat } from '../../whatsapp/functions';
 import { get } from './get';
@@ -47,15 +49,25 @@ export interface ButtonReplyOptions {
  * ```
  * @category Message
  */
+const chatReplyToButtonMessageSchema = z.object({
+  chatId: z.string(),
+  messageId: z.string(),
+  options: z.custom<ButtonReplyOptions>(),
+});
+export type ChatReplyToButtonMessageInput = z.infer<
+  typeof chatReplyToButtonMessageSchema
+>;
+export type ChatReplyToButtonMessageOutput = any;
+
 export async function replyToButtonMessage(
-  chatId: any,
-  messageId: string,
-  options: ButtonReplyOptions
-): Promise<any> {
-  const { buttonIndex } = options;
+  params: ChatReplyToButtonMessageInput
+): Promise<ChatReplyToButtonMessageOutput> {
+  const { chatId, messageId, options } =
+    chatReplyToButtonMessageSchema.parse(params);
+  const { buttonIndex } = options as ButtonReplyOptions;
 
   // Get the chat
-  const chat = get(chatId);
+  const chat = get({ chatId: chatId });
 
   if (!chat) {
     throw new WPPError('chat_not_found', `Chat ${chatId} not found`);

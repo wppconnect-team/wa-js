@@ -14,19 +14,25 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertFindChat } from '../../assert';
 import { getActiveChat } from '../../chat';
 import { WPPError } from '../../util';
-import { ComposeBoxActions, Wid } from '../../whatsapp';
+import { ComposeBoxActions } from '../../whatsapp';
 import { unixTime } from '../../whatsapp/functions';
 
+const chatSetInputTextSchema = z.object({
+  text: z.string(),
+  chatId: z.string().optional(),
+});
+export type ChatSetInputTextInput = z.infer<typeof chatSetInputTextSchema>;
+export type ChatSetInputTextOutput = { text: string; timestamp: number };
+
 export async function setInputText(
-  text: string,
-  chatId?: string | Wid
-): Promise<{
-  text: string;
-  timestamp: number;
-}> {
+  params: ChatSetInputTextInput
+): Promise<ChatSetInputTextOutput> {
+  const { text, chatId } = chatSetInputTextSchema.parse(params);
   const chat =
     chatId !== undefined ? await assertFindChat(chatId) : getActiveChat();
 

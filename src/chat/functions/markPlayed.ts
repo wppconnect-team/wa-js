@@ -14,36 +14,33 @@
  * limitations under the License.
  */
 
-import { Stringable } from '../../types';
-import { MsgKey, MsgModel } from '../../whatsapp';
+import { z } from 'zod';
+
 import { markPlayed as MarkPlayed } from '../../whatsapp/functions';
 import { getMessageById } from './getMessageById';
+
+const chatMarkPlayedSchema = z.object({
+  messageId: z.string(),
+});
+export type ChatMarkPlayedInput = z.infer<typeof chatMarkPlayedSchema>;
+export type ChatMarkPlayedOutput = any;
 
 /**
  * Mark message as played
  *
  * @example
  * ```javascript
- * WPP.chat.markPlayed('[message_id]');
+ * WPP.chat.markPlayed({ messageId: '[message_id]' });
  * ```
  * @category Message
  */
 export async function markPlayed(
-  messageId: string | MsgKey | MsgModel | Stringable
-): Promise<any> {
-  if (
-    !(messageId instanceof MsgModel) &&
-    typeof messageId !== 'string' &&
-    typeof messageId.toString === 'function'
-  ) {
-    messageId = messageId.toString();
-  }
+  params: ChatMarkPlayedInput
+): Promise<ChatMarkPlayedOutput> {
+  const { messageId } = chatMarkPlayedSchema.parse(params);
 
-  const msg =
-    messageId instanceof MsgModel
-      ? messageId
-      : await getMessageById(messageId.toString());
+  const msg = await getMessageById({ id: messageId });
 
   await MarkPlayed(msg);
-  return await getMessageById(messageId.toString());
+  return await getMessageById({ id: messageId });
 }

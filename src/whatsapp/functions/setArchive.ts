@@ -15,20 +15,6 @@
  */
 
 import { exportModule } from '../exportModule';
-import { ChatModel } from '../models';
-
-/**
- * @deprecated
- * @whatsapp 59992
- * @whatsapp 259992 >= 2.2222.8
- * @whatsapp 503153 >= 2.2228.4
- * <= 2.3000.x
- */
-export declare function setArchive(
-  chat: ChatModel,
-  archive: boolean,
-  id?: string
-): Promise<void>;
 
 /**
  * @whatsapp >= 2.3000.1012117641

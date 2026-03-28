@@ -14,16 +14,27 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertFindChat } from '../../assert';
-import { MsgKey, MsgModel, Wid } from '../../whatsapp';
 import { forwardMessages as forwardMessagesWhatsApp } from '../../whatsapp/functions';
 import { getMessageById } from './getMessageById';
 
-export interface ForwardMessagesOptions {
-  displayCaptionText?: boolean;
-  multicast?: boolean;
-  appendedText?: boolean;
-}
+const chatForwardMessagesSchema = z.object({
+  toChatId: z.string(),
+  msgsIds: z.array(z.string()),
+  options: z
+    .object({
+      displayCaptionText: z.boolean().optional(),
+      multicast: z.boolean().optional(),
+      appendedText: z.boolean().optional(),
+    })
+    .optional(),
+});
+export type ChatForwardMessagesInput = z.infer<
+  typeof chatForwardMessagesSchema
+>;
+export type ChatForwardMessagesOutput = Array<any>;
 
 /**
  * Forward many messages to a chat
@@ -31,32 +42,24 @@ export interface ForwardMessagesOptions {
  * @example
  * ```javascript
  * // Forward messages
- * WPP.chat.forwardMessagesWhatsApp('[number]@c.us', ['true_[number]@c.us_ABCDEF', ...]);
+ * WPP.chat.forwardMessages({ toChatId: '[number]@c.us', msgsId: ['true_[number]@c.us_ABCDEF', ...] });
  * ```
  * @category Message
  * @return  {any} Any
  */
 export async function forwardMessages(
-  toChatId: string | Wid,
-  msgsId: string[] | MsgKey[] | MsgModel[],
-  options: ForwardMessagesOptions = {}
-): Promise<Array<any>> {
+  params: ChatForwardMessagesInput
+): Promise<ChatForwardMessagesOutput> {
+  const { toChatId, msgsIds, options } =
+    chatForwardMessagesSchema.parse(params);
   const chat = await assertFindChat(toChatId);
-  const msgs: MsgModel[] = [];
-
-  for (const msg of msgsId) {
-    if (msg instanceof MsgModel) {
-      msgs.push(msg);
-    } else {
-      msgs.push(await getMessageById(msg));
-    }
-  }
+  const msgs = await Promise.all(msgsIds.map((id) => getMessageById({ id })));
 
   return await forwardMessagesWhatsApp({
     chat,
     msgs,
-    multicast: options.multicast ?? false,
-    includeCaption: options.displayCaptionText ?? false,
-    appendedText: options.appendedText ?? false,
+    multicast: options?.multicast ?? false,
+    includeCaption: options?.displayCaptionText ?? false,
+    appendedText: options?.appendedText ?? false,
   });
 }

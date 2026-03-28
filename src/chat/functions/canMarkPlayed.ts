@@ -14,35 +14,32 @@
  * limitations under the License.
  */
 
-import { Stringable } from '../../types';
-import { MsgKey, MsgModel } from '../../whatsapp';
+import { z } from 'zod';
+
 import { canMarkPlayed as CanMarkPlayed } from '../../whatsapp/functions';
 import { getMessageById } from './getMessageById';
+
+const chatCanMarkPlayedSchema = z.object({
+  messageId: z.string(),
+});
+export type ChatCanMarkPlayedInput = z.infer<typeof chatCanMarkPlayedSchema>;
+export type ChatCanMarkPlayedOutput = any;
 
 /**
  * Get if message can played
  *
  * @example
  * ```javascript
- * WPP.chat.canMarkPlayed('[message_id]');
+ * WPP.chat.canMarkPlayed({ messageId: '[message_id]' });
  * ```
  * @category Message
  */
 export async function canMarkPlayed(
-  messageId: string | MsgKey | MsgModel | Stringable
-): Promise<any> {
-  if (
-    !(messageId instanceof MsgModel) &&
-    typeof messageId !== 'string' &&
-    typeof messageId.toString === 'function'
-  ) {
-    messageId = messageId.toString();
-  }
+  params: ChatCanMarkPlayedInput
+): Promise<ChatCanMarkPlayedOutput> {
+  const { messageId } = chatCanMarkPlayedSchema.parse(params);
 
-  const msg =
-    messageId instanceof MsgModel
-      ? messageId
-      : await getMessageById(messageId.toString());
+  const msg = await getMessageById({ id: messageId });
 
   return CanMarkPlayed(msg);
 }

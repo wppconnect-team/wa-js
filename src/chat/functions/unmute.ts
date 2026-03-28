@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertGetChat, assertWid } from '../../assert';
-import { Wid } from '../../whatsapp';
+
+const chatUnmuteSchema = z.object({
+  chatId: z.string(),
+});
+export type ChatUnmuteInput = z.infer<typeof chatUnmuteSchema>;
+export type ChatUnmuteOutput = any;
 
 /**
  * Unmute a chat
@@ -27,7 +34,10 @@ import { Wid } from '../../whatsapp';
  *
  * @category Chat
  */
-export async function unmute(chatId: string | Wid) {
+export async function unmute(
+  params: ChatUnmuteInput
+): Promise<ChatUnmuteOutput> {
+  const { chatId } = chatUnmuteSchema.parse(params);
   const wid = assertWid(chatId);
 
   const chat = assertGetChat(wid);

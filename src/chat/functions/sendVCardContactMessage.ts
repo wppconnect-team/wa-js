@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import { z } from 'zod';
 
 import { assertWid } from '../../assert';
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
@@ -36,57 +38,64 @@ export interface VCardContact {
   name: string;
 }
 
+const vCardContactSchema = z.object({ id: z.string(), name: z.string() });
+
+const chatSendVCardContactMessageSchema = z.object({
+  chatId: z.string(),
+  contacts: z.array(vCardContactSchema),
+  options: z.custom<SendMessageOptions>().optional(),
+});
+export type ChatSendVCardContactMessageInput = z.infer<
+  typeof chatSendVCardContactMessageSchema
+>;
+export type ChatSendVCardContactMessageOutput = SendMessageReturn;
+
 /**
- * Send a VCard as message
+ * Send one or more contacts as a vCard message
+ *
  * @example
  * ```javascript
- * // single contact
- * WPP.chat.sendVCardContactMessage('[number]@c.us', {
- *   id: '123456@c.us',
- *   name: 'The Contact Name'
+ * // Send a single contact by ID (name resolved from contact store)
+ * WPP.chat.sendVCardContactMessage({
+ *   chatId: '[number]@c.us',
+ *   contacts: ['[contact]@c.us'],
  * });
  *
- * // multiple contacts
- * WPP.chat.sendVCardContactMessage('[number]@c.us', [
- *   {
- *     id: '123456@c.us',
- *     name: 'The Contact Name'
- *   },
- *   {
- *     id: '456789@c.us',
- *     name: 'Another Contact'
- *   },
- * ]);
+ * // Send a single contact with a custom display name
+ * WPP.chat.sendVCardContactMessage({
+ *   chatId: '[number]@c.us',
+ *   contacts: [{ id: '[contact]@c.us', name: 'John Doe' }],
+ * });
  *
+ * // Send multiple contacts at once
+ * WPP.chat.sendVCardContactMessage({
+ *   chatId: '[number]@c.us',
+ *   contacts: [
+ *     { id: '[contact1]@c.us', name: 'Alice' },
+ *     { id: '[contact2]@c.us', name: 'Bob' },
+ *   ],
+ * });
  * ```
  * @category Message
  */
 export async function sendVCardContactMessage(
-  chatId: any,
-  contacts: string | Wid | VCardContact | (string | Wid | VCardContact)[],
-  options: SendMessageOptions = {}
-): Promise<SendMessageReturn> {
-  options = {
+  params: ChatSendVCardContactMessageInput
+): Promise<ChatSendVCardContactMessageOutput> {
+  const {
+    chatId,
+    contacts,
+    options: opts = {},
+  } = chatSendVCardContactMessageSchema.parse(params);
+  const options: SendMessageOptions = {
     ...defaultSendMessageOptions,
-    ...options,
+    ...(opts as SendMessageOptions),
   };
-
-  if (!Array.isArray(contacts)) {
-    contacts = [contacts];
-  }
 
   const vcards: VCardData[] = [];
 
   for (const contact of contacts) {
-    let id = '';
-    let name = '';
-
-    if (typeof contact === 'object' && 'name' in contact) {
-      id = contact.id.toString();
-      name = contact.name;
-    } else {
-      id = contact.toString();
-    }
+    const id = contact.id;
+    let name = contact.name;
 
     let contactModel = ContactStore.get(id);
     if (!contactModel) {
@@ -124,5 +133,5 @@ export async function sendVCardContactMessage(
     message.vcardList = vcards;
   }
 
-  return sendRawMessage(chatId, message, options);
+  return sendRawMessage({ chatId, rawMessage: message, options });
 }

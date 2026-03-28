@@ -14,8 +14,21 @@
  * limitations under the License.
  */
 
-import { Stringable } from '../../types';
-import { MsgKey, MsgModel } from '../../whatsapp';
+import { z } from 'zod';
+
+import { MsgKey } from '../../whatsapp';
+
+const chatGetPlatformFromMessageSchema = z.object({
+  messageId: z.string(),
+});
+export type ChatGetPlatformFromMessageInput = z.infer<
+  typeof chatGetPlatformFromMessageSchema
+>;
+export type ChatGetPlatformFromMessageOutput =
+  | 'android'
+  | 'iphone'
+  | 'web'
+  | 'unknown';
 
 /**
  * Get the platform message from message ID
@@ -34,19 +47,9 @@ import { MsgKey, MsgModel } from '../../whatsapp';
  * @category Message
  */
 export function getPlatformFromMessage(
-  messageId: string | MsgKey | MsgModel | Stringable
-): 'android' | 'iphone' | 'web' | 'unknown' {
-  if (
-    !(messageId instanceof MsgModel) &&
-    typeof messageId !== 'string' &&
-    typeof messageId.toString === 'function'
-  ) {
-    messageId = messageId.toString();
-  }
-
-  if (messageId instanceof MsgModel) {
-    messageId = messageId.id;
-  }
+  params: ChatGetPlatformFromMessageInput
+): ChatGetPlatformFromMessageOutput {
+  const { messageId } = chatGetPlatformFromMessageSchema.parse(params);
 
   /**
    * Based Bailyes

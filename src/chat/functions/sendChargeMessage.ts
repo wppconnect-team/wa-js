@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import { generateOrderUniqueId, WPPError } from '../../util';
 import { CatalogStore, UserPrefs } from '../../whatsapp';
@@ -53,6 +55,16 @@ export interface OrderMessageOptions extends SendMessageOptions {
   payment_instruction?: string;
 }
 
+const chatSendChargeMessageSchema = z.object({
+  chatId: z.string(),
+  items: z.array(z.any()),
+  options: z.custom<OrderMessageOptions>().optional(),
+});
+export type ChatSendChargeMessageInput = z.infer<
+  typeof chatSendChargeMessageSchema
+>;
+export type ChatSendChargeMessageOutput = SendMessageReturn;
+
 /**
  * Send a order message
  * To send (prices, tax, shipping or discount), for example: USD 12.90, send them without dots or commas, like: 12900
@@ -60,53 +72,60 @@ export interface OrderMessageOptions extends SendMessageOptions {
  * @example
  * ```javascript
  * // Send charge with a product
- * WPP.chat.sendChargeMessage('[number]@c.us', [
- *   { type: 'product', id: '67689897878', qnt: 2 },
- *   { type: 'product', id: '37878774457', qnt: 1 },
- * ]
+ * WPP.chat.sendChargeMessage({
+ *   chatId: '[number]@c.us',
+ *   items: [
+ *     { type: 'product', id: '67689897878', qnt: 2 },
+ *     { type: 'product', id: '37878774457', qnt: 1 },
+ *   ]
+ * });
  *
  * // Send charge with a custom item
- * WPP.chat.sendChargeMessage('[number]@c.us', [
- *   { type: 'custom', name: 'Item de cost test', price: 120000, qnt: 2 },
- * ]
+ * WPP.chat.sendChargeMessage({
+ *   chatId: '[number]@c.us',
+ *   items: [{ type: 'custom', name: 'Item de cost test', price: 120000, qnt: 2 }]
+ * });
  *
  * // Send charge with custom options
- * WPP.chat.sendChargeMessage('[number]@c.us', [
- *   { type: 'product', id: '37878774457', qnt: 1 },
- *   { type: 'custom', name: 'Item de cost test', price: 120000, qnt: 2 },
- * ],
- * { tax: 10000, shipping: 4000, discount: 10000 }
+ * WPP.chat.sendChargeMessage({
+ *   chatId: '[number]@c.us',
+ *   items: [
+ *     { type: 'product', id: '37878774457', qnt: 1 },
+ *     { type: 'custom', name: 'Item de cost test', price: 120000, qnt: 2 },
+ *   ],
+ *   options: { tax: 10000, shipping: 4000, discount: 10000 }
+ * });
  *
  * // Send charge with Pix data (auto generate copy-paste pix code)
- * WPP.chat.sendChargeMessage('[number]@c.us', [
- *   { type: 'custom', name: 'Item de cost test', price: 120000, qnt: 2 },
- * ],
- * {
- *   tax: 10000,
- *   shipping: 4000,
- *   discount: 10000,
- *   pix: {
- *     keyType: 'CPF',
- *     key: '00555095999',
- *     name: 'Name of seller',
- *   },
+ * WPP.chat.sendChargeMessage({
+ *   chatId: '[number]@c.us',
+ *   items: [{ type: 'custom', name: 'Item de cost test', price: 120000, qnt: 2 }],
+ *   options: {
+ *     tax: 10000,
+ *     shipping: 4000,
+ *     discount: 10000,
+ *     pix: { keyType: 'CPF', key: '00555095999', name: 'Name of seller' },
+ *   }
  * });
  * ```
  * @category Message
  */
 export async function sendChargeMessage(
-  chatId: any,
-  items: OrderItems[],
-  options?: OrderMessageOptions
-): Promise<SendMessageReturn> {
+  params: ChatSendChargeMessageInput
+): Promise<ChatSendChargeMessageOutput> {
+  const {
+    chatId,
+    items,
+    options: opts,
+  } = chatSendChargeMessageSchema.parse(params);
   if (!items || !chatId)
     throw new WPPError(
       'parameter_not_fount',
       'Please, send all the required parameters'
     );
-  options = {
+  const options: OrderMessageOptions = {
     ...defaultSendMessageOptions,
-    ...options,
+    ...(opts as OrderMessageOptions),
   };
 
   const products = [];
@@ -255,5 +274,5 @@ export async function sendChargeMessage(
       messageVersion: 1,
     },
   };
-  return await sendRawMessage(chatId, message, options);
+  return await sendRawMessage({ chatId, rawMessage: message, options });
 }

@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertFindChat } from '../../assert';
-import { MsgKey, Wid } from '../../whatsapp';
 import { forwardMessagesToChats } from '../../whatsapp/functions';
 import { getMessageById } from '..';
 
-export interface ForwardMessageOptions {
-  displayCaptionText?: boolean;
-  multicast?: boolean;
-}
+const chatForwardMessageSchema = z.object({
+  toChatId: z.string(),
+  msgId: z.string(),
+  options: z
+    .object({
+      displayCaptionText: z.boolean().optional(),
+      multicast: z.boolean().optional(),
+    })
+    .optional(),
+});
+export type ChatForwardMessageInput = z.infer<typeof chatForwardMessageSchema>;
+export type ChatForwardMessageOutput = boolean;
 
 /**
  * Forward message to a chat
@@ -30,23 +39,22 @@ export interface ForwardMessageOptions {
  * @example
  * ```javascript
  * // Forward message
- * WPP.chat.forwardMessage('[number]@c.us', 'true_[number]@c.us_ABCDEF');
+ * WPP.chat.forwardMessage({ toChatId: '[number]@c.us', msgId: 'true_[number]@c.us_ABCDEF' });
  * ```
  * @category Message
  * @return  {any} Any
  */
 export async function forwardMessage(
-  toChatId: string | Wid,
-  msgId: string | MsgKey,
-  options: ForwardMessageOptions = {}
-): Promise<boolean> {
+  params: ChatForwardMessageInput
+): Promise<ChatForwardMessageOutput> {
+  const { toChatId, msgId, options } = chatForwardMessageSchema.parse(params);
   const chat = await assertFindChat(toChatId);
 
-  const msg = await getMessageById(msgId);
+  const msg = await getMessageById({ id: msgId });
 
   return await forwardMessagesToChats(
     [msg],
     [chat],
-    options.displayCaptionText
+    options?.displayCaptionText
   );
 }

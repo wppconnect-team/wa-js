@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import {
   defaultSendMessageOptions,
   RawMessage,
@@ -26,6 +28,17 @@ export interface PoolMessageOptions extends SendMessageOptions {
   selectableCount?: number;
 }
 
+const chatSendCreatePollMessageSchema = z.object({
+  chatId: z.string(),
+  name: z.string(),
+  choices: z.array(z.string()),
+  options: z.custom<PoolMessageOptions>().optional(),
+});
+export type ChatSendCreatePollMessageInput = z.infer<
+  typeof chatSendCreatePollMessageSchema
+>;
+export type ChatSendCreatePollMessageOutput = SendMessageReturn;
+
 /**
  * Send a create poll message
  *
@@ -34,36 +47,35 @@ export interface PoolMessageOptions extends SendMessageOptions {
  * @example
  * ```javascript
  * // Single pool
- * WPP.chat.sendCreatePollMessage(
- *  '[number]@g.us',
- *  'A poll name',
- *  ['Option 1', 'Option 2', 'Option 3']
- * );
- * ```
- * // Selectable Count
- * ```javascript
- * // Single pool
- * WPP.chat.sendCreatePollMessage(
- *  '[number]@g.us',
- *  'A poll name',
- *  ['Option 1', 'Option 2', 'Option 3'],
- *  {
- *    selectableCount: 1,
- *  }
- * );
+ * WPP.chat.sendCreatePollMessage({
+ *   chatId: '[number]@g.us',
+ *   name: 'A poll name',
+ *   choices: ['Option 1', 'Option 2', 'Option 3']
+ * });
+ *
+ * // With selectable count
+ * WPP.chat.sendCreatePollMessage({
+ *   chatId: '[number]@g.us',
+ *   name: 'A poll name',
+ *   choices: ['Option 1', 'Option 2', 'Option 3'],
+ *   options: { selectableCount: 1 }
+ * });
  * ```
  *
  * @category Message
  */
 export async function sendCreatePollMessage(
-  chatId: any,
-  name: string,
-  choices: string[],
-  options: PoolMessageOptions = {}
-): Promise<SendMessageReturn> {
-  options = {
+  params: ChatSendCreatePollMessageInput
+): Promise<ChatSendCreatePollMessageOutput> {
+  const {
+    chatId,
+    name,
+    choices,
+    options: opts = {},
+  } = chatSendCreatePollMessageSchema.parse(params);
+  const options: PoolMessageOptions = {
     ...defaultSendMessageOptions,
-    ...options,
+    ...(opts as PoolMessageOptions),
   };
 
   const rawMessage: RawMessage = {
@@ -75,5 +87,5 @@ export async function sendCreatePollMessage(
     messageSecret: self.crypto.getRandomValues(new Uint8Array(32)),
   };
 
-  return await sendRawMessage(chatId, rawMessage, options);
+  return await sendRawMessage({ chatId, rawMessage, options });
 }

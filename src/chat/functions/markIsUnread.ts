@@ -14,9 +14,16 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertGetChat } from '../../assert';
-import { Wid } from '../../whatsapp';
 import { markUnread } from '../../whatsapp/functions';
+
+const chatMarkIsUnreadSchema = z.object({
+  chatId: z.string(),
+});
+export type ChatMarkIsUnreadInput = z.infer<typeof chatMarkIsUnreadSchema>;
+export type ChatMarkIsUnreadOutput = void;
 
 /**
  * Mark a chat as unread
@@ -28,12 +35,11 @@ import { markUnread } from '../../whatsapp/functions';
  * ```
  * @category Chat
  */
-export async function markIsUnread(chatId: string | Wid) {
+export async function markIsUnread(
+  params: ChatMarkIsUnreadInput
+): Promise<ChatMarkIsUnreadOutput> {
+  const { chatId } = chatMarkIsUnreadSchema.parse(params);
   const chat = assertGetChat(chatId);
 
   await markUnread(chat, true);
-
-  return {
-    wid: chat.id,
-  };
 }

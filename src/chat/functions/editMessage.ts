@@ -14,42 +14,50 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
-import { MsgKey } from '../../whatsapp';
 import { canEditCaption, canEditMsg } from '../../whatsapp/functions';
 import {
   defaultSendMessageOptions,
-  LinkPreviewOptions,
   RawMessage,
-  SendMessageOptions,
+  sendMessageOptionsSchema,
   SendMessageReturn,
 } from '..';
 import { getMessageById, prepareRawMessage, sendRawMessage } from '.';
+import { linkPreviewOptionsSchema } from './prepareLinkPreview';
 
-export type EditMessageOptions = SendMessageOptions & LinkPreviewOptions;
+const chatEditMessageSchema = z.object({
+  msgId: z.string(),
+  newText: z.string(),
+  options: z
+    .union([linkPreviewOptionsSchema, sendMessageOptionsSchema])
+    .optional(),
+});
+export type ChatEditMessageInput = z.infer<typeof chatEditMessageSchema>;
+export type ChatEditMessageOutput = SendMessageReturn;
 
 /**
  * Edit a message previously sent.
  *
  * @example
- * WPP.chat.editMessage('true_[number]@c.us_[msgId]', 'New text for message', {
+ * WPP.chat.editMessage({ msgId: 'true_[number]@c.us_[msgId]', newText: 'New text for message', options: {
  *   linkPreview: true,
  *   mentionedJidList: ['5521985232287@c.us']
- * });
+ * } });
  * ```
  * @category Message
  */
 export async function editMessage(
-  msgId: string | MsgKey,
-  newText: string,
-  options: EditMessageOptions = {}
-): Promise<SendMessageReturn> {
-  options = {
+  params: ChatEditMessageInput
+): Promise<ChatEditMessageOutput> {
+  const { msgId, newText, options: opts } = chatEditMessageSchema.parse(params);
+  const options = {
     ...defaultSendMessageOptions,
-    ...options,
+    ...(opts || {}),
   };
 
-  const msg = await getMessageById(msgId);
+  const msg = await getMessageById({ id: msgId });
 
   const canEdit = canEditMsg(msg);
   const canEditCaptionMessage = canEditCaption(msg);
@@ -66,10 +74,25 @@ export async function editMessage(
     editMsgType: msg.type,
   };
 
-  rawMessage = await prepareRawMessage(msg.chat!, rawMessage, options);
+  if (!msg.chat) {
+    throw new WPPError(
+      `edit_message_error`,
+      `Message does not have a chat associated`
+    );
+  }
+
+  rawMessage = await prepareRawMessage({
+    chat: msg.chat!,
+    message: rawMessage,
+    options,
+  });
 
   rawMessage.latestEditMsgKey = rawMessage.id;
   rawMessage.latestEditSenderTimestampMs = rawMessage.t;
 
-  return await sendRawMessage(msg.chat?.id, rawMessage, options);
+  return await sendRawMessage({
+    chatId: msg.chat?.id._serialized,
+    rawMessage,
+    options,
+  });
 }

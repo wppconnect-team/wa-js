@@ -14,10 +14,21 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
 import { isWhatsAppVersionLTE } from '../../conn/functions/getBuildConstants';
-import { ChatStore, Cmd, Wid } from '../../whatsapp';
+import { ChatStore, Cmd } from '../../whatsapp';
 import { findOrCreateLatestChat } from '../../whatsapp/functions';
+
+const chatOpenChatFromUnreadSchema = z.object({
+  chatId: z.string(),
+  chatEntryPoint: z.string().optional(),
+});
+export type ChatOpenChatFromUnreadInput = z.infer<
+  typeof chatOpenChatFromUnreadSchema
+>;
+export type ChatOpenChatFromUnreadOutput = boolean;
 
 /**
  * Open the chat in the WhatsApp interface from first unread message
@@ -32,9 +43,9 @@ import { findOrCreateLatestChat } from '../../whatsapp/functions';
  * @category Chat
  */
 export async function openChatFromUnread(
-  chatId: string | Wid,
-  chatEntryPoint?: string | undefined
-): Promise<boolean> {
+  params: ChatOpenChatFromUnreadInput
+): Promise<ChatOpenChatFromUnreadOutput> {
+  const { chatId, chatEntryPoint } = chatOpenChatFromUnreadSchema.parse(params);
   const wid = assertWid(chatId);
 
   // Use findOrCreateLatestChat to match WhatsApp Web's native behavior
@@ -56,7 +67,7 @@ export async function openChatFromUnread(
   }
 
   // WhatsApp changed from positional to named params in version 2.3000.1029960097
-  if (isWhatsAppVersionLTE('2.3000.1029960097')) {
+  if (isWhatsAppVersionLTE({ version: '2.3000.1029960097' })) {
     // Legacy: use positional params for older versions
     return await Cmd.openChatFromUnread(chat);
   }

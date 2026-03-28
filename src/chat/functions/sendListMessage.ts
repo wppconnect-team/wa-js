@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
 import * as webpack from '../../webpack';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
@@ -41,39 +43,51 @@ export interface ListMessageOptions extends SendMessageOptions {
   }>;
 }
 
+const chatSendListMessageSchema = z.object({
+  chatId: z.string(),
+  options: z.custom<ListMessageOptions>(),
+});
+export type ChatSendListMessageInput = z.infer<
+  typeof chatSendListMessageSchema
+>;
+export type ChatSendListMessageOutput = SendMessageReturn;
+
 /**
  * Send a list message
  *
  * @example
  * ```javascript
- * WPP.chat.sendListMessage('[number]@c.us', {
- *   buttonText: 'Click Me!', //required
- *   description: "Hello it's list message", //required
- *   title: 'Hello user', //optional
- *   footer: 'Click and choose one', //optional
- *   sections: [{
- *     title: 'Section 1',
- *     rows: [{
- *       rowId: 'rowid1',
- *       title: 'Row 1',
- *       description: "Hello it's description 1",
- *     },{
- *       rowId: 'rowid2',
- *       title: 'Row 2',
- *       description: "Hello it's description 2",
+ * WPP.chat.sendListMessage({
+ *   chatId: '[number]@c.us',
+ *   options: {
+ *     buttonText: 'Click Me!',
+ *     description: "Hello it's list message",
+ *     title: 'Hello user',
+ *     footer: 'Click and choose one',
+ *     sections: [{
+ *       title: 'Section 1',
+ *       rows: [{
+ *         rowId: 'rowid1',
+ *         title: 'Row 1',
+ *         description: "Hello it's description 1",
+ *       },{
+ *         rowId: 'rowid2',
+ *         title: 'Row 2',
+ *         description: "Hello it's description 2",
+ *       }]
  *     }]
- *   }]
+ *   }
  * });
  * ```
  * @category Message
  */
 export async function sendListMessage(
-  chatId: any,
-  options: ListMessageOptions
-): Promise<SendMessageReturn> {
-  options = {
+  params: ChatSendListMessageInput
+): Promise<ChatSendListMessageOutput> {
+  const { chatId, options: opts } = chatSendListMessageSchema.parse(params);
+  const options: ListMessageOptions = {
     ...defaultSendMessageOptions,
-    ...options,
+    ...(opts as ListMessageOptions),
   };
 
   const sections = options.sections;
@@ -104,7 +118,7 @@ export async function sendListMessage(
     footer: options.footer,
   };
 
-  return await sendRawMessage(chatId, message, options);
+  return await sendRawMessage({ chatId, rawMessage: message, options });
 }
 
 webpack.onFullReady(() => {

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertGetChat, assertWid } from '../../assert';
-import { Wid } from '../../whatsapp';
+
+const chatCanMuteSchema = z.object({
+  chatId: z.string(),
+});
+export type ChatCanMuteInput = z.infer<typeof chatCanMuteSchema>;
+export type ChatCanMuteOutput = boolean;
 
 /**
  * Check if is possible to mute this chat
@@ -27,7 +34,8 @@ import { Wid } from '../../whatsapp';
  *
  * @category Chat
  */
-export function canMute(chatId: string | Wid): boolean {
+export function canMute(params: ChatCanMuteInput): ChatCanMuteOutput {
+  const { chatId } = chatCanMuteSchema.parse(params);
   const wid = assertWid(chatId);
 
   const chat = assertGetChat(wid);

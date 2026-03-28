@@ -14,12 +14,9 @@
  * limitations under the License.
  */
 
-import {
-  MsgInfoParticipantModel,
-  MsgInfoStore,
-  MsgKey,
-  Wid,
-} from '../../whatsapp';
+import { z } from 'zod';
+
+import { MsgInfoParticipantModel, MsgInfoStore, Wid } from '../../whatsapp';
 import { ACK } from '../../whatsapp/enums';
 import { getMessageById } from '..';
 
@@ -31,13 +28,26 @@ export interface ParticipantStatusACK {
   playedAt?: number;
 }
 
+const chatGetMessageACKSchema = z.object({
+  msgId: z.string(),
+});
+export type ChatGetMessageACKInput = z.infer<typeof chatGetMessageACKSchema>;
+export type ChatGetMessageACKOutput = {
+  ack: ACK;
+  fromMe: boolean;
+  deliveryRemaining: number;
+  readRemaining: number;
+  playedRemaining: number;
+  participants: ParticipantStatusACK[];
+};
+
 /**
  * Get message ACK from a message
  *
  * @example
  * ```javascript
  * // Get message ACK
- * const ackInfo = await WPP.chat.getMessageACK('true_[number]@c.us_ABCDEF');
+ * const ackInfo = await WPP.chat.getMessageACK({ msgId: 'true_[number]@c.us_ABCDEF' });
  *
  * console.log(ackInfo.deliveryRemaining); // Delivery Remaining
  * console.log(ackInfo.readRemaining); // Read Remaining
@@ -57,17 +67,13 @@ export interface ParticipantStatusACK {
  * const played = ackInfo.participants.filter(p => p.playedAt);
  * ```
  * @category Message
- * @return  {any} Any
+ * @return  {Promise<ChatGetMessageACKOutput>} Message ACK information
  */
-export async function getMessageACK(msgId: string | MsgKey): Promise<{
-  ack: ACK;
-  fromMe: boolean;
-  deliveryRemaining: number;
-  readRemaining: number;
-  playedRemaining: number;
-  participants: ParticipantStatusACK[];
-}> {
-  const msg = await getMessageById(msgId);
+export async function getMessageACK(
+  params: ChatGetMessageACKInput
+): Promise<ChatGetMessageACKOutput> {
+  const { msgId } = chatGetMessageACKSchema.parse(params);
+  const msg = await getMessageById({ id: msgId });
 
   const info = await MsgInfoStore.find(msg.id);
 

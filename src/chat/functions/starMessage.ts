@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertGetChat } from '../../assert';
 import { Cmd, MsgModel } from '../../whatsapp';
 import { getMessageById } from '.';
@@ -27,52 +29,37 @@ interface MsgsPerChat {
   [key: string]: MsgModel[];
 }
 
+const chatStarMessageSchema = z.object({
+  ids: z.array(z.string()),
+  star: z.boolean().optional(),
+});
+export type ChatStarMessageInput = z.infer<typeof chatStarMessageSchema>;
+export type ChatStarMessageOutput = StarMessageReturn | StarMessageReturn[];
+
 /**
- * Star/Unstar a message
+ * Star/Unstar a message or messages
  *
  * @example
  * ```javascript
  * // star a message
- * WPP.chat.starMessage('<message id>');
+ * WPP.chat.starMessage({ ids: '<message id>' });
  *
  * // unstar a message
- * WPP.chat.starMessage('<message id>', false);
- * ```
- * @category Message
- */
-export async function starMessage(
-  id: string,
-  star: boolean
-): Promise<StarMessageReturn>;
-/**
- * Star/Unstar messages
+ * WPP.chat.starMessage({ ids: '<message id>', star: false });
  *
- * @example
- * ```javascript
  * // star messages
- * WPP.chat.starMessage(['<message id>', '<message id>']);
- *
- * // unstar messages
- * WPP.chat.starMessage(['<message id>', '<message id>'], false);
+ * WPP.chat.starMessage({ ids: ['<message id>', '<message id>'] });
  * ```
  * @category Message
  */
 export async function starMessage(
-  ids: string[],
-  star: boolean
-): Promise<StarMessageReturn[]>;
-export async function starMessage(
-  ids: string | string[],
-  star = true
-): Promise<StarMessageReturn | StarMessageReturn[]> {
-  let isSingle = false;
+  params: ChatStarMessageInput
+): Promise<ChatStarMessageOutput> {
+  const { ids, star = true } = chatStarMessageSchema.parse(params);
 
-  if (!Array.isArray(ids)) {
-    isSingle = true;
-    ids = [ids];
-  }
-
-  const allMessages = await getMessageById(ids);
+  const allMessages = await Promise.all(
+    ids.map((id) => getMessageById({ id }))
+  );
 
   // group messages by chat
   const msgsPerChat: MsgsPerChat = allMessages.reduce((r, msg) => {
@@ -100,10 +87,6 @@ export async function starMessage(
     if (chat.promises.sendStarMsgs) {
       await chat.promises.sendStarMsgs;
     }
-  }
-
-  if (isSingle) {
-    return results[0];
   }
 
   return results;

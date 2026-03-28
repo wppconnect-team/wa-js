@@ -14,9 +14,20 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertGetChat } from '../../assert';
-import { ChatPresence, Wid } from '../../whatsapp';
+import { ChatPresence } from '../../whatsapp';
 import { markIsPaused } from '.';
+
+const chatMarkIsRecordingSchema = z.object({
+  chatId: z.string(),
+  duration: z.number().optional(),
+});
+export type ChatMarkIsRecordingInput = z.infer<
+  typeof chatMarkIsRecordingSchema
+>;
+export type ChatMarkIsRecordingOutput = void;
 
 /**
  * Mark a chat to recording state
@@ -32,7 +43,10 @@ import { markIsPaused } from '.';
  * ```
  * @category Chat
  */
-export async function markIsRecording(chatId: string | Wid, duration?: number) {
+export async function markIsRecording(
+  params: ChatMarkIsRecordingInput
+): Promise<ChatMarkIsRecordingOutput> {
+  const { chatId, duration } = chatMarkIsRecordingSchema.parse(params);
   const chat = assertGetChat(chatId);
 
   await chat.presence.subscribe();
@@ -42,7 +56,7 @@ export async function markIsRecording(chatId: string | Wid, duration?: number) {
   if (duration) {
     await new Promise<void>((resolve) => {
       chat.pausedTimerId = setTimeout(() => {
-        markIsPaused(chatId).then(resolve, resolve);
+        markIsPaused({ chatId }).then(resolve, resolve);
       }, duration);
     });
   }
