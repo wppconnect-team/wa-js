@@ -64,10 +64,14 @@ export async function sendImageStatus(
       remote: assertWid('status@broadcast'),
     });
 
-  return sendFileMessage('status@broadcast', content, {
-    waitForAck,
-    messageId,
-    caption,
-    type: 'image',
+  return sendFileMessage({
+    chatId: 'status@broadcast',
+    content,
+    options: {
+      waitForAck,
+      messageId,
+      caption,
+      type: 'image',
+    },
   });
 }

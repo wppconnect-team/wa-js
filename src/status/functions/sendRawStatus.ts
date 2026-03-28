@@ -67,12 +67,16 @@ export async function sendRawStatus(
     });
 
   message.author = me;
+  // caption is not in the protobuf, but whatsapp web accepts it as a custom property
+  (message as any).caption = caption;
 
-  const result = await Chat.sendRawMessage('status@broadcast', message, {
-    waitForAck,
-    messageId,
-    // @ts-expect-error - caption is not in the protobuf, but whatsapp web accepts it as a custom property
-    caption,
+  const result = await Chat.sendRawMessage({
+    chatId: 'status@broadcast',
+    rawMessage: message,
+    options: {
+      waitForAck,
+      messageId,
+    },
   });
 
   postSendStatus({ result });

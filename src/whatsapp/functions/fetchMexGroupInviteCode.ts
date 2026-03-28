@@ -37,7 +37,7 @@ exportModule(
 
 injectFallbackModule('fetchMexGroupInviteCode', {
   fetchMexGroupInviteCode: async (groupId: Wid) => {
-    const isAdmin = await iAmAdmin(groupId);
+    const isAdmin = await iAmAdmin({ groupId: groupId._serialized });
     return await queryGroupInviteCode(groupId, isAdmin).then(
       (value) => value.code
     );

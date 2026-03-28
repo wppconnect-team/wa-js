@@ -49,10 +49,10 @@ export async function demoteParticipants(
   const { communityId, participantsIds } =
     communityDemoteParticipantsSchema.parse(params);
 
-  const { groupChat, participants } = await ensureGroupAndParticipants(
-    communityId,
-    participantsIds
-  );
+  const { groupChat, participants } = await ensureGroupAndParticipants({
+    groupId: communityId,
+    participantsIds,
+  });
   try {
     await wa_functions.demoteCommunityParticipants(groupChat, participants);
     return {

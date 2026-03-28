@@ -49,10 +49,10 @@ export async function promoteParticipants(
   const { communityId, participantsIds } =
     communityPromoteParticipantsSchema.parse(params);
 
-  const { groupChat, participants } = await ensureGroupAndParticipants(
-    communityId,
-    participantsIds
-  );
+  const { groupChat, participants } = await ensureGroupAndParticipants({
+    groupId: communityId,
+    participantsIds,
+  });
 
   return wa_functions.promoteCommunityParticipants(groupChat, participants);
 }
