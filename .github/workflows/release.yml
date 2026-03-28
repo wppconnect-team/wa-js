@@ -67,6 +67,6 @@ jobs:
         run: |
           RELEASE_ARGS="--increment ${{ github.event.inputs.increment }}"
           if [ -n "${{ github.event.inputs.preRelease }}" ]; then
-            RELEASE_ARGS="$RELEASE_ARGS --preRelease ${{ github.event.inputs.preRelease }}"
+            RELEASE_ARGS="$RELEASE_ARGS --preRelease ${{ github.event.inputs.preRelease }} --npm.tag ${{ github.event.inputs.preRelease }}"
           fi
           npx release-it $RELEASE_ARGS
