@@ -16,5 +16,6 @@
 
 export {
   getMessagesFromRowId,
-  GetMessagesFromRowIdOptions,
+  IndexdbGetMessagesFromRowIdInput,
+  IndexdbGetMessagesFromRowIdOutput,
 } from './getMessagesFromRowId';

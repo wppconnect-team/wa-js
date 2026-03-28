@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-export interface GetMessagesFromRowIdOptions {
-  /**
-   * The minimum rowId (exclusive) to start fetching messages from
-   */
-  minRowId: number;
-  /**
-   * Maximum number of messages to return
-   * @default 1000
-   * Use -1 to get all available messages (use with caution on large datasets)
-   */
-  limit?: number;
-}
+import { z } from 'zod';
+
+const indexdbGetMessagesFromRowIdSchema = z.object({
+  minRowId: z.number(),
+  limit: z.number().optional(),
+});
+
+export type IndexdbGetMessagesFromRowIdInput = z.infer<
+  typeof indexdbGetMessagesFromRowIdSchema
+>;
+
+export type IndexdbGetMessagesFromRowIdOutput = any[];
 
 /**
  * Get messages from IndexedDB 'model-storage' database starting from a specific rowId
@@ -55,9 +55,10 @@ export interface GetMessagesFromRowIdOptions {
  * @return Promise that resolves to an array of message objects from IndexedDB
  */
 export async function getMessagesFromRowId(
-  options: GetMessagesFromRowIdOptions
-): Promise<any[]> {
-  const { minRowId, limit = 1000 } = options;
+  params: IndexdbGetMessagesFromRowIdInput
+): Promise<IndexdbGetMessagesFromRowIdOutput> {
+  const { minRowId, limit = 1000 } =
+    indexdbGetMessagesFromRowIdSchema.parse(params);
 
   // Validate minRowId
   if (typeof minRowId !== 'number') {
