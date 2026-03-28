@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,28 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { Base64, websocket } from '../../whatsapp';
+
+const parseRelayResponseSchema = z.object({
+  response: z.custom<websocket.WapNode>(),
+});
+
+export type ParseRelayResponseInput = z.infer<typeof parseRelayResponseSchema>;
+
+export type ParseRelayResponseOutput = {
+  rte: { ip: number[]; port: number } | null;
+  key: string;
+  relays: {
+    [key: string]: {
+      ip: number[];
+      port: number;
+      relay_id: string;
+      token: string;
+    };
+  };
+};
 
 function extractIpPort(data: Uint8Array) {
   const e = new Uint8Array(data);
@@ -30,7 +51,10 @@ function extractIpPort(data: Uint8Array) {
   return host;
 }
 
-export function parseRelayResponse(response: websocket.WapNode) {
+export function parseRelayResponse(
+  params: ParseRelayResponseInput
+): ParseRelayResponseOutput {
+  const { response } = parseRelayResponseSchema.parse(params);
   const rteNode = (response.content as websocket.WapNode[]).find(
     (c) => c.tag === 'rte'
   ) as websocket.WapNode;

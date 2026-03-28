@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,12 @@
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { getABPropConfigValue } from '../../whatsapp/functions';
 
+export type EnableCallInterfaceOutput = void;
+
 /**
  * Enable call interface from desktop app
  */
-export async function enableCallInterface() {
+export async function enableCallInterface(): Promise<EnableCallInterfaceOutput> {
   wrapModuleFunction(getABPropConfigValue, (func, ...args) => {
     const [key] = args;
     switch (key) {

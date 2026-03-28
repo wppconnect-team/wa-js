@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,19 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
 import { CallModel, CallStore, websocket } from '../../whatsapp';
 import { CALL_STATES } from '../../whatsapp/enums';
+
+const callEndSchema = z.object({
+  callId: z.string().optional(),
+});
+
+export type EndInput = z.infer<typeof callEndSchema>;
+
+export type EndOutput = boolean;
 
 /**
  * End a call
@@ -27,18 +37,20 @@ import { CALL_STATES } from '../../whatsapp/enums';
  * WPP.call.end();
  *
  * // End specific call id
- * WPP.call.end(callId);
+ * WPP.call.end({ callId });
  *
  * // End any incoming call
  * WPP.on('call.incoming_call', (call) => {
- *   WPP.call.end(call.id);
+ *   WPP.call.end({ callId: call.id });
  * });
  * ```
  *
  * @param   {string}  callId  The call ID, empty to end the first one
  * @return  {[type]}          [return description]
  */
-export async function end(callId?: string): Promise<boolean> {
+export async function end(params: EndInput = {}): Promise<EndOutput> {
+  const { callId } = callEndSchema.parse(params);
+
   const callOut = [
     CALL_STATES.ACTIVE,
     CALL_STATES.OUTGOING_CALLING,

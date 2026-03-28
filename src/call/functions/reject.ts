@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,20 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import { WPPError } from '../../util';
 import { CallModel, CallStore, websocket } from '../../whatsapp';
 import { CALL_STATES } from '../../whatsapp/enums';
+
+const callRejectSchema = z.object({
+  callId: z.string().optional(),
+});
+
+export type CallRejectInput = z.infer<typeof callRejectSchema>;
+
+export type CallRejectOutput = boolean;
 
 /**
  * Reject a incoming call
@@ -28,18 +38,22 @@ import { CALL_STATES } from '../../whatsapp/enums';
  * WPP.call.reject();
  *
  * // Reject specific call id
- * WPP.call.reject(callId);
+ * WPP.call.reject({ callId });
  *
  * // Reject any incoming call
  * WPP.on('call.incoming_call', (call) => {
- *   WPP.call.reject(call.id);
+ *   WPP.call.reject({ callId: call.id });
  * });
  * ```
  *
  * @param   {string}  callId  The call ID, empty to reject the first one
  * @return  {[type]}          [return description]
  */
-export async function reject(callId?: string): Promise<boolean> {
+export async function reject(
+  params: CallRejectInput = {}
+): Promise<CallRejectOutput> {
+  const { callId } = callRejectSchema.parse(params);
+
   let call: CallModel | undefined = undefined;
 
   if (callId) {

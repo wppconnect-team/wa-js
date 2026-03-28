@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,19 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
 import { CallModel, CallStore, websocket } from '../../whatsapp';
 import { CALL_STATES } from '../../whatsapp/enums';
+
+const callAcceptSchema = z.object({
+  callId: z.string().optional(),
+});
+
+export type CallAcceptInput = z.infer<typeof callAcceptSchema>;
+
+export type CallAcceptOutput = boolean;
 
 /**
  * Accept a incoming call
@@ -27,20 +37,24 @@ import { CALL_STATES } from '../../whatsapp/enums';
  * WPP.call.accept();
  *
  * // Accept specific call id
- * WPP.call.accept(callId);
+ * WPP.call.accept({ callId });
  *
  * // Accept any incoming call
  * WPP.on('call.incoming_call', (call) => {
  *   setTimeout(() => {
- *     WPP.call.accept(call.id);
+ *     WPP.call.accept({ callId: call.id });
  *   }, 1000);
  * });
  * ```
  *
- * @param   {string}  callId  The call ID, empty to accept the first one
- * @return  {[type]}          [return description]
+ * @param   {CallAcceptInput}  params  The call accept input parameters
+ * @return  {Promise<CallAcceptOutput>}          The call accept output
  */
-export async function accept(callId?: string): Promise<boolean> {
+export async function accept(
+  params: CallAcceptInput = {}
+): Promise<CallAcceptOutput> {
+  const { callId } = callAcceptSchema.parse(params);
+
   let call: CallModel | undefined = undefined;
 
   if (callId) {

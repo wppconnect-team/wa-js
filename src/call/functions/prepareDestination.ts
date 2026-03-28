@@ -14,12 +14,26 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { functions, multidevice, websocket, Wid } from '../../whatsapp';
 
+const prepareDestionationSchema = z.object({
+  wids: z.custom<Wid[]>(),
+  encKey: z.custom<ArrayBufferLike>(),
+});
+
+export type PrepareDestionationInput = z.infer<
+  typeof prepareDestionationSchema
+>;
+
+export type PrepareDestionationOutput = websocket.WapNode[];
+
 export async function prepareDestionation(
-  wids: Wid[],
-  encKey: ArrayBufferLike
-) {
+  params: PrepareDestionationInput
+): Promise<PrepareDestionationOutput> {
+  const { wids, encKey } = prepareDestionationSchema.parse(params);
+
   const fanList = await functions.getFanOutList({ wids });
   await websocket.ensureE2ESessions(fanList);
 

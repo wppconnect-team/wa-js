@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
 import { getMyUserId } from '../../conn';
 import { WPPError } from '../../util';
-import {
-  CallModel,
-  CallStore,
-  functions,
-  websocket,
-  Wid,
-} from '../../whatsapp';
+import { CallModel, CallStore, functions, websocket } from '../../whatsapp';
 import { CALL_STATES } from '../../whatsapp/enums';
 import { unixTime } from '../../whatsapp/functions';
 import { parseRelayResponse } from './parseRelayResponse';
 import { prepareDestionation } from './prepareDestination';
 
-export interface CallOfferOptions {
-  isVideo?: boolean;
-}
+const callOfferSchema = z.object({
+  to: z.string(),
+  isVideo: z.boolean().optional().default(false),
+});
+
+export type CallOfferInput = z.infer<typeof callOfferSchema>;
+
+export type CallOfferOutput = CallModel;
 
 /**
  * Send a call offer
@@ -41,19 +42,13 @@ export interface CallOfferOptions {
  * @example
  * ```javascript
  * // Send a call offer
- * WPP.call.offer('[number]@c.us');
+ * WPP.call.offer({ to: '[number]@c.us' });
  * // Send a video call offer
- * WPP.call.offer('[number]@c.us', {isVideo: true});
+ * WPP.call.offer({ to: '[number]@c.us', isVideo: true });
  * ```
  */
-export async function offer(
-  to: string | Wid,
-  options: CallOfferOptions = {}
-): Promise<any> {
-  options = Object.assign<CallOfferOptions, CallOfferOptions>(
-    { isVideo: false },
-    options
-  );
+export async function offer(params: CallOfferInput): Promise<CallOfferOutput> {
+  const { to, isVideo } = callOfferSchema.parse(params);
 
   const toWid = assertWid(to);
 
@@ -79,7 +74,7 @@ export async function offer(
     websocket.smax('audio', { enc: 'opus', rate: '8000' }, null),
   ];
 
-  if (options.isVideo) {
+  if (isVideo) {
     content.push(
       websocket.smax(
         'video',
@@ -110,7 +105,7 @@ export async function offer(
 
   const encKey = self.crypto.getRandomValues(new Uint8Array(32)).buffer;
 
-  content.push(...(await prepareDestionation([toWid], encKey)));
+  content.push(...(await prepareDestionation({ wids: [toWid], encKey })));
 
   const node = websocket.smax(
     'call',
@@ -133,7 +128,7 @@ export async function offer(
   const model = new CallModel({
     id: callId,
     peerJid: toWid,
-    isVideo: options.isVideo,
+    isVideo,
     isGroup: false,
     outgoing: true,
     offerTime: unixTime(),
@@ -150,7 +145,7 @@ export async function offer(
   const response = await websocket.sendSmaxStanza(node);
 
   console.info(response);
-  console.info(parseRelayResponse(response));
+  console.info(parseRelayResponse({ response }));
 
   return model;
 }

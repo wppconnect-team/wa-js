@@ -14,8 +14,16 @@
  * limitations under the License.
  */
 
-export { accept } from './accept';
-export { enableCallInterface } from './enableCallInterface';
-export { end } from './end';
-export { offer } from './offer';
-export { reject, reject as rejectCall } from './reject';
+export { accept, CallAcceptInput, CallAcceptOutput } from './accept';
+export {
+  enableCallInterface,
+  EnableCallInterfaceOutput,
+} from './enableCallInterface';
+export { end, EndInput, EndOutput } from './end';
+export { CallOfferInput, CallOfferOutput, offer } from './offer';
+export {
+  CallRejectInput,
+  CallRejectOutput,
+  reject,
+  reject as rejectCall,
+} from './reject';
