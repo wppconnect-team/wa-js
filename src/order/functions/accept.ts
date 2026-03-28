@@ -182,7 +182,11 @@ export async function accept(
     },
   };
 
-  await sendRawMessage(chat.id, interactiveMessage, {
-    quotedMsg: msg,
+  await sendRawMessage({
+    chatId: chat.id,
+    rawMessage: interactiveMessage,
+    options: {
+      quotedMsg: msg,
+    },
   });
 }

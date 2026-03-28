@@ -196,7 +196,11 @@ export async function decline(
     },
   };
 
-  await sendRawMessage(chat.id, interactiveMessage, {
-    quotedMsg: msg,
+  await sendRawMessage({
+    chatId: chat.id,
+    rawMessage: interactiveMessage,
+    options: {
+      quotedMsg: msg,
+    },
   });
 }
