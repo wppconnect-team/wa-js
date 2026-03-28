@@ -34,7 +34,7 @@ export async function getAllGroups(): Promise<GroupGetAllGroupsOutput> {
   const groupsArr = [];
   const groups = await queryAllGroups();
   for (const grp of groups) {
-    const g = get(grp.id);
+    const g = get({ chatId: grp.id._serialized });
 
     if (g) {
       groupsArr.push(g);

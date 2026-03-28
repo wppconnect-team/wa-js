@@ -40,7 +40,7 @@ const messageCodes: {
 
 const groupAddParticipantsSchema = z.object({
   groupId: z.string(),
-  participantsIds: z.union([z.string(), z.array(z.string())]),
+  participantsIds: z.array(z.string()),
 });
 
 export type GroupAddParticipantsInput = z.infer<
