@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,12 @@
 import { assertIsBusiness } from '../../assert';
 import { deleteLabel, DeleteLabelReturn, getAllLabels } from '.';
 
-export async function deleteAllLabels(): Promise<DeleteLabelReturn[]> {
+export type LabelsDeleteAllLabelsOutput = DeleteLabelReturn[];
+
+export async function deleteAllLabels(): Promise<LabelsDeleteAllLabelsOutput> {
   assertIsBusiness();
 
   const labels = await getAllLabels();
-  return deleteLabel(labels.map((e) => e.id));
+  const result = await deleteLabel({ labelIds: labels.map((e) => e.id) });
+  return result;
 }

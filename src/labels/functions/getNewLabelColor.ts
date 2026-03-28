@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,14 +21,16 @@ import { LabelStore } from '../../whatsapp';
 /**
  * Return the color of the next label in positive decimal
  */
-export async function getNewLabelColor(): Promise<number> {
+export type LabelsGetNewLabelColorOutput = number;
+
+export async function getNewLabelColor(): Promise<LabelsGetNewLabelColorOutput> {
   assertIsBusiness();
 
-  const newLabelColor = await LabelStore.getNextAvailableColor();
+  const newLabelColor = LabelStore.getNextAvailableColor();
 
-  if (!newLabelColor) {
+  if (newLabelColor == null) {
     throw new WPPError('cannot_get_color', `Can't get new label color`);
   }
 
-  return assertColor(Number(newLabelColor));
+  return assertColor(newLabelColor);
 }

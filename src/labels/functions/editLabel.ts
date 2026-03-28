@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,42 +14,53 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertIsBusiness } from '../../assert';
 import { WPPError } from '../../util';
 import { LabelStore } from '../../whatsapp';
 import { getAllLabelColors, labelEditAction } from '../../whatsapp/functions';
+import { Label } from '..';
 import { colorIsInLabelPalette, getLabelById } from '.';
 
-export interface EditLabelOptions {
-  /**
-   * If it's decimal, send it as a number. If it's hexadecimal, send it as a string.
-   * If labelColor is omitted, the color will be generated automatically
-   */
-  labelColor?: string | number;
-  name?: string;
-}
+const labelsEditLabelSchema = z.object({
+  id: z.string(),
+  name: z.string().optional(),
+  labelColor: z.union([z.string(), z.number()]).optional(),
+});
+
+export type LabelsEditLabelInput = z.infer<typeof labelsEditLabelSchema>;
+export type LabelsEditLabelOutput = Label;
 
 /**
  * Edit a label
  * For get a new color, use await WPP.labels.getLabelColorPalette() to get the list of available colors
  * @example
  * ```javascript
- * await WPP.labels.editLabel(`Name of label`);
+ * await WPP.labels.editLabel({ id: 'labelId' });
  * //or
- * await WPP.labels.editLabel(`Name of label`, { labelColor: '#dfaef0' });
+ * await WPP.labels.editLabel({ id: 'labelId', labelColor: '#dfaef0' });
  * ```
  * //or with color index
- * await WPP.labels.editLabel(`Name of label`, { labelColor: 16 });
+ * await WPP.labels.editLabel({ id: 'labelId', labelColor: 16 });
  * ```
  */
-export async function editLabel(id: string, options: EditLabelOptions = {}) {
+export async function editLabel(
+  params: LabelsEditLabelInput
+): Promise<LabelsEditLabelOutput> {
+  const {
+    id,
+    name,
+    labelColor: rawLabelColor,
+  } = labelsEditLabelSchema.parse(params);
   assertIsBusiness();
+
   const label = LabelStore.get(id.toString());
   if (!label) {
     throw new WPPError('label_not_exist', `Label with id ${id} not exist`);
   }
 
-  let labelColor = options.labelColor || undefined;
+  let labelColor: string | number | undefined = rawLabelColor || undefined;
 
   if (labelColor) {
     if (typeof labelColor === 'string' && labelColor.length > 2) {
@@ -59,15 +70,15 @@ export async function editLabel(id: string, options: EditLabelOptions = {}) {
     }
     labelColor = parseInt(labelColor.toString());
 
-    if (!(await colorIsInLabelPalette(labelColor))) {
+    if (!(await colorIsInLabelPalette({ color: labelColor.toString() }))) {
       throw new WPPError('color_not_in_pallet', `Color not in pallet`);
     }
   }
   await labelEditAction(
     id,
-    options.name || label.name,
+    name || label.name,
     0,
     labelColor || (label!.colorIndex as any)
   );
-  return await getLabelById(id.toString());
+  return await getLabelById({ labelId: id.toString() });
 }

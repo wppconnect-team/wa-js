@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,33 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertIsBusiness } from '../../assert';
 import { getLabelColorPalette } from '.';
 
+const labelsColorIsInLabelPaletteSchema = z.object({
+  color: z.union([z.string(), z.number()]),
+});
+
+export type LabelsColorIsInLabelPaletteInput = z.infer<
+  typeof labelsColorIsInLabelPaletteSchema
+>;
+export type LabelsColorIsInLabelPaletteOutput = boolean;
+
 /**
  * Check if color is in label palette
- * @param color If it's decimal, send it as a number. If it's hexadecimal, send it as a string
  * @example
  * ```javascript
- * await WPP.labels.colorIsInLabelPalette('#ffd429');
+ * await WPP.labels.colorIsInLabelPalette({ color: '#ffd429' });
  * //or
- * await WPP.labels.colorIsInLabelPalette(4284794111);
+ * await WPP.labels.colorIsInLabelPalette({ color: 4284794111 });
  * ```
  */
 export async function colorIsInLabelPalette(
-  color: string | number
-): Promise<boolean> {
+  params: LabelsColorIsInLabelPaletteInput
+): Promise<LabelsColorIsInLabelPaletteOutput> {
+  const { color } = labelsColorIsInLabelPaletteSchema.parse(params);
   assertIsBusiness();
 
   const colorPalette = await getLabelColorPalette();

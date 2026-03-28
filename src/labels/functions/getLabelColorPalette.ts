@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,9 @@ import { getAllLabelColors } from '../../whatsapp/functions';
 /**
  * Returns an array of color palette in hex code
  */
-export async function getLabelColorPalette(): Promise<string[]> {
+export type LabelsGetLabelColorPaletteOutput = string[];
+
+export async function getLabelColorPalette(): Promise<LabelsGetLabelColorPaletteOutput> {
   assertIsBusiness();
 
   const colorPalette = getAllLabelColors();

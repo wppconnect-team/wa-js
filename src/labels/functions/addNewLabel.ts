@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertIsBusiness } from '../../assert';
 import { WPPError } from '../../util';
 import {
@@ -21,36 +23,37 @@ import {
   getNextLabelId,
   labelAddAction,
 } from '../../whatsapp/functions';
+import { Label } from '..';
 import { colorIsInLabelPalette, getLabelById, getNewLabelColor } from '.';
 
-export interface NewLabelOptions {
-  /**
-   * If it's decimal, send it as a number. If it's hexadecimal, send it as a string.
-   * If labelColor is omitted, the color will be generated automatically
-   */
-  labelColor?: string | number;
-}
+const labelsAddNewLabelSchema = z.object({
+  labelName: z.string(),
+  labelColor: z.string().optional(),
+});
+
+export type LabelsAddNewLabelInput = z.infer<typeof labelsAddNewLabelSchema>;
+export type LabelsAddNewLabelOutput = Label;
 
 /**
  * Add a new label
  * Use await WPP.labels.getLabelColorPalette() to get the list of available colors
  * @example
  * ```javascript
- * await WPP.labels.addNewLabel(`Name of label`);
+ * await WPP.labels.addNewLabel({ labelName: 'Name of label' });
  * //or
- * await WPP.labels.addNewLabel(`Name of label`, { labelColor: '#dfaef0' });
- * ```
+ * await WPP.labels.addNewLabel({ labelName: 'Name of label', labelColor: '#dfaef0' });
  * //or with color index
- * await WPP.labels.addNewLabel(`Name of label`, { labelColor: 16 });
+ * await WPP.labels.addNewLabel({ labelName: 'Name of label', labelColor: 16 });
  * ```
  */
 export async function addNewLabel(
-  labelName: string,
-  options: NewLabelOptions = {}
-) {
+  params: LabelsAddNewLabelInput
+): Promise<LabelsAddNewLabelOutput> {
+  const { labelName, labelColor: rawLabelColor } =
+    labelsAddNewLabelSchema.parse(params);
   assertIsBusiness();
 
-  let labelColor = options.labelColor || undefined;
+  let labelColor: string | number | undefined = rawLabelColor || undefined;
 
   if (!labelColor) labelColor = await getNewLabelColor();
 
@@ -61,10 +64,10 @@ export async function addNewLabel(
   }
   labelColor = parseInt(labelColor.toString());
 
-  if (!(await colorIsInLabelPalette(labelColor))) {
+  if (!(await colorIsInLabelPalette({ color: labelColor!.toString() }))) {
     throw new WPPError('color_not_in_pallet', `Color not in pallet`);
   }
   const labelId = await getNextLabelId();
   await labelAddAction(labelName, labelColor);
-  return await getLabelById(labelId.toString());
+  return await getLabelById({ labelId: labelId.toString() });
 }

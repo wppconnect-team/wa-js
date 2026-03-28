@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,47 @@
  * limitations under the License.
  */
 
-export { addNewLabel } from './addNewLabel';
+export {
+  addNewLabel,
+  LabelsAddNewLabelInput,
+  LabelsAddNewLabelOutput,
+} from './addNewLabel';
 export {
   addOrRemoveLabels,
-  AddOrRemoveLabelsOptions,
+  LabelsAddOrRemoveLabelsInput,
+  LabelsAddOrRemoveLabelsOutput,
 } from './addOrRemoveLabels';
-export { colorIsInLabelPalette } from './colorIsInLabelPalette';
-export { deleteAllLabels } from './deleteAllLabels';
-export { deleteLabel, DeleteLabelReturn } from './deleteLabel';
-export { editLabel } from './editLabel';
-export { getAllLabels } from './getAllLabels';
-export { getLabelById } from './getLabelById';
-export { getLabelColorPalette } from './getLabelColorPalette';
-export { getNewLabelColor } from './getNewLabelColor';
+export {
+  colorIsInLabelPalette,
+  LabelsColorIsInLabelPaletteInput,
+  LabelsColorIsInLabelPaletteOutput,
+} from './colorIsInLabelPalette';
+export {
+  deleteAllLabels,
+  LabelsDeleteAllLabelsOutput,
+} from './deleteAllLabels';
+export {
+  deleteLabel,
+  DeleteLabelReturn,
+  LabelsDeleteLabelInput,
+  LabelsDeleteLabelOutput,
+} from './deleteLabel';
+export {
+  editLabel,
+  LabelsEditLabelInput,
+  LabelsEditLabelOutput,
+} from './editLabel';
+export { getAllLabels, LabelsGetAllLabelsOutput } from './getAllLabels';
+export {
+  getLabelById,
+  LabelsGetLabelByIdInput,
+  LabelsGetLabelByIdOutput,
+} from './getLabelById';
+export {
+  getLabelColorPalette,
+  LabelsGetLabelColorPaletteOutput,
+} from './getLabelColorPalette';
+export {
+  getNewLabelColor,
+  LabelsGetNewLabelColorOutput,
+} from './getNewLabelColor';

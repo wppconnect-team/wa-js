@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,36 +14,41 @@
  * limitations under the License.
  */
 
-import { assertGetChat, assertIsBusiness } from '../../assert';
-import { LabelStore, Wid } from '../../whatsapp';
+import { z } from 'zod';
 
-export interface AddOrRemoveLabelsOptions {
-  labelId: string;
-  type: 'add' | 'remove';
-}
+import { assertGetChat, assertIsBusiness } from '../../assert';
+import { LabelStore } from '../../whatsapp';
+
+const labelsAddOrRemoveLabelsOptionsItemSchema = z.object({
+  labelId: z.string(),
+  type: z.enum(['add', 'remove']),
+});
+
+const labelsAddOrRemoveLabelsSchema = z.object({
+  chatIds: z.array(z.string()),
+  options: z.array(labelsAddOrRemoveLabelsOptionsItemSchema),
+});
+
+export type LabelsAddOrRemoveLabelsInput = z.infer<
+  typeof labelsAddOrRemoveLabelsSchema
+>;
+export type LabelsAddOrRemoveLabelsOutput = any;
 
 /**
  * Add or remove label from chats
  * @example
  * ```javascript
- * await WPP.labels.addOrRemoveLabels(
- *   ['[number]@c.us','[number]@c.us'],
- *   [{labelId:'76', type:'add'},{labelId:'75', type:'remove'}]
- * )
+ * await WPP.labels.addOrRemoveLabels({
+ *   chatIds: ['[number]@c.us','[number]@c.us'],
+ *   options: [{labelId:'76', type:'add'},{labelId:'75', type:'remove'}]
+ * })
  * ```
  */
 export async function addOrRemoveLabels(
-  chatIds: string | Wid | (string | Wid)[],
-  options: AddOrRemoveLabelsOptions | AddOrRemoveLabelsOptions[]
-): Promise<any> {
+  params: LabelsAddOrRemoveLabelsInput
+): Promise<LabelsAddOrRemoveLabelsOutput> {
+  const { chatIds, options } = labelsAddOrRemoveLabelsSchema.parse(params);
   assertIsBusiness();
-
-  if (!Array.isArray(chatIds)) {
-    chatIds = [chatIds];
-  }
-  if (!Array.isArray(options)) {
-    options = [options];
-  }
 
   const chats = chatIds.map((e) => assertGetChat(e));
   const labels = options.map((e) => {

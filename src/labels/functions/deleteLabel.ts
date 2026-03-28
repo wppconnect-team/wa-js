@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertIsBusiness } from '../../assert';
 import { LabelStore } from '../../whatsapp';
 import { labelDeleteAction } from '../../whatsapp/functions';
@@ -23,22 +25,21 @@ export interface DeleteLabelReturn {
   deleteLabelResult: any;
 }
 
-export async function deleteLabel(id: string): Promise<DeleteLabelReturn>;
-export async function deleteLabel(ids: string[]): Promise<DeleteLabelReturn[]>;
+const labelsDeleteLabelSchema = z.object({
+  labelIds: z.array(z.string()),
+});
+
+export type LabelsDeleteLabelInput = z.infer<typeof labelsDeleteLabelSchema>;
+export type LabelsDeleteLabelOutput = DeleteLabelReturn[];
+
 export async function deleteLabel(
-  ids: string | string[]
-): Promise<DeleteLabelReturn | DeleteLabelReturn[]> {
+  params: LabelsDeleteLabelInput
+): Promise<LabelsDeleteLabelOutput> {
+  const { labelIds } = labelsDeleteLabelSchema.parse(params);
   assertIsBusiness();
 
-  let isSingle = false;
-
-  if (!Array.isArray(ids)) {
-    isSingle = true;
-    ids = [ids];
-  }
-
   const results: DeleteLabelReturn[] = [];
-  for (const id of ids) {
+  for (const id of labelIds) {
     const label = LabelStore.get(id.toString());
     if (label)
       await labelDeleteAction(id.toString(), label.name, label.colorIndex!);
@@ -53,8 +54,5 @@ export async function deleteLabel(
     });
   }
 
-  if (isSingle) {
-    return results[0];
-  }
   return results;
 }

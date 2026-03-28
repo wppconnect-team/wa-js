@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,9 @@ import { colorIndexToHex } from '../../whatsapp/functions';
 import { Label } from '..';
 import { patchLabelCount } from '../patch';
 
-export async function getAllLabels(): Promise<Label[]> {
+export type LabelsGetAllLabelsOutput = Label[];
+
+export async function getAllLabels(): Promise<LabelsGetAllLabelsOutput> {
   const labels = LabelStore.getModelsArray();
   return labels.map((e: LabelModel) => {
     return {
