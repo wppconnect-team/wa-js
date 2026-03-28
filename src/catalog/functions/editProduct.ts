@@ -1,5 +1,5 @@
 /*!
- * Copyright 2022 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,39 +14,50 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertGetProduct } from '../../assert';
 import { ProductModel } from '../../whatsapp';
 import { editProduct as EditProduct } from '../../whatsapp/functions';
 
+const catalogEditProductSchema = z.object({
+  productId: z.string(),
+  name: z.string().optional(),
+  description: z.string().optional(),
+  image: z.string().optional(),
+  price: z.number().optional(),
+  isHidden: z.boolean().optional(),
+  url: z.string().optional(),
+  retailerId: z.string().optional(),
+});
+
+export type CatalogEditProductInput = z.infer<typeof catalogEditProductSchema>;
+
+export type CatalogEditProductOutput = ProductModel;
+
 /**
- * Get your current catalog
+ * Edit an existing product in your catalog
  *
  * @example
  * ```javascript
- * // Get your current catalog
- * const myCatalog = WPP.catalog.editProduct('5498255476885590', {name: 'Plano 01', price: '89990', description: 'Insert description for your product', isHidden: true, url: 'http://www.wppconnect.io', retailerId: 'AKA001'});
+ * const product = await WPP.catalog.editProduct({
+ *   productId: '[productId]',
+ *   name: 'Updated Name',
+ *   price: 2000,
+ * });
  * ```
  *
- * @return Return model of product edited
+ * @category Catalog
  */
-
-export interface editProductParams {
-  name?: string;
-  description?: string;
-  image?: string;
-  price?: number;
-  isHidden?: boolean;
-  url?: string;
-  retailerId?: string;
-}
 export async function editProduct(
-  productId: string,
-  params: editProductParams
-): Promise<ProductModel> {
+  params: CatalogEditProductInput
+): Promise<CatalogEditProductOutput> {
+  const { productId, ...fields } = catalogEditProductSchema.parse(params);
+
   const produto = await assertGetProduct(productId);
-  Object.keys(params).forEach(
-    (key) => (params as any)[key] === undefined && delete (params as any)[key]
+  Object.keys(fields).forEach(
+    (key) => (fields as any)[key] === undefined && delete (fields as any)[key]
   );
-  const editedProduct = Object.assign(produto, params);
+  const editedProduct = Object.assign(produto, fields);
   return await EditProduct(editedProduct);
 }

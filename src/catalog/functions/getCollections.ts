@@ -20,15 +20,17 @@ import { createWid } from '../../util';
 import { ProductCollModel } from '../../whatsapp';
 import { queryCollectionsIQ } from '../../whatsapp/functions';
 
-const getCollectionsSchema = z.object({
+const catalogGetCollectionsSchema = z.object({
   chatId: z.string(),
   limit: z.number().optional(),
   productsCount: z.number().optional(),
 });
 
-export type GetCollectionsInput = z.infer<typeof getCollectionsSchema>;
+export type CatalogGetCollectionsInput = z.infer<
+  typeof catalogGetCollectionsSchema
+>;
 
-export type GetCollectionsOutput = ProductCollModel[];
+export type CatalogGetCollectionsOutput = ProductCollModel[];
 
 /**
  * Get collections of catalog
@@ -36,18 +38,19 @@ export type GetCollectionsOutput = ProductCollModel[];
  * @example
  * ```javascript
  * // Retrieve 20 collections of chat
- * const myCatalog = await WPP.catalog.getCollections({ chatId: '552198554578@c.us', limit: 20 });
+ * const myCatalog = await WPP.catalog.getCollections({ chatId: '[chatId]', limit: 20 });
  *
  * // Retrieve 20 collections of chat and products arrays limit with 10 products
- * const myCatalog = await WPP.catalog.getCollections({ chatId: '552198554578@c.us', limit: 20, productsCount: 10 });
+ * const myCatalog = await WPP.catalog.getCollections({ chatId: '[chatId]', limit: 20, productsCount: 10 });
  * ```
  *
  * @return Your collections of products
  */
 export async function getCollections(
-  params: GetCollectionsInput
-): Promise<GetCollectionsOutput> {
-  const { chatId, limit, productsCount } = getCollectionsSchema.parse(params);
+  params: CatalogGetCollectionsInput
+): Promise<CatalogGetCollectionsOutput> {
+  const { chatId, limit, productsCount } =
+    catalogGetCollectionsSchema.parse(params);
   const { collections } = await queryCollectionsIQ({
     afterCursor: '',
     catalogWid: createWid(chatId),

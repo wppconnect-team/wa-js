@@ -1,5 +1,5 @@
 /*!
- * Copyright 2022 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,43 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertGetProduct } from '../../assert';
+import { ProductModel } from '../../whatsapp';
 import { productVisibilitySet } from '../../whatsapp/functions';
 
+const catalogSetProductVisibilitySchema = z.object({
+  productId: z.string(),
+  isHidden: z.boolean(),
+});
+
+export type CatalogSetProductVisibilityInput = z.infer<
+  typeof catalogSetProductVisibilitySchema
+>;
+
+export type CatalogSetProductVisibilityOutput = ProductModel;
+
 /**
- * Get your current catalog
+ * Show or hide a product in your catalog
  *
  * @example
  * ```javascript
- * // Set product visibility hidden
- * const myCatalog = await WPP.catalog.setProductVisibility(54985569989897, true);
- * ```
- * // Set product visible
- * const myCatalog = await WPP.catalog.setProductVisibility(54985569989897, false);
+ * // Hide a product
+ * await WPP.catalog.setProductVisibility({ productId: '[productId]', isHidden: true });
+ *
+ * // Make a product visible
+ * await WPP.catalog.setProductVisibility({ productId: '[productId]', isHidden: false });
  * ```
  *
- * @return Return sucess of product visibility set
+ * @category Catalog
  */
 export async function setProductVisibility(
-  productId: any,
-  isHidden: boolean
-): Promise<any> {
+  params: CatalogSetProductVisibilityInput
+): Promise<CatalogSetProductVisibilityOutput> {
+  const { productId, isHidden } =
+    catalogSetProductVisibilitySchema.parse(params);
+
   await productVisibilitySet(productId, isHidden);
   return await assertGetProduct(productId);
 }

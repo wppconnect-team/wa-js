@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,74 @@
  * limitations under the License.
  */
 
-export { addProductImage } from './addProductImage';
-export { changeProductImage } from './changeProductImage';
-export { createCollection } from './createCollection';
-export { createProduct } from './createProduct';
-export { deleteCollection } from './deleteCollection';
-export { delProducts } from './deleteProduct';
-export { editCollection } from './editCollection';
-export { editProduct } from './editProduct';
 export {
+  addProductImage,
+  CatalogAddProductImageInput,
+  CatalogAddProductImageOutput,
+} from './addProductImage';
+export {
+  CatalogChangeProductImageInput,
+  CatalogChangeProductImageOutput,
+  changeProductImage,
+} from './changeProductImage';
+export {
+  CatalogCreateCollectionInput,
+  CatalogCreateCollectionOutput,
+  createCollection,
+} from './createCollection';
+export {
+  CatalogCreateProductInput,
+  CatalogCreateProductOutput,
+  createProduct,
+} from './createProduct';
+export {
+  CatalogDeleteCollectionInput,
+  CatalogDeleteCollectionOutput,
+  deleteCollection,
+} from './deleteCollection';
+export {
+  CatalogDeleteProductsInput,
+  CatalogDeleteProductsOutput,
+  deleteProducts,
+} from './deleteProduct';
+export {
+  CatalogEditCollectionInput,
+  CatalogEditCollectionOutput,
+  editCollection,
+} from './editCollection';
+export {
+  CatalogEditProductInput,
+  CatalogEditProductOutput,
+  editProduct,
+} from './editProduct';
+export {
+  CatalogGetCollectionsInput,
+  CatalogGetCollectionsOutput,
   getCollections,
-  GetCollectionsInput,
-  GetCollectionsOutput,
 } from './getCollections';
-export { getMyCatalog } from './getMyCatalog';
-export { getProductById } from './getProductById';
-export { getProducts } from './getProducts';
-export { removeProductImage } from './removeProductImage';
-export { setProductVisibility } from './setProductVisibility';
-export { updateCartEnabled } from './updateCartEnabled';
+export { CatalogGetMyCatalogOutput, getMyCatalog } from './getMyCatalog';
+export {
+  CatalogGetProductByIdInput,
+  CatalogGetProductByIdOutput,
+  getProductById,
+} from './getProductById';
+export {
+  CatalogGetProductsInput,
+  CatalogGetProductsOutput,
+  getProducts,
+} from './getProducts';
+export {
+  CatalogRemoveProductImageInput,
+  CatalogRemoveProductImageOutput,
+  removeProductImage,
+} from './removeProductImage';
+export {
+  CatalogSetProductVisibilityInput,
+  CatalogSetProductVisibilityOutput,
+  setProductVisibility,
+} from './setProductVisibility';
+export {
+  CatalogUpdateCartEnabledInput,
+  CatalogUpdateCartEnabledOutput,
+  updateCartEnabled,
+} from './updateCartEnabled';

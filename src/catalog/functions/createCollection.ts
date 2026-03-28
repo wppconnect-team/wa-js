@@ -1,5 +1,5 @@
 /*!
- * Copyright 2022 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,41 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { ProductCatalogSession } from '../../whatsapp';
 import { createCollection as CreateCollection } from '../../whatsapp/functions';
 
+const catalogCreateCollectionSchema = z.object({
+  collectionName: z.string(),
+  productsId: z.array(z.string()),
+});
+
+export type CatalogCreateCollectionInput = z.infer<
+  typeof catalogCreateCollectionSchema
+>;
+
+export type CatalogCreateCollectionOutput = any;
+
 /**
- * Create new collection
+ * Create a new product collection in your catalog
  *
  * @example
  * ```javascript
- * const myCatalog = await WPP.catalog.createCollection('Collection Name', ['565656589898']);
+ * await WPP.catalog.createCollection({
+ *   collectionName: 'Summer Sale',
+ *   productsId: ['[productId1]', '[productId2]'],
+ * });
  * ```
  *
- * @return Return collection created
+ * @category Catalog
  */
 export async function createCollection(
-  collectionName: string,
-  productsId: string[]
-): Promise<any> {
+  params: CatalogCreateCollectionInput
+): Promise<CatalogCreateCollectionOutput> {
+  const { collectionName, productsId } =
+    catalogCreateCollectionSchema.parse(params);
+
   const { sessionId } = new ProductCatalogSession(true);
 
   return await CreateCollection(collectionName, productsId, `${sessionId}`);

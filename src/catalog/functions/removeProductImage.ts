@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,41 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertGetProduct } from '../../assert';
 import { ProductModel } from '../../whatsapp';
 import { editProduct as EditProduct } from '../../whatsapp/functions';
 
+const catalogRemoveProductImageSchema = z.object({
+  productId: z.string(),
+  index: z.string(),
+});
+
+export type CatalogRemoveProductImageInput = z.infer<
+  typeof catalogRemoveProductImageSchema
+>;
+
+export type CatalogRemoveProductImageOutput = ProductModel;
+
 /**
- * Remove image on product
- * This function remove additional images of product
- * for change main image use @changeProductImage
+ * Remove an additional image from a product by its index
  *
  * @example
  * ```javascript
- * await WPP.catalog.removeProductImage('68685985868923', '0');
+ * await WPP.catalog.removeProductImage({
+ *   productId: '[productId]',
+ *   index: '0',
+ * });
  * ```
- * @param index - Index of array additionalImageCdnUrl
+ *
  * @category Catalog
  */
-
 export async function removeProductImage(
-  productId: string,
-  index: string
-): Promise<ProductModel> {
+  params: CatalogRemoveProductImageInput
+): Promise<CatalogRemoveProductImageOutput> {
+  const { productId, index } = catalogRemoveProductImageSchema.parse(params);
+
   const product = await assertGetProduct(productId);
   product.additionalImageCdnUrl.splice(index, 1);
 

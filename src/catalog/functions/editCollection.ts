@@ -1,5 +1,5 @@
 /*!
- * Copyright 2022 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,36 +14,53 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { ProductCatalogSession } from '../../whatsapp';
 import { editCollection as EditCollection } from '../../whatsapp/functions';
 
+const catalogEditCollectionSchema = z.object({
+  collectionId: z.string(),
+  name: z.string().optional(),
+  productsToAdd: z.array(z.string()).optional(),
+  productsToRemove: z.array(z.string()).optional(),
+});
+
+export type CatalogEditCollectionInput = z.infer<
+  typeof catalogEditCollectionSchema
+>;
+
+export type CatalogEditCollectionOutput = any;
+
 /**
- * Create new collection
+ * Edit a product collection in your catalog
  *
  * @example
  * ```javascript
- * const myCatalog = await WPP.catalog.EditCollection('565656589898', { collectionName: 'New Name for collection', productsToAdd: ['5656523223'], productsToRemove: ['5656523232']});
+ * await WPP.catalog.editCollection({
+ *   collectionId: '[collectionId]',
+ *   name: 'New Collection Name',
+ *   productsToAdd: ['[productId1]'],
+ *   productsToRemove: ['[productId2]'],
+ * });
  * ```
  *
- * @return Return collection edited
+ * @category Catalog
  */
-interface paramsEditCollection {
-  name?: string;
-  productsToAdd?: string[];
-  productsToRemove?: string[];
-}
 export async function editCollection(
-  collectionId: string,
-  params: paramsEditCollection
-): Promise<any> {
+  params: CatalogEditCollectionInput
+): Promise<CatalogEditCollectionOutput> {
+  const { collectionId, name, productsToAdd, productsToRemove } =
+    catalogEditCollectionSchema.parse(params);
+
   const { sessionId } = new ProductCatalogSession(true);
 
   return await EditCollection(
     collectionId,
-    params.name,
+    name,
     false,
-    params.productsToAdd || [],
-    params.productsToRemove || [],
+    productsToAdd || [],
+    productsToRemove || [],
     `${sessionId}`
   );
 }

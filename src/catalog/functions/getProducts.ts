@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,42 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { createWid } from '../../util';
 import { queryCatalog } from '../../whatsapp/functions';
 
+const catalogGetProductsSchema = z.object({
+  chatId: z.string(),
+  limit: z.number().optional(),
+});
+
+export type CatalogGetProductsInput = z.infer<typeof catalogGetProductsSchema>;
+
+export type CatalogGetProductsOutput = any[];
+
 /**
- * Retrieves product by contact id
+ * Get products from a business catalog
  *
  * @example
- * Get products of catalogs
  * ```javascript
- * await WPP.catalog.getProducts('5521985625689@c.us', 10);
+ * const products = await WPP.catalog.getProducts({ chatId: '[chatId]' });
+ *
+ * // Limit the number of products returned
+ * const products = await WPP.catalog.getProducts({ chatId: '[chatId]', limit: 20 });
  * ```
- * @return A array with products
+ *
  * @category Catalog
  */
+export async function getProducts(
+  params: CatalogGetProductsInput
+): Promise<CatalogGetProductsOutput> {
+  const { chatId, limit } = catalogGetProductsSchema.parse(params);
 
-export async function getProducts(chatId: string, qnt: number): Promise<any[]> {
   const { data } = await queryCatalog(
     createWid(chatId),
     undefined,
-    qnt || 10,
+    limit ?? 10,
     100,
     100
   );

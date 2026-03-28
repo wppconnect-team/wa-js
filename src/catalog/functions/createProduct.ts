@@ -1,5 +1,5 @@
 /*!
- * Copyright 2022 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { convertToFile } from '../../util';
 import {
   OpaqueData,
@@ -27,66 +29,79 @@ import {
   uploadProductImage,
 } from '../../whatsapp/functions';
 
+const catalogCreateProductSchema = z.object({
+  name: z.string(),
+  image: z.string(),
+  description: z.string().optional(),
+  price: z.number().optional(),
+  isHidden: z.boolean().optional(),
+  url: z.string().optional(),
+  retailerId: z.string().optional(),
+  currency: z.string().optional(),
+});
+
+export type CatalogCreateProductInput = z.infer<
+  typeof catalogCreateProductSchema
+>;
+
+export type CatalogCreateProductOutput = ProductModel;
+
 /**
- * Create new product
+ * Create a new product in your catalog
  *
  * @example
  * ```javascript
- * const myCatalog = await WPP.catalog.addProduct(
-    {
-      name: 'Product name', 
-      image: 'base64 image string', 
-      description: 'product description',
-      price: '89.90',
-      isHidden: false,
-      url: 'https://wppconnect.io',
-      retailerId: 'AKA001',
-    }
-  );
+ * const product = await WPP.catalog.createProduct({
+ *   name: 'My Product',
+ *   image: 'data:image/png;base64,...',
+ *   description: 'Product description',
+ *   price: 1000,
+ *   currency: 'BRL',
+ * });
  * ```
  *
- * @return Your created product
+ * @category Catalog
  */
-
-export interface createProductParams {
-  name: string;
-  image: string;
-  description?: string;
-  price?: number;
-  isHidden?: boolean;
-  url?: string;
-  retailerId?: string;
-  currency?: string;
-}
 export async function createProduct(
-  params: createProductParams
-): Promise<ProductModel> {
-  const file = await convertToFile(params.image);
+  params: CatalogCreateProductInput
+): Promise<CatalogCreateProductOutput> {
+  const {
+    name,
+    image,
+    description,
+    price,
+    isHidden,
+    url,
+    retailerId,
+    currency,
+  } = catalogCreateProductSchema.parse(params);
+
+  const file = await convertToFile(image);
 
   const opaqueData = await OpaqueData.createFromData(file, file.type);
   const filehash = await calculateFilehashFromBlob(file);
 
-  const url = await uploadProductImage(opaqueData, filehash);
+  const productUrl = await uploadProductImage(opaqueData, filehash);
 
   const Product = new ProductModel();
-  Product.name = params.name.toString();
+  Product.name = name.toString();
 
   const mePNWid = UserPrefs.getMaybeMePnUser();
   const meLIDWid = UserPrefs.getMaybeMeLidUser();
 
   Product.catalogWid = mePNWid || meLIDWid;
-  Product.imageCdnUrl = url;
+  Product.imageCdnUrl = productUrl;
   Product.productImageCollection = new ProductImageModel({
-    mediaUrl: url,
+    mediaUrl: productUrl,
   });
-  if (params.description) Product.description = params.description;
-  if (params.price) {
-    Product.priceAmount1000 = params.price * 10000;
-    Product.currency = params.currency || 'BRL';
+  if (description) Product.description = description;
+  if (price) {
+    Product.priceAmount1000 = price * 10000;
+    Product.currency = currency || 'BRL';
   }
-  if (params.isHidden) Product.isHidden = params.isHidden;
-  if (params.url) Product.url = params.url;
-  if (params.retailerId) Product.retailerId = params.retailerId;
+  if (isHidden) Product.isHidden = isHidden;
+  if (url) Product.url = url;
+  if (retailerId) Product.retailerId = retailerId;
 
   return await addProduct(Product, 100, 100);
 }

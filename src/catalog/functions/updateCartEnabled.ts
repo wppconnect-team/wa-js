@@ -1,5 +1,5 @@
 /*!
- * Copyright 2022 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,38 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { updateCartEnabled as UpdateCartEnabled } from '../../whatsapp/functions';
 
+const catalogUpdateCartEnabledSchema = z.object({
+  enabled: z.boolean(),
+});
+
+export type CatalogUpdateCartEnabledInput = z.infer<
+  typeof catalogUpdateCartEnabledSchema
+>;
+
+export type CatalogUpdateCartEnabledOutput = void;
+
 /**
- * Get your current catalog
+ * Enable or disable the cart feature in your catalog
  *
  * @example
  * ```javascript
- * // Set product visibility hidden
- * const myCatalog = await WPP.catalog.setProductVisibility(54985569989897, true);
- * ```
- * // Set product visible
- * const myCatalog = await WPP.catalog.setProductVisibility(54985569989897, false);
+ * // Enable cart
+ * await WPP.catalog.updateCartEnabled({ enabled: true });
+ *
+ * // Disable cart
+ * await WPP.catalog.updateCartEnabled({ enabled: false });
  * ```
  *
- * @return Return sucess of product visibility set
+ * @category Catalog
  */
-export async function updateCartEnabled(enabled: boolean): Promise<any> {
+export async function updateCartEnabled(
+  params: CatalogUpdateCartEnabledInput
+): Promise<CatalogUpdateCartEnabledOutput> {
+  const { enabled } = catalogUpdateCartEnabledSchema.parse(params);
+
   return await UpdateCartEnabled(enabled);
 }

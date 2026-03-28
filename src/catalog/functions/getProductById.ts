@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,21 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { createWid } from '../../util';
 import { queryProduct } from '../../whatsapp/functions';
 
-/**
- * Retrieves product by id
- *
- * @example
- * ```javascript
- * // Retrieve data of product
- * await WPP.catalog.getProductById('5521985565656@c.us', '68685985868923');
- * ```
- *
- * @category Catalog
- */
+const catalogGetProductByIdSchema = z.object({
+  chatId: z.string(),
+  productId: z.number(),
+});
 
-export async function getProductById(
-  chatId: string,
-  productId: number
-): Promise<{
+export type CatalogGetProductByIdInput = z.infer<
+  typeof catalogGetProductByIdSchema
+>;
+
+export type CatalogGetProductByIdOutput = {
   id: string;
   retailer_id: string;
   name: string;
@@ -45,17 +41,30 @@ export async function getProductById(
   availability: string;
   checkmark: boolean;
   image_hashes_for_whatsapp: string[];
-  image_cdn_urls: {
-    key: 'requested' | 'full';
-    value: string;
-  }[];
+  image_cdn_urls: { key: 'requested' | 'full'; value: string }[];
   additional_image_cdn_urls: any[];
   whatsapp_product_can_appeal: boolean;
-  capability_to_review_status: {
-    key: 'WHATSAPP';
-    value: 'APPROVED';
-  }[];
-}> {
+  capability_to_review_status: { key: 'WHATSAPP'; value: 'APPROVED' }[];
+};
+
+/**
+ * Get a product by its ID from a business catalog
+ *
+ * @example
+ * ```javascript
+ * const product = await WPP.catalog.getProductById({
+ *   chatId: '[chatId]',
+ *   productId: 123456789,
+ * });
+ * ```
+ *
+ * @category Catalog
+ */
+export async function getProductById(
+  params: CatalogGetProductByIdInput
+): Promise<CatalogGetProductByIdOutput> {
+  const { chatId, productId } = catalogGetProductByIdSchema.parse(params);
+
   const wid = createWid(chatId);
   const { data } = await queryProduct(wid, productId);
   return data;

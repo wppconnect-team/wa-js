@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertGetProduct } from '../../assert';
 import { convertToFile } from '../../util';
 import { OpaqueData } from '../../whatsapp';
@@ -23,23 +25,35 @@ import {
   uploadProductImage as UploadProductImage,
 } from '../../whatsapp/functions';
 
+const catalogChangeProductImageSchema = z.object({
+  productId: z.string(),
+  content: z.string(),
+});
+
+export type CatalogChangeProductImageInput = z.infer<
+  typeof catalogChangeProductImageSchema
+>;
+
+export type CatalogChangeProductImageOutput = any;
+
 /**
- * Add image on product
- * This function change main image of product
- * for change additional images use @addProductImage
+ * Replace the main image of a product
  *
  * @example
  * ```javascript
- * await WPP.catalog.changeProductImage('686859858689', 'data:image/jpeg;base64,.....');
+ * await WPP.catalog.changeProductImage({
+ *   productId: '[productId]',
+ *   content: 'data:image/png;base64,...',
+ * });
  * ```
  *
  * @category Catalog
  */
-
 export async function changeProductImage(
-  productId: string,
-  content: string
-): Promise<any> {
+  params: CatalogChangeProductImageInput
+): Promise<CatalogChangeProductImageOutput> {
+  const { productId, content } = catalogChangeProductImageSchema.parse(params);
+
   const file = await convertToFile(content);
   const opaqueData = await OpaqueData.createFromData(file, file.type);
   const filehash = await calculateFilehashFromBlob(file);

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2022 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,46 @@
  * limitations under the License.
  */
 
-import { deleteProducts } from '../../whatsapp/functions';
+import { z } from 'zod';
+
+import { deleteProducts as _deleteProducts } from '../../whatsapp/functions';
+
+const catalogDeleteProductsSchema = z.object({
+  productsIds: z.array(z.string()),
+});
+
+export type CatalogDeleteProductsInput = z.infer<
+  typeof catalogDeleteProductsSchema
+>;
+
+export type CatalogDeleteProductsOutput = {
+  productsIds: string[];
+  status: number;
+};
 
 /**
- * Get your current catalog
+ * Delete one or more products from your catalog
  *
  * @example
  * ```javascript
- * // Delete product by id
- * const myCatalog = await WPP.catalog.delProducts('6104203702939361');
- *
- * // Delete various products
- * const myCatalog = await WPP.catalog.delProducts(['6104203702939361', '6104289702939361']);
+ * const result = await WPP.catalog.deleteProducts({
+ *   productsIds: ['[productId1]', '[productId2]'],
+ * });
  * ```
  *
- * @return Return sucess or error of product deleted
+ * @category Catalog
  */
-export async function delProducts(productsIds: string[]): Promise<any> {
+export async function deleteProducts(
+  params: CatalogDeleteProductsInput
+): Promise<CatalogDeleteProductsOutput> {
+  const { productsIds } = catalogDeleteProductsSchema.parse(params);
+
   let status = 200;
   try {
     if (Array.isArray(productsIds)) {
-      await deleteProducts(productsIds);
+      await _deleteProducts(productsIds);
     } else {
-      await deleteProducts([productsIds]);
+      await _deleteProducts([productsIds]);
     }
   } catch (_error) {
     status = 500;

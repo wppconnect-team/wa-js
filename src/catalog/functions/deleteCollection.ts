@@ -1,5 +1,5 @@
 /*!
- * Copyright 2022 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,37 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { ProductCatalogSession } from '../../whatsapp';
 import { deleteCollection as DeleteCollection } from '../../whatsapp/functions';
 
+const catalogDeleteCollectionSchema = z.object({
+  collectionId: z.string(),
+});
+
+export type CatalogDeleteCollectionInput = z.infer<
+  typeof catalogDeleteCollectionSchema
+>;
+
+export type CatalogDeleteCollectionOutput = string;
+
 /**
- * Delete a collection
+ * Delete a product collection from your catalog
  *
  * @example
  * ```javascript
- * const myCatalog = await WPP.catalog.deleteCollection("377095767832354");
+ * await WPP.catalog.deleteCollection({ collectionId: '[collectionId]' });
  * ```
  *
- * @return Return sucess or error
+ * @category Catalog
  */
-export async function deleteCollection(collectionId: string): Promise<any> {
+export async function deleteCollection(
+  params: CatalogDeleteCollectionInput
+): Promise<CatalogDeleteCollectionOutput> {
+  const { collectionId } = catalogDeleteCollectionSchema.parse(params);
+
   const { sessionId } = new ProductCatalogSession(true);
   await DeleteCollection(collectionId, `${sessionId}`);
-  return 'Collection deleted sucessful';
+  return 'Collection deleted successfully';
 }

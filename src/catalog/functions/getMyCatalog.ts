@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,9 @@
  */
 
 import { CatalogStore, UserPrefs } from '../../whatsapp';
+
+export type CatalogGetMyCatalogOutput = ReturnType<typeof CatalogStore.get>;
+
 /**
  * Get your current catalog
  *
@@ -26,6 +29,6 @@ import { CatalogStore, UserPrefs } from '../../whatsapp';
  *
  * @return Your current catalog
  */
-export async function getMyCatalog() {
+export async function getMyCatalog(): Promise<CatalogGetMyCatalogOutput> {
   return CatalogStore.get(UserPrefs.getMaybeMePnUser());
 }
