@@ -3,6 +3,11 @@ name: release
 on:
   workflow_dispatch:
     inputs:
+      branch:
+        type: string
+        description: 'Branch to release from'
+        required: true
+        default: 'main'
       increment:
         type: choice
         description: 'Tipo de incremento: patch, minor, major ou pre*'
@@ -12,6 +17,14 @@ on:
           - patch
           - minor
           - major
+          - prepatch
+          - preminor
+          - premajor
+      preRelease:
+        type: string
+        description: 'Pre-release tag (e.g. alpha, beta, rc) — only used with pre* increments'
+        required: false
+        default: ''
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -20,6 +33,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           token: ${{ secrets.PERSONAL_TOKEN }}
+          ref: ${{ github.event.inputs.branch }}
 
       - name: Setup GIT
         run: |
@@ -50,4 +64,9 @@ jobs:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
 
       - name: Release
-        run: 'npx release-it --increment ${{ github.event.inputs.increment }}'
+        run: |
+          RELEASE_ARGS="--increment ${{ github.event.inputs.increment }}"
+          if [ -n "${{ github.event.inputs.preRelease }}" ]; then
+            RELEASE_ARGS="$RELEASE_ARGS --preRelease ${{ github.event.inputs.preRelease }}"
+          fi
+          npx release-it $RELEASE_ARGS
