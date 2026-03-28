@@ -23,7 +23,7 @@ import { CallModel, CallStore, functions, websocket } from '../../whatsapp';
 import { CALL_STATES } from '../../whatsapp/enums';
 import { unixTime } from '../../whatsapp/functions';
 import { parseRelayResponse } from './parseRelayResponse';
-import { prepareDestionation } from './prepareDestination';
+import { prepareDestination } from './prepareDestination';
 
 const callOfferSchema = z.object({
   to: z.string(),
@@ -105,7 +105,7 @@ export async function offer(params: CallOfferInput): Promise<CallOfferOutput> {
 
   const encKey = self.crypto.getRandomValues(new Uint8Array(32)).buffer;
 
-  content.push(...(await prepareDestionation({ wids: [toWid], encKey })));
+  content.push(...(await prepareDestination({ wids: [toWid], encKey })));
 
   const node = websocket.smax(
     'call',
