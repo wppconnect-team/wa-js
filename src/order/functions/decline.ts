@@ -1,5 +1,5 @@
 /*!
- * Copyright 2025 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { sendRawMessage } from '../../chat/functions';
 import { WPPError } from '../../util';
-import { MsgKey, MsgStore } from '../../whatsapp';
+import { MsgStore } from '../../whatsapp';
 import { MSG_TYPE } from '../../whatsapp/enums';
 import {
   queryOrder,
@@ -25,15 +27,13 @@ import {
 } from '../../whatsapp/functions';
 import { OrderMessageStatus, OrderStatus, PaymentStatus } from '../types';
 
-/**
- * Options for declining an order
- */
-export interface DeclineOrderOptions {
-  /** The message ID or message key of the order message */
-  msgId: string | MsgKey;
-  /** Optional note to include with the decline message (recommended) */
-  declineNote?: string;
-}
+const orderDeclineSchema = z.object({
+  msgId: z.any(),
+  declineNote: z.string().optional(),
+});
+
+export type OrderDeclineInput = z.infer<typeof orderDeclineSchema>;
+export type OrderDeclineOutput = void;
 
 /**
  * Decline an order
@@ -62,8 +62,10 @@ export interface DeclineOrderOptions {
  *
  * @category Order
  */
-export async function decline(options: DeclineOrderOptions): Promise<void> {
-  const { msgId, declineNote } = options;
+export async function decline(
+  params: OrderDeclineInput
+): Promise<OrderDeclineOutput> {
+  const { msgId, declineNote } = orderDeclineSchema.parse(params);
 
   // Get the message
   const msg = MsgStore.get(msgId);

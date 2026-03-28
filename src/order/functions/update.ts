@@ -1,5 +1,5 @@
 /*!
- * Copyright 2025 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
 import { MsgStore } from '../../whatsapp';
 import { MSG_TYPE } from '../../whatsapp/enums';
@@ -21,11 +23,20 @@ import {
   queryOrder,
   sendOrderStatusMessageAsMerchant,
 } from '../../whatsapp/functions';
-import {
-  OrderMessageStatus,
-  PaymentStatus,
-  UpdateOrderOptions,
-} from '../types';
+import { OrderMessageStatus, OrderStatus, PaymentStatus } from '../types';
+
+const orderUpdateSchema = z.object({
+  msgId: z.any(),
+  orderStatus: z.enum(OrderStatus),
+  orderNote: z.string().optional(),
+  offset: z.number().optional(),
+  referenceId: z.string().optional(),
+  paymentStatus: z.enum(PaymentStatus).optional(),
+  paymentMethod: z.string().optional(),
+});
+
+export type OrderUpdateInput = z.infer<typeof orderUpdateSchema>;
+export type OrderUpdateOutput = void;
 
 /**
  * Update an order status and/or payment information
@@ -87,7 +98,9 @@ import {
  *
  * @category Order
  */
-export async function update(options: UpdateOrderOptions): Promise<void> {
+export async function update(
+  params: OrderUpdateInput
+): Promise<OrderUpdateOutput> {
   const {
     msgId,
     orderStatus,
@@ -96,7 +109,7 @@ export async function update(options: UpdateOrderOptions): Promise<void> {
     referenceId,
     paymentStatus = PaymentStatus.Pending,
     paymentMethod,
-  } = options;
+  } = orderUpdateSchema.parse(params);
 
   // Get the message
   const orderMsg = MsgStore.get(msgId);

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2025 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { sendRawMessage } from '../../chat/functions';
 import { WPPError } from '../../util';
-import { MsgKey, MsgStore } from '../../whatsapp';
+import { MsgStore } from '../../whatsapp';
 import { MSG_TYPE } from '../../whatsapp/enums';
 import { queryOrder, updateMessageTable } from '../../whatsapp/functions';
 import { OrderMessageStatus } from '../types';
 
-/**
- * Options for accepting an order
- */
-export interface AcceptOrderOptions {
-  /** The message ID or message key of the order message */
-  msgId: string | MsgKey;
-}
+const orderAcceptSchema = z.object({
+  msgId: z.string(),
+});
+
+export type OrderAcceptInput = z.infer<typeof orderAcceptSchema>;
+export type OrderAcceptOutput = void;
 
 /**
  * Accept an order
@@ -63,8 +64,10 @@ export interface AcceptOrderOptions {
  *
  * @category Order
  */
-export async function accept(options: AcceptOrderOptions): Promise<void> {
-  const { msgId } = options;
+export async function accept(
+  params: OrderAcceptInput
+): Promise<OrderAcceptOutput> {
+  const { msgId } = orderAcceptSchema.parse(params);
 
   // Get the message
   const msg = MsgStore.get(msgId);

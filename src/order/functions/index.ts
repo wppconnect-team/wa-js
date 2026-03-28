@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export { accept } from './accept';
-export { decline } from './decline';
-export { get } from './get';
-export { update } from './update';
+export { accept, OrderAcceptInput, OrderAcceptOutput } from './accept';
+export { decline, OrderDeclineInput, OrderDeclineOutput } from './decline';
+export { get, OrderGetInput, OrderGetOutput } from './get';
+export { OrderUpdateInput, OrderUpdateOutput, update } from './update';

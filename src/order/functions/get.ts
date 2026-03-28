@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,33 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
-import { MsgKey, MsgStore, OrderModel } from '../../whatsapp';
+import { MsgStore, OrderModel } from '../../whatsapp';
 import { MSG_TYPE } from '../../whatsapp/enums';
 import { queryOrder } from '../../whatsapp/functions';
+
+const orderGetSchema = z.object({
+  msgId: z.any(),
+});
+
+export type OrderGetInput = z.infer<typeof orderGetSchema>;
+export type OrderGetOutput = OrderModel;
+
 /**
  * Get info of a order
  *
  * @example
  * ```javascript
- * const orderInfo = await WPP.order.get();
+ * const orderInfo = await WPP.order.get({ msgId: 'message_id_here' });
  * ```
  *
- * @return Your current catalog
+ * @return Your current order info
  */
-export async function get(msgId: string | MsgKey) {
+export async function get(params: OrderGetInput): Promise<OrderGetOutput> {
+  const { msgId } = orderGetSchema.parse(params);
+
   const msg = MsgStore.get(msgId);
   if (!msg) throw new WPPError('msg_not_found', 'Message not found');
   if (msg.type === MSG_TYPE.ORDER) {
