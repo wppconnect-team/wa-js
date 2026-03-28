@@ -57,7 +57,7 @@ export async function mute(
 ): Promise<NewsletterMuteOutput> {
   const { newsletterId, value } = newsletterMuteSchema.parse(params);
 
-  const chat = await ensureNewsletter(newsletterId);
+  const chat = await ensureNewsletter({ newsletterId });
 
   const eventSurface = CHANNEL_EVENT_SURFACE?.CHANNEL_UPDATES_HOME ?? 1;
   const muteExpirationValue =
