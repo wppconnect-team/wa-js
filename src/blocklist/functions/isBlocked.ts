@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,16 +19,18 @@ import { z } from 'zod';
 import { assertWid } from '../../assert';
 import { BlocklistStore } from '../../whatsapp';
 
-const isBlockedSchema = z.object({
+const blocklistIsBlockedSchema = z.object({
   chatId: z.string(),
 });
 
-export type IsBlockedInput = z.infer<typeof isBlockedSchema>;
+export type BlocklistIsBlockedInput = z.infer<typeof blocklistIsBlockedSchema>;
 
-export type IsBlockedOutput = boolean;
+export type BlocklistIsBlockedOutput = boolean;
 
-export function isBlocked(params: IsBlockedInput): IsBlockedOutput {
-  const { chatId } = isBlockedSchema.parse(params);
+export function isBlocked(
+  params: BlocklistIsBlockedInput
+): BlocklistIsBlockedOutput {
+  const { chatId } = blocklistIsBlockedSchema.parse(params);
 
   const wid = assertWid(chatId);
 

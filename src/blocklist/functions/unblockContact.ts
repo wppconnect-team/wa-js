@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,21 +21,23 @@ import { ContactModel, ContactStore, Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
 import { isBlocked } from './isBlocked';
 
-export const unblockContactSchema = z.object({
+const blocklistUnblockContactSchema = z.object({
   chatId: z.string(),
 });
 
-export type UnblockContactInput = z.infer<typeof unblockContactSchema>;
+export type BlocklistUnblockContactInput = z.infer<
+  typeof blocklistUnblockContactSchema
+>;
 
-export type UnblockContactOutput = {
+export type BlocklistUnblockContactOutput = {
   wid: Wid;
   isBlocked: boolean;
 };
 
 export async function unblockContact(
-  params: UnblockContactInput
-): Promise<UnblockContactOutput> {
-  const { chatId } = unblockContactSchema.parse(params);
+  params: BlocklistUnblockContactInput
+): Promise<BlocklistUnblockContactOutput> {
+  const { chatId } = blocklistUnblockContactSchema.parse(params);
 
   const wid = assertWid(chatId);
 

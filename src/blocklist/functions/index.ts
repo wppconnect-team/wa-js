@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-export { all, BlockListAllOutput } from './all';
+export { all, BlocklistAllOutput } from './all';
 export {
   blockContact,
-  BlockContactInput,
-  BlockContactOutput,
+  BlocklistBlockContactInput,
+  BlocklistBlockContactOutput,
 } from './blockContact';
-export { isBlocked, IsBlockedInput, IsBlockedOutput } from './isBlocked';
 export {
+  BlocklistIsBlockedInput,
+  BlocklistIsBlockedOutput,
+  isBlocked,
+} from './isBlocked';
+export {
+  BlocklistUnblockContactInput,
+  BlocklistUnblockContactOutput,
   unblockContact,
-  UnblockContactInput,
-  UnblockContactOutput,
 } from './unblockContact';

@@ -23,21 +23,23 @@ import { SANITIZED_VERSION_STR } from '../../whatsapp/contants';
 import * as wa_functions from '../../whatsapp/functions';
 import { isBlocked } from './isBlocked';
 
-export const blockContactSchema = z.object({
+const blocklistBlockContactSchema = z.object({
   chatId: z.string(),
 });
 
-export type BlockContactInput = z.infer<typeof blockContactSchema>;
+export type BlocklistBlockContactInput = z.infer<
+  typeof blocklistBlockContactSchema
+>;
 
-export type BlockContactOutput = {
+export type BlocklistBlockContactOutput = {
   wid: Wid;
   isBlocked: boolean;
 };
 
 export async function blockContact(
-  params: BlockContactInput
-): Promise<BlockContactOutput> {
-  const { chatId } = blockContactSchema.parse(params);
+  params: BlocklistBlockContactInput
+): Promise<BlocklistBlockContactOutput> {
+  const { chatId } = blocklistBlockContactSchema.parse(params);
 
   const wid = assertWid(chatId);
 
