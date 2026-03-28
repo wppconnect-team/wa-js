@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,26 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertGetChat } from '../../assert';
 import { WPPError } from '../../util';
-import { GroupMetadataStore, Wid } from '../../whatsapp';
+import { ChatModel, GroupMetadataStore } from '../../whatsapp';
 
-export async function ensureGroup(groupId: string | Wid, checkIsAdmin = false) {
+const groupEnsureGroupSchema = z.object({
+  groupId: z.string(),
+  checkIsAdmin: z.boolean().optional(),
+});
+
+export type GroupEnsureGroupInput = z.infer<typeof groupEnsureGroupSchema>;
+export type GroupEnsureGroupOutput = ChatModel;
+
+export async function ensureGroup(
+  params: GroupEnsureGroupInput
+): Promise<GroupEnsureGroupOutput> {
+  const { groupId, checkIsAdmin = false } =
+    groupEnsureGroupSchema.parse(params);
+
   const groupChat = assertGetChat(groupId);
 
   if (!groupChat.id.isGroup()) {

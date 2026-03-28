@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,33 @@
  * limitations under the License.
  */
 
-import { functions, Wid } from '../../whatsapp';
+import { z } from 'zod';
+
+import { functions } from '../../whatsapp';
 import { ensureGroup } from './';
+
+const groupRemoveIconSchema = z.object({
+  groupId: z.string(),
+});
+
+export type GroupRemoveIconInput = z.infer<typeof groupRemoveIconSchema>;
+export type GroupRemoveIconOutput = boolean;
 
 /**
  * Remove the group icon (group profile picture)
  *
  * @example
  * ```javascript
- * await WPP.group.removeIcon('[group@g.us]');
+ * await WPP.group.removeIcon({ groupId: '[group@g.us]' });
  * ```
  *
  * @category Group
  */
-export async function removeIcon(groupId: string | Wid): Promise<boolean> {
-  const groupChat = await ensureGroup(groupId);
+export async function removeIcon(
+  params: GroupRemoveIconInput
+): Promise<GroupRemoveIconOutput> {
+  const { groupId } = groupRemoveIconSchema.parse(params);
+  const groupChat = await ensureGroup({ groupId });
 
   const result = await functions.requestDeletePicture(groupChat.id);
 

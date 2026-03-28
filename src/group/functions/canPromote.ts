@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,28 +14,37 @@
  * limitations under the License.
  */
 
-import { Wid } from '../../whatsapp';
+import { z } from 'zod';
+
 import { ensureGroupAndParticipants } from './';
+
+const groupCanPromoteSchema = z.object({
+  groupId: z.string(),
+  participantsIds: z.array(z.string()),
+});
+
+export type GroupCanPromoteInput = z.infer<typeof groupCanPromoteSchema>;
+export type GroupCanPromoteOutput = boolean;
 
 /**
  * Check if your account is allowed to promote participants
  *
  * @example
  * ```javascript
- * await WPP.group.canPromote('group@g.us');
+ * await WPP.group.canPromote({ groupId: 'group@g.us', participantsIds: ['number@c.us'] });
  * console.log(result);
  * ```
  *
  * @category Group
  */
 export async function canPromote(
-  groupId: string | Wid,
-  participantsIds: (string | Wid) | (string | Wid)[]
-) {
-  const { groupChat, participants } = await ensureGroupAndParticipants(
+  params: GroupCanPromoteInput
+): Promise<GroupCanPromoteOutput> {
+  const { groupId, participantsIds } = groupCanPromoteSchema.parse(params);
+  const { groupChat, participants } = await ensureGroupAndParticipants({
     groupId,
-    participantsIds
-  );
+    participantsIds,
+  });
 
   return participants.every((p) =>
     groupChat.groupMetadata!.participants.canPromote(p)

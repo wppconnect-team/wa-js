@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,28 +14,37 @@
  * limitations under the License.
  */
 
-import { Wid } from '../../whatsapp';
+import { z } from 'zod';
+
 import { ensureGroupAndParticipants } from './';
+
+const groupCanRemoveSchema = z.object({
+  groupId: z.string(),
+  participantsIds: z.array(z.string()),
+});
+
+export type GroupCanRemoveInput = z.infer<typeof groupCanRemoveSchema>;
+export type GroupCanRemoveOutput = boolean;
 
 /**
  * Check if your account is allowed to remove participants
  *
  * @example
  * ```javascript
- * const result = await WPP.group.canRemove('group@g.us');
+ * const result = await WPP.group.canRemove({ groupId: 'group@g.us', participantsIds: ['number@c.us'] });
  * console.log(result);
  * ```
  *
  * @category Group
  */
 export async function canRemove(
-  groupId: string | Wid,
-  participantsIds: (string | Wid) | (string | Wid)[]
-) {
-  const { groupChat, participants } = await ensureGroupAndParticipants(
+  params: GroupCanRemoveInput
+): Promise<GroupCanRemoveOutput> {
+  const { groupId, participantsIds } = groupCanRemoveSchema.parse(params);
+  const { groupChat, participants } = await ensureGroupAndParticipants({
     groupId,
-    participantsIds
-  );
+    participantsIds,
+  });
 
   return participants.every((p) =>
     groupChat.groupMetadata!.participants.canRemove(p)

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,10 @@
  */
 
 import { compare } from 'compare-versions';
+import { z } from 'zod';
 
 import { createWid, WPPError } from '../../util';
-import { ContactStore, functions, ParticipantModel, Wid } from '../../whatsapp';
+import { ContactStore, functions, ParticipantModel } from '../../whatsapp';
 import { ensureGroupAndParticipants } from './ensureGroupAndParticipants';
 
 declare global {
@@ -37,6 +38,24 @@ const messageCodes: {
   421: 'Member not added, awaiting approval!',
 };
 
+const groupAddParticipantsSchema = z.object({
+  groupId: z.string(),
+  participantsIds: z.union([z.string(), z.array(z.string())]),
+});
+
+export type GroupAddParticipantsInput = z.infer<
+  typeof groupAddParticipantsSchema
+>;
+export type GroupAddParticipantsOutput = {
+  [key: `${number}@c.us`]: {
+    wid: string;
+    code: number;
+    message: string;
+    invite_code: string | null;
+    invite_code_exp: number | null;
+  };
+};
+
 /**
  * Add one or more participants to a group
  *
@@ -44,7 +63,7 @@ const messageCodes: {
  *
  * @example
  * ```javascript
- * const result = await WPP.group.addParticipants('[group@g.us]', [number@c.us]);
+ * const result = await WPP.group.addParticipants({ groupId: '[group@g.us]', participantsIds: 'number@c.us' });
  *
  * // Get participant result:
  * console.log(result['123@c.us'].code);
@@ -65,22 +84,14 @@ const messageCodes: {
  * @category Group
  */
 export async function addParticipants(
-  groupId: string | Wid,
-  participantsIds: (string | Wid) | (string | Wid)[]
-): Promise<{
-  [key: `${number}@c.us`]: {
-    wid: string;
-    code: number;
-    message: string;
-    invite_code: string | null;
-    invite_code_exp: number | null;
-  };
-}> {
-  const { groupChat, participants } = await ensureGroupAndParticipants(
+  params: GroupAddParticipantsInput
+): Promise<GroupAddParticipantsOutput> {
+  const { groupId, participantsIds } = groupAddParticipantsSchema.parse(params);
+  const { groupChat, participants } = await ensureGroupAndParticipants({
     groupId,
     participantsIds,
-    true
-  );
+    createIfNotExists: true,
+  });
 
   let members: any[] = [];
 
@@ -115,15 +126,7 @@ export async function addParticipants(
     );
   }
 
-  const data: {
-    [key: `${number}@c.us`]: {
-      wid: string;
-      code: number;
-      message: string;
-      invite_code: string | null;
-      invite_code_exp: number | null;
-    };
-  } = {};
+  const data: GroupAddParticipantsOutput = {};
 
   for (const r of result.participants || []) {
     let userWid: string | null = null;

@@ -15,7 +15,10 @@
  */
 
 import { get } from '../../chat';
+import { ChatModel } from '../../whatsapp';
 import { queryAllGroups } from '../../whatsapp/functions';
+
+export type GroupGetAllGroupsOutput = ChatModel[];
 
 /**
  * Get all groups
@@ -27,11 +30,15 @@ import { queryAllGroups } from '../../whatsapp/functions';
  *
  * @category Group
  */
-export async function getAllGroups() {
+export async function getAllGroups(): Promise<GroupGetAllGroupsOutput> {
   const groupsArr = [];
   const groups = await queryAllGroups();
   for (const grp of groups) {
-    groupsArr.push(get(grp.id));
+    const g = get(grp.id);
+
+    if (g) {
+      groupsArr.push(g);
+    }
   }
   return groupsArr;
 }

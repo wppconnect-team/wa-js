@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
 import * as Chat from '../../chat';
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
@@ -22,6 +24,25 @@ import { WPPError } from '../../util';
 import { ContactStore, Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
 
+const groupCreateSchema = z.object({
+  groupName: z.string(),
+  participantsIds: z.array(z.string()),
+  parentGroup: z.string().optional(),
+});
+
+export type GroupCreateInput = z.infer<typeof groupCreateSchema>;
+export type GroupCreateOutput = {
+  gid: Wid;
+  participants: {
+    [key: `${number}@c.us`]: {
+      wid: string;
+      code: number;
+      invite_code: string | null;
+      invite_code_exp: number | null;
+    };
+  };
+};
+
 /**
  * Create a new group
  *
@@ -29,7 +50,7 @@ import * as wa_functions from '../../whatsapp/functions';
  *
  * @example
  * ```javascript
- * const result = await WPP.group.create('Test Group', ['number@c.us']);
+ * const result = await WPP.group.create({ groupName: 'Test Group', participantsIds: ['number@c.us'] });
  *
  * console.log(result.gid.toString()); // Get the group ID
  *
@@ -49,29 +70,16 @@ import * as wa_functions from '../../whatsapp/functions';
  * console.log(link);
  *
  * // Create a Subgroup for a community
- * const result = await WPP.group.create('Test Group', ['number@c.us'], 'communit@g.us');
+ * const result = await WPP.group.create({ groupName: 'Test Group', participantsIds: ['number@c.us'], parentGroup: 'community@g.us' });
  * ```
  *
  * @category Group
  */
 export async function create(
-  groupName: string,
-  participantsIds: (string | Wid) | (string | Wid)[],
-  parentGroup: string | Wid
-): Promise<{
-  gid: Wid;
-  participants: {
-    [key: `${number}@c.us`]: {
-      wid: string;
-      code: number;
-      invite_code: string | null;
-      invite_code_exp: number | null;
-    };
-  };
-}> {
-  if (!Array.isArray(participantsIds)) {
-    participantsIds = [participantsIds];
-  }
+  params: GroupCreateInput
+): Promise<GroupCreateOutput> {
+  const { groupName, participantsIds, parentGroup } =
+    groupCreateSchema.parse(params);
 
   const participantsWids = participantsIds.map(assertWid);
 
@@ -89,7 +97,7 @@ export async function create(
       continue;
     }
 
-    const info = await Contact.queryExists(wid);
+    const info = await Contact.queryExists({ chatId: wid._serialized });
 
     if (!info) {
       throw new WPPError('participant_not_exists', 'Participant not exists', {
@@ -114,7 +122,7 @@ export async function create(
   );
 
   if (result.gid) {
-    const chatGroup = await Chat.find(result.gid);
+    const chatGroup = await Chat.find({ chatId: result.gid.toString() });
 
     // Wait group meta to be not stale
     if (chatGroup.groupMetadata?.stale !== false) {
@@ -129,14 +137,7 @@ export async function create(
     }
   }
 
-  const participants: {
-    [key: `${number}@c.us`]: {
-      wid: string;
-      code: number;
-      invite_code: string | null;
-      invite_code_exp: number | null;
-    };
-  } = {};
+  const participants: GroupCreateOutput['participants'] = {};
 
   for (const r of result.participants || []) {
     let userWid: string | null = null;

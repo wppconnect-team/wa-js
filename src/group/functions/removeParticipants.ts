@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,23 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
 import { WPPError } from '../../util';
-import { ParticipantModel, Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
 import { ensureGroup } from './ensureGroup';
 import { ensureGroupAndParticipants } from './ensureGroupAndParticipants';
+
+const groupRemoveParticipantsSchema = z.object({
+  groupId: z.string(),
+  participantsIds: z.array(z.string()),
+});
+
+export type GroupRemoveParticipantsInput = z.infer<
+  typeof groupRemoveParticipantsSchema
+>;
+export type GroupRemoveParticipantsOutput = void;
 
 /**
  * Remove participants of a group
@@ -27,36 +38,40 @@ import { ensureGroupAndParticipants } from './ensureGroupAndParticipants';
  * @example
  * ```javascript
  * // One member
- * await WPP.group.removeParticipants('123456@g.us', '123456@c.us');
+ * await WPP.group.removeParticipants({ groupId: '123456@g.us', participantsIds: ['123456@c.us'] });
  *
  * // More than one member
- * await WPP.group.removeParticipants('123456@g.us', ['123456@c.us','123456@c.us']);
+ * await WPP.group.removeParticipants({ groupId: '123456@g.us', participantsIds: ['123456@c.us','123456@c.us'] });
  * ```
  *
  * @category Group
  */
 export async function removeParticipants(
-  groupId: string | Wid,
-  participantsIds: (string | Wid) | (string | Wid)[]
-): Promise<void> {
-  if (!Array.isArray(participantsIds)) {
-    participantsIds = [participantsIds];
-  }
-  const groupChat = await ensureGroup(groupId, true);
-  const validWids: Wid[] = [];
+  params: GroupRemoveParticipantsInput
+): Promise<GroupRemoveParticipantsOutput> {
+  const { groupId, participantsIds } =
+    groupRemoveParticipantsSchema.parse(params);
+
+  const groupChat = await ensureGroup({ groupId, checkIsAdmin: true });
+  const validParticipantStrings: string[] = [];
   const wids = participantsIds.map(assertWid);
 
-  wids.map<ParticipantModel | any>((wid) => {
+  wids.forEach((wid) => {
     const participant = groupChat.groupMetadata?.participants.get(wid);
-    if (participant) validWids.push(wid);
+    if (participant) validParticipantStrings.push(wid.toString());
   });
-  if (validWids.length === 0)
+
+  if (validParticipantStrings.length === 0)
     throw new WPPError(
       'not_valid_group_participants',
       `No valid participants found for the group ${groupId}`
     );
 
-  const { participants } = await ensureGroupAndParticipants(groupId, validWids);
+  const { participants } = await ensureGroupAndParticipants({
+    groupId,
+    participantsIds: validParticipantStrings,
+  });
+
   if (
     participants.some(
       (p) => !groupChat.groupMetadata?.participants.canRemove(p)

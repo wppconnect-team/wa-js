@@ -14,35 +14,127 @@
  * limitations under the License.
  */
 
-export { addParticipants } from './addParticipants';
-export { approve } from './approve';
-export { canAdd } from './canAdd';
-export { canDemote } from './canDemote';
-export { canPromote } from './canPromote';
-export { canRemove } from './canRemove';
-export { create } from './create';
-export { demoteParticipants } from './demoteParticipants';
-export { ensureGroup } from './ensureGroup';
-export { ensureGroupAndParticipants } from './ensureGroupAndParticipants';
-export { getAllGroups } from './getAllGroups';
-export { getGroupInfoFromInviteCode } from './getGroupInfoFromInviteCode';
-export { getGroupSizeLimit } from './getGroupSizeLimit';
-export { getInviteCode } from './getInviteCode';
-export { getMembershipRequests } from './getMembershipRequests';
-export { getParticipants } from './getParticipants';
-export { getPastParticipants } from './getPastParticipants';
-export { iAmAdmin } from './iAmAdmin';
-export { iAmMember } from './iAmMember';
-export { iAmRestrictedMember } from './iAmRestrictedMember';
-export { iAmSuperAdmin } from './iAmSuperAdmin';
-export { join } from './join';
-export { leave } from './leave';
-export { promoteParticipants } from './promoteParticipants';
-export { reject } from './reject';
-export { removeIcon } from './removeIcon';
-export { removeParticipants } from './removeParticipants';
-export { revokeInviteCode } from './revokeInviteCode';
-export { setDescription } from './setDescription';
-export { setIcon } from './setIcon';
-export { GroupProperty, setProperty } from './setProperty';
-export { setSubject } from './setSubject';
+export {
+  addParticipants,
+  GroupAddParticipantsInput,
+  GroupAddParticipantsOutput,
+} from './addParticipants';
+export { approve, GroupApproveInput, GroupApproveOutput } from './approve';
+export { canAdd, GroupCanAddInput, GroupCanAddOutput } from './canAdd';
+export {
+  canDemote,
+  GroupCanDemoteInput,
+  GroupCanDemoteOutput,
+} from './canDemote';
+export {
+  canPromote,
+  GroupCanPromoteInput,
+  GroupCanPromoteOutput,
+} from './canPromote';
+export {
+  canRemove,
+  GroupCanRemoveInput,
+  GroupCanRemoveOutput,
+} from './canRemove';
+export { create, GroupCreateInput, GroupCreateOutput } from './create';
+export {
+  demoteParticipants,
+  GroupDemoteParticipantsInput,
+  GroupDemoteParticipantsOutput,
+} from './demoteParticipants';
+export {
+  ensureGroup,
+  GroupEnsureGroupInput,
+  GroupEnsureGroupOutput,
+} from './ensureGroup';
+export {
+  ensureGroupAndParticipants,
+  GroupEnsureGroupAndParticipantsInput,
+  GroupEnsureGroupAndParticipantsOutput,
+} from './ensureGroupAndParticipants';
+export { getAllGroups, GroupGetAllGroupsOutput } from './getAllGroups';
+export {
+  getGroupInfoFromInviteCode,
+  GroupGetGroupInfoFromInviteCodeInput,
+  GroupGetGroupInfoFromInviteCodeOutput,
+} from './getGroupInfoFromInviteCode';
+export {
+  getGroupSizeLimit,
+  GroupGetGroupSizeLimitOutput,
+} from './getGroupSizeLimit';
+export {
+  getInviteCode,
+  GroupGetInviteCodeInput,
+  GroupGetInviteCodeOutput,
+} from './getInviteCode';
+export {
+  getMembershipRequests,
+  GroupGetMembershipRequestsInput,
+  GroupGetMembershipRequestsOutput,
+} from './getMembershipRequests';
+export {
+  getParticipants,
+  GroupGetParticipantsInput,
+  GroupGetParticipantsOutput,
+} from './getParticipants';
+export {
+  getPastParticipants,
+  GroupGetPastParticipantsInput,
+  GroupGetPastParticipantsOutput,
+} from './getPastParticipants';
+export { GroupIAmAdminInput, GroupIAmAdminOutput, iAmAdmin } from './iAmAdmin';
+export {
+  GroupIAmMemberInput,
+  GroupIAmMemberOutput,
+  iAmMember,
+} from './iAmMember';
+export {
+  GroupIAmRestrictedMemberInput,
+  GroupIAmRestrictedMemberOutput,
+  iAmRestrictedMember,
+} from './iAmRestrictedMember';
+export {
+  GroupIAmSuperAdminInput,
+  GroupIAmSuperAdminOutput,
+  iAmSuperAdmin,
+} from './iAmSuperAdmin';
+export { GroupJoinInput, GroupJoinOutput, join } from './join';
+export { GroupLeaveInput, GroupLeaveOutput, leave } from './leave';
+export {
+  GroupPromoteParticipantsInput,
+  GroupPromoteParticipantsOutput,
+  promoteParticipants,
+} from './promoteParticipants';
+export { GroupRejectInput, GroupRejectOutput, reject } from './reject';
+export {
+  GroupRemoveIconInput,
+  GroupRemoveIconOutput,
+  removeIcon,
+} from './removeIcon';
+export {
+  GroupRemoveParticipantsInput,
+  GroupRemoveParticipantsOutput,
+  removeParticipants,
+} from './removeParticipants';
+export {
+  GroupRevokeInviteCodeInput,
+  GroupRevokeInviteCodeOutput,
+  revokeInviteCode,
+} from './revokeInviteCode';
+export {
+  GroupSetDescriptionInput,
+  GroupSetDescriptionOutput,
+  setDescription,
+} from './setDescription';
+export { GroupSetIconInput, GroupSetIconOutput, setIcon } from './setIcon';
+export {
+  GroupProperty,
+  GroupSetPropertyInput,
+  GroupSetPropertyOutput,
+  setProperty,
+} from './setProperty';
+export {
+  GroupSetSubjectInput,
+  GroupSetSubjectOutput,
+  setSubject,
+} from './setSubject';

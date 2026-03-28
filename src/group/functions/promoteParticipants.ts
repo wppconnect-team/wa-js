@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,21 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
-import { Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
 import { ensureGroupAndParticipants } from './ensureGroupAndParticipants';
+
+const groupPromoteParticipantsSchema = z.object({
+  groupId: z.string(),
+  participantsIds: z.array(z.string()),
+});
+
+export type GroupPromoteParticipantsInput = z.infer<
+  typeof groupPromoteParticipantsSchema
+>;
+export type GroupPromoteParticipantsOutput = void;
 
 /**
  * Promote group member to admin
@@ -25,22 +36,23 @@ import { ensureGroupAndParticipants } from './ensureGroupAndParticipants';
  * @example
  * ```javascript
  * // One member
- * await WPP.group.promoteParticipants('123456@g.us', '123456@c.us');
+ * await WPP.group.promoteParticipants({ groupId: '123456@g.us', participantsIds: ['123456@c.us'] });
  *
  * // More than one member
- * await WPP.group.promoteParticipants('123456@g.us', ['123456@c.us','123456@c.us']);
+ * await WPP.group.promoteParticipants({ groupId: '123456@g.us', participantsIds: ['123456@c.us','123456@c.us'] });
  * ```
  *
  * @category Group
  */
 export async function promoteParticipants(
-  groupId: string | Wid,
-  participantsIds: (string | Wid) | (string | Wid)[]
-): Promise<void> {
-  const { groupChat, participants } = await ensureGroupAndParticipants(
+  params: GroupPromoteParticipantsInput
+): Promise<GroupPromoteParticipantsOutput> {
+  const { groupId, participantsIds } =
+    groupPromoteParticipantsSchema.parse(params);
+  const { groupChat, participants } = await ensureGroupAndParticipants({
     groupId,
-    participantsIds
-  );
+    participantsIds,
+  });
 
   if (
     participants.some(

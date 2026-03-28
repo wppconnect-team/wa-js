@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,34 +14,43 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { blobToBase64, convertToFile, resizeImage, WPPError } from '../../util';
-import { Wid } from '../../whatsapp';
 import { sendSetPicture } from '../../whatsapp/functions';
 import { ensureGroup, iAmRestrictedMember } from './';
+
+const groupSetIconSchema = z.object({
+  groupId: z.string(),
+  content: z.string(),
+});
+
+export type GroupSetIconInput = z.infer<typeof groupSetIconSchema>;
+export type GroupSetIconOutput = {
+  eurl: string;
+  status: number;
+  tag: string;
+  token: string;
+  _duplicate: boolean;
+};
 
 /**
  * Set the group icon (group profile picture)
  *
  * @example
  * ```javascript
- * await WPP.group.setIcon('[group@g.us]', 'data:image/jpeg;base64,.....');
+ * await WPP.group.setIcon({ groupId: '[group@g.us]', content: 'data:image/jpeg;base64,.....' });
  * ```
  *
  * @category Group
  */
 export async function setIcon(
-  groupId: string | Wid,
-  content: string
-): Promise<{
-  eurl: string;
-  status: number;
-  tag: string;
-  token: string;
-  _duplicate: boolean;
-}> {
-  const groupChat = await ensureGroup(groupId);
+  params: GroupSetIconInput
+): Promise<GroupSetIconOutput> {
+  const { groupId, content } = groupSetIconSchema.parse(params);
+  const groupChat = await ensureGroup({ groupId });
 
-  if (await iAmRestrictedMember(groupId)) {
+  if (await iAmRestrictedMember({ groupId })) {
     throw new WPPError(
       'group_you_are_restricted_member',
       `You are a restricted member in ${groupChat.id._serialized}`

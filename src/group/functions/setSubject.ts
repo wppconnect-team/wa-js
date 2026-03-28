@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,35 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
-import { Wid } from '../../whatsapp';
 import { sendSetGroupSubject } from '../../whatsapp/functions';
 import { ensureGroup } from './';
+
+const groupSetSubjectSchema = z.object({
+  groupId: z.string(),
+  subject: z.string(),
+});
+
+export type GroupSetSubjectInput = z.infer<typeof groupSetSubjectSchema>;
+export type GroupSetSubjectOutput = boolean;
 
 /**
  * Define the group subject
  *
  * @example
  * ```javascript
- * await WPP.group.setSubject('[group-id]@g.us', 'new group subject');
+ * await WPP.group.setSubject({ groupId: '[group-id]@g.us', subject: 'new group subject' });
  * ```
  *
  * @category Group
  */
-export async function setSubject(groupId: string | Wid, subject: string) {
-  const groupChat = await ensureGroup(groupId);
+export async function setSubject(
+  params: GroupSetSubjectInput
+): Promise<GroupSetSubjectOutput> {
+  const { groupId, subject } = groupSetSubjectSchema.parse(params);
+  const groupChat = await ensureGroup({ groupId });
 
   if (!groupChat.groupMetadata?.canSetSubject()) {
     throw new WPPError(

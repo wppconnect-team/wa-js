@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,34 @@
  * limitations under the License.
  */
 
-import { Wid } from '../../whatsapp';
+import { z } from 'zod';
+
 import { sendQueryGroupInviteCode } from '../../whatsapp/functions';
 import { ensureGroup } from './';
+
+const groupGetInviteCodeSchema = z.object({
+  groupId: z.string(),
+});
+
+export type GroupGetInviteCodeInput = z.infer<typeof groupGetInviteCodeSchema>;
+export type GroupGetInviteCodeOutput = string;
 
 /**
  * Get the currend invite code of the group
  *
  * @example
  * ```javascript
- * const code = WPP.group.getInviteCode('[group-id]@g.us');
+ * const code = WPP.group.getInviteCode({ groupId: '[group-id]@g.us' });
  * const link = 'https://chat.whatsapp.com/' + code;
  * ```
  *
  * @category Group
  */
-export async function getInviteCode(groupId: string | Wid) {
-  const groupChat = await ensureGroup(groupId, true);
+export async function getInviteCode(
+  params: GroupGetInviteCodeInput
+): Promise<GroupGetInviteCodeOutput> {
+  const { groupId } = groupGetInviteCodeSchema.parse(params);
+  const groupChat = await ensureGroup({ groupId, checkIsAdmin: true });
 
   return await sendQueryGroupInviteCode(groupChat.id);
 }

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,21 @@
  * limitations under the License.
  */
 
-import { Wid } from '../../whatsapp';
+import { z } from 'zod';
+
 import { ensureGroup } from './';
 
-export async function iAmMember(groupId: string | Wid) {
-  const groupChat = await ensureGroup(groupId);
+const groupIAmMemberSchema = z.object({
+  groupId: z.string(),
+});
+
+export type GroupIAmMemberInput = z.infer<typeof groupIAmMemberSchema>;
+export type GroupIAmMemberOutput = boolean;
+
+export async function iAmMember(
+  params: GroupIAmMemberInput
+): Promise<GroupIAmMemberOutput> {
+  const { groupId } = groupIAmMemberSchema.parse(params);
+  const groupChat = await ensureGroup({ groupId });
   return groupChat.groupMetadata!.participants.iAmMember();
 }

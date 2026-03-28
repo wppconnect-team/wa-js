@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,29 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { sendJoinGroupViaInvite } from '../../whatsapp/functions';
+
+const groupJoinSchema = z.object({
+  inviteCode: z.string(),
+});
+
+export type GroupJoinInput = z.infer<typeof groupJoinSchema>;
+export type GroupJoinOutput = { id: string };
 
 /**
  * Join in a group from an invite code.
  *
  * @example
  * ```javascript
- * await WPP.group.join('abcde....');
+ * await WPP.group.join({ inviteCode: 'abcde....' });
  * ```
  *
  * @category Group
  */
-export async function join(inviteCode: string) {
+export async function join(params: GroupJoinInput): Promise<GroupJoinOutput> {
+  let { inviteCode } = groupJoinSchema.parse(params);
   inviteCode = inviteCode.replace('chat.whatsapp.com/', '');
   inviteCode = inviteCode.replace('invite/', '');
   inviteCode = inviteCode.replace('https://', '');

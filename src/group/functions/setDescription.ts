@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,40 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
-import { Wid } from '../../whatsapp';
 import {
   randomMessageId,
   sendSetGroupDescription,
 } from '../../whatsapp/functions';
 import { ensureGroup } from './';
 
+const groupSetDescriptionSchema = z.object({
+  groupId: z.string(),
+  description: z.string(),
+});
+
+export type GroupSetDescriptionInput = z.infer<
+  typeof groupSetDescriptionSchema
+>;
+export type GroupSetDescriptionOutput = true;
+
 /**
  * Define the group description
  *
  * @example
  * ```javascript
- * await WPP.group.setDescription('[group-id]@g.us', 'new group description');
+ * await WPP.group.setDescription({ groupId: '[group-id]@g.us', description: 'new group description' });
  * ```
  *
  * @category Group
  */
 export async function setDescription(
-  groupId: string | Wid,
-  description: string
-) {
-  const groupChat = await ensureGroup(groupId);
+  params: GroupSetDescriptionInput
+): Promise<GroupSetDescriptionOutput> {
+  const { groupId, description } = groupSetDescriptionSchema.parse(params);
+  const groupChat = await ensureGroup({ groupId });
 
   if (!groupChat.groupMetadata?.canSetDescription()) {
     throw new WPPError(

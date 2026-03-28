@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,32 @@
  * limitations under the License.
  */
 
-import { Wid } from '../../whatsapp';
+import { z } from 'zod';
+
 import { ensureGroup } from './';
+
+const groupCanAddSchema = z.object({
+  groupId: z.string(),
+});
+
+export type GroupCanAddInput = z.infer<typeof groupCanAddSchema>;
+export type GroupCanAddOutput = boolean;
 
 /**
  * Check if your account is allowed to add new participants
  *
  * @example
  * ```javascript
- * const result = await WPP.group.canAdd('group@g.us');
+ * const result = await WPP.group.canAdd({ groupId: 'group@g.us' });
  * console.log(result);
  * ```
  *
  * @category Group
  */
-export async function canAdd(groupId: string | Wid) {
-  const groupChat = await ensureGroup(groupId);
+export async function canAdd(
+  params: GroupCanAddInput
+): Promise<GroupCanAddOutput> {
+  const { groupId } = groupCanAddSchema.parse(params);
+  const groupChat = await ensureGroup({ groupId });
   return groupChat.groupMetadata!.participants.canAdd();
 }

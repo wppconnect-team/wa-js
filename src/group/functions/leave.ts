@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,33 @@
  * limitations under the License.
  */
 
-import { Wid } from '../../whatsapp';
+import { z } from 'zod';
+
 import { sendExitGroup } from '../../whatsapp/functions';
 import { ensureGroup } from '.';
+
+const groupLeaveSchema = z.object({
+  groupId: z.string(),
+});
+
+export type GroupLeaveInput = z.infer<typeof groupLeaveSchema>;
+export type GroupLeaveOutput = any;
 
 /**
  * Leave from a group.
  *
  * @example
  * ```javascript
- * await WPP.group.leave('[number]@g.us');
+ * await WPP.group.leave({ groupId: '[number]@g.us' });
  * ```
  *
  * @category Group
  */
-export async function leave(groupId: string | Wid) {
-  const groupChat = await ensureGroup(groupId);
+export async function leave(
+  params: GroupLeaveInput
+): Promise<GroupLeaveOutput> {
+  const { groupId } = groupLeaveSchema.parse(params);
+  const groupChat = await ensureGroup({ groupId });
 
   return await sendExitGroup(groupChat);
 }

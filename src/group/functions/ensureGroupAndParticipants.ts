@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,37 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
 import { WPPError } from '../../util';
-import { ParticipantModel, Wid } from '../../whatsapp';
+import { ChatModel, ParticipantModel } from '../../whatsapp';
 import { ensureGroup } from '.';
 
-export async function ensureGroupAndParticipants(
-  groupId: string | Wid,
-  participantsIds: (string | Wid) | (string | Wid)[],
-  createIfNotExists = false
-) {
-  const groupChat = await ensureGroup(groupId, true);
+const groupEnsureGroupAndParticipantsSchema = z.object({
+  groupId: z.string(),
+  participantsIds: z.array(z.string()),
+  createIfNotExists: z.boolean().optional(),
+});
 
-  if (!Array.isArray(participantsIds)) {
-    participantsIds = [participantsIds];
-  }
+export type GroupEnsureGroupAndParticipantsInput = z.infer<
+  typeof groupEnsureGroupAndParticipantsSchema
+>;
+export type GroupEnsureGroupAndParticipantsOutput = {
+  groupChat: ChatModel;
+  participants: ParticipantModel[];
+};
+
+export async function ensureGroupAndParticipants(
+  params: GroupEnsureGroupAndParticipantsInput
+): Promise<GroupEnsureGroupAndParticipantsOutput> {
+  const {
+    groupId,
+    participantsIds,
+    createIfNotExists = false,
+  } = groupEnsureGroupAndParticipantsSchema.parse(params);
+
+  const groupChat = await ensureGroup({ groupId, checkIsAdmin: true });
 
   const wids = participantsIds.map(assertWid);
 
@@ -44,7 +60,7 @@ export async function ensureGroupAndParticipants(
     if (!participant) {
       throw new WPPError(
         'group_participant_not_found',
-        `Group ${groupChat.id._serialized}: Participant '${participant}' not found`
+        `Group ${groupChat.id._serialized}: Participant '${wid._serialized}' not found`
       );
     }
 

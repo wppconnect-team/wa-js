@@ -16,6 +16,8 @@
 
 import { functions } from '../../whatsapp';
 
+export type GroupGetGroupSizeLimitOutput = number;
+
 /**
  * Get the max number of participants for a group
  *
@@ -27,7 +29,7 @@ import { functions } from '../../whatsapp';
  *
  * @category Group
  */
-export async function getGroupSizeLimit() {
+export async function getGroupSizeLimit(): Promise<GroupGetGroupSizeLimitOutput> {
   const limit = functions.getGroupSizeLimit();
 
   return limit;

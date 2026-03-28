@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,30 +14,43 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
 import { GroupMetadataStore, Wid } from '../../whatsapp';
 import { getMembershipApprovalRequests } from '../../whatsapp/functions';
+
+const groupGetMembershipRequestsSchema = z.object({
+  groupId: z.string(),
+});
+
+export type GroupGetMembershipRequestsInput = z.infer<
+  typeof groupGetMembershipRequestsSchema
+>;
+export type GroupGetMembershipRequestsOutput = {
+  addedBy: Wid;
+  id: Wid;
+  parentGroupId?: Wid;
+  requestMethod: 'InviteLink' | 'LinkedGroupJoin' | 'NonAdminAdd';
+  t: number;
+}[];
 
 /**
  * Retrieve a lista of a membership approval requests
  *
  * @example
  * ```javascript
- * await WPP.group.getMembershipRequests(12345645@g.us);
+ * await WPP.group.getMembershipRequests({ groupId: '12345645@g.us' });
  * ```
  *
  * @category Group
  */
-export async function getMembershipRequests(groupId: string | Wid): Promise<
-  {
-    addedBy: Wid;
-    id: Wid;
-    parentGroupId?: Wid;
-    requestMethod: 'InviteLink' | 'LinkedGroupJoin' | 'NonAdminAdd';
-    t: number;
-  }[]
-> {
-  groupId = assertWid(groupId);
+export async function getMembershipRequests(
+  params: GroupGetMembershipRequestsInput
+): Promise<GroupGetMembershipRequestsOutput> {
+  const { groupId: rawGroupId } =
+    groupGetMembershipRequestsSchema.parse(params);
+  const groupId = assertWid(rawGroupId);
   await GroupMetadataStore.find(groupId);
   return await getMembershipApprovalRequests(groupId);
 }

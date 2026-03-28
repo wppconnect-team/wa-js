@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,36 @@
  * limitations under the License.
  */
 
-import { Wid } from '../../whatsapp';
+import { z } from 'zod';
+
 import { sendRevokeGroupInviteCode } from '../../whatsapp/functions';
 import { ensureGroup } from '.';
+
+const groupRevokeInviteCodeSchema = z.object({
+  groupId: z.string(),
+});
+
+export type GroupRevokeInviteCodeInput = z.infer<
+  typeof groupRevokeInviteCodeSchema
+>;
+export type GroupRevokeInviteCodeOutput = string;
 
 /**
  * Revoke the current invite code and generate new one.
  *
  * @example
  * ```javascript
- * const code = WPP.group.revokeInviteCode('[group-id]@g.us');
+ * const code = WPP.group.revokeInviteCode({ groupId: '[group-id]@g.us' });
  * const link = 'https://chat.whatsapp.com/' + code;
  * ```
  *
  * @category Group
  */
-export async function revokeInviteCode(groupId: string | Wid) {
-  const groupChat = await ensureGroup(groupId, true);
+export async function revokeInviteCode(
+  params: GroupRevokeInviteCodeInput
+): Promise<GroupRevokeInviteCodeOutput> {
+  const { groupId } = groupRevokeInviteCodeSchema.parse(params);
+  const groupChat = await ensureGroup({ groupId, checkIsAdmin: true });
 
   return await sendRevokeGroupInviteCode(groupChat.id);
 }

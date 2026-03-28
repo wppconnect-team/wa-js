@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,34 +14,37 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
 import { WPPError } from '../../util';
 import { Wid } from '../../whatsapp';
 import { membershipApprovalRequestAction } from '../../whatsapp/functions';
+
+const groupApproveSchema = z.object({
+  groupId: z.string(),
+  membershipIds: z.array(z.string()),
+});
+
+export type GroupApproveInput = z.infer<typeof groupApproveSchema>;
+export type GroupApproveOutput = { error: any; wid: Wid }[];
 
 /**
  * Approve a membership request to group
  *
  * @example
  * ```javascript
- * await WPP.group.approve(12345645@g.us, 5554999999999@c.us);
+ * await WPP.group.approve({ groupId: '12345645@g.us', membershipIds: ['5554999999999@c.us'] });
  * ```
  *
  * @category Group
  */
 export async function approve(
-  groupId: string | Wid,
-  membershipIds: (string | Wid) | (string | Wid)[]
-): Promise<
-  {
-    error: any;
-    wid: Wid;
-  }[]
-> {
-  groupId = assertWid(groupId);
-  if (!Array.isArray(membershipIds)) {
-    membershipIds = [membershipIds];
-  }
+  params: GroupApproveInput
+): Promise<GroupApproveOutput> {
+  const { groupId: rawGroupId, membershipIds } =
+    groupApproveSchema.parse(params);
+  const groupId = assertWid(rawGroupId);
   const wids = membershipIds.map(assertWid);
 
   try {

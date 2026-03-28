@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,34 @@
  * limitations under the License.
  */
 
-import { Wid } from '../../whatsapp';
+import { z } from 'zod';
+
+import { ParticipantModel } from '../../whatsapp';
 import { ensureGroup } from './';
+
+const groupGetParticipantsSchema = z.object({
+  groupId: z.string(),
+});
+
+export type GroupGetParticipantsInput = z.infer<
+  typeof groupGetParticipantsSchema
+>;
+export type GroupGetParticipantsOutput = ParticipantModel[];
 
 /**
  * Get an array of participants of a group
  *
  * @example
  * ```javascript
- * WPP.group.getParticipants('[group-id]@g.us');
+ * WPP.group.getParticipants({ groupId: '[group-id]@g.us' });
  * ```
  *
  * @category Group
  */
-export async function getParticipants(groupId: string | Wid) {
-  const groupChat = await ensureGroup(groupId);
+export async function getParticipants(
+  params: GroupGetParticipantsInput
+): Promise<GroupGetParticipantsOutput> {
+  const { groupId } = groupGetParticipantsSchema.parse(params);
+  const groupChat = await ensureGroup({ groupId });
   return groupChat.groupMetadata!.participants.getModelsArray();
 }

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
-import { Wid } from '../../whatsapp';
 import { GROUP_SETTING_TYPE } from '../../whatsapp/enums';
 import { sendSetGroupProperty } from '../../whatsapp/functions';
 import { ensureGroup } from './';
@@ -26,44 +27,61 @@ export enum GroupProperty {
   RESTRICT = 'restrict',
 }
 
+const groupSetPropertySchema = z.object({
+  groupId: z.string(),
+  property: z.enum(GroupProperty),
+  value: z.union([
+    z.literal(0),
+    z.literal(1),
+    z.literal(86400),
+    z.literal(604800),
+    z.literal(7776000),
+    z.boolean(),
+  ]),
+});
+
+export type GroupSetPropertyInput = z.infer<typeof groupSetPropertySchema>;
+export type GroupSetPropertyOutput = true;
+
 /**
  * Set the group property
  *
  * @example
  * ```javascript
  * // Only admins can send message
- * await WPP.group.setProperty('[group-id]@g.us', 'announcement', true);
+ * await WPP.group.setProperty({ groupId: '[group-id]@g.us', property: 'announcement', value: true });
  *
  * // All can send message
- * await WPP.group.setProperty('[group-id]@g.us', 'announcement', false);
+ * await WPP.group.setProperty({ groupId: '[group-id]@g.us', property: 'announcement', value: false });
  *
  * // Disatble temporary messages
- * await WPP.group.setProperty('[group-id]@g.us', 'ephemeral', 0);
+ * await WPP.group.setProperty({ groupId: '[group-id]@g.us', property: 'ephemeral', value: 0 });
  *
  * // Enable temporary messages for 24 hours
- * await WPP.group.setProperty('[group-id]@g.us', 'ephemeral', 86400);
+ * await WPP.group.setProperty({ groupId: '[group-id]@g.us', property: 'ephemeral', value: 86400 });
  *
  * // Enable temporary messages for 7 days
- * await WPP.group.setProperty('[group-id]@g.us', 'ephemeral', 604800);
+ * await WPP.group.setProperty({ groupId: '[group-id]@g.us', property: 'ephemeral', value: 604800 });
  *
  * // Enable temporary messages for 90 days
- * await WPP.group.setProperty('[group-id]@g.us', 'ephemeral', 7776000);
+ * await WPP.group.setProperty({ groupId: '[group-id]@g.us', property: 'ephemeral', value: 7776000 });
  *
  * // Only admins can edit group properties
- * await WPP.group.setProperty('[group-id]@g.us', 'restrict', true);
+ * await WPP.group.setProperty({ groupId: '[group-id]@g.us', property: 'restrict', value: true });
  *
  * // All can edit group properties
- * await WPP.group.setProperty('[group-id]@g.us', 'restrict', false);
+ * await WPP.group.setProperty({ groupId: '[group-id]@g.us', property: 'restrict', value: false });
  * ```
  *
  * @category Group
  */
 export async function setProperty(
-  groupId: string | Wid,
-  property: GroupProperty,
-  value: 0 | 1 | 86400 | 604800 | 7776000 | boolean
-) {
-  const groupChat = await ensureGroup(groupId);
+  params: GroupSetPropertyInput
+): Promise<GroupSetPropertyOutput> {
+  const { groupId, property, value } = groupSetPropertySchema.parse(params);
+  const groupChat = await ensureGroup({ groupId });
+
+  let propertyValue = value;
 
   if (
     property !== GroupProperty.ANNOUNCEMENT &&
@@ -93,28 +111,28 @@ export async function setProperty(
 
   if (property === GroupProperty.EPHEMERAL) {
     if (typeof value === 'boolean' || value === 1) {
-      value = 604800;
+      propertyValue = 604800;
     }
 
     // If the value is different from those allowed
-    if (![0, 86400, 604800, 7776000].includes(value)) {
+    if (![0, 86400, 604800, 7776000].includes(propertyValue as number)) {
       throw new WPPError(
         'invalid_ephemeral_duration',
         'Invalid ephemeral duration',
         {
-          value,
+          value: propertyValue,
         }
       );
     }
   } else {
     // MD uses number
-    value = value ? 1 : 0;
+    propertyValue = propertyValue ? 1 : 0;
   }
 
   await sendSetGroupProperty(
     groupChat.id,
     property as unknown as GROUP_SETTING_TYPE,
-    value
+    propertyValue as number
   );
 
   return true;
