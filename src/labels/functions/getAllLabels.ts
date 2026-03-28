@@ -22,6 +22,17 @@ import { patchLabelCount } from '../patch';
 
 export type LabelsGetAllLabelsOutput = Label[];
 
+/**
+ * Get all labels
+ *
+ * @example
+ * ```javascript
+ * const labels = await WPP.labels.getAllLabels();
+ * console.log(labels);
+ * ```
+ *
+ * @category Labels
+ */
 export async function getAllLabels(): Promise<LabelsGetAllLabelsOutput> {
   const labels = LabelStore.getModelsArray();
   return labels.map((e: LabelModel) => {

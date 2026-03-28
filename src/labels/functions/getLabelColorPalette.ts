@@ -18,11 +18,19 @@ import { assertIsBusiness } from '../../assert';
 import { WPPError } from '../../util';
 import { getAllLabelColors } from '../../whatsapp/functions';
 
-/**
- * Returns an array of color palette in hex code
- */
 export type LabelsGetLabelColorPaletteOutput = string[];
 
+/**
+ * Returns an array of color palette in hex code
+ *
+ * @example
+ * ```javascript
+ * const palette = await WPP.labels.getLabelColorPalette();
+ * console.log(palette);
+ * ```
+ *
+ * @category Labels
+ */
 export async function getLabelColorPalette(): Promise<LabelsGetLabelColorPaletteOutput> {
   assertIsBusiness();
 

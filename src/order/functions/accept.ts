@@ -183,7 +183,7 @@ export async function accept(
   };
 
   await sendRawMessage({
-    chatId: chat.id,
+    chatId: chat.id._serialized,
     rawMessage: interactiveMessage,
     options: {
       quotedMsg: msg,

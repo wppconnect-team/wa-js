@@ -19,6 +19,17 @@ import { deleteLabel, DeleteLabelReturn, getAllLabels } from '.';
 
 export type LabelsDeleteAllLabelsOutput = DeleteLabelReturn[];
 
+/**
+ * Delete all labels
+ *
+ * @example
+ * ```javascript
+ * const deleted = await WPP.labels.deleteAllLabels();
+ * console.log(deleted);
+ * ```
+ *
+ * @category Labels
+ */
 export async function deleteAllLabels(): Promise<LabelsDeleteAllLabelsOutput> {
   assertIsBusiness();
 

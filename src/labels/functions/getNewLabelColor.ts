@@ -18,11 +18,19 @@ import { assertColor, assertIsBusiness } from '../../assert';
 import { WPPError } from '../../util';
 import { LabelStore } from '../../whatsapp';
 
-/**
- * Return the color of the next label in positive decimal
- */
 export type LabelsGetNewLabelColorOutput = number;
 
+/**
+ * Return the color index of the next available label
+ *
+ * @example
+ * ```javascript
+ * const color = await WPP.labels.getNewLabelColor();
+ * console.log(color);
+ * ```
+ *
+ * @category Labels
+ */
 export async function getNewLabelColor(): Promise<LabelsGetNewLabelColorOutput> {
   assertIsBusiness();
 
