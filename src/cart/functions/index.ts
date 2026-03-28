@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
-export { add } from './add';
-export { clear } from './clear';
-export { get } from './get';
-export { getThumbFromCart } from './getThumbFromCart';
-export { remove } from './remove';
-export { submit } from './submit';
-export { update } from './update';
+export { add, CartAddInput, CartAddOutput } from './add';
+export { CartClearInput, CartClearOutput, clear } from './clear';
+export { CartGetInput, CartGetOutput, get } from './get';
+export {
+  CartGetThumbFromCartInput,
+  CartGetThumbFromCartOutput,
+  getThumbFromCart,
+} from './getThumbFromCart';
+export { CartRemoveInput, CartRemoveOutput, remove } from './remove';
+export { CartSubmitInput, CartSubmitOutput, submit } from './submit';
+export { CartUpdateInput, CartUpdateOutput, update } from './update';

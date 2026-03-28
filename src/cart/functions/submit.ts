@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,7 @@
  * limitations under the License.
  */
 
-/**
- * Send a request order to business chat
- *
- * @example
- * ```javascript
- * const cart = WPP.cart.submit('[number]@c.us');
- * ```
- *
- * @example
- * ```javascript
- * // Send cart with a custom message
- * const cart = WPP.cart.submit('[number]@c.us', 'Custom message here');
- * ```
- *
- * @category Cart
- */
+import { z } from 'zod';
 
 import { assertFindChat } from '../../assert';
 import {
@@ -47,28 +32,57 @@ import {
 } from '../../whatsapp/functions';
 import { clear, getThumbFromCart } from './';
 
+const cartSubmitSchema = z.object({
+  chatId: z.string(),
+  msg: z.string().optional(),
+  options: z.custom<SendMessageOptions>().optional(),
+});
+
+export type CartSubmitInput = z.infer<typeof cartSubmitSchema>;
+
+export type CartSubmitOutput = any;
+
+/**
+ * Send a request order to a business chat
+ *
+ * @example
+ * ```javascript
+ * const cart = await WPP.cart.submit({ chatId: '[chatId]' });
+ * ```
+ *
+ * @example
+ * ```javascript
+ * // Send cart with a custom message
+ * const cart = await WPP.cart.submit({
+ *   chatId: '[chatId]',
+ *   msg: 'Custom message here',
+ * });
+ * ```
+ *
+ * @category Cart
+ */
 export async function submit(
-  wid: string,
-  msg?: string,
-  options?: SendMessageOptions
-): Promise<any> {
-  if (wid.toString() == getMyUserId()?.toString()) {
+  params: CartSubmitInput
+): Promise<CartSubmitOutput> {
+  const { chatId, msg, options } = cartSubmitSchema.parse(params);
+
+  if (chatId.toString() == getMyUserId()?.toString()) {
     throw new WPPError(
       'can_not_submit_order_to_yourself',
       `You can not submit order to yourself`
     );
   }
-  const cart = CartStore.findCart(wid);
+  const cart = CartStore.findCart(chatId);
   if (!cart || !cart?.cartItemCollection?.length) {
     throw new WPPError(
       'cart_not_have_products',
-      `Cart from  ${wid || '<empty>'} not have products`,
+      `Cart from  ${chatId || '<empty>'} not have products`,
       {
-        wid,
+        chatId,
       }
     );
   }
-  const chat = await assertFindChat(createWid(wid!)!);
+  const chat = await assertFindChat(createWid(chatId!)!);
   const order = await createOrder(chat.id, cart.cartItemCollection.toArray());
 
   const totalPrice = order.price?.total;
@@ -85,7 +99,7 @@ export async function submit(
       }),
       status: 1,
       messageVersion: 2,
-      thumbnail: await getThumbFromCart(wid),
+      thumbnail: await getThumbFromCart({ chatId }),
       itemCount: cart.itemCount,
       message: msg || cart.message,
       totalAmount1000:
@@ -99,7 +113,7 @@ export async function submit(
   );
   await addAndSendMsgToChat(chat, message as any);
   updateCart(cart);
-  await clear(wid);
+  await clear({ chatId });
   if (!order.id) {
     throw new WPPError(
       'error_send_order_request',

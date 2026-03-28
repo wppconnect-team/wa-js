@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,42 @@
  * limitations under the License.
  */
 
-/**
- * Get thumb of a cart
- *
- * @example
- * ```javascript
- * const cart = WPP.cart.getThumbFromCart('[number]@c.us');
- * ```
- *
- * @category Cart
- */
+import { z } from 'zod';
 
 import { createWid } from '../../util';
 import { CartStore, CatalogStore } from '../../whatsapp';
 
-export async function getThumbFromCart(wid: string): Promise<string> {
-  const cart = await CartStore.findCart(wid);
+const cartGetThumbFromCartSchema = z.object({
+  chatId: z.string(),
+});
+
+export type CartGetThumbFromCartInput = z.infer<
+  typeof cartGetThumbFromCartSchema
+>;
+
+export type CartGetThumbFromCartOutput = string;
+
+/**
+ * Get the thumbnail image of the first product in a cart
+ *
+ * @example
+ * ```javascript
+ * const thumb = await WPP.cart.getThumbFromCart({ chatId: '[chatId]' });
+ * ```
+ *
+ * @category Cart
+ */
+export async function getThumbFromCart(
+  params: CartGetThumbFromCartInput
+): Promise<CartGetThumbFromCartOutput> {
+  const { chatId } = cartGetThumbFromCartSchema.parse(params);
+
+  const cart = await CartStore.findCart(chatId);
 
   const item = cart?.cartItemCollection?.at(0);
   if (!item || !cart) return '';
 
-  const catalog = CatalogStore.get(createWid(wid) as any);
+  const catalog = CatalogStore.get(createWid(chatId) as any);
   if (!catalog) return '';
 
   const product = (catalog.productCollection as any).get(item.id);

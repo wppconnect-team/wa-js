@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,31 +14,40 @@
  * limitations under the License.
  */
 
-/**
- * Clear all items of cart
- *
- * @example
- * ```javascript
- * const cart = WPP.cart.add('[number]@c.us', [
- *   { id: 'productId', qnt: 2 },
- * ]);
- * ```
- *
- * @category Cart
- */
+import { z } from 'zod';
 
 import { WPPError } from '../../util';
 import { CartStore } from '../../whatsapp';
 import { updateCart } from '../../whatsapp/functions';
 
-export async function clear(wid: string): Promise<void> {
-  const cart = CartStore.findCart(wid);
+const cartClearSchema = z.object({
+  chatId: z.string(),
+});
+
+export type CartClearInput = z.infer<typeof cartClearSchema>;
+
+export type CartClearOutput = void;
+
+/**
+ * Clear all items from a cart
+ *
+ * @example
+ * ```javascript
+ * await WPP.cart.clear({ chatId: '[chatId]' });
+ * ```
+ *
+ * @category Cart
+ */
+export async function clear(params: CartClearInput): Promise<CartClearOutput> {
+  const { chatId } = cartClearSchema.parse(params);
+
+  const cart = CartStore.findCart(chatId);
   if (!cart || !cart?.cartItemCollection?.length) {
     throw new WPPError(
       'cart_not_have_products',
-      `Cart from  ${wid || '<empty>'} not have products`,
+      `Cart from  ${chatId || '<empty>'} not have products`,
       {
-        wid,
+        chatId,
       }
     );
   }

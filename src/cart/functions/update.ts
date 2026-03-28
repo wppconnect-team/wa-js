@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,31 +14,46 @@
  * limitations under the License.
  */
 
-/**
- * Update product in cart
- *
- * @example
- * ```javascript
- * const cart = WPP.cart.update('[number]@c.us', '6987301181294productId', { quantity: 12 });
- * ```
- *
- * @category Cart
- */
+import { z } from 'zod';
 
 import { WPPError } from '../../util';
 import { CartModel } from '../../whatsapp';
 import { add } from './add';
 
+const cartUpdateSchema = z.object({
+  chatId: z.string(),
+  productId: z.string(),
+  quantity: z.number(),
+});
+
+export type CartUpdateInput = z.infer<typeof cartUpdateSchema>;
+
+export type CartUpdateOutput = CartModel | undefined;
+
+/**
+ * Update the quantity of a product in a cart
+ *
+ * @example
+ * ```javascript
+ * const cart = await WPP.cart.update({
+ *   chatId: '[chatId]',
+ *   productId: '6987301181294',
+ *   quantity: 12,
+ * });
+ * ```
+ *
+ * @category Cart
+ */
 export async function update(
-  chatId: string,
-  productId: string,
-  options: { quantity: number }
-): Promise<CartModel | undefined> {
-  if (!chatId || !productId || !options.quantity) {
+  params: CartUpdateInput
+): Promise<CartUpdateOutput> {
+  const { chatId, productId, quantity } = cartUpdateSchema.parse(params);
+
+  if (!chatId || !productId || !quantity) {
     throw new WPPError(
       'send_required_params',
-      `For update item in cart send chatId, productId and options`
+      `For update item in cart send chatId, productId and quantity`
     );
   }
-  return add(chatId, [{ id: productId, qnt: options.quantity }]);
+  return add({ chatId, products: [{ id: productId, qnt: quantity }] });
 }

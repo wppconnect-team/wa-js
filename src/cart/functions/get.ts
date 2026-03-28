@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,30 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
+import { CartModel, CartStore } from '../../whatsapp';
+
+const cartGetSchema = z.object({
+  chatId: z.string(),
+});
+
+export type CartGetInput = z.infer<typeof cartGetSchema>;
+
+export type CartGetOutput = CartModel | undefined;
+
 /**
- * Get products in cart chat
+ * Get the cart for a chat
  *
  * @example
  * ```javascript
- * const cart = WPP.cart.get('[number]@c.us');
+ * const cart = WPP.cart.get({ chatId: '[chatId]' });
  * ```
  *
  * @category Cart
  */
+export function get(params: CartGetInput): CartGetOutput {
+  const { chatId } = cartGetSchema.parse(params);
 
-import { CartModel, CartStore } from '../../whatsapp';
-
-export function get(wid: string): CartModel | undefined {
-  return CartStore.get(wid);
+  return CartStore.get(chatId);
 }

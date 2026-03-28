@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,7 @@
  * limitations under the License.
  */
 
-/**
- * Add product in cart
- *
- * @example
- * ```javascript
- * const cart = WPP.cart.add('[number]@c.us', [
- *   { id: 'productId', qnt: 2 },
- * ]);
- * ```
- *
- * @category Cart
- */
+import { z } from 'zod';
 
 import { getProductById } from '../../catalog';
 import { WPPError } from '../../util';
@@ -35,13 +24,34 @@ import {
   updateProductQuantityCart,
 } from '../../whatsapp/functions';
 
-export async function add(
-  chatId: string,
-  products: {
-    id: string;
-    qnt: number;
-  }[]
-): Promise<CartModel | undefined> {
+const cartAddSchema = z.object({
+  chatId: z.string(),
+  products: z.array(z.object({ id: z.string(), qnt: z.number() })),
+});
+
+export type CartAddInput = z.infer<typeof cartAddSchema>;
+
+export type CartAddOutput = CartModel | undefined;
+
+/**
+ * Add products to a cart
+ *
+ * @example
+ * ```javascript
+ * const cart = await WPP.cart.add({
+ *   chatId: '[chatId]',
+ *   products: [
+ *     { id: 'productId1', qnt: 1 },
+ *     { id: 'productId2', qnt: 3 },
+ *   ],
+ * });
+ * ```
+ *
+ * @category Cart
+ */
+export async function add(params: CartAddInput): Promise<CartAddOutput> {
+  const { chatId, products } = cartAddSchema.parse(params);
+
   if (!chatId || !products) {
     throw new WPPError(
       'send_required_params',
@@ -49,7 +59,7 @@ export async function add(
     );
   }
   for (const product of products) {
-    const get = await getProductById(chatId, product.id as any);
+    const get = await getProductById({ chatId, productId: product.id as any });
     if (get) {
       const prod = new ProductModel({
         id: get.id,
