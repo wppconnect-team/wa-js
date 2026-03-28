@@ -18,27 +18,6 @@ import { exportModule } from '../exportModule';
 import { Wid } from '../misc';
 
 /**
- * Deletes a contact from the contact list (legacy API).
- *
- * @whatsapp WAWebDeleteContactAction >= 2.3000.0
- * @whatsapp ~2.3000.1030040369
- *
- * @param number - Phone number string
- *
- * @deprecated Since around WhatsApp version 2.3000.1030110621. Use the new object-based API instead.
- *             Use `deleteContactActionV2({ phoneNumber: wid })` for regular contacts
- *             or `deleteContactActionV2({ username, lid })` for username contacts.
- *
- * @example
- * // Deprecated usage
- * await deleteContactAction('5511999999999');
- *
- * // Use this instead
- * await deleteContactActionV2({ phoneNumber: wid });
- */
-export declare function deleteContactAction(number: string): Promise<void>;
-
-/**
  * Deletes a contact from the contact list.
  *
  * @whatsapp WAWebDeleteContactAction >= 2.3000.1030110621
@@ -50,12 +29,12 @@ export declare function deleteContactAction(number: string): Promise<void>;
  *
  * @example
  * // Delete regular contact by phone number
- * await deleteContactActionV2({ phoneNumber: wid });
+ * await deleteContactAction({ phoneNumber: wid });
  *
  * // Delete username contact
- * await deleteContactActionV2({ username: 'john', lid: '123' });
+ * await deleteContactAction({ username: 'john', lid: '123' });
  */
-export declare function deleteContactActionV2(params: {
+export declare function deleteContactAction(params: {
   phoneNumber?: Wid;
   username?: string;
   lid?: string;
