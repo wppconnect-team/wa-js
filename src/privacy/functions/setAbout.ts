@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,65 +14,64 @@
  * limitations under the License.
  */
 
-/**
- * Set who can see your about.
- *
- * @example
- * ```javascript
- * Set value for who can see your about like 'all'
- * await WPP.privacy.setAbout('all');
- *
- * Set value for who can see your about  like 'none'
- * await WPP.privacy.setAbout('none');
- *
- * Set value for who can see your about like 'only your contacts'
- * await WPP.privacy.setAbout('contacts');
- *
- * Set value for who can see your about like 'your contacts', but with excepts
- * await WPP.privacy.setAbout('contact_blacklist', [
- *   { id: '[number]@c.us', action: 'add' },
- *   { id: '[number]@c.us', action: 'remove' }
- * ]);
- * ```
- *
- * @category Privacy
- */
+import { z } from 'zod';
 
 import { PrivacyDisallowedListType } from '../../enums';
-import { WPPError } from '../../util';
 import {
   getUserPrivacySettings,
   setPrivacyForOneCategory,
 } from '../../whatsapp/functions';
 import { prepareDisallowedList } from './prepareDisallowedList';
 
-export enum setAboutTypes {
+export enum SetAboutTypes {
   all = 'all',
   contacts = 'contacts',
   none = 'none',
   contact_blacklist = 'contact_blacklist',
 }
+
+const privacySetAboutSchema = z.object({
+  value: z.enum(SetAboutTypes),
+  disallowedList: z
+    .array(z.object({ id: z.string(), action: z.enum(['add', 'remove']) }))
+    .optional(),
+});
+
+export type PrivacySetAboutInput = z.infer<typeof privacySetAboutSchema>;
+
+export type PrivacySetAboutOutput = SetAboutTypes;
+
+/**
+ * Set who can see your about.
+ *
+ * @example
+ * ```javascript
+ * await WPP.privacy.setAbout({ value: 'all' });
+ *
+ * await WPP.privacy.setAbout({ value: 'none' });
+ *
+ * await WPP.privacy.setAbout({ value: 'contacts' });
+ *
+ * await WPP.privacy.setAbout({
+ *   value: 'contact_blacklist',
+ *   disallowedList: [
+ *     { id: '[chatId]', action: 'add' },
+ *     { id: '[chatId]', action: 'remove' },
+ *   ],
+ * });
+ * ```
+ *
+ * @category Privacy
+ */
 export async function setAbout(
-  value: setAboutTypes,
-  disallowedList?: { id: string; action: 'add' | 'remove' }[]
-): Promise<setAboutTypes> {
-  if (
-    typeof value !== 'string' ||
-    !Object.values(setAboutTypes).includes(value)
-  ) {
-    throw new WPPError(
-      'incorrect_type',
-      `Incorrect type ${value || '<empty>'} for set about privacy`,
-      {
-        value,
-      }
-    );
-  }
-  const disallowed = await prepareDisallowedList(
-    PrivacyDisallowedListType.About,
+  params: PrivacySetAboutInput
+): Promise<PrivacySetAboutOutput> {
+  const { value, disallowedList } = privacySetAboutSchema.parse(params);
+  const disallowed = await prepareDisallowedList({
+    type: PrivacyDisallowedListType.About,
     value,
-    disallowedList
-  );
+    disallowedList,
+  });
   await setPrivacyForOneCategory(
     {
       name: PrivacyDisallowedListType.About,
@@ -83,5 +82,5 @@ export async function setAbout(
     },
     value === 'contact_blacklist' ? disallowed.allUsers : undefined
   );
-  return getUserPrivacySettings().about as any;
+  return getUserPrivacySettings().about as SetAboutTypes;
 }

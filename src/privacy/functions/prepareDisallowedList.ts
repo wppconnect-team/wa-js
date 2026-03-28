@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,39 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { PrivacyDisallowedListType } from '../../enums';
 import { WPPError } from '../../util';
 import { Wid } from '../../whatsapp';
 import { getPrivacyDisallowedListTable } from '../../whatsapp/functions';
 
-export async function prepareDisallowedList(
-  type: PrivacyDisallowedListType,
-  value: any,
-  list?: { id: string; action: 'add' | 'remove' }[]
-): Promise<{
+const privacyPrepareDisallowedListSchema = z.object({
+  type: z.nativeEnum(PrivacyDisallowedListType),
+  value: z.any(),
+  disallowedList: z
+    .array(z.object({ id: z.string(), action: z.enum(['add', 'remove']) }))
+    .optional(),
+});
+
+export type PrivacyPrepareDisallowedListInput = z.infer<
+  typeof privacyPrepareDisallowedListSchema
+>;
+
+export type PrivacyPrepareDisallowedListOutput = {
   ids: Wid[];
   dhash: number | null;
   idsFormatted: { wid: Wid; action: 'add' | 'remove' }[];
   allUsers: Wid[];
-}> {
+};
+
+export async function prepareDisallowedList(
+  params: PrivacyPrepareDisallowedListInput
+): Promise<PrivacyPrepareDisallowedListOutput> {
+  const { type, value, disallowedList } =
+    privacyPrepareDisallowedListSchema.parse(params);
+  let list = disallowedList;
+
   if (value !== 'contact_blacklist') {
     return {
       ids: [],
@@ -36,18 +54,6 @@ export async function prepareDisallowedList(
       idsFormatted: [],
       allUsers: [],
     };
-  }
-  if (
-    typeof type !== 'string' ||
-    !Object.values(PrivacyDisallowedListType).includes(type)
-  ) {
-    throw new WPPError(
-      'incorrect_type',
-      `Incorrect type ${type || '<empty>'} for get disalowed list`,
-      {
-        type,
-      }
-    );
   }
   const actual = await getPrivacyDisallowedListTable().get(type);
   if (!list || list?.length === 0) {
@@ -86,7 +92,7 @@ export async function prepareDisallowedList(
     };
   }
   const filtered = actual.disallowedList.filter(
-    (i) => !list.some((item) => item.action === 'remove' && item.id === i)
+    (i) => !list!.some((item) => item.action === 'remove' && item.id === i)
   );
   const filteredList = list.filter((i) => i.action !== 'remove');
 

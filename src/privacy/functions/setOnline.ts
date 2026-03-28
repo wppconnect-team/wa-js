@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,49 +14,45 @@
  * limitations under the License.
  */
 
-/**
- * Set who can see your online status.
- *
- * @example
- * ```javascript
- * Set value for who can see your online status like 'all'
- * await WPP.privacy.setAbout('all');
- *
- * Set value for who can see your online status like 'match_last_seen'
- * await WPP.privacy.setAbout('match_last_seen');
- * ```
- *
- * @category Privacy
- */
+import { z } from 'zod';
 
-import { WPPError } from '../../util';
 import {
   getUserPrivacySettings,
   setPrivacyForOneCategory,
 } from '../../whatsapp/functions';
 
-export enum setOnlineTypes {
+export enum SetOnlineTypes {
   all = 'all',
   match_last_seen = 'match_last_seen',
 }
+
+const privacySetOnlineSchema = z.object({
+  value: z.enum(SetOnlineTypes),
+});
+
+export type PrivacySetOnlineInput = z.infer<typeof privacySetOnlineSchema>;
+
+export type PrivacySetOnlineOutput = SetOnlineTypes;
+
+/**
+ * Set who can see your online status.
+ *
+ * @example
+ * ```javascript
+ * await WPP.privacy.setOnline({ value: 'all' });
+ *
+ * await WPP.privacy.setOnline({ value: 'match_last_seen' });
+ * ```
+ *
+ * @category Privacy
+ */
 export async function setOnline(
-  value: setOnlineTypes
-): Promise<setOnlineTypes> {
-  if (
-    typeof value !== 'string' ||
-    !Object.values(setOnlineTypes).includes(value)
-  ) {
-    throw new WPPError(
-      'incorrect_type',
-      `Incorrect type ${value || '<empty>'} for set online privacy`,
-      {
-        value,
-      }
-    );
-  }
+  params: PrivacySetOnlineInput
+): Promise<PrivacySetOnlineOutput> {
+  const { value } = privacySetOnlineSchema.parse(params);
   await setPrivacyForOneCategory({
     name: 'online',
     value: value,
   });
-  return getUserPrivacySettings().online as any;
+  return getUserPrivacySettings().online as SetOnlineTypes;
 }

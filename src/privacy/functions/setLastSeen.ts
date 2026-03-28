@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,65 +14,64 @@
  * limitations under the License.
  */
 
-/**
- * Set who can see your last seen status.
- *
- * @example
- * ```javascript
- * Set value for who can see your last seen like 'all'
- * await WPP.privacy.setLastSeen('all');
- *
- * Set value for who can see your last seen like 'none'
- * await WPP.privacy.setLastSeen('none');
- *
- * Set value for who can see your last seen like 'only your contacts'
- * await WPP.privacy.setLastSeen('contacts');
- *
- * Set value for who can see your last seen like 'your contacts', but with excepts
- * await WPP.privacy.setLastSeen('contact_blacklist', [
- *   { id: '[number]@c.us', action: 'add' },
- *   { id: '[number]@c.us', action: 'remove' }
- * ]);
- * ```
- *
- * @category Privacy
- */
+import { z } from 'zod';
 
 import { PrivacyDisallowedListType } from '../../enums';
-import { WPPError } from '../../util';
 import {
   getUserPrivacySettings,
   setPrivacyForOneCategory,
 } from '../../whatsapp/functions';
 import { prepareDisallowedList } from './prepareDisallowedList';
 
-export enum setLastSeenTypes {
+export enum SetLastSeenTypes {
   all = 'all',
   contacts = 'contacts',
   none = 'none',
   contact_blacklist = 'contact_blacklist',
 }
+
+const privacySetLastSeenSchema = z.object({
+  value: z.enum(SetLastSeenTypes),
+  disallowedList: z
+    .array(z.object({ id: z.string(), action: z.enum(['add', 'remove']) }))
+    .optional(),
+});
+
+export type PrivacySetLastSeenInput = z.infer<typeof privacySetLastSeenSchema>;
+
+export type PrivacySetLastSeenOutput = SetLastSeenTypes;
+
+/**
+ * Set who can see your last seen status.
+ *
+ * @example
+ * ```javascript
+ * await WPP.privacy.setLastSeen({ value: 'all' });
+ *
+ * await WPP.privacy.setLastSeen({ value: 'none' });
+ *
+ * await WPP.privacy.setLastSeen({ value: 'contacts' });
+ *
+ * await WPP.privacy.setLastSeen({
+ *   value: 'contact_blacklist',
+ *   disallowedList: [
+ *     { id: '[chatId]', action: 'add' },
+ *     { id: '[chatId]', action: 'remove' },
+ *   ],
+ * });
+ * ```
+ *
+ * @category Privacy
+ */
 export async function setLastSeen(
-  value: setLastSeenTypes,
-  disallowedList?: { id: string; action: 'add' | 'remove' }[]
-): Promise<setLastSeenTypes> {
-  if (
-    typeof value !== 'string' ||
-    !Object.values(setLastSeenTypes).includes(value)
-  ) {
-    throw new WPPError(
-      'incorrect_type',
-      `Incorrect type ${value || '<empty>'} for set last seen privacy`,
-      {
-        value,
-      }
-    );
-  }
-  const disallowed = await prepareDisallowedList(
-    PrivacyDisallowedListType.LastSeen,
+  params: PrivacySetLastSeenInput
+): Promise<PrivacySetLastSeenOutput> {
+  const { value, disallowedList } = privacySetLastSeenSchema.parse(params);
+  const disallowed = await prepareDisallowedList({
+    type: PrivacyDisallowedListType.LastSeen,
     value,
-    disallowedList
-  );
+    disallowedList,
+  });
   await setPrivacyForOneCategory(
     {
       name: 'last',
@@ -83,5 +82,5 @@ export async function setLastSeen(
     },
     value === 'contact_blacklist' ? disallowed.allUsers : undefined
   );
-  return getUserPrivacySettings().lastSeen as any;
+  return getUserPrivacySettings().lastSeen as SetLastSeenTypes;
 }

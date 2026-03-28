@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,56 +14,56 @@
  * limitations under the License.
  */
 
-/**
- * Set who can see your status storie media
- *
- * @example
- * ```javascript
- * Set value for who can see your status like 'contacts'
- * await WPP.privacy.setStatus('contact');
- *
- * Set value for who can see your status with allow list
- * await WPP.privacy.setStatus('allow-list', ['[number]@c.us', '[number]@c.us']);
- *
- * Set value for who can see your status with deny list
- * await WPP.privacy.setStatus('deny-list', ['[number]@c.us', '[number]@c.us']);
- *
- * ```
- *
- * @category Privacy
- */
+import { z } from 'zod';
 
 import { assertWid } from '../../assert';
 import { WPPError } from '../../util';
-import { Wid } from '../../whatsapp';
 import {
   getStatusPrivacySetting,
   setStatusPrivacyConfig,
 } from '../../whatsapp/functions';
 
-export enum setStatusTypes {
+export enum SetStatusTypes {
   contact = 'contact',
   DENY_LIST = 'deny-list',
   ALLOW_LIST = 'allow-list',
 }
+
+const privacySetStatusSchema = z.object({
+  value: z.enum(SetStatusTypes),
+  list: z.array(z.string()).optional(),
+});
+
+export type PrivacySetStatusInput = z.infer<typeof privacySetStatusSchema>;
+
+export type PrivacySetStatusOutput = SetStatusTypes;
+
+/**
+ * Set who can see your status story media.
+ *
+ * @example
+ * ```javascript
+ * await WPP.privacy.setStatus({ value: 'contact' });
+ *
+ * await WPP.privacy.setStatus({
+ *   value: 'allow-list',
+ *   list: ['[chatId]', '[chatId]'],
+ * });
+ *
+ * await WPP.privacy.setStatus({
+ *   value: 'deny-list',
+ *   list: ['[chatId]', '[chatId]'],
+ * });
+ * ```
+ *
+ * @category Privacy
+ */
 export async function setStatus(
-  value: setStatusTypes,
-  list?: string[] | Wid[]
-): Promise<setStatusTypes> {
+  params: PrivacySetStatusInput
+): Promise<PrivacySetStatusOutput> {
+  const { value, list } = privacySetStatusSchema.parse(params);
   if (
-    typeof value !== 'string' ||
-    !Object.values(setStatusTypes).includes(value)
-  ) {
-    throw new WPPError(
-      'incorrect_type',
-      `Incorrect type ${value || '<empty>'} for set about privacy`,
-      {
-        value,
-      }
-    );
-  }
-  if (
-    (value == setStatusTypes.ALLOW_LIST || value == setStatusTypes.DENY_LIST) &&
+    (value == SetStatusTypes.ALLOW_LIST || value == SetStatusTypes.DENY_LIST) &&
     !list
   ) {
     throw new WPPError(
@@ -77,11 +77,7 @@ export async function setStatus(
       list: [],
     });
   } else {
-    if (!Array.isArray(list)) {
-      list = [list];
-    }
     const listWid = list.map(assertWid);
-
     await setStatusPrivacyConfig({
       setting: value,
       list: listWid,

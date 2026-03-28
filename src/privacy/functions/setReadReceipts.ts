@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,49 +14,47 @@
  * limitations under the License.
  */
 
-/**
- * Set who send your read receipts
- *
- * @example
- * ```javascript
- * Set value for who can see your online status like 'all'
- * await WPP.privacy.setReadReceipts('all');
- *
- * Set value for who can see your online status like 'none'
- * await WPP.privacy.setReadReceipts('none');
- * ```
- *
- * @category Privacy
- */
+import { z } from 'zod';
 
-import { WPPError } from '../../util';
 import {
   getUserPrivacySettings,
   setPrivacyForOneCategory,
 } from '../../whatsapp/functions';
 
-export enum setReadReceiptsTypes {
+export enum SetReadReceiptsTypes {
   all = 'all',
   none = 'none',
 }
+
+const privacySetReadReceiptsSchema = z.object({
+  value: z.enum(SetReadReceiptsTypes),
+});
+
+export type PrivacySetReadReceiptsInput = z.infer<
+  typeof privacySetReadReceiptsSchema
+>;
+
+export type PrivacySetReadReceiptsOutput = SetReadReceiptsTypes;
+
+/**
+ * Set who can see your read receipts.
+ *
+ * @example
+ * ```javascript
+ * await WPP.privacy.setReadReceipts({ value: 'all' });
+ *
+ * await WPP.privacy.setReadReceipts({ value: 'none' });
+ * ```
+ *
+ * @category Privacy
+ */
 export async function setReadReceipts(
-  value: setReadReceiptsTypes
-): Promise<setReadReceiptsTypes> {
-  if (
-    typeof value !== 'string' ||
-    !Object.values(setReadReceiptsTypes).includes(value)
-  ) {
-    throw new WPPError(
-      'incorrect_type',
-      `Incorrect type ${value || '<empty>'} for set read receipts privacy`,
-      {
-        value,
-      }
-    );
-  }
+  params: PrivacySetReadReceiptsInput
+): Promise<PrivacySetReadReceiptsOutput> {
+  const { value } = privacySetReadReceiptsSchema.parse(params);
   await setPrivacyForOneCategory({
     name: 'readreceipts',
     value: value,
   });
-  return getUserPrivacySettings().readReceipts as any;
+  return getUserPrivacySettings().readReceipts as SetReadReceiptsTypes;
 }

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,47 +14,46 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
+import { PrivacyDisallowedListType } from '../../enums';
+import { getPrivacyDisallowedListTable } from '../../whatsapp/functions';
+
+const privacyGetDisallowedListSchema = z.object({
+  type: z.nativeEnum(PrivacyDisallowedListType),
+});
+
+export type PrivacyGetDisallowedListInput = z.infer<
+  typeof privacyGetDisallowedListSchema
+>;
+
+export type PrivacyGetDisallowedListOutput = string[] | null;
+
 /**
- * Get the disallowed list to get the contacts who cannot see your privacy (this applies when enabled: my contacts, except...).
+ * Get the disallowed list — contacts who cannot see your privacy
+ * (applies when the setting is: my contacts, except...).
  *
  * @example
  * ```javascript
- * // get disalowed list for group Last seen
- * const disalowed = WPP.privacy.getDisalowedList('last');
+ * // get disallowed list for Last seen
+ * const disallowed = await WPP.privacy.getDisallowedList({ type: 'last' });
  *
- * // get disalowed list for profile
- * const disalowed = WPP.privacy.getDisalowedList('profile');
+ * // get disallowed list for profile picture
+ * const disallowed = await WPP.privacy.getDisallowedList({ type: 'profile' });
  *
- * // get disalowed list for status
- * const disalowed = WPP.privacy.getDisalowedList('status');
+ * // get disallowed list for status
+ * const disallowed = await WPP.privacy.getDisallowedList({ type: 'status' });
  *
- * // get disalowed list for group add
- * const disalowed = WPP.privacy.getDisalowedList('groupadd');
- *
+ * // get disallowed list for group add
+ * const disallowed = await WPP.privacy.getDisallowedList({ type: 'groupadd' });
  * ```
  *
  * @category Privacy
  */
-
-import { PrivacyDisallowedListType } from '../../enums';
-import { WPPError } from '../../util';
-import { getPrivacyDisallowedListTable } from '../../whatsapp/functions';
-
 export async function getDisallowedList(
-  type: PrivacyDisallowedListType
-): Promise<string[] | null> {
-  if (
-    typeof type !== 'string' ||
-    !Object.values(PrivacyDisallowedListType).includes(type)
-  ) {
-    throw new WPPError(
-      'incorrect_type',
-      `Incorrect type ${type || '<empty>'} for get disalowed list`,
-      {
-        type,
-      }
-    );
-  }
+  params: PrivacyGetDisallowedListInput
+): Promise<PrivacyGetDisallowedListOutput> {
+  const { type } = privacyGetDisallowedListSchema.parse(params);
   const list = await getPrivacyDisallowedListTable().get(type);
   if (!list) return null;
   return list.disallowedList;

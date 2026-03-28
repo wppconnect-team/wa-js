@@ -14,12 +14,51 @@
  * limitations under the License.
  */
 
-export { get } from './get';
-export { getDisallowedList } from './getDisallowedList';
-export { setAbout } from './setAbout';
-export { setAddGroup } from './setAddGroup';
-export { setLastSeen } from './setLastSeen';
-export { setOnline } from './setOnline';
-export { setProfilePic } from './setProfilePic';
-export { setReadReceipts } from './setReadReceipts';
-export { setStatus } from './setStatus';
+export { get, PrivacyGetOutput } from './get';
+export {
+  getDisallowedList,
+  PrivacyGetDisallowedListInput,
+  PrivacyGetDisallowedListOutput,
+} from './getDisallowedList';
+export {
+  PrivacySetAboutInput,
+  PrivacySetAboutOutput,
+  setAbout,
+  SetAboutTypes,
+} from './setAbout';
+export {
+  PrivacySetAddGroupInput,
+  PrivacySetAddGroupOutput,
+  setAddGroup,
+  SetAddGroupTypes,
+} from './setAddGroup';
+export {
+  PrivacySetLastSeenInput,
+  PrivacySetLastSeenOutput,
+  setLastSeen,
+  SetLastSeenTypes,
+} from './setLastSeen';
+export {
+  PrivacySetOnlineInput,
+  PrivacySetOnlineOutput,
+  setOnline,
+  SetOnlineTypes,
+} from './setOnline';
+export {
+  PrivacySetProfilePicInput,
+  PrivacySetProfilePicOutput,
+  setProfilePic,
+  SetProfilePicTypes,
+} from './setProfilePic';
+export {
+  PrivacySetReadReceiptsInput,
+  PrivacySetReadReceiptsOutput,
+  setReadReceipts,
+  SetReadReceiptsTypes,
+} from './setReadReceipts';
+export {
+  PrivacySetStatusInput,
+  PrivacySetStatusOutput,
+  setStatus,
+  SetStatusTypes,
+} from './setStatus';

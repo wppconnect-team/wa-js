@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,61 +14,61 @@
  * limitations under the License.
  */
 
-/**
- * Set who can add you to a group.
- *
- * @example
- * ```javascript
- * Set value for who can add to a group like 'all'
- * await WPP.privacy.setAddGroup('all');
- *
- * Set value for who can add to a group like 'only your contacts'
- * await WPP.privacy.setAddGroup('contacts');
- *
- * Set value for who can add to a group like 'your contacts', but with excepts
- * await WPP.privacy.setAddGroup('contact_blacklist', [
- *   { id: '[number]@c.us', action: 'add' },
- *   { id: '[number]@c.us', action: 'remove' }
- * ]);
- * ```
- *
- * @category Privacy
- */
+import { z } from 'zod';
 
 import { PrivacyDisallowedListType } from '../../enums';
-import { WPPError } from '../../util';
 import {
   getUserPrivacySettings,
   setPrivacyForOneCategory,
 } from '../../whatsapp/functions';
 import { prepareDisallowedList } from './prepareDisallowedList';
 
-export enum setAddGroupTypes {
+export enum SetAddGroupTypes {
   all = 'all',
   contacts = 'contacts',
   contact_blacklist = 'contact_blacklist',
 }
+
+const privacySetAddGroupSchema = z.object({
+  value: z.enum(SetAddGroupTypes),
+  disallowedList: z
+    .array(z.object({ id: z.string(), action: z.enum(['add', 'remove']) }))
+    .optional(),
+});
+
+export type PrivacySetAddGroupInput = z.infer<typeof privacySetAddGroupSchema>;
+
+export type PrivacySetAddGroupOutput = SetAddGroupTypes;
+
+/**
+ * Set who can add you to a group.
+ *
+ * @example
+ * ```javascript
+ * await WPP.privacy.setAddGroup({ value: 'all' });
+ *
+ * await WPP.privacy.setAddGroup({ value: 'contacts' });
+ *
+ * await WPP.privacy.setAddGroup({
+ *   value: 'contact_blacklist',
+ *   disallowedList: [
+ *     { id: '[chatId]', action: 'add' },
+ *     { id: '[chatId]', action: 'remove' },
+ *   ],
+ * });
+ * ```
+ *
+ * @category Privacy
+ */
 export async function setAddGroup(
-  value: setAddGroupTypes,
-  disallowedList?: { id: string; action: 'add' | 'remove' }[]
-): Promise<setAddGroupTypes> {
-  if (
-    typeof value !== 'string' ||
-    !Object.values(setAddGroupTypes).includes(value)
-  ) {
-    throw new WPPError(
-      'incorrect_type',
-      `Incorrect type ${value || '<empty>'} for set add group privacy`,
-      {
-        value,
-      }
-    );
-  }
-  const disallowed = await prepareDisallowedList(
-    PrivacyDisallowedListType.GroupAdd,
+  params: PrivacySetAddGroupInput
+): Promise<PrivacySetAddGroupOutput> {
+  const { value, disallowedList } = privacySetAddGroupSchema.parse(params);
+  const disallowed = await prepareDisallowedList({
+    type: PrivacyDisallowedListType.GroupAdd,
     value,
-    disallowedList
-  );
+    disallowedList,
+  });
   await setPrivacyForOneCategory(
     {
       name: PrivacyDisallowedListType.GroupAdd,
@@ -79,5 +79,5 @@ export async function setAddGroup(
     },
     value === 'contact_blacklist' ? disallowed.allUsers : undefined
   );
-  return getUserPrivacySettings().groupAdd as any;
+  return getUserPrivacySettings().groupAdd as SetAddGroupTypes;
 }

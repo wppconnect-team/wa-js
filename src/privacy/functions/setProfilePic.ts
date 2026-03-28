@@ -1,5 +1,5 @@
 /*!
- * Copyright 2024 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,65 +14,66 @@
  * limitations under the License.
  */
 
-/**
- * Set who can see your profile pic.
- *
- * @example
- * ```javascript
- * Set value for who can see your profile pic like 'all'
- * await WPP.privacy.setProfilePic('all');
- *
- * Set value for who can see your profile pic  like 'none'
- * await WPP.privacy.setProfilePic('none');
- *
- * Set value for who can see your profile pic like 'only your contacts'
- * await WPP.privacy.setProfilePic('contacts');
- *
- * Set value for who can see your profile pic like 'your contacts', but with excepts
- * await WPP.privacy.setProfilePic('contact_blacklist', [
- *   { id: '[number]@c.us', action: 'add' },
- *   { id: '[number]@c.us', action: 'remove' }
- * ]);
- * ```
- *
- * @category Privacy
- */
+import { z } from 'zod';
 
 import { PrivacyDisallowedListType } from '../../enums';
-import { WPPError } from '../../util';
 import {
   getUserPrivacySettings,
   setPrivacyForOneCategory,
 } from '../../whatsapp/functions';
 import { prepareDisallowedList } from './prepareDisallowedList';
 
-export enum setProfilePicTypes {
+export enum SetProfilePicTypes {
   all = 'all',
   contacts = 'contacts',
   none = 'none',
   contact_blacklist = 'contact_blacklist',
 }
+
+const privacySetProfilePicSchema = z.object({
+  value: z.enum(SetProfilePicTypes),
+  disallowedList: z
+    .array(z.object({ id: z.string(), action: z.enum(['add', 'remove']) }))
+    .optional(),
+});
+
+export type PrivacySetProfilePicInput = z.infer<
+  typeof privacySetProfilePicSchema
+>;
+
+export type PrivacySetProfilePicOutput = SetProfilePicTypes;
+
+/**
+ * Set who can see your profile picture.
+ *
+ * @example
+ * ```javascript
+ * await WPP.privacy.setProfilePic({ value: 'all' });
+ *
+ * await WPP.privacy.setProfilePic({ value: 'none' });
+ *
+ * await WPP.privacy.setProfilePic({ value: 'contacts' });
+ *
+ * await WPP.privacy.setProfilePic({
+ *   value: 'contact_blacklist',
+ *   disallowedList: [
+ *     { id: '[chatId]', action: 'add' },
+ *     { id: '[chatId]', action: 'remove' },
+ *   ],
+ * });
+ * ```
+ *
+ * @category Privacy
+ */
 export async function setProfilePic(
-  value: setProfilePicTypes,
-  disallowedList?: { id: string; action: 'add' | 'remove' }[]
-): Promise<setProfilePicTypes> {
-  if (
-    typeof value !== 'string' ||
-    !Object.values(setProfilePicTypes).includes(value)
-  ) {
-    throw new WPPError(
-      'incorrect_type',
-      `Incorrect type ${value || '<empty>'} for set profile pic privacy`,
-      {
-        value,
-      }
-    );
-  }
-  const disallowed = await prepareDisallowedList(
-    PrivacyDisallowedListType.ProfilePicture,
+  params: PrivacySetProfilePicInput
+): Promise<PrivacySetProfilePicOutput> {
+  const { value, disallowedList } = privacySetProfilePicSchema.parse(params);
+  const disallowed = await prepareDisallowedList({
+    type: PrivacyDisallowedListType.ProfilePicture,
     value,
-    disallowedList
-  );
+    disallowedList,
+  });
   await setPrivacyForOneCategory(
     {
       name: PrivacyDisallowedListType.ProfilePicture,
