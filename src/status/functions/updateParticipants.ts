@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,27 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
 import { config } from '../../config';
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import {
   ContactStore,
   functions,
-  MsgKey,
   ParticipantModel,
-  Wid,
   WidFactory,
 } from '../../whatsapp';
 
-export interface SendStatusOptions {
-  waitForAck?: boolean;
-  messageId?: string | MsgKey;
-}
+const statusUpdateParticipantsSchema = z.object({
+  ids: z.array(z.any()).nullish(),
+});
+
+export type StatusUpdateParticipantsInput = z.infer<
+  typeof statusUpdateParticipantsSchema
+>;
+
+export type StatusUpdateParticipantsOutput = void;
 
 /**
  * Define a custom list of participants to send the status message
@@ -37,14 +42,15 @@ export interface SendStatusOptions {
  * @example
  * ```javascript
  * // Use a custom list
- * await WPP.status.updateParticipants(['123@c.us', '456@c.us']);
+ * await WPP.status.updateParticipants({ ids: ['[chatId]', '[chatId]'] });
  * // Use the contacts by default
- * await WPP.status.updateParticipants(null);
+ * await WPP.status.updateParticipants({ ids: null });
  * ```
  */
 export async function updateParticipants(
-  ids?: (string | Wid)[] | null
-): Promise<void> {
+  params: StatusUpdateParticipantsInput
+): Promise<StatusUpdateParticipantsOutput> {
+  let { ids } = statusUpdateParticipantsSchema.parse(params);
   let type = 'custom';
 
   const me = getMyUserWid();

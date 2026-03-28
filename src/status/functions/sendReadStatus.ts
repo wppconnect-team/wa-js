@@ -1,5 +1,5 @@
 /*!
- * Copyright 2022 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,34 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertWid } from '../../assert';
-import { StatusV3Store, Wid } from '../../whatsapp';
+import { StatusV3Store } from '../../whatsapp';
+
+const statusSendReadStatusSchema = z.object({
+  chatId: z.string(),
+  statusId: z.string(),
+});
+
+export type StatusSendReadStatusInput = z.infer<
+  typeof statusSendReadStatusSchema
+>;
+
+export type StatusSendReadStatusOutput = any; // TODO: Define the correct output type based on the actual return value of sendReadStatus
 
 /**
  * Mark status as read/seen
  *
  * @example
  * ```javascript
- * WPP.status.sendReadStatus('[phone_number]@c.us', 'false_status@broadcast_3A169E0FD4BC6E92212F_5521526232927@c.us');
+ * WPP.status.sendReadStatus({ chatId: '[chatId]', statusId: 'false_status@broadcast_3A169E0FD4BC6E92212F_[chatId]' });
  * ```
  */
 export async function sendReadStatus(
-  chatId: string | Wid,
-  statusId: string
-): Promise<any> {
+  params: StatusSendReadStatusInput
+): Promise<StatusSendReadStatusOutput> {
+  const { chatId, statusId } = statusSendReadStatusSchema.parse(params);
   const wid = assertWid(chatId);
   const statusStore = StatusV3Store.get(wid);
 

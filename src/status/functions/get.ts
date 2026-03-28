@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,29 @@
  * limitations under the License.
  */
 
-import { assertWid } from '../../assert';
-import { StatusV3Model, StatusV3Store, Wid } from '../../whatsapp';
+import { z } from 'zod';
 
-export function get(chatId: string | Wid): StatusV3Model | undefined {
+import { assertWid } from '../../assert';
+import { StatusV3Model, StatusV3Store } from '../../whatsapp';
+
+const statusGetSchema = z.object({
+  chatId: z.string(),
+});
+
+export type StatusGetInput = z.infer<typeof statusGetSchema>;
+
+export type StatusGetOutput = StatusV3Model | undefined;
+
+/**
+ * Get status of a contact
+ *
+ * @example
+ * ```javascript
+ * const status = WPP.status.get({ chatId: '[chatId]' });
+ * ```
+ */
+export function get(params: StatusGetInput): StatusGetOutput {
+  const { chatId } = statusGetSchema.parse(params);
   const wid = assertWid(chatId);
   return StatusV3Store.get(wid);
 }

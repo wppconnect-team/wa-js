@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,33 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { getMessageById } from '../../chat';
 import { WPPError } from '../../util';
 import { MsgKey, StatusV3Store, UserPrefs } from '../../whatsapp';
 import { revokeStatus } from '../../whatsapp/functions';
 
-export async function remove(msgId: string | MsgKey): Promise<boolean> {
+const statusRemoveSchema = z.object({
+  msgId: z.custom<string | MsgKey>(),
+});
+
+export type StatusRemoveInput = z.infer<typeof statusRemoveSchema>;
+
+export type StatusRemoveOutput = boolean;
+
+/**
+ * Remove a status message
+ *
+ * @example
+ * ```javascript
+ * await WPP.status.remove({ msgId: 'false_status@broadcast_3A169E0FD4BC6E92212F_[chatId]' });
+ * ```
+ */
+export async function remove(
+  params: StatusRemoveInput
+): Promise<StatusRemoveOutput> {
+  const { msgId } = statusRemoveSchema.parse(params);
   const msg = await getMessageById(msgId);
   try {
     await revokeStatus(

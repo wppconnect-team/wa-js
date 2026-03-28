@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,44 +14,57 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { assertColor } from '../../assert';
 import * as Chat from '../../chat';
 import { TextFontStyle } from '../../enums';
-import { defaultSendStatusOptions } from '..';
 import { sendRawStatus } from '.';
-import { SendStatusOptions } from './sendRawStatus';
 
-export interface TextStatusOptions extends SendStatusOptions {
-  font?: TextFontStyle;
-  backgroundColor?: string | number;
-}
+const statusSendTextStatusSchema = z.object({
+  content: z.any(),
+  waitForAck: z.boolean().default(true),
+  messageId: z.any().optional(),
+  caption: z.string().optional(),
+  font: z.enum(TextFontStyle).optional(),
+  backgroundColor: z.union([z.string(), z.number()]).optional(),
+});
+
+export type StatusSendTextStatusInput = z.infer<
+  typeof statusSendTextStatusSchema
+>;
+
+export type StatusSendTextStatusOutput = Chat.SendMessageReturn;
 
 /**
  * Send a text message to status stories
  *
  * @example
  * ```javascript
- * WPP.status.sendTextStatus(`Bootstrap primary color: #0275d8`, { backgroundColor: '#0275d8', font: 2});
+ * WPP.status.sendTextStatus({ content: 'Bootstrap primary color: #0275d8', backgroundColor: '#0275d8', font: 2 });
  * ```
  */
 export async function sendTextStatus(
-  content: any,
-  options: TextStatusOptions = {}
-): Promise<any> {
-  options = {
-    ...defaultSendStatusOptions,
-    ...options,
-  };
+  params: StatusSendTextStatusInput
+): Promise<StatusSendTextStatusOutput> {
+  const {
+    content,
+    waitForAck,
+    messageId,
+    caption,
+    font: fontParam,
+    backgroundColor: bgParam,
+  } = statusSendTextStatusSchema.parse(params);
 
   let backgroundColor = assertColor('#000000');
   let font = 0;
 
-  if (['number', 'string'].includes(typeof options.backgroundColor)) {
-    backgroundColor = assertColor(options.backgroundColor);
+  if (['number', 'string'].includes(typeof bgParam)) {
+    backgroundColor = assertColor(bgParam);
   }
 
-  if (options.font && options.font >= 0 && options.font <= 5) {
-    font = options.font;
+  if (fontParam !== undefined && fontParam >= 0 && fontParam <= 5) {
+    font = fontParam;
   }
 
   const message: Chat.RawMessage = {
@@ -63,5 +76,5 @@ export async function sendTextStatus(
     backgroundColor,
   };
 
-  return await sendRawStatus(message, options);
+  return sendRawStatus({ message, waitForAck, messageId, caption });
 }

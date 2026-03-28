@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import { z } from 'zod';
 
 import { assertWid } from '../../assert';
 import * as Chat from '../../chat';
@@ -28,43 +30,52 @@ import {
   primaryFeatureEnabled,
   randomHex,
 } from '../../whatsapp/functions';
-import { defaultSendStatusOptions } from '..';
 import { postSendStatus } from './postSendStatus';
 
-export interface SendStatusOptions {
-  waitForAck?: boolean;
-  // Only for text status
-  messageId?: string | MsgKey;
-  // Only image and video status
-  caption?: string;
-}
+const statusSendRawStatusSchema = z.object({
+  message: z.custom<Chat.RawMessage>(),
+  waitForAck: z.boolean().default(true),
+  messageId: z.any().optional(),
+  caption: z.string().optional(),
+});
+
+export type StatusSendRawStatusInput = z.infer<
+  typeof statusSendRawStatusSchema
+>;
+
+export type StatusSendRawStatusOutput = Chat.SendMessageReturn;
 
 export async function sendRawStatus(
-  message: Chat.RawMessage,
-  options: SendStatusOptions = {}
-) {
+  params: StatusSendRawStatusInput
+): Promise<StatusSendRawStatusOutput> {
+  const {
+    message,
+    waitForAck,
+    messageId: userMessageId,
+    caption,
+  } = statusSendRawStatusSchema.parse(params);
+
   const me = getMyUserWid();
 
-  const messageId = new MsgKey({
-    fromMe: true,
-    id: randomHex(16),
-    participant: me,
-    remote: assertWid('status@broadcast'),
-  });
-
-  options = {
-    ...defaultSendStatusOptions,
-    messageId,
-    ...options,
-  };
+  const messageId =
+    userMessageId ??
+    new MsgKey({
+      fromMe: true,
+      id: randomHex(16),
+      participant: me,
+      remote: assertWid('status@broadcast'),
+    });
 
   message.author = me;
 
   const result = await Chat.sendRawMessage('status@broadcast', message, {
-    ...options,
+    waitForAck,
+    messageId,
+    // @ts-expect-error - caption is not in the protobuf, but whatsapp web accepts it as a custom property
+    caption,
   });
 
-  postSendStatus(result);
+  postSendStatus({ result });
 
   return result;
 }

@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,36 @@
  * limitations under the License.
  */
 
-export { get } from './get';
-export { getMyStatus } from './getMyStatus';
-export { remove } from './remove';
-export { ImageStatusOptions, sendImageStatus } from './sendImageStatus';
-export { sendRawStatus, SendStatusOptions } from './sendRawStatus';
-export { sendReadStatus } from './sendReadStatus';
-export { sendTextStatus, TextStatusOptions } from './sendTextStatus';
-export { sendVideoStatus, VideoStatusOptions } from './sendVideoStatus';
-export { updateParticipants } from './updateParticipants';
+export { get, StatusGetInput, StatusGetOutput } from './get';
+export { getMyStatus, StatusGetMyStatusOutput } from './getMyStatus';
+export { remove, StatusRemoveInput, StatusRemoveOutput } from './remove';
+export {
+  sendImageStatus,
+  StatusSendImageStatusInput,
+  StatusSendImageStatusOutput,
+} from './sendImageStatus';
+export {
+  sendRawStatus,
+  StatusSendRawStatusInput,
+  StatusSendRawStatusOutput,
+} from './sendRawStatus';
+export {
+  sendReadStatus,
+  StatusSendReadStatusInput,
+  StatusSendReadStatusOutput,
+} from './sendReadStatus';
+export {
+  sendTextStatus,
+  StatusSendTextStatusInput,
+  StatusSendTextStatusOutput,
+} from './sendTextStatus';
+export {
+  sendVideoStatus,
+  StatusSendVideoStatusInput,
+  StatusSendVideoStatusOutput,
+} from './sendVideoStatus';
+export {
+  StatusUpdateParticipantsInput,
+  StatusUpdateParticipantsOutput,
+  updateParticipants,
+} from './updateParticipants';

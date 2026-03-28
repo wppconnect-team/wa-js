@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,25 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { SendMessageReturn } from '../../chat';
 import { MsgStore, StatusV3Store } from '../../whatsapp';
 
-export function postSendStatus(result: SendMessageReturn): void {
+const statusPostSendStatusSchema = z.object({
+  result: z.custom<SendMessageReturn>(),
+});
+
+export type StatusPostSendStatusInput = z.infer<
+  typeof statusPostSendStatusSchema
+>;
+
+export type StatusPostSendStatusOutput = void;
+
+export function postSendStatus(
+  params: StatusPostSendStatusInput
+): StatusPostSendStatusOutput {
+  const { result } = statusPostSendStatusSchema.parse(params);
   result.sendMsgResult.then(async () => {
     const msg = MsgStore.get(result.id);
 

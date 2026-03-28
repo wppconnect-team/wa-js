@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,9 @@
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import { StatusV3Model, StatusV3Store } from '../../whatsapp';
 
-export async function getMyStatus(): Promise<StatusV3Model> {
+export type StatusGetMyStatusOutput = StatusV3Model;
+
+export async function getMyStatus(): Promise<StatusGetMyStatusOutput> {
   let myStatus = StatusV3Store.getMyStatus();
 
   if (!myStatus) {
