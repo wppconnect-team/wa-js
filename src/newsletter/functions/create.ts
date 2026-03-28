@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,19 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { blobToBase64, convertToFile, downloadImage } from '../../util';
 import { createNewsletterQuery } from '../../whatsapp/functions';
 
-export interface ResultCreateNewsletter {
+const newsletterCreateSchema = z.object({
+  name: z.string(),
+  description: z.string().optional(),
+  picture: z.string().optional(),
+});
+
+export type NewsletterCreateInput = z.infer<typeof newsletterCreateSchema>;
+export type NewsletterCreateOutput = {
   idJid: string;
   inviteCode: string;
   inviteLink: string;
@@ -26,34 +35,35 @@ export interface ResultCreateNewsletter {
   subscribersCount: number;
   description: string | null;
   timestamp: number;
-}
+};
 
 /**
  * Create a newsletter
  *
  * @example
  * ```javascript
- * // To edit name
- * WPP.newsletter.create('Name for your newsletter', {
- * description: 'Description for that',
- * picture: '<base64_string',
+ * WPP.newsletter.create({
+ *   name: 'Name for your newsletter',
+ *   description: 'Description for that',
+ *   picture: '<base64_string>',
  * });
  * ```
  * @category Newsletter
  */
 export async function create(
-  name: string,
-  opts: { description?: string; picture?: string }
-): Promise<ResultCreateNewsletter> {
+  params: NewsletterCreateInput
+): Promise<NewsletterCreateOutput> {
+  const { name, description, picture } = newsletterCreateSchema.parse(params);
+
   let pic = undefined;
-  if (opts?.picture) {
-    const file = await convertToFile(opts.picture);
+  if (picture) {
+    const file = await convertToFile(picture);
     pic = await blobToBase64(file);
     ({ data: pic } = await downloadImage(pic, 'image/jpeg'));
   }
   const result = await createNewsletterQuery({
     name: name,
-    description: opts?.description || null,
+    description: description || null,
     picture: pic || null,
   });
 
@@ -65,7 +75,7 @@ export async function create(
     state: result?.newsletterStateMetadataMixin?.stateType,
     subscribersCount:
       result?.newsletterSubscribersMetadataMixin.subscribersCount,
-    description: opts?.description || null,
+    description: description || null,
     timestamp: result?.newsletterCreationTimeMetadataMixin?.creationTimeValue,
   };
 }

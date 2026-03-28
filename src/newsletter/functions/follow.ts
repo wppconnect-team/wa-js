@@ -14,8 +14,17 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
 import { mexJoinNewsletter } from '../../whatsapp/functions';
+
+const newsletterFollowSchema = z.object({
+  newsletterId: z.string(),
+});
+
+export type NewsletterFollowInput = z.infer<typeof newsletterFollowSchema>;
+export type NewsletterFollowOutput = boolean;
 
 /**
  * Follow/subscribe to a newsletter
@@ -23,13 +32,17 @@ import { mexJoinNewsletter } from '../../whatsapp/functions';
  * @example
  * ```javascript
  * // Follow a newsletter
- * const success = await WPP.newsletter.follow('120363xxxxx@newsletter');
+ * const success = await WPP.newsletter.follow({ newsletterId: '120363xxxxx@newsletter' });
  * ```
  *
  * @category Newsletter
  */
-export async function follow(id: string): Promise<boolean> {
-  if (!id || !id.includes('@newsletter')) {
+export async function follow(
+  params: NewsletterFollowInput
+): Promise<NewsletterFollowOutput> {
+  const { newsletterId } = newsletterFollowSchema.parse(params);
+
+  if (!newsletterId.includes('@newsletter')) {
     throw new WPPError(
       'invalid_newsletter_id',
       'Please provide a valid newsletter ID (must contain @newsletter)'
@@ -37,7 +50,7 @@ export async function follow(id: string): Promise<boolean> {
   }
 
   try {
-    await mexJoinNewsletter(id);
+    await mexJoinNewsletter(newsletterId);
     return true;
   } catch (error: any) {
     // Map specific error codes to friendly messages

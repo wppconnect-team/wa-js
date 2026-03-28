@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,22 @@
  * limitations under the License.
  */
 
+import z from 'zod';
+
 import { assertGetChat } from '../../assert';
 import { WPPError } from '../../util';
-import { Wid } from '../../whatsapp';
 
-export async function ensureNewsletter(newsletterId: string | Wid) {
+const newsletterEnsureNewsletterSchema = z.object({
+  newsletterId: z.string(),
+});
+export type NewsletterEnsureNewsletterInput = z.infer<
+  typeof newsletterEnsureNewsletterSchema
+>;
+
+export async function ensureNewsletter(
+  params: NewsletterEnsureNewsletterInput
+) {
+  const { newsletterId } = newsletterEnsureNewsletterSchema.parse(params);
   const newsletterChat = assertGetChat(newsletterId);
 
   if (!newsletterChat.isNewsletter) {

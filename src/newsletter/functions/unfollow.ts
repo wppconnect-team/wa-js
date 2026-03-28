@@ -14,8 +14,17 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
 import { mexLeaveNewsletter } from '../../whatsapp/functions';
+
+const newsletterUnfollowSchema = z.object({
+  newsletterId: z.string(),
+});
+
+export type NewsletterUnfollowInput = z.infer<typeof newsletterUnfollowSchema>;
+export type NewsletterUnfollowOutput = boolean;
 
 /**
  * Unfollow/unsubscribe from a newsletter
@@ -23,13 +32,17 @@ import { mexLeaveNewsletter } from '../../whatsapp/functions';
  * @example
  * ```javascript
  * // Unfollow a newsletter
- * const success = await WPP.newsletter.unfollow('120363xxxxx@newsletter');
+ * const success = await WPP.newsletter.unfollow({ newsletterId: '120363xxxxx@newsletter' });
  * ```
  *
  * @category Newsletter
  */
-export async function unfollow(id: string): Promise<boolean> {
-  if (!id || !id.includes('@newsletter')) {
+export async function unfollow(
+  params: NewsletterUnfollowInput
+): Promise<NewsletterUnfollowOutput> {
+  const { newsletterId } = newsletterUnfollowSchema.parse(params);
+
+  if (!newsletterId.includes('@newsletter')) {
     throw new WPPError(
       'invalid_newsletter_id',
       'Please provide a valid newsletter ID (must contain @newsletter)'
@@ -37,7 +50,7 @@ export async function unfollow(id: string): Promise<boolean> {
   }
 
   try {
-    await mexLeaveNewsletter(id);
+    await mexLeaveNewsletter(newsletterId);
     return true;
   } catch (error: any) {
     // Error 400 means already unfollowed - treat as success (idempotent)

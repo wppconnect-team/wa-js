@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import {
   blobToBase64,
   convertToFile,
@@ -26,7 +28,15 @@ import {
 } from '../../whatsapp/functions';
 import { ensureNewsletter } from './ensureNewsletter';
 
-export interface ResultCreateNewsletter {
+const newsletterEditSchema = z.object({
+  newsletterId: z.string(),
+  name: z.string().optional(),
+  description: z.string().optional(),
+  picture: z.string().nullable().optional(),
+});
+
+export type NewsletterEditInput = z.infer<typeof newsletterEditSchema>;
+export type NewsletterEditOutput = {
   idJid: string;
   inviteCode: string;
   inviteLink: string;
@@ -35,7 +45,7 @@ export interface ResultCreateNewsletter {
   subscribersCount: number;
   description: string | null;
   timestamp: number;
-}
+};
 
 /**
  * Edit the newsletter data
@@ -43,42 +53,44 @@ export interface ResultCreateNewsletter {
  * @example
  * ```javascript
  * // To edit name
- * const code = WPP.newsletter.edit('[newsletter-id]@newsletter', {
- * name: 'New Name'
+ * const code = WPP.newsletter.edit({
+ *   newsletterId: '[newsletter-id]@newsletter',
+ *   name: 'New Name'
  * });
  *
  * // To edit description
- * const code = WPP.newsletter.edit('[newsletter-id]@newsletter', {
- * description: 'New description'
+ * const code = WPP.newsletter.edit({
+ *   newsletterId: '[newsletter-id]@newsletter',
+ *   description: 'New description'
  * });
  *
  * // To change picture
- * const code = WPP.newsletter.edit('[newsletter-id]@newsletter', {
- * picture: '<base64_image>'
+ * const code = WPP.newsletter.edit({
+ *   newsletterId: '[newsletter-id]@newsletter',
+ *   picture: '<base64_image>'
  * });
  *
  * // To remove picture
- * const code = WPP.newsletter.edit('[newsletter-id]@newsletter', {
- * picture: null
+ * const code = WPP.newsletter.edit({
+ *   newsletterId: '[newsletter-id]@newsletter',
+ *   picture: null
  * });
  * ```
  *
  * @category Newsletter
  */
 export async function edit(
-  newsletterId: string,
-  opts: {
-    name?: string;
-    description?: string;
-    picture?: string;
-  }
-): Promise<ResultCreateNewsletter> {
+  params: NewsletterEditInput
+): Promise<NewsletterEditOutput> {
+  const { newsletterId, name, description, picture } =
+    newsletterEditSchema.parse(params);
+
   let pic: string | undefined = undefined;
 
-  if (opts?.picture) {
-    let base64 = opts.picture;
-    if (opts.picture.includes('http'))
-      ({ data: base64 } = await downloadImage(opts?.picture, 'image/jpeg'));
+  if (picture) {
+    let base64 = picture;
+    if (picture.includes('http'))
+      ({ data: base64 } = await downloadImage(picture, 'image/jpeg'));
 
     const file = await convertToFile(base64 as string);
     const pictureFile = await resizeImage(file, {
@@ -91,16 +103,18 @@ export async function edit(
   }
 
   await editNewsletterMetadataAction(
-    await ensureNewsletter(newsletterId),
+    await ensureNewsletter({
+      newsletterId,
+    }),
     {
-      editDescription: opts.description ? true : false,
-      editName: opts.name ? true : false,
-      editPicture: pic || opts.picture == null ? true : false,
+      editDescription: description ? true : false,
+      editName: name ? true : false,
+      editPicture: pic || picture == null ? true : false,
     },
     {
-      name: opts.name,
-      description: opts.description,
-      picture: opts.picture == null ? null : pic,
+      name: name,
+      description: description,
+      picture: picture == null ? null : pic,
     }
   );
 

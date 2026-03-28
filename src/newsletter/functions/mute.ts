@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { WPPError } from '../../util';
+import { z } from 'zod';
+
 import { ChatModel, NewsletterStore } from '../../whatsapp';
 import { CHANNEL_EVENT_SURFACE } from '../../whatsapp/enums';
 import {
@@ -23,6 +24,14 @@ import {
   unmuteNewsletter,
 } from '../../whatsapp/functions';
 import { ensureNewsletter } from './ensureNewsletter';
+
+const newsletterMuteSchema = z.object({
+  newsletterId: z.string(),
+  value: z.boolean().optional(),
+});
+
+export type NewsletterMuteInput = z.infer<typeof newsletterMuteSchema>;
+export type NewsletterMuteOutput = ChatModel;
 
 const NEWSLETTER_MUTED_STATE = -1;
 const NEWSLETTER_UNMUTED_STATE = 0;
@@ -33,25 +42,22 @@ const NEWSLETTER_UNMUTED_STATE = 0;
  * @example
  * // Mute
  * ```javascript
- * WPP.newsletter.mute('[newsletter-id]@newsletter', true);
+ * WPP.newsletter.mute({ newsletterId: '[newsletter-id]@newsletter', value: true });
  * ```
  *
  * // Unmute
  * ```javascript
- * WPP.newsletter.mute('[newsletter-id]@newsletter', false);
+ * WPP.newsletter.mute({ newsletterId: '[newsletter-id]@newsletter', value: false });
  * ```
  *
  * @category Newsletter
  */
 export async function mute(
-  newsletterId: string,
-  value?: boolean
-): Promise<ChatModel> {
-  const chat = await ensureNewsletter(newsletterId);
+  params: NewsletterMuteInput
+): Promise<NewsletterMuteOutput> {
+  const { newsletterId, value } = newsletterMuteSchema.parse(params);
 
-  if (value != null && typeof value !== 'boolean') {
-    throw new WPPError('invalid_mute_value', 'Mute value must be boolean');
-  }
+  const chat = await ensureNewsletter(newsletterId);
 
   const eventSurface = CHANNEL_EVENT_SURFACE?.CHANNEL_UPDATES_HOME ?? 1;
   const muteExpirationValue =

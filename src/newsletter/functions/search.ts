@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
 import { mexFetchNewsletterDirectorySearchResults } from '../../whatsapp/functions';
 
-export interface NewsletterSearchOptions {
-  categories?: string[];
-  limit?: number;
-  cursorToken?: string;
-}
+const newsletterSearchSchema = z.object({
+  query: z.string(),
+  categories: z.array(z.string()).optional(),
+  limit: z.number().optional(),
+  cursorToken: z.string().optional(),
+});
 
-export interface NewsletterSearchResult {
+export type NewsletterSearchInput = z.infer<typeof newsletterSearchSchema>;
+export type NewsletterSearchOutput = {
   newsletters: Array<{
     idJid: string;
     name: string;
@@ -40,7 +44,7 @@ export interface NewsletterSearchResult {
     hasNextPage?: boolean;
     endCursor?: string;
   };
-}
+};
 
 /**
  * Search for newsletters in the directory
@@ -48,18 +52,20 @@ export interface NewsletterSearchResult {
  * @example
  * ```javascript
  * // Basic search
- * const result = await WPP.newsletter.search('technology');
+ * const result = await WPP.newsletter.search({ query: 'technology' });
  *
  * // Search with options
- * const result = await WPP.newsletter.search('news', {
+ * const result = await WPP.newsletter.search({
+ *   query: 'news',
  *   limit: 10,
  *   categories: ['TECHNOLOGY', 'NEWS']
  * });
  *
  * // Pagination
- * const firstPage = await WPP.newsletter.search('tech');
+ * const firstPage = await WPP.newsletter.search({ query: 'tech' });
  * if (firstPage.pageInfo?.hasNextPage) {
- *   const nextPage = await WPP.newsletter.search('tech', {
+ *   const nextPage = await WPP.newsletter.search({
+ *     query: 'tech',
  *     cursorToken: firstPage.pageInfo.endCursor
  *   });
  * }
@@ -68,22 +74,25 @@ export interface NewsletterSearchResult {
  * @category Newsletter
  */
 export async function search(
-  query: string,
-  options?: NewsletterSearchOptions
-): Promise<NewsletterSearchResult> {
+  params: NewsletterSearchInput
+): Promise<NewsletterSearchOutput> {
+  const { query, categories, limit, cursorToken } =
+    newsletterSearchSchema.parse(params);
+
   if (!query || query.trim().length === 0) {
     throw new WPPError('invalid_search_query', 'Search query cannot be empty');
   }
 
   try {
-    const params = {
+    const searchParams = {
       searchText: query.trim(),
-      categories: options?.categories || [],
-      limit: options?.limit || 20,
-      cursorToken: options?.cursorToken,
+      categories: categories || [],
+      limit: limit || 20,
+      cursorToken: cursorToken,
     };
 
-    const response = await mexFetchNewsletterDirectorySearchResults(params);
+    const response =
+      await mexFetchNewsletterDirectorySearchResults(searchParams);
 
     // Parse response defensively
     const searchResult = response?.xwa2_newsletters_directory_search;

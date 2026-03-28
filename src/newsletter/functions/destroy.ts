@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,40 @@
  * limitations under the License.
  */
 
+import { z } from 'zod';
+
 import { WPPError } from '../../util';
 import { deleteNewsletter } from '../../whatsapp/functions';
+
+const newsletterDestroySchema = z.object({
+  newsletterId: z.string(),
+});
+
+export type NewsletterDestroyInput = z.infer<typeof newsletterDestroySchema>;
+export type NewsletterDestroyOutput = boolean;
 
 /**
  * Delete a newsletter
  *
  * @example
  * ```javascript
- * const code = WPP.newsletter.destroy('[newsletter-id]@newsletter');
+ * const code = WPP.newsletter.destroy({ newsletterId: '[newsletter-id]@newsletter' });
  * ```
  *
  * @category Newsletter
  */
-export async function destroy(id: string): Promise<boolean> {
-  if (!id || !id.includes('newsletter'))
+export async function destroy(
+  params: NewsletterDestroyInput
+): Promise<NewsletterDestroyOutput> {
+  const { newsletterId } = newsletterDestroySchema.parse(params);
+
+  if (!newsletterId.includes('newsletter'))
     throw new WPPError(
       'send_correctly_newsletter_id',
       'Please, send the correct newsletter ID.'
     );
   try {
-    return await deleteNewsletter(id);
+    return await deleteNewsletter(newsletterId);
   } catch (_error) {
     return false;
   }

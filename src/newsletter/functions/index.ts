@@ -1,5 +1,5 @@
 /*!
- * Copyright 2022 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,35 @@
  * limitations under the License.
  */
 
-export { create } from './create';
-export { destroy } from './destroy';
-export { edit } from './edit';
-export { follow } from './follow';
-export { getSubscribers } from './getSubscribers';
-export { mute } from './mute';
-export { search } from './search';
-export { unfollow } from './unfollow';
+export {
+  create,
+  NewsletterCreateInput,
+  NewsletterCreateOutput,
+} from './create';
+export {
+  destroy,
+  NewsletterDestroyInput,
+  NewsletterDestroyOutput,
+} from './destroy';
+export { edit, NewsletterEditInput, NewsletterEditOutput } from './edit';
+export {
+  follow,
+  NewsletterFollowInput,
+  NewsletterFollowOutput,
+} from './follow';
+export {
+  getSubscribers,
+  NewsletterGetSubscribersInput,
+  NewsletterGetSubscribersOutput,
+} from './getSubscribers';
+export { mute, NewsletterMuteInput, NewsletterMuteOutput } from './mute';
+export {
+  NewsletterSearchInput,
+  NewsletterSearchOutput,
+  search,
+} from './search';
+export {
+  NewsletterUnfollowInput,
+  NewsletterUnfollowOutput,
+  unfollow,
+} from './unfollow';
