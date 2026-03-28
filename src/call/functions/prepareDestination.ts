@@ -1,5 +1,5 @@
 /*!
- * Copyright 2023 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,21 +18,21 @@ import { z } from 'zod';
 
 import { functions, multidevice, websocket, Wid } from '../../whatsapp';
 
-const prepareDestionationSchema = z.object({
+const callPrepareDestinationSchema = z.object({
   wids: z.custom<Wid[]>(),
   encKey: z.custom<ArrayBufferLike>(),
 });
 
-export type PrepareDestionationInput = z.infer<
-  typeof prepareDestionationSchema
+export type CallPrepareDestinationInput = z.infer<
+  typeof callPrepareDestinationSchema
 >;
 
-export type PrepareDestionationOutput = websocket.WapNode[];
+export type CallPrepareDestinationOutput = websocket.WapNode[];
 
-export async function prepareDestionation(
-  params: PrepareDestionationInput
-): Promise<PrepareDestionationOutput> {
-  const { wids, encKey } = prepareDestionationSchema.parse(params);
+export async function prepareDestination(
+  params: CallPrepareDestinationInput
+): Promise<CallPrepareDestinationOutput> {
+  const { wids, encKey } = callPrepareDestinationSchema.parse(params);
 
   const fanList = await functions.getFanOutList({ wids });
   await websocket.ensureE2ESessions(fanList);

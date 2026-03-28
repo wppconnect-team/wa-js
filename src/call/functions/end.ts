@@ -24,9 +24,9 @@ const callEndSchema = z.object({
   callId: z.string().optional(),
 });
 
-export type EndInput = z.infer<typeof callEndSchema>;
+export type CallEndInput = z.infer<typeof callEndSchema>;
 
-export type EndOutput = boolean;
+export type CallEndOutput = boolean;
 
 /**
  * End a call
@@ -48,7 +48,7 @@ export type EndOutput = boolean;
  * @param   {string}  callId  The call ID, empty to end the first one
  * @return  {[type]}          [return description]
  */
-export async function end(params: EndInput = {}): Promise<EndOutput> {
+export async function end(params: CallEndInput = {}): Promise<CallEndOutput> {
   const { callId } = callEndSchema.parse(params);
 
   const callOut = [

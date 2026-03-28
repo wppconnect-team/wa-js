@@ -18,13 +18,15 @@ import { z } from 'zod';
 
 import { Base64, websocket } from '../../whatsapp';
 
-const parseRelayResponseSchema = z.object({
+const callParseRelayResponseSchema = z.object({
   response: z.custom<websocket.WapNode>(),
 });
 
-export type ParseRelayResponseInput = z.infer<typeof parseRelayResponseSchema>;
+export type CallParseRelayResponseInput = z.infer<
+  typeof callParseRelayResponseSchema
+>;
 
-export type ParseRelayResponseOutput = {
+export type CallParseRelayResponseOutput = {
   rte: { ip: number[]; port: number } | null;
   key: string;
   relays: {
@@ -52,9 +54,9 @@ function extractIpPort(data: Uint8Array) {
 }
 
 export function parseRelayResponse(
-  params: ParseRelayResponseInput
-): ParseRelayResponseOutput {
-  const { response } = parseRelayResponseSchema.parse(params);
+  params: CallParseRelayResponseInput
+): CallParseRelayResponseOutput {
+  const { response } = callParseRelayResponseSchema.parse(params);
   const rteNode = (response.content as websocket.WapNode[]).find(
     (c) => c.tag === 'rte'
   ) as websocket.WapNode;

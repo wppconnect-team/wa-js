@@ -17,12 +17,12 @@
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { getABPropConfigValue } from '../../whatsapp/functions';
 
-export type EnableCallInterfaceOutput = void;
+export type CallEnableCallInterfaceOutput = void;
 
 /**
  * Enable call interface from desktop app
  */
-export async function enableCallInterface(): Promise<EnableCallInterfaceOutput> {
+export async function enableCallInterface(): Promise<CallEnableCallInterfaceOutput> {
   wrapModuleFunction(getABPropConfigValue, (func, ...args) => {
     const [key] = args;
     switch (key) {
