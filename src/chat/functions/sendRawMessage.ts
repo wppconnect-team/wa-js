@@ -65,7 +65,9 @@ export async function sendRawMessage(
   if (chat.id.isGroup() && chat.isParentGroup) {
     const groupData = GroupMetadataStore.get(chat.id?.toString());
     if (groupData?.groupType == 'COMMUNITY') {
-      const announceGroup = getAnnouncementGroup(groupData.id);
+      const announceGroup = getAnnouncementGroup({
+        communityId: groupData.id._serialized,
+      });
       throw new WPPError(
         'can_not_send_message_to_this_groupType',
         `You can not send message to this groupType 'COMMUNITY', send for Announcement Group. Correct announcement groupId: ${announceGroup?.toString()}`
