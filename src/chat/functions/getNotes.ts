@@ -25,7 +25,7 @@ import { retrieveOnlyNoteForChatJid } from '../../whatsapp/functions/addOrEditNo
  * Only when are connected with business device
  * @example
  * ```javascript
- * WPP.chat.getNotes('[number]@c.us', 'Text for your notes');
+ * WPP.chat.getNotes('[number]@c.us');
  * ```
  * @category Chat
  */
