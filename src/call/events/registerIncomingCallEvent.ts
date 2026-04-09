@@ -13,44 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import Debug from 'debug';
 
 import { internalEv } from '../../eventEmitter';
 import { createWid } from '../../util/createWid';
 import * as webpack from '../../webpack';
 import { CallModel, CallStore } from '../../whatsapp';
-import { CALL_STATES } from '../../whatsapp/enums';
+
+const debug = Debug('WA-JS:call:registerIncomingCallEvent');
 
 webpack.onInjected(() => register());
 
 function register() {
-  CallStore.on('add', (call: CallModel) => {
-    if (call.isGroup) {
-      internalEv.emit('call.incoming_call', {
-        id: call.id,
-        isGroup: call.isGroup,
-        isVideo: call.isVideo,
-        offerTime: call.offerTime,
-        sender: createWid(call.peerJid),
-        peerJid: call.peerJid,
-      });
-    }
-  });
+  debug('Registering incoming call event listeners');
 
-  CallStore.on('change', (call: CallModel) => {
-    if (
-      // Fix for mantain compatibility with older versions of whatsapp web
-      call.getState() === CALL_STATES.INCOMING_RING ||
-      // >= 2.3000.10213.x
-      call.getState() === CALL_STATES.ReceivedCall
-    ) {
-      internalEv.emit('call.incoming_call', {
-        id: call.id,
-        isGroup: call.isGroup,
-        isVideo: call.isVideo,
-        offerTime: call.offerTime,
-        sender: createWid(call.peerJid),
-        peerJid: call.peerJid,
-      });
-    }
-  });
+  const registeredCalls = new Set<string>();
+
+  const originalProcessIncomingCall =
+    CallStore.processIncomingCall.bind(CallStore);
+  (CallStore as any).processIncomingCall = function (...args: any[]) {
+    const call: CallModel = originalProcessIncomingCall(...args);
+    if (!call || registeredCalls.has(call.id)) return call;
+
+    registeredCalls.add(call.id);
+
+    debug('New call via processIncomingCall', call);
+
+    internalEv.emit('call.incoming_call', {
+      id: call.id,
+      isGroup: call.isGroup,
+      isVideo: call.isVideo,
+      offerTime: call.offerTime,
+      sender: createWid(call.peerJid),
+      peerJid: call.peerJid,
+    });
+
+    return call;
+  };
 }
