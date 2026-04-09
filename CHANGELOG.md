@@ -1,9 +1,6 @@
-## 3.23.2 (2026-03-18)
+## 3.23.3 (2026-04-09)
 
 
 ### Bug Fixes
 
-* update exportModule to correctly reference WAWebDBCreateLidPnMap ([#3384](https://github.com/wppconnect-team/wa-js/issues/3384)) ([8c8680a](https://github.com/wppconnect-team/wa-js/commit/8c8680a5d1d67f93786f195cea001c1eaa966daa))
-
-
-
+* refactor incoming call event registration for improved handling ([#3406](https://github.com/wppconnect-team/wa-js/issues/3406)) ([db6a588](https://github.com/wppconnect-team/wa-js/commit/db6a5885856c68e2a78dd5a376f6fa33f3f295b5))
