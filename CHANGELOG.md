@@ -1,6 +1,6 @@
-## 3.23.3 (2026-04-09)
+## 3.23.4 (2026-04-17)
 
 
 ### Bug Fixes
 
-* refactor incoming call event registration for improved handling ([#3406](https://github.com/wppconnect-team/wa-js/issues/3406)) ([db6a588](https://github.com/wppconnect-team/wa-js/commit/db6a5885856c68e2a78dd5a376f6fa33f3f295b5))
+* disconnection after reading qrcode - flushing during sync ([#3409](https://github.com/wppconnect-team/wa-js/issues/3409)) ([428ee01](https://github.com/wppconnect-team/wa-js/commit/428ee012c12dedc663991e8734af67876a9593af))
