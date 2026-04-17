@@ -14,10 +14,20 @@
  * limitations under the License.
  */
 
+import Debug from 'debug';
+
 import { assertWid } from '../../assert';
 import { createWid } from '../../util/createWid';
-import { ApiContact, USyncQuery, USyncUser, Wid } from '../../whatsapp';
+import {
+  ApiContact,
+  USyncQuery,
+  USyncQueryResult,
+  USyncUser,
+  Wid,
+} from '../../whatsapp';
 import * as DBCreateLidPnMappings from '../../whatsapp/misc/DBCreateLidPnMappings';
+
+const debug = Debug('WPP:contact:queryExists');
 
 export interface QueryExistsResult {
   wid: Wid;
@@ -86,41 +96,51 @@ export async function queryExists(
     .withStatusProtocol()
     .withLidProtocol();
 
-  const get = await syncQuery.execute();
+  const usyncQueryResult: USyncQueryResult = await syncQuery.execute();
 
-  let result = null;
+  let result: QueryExistsResult | null = null;
 
-  if (get?.error?.all || get?.error?.contact) {
+  if (usyncQueryResult?.error?.all || usyncQueryResult?.error?.contact) {
     result = null;
   }
-  if (Array.isArray(get.list)) {
-    result = get.list[0];
-    if (result?.contact?.type === 'out') {
+  if (Array.isArray(usyncQueryResult.list)) {
+    const rawResult = usyncQueryResult.list[0];
+    if (!rawResult?.id || rawResult?.contact?.type === 'out') {
       result = null;
     } else {
-      const lid = result?.lid;
-      result = {
-        wid: result.id,
-        biz: typeof result.business !== 'undefined',
-        bizInfo: result.business,
+      const lid = rawResult.lid;
+      const disappearingMode = rawResult.disappearing_mode;
+      const normalizedResult: QueryExistsResult = {
+        wid: rawResult.id,
+        biz: typeof rawResult.business !== 'undefined',
+        bizInfo: rawResult.business,
         disappearingMode:
-          typeof result.disappearing_mode !== 'undefined'
+          typeof disappearingMode?.duration === 'number' &&
+          typeof disappearingMode?.t === 'number'
             ? {
-                duration: result.disappearing_mode?.duration,
-                settingTimestamp: result.disappearing_mode?.t,
+                duration: disappearingMode.duration,
+                settingTimestamp: disappearingMode.t,
               }
             : undefined,
-        status: result.status,
+        status: rawResult.status,
         lid: lid ? createWid(lid) : undefined,
       };
 
-      // Update the lidPnCache with the PN→LID mapping using native createLidPnMappings
-      // This updates BOTH IndexedDB and in-memory cache
-      if (result.lid && wid.isUser() && !wid.isLid()) {
-        await DBCreateLidPnMappings.createLidPnMappings({
-          mappings: [{ lid: result.lid, pn: result.wid }],
-          flushImmediately: true,
+      result = normalizedResult;
+
+      // Enqueue a best-effort native persistence path.
+      // WhatsApp warms the in-memory LID/PN cache automatically here, so we
+      // avoid the manual cache mutation and skip the immediate DB flush.
+      if (normalizedResult.lid && wid.isUser() && !wid.isLid()) {
+        void DBCreateLidPnMappings.createLidPnMappings({
+          mappings: [{ lid: normalizedResult.lid, pn: normalizedResult.wid }],
+          flushImmediately: false,
+          identityChangeHandlingEnabled: false,
           learningSource: 'usync',
+        }).catch(() => {
+          debug(
+            `Failed to create LID/PN mapping for ${normalizedResult.wid} -> ${normalizedResult.lid}`
+          );
         });
       }
     }

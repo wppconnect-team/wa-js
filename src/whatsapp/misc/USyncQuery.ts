@@ -17,27 +17,59 @@
 import { exportModule } from '../exportModule';
 import { Wid } from './Wid';
 
+export interface USyncQueryBizInfo {
+  verifiedName?: {
+    isApi: boolean;
+    level: string;
+    name: string;
+    privacyMode: any;
+    serial: string;
+  };
+}
+
+export interface USyncQueryListItem {
+  id?: Wid;
+  business?: USyncQueryBizInfo;
+  disappearing_mode?: {
+    duration?: number;
+    t?: number;
+  };
+  status?: string;
+  lid?: string | { _serialized: string };
+  contact?: {
+    type?: 'in' | 'out';
+  };
+}
+
+export interface USyncQueryResult {
+  error?: {
+    all?: unknown;
+    contact?: unknown;
+  };
+  list?: USyncQueryListItem[];
+}
+
 /**
  * @whatsapp 459857
  */
 export declare class USyncQuery {
   constructor();
   $1(): any;
-  execute(): any;
-  withBotProfileProtocol(): any;
-  withBusinessProtocol(): any;
-  withContactProtocol(): any;
-  withContext(a: any): any;
-  withDeviceProtocol(): Wid;
-  withDisappearingModeProtocol(): any;
-  withFeaturesProtocol(a: any): any;
-  withLidProtocol(): Wid;
-  withMode(a: any): any;
-  withPictureProtocol(): any;
-  withStatusProtocol(): any;
-  withTextStatusProtocol(): any;
-  withUser(a: any): any;
-  withUsernameProtocol(): any;
+  execute(): Promise<USyncQueryResult>;
+  withBotProfileProtocol(): USyncQuery;
+  withBusinessProtocol(): USyncQuery;
+  withContactProtocol(): USyncQuery;
+  withContext(a: any): USyncQuery;
+  withDeviceProtocol(): USyncQuery;
+  withDisappearingModeProtocol(): USyncQuery;
+  withFeaturesProtocol(a: any): USyncQuery;
+  withLidProtocol(): USyncQuery;
+  withMode(a: any): USyncQuery;
+  withPictureProtocol(): USyncQuery;
+  withStatusProtocol(): USyncQuery;
+  withTextStatusProtocol(): USyncQuery;
+  withUser(a: any): USyncQuery;
+  withUsernameProtocol(): USyncQuery;
 }
 
 exportModule(
