@@ -26,6 +26,7 @@ interface CreateLidPnMappingsParams {
   mappings: LidPnMapping[];
   flushImmediately: boolean;
   learningSource: string;
+  identityChangeHandlingEnabled?: boolean;
 }
 
 /**
