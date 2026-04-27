@@ -20,9 +20,9 @@ import { ChatEventTypes } from '../chat/events/eventTypes';
 import { ConfigEventTypes } from '../config/eventTypes';
 import { ConnEventTypes } from '../conn/events/eventTypes';
 import { GroupEventTypes } from '../group/events/eventTypes';
+import { LoaderEvents } from '../loader/eventTypes';
 import { OrderEventTypes } from '../order/events/eventTypes';
 import { StatusEventTypes } from '../status/events/eventTypes';
-import { WebpackEvents } from '../webpack/eventTypes';
 
 export { BlocklistEventTypes } from '../blocklist/events/eventTypes';
 export { CallEventTypes } from '../call/events/eventTypes';
@@ -30,9 +30,9 @@ export { ChatEventTypes } from '../chat/events/eventTypes';
 export { ConfigEventTypes } from '../config/eventTypes';
 export { ConnEventTypes } from '../conn/events/eventTypes';
 export { GroupEventTypes } from '../group/events/eventTypes';
+export { LoaderEvents } from '../loader/eventTypes';
 export { OrderEventTypes } from '../order/events/eventTypes';
 export { StatusEventTypes } from '../status/events/eventTypes';
-export { WebpackEvents } from '../webpack/eventTypes';
 
 export type EventTypes = BlocklistEventTypes &
   CallEventTypes &
@@ -42,4 +42,4 @@ export type EventTypes = BlocklistEventTypes &
   GroupEventTypes &
   OrderEventTypes &
   StatusEventTypes &
-  WebpackEvents;
+  LoaderEvents;

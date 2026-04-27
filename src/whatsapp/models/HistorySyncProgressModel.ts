@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { exportModule } from '../exportModule';
 import { getHistorySyncProgress } from '../functions';
 import {
@@ -83,4 +83,4 @@ Object.defineProperty(fallback, 'HistorySyncProgressModel', {
   },
 });
 
-webpack.injectFallbackModule('HistorySyncProgressModel', fallback);
+loader.injectFallbackModule('HistorySyncProgressModel', fallback);

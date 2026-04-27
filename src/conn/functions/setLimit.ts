@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
+import * as loader from '../../loader';
 import { WPPError } from '../../util';
-import * as webpack from '../../webpack';
 import { ServerPropsConstants } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { getNumChatsPinned } from '../../whatsapp/functions';
 
 let unlimitedPin: undefined | boolean = undefined;
 
-webpack.onFullReady(() => {
+loader.onFullReady(() => {
   wrapModuleFunction(getNumChatsPinned, (func, ...args) => {
     const getNumChatsPinnedOriginal = func(...args);
     return unlimitedPin ? 1 : getNumChatsPinnedOriginal;

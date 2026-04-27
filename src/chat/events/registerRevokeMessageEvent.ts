@@ -15,11 +15,11 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { MsgStore, Wid } from '../../whatsapp';
 import { RawMessage } from '..';
 
-webpack.onInjected(() => registerRevokeMessageEvent());
+loader.onInjected(() => registerRevokeMessageEvent());
 
 function registerRevokeMessageEvent() {
   /**

@@ -15,12 +15,12 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { upsertVotes } from '../../whatsapp/functions';
 import { getMessageById } from '../functions';
 
-webpack.onFullReady(register);
+loader.onFullReady(register);
 
 const now = Date.now();
 

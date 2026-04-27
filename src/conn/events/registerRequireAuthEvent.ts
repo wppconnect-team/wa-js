@@ -15,12 +15,12 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { Socket } from '../../whatsapp';
 import { SOCKET_STATE } from '../../whatsapp/enums/SOCKET_STATE';
 import { isAuthenticated } from '..';
 
-webpack.onInjected(registerRequireAuthEvent);
+loader.onInjected(registerRequireAuthEvent);
 
 function registerRequireAuthEvent() {
   let fired = false;

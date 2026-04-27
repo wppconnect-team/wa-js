@@ -16,11 +16,11 @@
 
 import { config } from '..';
 import { getMyUserWid } from '../conn/functions/getMyUserWid';
-import * as webpack from '../webpack';
+import * as loader from '../loader';
 import { wrapModuleFunction } from '../whatsapp/exportModule';
 import { handleSingleMsg } from '../whatsapp/functions';
 
-webpack.onFullReady(applyPatch);
+loader.onFullReady(applyPatch);
 
 function applyPatch() {
   wrapModuleFunction(handleSingleMsg, async (func, ...args) => {

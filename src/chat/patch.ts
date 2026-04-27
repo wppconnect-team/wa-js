@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as webpack from '../webpack';
+import * as loader from '../loader';
 import { ChatModel, ContactStore, functions } from '../whatsapp';
 import { wrapModuleFunction } from '../whatsapp/exportModule';
 import {
@@ -31,8 +31,8 @@ import {
 } from '../whatsapp/functions';
 import { ApiContact } from '../whatsapp/misc';
 
-webpack.onFullReady(applyPatch, 1000);
-webpack.onFullReady(applyPatchModel);
+loader.onFullReady(applyPatch, 1000);
+loader.onFullReady(applyPatchModel);
 
 function applyPatch() {
   wrapModuleFunction(mediaTypeFromProtobuf, (func, ...args) => {

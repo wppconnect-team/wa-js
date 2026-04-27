@@ -15,10 +15,10 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { MsgModel, MsgStore } from '../../whatsapp';
 
-webpack.onInjected(() => registerLiveLocationUpdateEvent());
+loader.onInjected(() => registerLiveLocationUpdateEvent());
 
 function registerLiveLocationUpdateEvent() {
   /**

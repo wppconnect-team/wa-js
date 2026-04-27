@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { exportModule } from '../exportModule';
 
 export interface LinkUrlData {
@@ -69,7 +69,7 @@ exportModule(
       return true;
     }
     // @whatsapp < 2.2329.7
-    const source: string = webpack.moduleSource(id);
+    const source: string = loader.moduleSource(id);
     return (
       source.includes('.genMinimalLinkPreview') &&
       source.includes('.getProductOrCatalogLinkPreview')

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   mediaTypeFromProtobuf,
@@ -151,7 +151,7 @@ export async function sendLocationMessage(
   return await sendRawMessage(chatId, rawMessage, options);
 }
 
-webpack.onFullReady(() => {
+loader.onFullReady(() => {
   wrapModuleFunction(mediaTypeFromProtobuf, (func, ...args) => {
     const [proto] = args;
     if (proto.locationMessage) {

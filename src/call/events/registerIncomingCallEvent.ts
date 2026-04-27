@@ -16,13 +16,13 @@
 import Debug from 'debug';
 
 import { internalEv } from '../../eventEmitter';
+import * as loader from '../../loader';
 import { createWid } from '../../util/createWid';
-import * as webpack from '../../webpack';
 import { CallModel, CallStore } from '../../whatsapp';
 
 const debug = Debug('WA-JS:call:registerIncomingCallEvent');
 
-webpack.onInjected(() => register());
+loader.onInjected(() => register());
 
 function register() {
   debug('Registering incoming call event listeners');

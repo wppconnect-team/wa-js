@@ -15,11 +15,11 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { Stream, StreamModel } from '../../whatsapp';
 import { StreamInfo, StreamMode } from '../../whatsapp/enums';
 
-webpack.onInjected(register);
+loader.onInjected(register);
 
 function register() {
   // Emit current StreamMode immediately

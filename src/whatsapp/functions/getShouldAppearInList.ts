@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { injectFallbackModule } from '../../webpack';
+import { injectFallbackModule } from '../../loader';
 import { exportModule } from '../exportModule';
 import { ChatModel } from '../models';
 

@@ -15,10 +15,10 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { ChatModel, ChatStore } from '../../whatsapp';
 
-webpack.onInjected(() => register());
+loader.onInjected(() => register());
 let emitTimeout: any = null;
 
 function register() {

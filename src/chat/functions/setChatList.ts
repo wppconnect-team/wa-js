@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+import * as loader from '../../loader';
 import { WPPError } from '../../util';
-import * as webpack from '../../webpack';
 import { Cmd } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
@@ -104,7 +104,7 @@ export async function setChatList(
   }
 }
 
-webpack.onFullReady(applyPatch, 1000);
+loader.onFullReady(applyPatch, 1000);
 
 function applyPatch() {
   wrapModuleFunction(getShouldAppearInList, (func, ...args) => {

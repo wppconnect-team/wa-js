@@ -17,6 +17,7 @@
 import Debug from 'debug';
 
 import { assertFindChat } from '../../assert';
+import * as loader from '../../loader';
 import {
   blobToArrayBuffer,
   convertToFile,
@@ -28,7 +29,6 @@ import {
   formatFileSize,
   getMediaTypeForValidation,
 } from '../../util/fileHelpers';
-import * as webpack from '../../webpack';
 import * as whatsapp from '../../whatsapp';
 import {
   ChatModel,
@@ -535,7 +535,7 @@ function generateWhiteThumb(width: number, height: number, maxSize: number) {
   };
 }
 
-webpack.onFullReady(() => {
+loader.onFullReady(() => {
   wrapModuleFunction(generateVideoThumbsAndDuration, async (func, ...args) => {
     const [data] = args;
 

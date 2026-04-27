@@ -16,7 +16,7 @@
 
 import { compare } from 'compare-versions';
 
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 
 export interface BuildConstants {
   VERSION_STR: string;
@@ -55,7 +55,7 @@ export interface BuildConstants {
  * - And other build-related constants
  */
 export function getBuildConstants(): BuildConstants | null {
-  const buildConstants = webpack.search((m) => m.VERSION_STR);
+  const buildConstants = loader.search((m) => m.VERSION_STR);
 
   if (!buildConstants) {
     return null;

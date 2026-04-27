@@ -87,11 +87,11 @@ async function start() {
         return JSON.parse(json);
       };
 
-      const module = WPP.webpack.search(
+      const module = WPP.loader.search(
         (m) => m.deprecatedSendIq && m.deprecatedSendIqWithoutRetry
       );
 
-      const sockModule = WPP.webpack.search(
+      const sockModule = WPP.loader.search(
         (m) => m.sendSmaxStanza && m.sendPing
       );
 

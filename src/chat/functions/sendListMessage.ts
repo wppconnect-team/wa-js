@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+import * as loader from '../../loader';
 import { WPPError } from '../../util';
-import * as webpack from '../../webpack';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { typeAttributeFromProtobuf } from '../../whatsapp/functions';
 import {
@@ -107,7 +107,7 @@ export async function sendListMessage(
   return await sendRawMessage(chatId, message, options);
 }
 
-webpack.onFullReady(() => {
+loader.onFullReady(() => {
   wrapModuleFunction(typeAttributeFromProtobuf, (func, ...args) => {
     const [proto] = args;
     if (proto.listMessage) {

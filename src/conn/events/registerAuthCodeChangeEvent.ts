@@ -15,11 +15,11 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { Conn } from '../../whatsapp';
 import { getAuthCode } from '..';
 
-webpack.onInjected(registerAuthCodeChangeEvent);
+loader.onInjected(registerAuthCodeChangeEvent);
 
 function registerAuthCodeChangeEvent() {
   const trigger = async () => {

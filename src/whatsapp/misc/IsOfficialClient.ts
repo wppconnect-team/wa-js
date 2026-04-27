@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { exportModule } from '../exportModule';
 
 /**
@@ -31,6 +31,6 @@ exportModule(
   (m) => typeof m.isOfficialClient !== 'undefined'
 );
 
-webpack.injectFallbackModule('IsOfficialClient', {
+loader.injectFallbackModule('IsOfficialClient', {
   isOfficialClient: true,
 });

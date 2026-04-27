@@ -35,7 +35,7 @@ After build, this project generates a file `dist/wppconnect-wa.js` to be used fo
 
 Some parts of `WPP` variable:
 
-- `WPP.webpack` - Scripts to export WhatsApp functions.
+- `WPP.loader` - Scripts to export WhatsApp functions.
 - `WPP.whatsapp` - Only exported WhatsApp functions.
 - `WPP.chat` - Chat functions and events.
 - ...
@@ -261,7 +261,7 @@ Basically, you need to inject the `wppconnect-wa.js` file into the browser after
 (function () {
   'use strict';
 
-  WPP.webpack.onReady(function () {
+  WPP.loader.onReady(function () {
     alert('Ready to use WPPConnect WA-JS');
   });
 

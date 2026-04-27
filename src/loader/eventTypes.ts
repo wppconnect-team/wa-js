@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-export interface WebpackEvents {
-  'webpack.injected': void;
-  'webpack.ready': void;
-  'webpack.full_ready': void;
+export interface LoaderEvents {
+  'loader.injected': void;
+  'loader.ready': void;
+  'loader.full_ready': void;
 }

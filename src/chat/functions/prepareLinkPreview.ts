@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
+import * as loader from '../../loader';
 import {
   fetchRemoteLinkPreviewData,
   generateThumbnailLinkPreviewData,
 } from '../../util/linkPreview';
-import * as webpack from '../../webpack';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   fetchLinkPreview,
@@ -105,7 +105,7 @@ export async function prepareLinkPreview<T extends RawMessage>(
   return message;
 }
 
-webpack.onFullReady(() => {
+loader.onFullReady(() => {
   wrapModuleFunction(getABPropConfigValue, (func, ...args) => {
     const [key] = args;
     switch (key) {

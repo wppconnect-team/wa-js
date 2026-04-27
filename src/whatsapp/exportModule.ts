@@ -18,8 +18,9 @@ import Debug from 'debug';
 
 import { wrapShouldAppearFunction } from '../chat/functions/setChatList';
 import { trackException } from '../gtag';
+import * as loader from '../loader';
+import { IGNORE_FAIL_MODULES } from '../loader/blacklist';
 import { InferArgs, InferReturn, wrapFunction } from '../util';
-import * as webpack from '../webpack';
 
 const debug = Debug('WA-JS:export');
 
@@ -77,7 +78,7 @@ export function exportModule(
     | {
         [key: string]: null | undefined | string | string[];
       },
-  condition: webpack.SearchModuleCondition
+  condition: loader.SearchModuleCondition
 ): void {
   if (typeof properties === 'string') {
     properties = {
@@ -95,30 +96,17 @@ export function exportModule(
         let valueFn: any = undefined;
         let functionPath: string | undefined = undefined;
 
-        const moduleId = webpack.searchId(condition);
+        const moduleId = loader.searchId(condition);
 
         if (!moduleId) {
           const description = `Module ${name} was not found with ${condition.toString()}`;
 
           /**
-           * Theses modules only loaded after device is connected
+           * These modules only loaded after device is connected
            * I be creating other function for check expires based directily from files
            * This will not directly affect the function call, it continues to work normally.
            */
-          const ignoreFailModules: string[] = [
-            'revokeStatus',
-            'toggleNewsletterAdminActivityMuteStateAction',
-            'msgFindQuery', // stopped working in WA version ~2.3000.1034162388
-            'msgFindBefore', // added in WA version 2.3000.1034162388, but not available in older versions, remove this line when older versions are no longer supported
-            'msgFindAfter', // added in WA version 2.3000.1034162388, but not available in older versions, remove this line when older versions are no longer supported
-            'msgFindByDirection', // added in WA version 2.3000.1034162388, but not available in older versions, remove this line when older versions are no longer supported
-            'msgFindCallLog', // added in WA version 2.3000.1034162388, but not available in older versions, remove this line when older versions are no longer supported
-            'msgFindEvents', // added in WA version 2.3000.1034162388, but not available in older versions, remove this line when older versions are no longer supported
-            'msgFindMedia', // added in WA version 2.3000.1034162388, but not available in older versions, remove this line when older versions are no longer supported
-            'msgFindSearch', // added in WA version 2.3000.1034162388, but not available in older versions, remove this line when older versions are no longer supported
-            'msgFindStarred', // added in WA version 2.3000.1034162388, but not available in older versions, remove this line when older versions are no longer supported
-          ];
-          if (!ignoreFailModules.includes(name)) {
+          if (!IGNORE_FAIL_MODULES.has(name)) {
             console.error(description);
             trackException(description);
           }
@@ -128,7 +116,7 @@ export function exportModule(
           return undefined;
         }
 
-        const module = webpack.loadModule(moduleId);
+        const module = loader.loadModule(moduleId);
 
         if (Array.isArray(property)) {
           for (const p of property) {
@@ -257,7 +245,7 @@ export function wrapModuleFunction<TFunc extends (...args: any[]) => any>(
     return;
   }
 
-  const module = webpack.loadModule(moduleId);
+  const module = loader.loadModule(moduleId);
 
   const functionPath = functionPathMap.get(func);
 

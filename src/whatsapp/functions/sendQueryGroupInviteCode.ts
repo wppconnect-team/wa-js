@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
 import { fetchMexGroupInviteCode } from './';
@@ -30,7 +30,7 @@ exportModule(
   (m) => m.sendQueryGroupInviteCode
 );
 
-webpack.injectFallbackModule('sendQueryGroupInviteCode', {
+loader.injectFallbackModule('sendQueryGroupInviteCode', {
   sendQueryGroupInviteCode: async (groupId: Wid) => {
     return await fetchMexGroupInviteCode(groupId);
   },

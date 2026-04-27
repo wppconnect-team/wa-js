@@ -15,11 +15,11 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { getErrorCodeFromLogoutReason } from '../../whatsapp/functions';
 
-webpack.onInjected(registerLogoutReasonEvent);
+loader.onInjected(registerLogoutReasonEvent);
 
 function registerLogoutReasonEvent() {
   wrapModuleFunction(getErrorCodeFromLogoutReason, (func, ...args) => {

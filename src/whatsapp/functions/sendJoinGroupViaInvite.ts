@@ -15,7 +15,7 @@
  */
 
 import { getGroupInfoFromInviteCode, iAmMember } from '../../group';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { ChatStore, Wid } from '..';
 import { exportModule } from '../exportModule';
 import { joinGroupViaInvite } from './joinGroupViaInvite';
@@ -36,7 +36,7 @@ exportModule(
 /**
  * @whatsapp >= 2.2301.5
  */
-webpack.injectFallbackModule('sendJoinGroupViaInvite', {
+loader.injectFallbackModule('sendJoinGroupViaInvite', {
   sendJoinGroupViaInvite: async (groupId: Wid) => {
     const group = await getGroupInfoFromInviteCode(groupId as any);
     const existChat = ChatStore.get(group.id.toString());

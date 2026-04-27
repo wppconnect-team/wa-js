@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+import * as loader from '../../loader';
 import { WPPError } from '../../util';
-import * as webpack from '../../webpack';
 import {
   TemplateButtonCollection,
   TemplateButtonModel,
@@ -237,7 +237,7 @@ export function prepareMessageButtons<T extends RawMessage>(
   return message;
 }
 
-webpack.onFullReady(() => {
+loader.onFullReady(() => {
   wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
     const [message] = args;
     const r = func(...args);

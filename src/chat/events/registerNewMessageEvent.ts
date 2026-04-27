@@ -15,12 +15,12 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { ChatStore, MsgModel, MsgStore } from '../../whatsapp';
 import { getQuotedMsgObj } from '../../whatsapp/functions';
 import { getQuotedMsgKey } from '../functions/';
 
-webpack.onInjected(() => register());
+loader.onInjected(() => register());
 
 function register() {
   MsgStore.on('add', (msg: MsgModel) => {

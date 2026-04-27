@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import * as webpack from '../webpack';
+import * as loader from '../loader';
 import { IsOfficialClient } from '../whatsapp';
 
-webpack.onInjected(() => {
+loader.onInjected(() => {
   /**
    * When sending logs to the WhatsApp server, it will always report that the ocVersion is true.
    */

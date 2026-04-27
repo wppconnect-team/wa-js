@@ -15,15 +15,15 @@
  */
 
 import { config } from './config';
-import * as webpack from './webpack';
+import * as loader from './loader';
 
 // Update deviceName connected
-webpack.onInjected(() => {
+loader.onInjected(() => {
   if (!config.deviceName) {
     return;
   }
 
-  const m = webpack.search((m) => m.default.info && m.default.hardRefresh);
+  const m = loader.search((m) => m.default.info && m.default.hardRefresh);
   if (m) {
     const info = m.default.info();
 

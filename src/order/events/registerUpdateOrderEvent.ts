@@ -15,10 +15,10 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { MsgModel, MsgStore } from '../../whatsapp';
 
-webpack.onInjected(() => registerUpdateOrderEvent());
+loader.onInjected(() => registerUpdateOrderEvent());
 
 function registerUpdateOrderEvent() {
   MsgStore.on('add', (msg: MsgModel) => {

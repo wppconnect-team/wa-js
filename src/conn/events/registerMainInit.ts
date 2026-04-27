@@ -15,10 +15,10 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { isMainInit } from '../functions';
 
-webpack.onInjected(register);
+loader.onInjected(register);
 
 function register() {
   const check = setInterval(() => {

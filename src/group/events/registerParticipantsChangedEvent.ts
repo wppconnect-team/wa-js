@@ -15,12 +15,12 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { Wid } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { updateDBForGroupAction } from '../../whatsapp/functions';
 
-webpack.onFullReady(register);
+loader.onFullReady(register);
 
 function register() {
   const eventTypes = ['add', 'remove', 'demote', 'promote'];

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { exportModule } from '../exportModule';
 import { MediaEntry, OpaqueData } from '../misc';
 
@@ -51,7 +51,7 @@ exportModule(
     if (id === 'WAWebMediaUploadMmsThumbnail') {
       return true;
     }
-    const source: string = webpack.moduleSource(id);
+    const source: string = loader.moduleSource(id);
     return (
       source.includes('thumbnail') &&
       source.includes('.cancelUploadMedia') &&

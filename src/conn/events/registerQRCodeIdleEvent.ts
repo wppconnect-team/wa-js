@@ -15,11 +15,11 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { Socket } from '../../whatsapp';
 import { isIdle } from '..';
 
-webpack.onInjected(registerQRCodeIdleEvent);
+loader.onInjected(registerQRCodeIdleEvent);
 
 function registerQRCodeIdleEvent() {
   const trigger = async () => {

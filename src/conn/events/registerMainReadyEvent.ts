@@ -17,12 +17,12 @@
 import Debug from 'debug';
 
 import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { StreamMode } from '../../whatsapp/enums';
 
 const debug = Debug('WA-JS:conn:main_ready');
 
-webpack.onInjected(register);
+loader.onInjected(register);
 
 function register() {
   const isReadyMode = (mode: StreamMode) =>

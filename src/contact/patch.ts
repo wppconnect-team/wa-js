@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import * as webpack from '../webpack';
+import * as loader from '../loader';
 import { ContactModel, functions } from '../whatsapp';
 
-webpack.onInjected(applyPatch);
+loader.onInjected(applyPatch);
 
 function applyPatch() {
   const funcs: {

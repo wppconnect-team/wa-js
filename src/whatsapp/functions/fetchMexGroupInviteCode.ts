@@ -15,7 +15,7 @@
  */
 
 import { iAmAdmin } from '../../group';
-import { injectFallbackModule } from '../../webpack';
+import { injectFallbackModule } from '../../loader';
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
 import { queryGroupInviteCode } from './queryGroupInviteCode';

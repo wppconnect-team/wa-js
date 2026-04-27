@@ -15,10 +15,10 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { StatusV3Store } from '../../whatsapp';
 
-webpack.onInjected(() => registerSyncedEvent());
+loader.onInjected(() => registerSyncedEvent());
 
 function registerSyncedEvent() {
   StatusV3Store.on('sync', () => {

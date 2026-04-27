@@ -17,7 +17,7 @@
 import { isMainReady } from '../../conn';
 import { internalEv } from '../../eventEmitter';
 import { getLabelById, Label } from '../../labels';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { ChatModel } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
@@ -26,7 +26,7 @@ import {
 } from '../../whatsapp/functions';
 import { get as getChat } from '../functions/';
 
-webpack.onFullReady(register);
+loader.onFullReady(register);
 
 function register() {
   async function processLabelEvent(event: 'add' | 'remove', ...args: any) {

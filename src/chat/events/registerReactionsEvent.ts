@@ -15,13 +15,13 @@
  */
 
 import { internalEv } from '../../eventEmitter';
+import * as loader from '../../loader';
 import { createWid } from '../../util';
-import * as webpack from '../../webpack';
 import { MsgKey } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { createOrUpdateReactions } from '../../whatsapp/functions';
 
-webpack.onFullReady(register);
+loader.onFullReady(register);
 
 const reactions: string[] = [];
 

@@ -16,7 +16,7 @@
 
 import { compare } from 'compare-versions';
 
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
 import { createGroup } from './createGroup';
@@ -57,7 +57,7 @@ exportModule(
 /**
  * @whatsapp >= 2.2301.5
  */
-webpack.injectFallbackModule('sendCreateGroup', {
+loader.injectFallbackModule('sendCreateGroup', {
   sendCreateGroup: async (
     groupName: string,
     participants: Wid[],

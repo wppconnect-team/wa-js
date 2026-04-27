@@ -15,11 +15,11 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { Cmd } from '../../whatsapp';
 import { isAuthenticated } from '..';
 
-webpack.onInjected(register);
+loader.onInjected(register);
 
 function register() {
   let isAuth = isAuthenticated();

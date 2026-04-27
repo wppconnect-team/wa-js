@@ -15,10 +15,10 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import * as webpack from '../../webpack';
+import * as loader from '../../loader';
 import { ChatModel, ChatStore } from '../../whatsapp';
 
-webpack.onInjected(() => registerNewChat());
+loader.onInjected(() => registerNewChat());
 
 function registerNewChat() {
   ChatStore.on('add', (chat: ChatModel) => {
