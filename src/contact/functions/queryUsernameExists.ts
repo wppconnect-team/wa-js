@@ -15,7 +15,7 @@
  */
 
 import { Wid } from '../../whatsapp';
-import { queryUsernameExists as nativeQueryUsernameExists } from '../../whatsapp/functions/sendUsernameQueryExists';
+import { queryUsernameExists as nativeQueryUsernameExists } from '../../whatsapp/functions/sendQueryUsernameExists';
 
 export interface QueryUsernameExistsResult {
   wid: Wid;
