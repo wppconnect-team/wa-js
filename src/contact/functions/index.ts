@@ -27,7 +27,16 @@ export {
 export { getProfilePictureUrl } from './getProfilePictureUrl';
 export { getStatus } from './getStatus';
 export { ContactListOptions, list } from './list';
-export { queryExists } from './queryExists';
+/**
+ * @deprecated Use queryWidExists instead
+ */
+export { queryExists, QueryExistsResult } from './queryExists';
+export {
+  queryUsernameExists,
+  QueryUsernameExistsKeyRequired,
+  QueryUsernameExistsResult,
+} from './queryUsernameExists';
+export { queryWidExists, QueryWidExistsResult } from './queryWidExists';
 export { remove } from './remove';
 export { reportContact, ReportContactResult } from './reportContact';
 export { save } from './save';

@@ -159,6 +159,7 @@ export * from './sendQueryGroupInviteCode';
 export * from './sendReactionToMsg';
 export * from './sendRevokeGroupInviteCode';
 export * from './sendTextMsgToChat';
+export * from './sendUsernameQueryExists';
 export * from './setArchive';
 export * from './setGroup';
 export * from './setPin';
