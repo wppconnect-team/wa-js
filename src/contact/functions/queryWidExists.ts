@@ -17,7 +17,7 @@
 import Debug from 'debug';
 
 import { assertWid } from '../../assert';
-import { ApiContact, ChatStore, ContactStore, Wid } from '../../whatsapp';
+import { ApiContact, ContactStore, lidPnCache, Wid } from '../../whatsapp';
 import { queryWidExists as nativeQueryWidExists } from '../../whatsapp/functions/sendQueryExists';
 import type { ContactModel } from '../../whatsapp/models/ContactModel';
 
@@ -124,19 +124,23 @@ export async function queryWidExists(
   const wid = assertWid(contactId);
   debug('queryWidExists: %s', wid.toString());
 
-  // Tier 1: persistent ContactStore check (mirrors WA's getOrQueryUsyncInfoContact).
-  // Skipped for LID wids — the ContactStore is keyed by phone, not LID.
-  if (!wid.isLid()) {
-    const contact = ContactStore.get(wid);
-    if (
-      contact != null &&
-      (contact.name != null || ChatStore.get(wid) != null)
-    ) {
-      debug('contactStore hit for %s', wid.toString());
-      return buildResultFromContact(contact, wid);
-    }
-    debug('contactStore miss for %s', wid.toString());
+  const counterpartWid = wid.isLid()
+    ? lidPnCache.getPhoneNumber(wid)
+    : lidPnCache.getCurrentLid(wid);
+
+  // Tier 1: persistent ContactStore check.
+  const lidOrPnContact1 = ContactStore.get(wid);
+  const lidOrPnContact2 = counterpartWid
+    ? ContactStore.get(counterpartWid)
+    : null;
+
+  if (lidOrPnContact1 != null || lidOrPnContact2 != null) {
+    const contact = lidOrPnContact1 || lidOrPnContact2!;
+
+    debug('contactStore hit for %s', wid.toString());
+    return buildResultFromContact(contact, wid);
   }
+  debug('contactStore miss for %s', wid.toString());
 
   // Tier 2: in-memory promise cache (5-min TTL for hits, 15s for misses).
   // Stores Promises so parallel calls share one in-flight request.
