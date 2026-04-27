@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,37 +17,39 @@
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 57547
- * @whatsapp 69722 >= 2.2204.13
- */
-export declare function queryWidExists(
-  contact: Wid,
+export declare function queryUsernameExists(
+  username: string,
+  key?: string,
   requestOrigin?: string // Telemetry only, not used for the actual query
-): Promise<{
-  wid: Wid;
-  biz: boolean;
-  bizInfo?: {
-    verifiedName?: {
-      isApi: boolean;
-      level: string;
-      name: string;
-      privacyMode: any;
-      serial: string;
-    };
-  };
-  disappearingMode?: {
-    duration: number;
-    settingTimestamp: number;
-  };
-  username?: string;
-}>;
+): Promise<
+  | {
+      wid: Wid;
+      biz: boolean;
+      bizInfo?: {
+        verifiedName?: {
+          isApi: boolean;
+          level: string;
+          name: string;
+          privacyMode: any;
+          serial: string;
+        };
+      };
+      username?: string;
+      wasUpdated: boolean;
+      isUsernameSearch: true;
+    }
+  | {
+      keyRequired: true;
+      username?: string;
+      isUsernameSearch: true;
+    }
+  | null
+>;
 
 exportModule(
   exports,
   {
-    queryWidExists: [
-      'queryWidExists', // @whatsapp >= 2.2306.7 - handles lid and phone queries
-    ],
+    queryUsernameExists: ['queryUsernameExists'],
   },
-  (m) => m.queryWidExists && m.queryPhoneExists // @whatsapp >= 2.2306.7
+  (m) => m.queryUsernameExists
 );
