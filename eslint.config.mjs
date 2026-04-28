@@ -106,4 +106,18 @@ export default [
       '@typescript-eslint/no-unsafe-declaration-merging': 'off',
     },
   },
+
+  // CommonJS config files
+  {
+    files: ['**/*.cjs'],
+    languageOptions: {
+      globals: {
+        module: 'readonly',
+        require: 'readonly',
+        exports: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+      },
+    },
+  },
 ];
