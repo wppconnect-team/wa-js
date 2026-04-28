@@ -22,9 +22,9 @@
   "scripts": {
     "build:dev": "webpack --devtool inline-source-map --mode development",
     "build:prd": "webpack",
-    "changelog:last": "conventional-changelog -p angular -r 2",
-    "changelog:preview": "conventional-changelog -p angular -u",
-    "changelog:update": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "changelog:last": "conventional-changelog -n ./changelog.config.cjs -r 2",
+    "changelog:preview": "conventional-changelog -n ./changelog.config.cjs -u",
+    "changelog:update": "conventional-changelog -n ./changelog.config.cjs -i CHANGELOG.md -s -r 0",
     "clean": "shx rm -rf dist",
     "commit": "cz",
     "docs:build": "npm run docs:clean && typedoc --gitRevision main",
