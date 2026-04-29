@@ -1,6 +1,3 @@
-## 3.23.4 (2026-04-17)
+## 4.0.0 (2026-04-29)
 
-
-### Bug Fixes
-
-* disconnection after reading qrcode - flushing during sync ([#3409](https://github.com/wppconnect-team/wa-js/issues/3409)) ([428ee01](https://github.com/wppconnect-team/wa-js/commit/428ee012c12dedc663991e8734af67876a9593af))
+* feat: add BackendEventBus and register backend event handling (#3416) ([75ca156033d428784e8bff868e1cead3ae18a8c5](https://github.com/wppconnect-team/wa-js/commit/75ca156033d428784e8bff868e1cead3ae18a8c5)), closes [#3416](https://github.com/wppconnect-team/wa-js/issues/3416)
