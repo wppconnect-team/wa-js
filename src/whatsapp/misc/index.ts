@@ -15,6 +15,7 @@
  */
 
 export * from './ApiContact';
+export * from './BackendEventBus';
 export * from './Base64';
 export * from './Browser';
 export * from './ChatPresence';

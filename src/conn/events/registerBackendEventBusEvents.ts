@@ -14,16 +14,25 @@
  * limitations under the License.
  */
 
-import './registerAuthCodeChangeEvent';
-import './registerAuthenticatedEvent';
-import './registerBackendEventBusEvents';
-import './registerLogoutEvent';
-import './registerLogoutReasonEvent';
-import './registerMainInit';
-import './registerMainLoadedEvent';
-import './registerMainReadyEvent';
-import './registerNeedsUpdateEvent';
-import './registerOnlineEvent';
-import './registerQRCodeIdleEvent';
-import './registerRequireAuthEvent';
-import './registerStreamEvent';
+import { internalEv } from '../../eventEmitter';
+import * as loader from '../../loader';
+import { BackendEventBus } from '../../whatsapp';
+import { BackendEventName } from '../../whatsapp/misc/BackendEventBus';
+
+loader.onInjected(register);
+
+function register() {
+  const originalTrigger = BackendEventBus.trigger.bind(BackendEventBus);
+
+  (BackendEventBus as any).trigger = function (
+    eventName: string,
+    ...args: any[]
+  ) {
+    internalEv.emit(
+      'conn.backend_event',
+      eventName as BackendEventName,
+      ...args
+    );
+    return originalTrigger(eventName, ...args);
+  };
+}

@@ -14,11 +14,27 @@
  * limitations under the License.
  */
 
+import { BackendEventName } from '../../whatsapp';
 import { LogoutReason, StreamInfo, StreamMode } from '../../whatsapp/enums';
 import { AuthCode } from '../types';
 
 export interface ConnEventTypes {
   'conn.auth_code_change': AuthCode | null;
+  /**
+   * Triggered for every event emitted by WhatsApp Web's internal BackendEventBus.
+   * The first argument is the event name (one of the BackendEvent constant values).
+   * Some events carry additional arguments (e.g. set_socket_state passes the new state).
+   *
+   * @example
+   * ```javascript
+   * WPP.on('conn.backend_event', (eventName, ...args) => {
+   *   if (eventName === 'storage_initialization_error') {
+   *     // Browser IndexedDB failed — clear profile and restart to recover
+   *   }
+   * });
+   * ```
+   */
+  'conn.backend_event': (eventName: BackendEventName, ...args: any[]) => void;
   /**
    * Triggered afted a success QR code scan
    *
