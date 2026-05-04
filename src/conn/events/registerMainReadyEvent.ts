@@ -26,9 +26,7 @@ loader.onInjected(register);
 
 function register() {
   const isReadyMode = (mode: StreamMode) =>
-    mode === StreamMode.MAIN ||
-    mode === StreamMode.QR ||
-    mode === StreamMode.SYNCING;
+    mode === StreamMode.MAIN || mode === StreamMode.QR;
 
   const checkMode = (mode: StreamMode) => {
     if (isReadyMode(mode)) {
