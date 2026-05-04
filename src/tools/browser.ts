@@ -292,25 +292,38 @@ export async function getPage(options?: LaunchArguments[1]) {
   await preparePage(page);
 
   setTimeout(async () => {
+    console.log('⏳ Waiting for WhatsApp Web to load...');
     await page.goto(URL, {
       waitUntil: 'domcontentloaded',
       timeout: 120000,
     });
 
+    console.log(
+      '✅ WhatsApp Web loaded, waiting for main stream to be ready...'
+    );
     await page
       .waitForFunction(
         () => (window as any).Debug?.VERSION,
         {},
         { timeout: 120000 }
       )
-      .catch(() => null);
+      .catch(() => {
+        console.warn(
+          '⚠️ Timeout waiting for Debug.VERSION, main stream might not be ready'
+        );
+      });
 
     const version = await page
       .evaluate(() => (window as any).Debug.VERSION)
-      .catch(() => null);
+      .catch(() => {
+        console.warn(
+          '⚠️ Failed to get Debug.VERSION, main stream might not be ready'
+        );
+        return 'unknown';
+      });
 
     console.log('WhatsApp Version: ', version);
-  }, 1000);
+  }, 2000);
 
   return { browser, page };
 }
