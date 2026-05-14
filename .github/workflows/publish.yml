@@ -40,7 +40,12 @@ jobs:
 
       # seu prepare já roda no publish (prepare -> husky install + clean + build:prd)
       - name: Publish to npm (OIDC)
-        run: npm publish --access public --provenance
+        run: |
+          if [[ "${{ github.ref }}" == *"-alpha"* ]]; then
+            npm publish --access public --provenance --tag alpha
+          else
+            npm publish --access public --provenance
+          fi
         env:
           NODE_AUTH_TOKEN: ""
           NPM_TOKEN: ""
