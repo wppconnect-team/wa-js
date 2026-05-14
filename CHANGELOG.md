@@ -1,3 +1,3 @@
-## <small>4.1.1-alpha.1 (2026-05-14)</small>
+## <small>4.1.1-alpha.2 (2026-05-14)</small>
 
-* feat: add 'prerelease' option to increment types in release workflow ([2d084ef4613daa7ab3e26a2083fb5398983dc608](https://github.com/wppconnect-team/wa-js/commit/2d084ef4613daa7ab3e26a2083fb5398983dc608))
+* Merge branch 'manfe/clear-outdated-patches' of github.com:wppconnect-team/wa-js into manfe/clear-outdated-patches ([4061d2bb28bedcb340033a7bd94fd925249801db](https://github.com/wppconnect-team/wa-js/commit/4061d2bb28bedcb340033a7bd94fd925249801db))
