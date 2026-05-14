@@ -59,21 +59,16 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create Release
-        uses: meeDamian/github-release@2.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref }}
-          commitish: ${{ github.sha }}
+          tag_name: ${{ github.ref }}
           name: ${{ github.ref_name }}
           body: ${{ steps.generate_changelog.outputs.changelog }}
           draft: false
           prerelease: ${{ contains(github.ref, '-alpha') || contains(github.ref, '-beta') || contains(github.ref, '-rc') }}
-          files: |
-            dist/wppconnect-wa.js
-          gzip: folders
-          allow_override: true
+          files: dist/wppconnect-wa.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update WPPConnect Site
         if: env.PERSONAL_TOKEN != ''
