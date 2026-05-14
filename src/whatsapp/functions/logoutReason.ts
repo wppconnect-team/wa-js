@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,26 @@ export declare function getErrorCodeFromLogoutReason(
   type: LogoutReason
 ): LOGOUT_REASON_CODE | null;
 
+export declare function setPrevLogoutReasonCode(
+  code: LOGOUT_REASON_CODE | null
+): void;
+
+export declare function setPrevCustomLogoutMessage(
+  message: string | null
+): void;
+
+export declare function getPrevLogoutReasonCode(): LOGOUT_REASON_CODE | null;
+
+export declare function getPrevCustomLogoutMessage(): string | null;
+
 exportModule(
   exports,
   {
     getErrorCodeFromLogoutReason: 'getErrorCodeFromLogoutReason',
+    setPrevLogoutReasonCode: 'setPrevLogoutReasonCode',
+    setPrevCustomLogoutMessage: 'setPrevCustomLogoutMessage',
+    getPrevLogoutReasonCode: 'getPrevLogoutReasonCode',
+    getPrevCustomLogoutMessage: 'getPrevCustomLogoutMessage',
   },
   (m) => m.getErrorCodeFromLogoutReason
 );
