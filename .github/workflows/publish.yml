@@ -69,7 +69,7 @@ jobs:
           name: ${{ github.ref_name }}
           body: ${{ steps.generate_changelog.outputs.changelog }}
           draft: false
-          prerelease: false
+          prerelease: ${{ contains(github.ref, '-alpha') || contains(github.ref, '-beta') || contains(github.ref, '-rc') }}
           files: |
             dist/wppconnect-wa.js
           gzip: folders
