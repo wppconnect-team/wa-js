@@ -1,3 +1,3 @@
-## 4.1.0 (2026-05-04)
+## <small>4.1.1-alpha.0 (2026-05-14)</small>
 
-* fix: remove SYNCING mode from isReadyMode check in register function (#3417) ([311b4950cd30bd44af61a34d57bc540e82efec9c](https://github.com/wppconnect-team/wa-js/commit/311b4950cd30bd44af61a34d57bc540e82efec9c)), closes [#3417](https://github.com/wppconnect-team/wa-js/issues/3417)
+* fix: removed patched function not used by wa-js directly ([d142de87a087e212568e9beb66a4837fb15a38ac](https://github.com/wppconnect-team/wa-js/commit/d142de87a087e212568e9beb66a4837fb15a38ac))
