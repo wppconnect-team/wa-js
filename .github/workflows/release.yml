@@ -20,6 +20,7 @@ on:
           - prepatch
           - preminor
           - premajor
+          - prerelease
       preRelease:
         type: string
         description: 'Pre-release tag (e.g. alpha, beta, rc) — only used with pre* increments'
