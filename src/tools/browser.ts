@@ -213,28 +213,31 @@ export async function preparePage(page: playwright.Page) {
     }
   );
 
-  page.addInitScript(() => {
-    // Remove existent service worker
-    navigator.serviceWorker
-      .getRegistrations()
-      .then((registrations) => {
-        for (const registration of registrations) {
-          registration.unregister();
-        }
-      })
-      .catch(() => null);
+  // page.addInitScript(() => {
+  //   // Remove existent service worker
+  //   navigator.serviceWorker
+  //     .getRegistrations()
+  //     .then((registrations) => {
+  //       for (const registration of registrations) {
+  //         registration.unregister();
+  //       }
+  //     })
+  //     .catch(() => null);
 
-    // Disable service worker registration
-    // @ts-expect-error(eslint-migration) -- Ignore
-    navigator.serviceWorker.register = new Promise(() => {});
+  //   // Disable service worker registration
+  //   // @ts-expect-error(eslint-migration) -- Ignore
+  //   navigator.serviceWorker.register = new Promise(() => {});
 
-    setInterval(() => {
-      window.onerror = console.error;
-      window.onunhandledrejection = console.error;
-    }, 500);
-  });
+  //   setInterval(() => {
+  //     window.onerror = console.error;
+  //     window.onunhandledrejection = console.error;
+  //   }, 500);
+  // });
 
   page.on('load', async (page) => {
+    // Wait a bit to ensure all scripts are loaded and executed
+    await new Promise((resolve) => setTimeout(resolve, 10000));
+
     await page.addScriptTag({
       url: `${URL}dist/wppconnect-wa.js`,
     });
