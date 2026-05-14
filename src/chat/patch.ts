@@ -15,21 +15,15 @@
  */
 
 import * as loader from '../loader';
-import { ChatModel, ContactStore, functions } from '../whatsapp';
+import { ChatModel, functions } from '../whatsapp';
 import { wrapModuleFunction } from '../whatsapp/exportModule';
 import {
-  createChat,
   createChatRecord,
-  findChat,
-  getEnforceCurrentLid,
-  getExisting,
   isLidMigrated,
   isUnreadTypeMsg,
   mediaTypeFromProtobuf,
-  toUserLid,
   typeAttributeFromProtobuf,
 } from '../whatsapp/functions';
-import { ApiContact } from '../whatsapp/misc';
 
 loader.onFullReady(applyPatch, 1000);
 loader.onFullReady(applyPatchModel);
@@ -105,59 +99,6 @@ function applyPatch() {
         await new Promise((resolve) => setTimeout(resolve, delay));
         delay *= 2;
       }
-    }
-  });
-
-  wrapModuleFunction(findChat, async (func, ...args) => {
-    const [chatId, context] = args;
-
-    if (!chatId.isLid()) {
-      return await func(...args);
-    }
-
-    const contact = ContactStore.get(chatId);
-    const existingChat = await getExisting(chatId);
-    if (!existingChat && contact) {
-      // WhatsApp Web logic: For username_contactless_search context, prefer phone number if available
-      // This prevents duplicate chats (one with LID, one with phone number)
-      const VALID_USERNAME_ORIGINS = new Set([
-        'username_change_notification',
-        'username_contactless_search',
-      ]);
-      const phoneNumberWid = ApiContact.getPhoneNumber(chatId);
-      const shouldUsePhoneNumber =
-        VALID_USERNAME_ORIGINS.has(context) && phoneNumberWid != null;
-
-      if (shouldUsePhoneNumber) {
-        // Use the phone number WID to create/find the chat
-        // Call findChat with the phone number instead of LID
-        return await findChat(phoneNumberWid, context);
-      }
-
-      // Create with LID for other contexts
-      const chatParams: any = { chatId };
-      await createChat(
-        chatParams,
-        'createChat',
-        {
-          createdLocally: true,
-          lidOriginType: 'general',
-        },
-        {}
-      );
-      return await func(...args)!;
-    }
-    return await func(...args);
-  });
-
-  wrapModuleFunction(getEnforceCurrentLid, (_func, ...args) => {
-    const [UserWid] = args;
-
-    try {
-      const LID = toUserLid ? toUserLid(UserWid) : null;
-      return LID || UserWid;
-    } catch {
-      return UserWid;
     }
   });
 
