@@ -27,6 +27,7 @@ export { loader };
 export { config, Config } from './config';
 
 export * as blocklist from './blocklist';
+export * as lists from './lists';
 export * as call from './call';
 export * as cart from './cart';
 export * as catalog from './catalog';
