@@ -16,7 +16,7 @@
 
 import { assertFindChat, assertWid } from '../../assert';
 import { Cmd, Wid } from '../../whatsapp';
-import { getSearchContext } from '../../whatsapp/functions';
+import { callGetSearchContext } from '../../whatsapp/functions';
 import { getMessageById } from '.';
 
 /**
@@ -43,10 +43,10 @@ export async function openChatAt(
   const msg = await getMessageById(messageId);
 
   try {
-    const msgContext = getSearchContext(chat, msg);
+    const msgContext = callGetSearchContext(chat, msg);
     return await Cmd.openChatAt(chat, msgContext);
   } catch (_e) {
-    const msgContext = getSearchContext(chat, msg.id._serialized);
+    const msgContext = callGetSearchContext(chat, msg.id._serialized);
     return await Cmd.openChatAt({ chat, msgContext, chatEntryPoint });
   }
 }
