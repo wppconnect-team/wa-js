@@ -21,6 +21,7 @@ import { ChatModel, MsgModel } from '../models';
 /**
  * @whatsapp 738599 >= 2.2242.5
  */
+// Positional form (WA < 2.3000)
 export declare function getSearchContext(
   chat: ChatModel | string,
   msg: MsgModel | MsgKey | string,
@@ -28,6 +29,19 @@ export declare function getSearchContext(
     isQuotedMsgAvailable: boolean;
   }
 ): {
+  collection: MsgLoad;
+  msg?: MsgModel;
+  key?: MsgKey;
+  highlightMsg: true;
+};
+
+// Object form (WA >= 2.3000)
+export declare function getSearchContext(params: {
+  chat: ChatModel | string;
+  msgKey: MsgModel | MsgKey | string;
+  rootMsg?: MsgModel;
+  threadId?: string;
+}): {
   collection: MsgLoad;
   msg?: MsgModel;
   key?: MsgKey;

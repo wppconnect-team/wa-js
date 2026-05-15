@@ -19,7 +19,7 @@ import Debug from 'debug';
 import { assertGetChat } from '../../assert';
 import { WPPError } from '../../util';
 import { MsgKey, MsgModel, MsgStore, StatusV3Store } from '../../whatsapp';
-import { getSearchContext } from '../../whatsapp/functions';
+import { callGetSearchContext } from '../../whatsapp/functions/callGetSearchContext';
 
 const debug = Debug('WA-JS:message:getMessageById');
 
@@ -70,7 +70,7 @@ export async function getMessageById(
 
         if (!msg) {
           debug(`searching remote message with id ${msgKey.toString()}`);
-          const result = getSearchContext(chat, msgKey);
+          const result = callGetSearchContext(chat, msgKey);
           await result.collection.loadAroundPromise;
 
           msg = chat.msgs.get(msgKey) || result.collection.get(msgKey);
