@@ -19,7 +19,7 @@ import Debug from 'debug';
 import { assertGetChat } from '../../assert';
 import { WPPError } from '../../util';
 import { MsgKey, MsgModel, MsgStore, StatusV3Store } from '../../whatsapp';
-import { callGetSearchContext } from '../../whatsapp/functions';
+import { callGetSearchContext } from '../../whatsapp/functions/callGetSearchContext';
 
 const debug = Debug('WA-JS:message:getMessageById');
 

@@ -16,7 +16,7 @@
 
 import { assertFindChat, assertWid } from '../../assert';
 import { Cmd, Wid } from '../../whatsapp';
-import { callGetSearchContext } from '../../whatsapp/functions';
+import { callGetSearchContext } from '../../whatsapp/functions/callGetSearchContext';
 import { getMessageById } from '.';
 
 /**
