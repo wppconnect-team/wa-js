@@ -81,6 +81,100 @@
 <p><code>WPP.group.getAllGroups</code> - Get all groups</p>
 <p>For the most up-to-date list of available functions, launch the project locally and run this in your browser console:</p>
 <p><code>Object.keys(WPP.group).sort()</code></p>
+<h3 id="newsletter-channels-functions" class="tsd-anchor-link">Newsletter (Channels) Functions<a href="#newsletter-channels-functions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><code>WPP.newsletter.create</code> - Create a new newsletter (WhatsApp Channel)</p>
+<p><code>WPP.newsletter.edit</code> - Edit an existing newsletter (name, description, picture)</p>
+<p><code>WPP.newsletter.destroy</code> - Delete a newsletter you own</p>
+<p><code>WPP.newsletter.follow</code> / <code>WPP.newsletter.unfollow</code> - Follow or unfollow a newsletter</p>
+<p><code>WPP.newsletter.mute</code> - Mute notifications from a newsletter</p>
+<p><code>WPP.newsletter.search</code> - Search newsletters by name or country</p>
+<p><code>WPP.newsletter.getSubscribers</code> - Get the subscriber list of a newsletter you own</p>
+<p>For the most up-to-date list of available functions, launch the project locally and run this in your browser console:</p>
+<p><code>Object.keys(WPP.newsletter).sort()</code></p>
+<h3 id="community-functions" class="tsd-anchor-link">Community Functions<a href="#community-functions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><code>WPP.community.create</code> - Create a new community</p>
+<p><code>WPP.community.deactivate</code> - Deactivate (delete) a community</p>
+<p><code>WPP.community.addSubgroups</code> - Add existing groups as subgroups of a community</p>
+<p><code>WPP.community.removeSubgroups</code> - Remove subgroups from a community</p>
+<p><code>WPP.community.getSubgroups</code> - Get all subgroups of a community</p>
+<p><code>WPP.community.getParticipants</code> - Get all participants across the community</p>
+<p><code>WPP.community.getAnnouncementGroup</code> - Get the announcement group of a community</p>
+<p><code>WPP.community.promoteParticipants</code> / <code>WPP.community.demoteParticipants</code> - Promote or demote community admins</p>
+<p>For the most up-to-date list of available functions, launch the project locally and run this in your browser console:</p>
+<p><code>Object.keys(WPP.community).sort()</code></p>
+<h3 id="catalog-functions" class="tsd-anchor-link">Catalog Functions<a href="#catalog-functions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><code>WPP.catalog.getMyCatalog</code> - Get the catalog of the connected business account</p>
+<p><code>WPP.catalog.getProducts</code> - Get products of any business contact</p>
+<p><code>WPP.catalog.getProductById</code> - Get a single product by id</p>
+<p><code>WPP.catalog.createProduct</code> - Create a new product in your catalog</p>
+<p><code>WPP.catalog.editProduct</code> - Edit an existing product</p>
+<p><code>WPP.catalog.delProducts</code> - Delete one or more products</p>
+<p><code>WPP.catalog.addProductImage</code> / <code>WPP.catalog.changeProductImage</code> / <code>WPP.catalog.removeProductImage</code> - Manage product images</p>
+<p><code>WPP.catalog.setProductVisibility</code> - Show or hide a product</p>
+<p><code>WPP.catalog.createCollection</code> / <code>WPP.catalog.editCollection</code> / <code>WPP.catalog.deleteCollection</code> / <code>WPP.catalog.getCollections</code> - Manage product collections</p>
+<p><code>WPP.catalog.updateCartEnabled</code> - Enable or disable cart for the catalog</p>
+<p>For the most up-to-date list of available functions, launch the project locally and run this in your browser console:</p>
+<p><code>Object.keys(WPP.catalog).sort()</code></p>
+<h3 id="cart-functions" class="tsd-anchor-link">Cart Functions<a href="#cart-functions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><code>WPP.cart.add</code> - Add a product to the cart of a business chat</p>
+<p><code>WPP.cart.update</code> - Update the quantity of an item in the cart</p>
+<p><code>WPP.cart.remove</code> - Remove an item from the cart</p>
+<p><code>WPP.cart.get</code> - Get the current cart for a business chat</p>
+<p><code>WPP.cart.clear</code> - Empty the cart</p>
+<p><code>WPP.cart.submit</code> - Submit the cart and send the order</p>
+<p><code>WPP.cart.getThumbFromCart</code> - Get the cart thumbnail preview</p>
+<p>For the most up-to-date list of available functions, launch the project locally and run this in your browser console:</p>
+<p><code>Object.keys(WPP.cart).sort()</code></p>
+<h3 id="order-functions" class="tsd-anchor-link">Order Functions<a href="#order-functions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><code>WPP.order.get</code> - Get the details of an order received in a chat</p>
+<p><code>WPP.order.accept</code> - Accept an order</p>
+<p><code>WPP.order.decline</code> - Decline an order</p>
+<p><code>WPP.order.update</code> - Update an order (e.g. change status)</p>
+<p>For the most up-to-date list of available functions, launch the project locally and run this in your browser console:</p>
+<p><code>Object.keys(WPP.order).sort()</code></p>
+<h3 id="status-functions" class="tsd-anchor-link">Status Functions<a href="#status-functions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><code>WPP.status.sendTextStatus</code> - Post a text status</p>
+<p><code>WPP.status.sendImageStatus</code> - Post an image status</p>
+<p><code>WPP.status.sendVideoStatus</code> - Post a video status</p>
+<p><code>WPP.status.sendReadStatus</code> - Mark a status as seen</p>
+<p><code>WPP.status.get</code> - Get the status feed of a contact</p>
+<p><code>WPP.status.getMyStatus</code> - Get your own status feed</p>
+<p><code>WPP.status.remove</code> - Remove one of your statuses</p>
+<p><code>WPP.status.updateParticipants</code> - Update who can see your statuses</p>
+<p>For the most up-to-date list of available functions, launch the project locally and run this in your browser console:</p>
+<p><code>Object.keys(WPP.status).sort()</code></p>
+<h3 id="labels-functions" class="tsd-anchor-link">Labels Functions<a href="#labels-functions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><code>WPP.labels.getAllLabels</code> - Get every label defined in the account</p>
+<p><code>WPP.labels.getLabelById</code> - Get a label by id</p>
+<p><code>WPP.labels.addNewLabel</code> - Create a new label</p>
+<p><code>WPP.labels.editLabel</code> - Rename or recolor a label</p>
+<p><code>WPP.labels.deleteLabel</code> - Delete a single label</p>
+<p><code>WPP.labels.deleteAllLabels</code> - Delete every label in the account</p>
+<p><code>WPP.labels.addOrRemoveLabels</code> - Apply or remove labels on chats / messages in bulk</p>
+<p><code>WPP.labels.getLabelColorPalette</code> / <code>WPP.labels.getNewLabelColor</code> - Helpers for label colors</p>
+<p>For the most up-to-date list of available functions, launch the project locally and run this in your browser console:</p>
+<p><code>Object.keys(WPP.labels).sort()</code></p>
+<h3 id="profile-functions" class="tsd-anchor-link">Profile Functions<a href="#profile-functions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><code>WPP.profile.getMyProfileName</code> / <code>WPP.profile.setMyProfileName</code> - Read or change your profile name</p>
+<p><code>WPP.profile.getMyStatus</code> / <code>WPP.profile.setMyStatus</code> - Read or change your &quot;about&quot; text</p>
+<p><code>WPP.profile.getMyProfilePicture</code> - Get your current profile picture</p>
+<p><code>WPP.profile.setMyProfilePicture</code> / <code>WPP.profile.removeMyProfilePicture</code> - Set or remove your profile picture</p>
+<p><code>WPP.profile.isBusiness</code> - Check whether the connected account is a Business account</p>
+<p><code>WPP.profile.editBusinessProfile</code> - Edit business profile fields (description, address, etc.)</p>
+<p>For the most up-to-date list of available functions, launch the project locally and run this in your browser console:</p>
+<p><code>Object.keys(WPP.profile).sort()</code></p>
+<h3 id="privacy-functions" class="tsd-anchor-link">Privacy Functions<a href="#privacy-functions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p><code>WPP.privacy.get</code> - Get the current privacy settings as an object</p>
+<p><code>WPP.privacy.setLastSeen</code> - Configure who can see your &quot;last seen&quot;</p>
+<p><code>WPP.privacy.setOnline</code> - Configure who can see when you are online</p>
+<p><code>WPP.privacy.setProfilePic</code> - Configure who can see your profile picture</p>
+<p><code>WPP.privacy.setReadReceipts</code> - Enable or disable read receipts</p>
+<p><code>WPP.privacy.setStatus</code> - Configure who can see your status updates</p>
+<p><code>WPP.privacy.setAbout</code> - Configure who can see your &quot;about&quot; text</p>
+<p><code>WPP.privacy.setAddGroup</code> - Configure who can add you to groups</p>
+<p><code>WPP.privacy.getDisallowedList</code> - Get the disallowed list (used together with <code>setAddGroup</code> / <code>setStatus</code> when set to <code>contact_blacklist</code>)</p>
+<p>For the most up-to-date list of available functions, launch the project locally and run this in your browser console:</p>
+<p><code>Object.keys(WPP.privacy).sort()</code></p>
 <h3 id="events" class="tsd-anchor-link">Events<a href="#events" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <h4 id="connection-events" class="tsd-anchor-link">Connection Events<a href="#connection-events" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4>
 <p><code>WPP.on('conn.stream_mode_changed', callback)</code> - Triggered when the connection mode changes</p>
@@ -129,6 +223,19 @@
 <pre><code class="sh"><span class="hl-2">npm</span><span class="hl-1"> </span><span class="hl-3">run</span><span class="hl-1"> </span><span class="hl-3">wa-source:format</span>
 </code><button type="button">Copy</button></pre>
 
+<h3 id="testing" class="tsd-anchor-link">Testing<a href="#testing" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>The project ships a Playwright suite under <code>tests/</code>. Two flavours are available:</p>
+<pre><code class="bash"><span class="hl-7"># Smoke tests — no QR scan needed.</span><br/><span class="hl-7"># Loads the live wppconnect-wa.js bundle on web.whatsapp.com and verifies</span><br/><span class="hl-7"># every public WPP module still exposes the functions documented above.</span><br/><span class="hl-7"># Useful as an early-warning when WhatsApp Web ships an update that breaks</span><br/><span class="hl-7"># our patches.</span><br/><span class="hl-2">npm</span><span class="hl-1"> </span><span class="hl-3">test</span><span class="hl-1"> </span><span class="hl-5">--</span><span class="hl-1"> </span><span class="hl-3">tests/smoke.spec.ts</span><br/><br/><span class="hl-7"># Full test project (smoke + any other *.spec.ts)</span><br/><span class="hl-2">npm</span><span class="hl-1"> </span><span class="hl-3">test</span>
+</code><button type="button">Copy</button></pre>
+
+<p>Tests that need an authenticated session use the <code>loggedPage</code> fixture from
+<code>tests/wpp-test.ts</code>. To bootstrap that session once (this opens a real
+browser so you can scan the QR), run:</p>
+<pre><code class="bash"><span class="hl-2">npm</span><span class="hl-1"> </span><span class="hl-3">run</span><span class="hl-1"> </span><span class="hl-3">test:prepare</span>
+</code><button type="button">Copy</button></pre>
+
+<p>The session is cached under your OS temp dir (<code>wa-js-test-&lt;browser&gt;</code>) and
+reused by subsequent runs.</p>
 <h3 id="comparing-whatsapp-web-versions" class="tsd-anchor-link">Comparing WhatsApp Web Versions<a href="#comparing-whatsapp-web-versions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <p>To compare changes between two WhatsApp Web versions, use the helper script:</p>
 <p>Note: You need to run locally in multiple versions to download the scripts to wa-source folder, otherwise will not have anything to compare. To do it use: <code>WA_VERSION=&quot;&lt;version-here&gt;&quot; npm run launch:local</code></p>
@@ -163,4 +270,4 @@ distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.</p>
-</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#wppconnectwa-js"><span>WPP<wbr/>Connect/<wbr/>WA-<wbr/>JS</span></a><ul><li><a href="#our-online-channels"><span>Our online channels</span></a></li><li><ul><li><a href="#top-contributors-last-45-days-widget"><span>Top <wbr/>Contributors (last 45 days) widget</span></a></li></ul></li></ul><a href="#top-contributors-last-45-days-widget-1"><span>Top <wbr/>Contributors (<wbr/>Last 45 days) widget</span></a><ul><li><a href="#how-does-it-work"><span>How does it work</span></a></li><li><a href="#exported-whatsapp-modules"><span>Exported <wbr/>Whats<wbr/>App modules</span></a></li><li><a href="#some-available-functions"><span>Some <wbr/>Available functions</span></a></li><li><ul><li><a href="#general-functions"><span>General <wbr/>Functions</span></a></li><li><a href="#chat-functions"><span>Chat <wbr/>Functions</span></a></li><li><a href="#contact-functions"><span>Contact <wbr/>Functions</span></a></li><li><a href="#blocklist-functions"><span>Blocklist <wbr/>Functions</span></a></li><li><a href="#group-functions"><span>Group <wbr/>Functions</span></a></li><li><a href="#events"><span>Events</span></a></li><li><ul><li><a href="#connection-events"><span>Connection <wbr/>Events</span></a></li><li><a href="#chat-events"><span>Chat <wbr/>Events</span></a></li></ul></li></ul></li><li><a href="#development"><span>Development</span></a></li><li><ul><li><a href="#comparing-whatsapp-web-versions"><span>Comparing <wbr/>Whats<wbr/>App <wbr/>Web <wbr/>Versions</span></a></li></ul></li><li><a href="#how-to-use-this-project"><span>How to use this project</span></a></li><li><ul><li><a href="#tampermonkey-or-greasemonkey"><span>Tamper<wbr/>Monkey or <wbr/>Grease<wbr/>Monkey</span></a></li><li><a href="#playwright"><span>Playwright</span></a></li></ul></li><li><a href="#license"><span>License</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html">@wppconnect/wa-js - v4.1.0</a><ul class="tsd-small-nested-navigation" id="tsd-nav-container"><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#wppconnectwa-js"><span>WPP<wbr/>Connect/<wbr/>WA-<wbr/>JS</span></a><ul><li><a href="#our-online-channels"><span>Our online channels</span></a></li><li><ul><li><a href="#top-contributors-last-45-days-widget"><span>Top <wbr/>Contributors (last 45 days) widget</span></a></li></ul></li></ul><a href="#top-contributors-last-45-days-widget-1"><span>Top <wbr/>Contributors (<wbr/>Last 45 days) widget</span></a><ul><li><a href="#how-does-it-work"><span>How does it work</span></a></li><li><a href="#exported-whatsapp-modules"><span>Exported <wbr/>Whats<wbr/>App modules</span></a></li><li><a href="#some-available-functions"><span>Some <wbr/>Available functions</span></a></li><li><ul><li><a href="#general-functions"><span>General <wbr/>Functions</span></a></li><li><a href="#chat-functions"><span>Chat <wbr/>Functions</span></a></li><li><a href="#contact-functions"><span>Contact <wbr/>Functions</span></a></li><li><a href="#blocklist-functions"><span>Blocklist <wbr/>Functions</span></a></li><li><a href="#group-functions"><span>Group <wbr/>Functions</span></a></li><li><a href="#newsletter-channels-functions"><span>Newsletter (<wbr/>Channels) <wbr/>Functions</span></a></li><li><a href="#community-functions"><span>Community <wbr/>Functions</span></a></li><li><a href="#catalog-functions"><span>Catalog <wbr/>Functions</span></a></li><li><a href="#cart-functions"><span>Cart <wbr/>Functions</span></a></li><li><a href="#order-functions"><span>Order <wbr/>Functions</span></a></li><li><a href="#status-functions"><span>Status <wbr/>Functions</span></a></li><li><a href="#labels-functions"><span>Labels <wbr/>Functions</span></a></li><li><a href="#profile-functions"><span>Profile <wbr/>Functions</span></a></li><li><a href="#privacy-functions"><span>Privacy <wbr/>Functions</span></a></li><li><a href="#events"><span>Events</span></a></li><li><ul><li><a href="#connection-events"><span>Connection <wbr/>Events</span></a></li><li><a href="#chat-events"><span>Chat <wbr/>Events</span></a></li></ul></li></ul></li><li><a href="#development"><span>Development</span></a></li><li><ul><li><a href="#testing"><span>Testing</span></a></li><li><a href="#comparing-whatsapp-web-versions"><span>Comparing <wbr/>Whats<wbr/>App <wbr/>Web <wbr/>Versions</span></a></li></ul></li><li><a href="#how-to-use-this-project"><span>How to use this project</span></a></li><li><ul><li><a href="#tampermonkey-or-greasemonkey"><span>Tamper<wbr/>Monkey or <wbr/>Grease<wbr/>Monkey</span></a></li><li><a href="#playwright"><span>Playwright</span></a></li></ul></li><li><a href="#license"><span>License</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html">@wppconnect/wa-js - v4.1.0</a><ul class="tsd-small-nested-navigation" id="tsd-nav-container"><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>
