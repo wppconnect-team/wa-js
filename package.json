@@ -41,6 +41,7 @@
     "update-module-id": "ts-node ./src/tools/updateModuleID.ts",
     "wa-source:clean": "shx rm -rf wa-source",
     "wa-source:format": "sh -c 'prettier --ignore-path .prettierignore --write ./wa-source/$1' --",
+    "wa-source:populate": "ts-node ./src/tools/populateWaSources.ts",
     "watch": "webpack watch --devtool inline-source-map --mode development"
   },
   "devDependencies": {
