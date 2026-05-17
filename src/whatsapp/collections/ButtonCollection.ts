@@ -18,7 +18,9 @@ import { exportModule } from '../exportModule';
 import { ReplyButtonModel } from '../models';
 import { BaseCollection } from './BaseCollection';
 
-/** @whatsapp 47688 */
+/** @whatsapp 47688
+ * @whatsapp WAWebButtonCollection >= 2.3000.1039447205
+ */
 export declare class ButtonCollection extends BaseCollection<ReplyButtonModel> {
   static model: ReplyButtonModel;
   static comparator(): any;
@@ -26,6 +28,10 @@ export declare class ButtonCollection extends BaseCollection<ReplyButtonModel> {
 
 exportModule(
   exports,
-  { ButtonCollection: ['ButtonCollectionImpl', 'ButtonCollection'] },
-  (m) => m.ButtonCollectionImpl || m.ButtonCollection
+  { ButtonCollection: ['ButtonCollectionImpl', 'ButtonCollection', 'default'] },
+  (m, id) =>
+    // WA >= ~2.3000.1039447205: module ID is 'WAWebButtonCollection'; exports l.default
+    id === 'WAWebButtonCollection' ||
+    // Legacy: named exports ButtonCollectionImpl or ButtonCollection
+    !!(m.ButtonCollectionImpl || m.ButtonCollection)
 );
