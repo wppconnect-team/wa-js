@@ -28,6 +28,8 @@ interface Props {
   colorIndex?: number;
   color?: number;
   count?: any;
+  type?: number;
+  predefinedId?: number;
 }
 
 interface Session {

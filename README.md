@@ -320,6 +320,37 @@ For the most up-to-date list of available functions, launch the project locally 
 
 `Object.keys(WPP.privacy).sort()`
 
+### Labels vs Lists
+
+WhatsApp has two separate chat-organization features that share the same internal infrastructure but serve different purposes:
+
+| | `WPP.labels` | `WPP.lists` |
+|---|---|---|
+| **Account** | Business only | Personal + Business |
+| **Purpose** | Tag chats for CRM workflows (e.g. "New lead", "Pending") | Group chats into named tabs (e.g. "Family", "Work") |
+| **Visible as** | Colored label chips on chats | Tabs at the top of the chat list |
+| **API guard** | `assertIsBusiness()` — throws on personal accounts | No business check |
+
+Use `WPP.labels` for business label management. Use `WPP.lists` to create and manage chat grouping lists on any account type.
+
+#### Lists Functions
+
+`WPP.lists.create` - Create a new list
+
+`WPP.lists.list` - Get all custom lists
+
+`WPP.lists.addChats` - Add chats to a list
+
+`WPP.lists.removeChats` - Remove chats from a list
+
+`WPP.lists.rename` - Rename a list
+
+`WPP.lists.remove` - Delete a list
+
+For the most up-to-date list of available functions, launch the project locally and run this in your browser console:
+
+`Object.keys(WPP.lists).sort()`
+
 ### Events
 
 #### Connection Events
