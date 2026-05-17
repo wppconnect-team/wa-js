@@ -16,7 +16,7 @@
 
 import { CallCollection } from '../collections';
 import { CALL_STATES } from '../enums';
-import { exportProxyModel } from '../exportModule';
+import { exportModule } from '../exportModule';
 import { Wid } from '../misc';
 import {
   Model,
@@ -44,7 +44,8 @@ interface Session {
 
 interface Derived {}
 
-/** @whatsapp 36473
+/** @whatsapp WAWebCallModel >= 2.3000.0
+ * @whatsapp 36473
  * @whatsapp 40122 >= 2.2204.13
  * @whatsapp 736473 >= 2.2222.8
  */
@@ -54,7 +55,8 @@ export declare interface CallModel extends ModelProxy<
   Derived
 > {}
 
-/** @whatsapp 36473
+/** @whatsapp WAWebCallModel >= 2.3000.0
+ * @whatsapp 36473
  * @whatsapp 40122 >= 2.2204.13
  * @whatsapp 736473 >= 2.2222.8
  */
@@ -68,4 +70,16 @@ export declare class CallModel extends Model<CallCollection> {
   getCollection(): CallCollection;
 }
 
-exportProxyModel(exports, 'CallModel');
+exportModule(
+  exports,
+  { CallModel: 'default' },
+  (m, id) =>
+    // WA >= 2.3000: module ID is 'WAWebCallModel'; class extends WAWebEventEmitter (no proxyName)
+    id === 'WAWebCallModel' ||
+    // Legacy webpack (< 2.3000): find by proxyName = 'call'
+    ['call', 'Call'].includes(
+      m.default?.prototype?.proxyName ||
+        m.CallModel?.prototype?.proxyName ||
+        m.Call?.prototype?.proxyName
+    )
+);
