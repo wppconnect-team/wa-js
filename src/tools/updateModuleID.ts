@@ -124,7 +124,7 @@ async function start() {
     'functions.msgFindMedia', // added in WA version 2.3000.1034162388, but not available in older versions
     'functions.msgFindSearch', // added in WA version 2.3000.1034162388, but not available in older versions
     'functions.msgFindStarred', // added in WA version 2.3000.1034162388, but not available in older versions
-    'collections.CartItemCollection', // WAWebCartItemCollection removed from WA ~= 2.3000.1039092809
+    'CartItemCollection', // WAWebCartItemCollection removed from WA ~= 2.3000.1039092809
     'functions.subscribeGroupPresence', // added in WAWebContactPresenceBridge >= ~2.3000.1039447205
   ];
 
