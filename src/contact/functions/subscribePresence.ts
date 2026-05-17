@@ -15,7 +15,10 @@
  */
 
 import { PresenceStore, Wid, WidFactory } from '../../whatsapp';
-import { subscribePresence as sendSubscribePresence } from '../../whatsapp/functions';
+import {
+  subscribeGroupPresence,
+  subscribePresence as sendSubscribePresence,
+} from '../../whatsapp/functions';
 
 /**
  * Subscribe presente from a contact
@@ -39,7 +42,14 @@ export async function subscribePresence(
   for (const id of ids) {
     try {
       const wid = WidFactory.createWid(id);
-      await sendSubscribePresence(wid);
+      // WA >= ~2.3000.1039447205 split subscribePresence into separate user/group functions.
+      // subscribePresence already maps to subscribeUserPresence on new WA via exportModule fallback,
+      // but group JIDs require the dedicated subscribeGroupPresence call when available.
+      if (subscribeGroupPresence && wid.isGroup()) {
+        subscribeGroupPresence(wid);
+      } else {
+        await sendSubscribePresence(wid);
+      }
       if (PresenceStore.get(wid)) {
         result.push(wid);
         continue;

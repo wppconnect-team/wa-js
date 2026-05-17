@@ -48,4 +48,8 @@ export const IGNORE_FAIL_MODULES: ReadonlySet<string> = new Set([
   'msgFindMedia',
   'msgFindSearch',
   'msgFindStarred',
+  // WAWebCartItemCollection was removed from WA ~= 2.3000.1039092809
+  'CartItemCollection',
+  // subscribeGroupPresence only exists in WAWebContactPresenceBridge >= ~2.3000.1039447205
+  'subscribeGroupPresence',
 ]);
