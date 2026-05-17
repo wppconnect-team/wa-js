@@ -43,11 +43,19 @@ exportModule(
   {
     // WA < ~2.3000.1039447205: 'subscribePresence'; newer: falls back to 'subscribeUserPresence'
     subscribePresence: ['subscribePresence', 'subscribeUserPresence'],
-    subscribeGroupPresence: 'subscribeGroupPresence',
   },
   (m, id) =>
     // WA >= ~2.3000.1039447205: module ID is 'WAWebContactPresenceBridge'
     id === 'WAWebContactPresenceBridge' ||
     // Legacy: function was a named export
     !!(m.subscribePresence || m.subscribeUserPresence)
+);
+
+// subscribeGroupPresence only exists in WA >= ~2.3000.1039447205.
+// Separate call so that on older WA searchId returns null and IGNORE_FAIL_MODULES
+// silences the error instead of the property-not-found path triggering it.
+exportModule(
+  exports,
+  { subscribeGroupPresence: 'subscribeGroupPresence' },
+  (m) => !!m.subscribeGroupPresence
 );
