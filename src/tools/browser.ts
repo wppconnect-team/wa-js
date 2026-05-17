@@ -16,7 +16,6 @@
 
 import * as waVersion from '@wppconnect/wa-version';
 import * as crypto from 'crypto';
-import FileType from 'file-type';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as playwright from 'playwright-chromium';
@@ -250,7 +249,8 @@ export async function preparePage(page: playwright.Page) {
         encoding: 'base64',
       });
 
-      const mime = await FileType.fromFile(filePath);
+      const { fileTypeFromFile } = await import('file-type');
+      const mime = await fileTypeFromFile(filePath);
 
       const base64 = `data:${
         mime?.mime || 'application/octet-stream'

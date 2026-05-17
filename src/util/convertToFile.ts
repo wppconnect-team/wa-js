@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import FileType from 'file-type';
+import { fileTypeFromBuffer } from 'file-type';
 import parseDataURL from 'parse-data-url';
 
 import { isBase64, isUrl } from '.';
@@ -59,7 +59,7 @@ export async function convertToFile(
   }
 
   if (!filename || !mimetype) {
-    const result = await FileType.fromBuffer(await blob.arrayBuffer());
+    const result = await fileTypeFromBuffer(await blob.arrayBuffer());
     if (result) {
       const baseType = result.mime.split('/')[0];
       filename = filename || `${baseType}.${result.ext}`;
