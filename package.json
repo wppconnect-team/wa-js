@@ -50,7 +50,7 @@
     "@commitlint/prompt-cli": "^20.5.3",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.58.2",
-    "@tony.ganchev/eslint-plugin-header": "^3.3.3",
+    "@tony.ganchev/eslint-plugin-header": "^3.4.4",
     "@types/debug": "^4.1.13",
     "@types/node": "^16.18.126",
     "@types/node-fetch": "^2.6.13",
