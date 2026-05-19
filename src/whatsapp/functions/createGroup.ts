@@ -73,5 +73,5 @@ exportModule(
     m.createGroup &&
     (m.GroupAlreadyExistsError
       ? m.createGroup.length === 3
-      : !m.sendForNeededAddRequest)
+      : m.createGroup.length !== 4)
 );
