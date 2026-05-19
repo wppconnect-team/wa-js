@@ -1,3 +1,3 @@
-## 4.2.0 (2026-05-15)
+## 4.3.0 (2026-05-19)
 
-* fix: remove outdated pre-lid release patches (#3425) ([aadc862253d4c4989d6a9e404c349889d55fa0d1](https://github.com/wppconnect-team/wa-js/commit/aadc862253d4c4989d6a9e404c349889d55fa0d1)), closes [#3425](https://github.com/wppconnect-team/wa-js/issues/3425)
+* build(deps-dev): update dependency @wppconnect/wa-version to ^1.5.3967 (#3459) ([399fa1478d6037c83ef4f6baadeea49e7944f1c8](https://github.com/wppconnect-team/wa-js/commit/399fa1478d6037c83ef4f6baadeea49e7944f1c8)), closes [#3459](https://github.com/wppconnect-team/wa-js/issues/3459)
