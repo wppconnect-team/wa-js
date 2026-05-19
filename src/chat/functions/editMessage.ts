@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import { WPPError } from '../../util';
-import { MsgKey } from '../../whatsapp';
-import { canEditCaption, canEditMsg } from '../../whatsapp/functions';
+import { getMessageById, prepareRawMessage, sendRawMessage } from '.';
 import {
   defaultSendMessageOptions,
   LinkPreviewOptions,
@@ -24,7 +21,10 @@ import {
   SendMessageOptions,
   SendMessageReturn,
 } from '..';
-import { getMessageById, prepareRawMessage, sendRawMessage } from '.';
+import { assertGetChat } from '../../assert';
+import { WPPError } from '../../util';
+import { MsgKey } from '../../whatsapp';
+import { canEditCaption, canEditMsg } from '../../whatsapp/functions';
 
 export type EditMessageOptions = SendMessageOptions & LinkPreviewOptions;
 
@@ -66,10 +66,12 @@ export async function editMessage(
     editMsgType: msg.type,
   };
 
-  rawMessage = await prepareRawMessage(msg.chat!, rawMessage, options);
+  const chat = msg.chat || assertGetChat(msg.id.remote);
+
+  rawMessage = await prepareRawMessage(chat, rawMessage, options);
 
   rawMessage.latestEditMsgKey = rawMessage.id;
   rawMessage.latestEditSenderTimestampMs = rawMessage.t;
 
-  return await sendRawMessage(msg.chat?.id, rawMessage, options);
+  return await sendRawMessage(chat.id, rawMessage, options);
 }
