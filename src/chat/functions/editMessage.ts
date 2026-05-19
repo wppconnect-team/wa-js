@@ -13,7 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { getMessageById, prepareRawMessage, sendRawMessage } from '.';
+
+import { assertGetChat } from '../../assert';
+import { WPPError } from '../../util';
+import { MsgKey } from '../../whatsapp';
+import { canEditCaption, canEditMsg } from '../../whatsapp/functions';
 import {
   defaultSendMessageOptions,
   LinkPreviewOptions,
@@ -21,10 +25,7 @@ import {
   SendMessageOptions,
   SendMessageReturn,
 } from '..';
-import { assertGetChat } from '../../assert';
-import { WPPError } from '../../util';
-import { MsgKey } from '../../whatsapp';
-import { canEditCaption, canEditMsg } from '../../whatsapp/functions';
+import { getMessageById, prepareRawMessage, sendRawMessage } from '.';
 
 export type EditMessageOptions = SendMessageOptions & LinkPreviewOptions;
 
