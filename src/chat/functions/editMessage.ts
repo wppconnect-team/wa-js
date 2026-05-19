@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { assertGetChat } from '../../assert';
 import { WPPError } from '../../util';
 import { MsgKey } from '../../whatsapp';
 import { canEditCaption, canEditMsg } from '../../whatsapp/functions';
@@ -66,10 +67,12 @@ export async function editMessage(
     editMsgType: msg.type,
   };
 
-  rawMessage = await prepareRawMessage(msg.chat!, rawMessage, options);
+  const chat = msg.chat || assertGetChat(msg.id.remote);
+
+  rawMessage = await prepareRawMessage(chat, rawMessage, options);
 
   rawMessage.latestEditMsgKey = rawMessage.id;
   rawMessage.latestEditSenderTimestampMs = rawMessage.t;
 
-  return await sendRawMessage(msg.chat?.id, rawMessage, options);
+  return await sendRawMessage(chat.id, rawMessage, options);
 }
