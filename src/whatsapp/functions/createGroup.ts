@@ -70,5 +70,8 @@ exportModule(
     createGroup: 'createGroup',
   },
   (m) =>
-    m.createGroup && m.GroupAlreadyExistsError && m.createGroup.length === 3
+    m.createGroup &&
+    (m.GroupAlreadyExistsError
+      ? m.createGroup.length === 3
+      : !m.sendForNeededAddRequest)
 );
