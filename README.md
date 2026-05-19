@@ -483,6 +483,90 @@ This is useful for:
 - Identifying when function signatures changed
 - Finding new or removed modules
 
+## Building with a custom global variable name
+
+If you are developing an extension or automation tool that may run on the same WhatsApp Web page alongside other WA-JS-based projects, you can compile your own build of this library under a different global variable name to avoid conflicts.
+
+### When to do this
+
+By default, WA-JS exposes itself as `window.WPP`. If two tools built on WA-JS are injected into the same page using the default name, they will overwrite each other. Building under a custom name (e.g. `window.MYWPP`) ensures each tool owns its own isolated global.
+
+### Steps
+
+**1. Clone the repository and install dependencies**
+
+```bash
+git clone https://github.com/wppconnect-team/wa-js.git
+cd wa-js
+npm install
+```
+
+**2. Change the global variable name in `webpack.config.js`**
+
+Find the `output.library` block and replace `'WPP'` with your chosen name:
+
+```js
+// webpack.config.js
+output: {
+  filename: 'wppconnect-wa.js',
+  path: path.resolve(__dirname, 'dist'),
+  library: {
+    name: 'MYWPP', // <-- your custom global variable name
+    type: 'global',
+  },
+},
+```
+
+**3. Update the pre-injection config key in `src/config/index.ts`**
+
+Replace every occurrence of `WPPConfig` with `<YOURNAME>Config` (e.g. `MYWPPConfig`). There are three occurrences in that file:
+
+```ts
+// Before
+interface Window { WPPConfig: Config; }
+const setted = window.WPPConfig || {};
+window.WPPConfig = config;
+
+// After (using MYWPP as example)
+interface Window { MYWPPConfig: Config; }
+const setted = window.MYWPPConfig || {};
+window.MYWPPConfig = config;
+```
+
+**4. Build the production bundle**
+
+```bash
+npm run build:prd
+```
+
+The compiled file will be available at:
+
+```
+dist/wppconnect-wa.js
+```
+
+### Result
+
+When your custom build is injected into WhatsApp Web:
+
+- The library is available as **`window.MYWPP`** (your chosen name).
+- **`window.WPP` is not set** — there is no conflict with other WA-JS builds on the same page.
+- Pre-injection configuration is read from **`window.MYWPPConfig`** instead of `window.WPPConfig`.
+
+**Pre-injection usage example:**
+
+```javascript
+// Set this before injecting your custom build
+window.MYWPPConfig = {
+  deviceName: 'My Extension',
+};
+
+// After injection, use your custom global
+window.MYWPP.loader.onReady(function () {
+  console.log('My extension is ready');
+});
+```
+
 ## How to use this project
 
 Basically, you need to inject the `wppconnect-wa.js` file into the browser after WhatsApp page load.
