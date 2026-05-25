@@ -57,8 +57,12 @@ export async function prepareRawMessage<T extends RawMessage>(
     ...options,
   };
 
-  // For group messages, use LID format for the 'from' field
-  const fromWid = chat.id.isGroup() ? getMyUserLid() : getMyUserWid();
+  // For group and LID 1:1 chats, use LID format for the 'from' field.
+  // Mirrors WAWebLidMigrationUtils.getMeUserLidOrJidForChat: when chat.id.isLid()
+  // is true (account is LID-migrated and the contact has a LID), WA expects the
+  // sender to be addressed by LID, not PN.
+  const fromWid =
+    chat.id.isLid() || chat.id.isGroup() ? getMyUserLid() : getMyUserWid();
 
   message = {
     t: unixTime(),
