@@ -42,6 +42,8 @@ interface Props extends PropsChatBase {
   unreadMentionsOfMe?: any;
   msgUnsyncedButtonReplyMsgs?: any;
   endOfHistoryTransferType?: any;
+  /** Contact LID for PnLess protocol (Phone Number-less) */
+  accountLid?: Wid;
 }
 
 interface Session extends SessionChatBase {

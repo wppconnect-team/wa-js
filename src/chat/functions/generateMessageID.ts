@@ -16,7 +16,7 @@
 
 import { assertWid } from '../../assert';
 import { getMyUserLid, getMyUserWid } from '../../conn';
-import { ChatModel, MsgKey, Wid } from '../../whatsapp';
+import { ChatModel, MsgKey, UserPrefs, Wid } from '../../whatsapp';
 import { randomMessageId } from '../../whatsapp/functions';
 
 /**
@@ -37,8 +37,22 @@ export async function generateMessageID(
     to = assertWid(chat);
   }
 
-  // For group messages, use LID format for both 'from' and 'participant'
-  const from = to.isGroup() ? getMyUserLid() : getMyUserWid();
+  // For group messages, use LID format for both 'from' and 'participant'.
+  // For individual chats, use device-aware WIDs to match WhatsApp Web behavior.
+  let from: Wid;
+  if (to.isGroup()) {
+    from = getMyUserLid();
+  } else {
+    const deviceLid =
+      typeof UserPrefs.getMaybeMeDeviceLid === 'function'
+        ? UserPrefs.getMaybeMeDeviceLid()
+        : null;
+    const devicePn =
+      typeof UserPrefs.getMaybeMeDevicePn === 'function'
+        ? UserPrefs.getMaybeMeDevicePn()
+        : null;
+    from = deviceLid ?? devicePn ?? getMyUserWid();
+  }
   const participant = to.isGroup() ? from : undefined;
 
   return new MsgKey({

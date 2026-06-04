@@ -23,6 +23,7 @@ import {
   ChatModel,
   MsgKey,
   MsgModel,
+  UserPrefs,
   Wid,
 } from '../../whatsapp';
 import { ACK } from '../../whatsapp/enums';
@@ -57,8 +58,24 @@ export async function prepareRawMessage<T extends RawMessage>(
     ...options,
   };
 
-  // For group messages, use LID format for the 'from' field
-  const fromWid = chat.id.isGroup() ? getMyUserLid() : getMyUserWid();
+  // For group messages, use LID format for the 'from' field.
+  // For individual chats, WhatsApp Web uses device-aware WIDs (with device ID
+  // suffix) via getMaybeMeDeviceLid/getMaybeMeDevicePn. Using a WID without
+  // device ID causes the recipient to see "unknown user" without a phone number.
+  let fromWid: Wid;
+  if (chat.id.isGroup()) {
+    fromWid = getMyUserLid();
+  } else {
+    const deviceLid =
+      typeof UserPrefs.getMaybeMeDeviceLid === 'function'
+        ? UserPrefs.getMaybeMeDeviceLid()
+        : null;
+    const devicePn =
+      typeof UserPrefs.getMaybeMeDevicePn === 'function'
+        ? UserPrefs.getMaybeMeDevicePn()
+        : null;
+    fromWid = deviceLid ?? devicePn ?? getMyUserWid();
+  }
 
   message = {
     t: unixTime(),
