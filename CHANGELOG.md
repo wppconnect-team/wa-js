@@ -1,3 +1,3 @@
-## <small>4.3.1-alpha.0 (2026-06-04)</small>
+## <small>4.3.2-alpha.0 (2026-06-04)</small>
 
-* fix: unknown on chat list ([a8bd92d2b381d56ca5b96c392f71aa81d7ff0c70](https://github.com/wppconnect-team/wa-js/commit/a8bd92d2b381d56ca5b96c392f71aa81d7ff0c70))
+* Merge branch 'manfe/fix-unknown-on-chat-list' of github.com:wppconnect-team/wa-js into manfe/fix-unknown-on-chat-list ([c444c5bf8c6ce23ffa3edddbd6feb5ef749a6baa](https://github.com/wppconnect-team/wa-js/commit/c444c5bf8c6ce23ffa3edddbd6feb5ef749a6baa))
