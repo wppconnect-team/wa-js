@@ -60,21 +60,19 @@ export async function prepareRawMessage<T extends RawMessage>(
 
   // For group messages, use LID format for the 'from' field.
   // For individual chats, WhatsApp Web uses device-aware WIDs (with device ID
-  // suffix) via getMaybeMeDeviceLid/getMaybeMeDevicePn. Using a WID without
+  // suffix, e.g. "5511999@c.us" → "5511999:0@c.us"). Using a WID without
   // device ID causes the recipient to see "unknown user" without a phone number.
+  // Note: individual chats must use PN format (@c.us), not LID (@lid) — LID is
+  // only used in the encryption layer (encryptAndSendUserMsg), not the MsgModel.
   let fromWid: Wid;
   if (chat.id.isGroup()) {
     fromWid = getMyUserLid();
   } else {
-    const deviceLid =
-      typeof UserPrefs.getMaybeMeDeviceLid === 'function'
-        ? UserPrefs.getMaybeMeDeviceLid()
-        : null;
     const devicePn =
       typeof UserPrefs.getMaybeMeDevicePn === 'function'
         ? UserPrefs.getMaybeMeDevicePn()
         : null;
-    fromWid = deviceLid ?? devicePn ?? getMyUserWid();
+    fromWid = devicePn ?? getMyUserWid();
   }
 
   message = {
