@@ -15,28 +15,16 @@
  */
 
 import { assertWid } from '../../assert';
-import { getMyUserId } from '../../conn';
 import { WPPError } from '../../util';
-import {
-  CallModel,
-  CallStore,
-  functions,
-  websocket,
-  Wid,
-} from '../../whatsapp';
-import { CALL_STATES } from '../../whatsapp/enums';
-import { unixTime } from '../../whatsapp/functions';
-import { parseRelayResponse } from './parseRelayResponse';
-import { prepareDestionation } from './prepareDestination';
+import { CallStore, lidPnCache, Wid } from '../../whatsapp';
+import { startWAWebVoipCall, toUserLidOrThrow } from '../../whatsapp/functions';
 
 export interface CallOfferOptions {
   isVideo?: boolean;
 }
 
 /**
- * Send a call offer
- *
- * This method only will send a call offer, but there are no audio/video
+ * Send a call offer using the WhatsApp Web native VoIP stack
  *
  * @example
  * ```javascript
@@ -67,90 +55,36 @@ export async function offer(
     );
   }
 
-  const callId = functions.randomHex(16).substr(0, 64);
-  const me = getMyUserId();
-
-  if (!me) {
-    throw new WPPError('user_id_is_null', 'My user id is null or undefined');
+  // Tenta resolver para o JID LID se o contato/conta estiver migrado
+  let targetWid = toWid;
+  if (!toWid.isLid()) {
+    try {
+      const lid = lidPnCache.getCurrentLid(toWid);
+      if (lid) {
+        targetWid = lid;
+      } else {
+        const resolvedLid = toUserLidOrThrow(toWid);
+        if (resolvedLid) {
+          targetWid = resolvedLid;
+        }
+      }
+    } catch {
+      // Ignora erro caso a conversão de LID dê erro e continua usando o PN original
+    }
   }
 
-  const content = [
-    websocket.smax('audio', { enc: 'opus', rate: '16000' }, null),
-    websocket.smax('audio', { enc: 'opus', rate: '8000' }, null),
-  ];
+  // Dispara a chamada nativa de alto nível do WhatsApp Web
+  // lobbyEntryPoint = 8 (CHAT_HEADER)
+  // channel = 5 (interno)
+  await startWAWebVoipCall(targetWid, !!options.isVideo, 8, 5);
 
-  if (options.isVideo) {
-    content.push(
-      websocket.smax(
-        'video',
-        {
-          orientation: '0',
-          screen_width: '1920',
-          screen_height: '1080',
-          device_orientation: '0',
-          enc: 'vp8',
-          dec: 'vp8',
-        },
-        null
-      )
-    );
-  }
-
-  content.push(
-    ...[
-      websocket.smax('net', { medium: '3' }, null),
-      websocket.smax(
-        'capability',
-        { ver: '1' },
-        new Uint8Array([1, 4, 255, 131, 207, 4])
-      ),
-      websocket.smax('encopt', { keygen: '2' }, null),
-    ]
+  // Busca o modelo de chamada recém-criado na Store nativa do WhatsApp
+  const call = CallStore.getModelsArray().find(
+    (c) =>
+      c.peerJid.toString({ legacy: true }) ===
+        targetWid.toString({ legacy: true }) ||
+      c.peerJid.toString({ legacy: true }) === toWid.toString({ legacy: true })
   );
 
-  const encKey = self.crypto.getRandomValues(new Uint8Array(32)).buffer;
-
-  content.push(...(await prepareDestionation([toWid], encKey)));
-
-  const node = websocket.smax(
-    'call',
-    {
-      to: toWid.toString({ legacy: true }),
-      id: functions.randomHex(8),
-    },
-    [
-      websocket.smax(
-        'offer',
-        {
-          'call-id': callId,
-          'call-creator': me.toString({ legacy: true }),
-        },
-        content
-      ),
-    ]
-  );
-
-  const model = new CallModel({
-    id: callId,
-    peerJid: toWid,
-    isVideo: options.isVideo,
-    isGroup: false,
-    outgoing: true,
-    offerTime: unixTime(),
-    webClientShouldHandle: false,
-    canHandleLocally: true,
-  });
-
-  CallStore.add(model);
-
-  CallStore.setActiveCall(CallStore.assertGet(callId));
-
-  model.setState(CALL_STATES.OUTGOING_CALLING);
-
-  const response = await websocket.sendSmaxStanza(node);
-
-  console.info(response);
-  console.info(parseRelayResponse(response));
-
-  return model;
+  return call;
 }

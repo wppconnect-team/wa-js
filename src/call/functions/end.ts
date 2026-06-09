@@ -15,11 +15,10 @@
  */
 
 import { WPPError } from '../../util';
-import { CallModel, CallStore, websocket } from '../../whatsapp';
-import { CALL_STATES } from '../../whatsapp/enums';
+import { getVoipStackInterface } from '../../whatsapp/functions';
 
 /**
- * End a call
+ * End a call using the WhatsApp Web native VoIP stack
  *
  * @example
  * ```javascript
@@ -28,77 +27,24 @@ import { CALL_STATES } from '../../whatsapp/enums';
  *
  * // End specific call id
  * WPP.call.end(callId);
- *
- * // End any incoming call
- * WPP.on('call.incoming_call', (call) => {
- *   WPP.call.end(call.id);
- * });
  * ```
  *
- * @param   {string}  callId  The call ID, empty to end the first one
- * @return  {[type]}          [return description]
+ * @param   {string}  [callId]  The call ID (optional)
+ * @return  {Promise<boolean>}
  */
-export async function end(callId?: string): Promise<boolean> {
-  const callOut = [
-    CALL_STATES.ACTIVE,
-    CALL_STATES.OUTGOING_CALLING,
-    CALL_STATES.OUTGOING_RING,
-    CALL_STATES.CallActive,
-  ];
-
-  let call: CallModel | undefined = undefined;
-
-  if (callId) {
-    call = CallStore.get(callId);
-  } else {
-    call = CallStore.activeCall ?? undefined;
-  }
-
-  if (!call) {
+export async function end(_callId?: string): Promise<boolean> {
+  const voipStack = await getVoipStackInterface();
+  if (!voipStack) {
     throw new WPPError(
-      'call_not_found',
-      `Call ${callId || '<empty>'} not found`,
-      {
-        callId,
-      }
+      'voip_stack_not_found',
+      'VoIP stack interface is not available'
     );
   }
 
-  if (!callOut.includes(call.getState()) && !call.isGroup) {
-    throw new WPPError(
-      'call_is_not_outcoming_calling',
-      `Call ${callId || '<empty>'} is not incoming calling`,
-      {
-        callId,
-        state: call.getState(),
-      }
-    );
-  }
-
-  if (!call.peerJid.isGroupCall()) {
-    await websocket.ensureE2ESessions([call.peerJid]);
-  }
-
-  const node = websocket.smax(
-    'call',
-    {
-      to: call.peerJid.toString({ legacy: true }),
-      id: websocket.generateId(),
-    },
-    [
-      websocket.smax(
-        'terminate',
-        {
-          'call-id': call.id,
-          'call-creator': call.peerJid.toString({ legacy: true }),
-          // count: '0',
-        },
-        null
-      ),
-    ]
-  );
-
-  await websocket.sendSmaxStanza(node);
+  // Executa o encerramento da chamada ativa na pilha VoIP nativa
+  // 2 = Encerramento solicitado pelo usuário
+  // true = Iniciado pelo usuário local
+  await voipStack.endCall(2, true);
 
   return true;
 }
