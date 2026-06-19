@@ -22,7 +22,6 @@ import {
   isUnsupportedBrowserForWebCalling,
   isVoipDownloadEnabled,
   requireVoipJsBackend,
-  useExternalBetaOptIn,
 } from '../../whatsapp/functions';
 
 let isEnabled = false;
@@ -53,11 +52,6 @@ export async function enableCallInterface() {
       default:
         return func(...args);
     }
-  });
-
-  wrapModuleFunction(useExternalBetaOptIn, (func, ...args) => {
-    const result = func(...args);
-    return [true, result[1]];
   });
 
   wrapModuleFunction(isCallingEnabled, () => {
