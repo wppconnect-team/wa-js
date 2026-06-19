@@ -17,13 +17,25 @@
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   getABPropConfigValue,
+  getUnsupportedBrowserReason,
+  isCallingEnabled,
+  isUnsupportedBrowserForWebCalling,
+  isVoipDownloadEnabled,
+  requireVoipJsBackend,
   useExternalBetaOptIn,
 } from '../../whatsapp/functions';
+
+let isEnabled = false;
 
 /**
  * Enable call interface from desktop app
  */
 export async function enableCallInterface() {
+  if (isEnabled) {
+    return;
+  }
+  isEnabled = true;
+
   wrapModuleFunction(getABPropConfigValue, (func, ...args) => {
     const [key] = args;
     switch (key) {
@@ -47,4 +59,37 @@ export async function enableCallInterface() {
     const result = func(...args);
     return [true, result[1]];
   });
+
+  wrapModuleFunction(isCallingEnabled, () => {
+    return true;
+  });
+
+  wrapModuleFunction(isUnsupportedBrowserForWebCalling, () => {
+    return false;
+  });
+
+  wrapModuleFunction(getUnsupportedBrowserReason, () => {
+    return null;
+  });
+
+  wrapModuleFunction(isVoipDownloadEnabled, () => {
+    return true;
+  });
+
+  // Tenta inicializar o backend de VoIP caso ele não tenha sido inicializado no boot
+  try {
+    const backend = await requireVoipJsBackend();
+    if (
+      backend &&
+      backend.WAWebVoipInit &&
+      typeof backend.WAWebVoipInit.initWAWebVoip === 'function'
+    ) {
+      await backend.WAWebVoipInit.initWAWebVoip();
+    }
+  } catch (err) {
+    console.warn(
+      '[WA-JS] Falha ao tentar inicializar manualmente o VoIP backend:',
+      err
+    );
+  }
 }

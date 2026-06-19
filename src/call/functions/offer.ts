@@ -15,9 +15,14 @@
  */
 
 import { assertWid } from '../../assert';
+import { queryExists } from '../../contact/functions/queryExists';
 import { WPPError } from '../../util';
-import { CallStore, lidPnCache, Wid } from '../../whatsapp';
-import { startWAWebVoipCall, toUserLidOrThrow } from '../../whatsapp/functions';
+import { CallStore, Wid } from '../../whatsapp';
+import {
+  getVoipStackInterface,
+  startWAWebVoipCall,
+} from '../../whatsapp/functions';
+import { enableCallInterface } from './enableCallInterface';
 
 export interface CallOfferOptions {
   isVideo?: boolean;
@@ -38,6 +43,9 @@ export async function offer(
   to: string | Wid,
   options: CallOfferOptions = {}
 ): Promise<any> {
+  // Garante a ativação das propriedades de ligação (ABProps)
+  await enableCallInterface();
+
   options = Object.assign<CallOfferOptions, CallOfferOptions>(
     { isVideo: false },
     options
@@ -55,23 +63,20 @@ export async function offer(
     );
   }
 
-  // Tenta resolver para o JID LID se o contato/conta estiver migrado
-  let targetWid = toWid;
-  if (!toWid.isLid()) {
-    try {
-      const lid = lidPnCache.getCurrentLid(toWid);
-      if (lid) {
-        targetWid = lid;
-      } else {
-        const resolvedLid = toUserLidOrThrow(toWid);
-        if (resolvedLid) {
-          targetWid = resolvedLid;
-        }
-      }
-    } catch {
-      // Ignora erro caso a conversão de LID dê erro e continua usando o PN original
-    }
+  // Resolve o contato e garante que ele existe, populando o cache de LID/PN
+  const existResult = await queryExists(toWid);
+  if (!existResult) {
+    throw new WPPError(
+      'contact_not_found',
+      `The contact ${toWid} does not exist on WhatsApp`,
+      { to }
+    );
   }
+
+  const targetWid = existResult.lid || existResult.wid;
+
+  // Garante o carregamento prévio do bundle lazy da stack de VoIP
+  await getVoipStackInterface();
 
   // Dispara a chamada nativa de alto nível do WhatsApp Web
   // lobbyEntryPoint = 8 (CHAT_HEADER)

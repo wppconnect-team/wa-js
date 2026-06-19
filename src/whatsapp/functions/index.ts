@@ -189,4 +189,6 @@ export * from './uploadProductImage';
 export * from './uploadThumbnail';
 export * from './upsertVotes';
 export * from './useExternalBetaOptIn';
+export * from './voipBackend';
+export * from './voipGating';
 export * from './voteFromDbRow';
