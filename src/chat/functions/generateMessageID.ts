@@ -37,8 +37,18 @@ export async function generateMessageID(
     to = assertWid(chat);
   }
 
-  // For group messages, use LID format for both 'from' and 'participant'
-  const from = to.isGroup() ? getMyUserLid() : getMyUserWid();
+  // The outgoing 'from' is a *user* WID (no device id) whose addressing mode
+  // matches the chat, mirroring WhatsApp Web's WAWebMsgDataUtils.genOutgoingMsgData:
+  // - groups address the sender by LID (@lid)
+  // - 1:1 / newsletter chats match their own id: @lid chat → @lid, @c.us → @c.us
+  // After the LID migration most 1:1 chats are @lid; sending a @c.us 'from' to a
+  // @lid chat makes the recipient resolve us as an "unknown user" without a phone.
+  let from: Wid;
+  if (to.isGroup()) {
+    from = getMyUserLid();
+  } else {
+    from = to.isLid() ? getMyUserLid() : getMyUserWid();
+  }
   const participant = to.isGroup() ? from : undefined;
 
   return new MsgKey({

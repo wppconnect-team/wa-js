@@ -57,8 +57,18 @@ export async function prepareRawMessage<T extends RawMessage>(
     ...options,
   };
 
-  // For group messages, use LID format for the 'from' field
-  const fromWid = chat.id.isGroup() ? getMyUserLid() : getMyUserWid();
+  // The outgoing 'from' is a *user* WID (no device id) whose addressing mode
+  // matches the chat, mirroring WhatsApp Web's WAWebMsgDataUtils.genOutgoingMsgData:
+  // - groups address the sender by LID (@lid)
+  // - 1:1 / newsletter chats match their own id: @lid chat → @lid, @c.us → @c.us
+  // After the LID migration most 1:1 chats are @lid; sending a @c.us 'from' to a
+  // @lid chat makes the recipient resolve us as an "unknown user" without a phone.
+  let fromWid: Wid;
+  if (chat.id.isGroup()) {
+    fromWid = getMyUserLid();
+  } else {
+    fromWid = chat.id.isLid() ? getMyUserLid() : getMyUserWid();
+  }
 
   message = {
     t: unixTime(),

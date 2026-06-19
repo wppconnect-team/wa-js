@@ -1,3 +1,3 @@
-## 4.3.0 (2026-05-19)
+## <small>4.3.1 (2026-06-19)</small>
 
-* build(deps-dev): update dependency @wppconnect/wa-version to ^1.5.3967 (#3459) ([399fa1478d6037c83ef4f6baadeea49e7944f1c8](https://github.com/wppconnect-team/wa-js/commit/399fa1478d6037c83ef4f6baadeea49e7944f1c8)), closes [#3459](https://github.com/wppconnect-team/wa-js/issues/3459)
+* fix(group): pass membershipApprovalMode to joinGroupViaInvite (#3468) ([3383b0374789dd25564068669bd2caadc25c0f5a](https://github.com/wppconnect-team/wa-js/commit/3383b0374789dd25564068669bd2caadc25c0f5a)), closes [#3468](https://github.com/wppconnect-team/wa-js/issues/3468) [#2221](https://github.com/wppconnect-team/wa-js/issues/2221)
