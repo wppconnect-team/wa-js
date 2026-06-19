@@ -15,7 +15,10 @@
  */
 
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
-import { getABPropConfigValue } from '../../whatsapp/functions';
+import {
+  getABPropConfigValue,
+  useExternalBetaOptIn,
+} from '../../whatsapp/functions';
 
 /**
  * Enable call interface from desktop app
@@ -27,6 +30,9 @@ export async function enableCallInterface() {
       case 'enable_web_calling':
       case 'enable_web_group_calling':
       case 'web_voip_call_tab_new_call':
+      case 'enable_wds_calling_dropdown':
+      case 'enable_web_calling_nux':
+      case 'enable_web_calling_beta_upsell':
         return true;
       case 'calling_lid_version':
         return 1;
@@ -35,5 +41,10 @@ export async function enableCallInterface() {
       default:
         return func(...args);
     }
+  });
+
+  wrapModuleFunction(useExternalBetaOptIn, (func, ...args) => {
+    const result = func(...args);
+    return [true, result[1]];
   });
 }
