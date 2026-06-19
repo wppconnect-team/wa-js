@@ -19,8 +19,16 @@ import { exportModule } from '../exportModule';
 
 /**
  * @whatsapp 153438 >= 2.2301.5
+ *
+ * When `membershipApprovalMode` is `false` (default) the server must respond
+ * with a `<group>` node; when `true` it must respond with
+ * `<membership_approval_request>`.  If the wrong node is returned the function
+ * throws `UnexpectedJoinGroupViaInviteResponse` (see WAWebBackendErrors).
  */
-export declare function joinGroupViaInvite(groupId: Wid): Promise<{ gid: Wid }>;
+export declare function joinGroupViaInvite(
+  code: string,
+  membershipApprovalMode: boolean
+): Promise<{ gid: Wid }>;
 
 exportModule(
   exports,

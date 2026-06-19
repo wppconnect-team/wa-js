@@ -20,10 +20,24 @@ import { ChatStore, Wid } from '..';
 import { exportModule } from '../exportModule';
 import { joinGroupViaInvite } from './joinGroupViaInvite';
 
+/**
+ * Result shape returned by {@link sendJoinGroupViaInvite}.
+ *
+ * `membershipApprovalMode` mirrors the flag queried via
+ * `getGroupInfoFromInviteCode` and signals whether the bot's join request is
+ * pending admin approval (`true`) or the bot joined immediately (`false`).
+ */
+export interface SendJoinGroupViaInviteResult {
+  gid: Wid;
+  membershipApprovalMode: boolean;
+}
+
 /** @whatsapp 69586
  * @whatsapp 769586 >= 2.2222.8
  */
-export declare function sendJoinGroupViaInvite(code: string): Promise<Wid>;
+export declare function sendJoinGroupViaInvite(
+  code: string
+): Promise<SendJoinGroupViaInviteResult>;
 
 exportModule(
   exports,
@@ -35,15 +49,27 @@ exportModule(
 
 /**
  * @whatsapp >= 2.2301.5
+ *
+ * Fallback used when the native `sendJoinGroupViaInvite` module is absent.
+ * Queries group metadata first to obtain `membershipApprovalMode`, then
+ * forwards that flag to the low-level `joinGroupViaInvite` IQ call so the
+ * WAP response parser knows which node type (`<group>` vs
+ * `<membership_approval_request>`) to expect.
  */
 loader.injectFallbackModule('sendJoinGroupViaInvite', {
-  sendJoinGroupViaInvite: async (groupId: Wid) => {
-    const group = await getGroupInfoFromInviteCode(groupId as any);
+  sendJoinGroupViaInvite: async (
+    code: string
+  ): Promise<SendJoinGroupViaInviteResult> => {
+    const group = await getGroupInfoFromInviteCode(code);
     const existChat = ChatStore.get(group.id.toString());
     if (existChat) {
       const isMember = await iAmMember(group.id.toString());
-      if (isMember) return group.id;
+      if (isMember) return { gid: existChat.id, membershipApprovalMode: false };
     }
-    return await joinGroupViaInvite(groupId).then((value) => value.gid);
+    const result = await joinGroupViaInvite(code, group.membershipApprovalMode);
+    return {
+      gid: result.gid,
+      membershipApprovalMode: group.membershipApprovalMode,
+    };
   },
 });
