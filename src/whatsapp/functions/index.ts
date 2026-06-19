@@ -188,4 +188,5 @@ export * from './uploadMedia';
 export * from './uploadProductImage';
 export * from './uploadThumbnail';
 export * from './upsertVotes';
+export * from './useExternalBetaOptIn';
 export * from './voteFromDbRow';
