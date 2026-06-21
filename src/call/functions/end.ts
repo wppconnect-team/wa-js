@@ -24,15 +24,11 @@ import { getVoipStackInterface } from '../../whatsapp/functions';
  * ```javascript
  * // End any call
  * WPP.call.end();
- *
- * // End specific call id
- * WPP.call.end(callId);
  * ```
  *
- * @param   {string}  [callId]  The call ID (optional)
  * @return  {Promise<boolean>}
  */
-export async function end(_callId?: string): Promise<boolean> {
+export async function end(): Promise<boolean> {
   const voipStack = await getVoipStackInterface();
   if (!voipStack) {
     throw new WPPError(
