@@ -16,9 +16,8 @@
 
 import Debug from 'debug';
 
-import { assertFindChat, assertWid } from '../../assert';
+import { assertFindChat } from '../../assert';
 import { getAnnouncementGroup } from '../../community';
-import { getPnLidEntry } from '../../contact';
 import { WPPError } from '../../util';
 import { GroupMetadataStore, MsgModel } from '../../whatsapp';
 import { ACK } from '../../whatsapp/enums';
@@ -41,21 +40,6 @@ import { getMessageById, markIsRead, prepareRawMessage } from '.';
 
 const debug = Debug('WA-JS:message');
 
-async function resolveSendChatId(chatId: any) {
-  const wid = assertWid(chatId);
-
-  if (!wid.isLid()) {
-    return chatId;
-  }
-
-  try {
-    const entry = await getPnLidEntry(wid);
-    return entry.phoneNumber?._serialized || chatId;
-  } catch (_error) {
-    return chatId;
-  }
-}
-
 /**
  * Send a raw message
  *
@@ -71,9 +55,7 @@ export async function sendRawMessage(
     ...options,
   };
 
-  // WhatsApp Web still expects the PN chat model for some send-side hooks, even
-  // when the final destination is LID. The lower layer enforces the current LID.
-  const chat = await assertFindChat(await resolveSendChatId(chatId));
+  const chat = await assertFindChat(chatId);
 
   /**
    * When the group is groupType 'COMMUNITY', its a instance of a group created, you can
