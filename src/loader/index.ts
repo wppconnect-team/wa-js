@@ -427,6 +427,14 @@ function moduleLooksLikeReact(module: any): boolean {
 
 // Cache for searchId results based on condition function reference
 const searchIdCache = new Map<SearchModuleCondition, string | null>();
+// For negative (null) results we also remember how many modules were registered
+// at the time of the miss. WhatsApp Web (>= 2.3000, Meta loader) registers its
+// modules progressively, often well after the loader is injected, so a finder
+// that runs early can miss a module that simply hasn't been registered yet.
+// Caching that miss permanently means the binding never recovers even after the
+// module loads (root cause of #3419). We therefore only trust a cached null
+// while the module set is unchanged, and re-scan once new modules appear.
+const searchIdMissModuleCount = new Map<SearchModuleCondition, number>();
 
 function isReactResolvedCached(moduleId: string, module: any): boolean {
   if (pureComponentMap.has(moduleId)) {
@@ -541,9 +549,21 @@ export function searchId(
   reverse = false,
   hint?: string | RegExp
 ): string | null {
-  // Check cache first
-  if (searchIdCache.has(condition)) {
-    return searchIdCache.get(condition)!;
+  // Check cache first. Positive results are stable; a cached null is only
+  // trustworthy while no new modules have registered since the miss — otherwise
+  // the module we wanted may have loaded in the meantime (#3419).
+  const cached = searchIdCache.get(condition);
+  if (cached) {
+    return cached;
+  }
+  if (cached === null) {
+    if (
+      searchIdMissModuleCount.get(condition) ===
+      Object.keys(moduleRequire.m).length
+    ) {
+      return null;
+    }
+    // Stale negative cache: new modules appeared, fall through and re-scan.
   }
 
   const allIds = Object.keys(moduleRequire.m);
@@ -618,6 +638,9 @@ export function searchId(
   clearTimeout(timer);
   debug(`Module not found: ${condition.toString()}`);
   searchIdCache.set(condition, null);
+  // Remember the module count at miss time so the cached null is re-evaluated
+  // once WhatsApp registers more modules (see searchIdMissModuleCount above).
+  searchIdMissModuleCount.set(condition, allIds.length);
   return null;
 }
 
