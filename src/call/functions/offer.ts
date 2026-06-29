@@ -15,28 +15,21 @@
  */
 
 import { assertWid } from '../../assert';
-import { getMyUserId } from '../../conn';
+import { queryExists } from '../../contact/functions/queryExists';
 import { WPPError } from '../../util';
+import { CallStore, Wid } from '../../whatsapp';
 import {
-  CallModel,
-  CallStore,
-  functions,
-  websocket,
-  Wid,
-} from '../../whatsapp';
-import { CALL_STATES } from '../../whatsapp/enums';
-import { unixTime } from '../../whatsapp/functions';
-import { parseRelayResponse } from './parseRelayResponse';
-import { prepareDestionation } from './prepareDestination';
+  getVoipStackInterface,
+  startWAWebVoipCall,
+} from '../../whatsapp/functions';
+import { enableCallInterface } from './enableCallInterface';
 
 export interface CallOfferOptions {
   isVideo?: boolean;
 }
 
 /**
- * Send a call offer
- *
- * This method only will send a call offer, but there are no audio/video
+ * Send a call offer using the WhatsApp Web native VoIP stack
  *
  * @example
  * ```javascript
@@ -50,6 +43,9 @@ export async function offer(
   to: string | Wid,
   options: CallOfferOptions = {}
 ): Promise<any> {
+  // Garante a ativação das propriedades de ligação (ABProps)
+  await enableCallInterface();
+
   options = Object.assign<CallOfferOptions, CallOfferOptions>(
     { isVideo: false },
     options
@@ -67,90 +63,33 @@ export async function offer(
     );
   }
 
-  const callId = functions.randomHex(16).substr(0, 64);
-  const me = getMyUserId();
-
-  if (!me) {
-    throw new WPPError('user_id_is_null', 'My user id is null or undefined');
-  }
-
-  const content = [
-    websocket.smax('audio', { enc: 'opus', rate: '16000' }, null),
-    websocket.smax('audio', { enc: 'opus', rate: '8000' }, null),
-  ];
-
-  if (options.isVideo) {
-    content.push(
-      websocket.smax(
-        'video',
-        {
-          orientation: '0',
-          screen_width: '1920',
-          screen_height: '1080',
-          device_orientation: '0',
-          enc: 'vp8',
-          dec: 'vp8',
-        },
-        null
-      )
+  // Resolve o contato e garante que ele existe, populando o cache de LID/PN
+  const existResult = await queryExists(toWid);
+  if (!existResult) {
+    throw new WPPError(
+      'contact_not_found',
+      `The contact ${toWid} does not exist on WhatsApp`,
+      { to }
     );
   }
 
-  content.push(
-    ...[
-      websocket.smax('net', { medium: '3' }, null),
-      websocket.smax(
-        'capability',
-        { ver: '1' },
-        new Uint8Array([1, 4, 255, 131, 207, 4])
-      ),
-      websocket.smax('encopt', { keygen: '2' }, null),
-    ]
+  const targetWid = existResult.lid || existResult.wid;
+
+  // Garante o carregamento prévio do bundle lazy da stack de VoIP
+  await getVoipStackInterface();
+
+  // Dispara a chamada nativa de alto nível do WhatsApp Web
+  // lobbyEntryPoint = 8 (CHAT_HEADER)
+  // channel = 5 (interno)
+  await startWAWebVoipCall(targetWid, !!options.isVideo, 8, 5);
+
+  // Busca o modelo de chamada recém-criado na Store nativa do WhatsApp
+  const call = CallStore.getModelsArray().find(
+    (c) =>
+      c.peerJid.toString({ legacy: true }) ===
+        targetWid.toString({ legacy: true }) ||
+      c.peerJid.toString({ legacy: true }) === toWid.toString({ legacy: true })
   );
 
-  const encKey = self.crypto.getRandomValues(new Uint8Array(32)).buffer;
-
-  content.push(...(await prepareDestionation([toWid], encKey)));
-
-  const node = websocket.smax(
-    'call',
-    {
-      to: toWid.toString({ legacy: true }),
-      id: functions.randomHex(8),
-    },
-    [
-      websocket.smax(
-        'offer',
-        {
-          'call-id': callId,
-          'call-creator': me.toString({ legacy: true }),
-        },
-        content
-      ),
-    ]
-  );
-
-  const model = new CallModel({
-    id: callId,
-    peerJid: toWid,
-    isVideo: options.isVideo,
-    isGroup: false,
-    outgoing: true,
-    offerTime: unixTime(),
-    webClientShouldHandle: false,
-    canHandleLocally: true,
-  });
-
-  CallStore.add(model);
-
-  CallStore.setActiveCall(CallStore.assertGet(callId));
-
-  model.setState(CALL_STATES.OUTGOING_CALLING);
-
-  const response = await websocket.sendSmaxStanza(node);
-
-  console.info(response);
-  console.info(parseRelayResponse(response));
-
-  return model;
+  return call;
 }

@@ -47,7 +47,7 @@ export async function accept(callId?: string): Promise<boolean> {
     call = CallStore.get(callId);
   } else {
     // First incoming ring or call group
-    call = CallStore.findFirst(
+    call = CallStore.getModelsArray().find(
       (c) => c.getState() === CALL_STATES.INCOMING_RING || c.isGroup
     );
   }
