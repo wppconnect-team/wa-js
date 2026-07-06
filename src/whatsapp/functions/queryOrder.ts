@@ -46,5 +46,10 @@ exportModule(
   {
     queryOrder: 'queryOrder',
   },
-  (m) => m.queryOrder && m.queryOrderResponse
+  // WA >= 2.3000.1042652105 dropped `queryOrderResponse` from the module and
+  // moved `queryOrder` into `WAWebBizQueryOrderJob`. Keep the legacy predicate
+  // for older versions still listed in wa-version/html.
+  // TODO: remove the legacy branch when 2.30xx pre-1042652105 is no longer available in wa-version/html
+  (m, id) =>
+    (m.queryOrder && m.queryOrderResponse) || id === 'WAWebBizQueryOrderJob'
 );

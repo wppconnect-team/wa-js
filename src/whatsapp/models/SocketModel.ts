@@ -134,5 +134,8 @@ export declare class SocketModel extends Model {
 exportModule(
   exports,
   { Socket: 'Socket.constructor' },
-  (m) => m.Socket?.initConn
+  // WA >= 2.3000.1042652105 removed `initConn` from the Socket model. The module
+  // id is stable, so match by id and keep the legacy predicate for older versions.
+  // TODO: remove the legacy `initConn` branch when 2.30xx pre-1042652105 is no longer available in wa-version/html
+  (m, id) => m.Socket?.initConn || id === 'WAWebSocketModel'
 );
