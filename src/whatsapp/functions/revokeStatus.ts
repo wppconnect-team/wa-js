@@ -28,11 +28,16 @@ export declare function revokeStatus(
 exportModule(
   exports,
   {
-    revokeStatus: ['default'],
+    // WA >= 2.3000.1042652105 replaced the default action component with a named
+    // `sendStatusRevokeMsgAction` export. Older versions still expose it as `default`.
+    revokeStatus: ['default', 'sendStatusRevokeMsgAction'],
   },
   /**
    * This module only loaded after device is connected
    * I be creating other function for check expires based directily from files
    */
-  (m) => m.default?.displayName?.includes('RevokeStatusAction')
+  // TODO: remove the legacy `default.displayName` branch when 2.30xx pre-1042652105 is no longer available in wa-version/html
+  (m, id) =>
+    m.default?.displayName?.includes('RevokeStatusAction') ||
+    id === 'WAWebRevokeStatusAction'
 );

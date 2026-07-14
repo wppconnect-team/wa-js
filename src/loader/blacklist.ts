@@ -52,4 +52,14 @@ export const IGNORE_FAIL_MODULES: ReadonlySet<string> = new Set([
   'CartItemCollection',
   // subscribeGroupPresence only exists in WAWebContactPresenceBridge >= ~2.3000.1039447205
   'subscribeGroupPresence',
+  // The dedicated newsletter mute mex mutations were removed in WA ~2.3000.1042652105.
+  // Newsletter muting now goes through `toggleNewsletterAdminActivityMuteStateAction`
+  // (the preferred path already used by `WPP.newsletter.mute`), so the absence of these
+  // legacy fallbacks is expected.
+  'muteNewsletter',
+  'unmuteNewsletter',
+  // The ServerProps store/model was removed from WA ~2.3000.1042652105; its data now
+  // comes from `ServerPropsConstants` (WAWebServerPropConstants) plus the `ServerProps`
+  // fallback module. `ServerPropsModel` is only used as a TypeScript type at runtime.
+  'ServerPropsModel',
 ]);
