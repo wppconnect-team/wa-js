@@ -46,7 +46,7 @@ export async function reject(callId?: string): Promise<boolean> {
     call = CallStore.get(callId);
   } else {
     // First incoming ring or call group
-    call = CallStore.findFirst(
+    call = CallStore.getModelsArray().find(
       (c) =>
         // Fix for mantain compatibility with older versions of whatsapp web
         c.getState() === CALL_STATES.INCOMING_RING ||

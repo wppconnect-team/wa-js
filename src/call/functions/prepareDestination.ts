@@ -20,24 +20,44 @@ export async function prepareDestionation(
   wids: Wid[],
   encKey: ArrayBufferLike
 ) {
+  console.log('[DEBUG] prepareDestionation: Iniciando. wids:', wids);
+  console.log('[DEBUG] prepareDestionation: Chamando getFanOutList...');
   const fanList = await functions.getFanOutList({ wids });
+  console.log(
+    '[DEBUG] prepareDestionation: getFanOutList finalizado. fanList:',
+    fanList
+  );
+
+  console.log('[DEBUG] prepareDestionation: Chamando ensureE2ESessions...');
   await websocket.ensureE2ESessions(fanList);
+  console.log('[DEBUG] prepareDestionation: ensureE2ESessions finalizado.');
 
   let shouldHaveIdentity = false;
+  console.log('[DEBUG] prepareDestionation: Mapeando fanList...');
   const destination = await Promise.all(
     fanList.map(async (wid) => {
+      console.log(
+        '[DEBUG] prepareDestionation: Criptografando para',
+        wid.toString()
+      );
       const { type, ciphertext } = await functions.encryptMsgProtobuf(wid, 0, {
         call: {
           callKey: new Uint8Array(encKey),
         },
       });
+      console.log(
+        '[DEBUG] prepareDestionation: Criptografia concluída para',
+        wid.toString(),
+        'tipo:',
+        type
+      );
 
       shouldHaveIdentity = shouldHaveIdentity || type === 'pkmsg';
 
       return websocket.smax(
         'to',
         {
-          jid: wid.toString({ legacy: true }),
+          jid: wid.toString(),
         },
         [
           websocket.smax(
@@ -59,7 +79,9 @@ export async function prepareDestionation(
   content.push(websocket.smax('destination', {}, destination));
 
   if (shouldHaveIdentity) {
+    console.log('[DEBUG] prepareDestionation: Obtendo identity...');
     const identity = await multidevice.adv.getADVEncodedIdentity();
+    console.log('[DEBUG] prepareDestionation: Identity obtida.');
     content.push(websocket.smax('device-identity', undefined, identity));
   }
 
