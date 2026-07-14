@@ -61,6 +61,13 @@ const functionPathMap = new CustomWeakMap();
 export const _moduleIdMap = moduleIdMap;
 
 /**
+ * Names we've already logged a "module not found" error for, so that retrying
+ * the lazy getter (see exportModule) doesn't spam the console while a module is
+ * still pending registration.
+ */
+const loggedMisses = new Set<string>();
+
+/**
  * The object of this function is to override the exports to create getters.
  *
  * You can export a single module or specific functions
@@ -106,13 +113,19 @@ export function exportModule(
            * I be creating other function for check expires based directily from files
            * This will not directly affect the function call, it continues to work normally.
            */
-          if (!IGNORE_FAIL_MODULES.has(name)) {
+          if (!IGNORE_FAIL_MODULES.has(name) && !loggedMisses.has(name)) {
+            loggedMisses.add(name);
             console.error(description);
             trackException(description);
           }
-          Object.defineProperty(this, name, {
-            get: () => undefined,
-          });
+          /**
+           * Do NOT pin this getter to `undefined`. On WhatsApp Web >= 2.3000 the
+           * Meta module graph is registered progressively, so a finder can run
+           * before its module exists. Permanently caching the miss meant the
+           * binding never recovered after the module loaded (#3419). Leaving the
+           * lazy getter in place lets the next access re-resolve (loader.searchId
+           * re-scans once new modules appear).
+           */
           return undefined;
         }
 
