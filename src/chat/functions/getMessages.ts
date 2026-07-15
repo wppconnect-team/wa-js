@@ -314,5 +314,13 @@ export async function getMessages(
     }
   }
 
+  // Keys created before the MsgKey patch ran (e.g. the appended
+  // lastReceivedKey message from MsgStore) still cache the serialized value
+  // in a minified property; reading _serialized migrates them in place
+  // (see whatsapp/misc/MsgKey.ts).
+  for (const msg of msgs) {
+    void msg.id?._serialized;
+  }
+
   return msgs;
 }
