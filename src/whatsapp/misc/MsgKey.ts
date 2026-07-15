@@ -56,5 +56,48 @@ exportModule(
   {
     MsgKey: 'default',
   },
-  (m) => m.default.toString().includes('MsgKey error: obj is null/undefined')
+  (m) => {
+    if (
+      !m?.default?.toString().includes('MsgKey error: obj is null/undefined')
+    ) {
+      return false;
+    }
+
+    /**
+     * WhatsApp >= 2.3000.1042401057 caches the serialized key in a minified
+     * property (`this.$1 = [...].join('_')`) instead of `this._serialized`,
+     * so message keys stopped exposing `_serialized` (events like ack and
+     * sendMessage delivered ids without it). Alias the minified property
+     * back to an own enumerable `_serialized` on each instance.
+     */
+    try {
+      const proto = m.default.prototype;
+      const cached = /\breturn this\.([$A-Za-z_][\w$]*)/.exec(
+        Function.prototype.toString.call(proto.toString)
+      )?.[1];
+
+      if (
+        cached &&
+        cached !== '_serialized' &&
+        !Object.getOwnPropertyDescriptor(proto, cached)
+      ) {
+        Object.defineProperty(proto, cached, {
+          configurable: true,
+          get: function (this: any) {
+            return this._serialized;
+          },
+          set: function (this: any, value: string) {
+            Object.defineProperty(this, '_serialized', {
+              value,
+              writable: true,
+              enumerable: true,
+              configurable: true,
+            });
+          },
+        });
+      }
+    } catch {}
+
+    return true;
+  }
 );
