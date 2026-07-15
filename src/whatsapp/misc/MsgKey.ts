@@ -81,20 +81,70 @@ exportModule(
         cached !== '_serialized' &&
         !Object.getOwnPropertyDescriptor(proto, cached)
       ) {
+        const defineSerialized = (target: any, value: string) => {
+          Object.defineProperty(target, '_serialized', {
+            value,
+            writable: true,
+            enumerable: true,
+            configurable: true,
+          });
+        };
+
+        /**
+         * Instances created before this patch ran carry the minified
+         * property as an own data property (which shadows the accessor
+         * installed below), so they never received `_serialized` — e.g.
+         * every key already loaded in MsgStore at injection time. Convert
+         * the own minified property into an own `_serialized`.
+         */
+        const migrateInstance = (key: any) => {
+          const own = Object.getOwnPropertyDescriptor(key, cached);
+          if (own) {
+            delete key[cached];
+            defineSerialized(key, own.value);
+          }
+        };
+
         Object.defineProperty(proto, cached, {
           configurable: true,
           get: function (this: any) {
             return this._serialized;
           },
           set: function (this: any, value: string) {
-            Object.defineProperty(this, '_serialized', {
-              value,
-              writable: true,
-              enumerable: true,
-              configurable: true,
-            });
+            defineSerialized(this, value);
           },
         });
+
+        Object.defineProperty(proto, '_serialized', {
+          configurable: true,
+          get: function (this: any) {
+            migrateInstance(this);
+            return Object.getOwnPropertyDescriptor(this, '_serialized')?.value;
+          },
+          set: function (this: any, value: string) {
+            defineSerialized(this, value);
+          },
+        });
+
+        // Migrate pre-patch instances whenever they are serialized, so the
+        // own enumerable `_serialized` exists before structural copies
+        // (spread, JSON, devtools/CDP serialization) that never trigger the
+        // getter above.
+        const originalToString = proto.toString;
+        proto.toString = function (this: any) {
+          migrateInstance(this);
+          return originalToString.call(this);
+        };
+        if (!('toJSON' in proto)) {
+          Object.defineProperty(proto, 'toJSON', {
+            configurable: true,
+            writable: true,
+            value: function (this: any) {
+              migrateInstance(this);
+              return this;
+            },
+          });
+        }
       }
     } catch {}
 
