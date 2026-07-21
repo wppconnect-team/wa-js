@@ -225,7 +225,17 @@ export declare class CmdClass extends EventEmitter {
   showCountrySelector(e?: any, t?: any, r?: any): void;
   toggleStickerMaker(): void;
   setActiveFilter(
-    type?: 'unread' | 'favorites' | 'personal' | 'assigned_to_you' | 'labels'
+    type?:
+      | 'unread'
+      | 'favorites'
+      | 'personal'
+      | 'non_contact'
+      | 'group'
+      | 'contact'
+      | 'business'
+      | 'broadcast'
+      | 'assigned_to_you'
+      | 'labels'
   ): Promise<void>;
 }
 
