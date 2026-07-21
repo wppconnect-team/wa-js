@@ -133,6 +133,7 @@ interface Props {
   quotedGroupSubject?: any;
   quotedParentGroupJid?: any;
   mentionedJidList?: Wid[];
+  nonJidMentions?: number;
   footer?: string;
   hydratedButtons?: Array<{
     index?: number;
