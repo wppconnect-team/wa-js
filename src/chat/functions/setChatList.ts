@@ -16,7 +16,7 @@
 
 import * as loader from '../../loader';
 import { WPPError } from '../../util';
-import { Cmd } from '../../whatsapp';
+import { ChatModel, Cmd, lidPnCache } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   getShouldAppearInList,
@@ -46,6 +46,25 @@ import {
  */
 let allowSet: Set<string> = new Set();
 let filterType: string = 'all';
+
+function isAllowedChat(chat: ChatModel): boolean {
+  const chatId = chat.id;
+  if (!chatId) {
+    return false;
+  }
+
+  if (allowSet.has(chatId.toString())) {
+    return true;
+  }
+
+  const equivalentId = chatId.isLid()
+    ? lidPnCache?.getPhoneNumber?.(chatId)
+    : chatId.server === 'c.us'
+      ? lidPnCache?.getCurrentLid?.(chatId)
+      : undefined;
+
+  return equivalentId ? allowSet.has(equivalentId.toString()) : false;
+}
 
 export enum FilterChatListTypes {
   ALL = 'all',
@@ -79,14 +98,14 @@ export async function setChatList(
 
   if (type == FilterChatListTypes.CUSTOM && ids) {
     allowSet = new Set<string>(ids);
-    Cmd.trigger('set_active_filter', 'unread');
-    Cmd.trigger('set_active_filter');
+    await Cmd.setActiveFilter('unread');
+    await Cmd.setActiveFilter();
     return {
       type: type as any,
       list: ids,
     };
   } else if (type == FilterChatListTypes.ALL) {
-    Cmd.trigger('set_active_filter');
+    await Cmd.setActiveFilter();
     return {
       type: type as any,
     };
@@ -96,8 +115,7 @@ export async function setChatList(
       type: type as any,
     };
   } else {
-    Cmd.trigger('set_active_filter', 'unread');
-    Cmd.trigger('set_active_filter', type);
+    await Cmd.setActiveFilter(type as any);
     return {
       type: type as any,
     };
@@ -111,11 +129,7 @@ function applyPatch() {
     const [chat] = args;
 
     if (filterType === FilterChatListTypes.CUSTOM) {
-      const chatId = chat.id?.toString();
-      if (chatId && allowSet.has(chatId)) {
-        return true;
-      }
-      return false;
+      return isAllowedChat(chat);
     }
     return func(...args);
   });
