@@ -17,6 +17,26 @@
 import { Label } from '../../labels';
 import { ChatModel, MsgKey, MsgModel, Wid } from '../../whatsapp';
 
+export interface ChatFilter {
+  kind?:
+    | 'unread'
+    | 'favorites'
+    | 'group'
+    | 'community'
+    | 'broadcast'
+    | 'contact'
+    | 'non_contact'
+    | 'assigned_to_you'
+    | 'personal'
+    | 'business'
+    | 'labels'
+    | 'channels'
+    | 'ai_responding'
+    | 'ai_handoff'
+    | null;
+  label?: string | null;
+}
+
 export interface ChatEventTypes {
   /**
    * Triggered when change the active chat
@@ -29,6 +49,13 @@ export interface ChatEventTypes {
    * ```
    */
   'chat.active_chat': ChatModel | null;
+  /**
+   * Triggered when the active native chat-list filter changes.
+   *
+   * Custom lists use `kind: 'labels'` and expose their WhatsApp label ID in
+   * `label`. The All filter has no `kind` or `label`.
+   */
+  'chat.active_filter': ChatFilter;
   /**
    * Triggered when a new chat is created
    *
