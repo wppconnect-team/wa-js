@@ -31,6 +31,9 @@ export type TextMessageOptions = SendMessageOptions &
 /**
  * Send a text message
  *
+ * In group chats, the exact lowercase token `@all` mentions everyone when
+ * `detectMentioned` is enabled. The token is case-sensitive.
+ *
  * @example
  * ```javascript
  * // Send a simple text message

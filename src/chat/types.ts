@@ -41,7 +41,8 @@ export interface SendMessageOptions {
   createChat?: boolean;
 
   /**
-   * Automatic detect and add the mentioned contacts with @[number]
+   * Automatic detect and add mentioned contacts with @[number], or mention
+   * everyone in a group with @all
    *
    * @default true
    *
