@@ -21,7 +21,6 @@ export * from './addProductToCart';
 export * from './addToLabelCollection';
 export * from './blockContact';
 export * from './calculateFilehashFromBlob';
-export * from './callLabelDeleteAction';
 export * from './canEditCaption';
 export * from './canEditMsg';
 export * from './canReplyMsg';

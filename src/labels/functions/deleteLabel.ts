@@ -16,7 +16,7 @@
 
 import { assertIsBusiness } from '../../assert';
 import { LabelStore } from '../../whatsapp';
-import { callLabelDeleteAction } from '../../whatsapp/functions';
+import { callLabelDeleteAction } from '../../whatsapp/functions/callLabelDeleteAction';
 
 export interface DeleteLabelReturn {
   id: string;

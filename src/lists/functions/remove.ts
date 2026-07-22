@@ -16,7 +16,7 @@
 
 import { WPPError } from '../../util';
 import { LabelStore } from '../../whatsapp';
-import { callLabelDeleteAction } from '../../whatsapp/functions';
+import { callLabelDeleteAction } from '../../whatsapp/functions/callLabelDeleteAction';
 
 /**
  * Delete a list by ID
