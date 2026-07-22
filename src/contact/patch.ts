@@ -59,7 +59,12 @@ function applyPatch() {
 
   for (const attr in funcs) {
     const func = funcs[attr];
-    if (typeof (ContactModel.prototype as any)[attr] === 'undefined') {
+    // `in` instead of `typeof prototype[attr]`: reading the property invokes
+    // an existing accessor with `this` = the bare prototype. On WhatsApp Web
+    // >= 2.3000 some of these props already exist as memoized getters that
+    // throw without model data ("Data passed to getter must include an id
+    // property"), which aborted this whole patch loop (#3481).
+    if (!(attr in ContactModel.prototype)) {
       Object.defineProperty(ContactModel.prototype, attr, {
         get: function () {
           return func(this);
