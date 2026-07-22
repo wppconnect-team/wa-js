@@ -23,6 +23,45 @@ import { getQuotedMsgKey } from '../functions/';
 loader.onInjected(() => register());
 
 function register() {
+  // Probe with the `in` operator, never with `typeof prototype.<prop>`:
+  // reading the property invokes an accessor with `this` set to the bare
+  // prototype. If the getter exists (defined by WhatsApp, or by a previous
+  // partial run of this registrar being retried), it throws on a prototype
+  // without model data (e.g. `getQuotedMsgKey` -> "Message undefined does not
+  // have a reply"), wedging the registrar in a permanent retry loop.
+  //
+  // The property definitions also run *before* MsgStore.on: they are
+  // idempotent, while a repeated `.on` would duplicate 'add' handlers if a
+  // retry re-entered this function after the subscription.
+  if (!('chat' in MsgModel.prototype)) {
+    Object.defineProperty(MsgModel.prototype, 'chat', {
+      get: function () {
+        return ChatStore.get(this.id?.fromMe ? this.to : this.from);
+      },
+      configurable: true,
+    });
+  }
+
+  if (!('isGroupMsg' in MsgModel.prototype)) {
+    Object.defineProperty(MsgModel.prototype, 'isGroupMsg', {
+      get: function () {
+        return this?.chat?.id?.isGroup();
+      },
+      configurable: true,
+    });
+  }
+
+  if (!('quotedMsgId' in MsgModel.prototype)) {
+    Object.defineProperty(MsgModel.prototype, 'quotedMsgId', {
+      get: function () {
+        const quotedMsgId = getQuotedMsgKey(this);
+
+        return quotedMsgId;
+      },
+      configurable: true,
+    });
+  }
+
   MsgStore.on('add', (msg: MsgModel) => {
     if (msg.isNewMsg) {
       queueMicrotask(async () => {
@@ -39,35 +78,6 @@ function register() {
       });
     }
   });
-
-  if (typeof MsgModel.prototype.chat === 'undefined') {
-    Object.defineProperty(MsgModel.prototype, 'chat', {
-      get: function () {
-        return ChatStore.get(this.id?.fromMe ? this.to : this.from);
-      },
-      configurable: true,
-    });
-  }
-
-  if (typeof MsgModel.prototype.isGroupMsg === 'undefined') {
-    Object.defineProperty(MsgModel.prototype, 'isGroupMsg', {
-      get: function () {
-        return this?.chat?.id?.isGroup();
-      },
-      configurable: true,
-    });
-  }
-
-  if (typeof MsgModel.prototype.quotedMsgId === 'undefined') {
-    Object.defineProperty(MsgModel.prototype, 'quotedMsgId', {
-      get: function () {
-        const quotedMsgId = getQuotedMsgKey(this);
-
-        return quotedMsgId;
-      },
-      configurable: true,
-    });
-  }
 }
 
 async function addAttributesMsg(msg: any): Promise<MsgModel> {
