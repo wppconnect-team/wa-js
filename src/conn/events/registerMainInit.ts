@@ -16,14 +16,22 @@
 
 import { internalEv } from '../../eventEmitter';
 import * as loader from '../../loader';
+import {
+  consistentClearInterval,
+  consistentSetInterval,
+} from '../../util/consistentTimers';
 import { isMainInit } from '../functions';
 
 loader.onInjected(register);
 
 function register() {
-  const check = setInterval(() => {
+  // consistent* timers: WhatsApp Web swaps the global timer implementations
+  // during boot; a plain `clearInterval` can no-op across the swap, leaving
+  // this interval emitting `conn.main_init` forever (see
+  // util/consistentTimers.ts).
+  const check = consistentSetInterval(() => {
     if (isMainInit()) {
-      clearInterval(check);
+      consistentClearInterval(check);
       internalEv.emit('conn.main_init');
     }
   }, 100);
