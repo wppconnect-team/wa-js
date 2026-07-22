@@ -33,6 +33,52 @@ export const ev = new EventEmitter<
   maxListeners: Infinity,
 });
 
+/**
+ * EventEmitter2's `emit` runs listeners synchronously and propagates any
+ * listener exception straight into the *emitter's* stack. Combined with lazy
+ * module execution on WhatsApp Web >= 2.3000 (where a binding accessed by one
+ * listener can still be undefined), a single fragile listener can abort a
+ * completely unrelated registrar mid-registration, or kill the loader's
+ * lifecycle chain (root cause of #3481's stuck isReady/isFullReady and of
+ * feedback loops between retried registrars). Guard both emitters so a
+ * listener error is logged and contained at the emit boundary instead of
+ * unwinding into whoever happened to emit the event.
+ */
+function guardEmit(emitter: EventEmitter<any>, name: string): void {
+  const rawEmit = emitter.emit.bind(emitter);
+  (emitter as any).emit = (event: any, ...values: any[]): boolean => {
+    try {
+      return rawEmit(event, ...values);
+    } catch (error) {
+      debug(`listener error while emitting ${String(event)} on ${name}`, error);
+      return true;
+    }
+  };
+
+  // emitAsync collects listener return values synchronously before awaiting
+  // them, so a synchronously-throwing listener escapes the returned promise
+  // entirely — `emitAsync(...).catch(...)` never sees it. This is what killed
+  // `runMetaLoader` at `await emitAsync('loader.injected')`.
+  const rawEmitAsync = emitter.emitAsync.bind(emitter);
+  (emitter as any).emitAsync = async (
+    event: any,
+    ...values: any[]
+  ): Promise<any[]> => {
+    try {
+      return await rawEmitAsync(event, ...values);
+    } catch (error) {
+      debug(
+        `listener error while emitting (async) ${String(event)} on ${name}`,
+        error
+      );
+      return [];
+    }
+  };
+}
+
+guardEmit(internalEv, 'internalEv');
+guardEmit(ev, 'ev');
+
 internalEv.onAny((event, ...values) => {
   ev.emit(event as any, ...values);
   if (debug.enabled) {
