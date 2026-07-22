@@ -16,7 +16,7 @@
 
 import { assertIsBusiness } from '../../assert';
 import { LabelStore } from '../../whatsapp';
-import { labelDeleteAction } from '../../whatsapp/functions';
+import { callLabelDeleteAction } from '../../whatsapp/functions/callLabelDeleteAction';
 
 export interface DeleteLabelReturn {
   id: string;
@@ -41,7 +41,11 @@ export async function deleteLabel(
   for (const id of ids) {
     const label = LabelStore.get(id.toString());
     if (label)
-      await labelDeleteAction(id.toString(), label.name, label.colorIndex!);
+      await callLabelDeleteAction(
+        id.toString(),
+        label.name,
+        label.colorIndex ?? 0
+      );
     results.push({
       id: id,
       deleteLabelResult:
