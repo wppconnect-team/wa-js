@@ -14,26 +14,20 @@
  * limitations under the License.
  */
 
-import { WPPError } from '../../util';
-import { LabelStore } from '../../whatsapp';
-import { callLabelDeleteAction } from '../../whatsapp/functions';
+import { labelDeleteAction } from './labelAddAction';
 
 /**
- * Delete a list by ID
- *
- * @example
- * ```javascript
- * await WPP.lists.remove('42');
- * ```
- *
- * @category Lists
+ * Call labelDeleteAction using the signature supported by the current
+ * WhatsApp Web version.
  */
-export async function remove(listId: string): Promise<void> {
-  const label = LabelStore.get(listId);
-  if (!label) {
-    throw new WPPError('list_not_found', `List ${listId} not found`, {
-      id: listId,
-    });
+export function callLabelDeleteAction(
+  id: string,
+  name: string,
+  colorIndex: number
+): Promise<number | void> {
+  if (labelDeleteAction.length === 1) {
+    return labelDeleteAction({ labelId: id, name, color: colorIndex });
   }
-  await callLabelDeleteAction(listId, label.name, label.colorIndex ?? 0);
+
+  return labelDeleteAction(id, name, colorIndex);
 }
