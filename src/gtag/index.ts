@@ -36,6 +36,21 @@ const otherTracker = config.googleAnalyticsId
   : null;
 
 internalEv.on('loader.injected', () => {
+  // Analytics must never break the loader lifecycle: this listener runs inside
+  // `emitAsync('loader.injected')`, and on WhatsApp Web >= 2.3000 (lazy module
+  // execution) `conn.isAuthenticated()`/`isMultiDevice()` can throw while their
+  // bindings are still unresolved. An uncaught throw here aborts the emit,
+  // skips every listener registered after this one and kills `runMetaLoader`
+  // (isReady/isFullReady never set — part of #3481). Degrade to "no analytics"
+  // instead.
+  try {
+    registerTrackers();
+  } catch (_error) {
+    // ignore: analytics only
+  }
+});
+
+function registerTrackers() {
   const authenticated = conn.isAuthenticated();
   const method = conn.isMultiDevice() ? 'multidevice' : 'legacy';
 
@@ -104,7 +119,7 @@ internalEv.on('loader.injected', () => {
       }
     }
   });
-});
+}
 
 if (!config.disableGoogleAnalytics) {
   internalEv.on('conn.authenticated', () => {
