@@ -49,8 +49,9 @@ const prepareWhatsAppPage = async (page: Page) => {
     waitUntil: 'domcontentloaded',
   });
 
-  // Allow generous headroom over the Playwright default (30s) for `isReady` on
-  // a cold, unauthenticated page.
+  // The loader converges via timers (retry poll + 500ms generation tick) once
+  // WhatsApp registers its modules, so allow generous headroom over the
+  // Playwright default (30s) for `isReady` on a cold, unauthenticated page.
   await page.waitForFunction(() => WPP && WPP.isReady, undefined, {
     timeout: 120_000,
   });
