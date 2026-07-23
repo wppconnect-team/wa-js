@@ -33,17 +33,28 @@ export type TestOptions = {
 };
 
 const prepareWhatsAppPage = async (page: Page) => {
-  page.on('domcontentloaded', async () => {
-    await page.addScriptTag({
-      path: path.join(__dirname, '../dist/wppconnect-wa.js'),
-    });
+  // Inject via addInitScript, not addScriptTag: WhatsApp Web >= 2.3000 ships a
+  // strict nonce-based CSP with no 'unsafe-inline', so addScriptTag's inline
+  // <script> is blocked ("Executing inline script violates ... script-src ...
+  // nonce-..."). addInitScript is evaluated by the browser via CDP before the
+  // page's own scripts (not as a DOM node), so it bypasses the page CSP — the
+  // same mechanism a MAIN-world extension content script uses, and the timing
+  // (document_start) the Meta loader's __d/require setter traps are built for.
+  // Must be registered before navigation so it runs on the initial load.
+  await page.addInitScript({
+    path: path.join(__dirname, '../dist/wppconnect-wa.js'),
   });
 
   await page.goto('https://web.whatsapp.com/', {
     waitUntil: 'domcontentloaded',
   });
 
-  await page.waitForFunction(() => WPP && WPP.isReady);
+  // The loader converges via timers (retry poll + 500ms generation tick) once
+  // WhatsApp registers its modules, so allow generous headroom over the
+  // Playwright default (30s) for `isReady` on a cold, unauthenticated page.
+  await page.waitForFunction(() => WPP && WPP.isReady, undefined, {
+    timeout: 120_000,
+  });
 };
 
 export const test = base.extend<TestOptions>({
