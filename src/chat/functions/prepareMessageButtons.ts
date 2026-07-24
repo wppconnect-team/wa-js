@@ -349,9 +349,22 @@ loader.onFullReady(() => {
     return func(...args);
   });
 
-  wrapModuleFunction(createFanoutMsgStanza, async (func, ...args) => {
+  wrapModuleFunction(createFanoutMsgStanza, async (func, ...wrapArgs) => {
     let buttonNode: websocket.WapNode | null = null;
-    const proto: any = args[1].id ? args[2] : args[1];
+
+    const args: any[] = wrapArgs;
+
+    // WhatsApp >= 2.3000.1043786062 uses a single named-params object
+    const namedParams: any =
+      args.length === 1 && typeof args[0]?.msgProtobuf !== 'undefined'
+        ? args[0]
+        : null;
+
+    const proto: any = namedParams
+      ? namedParams.msgProtobuf
+      : args[1].id
+        ? args[2]
+        : args[1];
 
     if (proto.buttonsMessage) {
       buttonNode = websocket.smax('buttons');
@@ -368,9 +381,39 @@ loader.onFullReady(() => {
       });
     }
 
-    let node = await func(...args);
+    let node = await (func as (...args: any[]) => any)(...args);
     if (proto?.viewOnceMessage?.message?.interactiveMessage) {
-      node = await encryptAndParserMsgButtons(...args, func);
+      if (namedParams) {
+        const positionalToNamed = (
+          message: any,
+          msgProtobuf: any,
+          deviceList: any,
+          option: any,
+          metricReporter: any,
+          groupData: any
+        ) =>
+          func({
+            ...namedParams,
+            msgRecord: message,
+            msgProtobuf,
+            deviceList,
+            option,
+            metricReporter,
+            groupData,
+          });
+
+        node = await encryptAndParserMsgButtons(
+          namedParams.msgRecord,
+          namedParams.msgProtobuf,
+          namedParams.deviceList,
+          namedParams.option,
+          namedParams.metricReporter,
+          namedParams.groupData,
+          positionalToNamed
+        );
+      } else {
+        node = await (encryptAndParserMsgButtons as any)(...args, func);
+      }
     }
 
     if (!buttonNode) {
