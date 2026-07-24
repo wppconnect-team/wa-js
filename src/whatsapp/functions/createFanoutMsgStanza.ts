@@ -37,6 +37,20 @@ export declare function createFanoutMsgStanza(
   groupData?: any
 ): Promise<websocket.WapNode>;
 
+/**
+ * @whatsapp >= 2.3000.1043786062
+ */
+export declare function createFanoutMsgStanza(params: {
+  chatId: Wid;
+  deviceList: Wid[];
+  groupData?: any;
+  metricReporter?: any;
+  msgProtobuf: { [key: string]: any };
+  msgRecord: { type: string; data: MsgModel };
+  option?: { [key: string]: any };
+  scheduledMsgMetadata?: any;
+}): Promise<websocket.WapNode>;
+
 exportModule(
   exports,
   {
