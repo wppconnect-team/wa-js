@@ -27,6 +27,11 @@ export declare function labelDeleteAction(
   name: string,
   colorIndex: number
 ): Promise<number>;
+export declare function labelDeleteAction(options: {
+  labelId: string;
+  name: string;
+  color: number;
+}): Promise<void>;
 export declare function labelEditAction(
   id: string,
   name: string,
