@@ -19,6 +19,7 @@ import { compare } from 'compare-versions';
 import { assertGetChat, assertWid } from '../../assert';
 import { WPPError } from '../../util';
 import { Cmd, Wid } from '../../whatsapp';
+import { SANITIZED_VERSION_STR } from '../../whatsapp/contants';
 import { setArchive } from '../../whatsapp/functions';
 
 /**
@@ -50,7 +51,7 @@ export async function archive(chatId: string | Wid, archive = true) {
       { wid, archive }
     );
   }
-  if (compare(self.Debug.VERSION, '2.3000.0', '>=')) {
+  if (compare(SANITIZED_VERSION_STR, '2.3000.0', '>=')) {
     Cmd.archiveChat(chat, archive);
   } else {
     await setArchive(chat, archive);
