@@ -19,6 +19,11 @@ import { exportModule } from '../exportModule';
 /** @whatsapp 64369
  * @whatsapp 69618 >= 2.2204.13
  * @whatsapp 364369 >= 2.2222.8
+ *
+ * @deprecated The source module (WAWebConstantsDeprecated) was removed from
+ * WA ~2.3000.1044096409; its values are now spread across specific modules
+ * (WAWebMediaConstants, WAWebBizCommerceConstants, ...). This export resolves
+ * to undefined on newer versions.
  */
 export declare const Constants: {
   IMG_THUMB_MAX_EDGE: 100;

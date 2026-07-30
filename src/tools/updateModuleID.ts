@@ -126,6 +126,9 @@ async function start() {
     'functions.msgFindStarred', // added in WA version 2.3000.1034162388, but not available in older versions
     'CartItemCollection', // WAWebCartItemCollection removed from WA ~= 2.3000.1039092809
     'functions.subscribeGroupPresence', // added in WAWebContactPresenceBridge >= ~2.3000.1039447205
+    'functions.getUserhash', // removed from WAWebContactGetters in WA ~2.3000.1043126001, reimplemented in src/contact/patch.ts
+    'Constants', // WAWebConstantsDeprecated removed from WA ~= 2.3000.1044096409
+    'functions.createGroup', // WAWebGroupCreateJob only registers after login on WA >= ~2.3000.1044096409
   ];
 
   for (const moduleName of Object.keys(result)) {
