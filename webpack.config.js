@@ -52,6 +52,8 @@ module.exports = (env, argv) => {
       new webpack.DefinePlugin({
         __VERSION__: `'${packageJSON.version}'`,
         __SUPPORTED_WHATSAPP_WEB__: `'${packageJSON.engines['whatsapp-web']}'`,
+        // Gates src/dev, webpack drops the require and the module when false
+        __DEV__: JSON.stringify(isDevelopment),
       }),
       new webpack.BannerPlugin({
         banner: `/*! wppconnect-team/wa-js v${packageJSON.version} */\n`,
