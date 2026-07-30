@@ -12,7 +12,7 @@
 <li><a href="" aria-current="page">StickerMessageOptions</a></li></ul>
 <h1>Interface StickerMessageOptions</h1></div>
 <div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">StickerMessageOptions</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#caption">caption</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#createchat">createChat</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#delay">delay</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#detectmentioned">detectMentioned</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#filename">filename</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#footer">footer</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#markisread">markIsRead</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#mentionedlist">mentionedList</a><span class="tsd-signature-symbol">?:</span> (<span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <a href="../classes/whatsapp.Wid.html" class="tsd-signature-type tsd-kind-class">Wid</a>)<span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#messageid">messageId</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <a href="../classes/whatsapp.MsgKey.html" class="tsd-signature-type tsd-kind-class">MsgKey</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#mimetype">mimetype</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#quotedmsg">quotedMsg</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <a href="../classes/whatsapp.MsgModel.html" class="tsd-signature-type tsd-kind-class">MsgModel</a> <span class="tsd-signature-symbol">|</span> <a href="../classes/whatsapp.MsgKey.html" class="tsd-signature-type tsd-kind-class">MsgKey</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#quotedmsgpayload">quotedMsgPayload</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#type">type</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;sticker&quot;</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#waitforack">waitForAck</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div>
-<section class="tsd-panel tsd-hierarchy" data-refl="26770">
+<section class="tsd-panel tsd-hierarchy" data-refl="26772">
 <h4>Hierarchy (<a href="../hierarchy.html#chat.StickerMessageOptions">View Summary</a>)</h4>
 <ul class="tsd-hierarchy">
 <li class="tsd-hierarchy-item"><a href="chat.FileMessageOptions.html" class="tsd-signature-type tsd-kind-interface">FileMessageOptions</a>
@@ -92,13 +92,16 @@ While delaying, Typing Status is used to look like a human interaction</p>
 </div></div><aside class="tsd-sources">
 <p>Inherited from <a href="chat.FileMessageOptions.html">FileMessageOptions</a>.<a href="chat.FileMessageOptions.html#delay">delay</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L133">src/chat/types.ts:133</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L134">src/chat/types.ts:134</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="detectmentioned"><code class="tsd-tag">Optional</code><span>detect<wbr/>Mentioned</span><a href="#detectmentioned" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">detectMentioned</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
-<div class="tsd-comment tsd-typography"><p>Automatic detect and add the mentioned contacts with @[number]</p>
+<div class="tsd-comment tsd-typography"><p>Automatic detect and add mentioned contacts with @[number], or mention
+everyone in a group with</p>
 </div>
 <div class="tsd-comment tsd-typography">
+<div class="tsd-tag-all">
+<h4 class="tsd-anchor-link" id="all">All<a href="#all" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4></div>
 <div class="tsd-tag-default">
 <h4 class="tsd-anchor-link" id="default-2">Default<a href="#default-2" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><pre><code class="ts"><span class="hl-5">true</span>
 </code><button type="button">Copy</button></pre>
@@ -111,7 +114,7 @@ While delaying, Typing Status is used to look like a human interaction</p>
 </div></div><aside class="tsd-sources">
 <p>Inherited from <a href="chat.FileMessageOptions.html">FileMessageOptions</a>.<a href="chat.FileMessageOptions.html#detectmentioned">detectMentioned</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L55">src/chat/types.ts:55</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L56">src/chat/types.ts:56</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="filename"><code class="tsd-tag">Optional</code><span>filename</span><a href="#filename" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">filename</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
@@ -142,7 +145,7 @@ While delaying, Typing Status is used to look like a human interaction</p>
 </div></div><aside class="tsd-sources">
 <p>Inherited from <a href="chat.FileMessageOptions.html">FileMessageOptions</a>.<a href="chat.FileMessageOptions.html#markisread">markIsRead</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L69">src/chat/types.ts:69</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L70">src/chat/types.ts:70</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="mentionedlist"><code class="tsd-tag">Optional</code><span>mentioned<wbr/>List</span><a href="#mentionedlist" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">mentionedList</span><span class="tsd-signature-symbol">?:</span> (<span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <a href="../classes/whatsapp.Wid.html" class="tsd-signature-type tsd-kind-class">Wid</a>)<span class="tsd-signature-symbol">[]</span></div>
@@ -157,13 +160,13 @@ This option work better with a message with mension</p>
 </div></div><aside class="tsd-sources">
 <p>Inherited from <a href="chat.FileMessageOptions.html">FileMessageOptions</a>.<a href="chat.FileMessageOptions.html#mentionedlist">mentionedList</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L87">src/chat/types.ts:87</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L88">src/chat/types.ts:88</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="messageid"><code class="tsd-tag">Optional</code><span>message<wbr/>Id</span><a href="#messageid" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">messageId</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <a href="../classes/whatsapp.MsgKey.html" class="tsd-signature-type tsd-kind-class">MsgKey</a></div><aside class="tsd-sources">
 <p>Inherited from <a href="chat.FileMessageOptions.html">FileMessageOptions</a>.<a href="chat.FileMessageOptions.html#messageid">messageId</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L74">src/chat/types.ts:74</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L75">src/chat/types.ts:75</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="mimetype"><code class="tsd-tag">Optional</code><span>mimetype</span><a href="#mimetype" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">mimetype</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
@@ -183,7 +186,7 @@ This option work better with a message with mension</p>
 </div></div><aside class="tsd-sources">
 <p>Inherited from <a href="chat.FileMessageOptions.html">FileMessageOptions</a>.<a href="chat.FileMessageOptions.html#quotedmsg">quotedMsg</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L99">src/chat/types.ts:99</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L100">src/chat/types.ts:100</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="quotedmsgpayload"><code class="tsd-tag">Optional</code><span>quoted<wbr/>Msg<wbr/>Payload</span><a href="#quotedmsgpayload" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">quotedMsgPayload</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div>
@@ -194,7 +197,7 @@ When provided it has priority over <a href="chat.SendMessageOptions.html#quotedm
 </div><aside class="tsd-sources">
 <p>Inherited from <a href="chat.FileMessageOptions.html">FileMessageOptions</a>.<a href="chat.FileMessageOptions.html#quotedmsgpayload">quotedMsgPayload</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L107">src/chat/types.ts:107</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L108">src/chat/types.ts:108</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="type"><span>type</span><a href="#type" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">type</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;sticker&quot;</span></div><aside class="tsd-sources">
@@ -219,7 +222,7 @@ When provided it has priority over <a href="chat.SendMessageOptions.html#quotedm
 </div></div><aside class="tsd-sources">
 <p>Inherited from <a href="chat.FileMessageOptions.html">FileMessageOptions</a>.<a href="chat.FileMessageOptions.html#waitforack">waitForAck</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L121">src/chat/types.ts:121</a></li></ul></aside></section></section></details></div>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/chat/types.ts#L122">src/chat/types.ts:122</a></li></ul></aside></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
