@@ -34,6 +34,9 @@ export declare function getUserid(contact: ContactModel): any;
 
 /**
  * @whatsapp 660666 >= 2.2327.4
+ *
+ * Removed from WAWebContactGetters in WA ~2.3000.1043126001;
+ * see the fallback in src/contact/patch.ts
  */
 export declare function getUserhash(contact: ContactModel): any;
 
@@ -139,7 +142,6 @@ exportModule(
     getNotifyName: 'getNotifyName',
     getPremiumMessageName: 'getPremiumMessageName',
     getUserid: 'getUserid',
-    getUserhash: 'getUserhash',
     getIsMe: 'getIsMe',
     getIsUser: 'getIsUser',
     getIsGroup: 'getIsGroup',
@@ -157,6 +159,15 @@ exportModule(
     getShouldForceBusinessUpdate: 'getShouldForceBusinessUpdate',
   },
   (m) => m.getNotifyName && m.getIsMe && m.getUserid
+);
+
+// TODO: remove when 2.3000.1042620056 is no longer available in wa-version/html
+exportModule(
+  exports,
+  {
+    getUserhash: 'getUserhash',
+  },
+  (m) => m.getNotifyName && m.getIsMe && m.getUserhash
 );
 
 /**
