@@ -48,6 +48,11 @@
       "description": "Ignore major version",
       "matchPackageNames": ["file-type"],
       "allowedVersions": "<17"
+    },
+    {
+      "description": "TypeScript 7 is the native compiler and no longer ships the JS compiler API (ts.sys and friends). ts-loader, ts-node, typedoc and typescript-eslint all break on it, so stay on the 5.x/6.x line until they support it",
+      "matchPackageNames": ["typescript"],
+      "allowedVersions": "<7"
     }
   ]
 }
