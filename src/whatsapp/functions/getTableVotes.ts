@@ -26,5 +26,5 @@ exportModule(
   {
     getTableVotes: ['getTable'],
   },
-  (m) => m.getTable.toString().includes('poll')
+  (m) => m.getTable.toString().includes('"poll-votes"')
 );
