@@ -16,10 +16,13 @@
 
 import { assertWid } from '../../assert';
 import { WPPError } from '../../util';
-import { ParticipantModel, Wid } from '../../whatsapp';
+import { Wid } from '../../whatsapp';
 import * as wa_functions from '../../whatsapp/functions';
 import { ensureGroup } from './ensureGroup';
-import { ensureGroupAndParticipants } from './ensureGroupAndParticipants';
+import {
+  ensureGroupAndParticipants,
+  findGroupParticipant,
+} from './ensureGroupAndParticipants';
 
 /**
  * Remove participants of a group
@@ -46,10 +49,12 @@ export async function removeParticipants(
   const validWids: Wid[] = [];
   const wids = participantsIds.map(assertWid);
 
-  wids.map<ParticipantModel | any>((wid) => {
-    const participant = groupChat.groupMetadata?.participants.get(wid);
-    if (participant) validWids.push(wid);
-  });
+  for (const wid of wids) {
+    if (findGroupParticipant(groupChat, wid)) {
+      validWids.push(wid);
+    }
+  }
+
   if (validWids.length === 0)
     throw new WPPError(
       'not_valid_group_participants',
