@@ -91,7 +91,7 @@
     "typescript-debounce-decorator": "^0.0.18",
     "typescript-eslint": "^8.59.4",
     "webpack": "^5.109.2",
-    "webpack-cli": "^7.0.2"
+    "webpack-cli": "^7.2.2"
   },
   "engines": {
     "whatsapp-web": ">=2.3000.1038792969-alpha"
