@@ -15,25 +15,16 @@
  */
 
 import { Label } from '../../labels';
-import { ChatModel, MsgKey, MsgModel, Wid } from '../../whatsapp';
+import {
+  ChatModel,
+  ChatSearchFilter,
+  MsgKey,
+  MsgModel,
+  Wid,
+} from '../../whatsapp';
 
 export interface ChatFilter {
-  kind?:
-    | 'unread'
-    | 'favorites'
-    | 'group'
-    | 'community'
-    | 'broadcast'
-    | 'contact'
-    | 'non_contact'
-    | 'assigned_to_you'
-    | 'personal'
-    | 'business'
-    | 'labels'
-    | 'channels'
-    | 'ai_responding'
-    | 'ai_handoff'
-    | null;
+  kind?: ChatSearchFilter | null;
   label?: string | null;
 }
 

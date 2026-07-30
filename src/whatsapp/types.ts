@@ -21,3 +21,22 @@ export interface SendMsgResultObject {
   t?: number;
   count?: number | null;
 }
+
+/**
+ * Chat list filter kinds, the values of WhatsApp's `WAWebChatSearchFilters`.
+ */
+export type ChatSearchFilter =
+  | 'unread'
+  | 'favorites'
+  | 'group'
+  | 'community'
+  | 'broadcast'
+  | 'contact'
+  | 'non_contact'
+  | 'assigned_to_you'
+  | 'personal'
+  | 'business'
+  | 'labels'
+  | 'channels'
+  | 'ai_responding'
+  | 'ai_handoff';

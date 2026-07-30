@@ -18,6 +18,7 @@ import { ChatModel } from '..';
 import { exportModule } from '../exportModule';
 import { getSearchContext } from '../functions';
 import { MsgModel } from '../models';
+import { ChatSearchFilter } from '../types';
 import { EventEmitter } from '.';
 
 /** @whatsapp 88102
@@ -233,24 +234,7 @@ export declare class CmdClass extends EventEmitter {
    * Note: this is a synchronous shortcut for
    * `Cmd.trigger('set_active_filter', type, labelId)`.
    */
-  setActiveFilter(
-    type?:
-      | 'unread'
-      | 'favorites'
-      | 'group'
-      | 'community'
-      | 'broadcast'
-      | 'contact'
-      | 'non_contact'
-      | 'assigned_to_you'
-      | 'personal'
-      | 'business'
-      | 'labels'
-      | 'channels'
-      | 'ai_responding'
-      | 'ai_handoff',
-    labelId?: string
-  ): void;
+  setActiveFilter(type?: ChatSearchFilter, labelId?: string): void;
 }
 
 /** @whatsapp 88102
