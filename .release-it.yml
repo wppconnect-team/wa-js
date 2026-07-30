@@ -10,5 +10,3 @@ hooks:
 # automatic publish from github workflow
 npm:
   publish: false
-  private: true
-  registry: 'OMITTED'
