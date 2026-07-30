@@ -20,6 +20,12 @@
  * This module only exists in the development build (`npm run build:dev`):
  * `src/index.ts` requires it behind `if (__DEV__)`, which webpack folds away in
  * production, so nothing here ships to users.
+ *
+ * @example
+ * ```javascript
+ * await WPP.dev.sendTests();
+ * ```
  */
 
-export * as sendFileTest from './sendFileTest';
+export type { TestCase, TestGroup, TestResult } from './sendTests';
+export { cases, sendTests } from './sendTests';
