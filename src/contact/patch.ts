@@ -30,7 +30,14 @@ function applyPatch() {
     displayNameOrPnForLid: functions.getDisplayNameOrPnForLid,
     formattedPhone: functions.getFormattedPhone,
     userid: functions.getUserid,
-    userhash: functions.getUserhash,
+    // getUserhash was removed from WAWebContactGetters in WA ~2.3000.1043126001,
+    // reimplement the same logic using WAMd5 when it is missing
+    userhash:
+      functions.getUserhash ??
+      ((contact: ContactModel) =>
+        contact.id.isUser()
+          ? functions.md5((contact.id.user || '') + 'WA_ADD_NOTIF')
+          : null),
     searchName: functions.getSearchName,
     searchVerifiedName: functions.getSearchVerifiedName,
     header: functions.getHeader,

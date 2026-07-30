@@ -53,8 +53,12 @@ export declare class MsgCollection extends BaseCollection<MsgModel> {
   markAllAsStale(): any;
 }
 
+// On WA >= ~2.3000.1044096409 the class is no longer exported, only the
+// `MsgCollection` singleton instance, so fall back to its constructor
 exportModule(
   exports,
-  { MsgCollection: 'MsgCollectionImpl' },
-  (m) => m.MsgCollectionImpl
+  { MsgCollection: ['MsgCollectionImpl', 'MsgCollection.constructor'] },
+  (m) =>
+    m.MsgCollectionImpl ||
+    typeof m.MsgCollection?.processMultipleMessages === 'function'
 );
