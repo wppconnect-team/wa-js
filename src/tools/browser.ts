@@ -280,10 +280,30 @@ export async function getPage(options?: LaunchArguments[1]) {
     }
   }
 
-  const browser = await playwright.chromium.launchPersistentContext(
+  let browser = await playwright.chromium.launchPersistentContext(
     userDataDir,
     options
   );
+
+  /**
+   * WhatsApp Web >= ~2.3000.1044 shows the unsupported-browser page
+   * ("WhatsApp works with Google Chrome 100+") for the "HeadlessChrome"
+   * token reported by headless Chromium and never boots the app. Mask it
+   * with the equivalent regular Chrome user agent.
+   */
+  if (!options?.userAgent) {
+    const probePage = browser.pages().length
+      ? browser.pages()[0]
+      : await browser.newPage();
+    const userAgent = await probePage.evaluate(() => navigator.userAgent);
+    if (userAgent.includes('HeadlessChrome')) {
+      await browser.close();
+      browser = await playwright.chromium.launchPersistentContext(userDataDir, {
+        ...options,
+        userAgent: userAgent.replace('HeadlessChrome', 'Chrome'),
+      });
+    }
+  }
 
   const page = browser.pages().length
     ? browser.pages()[0]
