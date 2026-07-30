@@ -152,6 +152,6 @@ export async function sendRawMessage(
     ...(chat && {
       to: chat.id.toString(),
     }),
-    sendMsgResult: sendMsgResult!,
+    sendMsgResult,
   };
 }
