@@ -48,16 +48,23 @@ function registerActiveFilterEvent() {
   const prototype = module.SearchQuery.prototype;
   const updateLabelQuery = prototype.updateLabelQuery;
 
-  prototype.updateLabelQuery = function (filter?: ChatFilter) {
-    const previousKind = this.filter?.kind;
-    const previousLabel = this.filter?.label;
-    const result = updateLabelQuery.call(this, filter);
+  /**
+   * The absence of a filter is `undefined`, `null` or a missing key depending
+   * on the caller, WhatsApp itself calls `updateLabelQuery({})` when clearing
+   * the search, so normalize it to `null` to compare and to emit.
+   */
+  const normalize = (filter?: ChatFilter): Required<ChatFilter> => ({
+    kind: filter?.kind ?? null,
+    label: filter?.label ?? null,
+  });
 
-    if (
-      previousKind !== this.filter?.kind ||
-      previousLabel !== this.filter?.label
-    ) {
-      internalEv.emit('chat.active_filter', this.filter);
+  prototype.updateLabelQuery = function (filter?: ChatFilter) {
+    const previous = normalize(this.filter);
+    const result = updateLabelQuery.call(this, filter);
+    const current = normalize(this.filter);
+
+    if (previous.kind !== current.kind || previous.label !== current.label) {
+      internalEv.emit('chat.active_filter', current);
     }
 
     return result;

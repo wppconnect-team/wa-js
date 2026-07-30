@@ -43,10 +43,21 @@ export interface ChatEventTypes {
   /**
    * Triggered when the active native chat-list filter changes.
    *
-   * Custom lists use `kind: 'labels'` and expose their WhatsApp label ID in
-   * `label`. The All filter has no `kind` or `label`.
+   * `kind` and `label` are always present, `null` when there is no filter, so
+   * the All filter is `{ kind: null, label: null }`. WhatsApp label lists use
+   * `kind: 'labels'` and expose their label id in `label`.
+   *
+   * Note: the list of {@link setChatList} `custom` type is not a native filter,
+   * WhatsApp stays on the All filter for it.
+   *
+   * @example
+   * ```javascript
+   * WPP.on('chat.active_filter', ({ kind, label }) => {
+   *   // Your code
+   * });
+   * ```
    */
-  'chat.active_filter': ChatFilter;
+  'chat.active_filter': Required<ChatFilter>;
   /**
    * Triggered when a new chat is created
    *
