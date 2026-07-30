@@ -143,6 +143,50 @@ async function waitUntil<T>(
 }
 
 /**
+ * Wait until WhatsApp's Meta module graph stops growing for a quiet window.
+ *
+ * On a cold load (empty cache / hard reload / reconnection) WhatsApp registers
+ * its modules progressively, often well after the loader is injected. Firing
+ * `loader.injected` too early runs the onInjected callbacks — e.g.
+ * `registerStreamEvent`, which does `Stream.on('change:mode', ...)` — before
+ * their store modules exist, permanently pinning those getters to `undefined`.
+ * That breaks the `conn.stream_mode_changed` -> `conn.main_ready` chain, so
+ * `isFullReady`/`isReady` never become true (root cause of #3419 / #3481).
+ *
+ * Waiting for the module set to settle lets those callbacks see live modules.
+ */
+async function waitForMetaModulesSettle({
+  quiet = 750,
+  timeout = 20_000,
+  poll = 100,
+}: { quiet?: number; timeout?: number; poll?: number } = {}): Promise<void> {
+  const moduleCount = (): number => {
+    try {
+      return Object.keys(__debug().modulesMap).length;
+    } catch {
+      return 0;
+    }
+  };
+
+  const deadline = Date.now() + timeout;
+  let last = moduleCount();
+  let lastChangeAt = Date.now();
+
+  while (Date.now() < deadline) {
+    await new Promise((r) => setTimeout(r, poll));
+    const current = moduleCount();
+    if (current !== last) {
+      last = current;
+      lastChangeAt = Date.now();
+    } else if (current > 0 && Date.now() - lastChangeAt >= quiet) {
+      debug(`meta modules settled at ${current} (quiet ${quiet}ms)`);
+      return;
+    }
+  }
+  debug(`meta modules settle timed out after ${timeout}ms (count ${last})`);
+}
+
+/**
  * Install setter traps on `global.__d` and `global.require` so the Meta
  * loader is started the moment WhatsApp assigns either of those globals.
  *
@@ -221,6 +265,13 @@ async function runMetaLoader(global: any): Promise<void> {
   Object.defineProperty(moduleRequire, 'm', {
     get: () => buildMetaModulesMap(),
   });
+
+  // Cold-load fix (#3419 / #3481): wait for WhatsApp's module graph to settle
+  // before firing the injected callbacks. Otherwise store getters accessed by
+  // those callbacks (e.g. registerStreamEvent's `Stream.on(...)`) get pinned to
+  // `undefined` while their module is still pending registration, which breaks
+  // the `conn.main_ready` chain and leaves `isReady` stuck at false.
+  await waitForMetaModulesSettle();
 
   isInjected = true;
   debug('injected');
