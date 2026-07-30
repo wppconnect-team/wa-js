@@ -94,6 +94,6 @@
     "webpack-cli": "^7.0.2"
   },
   "engines": {
-    "whatsapp-web": ">=2.3000.1038598577-alpha"
+    "whatsapp-web": ">=2.3000.1038792969-alpha"
   }
 }
