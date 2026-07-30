@@ -55,7 +55,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Update Nightly TAG
-        uses: richardsimko/update-tag@v1
+        uses: richardsimko/update-tag@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
