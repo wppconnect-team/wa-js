@@ -76,7 +76,7 @@ export const cases: Record<string, FileTestCase> = {
   text: {
     // Plain text has no magic bytes, so the mimetype cannot be sniffed from the
     // content and has to be given explicitly
-    data: `data:text/plain;base64,${TXT}`,
+    data: `data:text/plain,${encodeURIComponent(TXT)}`,
     options: {
       type: 'document',
       filename: 'wa-js-test.txt',

@@ -17,7 +17,8 @@
 /**
  * The smallest valid file of each type, small enough to live in the source.
  *
- * These are real files, not padding: WhatsApp reads the container to get
+ * The binary ones are base64 because there is no readable way to write them.
+ * They are also real files, not padding: WhatsApp reads the container to get
  * dimensions, duration and page count, and the PTT waveform decodes the audio
  * with `AudioContext`, so truncated bytes are rejected instead of sent. A fake
  * payload fails in a way that looks like a wa-js bug.
@@ -35,8 +36,8 @@
  *   -b:a 16k -write_xing 0 -id3v2_version 0 audio.mp3
  * ```
  *
- * The image is a 1x1 PNG (69 bytes), the document a 3 object PDF with a valid
- * xref (327 bytes) and the text a plain text file (21 bytes).
+ * The image is a 1x1 PNG (69 bytes) and the document a 3 object PDF with a
+ * valid xref (327 bytes). The text is plain, see {@link TXT}.
  */
 
 /** 1x1 PNG, 69 bytes */
@@ -55,5 +56,8 @@ export const MP3 =
 export const PDF =
   'JVBERi0xLjQKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEgPj4KZW5kb2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCA3MiA3Ml0gPj4KZW5kb2JqCnhyZWYKMCA0CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAwOSAwMDAwMCBuIAowMDAwMDAwMDU4IDAwMDAwIG4gCjAwMDAwMDAxMTUgMDAwMDAgbiAKdHJhaWxlcgo8PCAvU2l6ZSA0IC9Sb290IDEgMCBSID4+CnN0YXJ0eHJlZgoxODQKJSVFT0YK';
 
-/** Plain text, 21 bytes */
-export const TXT = 'd2EtanMgc2VuZCBmaWxlIHRlc3QK';
+/**
+ * Text needs no encoding, `convertToFile` parses a plain data URL, so keep it
+ * readable in the source instead of base64.
+ */
+export const TXT = 'wa-js send file test';
