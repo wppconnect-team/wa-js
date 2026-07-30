@@ -224,9 +224,33 @@ export declare class CmdClass extends EventEmitter {
   showMerchantDetailsEntityTypePopup(e?: any, t?: any): void;
   showCountrySelector(e?: any, t?: any, r?: any): void;
   toggleStickerMaker(): void;
+  /**
+   * Set the active chat list filter, `undefined` for all chats.
+   *
+   * Accepted types are the values of `WAWebChatSearchFilters`.
+   * `labelId` is only used with the `labels` filter.
+   *
+   * Note: this is a synchronous shortcut for
+   * `Cmd.trigger('set_active_filter', type, labelId)`.
+   */
   setActiveFilter(
-    type?: 'unread' | 'favorites' | 'personal' | 'assigned_to_you' | 'labels'
-  ): Promise<void>;
+    type?:
+      | 'unread'
+      | 'favorites'
+      | 'group'
+      | 'community'
+      | 'broadcast'
+      | 'contact'
+      | 'non_contact'
+      | 'assigned_to_you'
+      | 'personal'
+      | 'business'
+      | 'labels'
+      | 'channels'
+      | 'ai_responding'
+      | 'ai_handoff',
+    labelId?: string
+  ): void;
 }
 
 /** @whatsapp 88102

@@ -16,16 +16,88 @@
 
 import * as loader from '../../loader';
 import { WPPError } from '../../util';
-import { Cmd } from '../../whatsapp';
+import { ChatModel, ChatStore, Cmd, lidPnCache } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   getShouldAppearInList,
   isFilterExcludedFromSearchTreatmentInInboxFlow,
 } from '../../whatsapp/functions';
 
+let allowSet: Set<string> = new Set();
+let filterType: string = 'all';
+
+export enum FilterChatListTypes {
+  ALL = 'all',
+  CUSTOM = 'custom',
+  UNREAD = 'unread',
+  PERSONAL = 'personal',
+  NON_CONTACT = 'non_contact',
+  GROUP = 'group',
+  FAVORITES = 'favorites',
+  CONTACT = 'contact',
+  BUSINESS = 'business',
+  BROADCAST = 'broadcast',
+  LABELS = 'labels',
+  ASSIGNED_TO_YOU = 'assigned_to_you',
+}
+
+type ActiveFilter = NonNullable<Parameters<typeof Cmd.setActiveFilter>[0]>;
+
+/**
+ * Force the chat list panel to filter the chats again.
+ *
+ * Needed for the `custom` and `all` types: both keep WhatsApp on the "all"
+ * filter, so there is no filter change to re-render the panel, only what
+ * `getShouldAppearInList` answers changes. The panel filters the chats again on
+ * a `sort` of the chat collection.
+ */
+function refreshChatList(): void {
+  ChatStore?.trigger?.('sort');
+}
+
+/**
+ * Check if a chat belongs to the custom list.
+ *
+ * WhatsApp Web stores 1:1 chats by LID or by phone number depending on the
+ * addressing mode, while callers usually only know one of them, so a literal
+ * comparison is not enough: fallback to the equivalent id from the local
+ * LID/PN cache.
+ */
+function isAllowedChat(chat: ChatModel): boolean {
+  const chatId = chat.id;
+  if (!chatId) {
+    return false;
+  }
+
+  if (allowSet.has(chatId.toString())) {
+    return true;
+  }
+
+  /**
+   * This runs inside of WhatsApp's chat list render, a throw here would break
+   * the whole list, so never assume a complete Wid instance.
+   */
+  if (typeof chatId.isLid !== 'function') {
+    return false;
+  }
+
+  const equivalentId = chatId.isLid()
+    ? lidPnCache?.getPhoneNumber?.(chatId)
+    : chatId.server === 'c.us'
+      ? lidPnCache?.getCurrentLid?.(chatId)
+      : undefined;
+
+  return equivalentId ? allowSet.has(equivalentId.toString()) : false;
+}
+
 /**
  * Set custom Chat list in panel of whatsapp
- * * @example
+ *
+ * For the `custom` type, ids are matched against the chat id and also against
+ * the equivalent phone number or LID, so both `number@c.us` and `number@lid`
+ * work no matter how the chat is stored.
+ *
+ * @example
  * ```javascript
  * // Your custom list
  * WPP.chat.setChatList('custom', ['number@c.us', 'number2@c.us']);
@@ -44,23 +116,6 @@ import {
  * ```
  * @category Chat
  */
-let allowSet: Set<string> = new Set();
-let filterType: string = 'all';
-
-export enum FilterChatListTypes {
-  ALL = 'all',
-  CUSTOM = 'custom',
-  UNREAD = 'unread',
-  PERSONAL = 'personal',
-  NON_CONTACT = 'non_contact',
-  GROUP = 'group',
-  FAVORITES = 'favorites',
-  CONTACT = 'contact',
-  BUSINESS = 'business',
-  BROADCAST = 'broadcast',
-  LABELS = 'labels',
-  ASSIGNED_TO_YOU = 'assigned_to_you',
-}
 export async function setChatList(
   type: FilterChatListTypes,
   ids?: string | string[]
@@ -77,27 +132,34 @@ export async function setChatList(
   // normalize ids to array, when string it's a single id
   if (typeof ids == 'string') ids = [ids];
 
+  /**
+   * `Cmd.setActiveFilter` only forwards to `Cmd.trigger('set_active_filter')`,
+   * it is not asynchronous, and WhatsApp ignores a filter equal to the current
+   * one, so it must be called only once per change: two calls in a row are
+   * compared against the filter of the last render and the second one is
+   * dropped as unchanged, leaving the panel on the intermediate filter.
+   */
   if (type == FilterChatListTypes.CUSTOM && ids) {
     allowSet = new Set<string>(ids);
-    Cmd.trigger('set_active_filter', 'unread');
-    Cmd.trigger('set_active_filter');
+    Cmd.setActiveFilter();
+    refreshChatList();
     return {
       type: type as any,
       list: ids,
     };
   } else if (type == FilterChatListTypes.ALL) {
-    Cmd.trigger('set_active_filter');
+    Cmd.setActiveFilter();
+    refreshChatList();
     return {
       type: type as any,
     };
   } else if (type == FilterChatListTypes.LABELS) {
-    Cmd.trigger('set_active_filter', FilterChatListTypes.LABELS, ids![0]);
+    Cmd.setActiveFilter(FilterChatListTypes.LABELS, ids![0]);
     return {
       type: type as any,
     };
   } else {
-    Cmd.trigger('set_active_filter', 'unread');
-    Cmd.trigger('set_active_filter', type);
+    Cmd.setActiveFilter(type as ActiveFilter);
     return {
       type: type as any,
     };
@@ -111,11 +173,7 @@ function applyPatch() {
     const [chat] = args;
 
     if (filterType === FilterChatListTypes.CUSTOM) {
-      const chatId = chat.id?.toString();
-      if (chatId && allowSet.has(chatId)) {
-        return true;
-      }
-      return false;
+      return isAllowedChat(chat);
     }
     return func(...args);
   });
