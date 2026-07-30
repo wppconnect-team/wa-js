@@ -19,6 +19,7 @@ import { compare } from 'compare-versions';
 import { assertGetChat } from '../../assert';
 import { iAmAdmin } from '../../group';
 import { Cmd, Wid } from '../../whatsapp';
+import { SANITIZED_VERSION_STR } from '../../whatsapp/contants';
 import { MSG_TYPE, SendMsgResult } from '../../whatsapp/enums';
 import { getMessageById } from '.';
 
@@ -83,7 +84,7 @@ export async function deleteMessage(
         (msg as any).__x_isUserCreatedType = true;
       }
 
-      if (compare(self.Debug.VERSION, '2.3000.0', '>=')) {
+      if (compare(SANITIZED_VERSION_STR, '2.3000.0', '>=')) {
         await Cmd.sendRevokeMsgs(
           chat,
           {
@@ -101,7 +102,7 @@ export async function deleteMessage(
       sendMsgResult = SendMsgResult.OK;
       isRevoked = true;
     } else {
-      if (compare(self.Debug.VERSION, '2.3000.0', '>=')) {
+      if (compare(SANITIZED_VERSION_STR, '2.3000.0', '>=')) {
         await Cmd.sendDeleteMsgs(
           chat,
           {

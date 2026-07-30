@@ -18,6 +18,7 @@ import { compare } from 'compare-versions';
 
 import { createWid, WPPError } from '../../util';
 import { ContactStore, functions, ParticipantModel, Wid } from '../../whatsapp';
+import { SANITIZED_VERSION_STR } from '../../whatsapp/contants';
 import { ensureGroupAndParticipants } from './ensureGroupAndParticipants';
 
 declare global {
@@ -84,7 +85,7 @@ export async function addParticipants(
 
   let members: any[] = [];
 
-  if (compare(self.Debug.VERSION, '2.2320.0', '>=')) {
+  if (compare(SANITIZED_VERSION_STR, '2.2320.0', '>=')) {
     if (groupChat.groupMetadata?.isLidAddressingMode) {
       members = participants.map((p: ParticipantModel) => ({
         phoneNumber: p.id,

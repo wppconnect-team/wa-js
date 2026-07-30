@@ -16,10 +16,25 @@
 
 import * as loader from '../loader';
 import { IsOfficialClient } from '../whatsapp';
+import { SANITIZED_VERSION_STR } from '../whatsapp/contants';
 
 loader.onInjected(() => {
   /**
    * When sending logs to the WhatsApp server, it will always report that the ocVersion is true.
    */
   IsOfficialClient.isOfficialClient = true;
+
+  /**
+   * WhatsApp only sets window.Debug late in the app boot and gates it
+   * behind a gatekeeper (gk 26258), so it can be absent or delayed.
+   * Expose it early for consumers that rely on Debug.VERSION, keeping
+   * the native object when it exists.
+   */
+  const global = self as any;
+  if (!global.Debug?.VERSION && SANITIZED_VERSION_STR) {
+    global.Debug = {
+      ...global.Debug,
+      VERSION: SANITIZED_VERSION_STR,
+    };
+  }
 });
