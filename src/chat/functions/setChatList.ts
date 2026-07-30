@@ -16,7 +16,13 @@
 
 import * as loader from '../../loader';
 import { WPPError } from '../../util';
-import { ChatModel, ChatStore, Cmd, lidPnCache } from '../../whatsapp';
+import {
+  ChatModel,
+  ChatSearchFilter,
+  ChatStore,
+  Cmd,
+  lidPnCache,
+} from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   getShouldAppearInList,
@@ -40,8 +46,6 @@ export enum FilterChatListTypes {
   LABELS = 'labels',
   ASSIGNED_TO_YOU = 'assigned_to_you',
 }
-
-type ActiveFilter = NonNullable<Parameters<typeof Cmd.setActiveFilter>[0]>;
 
 /**
  * Force the chat list panel to filter the chats again.
@@ -159,7 +163,7 @@ export async function setChatList(
       type: type as any,
     };
   } else {
-    Cmd.setActiveFilter(type as ActiveFilter);
+    Cmd.setActiveFilter(type as ChatSearchFilter);
     return {
       type: type as any,
     };
