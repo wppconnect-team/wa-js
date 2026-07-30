@@ -25,7 +25,7 @@ import {
   MsgModel,
   Wid,
 } from '../../whatsapp';
-import { ACK } from '../../whatsapp/enums';
+import { ACK, WAWebNonJidMentionType } from '../../whatsapp/enums';
 import {
   canReplyMsg,
   genBotMsgSecretFromMsgSecret,
@@ -41,6 +41,9 @@ import {
   markIsPaused,
   markIsRecording,
 } from '.';
+
+/** `@all` must start a token, so `me@all.com` is not a mention-everyone. */
+const MENTION_ALL_REGEX = /(?<![\w@.+-])@all\b/;
 
 /**
  * Prepare a raw message
@@ -159,32 +162,35 @@ export async function prepareRawMessage<T extends RawMessage>(
   /**
    * Try to detect mentioned list from message
    */
-  if (
-    options.detectMentioned &&
-    chat.id.isGroup() &&
-    (!options.mentionedList || !options.mentionedList.length)
-  ) {
+  if (options.detectMentioned && chat.id.isGroup()) {
     const text = message.type === 'chat' ? message.body : message.caption;
 
-    options.mentionedList = options.mentionedList || [];
+    if (text && MENTION_ALL_REGEX.test(text)) {
+      message.nonJidMentions =
+        (message.nonJidMentions || 0) | WAWebNonJidMentionType.MENTION_ALL;
+    }
 
-    const ids = text?.match(/(?<=@)(\d+)\b/g) || [];
+    if (!options.mentionedList || !options.mentionedList.length) {
+      options.mentionedList = options.mentionedList || [];
 
-    if (ids.length > 0) {
-      const participants = (await getParticipants(chat.id)).map((p) =>
-        p.id.toString()
-      );
+      const ids = text?.match(/(?<=@)(\d+)\b/g) || [];
 
-      for (const id of ids) {
-        const lidWid = `${id}@lid`;
-        const pnWid = `${id}@c.us`;
+      if (ids.length > 0) {
+        const participants = (await getParticipants(chat.id)).map((p) =>
+          p.id.toString()
+        );
 
-        // AFAIK, groups are only LID. Doesn't matter if account is migrated or not
-        // But will keep support for pnWid just in case
-        if (participants.includes(lidWid)) {
-          options.mentionedList.push(lidWid);
-        } else if (participants.includes(pnWid)) {
-          options.mentionedList.push(pnWid);
+        for (const id of ids) {
+          const lidWid = `${id}@lid`;
+          const pnWid = `${id}@c.us`;
+
+          // AFAIK, groups are only LID. Doesn't matter if account is migrated or not
+          // But will keep support for pnWid just in case
+          if (participants.includes(lidWid)) {
+            options.mentionedList.push(lidWid);
+          } else if (participants.includes(pnWid)) {
+            options.mentionedList.push(pnWid);
+          }
         }
       }
     }
