@@ -76,8 +76,23 @@ export {
 
 declare const __VERSION__: string;
 declare const __SUPPORTED_WHATSAPP_WEB__: string;
+declare const __DEV__: boolean;
 export const version = __VERSION__;
 export const supportedWhatsappWeb = __SUPPORTED_WHATSAPP_WEB__;
 export const license = 'Apache-2.0';
+
+/**
+ * Console helpers for testing by hand, only in the development build.
+ *
+ * `__DEV__` is a DefinePlugin constant, so in production this is `if (false)`
+ * and webpack drops both the require and the whole `./dev` module from the
+ * bundle. The type import is erased at compile time, it adds no dependency.
+ */
+export let dev: typeof import('./dev') | undefined;
+
+if (__DEV__) {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  dev = require('./dev');
+}
 
 loader.injectLoader();
