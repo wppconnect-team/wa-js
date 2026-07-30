@@ -16,8 +16,55 @@
 
 import { assertWid } from '../../assert';
 import { WPPError } from '../../util';
-import { ParticipantModel, Wid } from '../../whatsapp';
+import { ChatModel, ParticipantModel, Wid } from '../../whatsapp';
+import * as wa_functions from '../../whatsapp/functions';
 import { ensureGroup } from '.';
+
+/**
+ * Find a participant of a group, tolerating PN <-> LID addressing.
+ *
+ * Groups migrated to LID addressing keep their participant collection keyed by
+ * `@lid` wids, so looking a member up by its phone number wid returns nothing
+ * and every participant operation fails with `not_valid_group_participants` /
+ * `group_participant_not_found` (close #3527). Try the alternate addressing of
+ * the wid before giving up.
+ */
+export function findGroupParticipant(
+  groupChat: ChatModel,
+  wid: Wid
+): ParticipantModel | undefined {
+  const participants = groupChat.groupMetadata?.participants;
+
+  if (!participants) {
+    return undefined;
+  }
+
+  const candidates: (Wid | null | undefined)[] = [wid];
+
+  try {
+    candidates.push(
+      wid.isLid()
+        ? wa_functions.getPhoneNumber?.(wid)
+        : wa_functions.getCurrentLid?.(wid)
+    );
+  } catch (_error) {
+    // The lid <-> pn mapping is not always available, keep the direct lookup
+  }
+
+  for (const candidate of candidates) {
+    if (!candidate) {
+      continue;
+    }
+
+    const participant = participants.get(candidate);
+
+    if (participant) {
+      return participant;
+    }
+  }
+
+  return undefined;
+}
 
 export async function ensureGroupAndParticipants(
   groupId: string | Wid,
@@ -33,7 +80,7 @@ export async function ensureGroupAndParticipants(
   const wids = participantsIds.map(assertWid);
 
   const participants = wids.map<ParticipantModel>((wid) => {
-    let participant = groupChat.groupMetadata?.participants.get(wid);
+    let participant = findGroupParticipant(groupChat, wid);
 
     if (!participant && createIfNotExists) {
       participant = new ParticipantModel({
@@ -44,7 +91,7 @@ export async function ensureGroupAndParticipants(
     if (!participant) {
       throw new WPPError(
         'group_participant_not_found',
-        `Group ${groupChat.id._serialized}: Participant '${participant}' not found`
+        `Group ${groupChat.id._serialized}: Participant '${wid._serialized}' not found`
       );
     }
 

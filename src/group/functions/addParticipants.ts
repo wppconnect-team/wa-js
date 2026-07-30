@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-import { compare } from 'compare-versions';
-
 import { createWid, WPPError } from '../../util';
 import { ContactStore, functions, ParticipantModel, Wid } from '../../whatsapp';
-import { SANITIZED_VERSION_STR } from '../../whatsapp/contants';
 import { ensureGroupAndParticipants } from './ensureGroupAndParticipants';
 
 declare global {
@@ -83,28 +80,21 @@ export async function addParticipants(
     true
   );
 
-  let members: any[] = [];
+  /**
+   * A participant may already be addressed by its `@lid` (that is what
+   * `WPP.group.getParticipants` returns for groups in LID addressing mode), so
+   * always resolve both forms instead of assuming `p.id` is a phone number.
+   */
+  const asPhoneNumber = (p: ParticipantModel): Wid =>
+    p.id.isLid() ? functions.getPhoneNumber?.(p.id) || p.id : p.id;
+  const asLid = (p: ParticipantModel): Wid =>
+    p.id.isLid() ? p.id : functions.getCurrentLid?.(p.id);
 
-  if (compare(SANITIZED_VERSION_STR, '2.2320.0', '>=')) {
-    if (groupChat.groupMetadata?.isLidAddressingMode) {
-      members = participants.map((p: ParticipantModel) => ({
-        phoneNumber: p.id,
-        lid: functions.getCurrentLid(p.id),
-      }));
-    } else {
-      members = participants.map((p: ParticipantModel) => ({
-        phoneNumber: p.id,
-      }));
-    }
-  } else {
-    if (groupChat.groupMetadata?.isLidAddressingMode) {
-      members = participants.map((p: ParticipantModel) =>
-        functions.getCurrentLid(p.id)
-      );
-    } else {
-      members = participants.map((p: ParticipantModel) => p.id);
-    }
-  }
+  const members = participants.map((p: ParticipantModel) =>
+    groupChat.groupMetadata?.isLidAddressingMode
+      ? { phoneNumber: asPhoneNumber(p), lid: asLid(p) }
+      : { phoneNumber: asPhoneNumber(p) }
+  );
 
   const result = await functions.sendAddParticipants(groupChat.id, members);
 
