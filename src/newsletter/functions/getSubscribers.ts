@@ -15,26 +15,48 @@
  */
 
 import { WPPError } from '../../util';
-import { getNewsletterSubscribers } from '../../whatsapp/functions';
+import {
+  getNewsletterSubscribers,
+  NewsletterFollower,
+} from '../../whatsapp/functions';
+import { NewsletterGatingUtils } from '../../whatsapp/misc';
 
 /**
  * Get subscribers of a newsletters
  *
  * @example
  * ```javascript
- * const code = WPP.newsletter.getSubscribers('[newsletter-id]@newsletter');
+ * // Up to the maximum WhatsApp allows
+ * const subscribers = await WPP.newsletter.getSubscribers('[newsletter-id]@newsletter');
+ *
+ * // Only the first 10
+ * const subscribers = await WPP.newsletter.getSubscribers('[newsletter-id]@newsletter', 10);
  * ```
+ *
+ * @param id The newsletter ID
+ * @param count How many subscribers to fetch. Defaults to the maximum
+ *   WhatsApp allows, which is also the ceiling for any higher value.
+ * @returns The subscriber list, or `false` when the request fails
  *
  * @category Newsletter
  */
-export async function getSubscribers(id: string): Promise<any> {
+export async function getSubscribers(
+  id: string,
+  count?: number
+): Promise<NewsletterFollower[] | false> {
   if (!id || !id.includes('newsletter'))
     throw new WPPError(
       'send_correctly_newsletter_id',
       'Please, send the correct newsletter ID.'
     );
   try {
-    return (await getNewsletterSubscribers(id, 9, 'LIMITED')).subscribers;
+    const max = NewsletterGatingUtils?.getMaxSubscriberNumber?.();
+    const result = await getNewsletterSubscribers(
+      id,
+      count ?? (typeof max === 'number' ? max : 100),
+      'LIMITED'
+    );
+    return result?.followers || [];
   } catch (_error) {
     return false;
   }

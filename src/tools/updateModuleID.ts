@@ -157,12 +157,6 @@ async function start() {
     'functions.joinGroupViaInvite',
     'functions.queryGroupInviteCode',
     'functions.resetGroupInviteCode',
-    // WAWebNewsletterSubscriberListQueryJob was moved into the lazy
-    // newsletter-insights/media-viewer chunk on WA ~2.3000.1044479778 (it was
-    // still registered on the QR screen in 2.3000.1044380631), so it is no
-    // longer resolvable before login. The module and its signature are
-    // unchanged; the binding re-resolves once the chunk loads.
-    'functions.getNewsletterSubscribers',
   ];
 
   for (const moduleName of Object.keys(result)) {
