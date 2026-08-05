@@ -50,6 +50,11 @@ export { isMultiDevice } from './isMultiDevice';
 export { isOnline } from './isOnline';
 export { isRegistered } from './isRegistered';
 export { joinWebBeta } from './joinWebBeta';
+export {
+  cancelLinkDeviceCode,
+  refreshLinkDeviceCode,
+  startLinkDeviceCodeForPhoneNumber,
+} from './linkDeviceCodeLifecycle';
 export { logout } from './logout';
 export { markAvailable, markUnavailable } from './markAvailable';
 export { needsUpdate } from './needsUpdate';

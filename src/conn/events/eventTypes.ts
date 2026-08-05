@@ -20,6 +20,12 @@ import { AuthCode } from '../types';
 
 export interface ConnEventTypes {
   'conn.auth_code_change': AuthCode | null;
+  /** Triggered when a managed phone-number linking code is generated. */
+  'conn.link_code_change': string;
+  /** Triggered when the active phone-number linking code requires manual refresh. */
+  'conn.link_code_expired': undefined;
+  /** Triggered when the managed phone-number linking flow fails. */
+  'conn.link_code_error': Error;
   /**
    * Triggered for every event emitted by WhatsApp Web's internal BackendEventBus.
    * The first argument is the event name (one of the BackendEvent constant values).
