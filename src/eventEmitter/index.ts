@@ -43,29 +43,32 @@ export const ev = new EventEmitter<
  * feedback loops between retried registrars). Guard both emitters so a
  * listener error is logged and contained at the emit boundary instead of
  * unwinding into whoever happened to emit the event.
+ *
+ * KNOWN LIMITATION (not solved here): the guard is at the *emit* boundary, so
+ * EventEmitter2 still runs a throwing listener's siblings synchronously in the
+ * same call — listeners registered AFTER a throwing one on the same event are
+ * SKIPPED for that emit (the exception aborts EE2's loop before it reaches
+ * them; containment only catches that abort and hides it). Loader lifecycle
+ * listeners are `setTimeout`-deferred and safe against this; multiple user
+ * listeners on one event are not. Per-listener wrapping is the complete fix and
+ * is deliberately left as a follow-up (see review item: listener starvation).
  */
-function guardEmit(
-  emitter: EventEmitter<any>,
-  name: string,
-  opts: { consumer?: boolean } = {}
-): void {
+function guardEmit(emitter: EventEmitter<any>, name: string): void {
   const rawEmit = emitter.emit.bind(emitter);
   (emitter as any).emit = (event: any, ...values: any[]): boolean => {
     try {
       return rawEmit(event, ...values);
     } catch (error) {
-      // Consumer listeners (WPP.on) are the user's own code: hiding an exception
-      // they threw behind a debug() channel that's off by default was the
-      // error-visibility regression flagged in review. Re-surfacing it on
-      // console.error keeps the bug diagnosable; CONTAINING it (not rethrowing)
-      // is the load-bearing part — a listener's own exception escaping the emit
+      // Listener exceptions are surfaced at console.error on BOTH paths: a
+      // throwing consumer listener is the user's own bug to find, and a
+      // throwing internal one is always a wa-js defect — hiding either behind
+      // the off-by-default debug() channel was the error-visibility regression
+      // flagged in review (it also regressed pre-guard behavior, where the
+      // exception propagated to the console). CONTAINING it (not rethrowing) is
+      // the load-bearing part — a listener's own exception escaping the emit
       // boundary is the #3481 root cause, so this must log, not throw.
       const message = `listener error while emitting ${String(event)} on ${name}`;
-      if (opts.consumer) {
-        console.error(`[WA-JS] ${message}`, error);
-      } else {
-        debug(message, error);
-      }
+      console.error(`[WA-JS] ${message}`, error);
       return true;
     }
   };
@@ -74,6 +77,14 @@ function guardEmit(
   // them, so a synchronously-throwing listener escapes the returned promise
   // entirely — `emitAsync(...).catch(...)` never sees it. This is what killed
   // `runMetaLoader` at `await emitAsync('loader.injected')`.
+  //
+  // On error this resolves `[]`, DISCARDING every listener's result — a silent
+  // public-API contract change (previously the promise rejected). No in-repo
+  // caller reads the results today (all six call sites are fire-and-forget or
+  // `.catch(() => null)`), so it is latent, but consumers who do read them get
+  // an empty array with the failure only on console.error. Rejecting on a
+  // listener bug is not an option (see the containment note above — the throw
+  // inside `emitAsync` is not reachable by `.catch` before it is collected).
   const rawEmitAsync = emitter.emitAsync.bind(emitter);
   (emitter as any).emitAsync = async (
     event: any,
@@ -85,18 +96,14 @@ function guardEmit(
       const message = `listener error while emitting (async) ${String(
         event
       )} on ${name}`;
-      if (opts.consumer) {
-        console.error(`[WA-JS] ${message}`, error);
-      } else {
-        debug(message, error);
-      }
+      console.error(`[WA-JS] ${message}`, error);
       return [];
     }
   };
 }
 
 guardEmit(internalEv, 'internalEv');
-guardEmit(ev, 'ev', { consumer: true });
+guardEmit(ev, 'ev');
 
 internalEv.onAny((event, ...values) => {
   ev.emit(event as any, ...values);
