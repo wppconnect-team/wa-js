@@ -28,10 +28,27 @@
 // disappeared executing cleanly, and the absence of a runaway emission loop.
 // They run unauthenticated (QR screen) — full readiness is reached pre-login.
 
+import { Page } from '@playwright/test';
+
 import { expect, test } from './wpp-test';
+
+// The `page` fixture only guarantees `WPP.isReady`. Full readiness converges
+// strictly later: the Meta loader recovers cached finder misses on a 500ms
+// generation tick and re-runs failed registrars on a 100ms retry poll. Sampling
+// the flags immediately after `isReady` therefore passed or failed on network
+// timing alone — waiting for the convergence is the actual property under test.
+async function waitForFullReady(page: Page): Promise<void> {
+  await page.waitForFunction(
+    () => (window as any).WPP?.isFullReady === true,
+    undefined,
+    { timeout: 120_000 }
+  );
+}
 
 test.describe('loader recovery (regression #3481)', () => {
   test('reaches full readiness, not just injected/ready', async ({ page }) => {
+    await waitForFullReady(page);
+
     const state = await page.evaluate(() => ({
       isInjected: (window as any).WPP?.isInjected === true,
       isReady: (window as any).WPP?.isReady === true,
@@ -53,6 +70,8 @@ test.describe('loader recovery (regression #3481)', () => {
     // ("Module isAuthenticated was not found" / "wa_functions.isAuthenticated
     // is not a function"). If the finder recovered, calling it resolves the
     // underlying module and returns a boolean instead of throwing.
+    await waitForFullReady(page);
+
     const result = await page.evaluate(() => {
       try {
         const value = (window as any).WPP.conn.isAuthenticated();
