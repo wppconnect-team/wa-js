@@ -25,8 +25,8 @@ import {
   typeAttributeFromProtobuf,
 } from '../whatsapp/functions';
 
-loader.onFullReady(applyPatch, 1000);
-loader.onFullReady(applyPatchModel);
+loader.onFullReadyInternal(applyPatch, 1000);
+loader.onFullReadyInternal(applyPatchModel);
 
 function applyPatch() {
   wrapModuleFunction(mediaTypeFromProtobuf, (func, ...args) => {

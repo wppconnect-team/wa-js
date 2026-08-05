@@ -29,7 +29,7 @@ interface ChatSearchQueryModule {
   };
 }
 
-loader.onFullReady(registerActiveFilterEvent);
+loader.onFullReadyInternal(registerActiveFilterEvent);
 
 function registerActiveFilterEvent() {
   const module = loader.search<ChatSearchQueryModule>(

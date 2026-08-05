@@ -22,7 +22,7 @@ import {
 } from '../../util/consistentTimers';
 import { isMainInit } from '../functions';
 
-loader.onInjected(register);
+loader.onInjectedInternal(register);
 
 function register() {
   // consistent* timers: WhatsApp Web swaps the global timer implementations

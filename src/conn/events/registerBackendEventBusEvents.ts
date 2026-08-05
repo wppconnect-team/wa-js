@@ -19,7 +19,7 @@ import * as loader from '../../loader';
 import { BackendEventBus } from '../../whatsapp';
 import { BackendEventName } from '../../whatsapp/misc/BackendEventBus';
 
-loader.onInjected(register);
+loader.onInjectedInternal(register);
 
 function register() {
   const originalTrigger = BackendEventBus.trigger.bind(BackendEventBus);

@@ -17,7 +17,7 @@
 import * as loader from '../loader';
 import { ContactModel, functions } from '../whatsapp';
 
-loader.onInjected(applyPatch);
+loader.onInjectedInternal(applyPatch);
 
 function applyPatch() {
   const funcs: {
