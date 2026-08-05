@@ -20,7 +20,7 @@ import { ChatStore, MsgModel, MsgStore } from '../../whatsapp';
 import { getQuotedMsgObj } from '../../whatsapp/functions';
 import { getQuotedMsgKey } from '../functions/';
 
-loader.onInjected(() => register());
+loader.onInjectedInternal(() => register());
 
 function register() {
   // Probe with the `in` operator, never with `typeof prototype.<prop>`:

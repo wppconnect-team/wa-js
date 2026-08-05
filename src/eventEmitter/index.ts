@@ -44,13 +44,28 @@ export const ev = new EventEmitter<
  * listener error is logged and contained at the emit boundary instead of
  * unwinding into whoever happened to emit the event.
  */
-function guardEmit(emitter: EventEmitter<any>, name: string): void {
+function guardEmit(
+  emitter: EventEmitter<any>,
+  name: string,
+  opts: { consumer?: boolean } = {}
+): void {
   const rawEmit = emitter.emit.bind(emitter);
   (emitter as any).emit = (event: any, ...values: any[]): boolean => {
     try {
       return rawEmit(event, ...values);
     } catch (error) {
-      debug(`listener error while emitting ${String(event)} on ${name}`, error);
+      // Consumer listeners (WPP.on) are the user's own code: hiding an exception
+      // they threw behind a debug() channel that's off by default was the
+      // error-visibility regression flagged in review. Re-surfacing it on
+      // console.error keeps the bug diagnosable; CONTAINING it (not rethrowing)
+      // is the load-bearing part — a listener's own exception escaping the emit
+      // boundary is the #3481 root cause, so this must log, not throw.
+      const message = `listener error while emitting ${String(event)} on ${name}`;
+      if (opts.consumer) {
+        console.error(`[WA-JS] ${message}`, error);
+      } else {
+        debug(message, error);
+      }
       return true;
     }
   };
@@ -67,17 +82,21 @@ function guardEmit(emitter: EventEmitter<any>, name: string): void {
     try {
       return await rawEmitAsync(event, ...values);
     } catch (error) {
-      debug(
-        `listener error while emitting (async) ${String(event)} on ${name}`,
-        error
-      );
+      const message = `listener error while emitting (async) ${String(
+        event
+      )} on ${name}`;
+      if (opts.consumer) {
+        console.error(`[WA-JS] ${message}`, error);
+      } else {
+        debug(message, error);
+      }
       return [];
     }
   };
 }
 
 guardEmit(internalEv, 'internalEv');
-guardEmit(ev, 'ev');
+guardEmit(ev, 'ev', { consumer: true });
 
 internalEv.onAny((event, ...values) => {
   ev.emit(event as any, ...values);

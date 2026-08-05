@@ -27,8 +27,8 @@ import {
 } from '../whatsapp/functions';
 import { forceMediaUploadMainThread } from './functions/forceMediaUploadMainThread';
 
-loader.onFullReady(applyPatch, 1000);
-loader.onFullReady(applyPatchModel);
+loader.onFullReadyInternal(applyPatch, 1000);
+loader.onFullReadyInternal(applyPatchModel);
 
 function applyPatch() {
   wrapModuleFunction(mediaTypeFromProtobuf, (func, ...args) => {

@@ -74,6 +74,42 @@ export let isFullReady = false;
  * the `searchId` meta re-scan, a retried listener resolves its binding as soon
  * as the underlying module runs.
  */
+/**
+ * Run an INTERNAL loader-lifecycle registrar, retrying on failure.
+ *
+ * On WhatsApp Web >= 2.3000 (Meta loader) internal modules execute lazily, so a
+ * binding resolved by a finder can still be `undefined` at the moment a
+ * `loader.injected` / `loader.ready` listener first runs. Most wa-js event/patch
+ * registrars access their target binding on their first statement (e.g.
+ * `ChatStore.on(...)`, `MsgStore.on(...)`), so an undefined binding throws
+ * `Cannot read properties of undefined (reading 'on')` right there and the
+ * registrar (never having attached its listener) silently dies. Dozens of
+ * registrars failing this way is the observable surface of #3481: no
+ * chat/message/conn events, `isReady`/`isFullReady` stuck false.
+ *
+ * **Scope: INTERNAL wa-js registrars ONLY.** This is the fix for reviewers' main
+ * concern in #3481: the retry must NOT touch public consumer listeners
+ * (`window.WPP.loader.onReady(...)`), which are documented one-shot APIs. A
+ * consumer callback that throws — for any reason, not only an unresolved
+ * binding — must NOT be silently re-executed hundreds of times, repeating any
+ * side effect the callback performs before its own bug. The public functions
+ * below restore the original one-shot semantics; internal registration uses the
+ * `*Internal` variants so the retry is opt-in and wa-js-owned.
+ *
+ * Retrying the whole listener is safe against **duplicate registration**: in
+ * every registrar the statement that actually attaches a listener / wraps a
+ * function / patches a prototype is the binding-gated one that throws while the
+ * binding is undefined, so a failed attempt never leaves a listener behind. A
+ * few registrars (`registerAuthCodeChangeEvent`, `registerQRCodeIdleEvent`,
+ * `registerRequireAuthEvent`) do emit an idempotent lifecycle event via an
+ * async `trigger()` *before* that throwing `.on(...)`; retrying re-emits those
+ * (e.g. `conn.require_auth`) once per attempt until the binding resolves, which
+ * consumers already tolerate — but nothing is double-registered. We poll every
+ * 100ms until the listener completes without throwing, capped at 60s (by which
+ * point the binding either resolved or never will on this page). Combined with
+ * the `searchId` meta re-scan, a retried listener resolves its binding as soon
+ * as the underlying module runs.
+ */
 function runListenerWithRetry(listener: () => void): void {
   const attempt = (): boolean => {
     try {
@@ -100,23 +136,59 @@ function runListenerWithRetry(listener: () => void): void {
   }, 100);
 
   // Stop retrying after 60s to avoid a permanent timer on pages where the
-  // binding genuinely never appears.
-  consistentSetTimeout(() => consistentClearInterval(check), 60_000);
+  // binding genuinely never appears. This give-up is TERMINAL and post-boot, so
+  // it surfaces at console.error — a registrar that never attached is a real
+  // defect (its store never resolved), and hiding it behind debug() was the
+  // error-visibility regression flagged in review.
+  consistentSetTimeout(() => {
+    consistentClearInterval(check);
+    console.error(
+      '[WA-JS] loader internal registrar gave up after 60s: its binding never resolved. ' +
+        'The affected feature is unavailable for this boot.'
+    );
+  }, 60_000);
 }
 
 export function onInjected(listener: () => void, delay = 0): void {
   internalEv.on('loader.injected', () => {
-    setTimeout(() => runListenerWithRetry(listener), delay);
+    setTimeout(listener, delay);
   });
 }
 
 export function onReady(listener: () => void, delay = 0): void {
   internalEv.on('loader.ready', () => {
-    setTimeout(() => runListenerWithRetry(listener), delay);
+    setTimeout(listener, delay);
   });
 }
 
 export function onFullReady(listener: () => void, delay = 0): void {
+  internalEv.on('loader.full_ready', () => {
+    setTimeout(listener, delay);
+  });
+}
+
+/**
+ * INTERNAL registration points for wa-js's own event/patch registrars.
+ *
+ * These are the ONLY call sites allowed to retry: the loader's public
+ * `onInjected`/`onReady`/`onFullReady` are documented one-shot consumer APIs
+ * (see the public functions above), so the lazy-binding retry that #3481 needs
+ * is confined here. The retry is what keeps a registrar from dying silently
+ * when its store binding is still `undefined` at first fire.
+ */
+export function onInjectedInternal(listener: () => void, delay = 0): void {
+  internalEv.on('loader.injected', () => {
+    setTimeout(() => runListenerWithRetry(listener), delay);
+  });
+}
+
+export function onReadyInternal(listener: () => void, delay = 0): void {
+  internalEv.on('loader.ready', () => {
+    setTimeout(() => runListenerWithRetry(listener), delay);
+  });
+}
+
+export function onFullReadyInternal(listener: () => void, delay = 0): void {
   internalEv.on('loader.full_ready', () => {
     setTimeout(() => runListenerWithRetry(listener), delay);
   });
@@ -579,14 +651,28 @@ const searchIdMissModuleCount = new Map<SearchModuleCondition, number>();
 const searchIdMissGeneration = new Map<SearchModuleCondition, number>();
 let metaScanGeneration = 0;
 let metaScanTimer: ReturnType<typeof setInterval> | null = null;
+let metaScanStartedAt = 0;
 
+// Same 60s ceiling as the registrar retry: if the page never reaches
+// full-ready the generation counter would otherwise tick forever — the only
+// unbounded timer this loader owns. Bumping a counter every 500ms is cheap, but
+// an interval that can never clear is a leak on a page that stays half-booted.
 function ensureMetaScanTimer(): void {
   if (metaScanTimer !== null || isFullReady) {
     return;
   }
+  metaScanStartedAt = Date.now();
   metaScanTimer = consistentSetInterval(() => {
     metaScanGeneration++;
-    if (isFullReady && metaScanTimer !== null) {
+    if (
+      (isFullReady || Date.now() - metaScanStartedAt > 60_000) &&
+      metaScanTimer !== null
+    ) {
+      if (!isFullReady) {
+        debug(
+          'meta scan timer gave up after 60s without full readiness; stopping'
+        );
+      }
       consistentClearInterval(metaScanTimer);
       metaScanTimer = null;
     }
