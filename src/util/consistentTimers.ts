@@ -48,3 +48,5 @@ export const consistentClearInterval: typeof clearInterval =
   globalRef.clearInterval.bind(globalRef);
 export const consistentSetTimeout: typeof setTimeout =
   globalRef.setTimeout.bind(globalRef);
+export const consistentClearTimeout: typeof clearTimeout =
+  globalRef.clearTimeout.bind(globalRef);
