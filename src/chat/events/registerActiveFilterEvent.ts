@@ -31,7 +31,7 @@ interface ChatSearchQueryModule {
 
 loader.onFullReadyInternal(registerActiveFilterEvent);
 
-function registerActiveFilterEvent() {
+function registerActiveFilterEvent(): boolean | void {
   const module = loader.search<ChatSearchQueryModule>(
     (module, id) =>
       id === 'WAWebChatSearchQuery' ||
@@ -42,7 +42,10 @@ function registerActiveFilterEvent() {
 
   if (!module) {
     console.error('WAWebChatSearchQuery module was not found');
-    return;
+    // `false` = "not ready yet": the loader's retry keeps re-running this until
+    // the module executes (a bare `return` would be read as success and never
+    // retried — the finder-miss case the retry exists for).
+    return false;
   }
 
   const prototype = module.SearchQuery.prototype;

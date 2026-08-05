@@ -146,4 +146,67 @@ test.describe('loader recovery (regression #3481)', () => {
 
     expect(emissions).toBeLessThan(5);
   });
+
+  test('public loader.onReady is one-shot even when the callback throws', async ({
+    page,
+  }) => {
+    // The subject of the review's blocking item #1: the lazy-binding retry must be
+    // confined to wa-js's internal registrars. A public consumer callback that
+    // throws for its OWN bug must run exactly once — never be re-executed every
+    // 100ms for 60s, which would repeat any side effect it performed before the
+    // throw. If a future change re-added retry to the public API, this count
+    // would climb past 1.
+    //
+    // Registered via addInitScript BEFORE navigation: `loader.onReady` subscribes
+    // to the `loader.ready` event, and EventEmitter2 does not replay past events,
+    // so a callback added after the loader is already ready never fires at all.
+    // The throwing callback must be in place before boot to be invoked once.
+    await page.addInitScript(() => {
+      (window as any).__onReadyInvocations = 0;
+      const install = () => {
+        const wpp = (window as any).WPP;
+        if (!wpp?.loader?.onReady) {
+          setTimeout(install, 10);
+          return;
+        }
+        wpp.loader.onReady(() => {
+          (window as any).__onReadyInvocations++;
+          throw new Error('consumer callback bug');
+        });
+      };
+      install();
+    });
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    await waitForFullReady(page);
+    // Past the retry window a wrongly-retried callback would have run many times.
+    await page.waitForTimeout(1000);
+
+    const invocations = await page.evaluate(
+      () => (window as any).__onReadyInvocations as number
+    );
+    expect(invocations).toBe(1);
+  });
+
+  test('a clean boot does not emit a false loader give-up error', async ({
+    page,
+  }) => {
+    // Finding #1: the internal-registrar retry armed a 60s give-up timeout that
+    // used to fire even after the registrar SUCCEEDED, so a NORMAL Meta-loader
+    // boot (most registrars miss once, then recover) produced a burst of bogus
+    // "gave up after 60s" console.error lines — destroying the visibility of a
+    // genuine give-up. On a healthy boot there must be zero of them.
+    const giveUpErrors: string[] = [];
+    page.on('console', (msg) => {
+      if (msg.type() === 'error' && /gave up after 60s/.test(msg.text())) {
+        giveUpErrors.push(msg.text());
+      }
+    });
+
+    await waitForFullReady(page);
+    // The give-up fires at 60s after a registrar's first failure; wait past that
+    // window so a false positive would have surfaced.
+    await page.waitForTimeout(62_000);
+
+    expect(giveUpErrors).toEqual([]);
+  });
 });
