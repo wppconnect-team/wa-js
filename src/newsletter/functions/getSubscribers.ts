@@ -57,7 +57,11 @@ export async function getSubscribers(
       'LIMITED'
     );
     return result?.followers || [];
-  } catch (_error) {
+  } catch (error) {
+    // Returning `false` is the historical contract, but swallowing the error
+    // silently is what hid this function being broken. Keep the contract and
+    // make the cause visible.
+    console.error('[WPP.newsletter.getSubscribers] failed', error);
     return false;
   }
 }

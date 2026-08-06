@@ -51,8 +51,14 @@ export declare namespace MexClient {
   ): Promise<T>;
 }
 
+/**
+ * `WAWebRelayClient` also exports both `graphql` and `fetchQuery`, but its
+ * `fetchQuery(query, variables, options)` goes through a Relay environment and
+ * has nothing to do with this signature. It is told apart by `commitMutation`,
+ * which `WAWebMexClient` does not export.
+ */
 exportModule(
   exports,
   'MexClient',
-  (m) => m.fetchQuery && m.graphql && typeof m.fetchQuery === 'function'
+  (m) => typeof m.fetchQuery === 'function' && !!m.graphql && !m.commitMutation
 );

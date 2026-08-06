@@ -15,6 +15,7 @@
  */
 
 import { injectFallbackModule } from '../../loader';
+import { WPPError } from '../../util';
 import { exportModule } from '../exportModule';
 import { MexClient, NewsletterGatingUtils, Wid, WidFactory } from '../misc';
 
@@ -85,6 +86,13 @@ const FETCH_NEWSLETTER_FOLLOWERS_DOC_ID = '27472091235714801';
  */
 injectFallbackModule('getNewsletterSubscribers', {
   getNewsletterSubscribers: async (jid: string, count: number) => {
+    if (typeof MexClient?.fetchQuery !== 'function') {
+      throw new WPPError(
+        'mex_client_not_available',
+        'WAWebMexClient is not available, unable to fetch newsletter subscribers'
+      );
+    }
+
     const max = NewsletterGatingUtils?.getMaxSubscriberNumber?.();
     const data = await MexClient.fetchQuery(
       {
