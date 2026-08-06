@@ -20,9 +20,13 @@ import {
   NewsletterFollower,
 } from '../../whatsapp/functions';
 import { NewsletterGatingUtils } from '../../whatsapp/misc';
+import { NewsletterStore } from '../../whatsapp/stores';
 
 /**
- * Get subscribers of a newsletters
+ * Get subscribers of a newsletter
+ *
+ * Only an admin or the owner of the newsletter can list its subscribers —
+ * WhatsApp answers `401 Not Authorized` for anyone else.
  *
  * @example
  * ```javascript
@@ -49,6 +53,23 @@ export async function getSubscribers(
       'send_correctly_newsletter_id',
       'Please, send the correct newsletter ID.'
     );
+
+  /**
+   * WhatsApp only allows an admin or the owner to list a newsletter's
+   * subscribers — `WAWebNewsletterSubscriberListAction` bails out on
+   * `iAmAdminOrOwner()` and the MEX query answers 401 "Not Authorized"
+   * otherwise. Fail with something actionable when we can tell up front.
+   */
+  const metadata = NewsletterStore.get(id)?.newsletterMetadata;
+
+  if (metadata?.iAmAdminOrOwner?.() === false) {
+    throw new WPPError(
+      'newsletter_subscribers_require_admin',
+      'Only an admin or the owner of a newsletter can list its subscribers.',
+      { id }
+    );
+  }
+
   try {
     const max = NewsletterGatingUtils?.getMaxSubscriberNumber?.();
     const result = await getNewsletterSubscribers(
