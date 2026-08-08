@@ -22,7 +22,7 @@ import { CallModel, CallStore } from '../../whatsapp';
 
 const debug = Debug('WA-JS:call:registerIncomingCallEvent');
 
-loader.onInjected(() => register());
+loader.onInjectedInternal(() => register());
 
 function register() {
   debug('Registering incoming call event listeners');

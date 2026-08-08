@@ -14,10 +14,14 @@
  * limitations under the License.
  */
 
+import Debug from 'debug';
+
 import { config } from '../config';
 import * as conn from '../conn';
 import { internalEv } from '../eventEmitter';
 import { Tracker } from './Tracker';
+
+const debug = Debug('WA-JS:gtag');
 
 export * from './Tracker';
 
@@ -36,6 +40,41 @@ const otherTracker = config.googleAnalyticsId
   : null;
 
 internalEv.on('loader.injected', () => {
+  // Analytics must never break the loader lifecycle: this listener runs inside
+  // `emitAsync('loader.injected')`, and on WhatsApp Web >= 2.3000 (lazy module
+  // execution) `conn.isAuthenticated()`/`isMultiDevice()` can throw while their
+  // bindings are still unresolved. An uncaught throw here aborts the emit,
+  // skips every listener registered after this one and kills `runMetaLoader`
+  // (isReady/isFullReady never set — part of #3481). Degrade to "no analytics"
+  // instead.
+  try {
+    registerTrackers();
+  } catch (error) {
+    // Failure here is all-or-nothing by accident, not design: a throw partway
+    // leaves the trackers registered BEFORE it live and the ones after it
+    // permanently missing (registerTrackers is a sequence with no rollback).
+    // That needs a log, not the bare "// ignore" that used to make a permanent
+    // analytics failure invisible.
+    debug('analytics registration failed, continuing without analytics', error);
+  }
+});
+
+function registerTrackers() {
+  // Register the lifecycle listeners FIRST. The binding-gated reads below
+  // (conn.isAuthenticated / isMultiDevice) can throw while their module is still
+  // unresolved; if they fired before these registrations, a throw would leave a
+  // half-registered tracker set with no retry to converge it. Registering first
+  // means a later throw still leaves the listeners that update the version.
+  internalEv.on('conn.main_init', () => {
+    titleParts[1] = (window as any).Debug?.VERSION || '-';
+
+    if (!config.disableGoogleAnalytics) {
+      mainTracker.documentTitle = titleParts.join('');
+
+      mainTracker.setUserProperty('whatsapp', titleParts[1]);
+    }
+  });
+
   const authenticated = conn.isAuthenticated();
   const method = conn.isMultiDevice() ? 'multidevice' : 'legacy';
 
@@ -47,16 +86,6 @@ internalEv.on('loader.injected', () => {
     mainTracker.setUserProperty('wa_js', waVersion);
     mainTracker.setUserProperty('powered_by', config.poweredBy || '-');
   }
-
-  internalEv.on('conn.main_init', () => {
-    titleParts[1] = (window as any).Debug?.VERSION || '-';
-
-    if (!config.disableGoogleAnalytics) {
-      mainTracker.documentTitle = titleParts.join('');
-
-      mainTracker.setUserProperty('whatsapp', titleParts[1]);
-    }
-  });
 
   if (otherTracker && !config.disableGoogleAnalytics) {
     mainTracker.trackEvent('page_view', { authenticated, method });
@@ -104,7 +133,7 @@ internalEv.on('loader.injected', () => {
       }
     }
   });
-});
+}
 
 if (!config.disableGoogleAnalytics) {
   internalEv.on('conn.authenticated', () => {

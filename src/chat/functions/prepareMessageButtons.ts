@@ -237,7 +237,7 @@ export function prepareMessageButtons<T extends RawMessage>(
   return message;
 }
 
-loader.onFullReady(() => {
+loader.onFullReadyInternal(() => {
   wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
     const [message] = args;
     const r = func(...args);

@@ -18,7 +18,7 @@ import { internalEv } from '../../eventEmitter';
 import * as loader from '../../loader';
 import { StatusV3Store } from '../../whatsapp';
 
-loader.onInjected(() => registerSyncedEvent());
+loader.onInjectedInternal(() => registerSyncedEvent());
 
 function registerSyncedEvent() {
   StatusV3Store.on('sync', () => {

@@ -25,8 +25,8 @@ import {
   typeAttributeFromProtobuf,
 } from '../whatsapp/functions';
 
-loader.onFullReady(applyPatch, 1000);
-loader.onFullReady(applyPatchModel);
+loader.onFullReadyInternal(applyPatch, 1000);
+loader.onFullReadyInternal(applyPatchModel);
 
 function applyPatch() {
   wrapModuleFunction(mediaTypeFromProtobuf, (func, ...args) => {
@@ -127,7 +127,10 @@ function applyPatchModel() {
 
   for (const attr in funcs) {
     const func = funcs[attr];
-    if (typeof (ChatModel.prototype as any)[attr] === 'undefined') {
+    // `in` instead of `typeof prototype[attr]`: reading the property invokes
+    // an existing accessor with `this` = the bare prototype, which can throw
+    // on getters that need model data (see contact/patch.ts, #3481).
+    if (!(attr in ChatModel.prototype)) {
       Object.defineProperty(ChatModel.prototype, attr, {
         get: function () {
           return func(this);
