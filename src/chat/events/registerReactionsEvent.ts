@@ -21,7 +21,7 @@ import { MsgKey } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { createOrUpdateReactions } from '../../whatsapp/functions';
 
-loader.onFullReady(register);
+loader.onFullReadyInternal(register);
 
 const reactions: string[] = [];
 

@@ -151,7 +151,7 @@ export async function sendLocationMessage(
   return await sendRawMessage(chatId, rawMessage, options);
 }
 
-loader.onFullReady(() => {
+loader.onFullReadyInternal(() => {
   wrapModuleFunction(mediaTypeFromProtobuf, (func, ...args) => {
     const [proto] = args;
     if (proto.locationMessage) {

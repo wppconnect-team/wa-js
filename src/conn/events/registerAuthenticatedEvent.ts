@@ -19,7 +19,7 @@ import * as loader from '../../loader';
 import { Cmd } from '../../whatsapp';
 import { isAuthenticated } from '..';
 
-loader.onInjected(register);
+loader.onInjectedInternal(register);
 
 function register() {
   let isAuth = isAuthenticated();

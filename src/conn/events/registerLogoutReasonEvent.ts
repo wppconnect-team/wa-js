@@ -19,7 +19,7 @@ import * as loader from '../../loader';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { getErrorCodeFromLogoutReason } from '../../whatsapp/functions';
 
-loader.onInjected(registerLogoutReasonEvent);
+loader.onInjectedInternal(registerLogoutReasonEvent);
 
 function registerLogoutReasonEvent() {
   wrapModuleFunction(getErrorCodeFromLogoutReason, (func, ...args) => {

@@ -17,6 +17,12 @@
 import Debug from 'debug';
 
 import { internalEv } from '../eventEmitter';
+import {
+  consistentClearInterval,
+  consistentClearTimeout,
+  consistentSetInterval,
+  consistentSetTimeout,
+} from '../util/consistentTimers';
 import { META_MODULE_ID_BLACKLIST } from './blacklist';
 
 const debug = Debug('WA-JS:loader');
@@ -41,6 +47,119 @@ export let isReady = false;
  */
 export let isFullReady = false;
 
+/**
+ * Run an INTERNAL loader-lifecycle registrar, retrying on failure.
+ *
+ * On WhatsApp Web >= 2.3000 (Meta loader) internal modules execute lazily, so a
+ * binding resolved by a finder can still be `undefined` at the moment a
+ * `loader.injected` / `loader.ready` listener first runs. Most wa-js event/patch
+ * registrars access their target binding on their first statement (e.g.
+ * `ChatStore.on(...)`, `MsgStore.on(...)`), so an undefined binding throws
+ * `Cannot read properties of undefined (reading 'on')` right there and the
+ * registrar (never having attached its listener) silently dies. Dozens of
+ * registrars failing this way is the observable surface of #3481: no
+ * chat/message/conn events, `isReady`/`isFullReady` stuck false.
+ *
+ * **Scope: INTERNAL wa-js registrars ONLY.** This is the fix for reviewers' main
+ * concern in #3481: the retry must NOT touch public consumer listeners
+ * (`window.WPP.loader.onReady(...)`), which are documented one-shot APIs. A
+ * consumer callback that throws — for any reason, not only an unresolved
+ * binding — must NOT be silently re-executed hundreds of times, repeating any
+ * side effect the callback performs before its own bug. The public functions
+ * below restore the original one-shot semantics; internal registration uses the
+ * `*Internal` variants so the retry is opt-in and wa-js-owned.
+ *
+ * Retrying the whole listener is safe against **duplicate registration**: in
+ * every registrar the statement that actually attaches a listener / wraps a
+ * function / patches a prototype is the binding-gated one that throws while the
+ * binding is undefined, so a failed attempt never leaves a listener behind. A
+ * few registrars (`registerAuthCodeChangeEvent`, `registerQRCodeIdleEvent`,
+ * `registerRequireAuthEvent`) do emit an idempotent lifecycle event via an
+ * async `trigger()` *before* that throwing `.on(...)`; retrying re-emits those
+ * (e.g. `conn.require_auth`) once per attempt until the binding resolves, which
+ * consumers already tolerate — but nothing is double-registered. We poll every
+ * 100ms until the listener completes without throwing, capped at 60s (by which
+ * point the binding either resolved or never will on this page). Combined with
+ * the `searchId` meta re-scan, a retried listener resolves its binding as soon
+ * as the underlying module runs.
+ */
+function runListenerWithRetry(
+  listener: () => void | boolean,
+  label?: string
+): void {
+  const name =
+    label ?? (listener as { name?: string }).name ?? 'anonymous registrar';
+  let attempts = 0;
+  const attempt = (): boolean => {
+    try {
+      // A `false` return is an explicit "not ready yet" signal (#3481's
+      // return-on-miss registrars, e.g. `if (!module) { console.error(…);
+      // return; }`); anything else (void / true) counts as attached.
+      return listener() !== false;
+    } catch (err) {
+      attempts += 1;
+      // One debug line on the FIRST failure and one on give-up — not one per
+      // 100ms attempt (that's ~600 lines per stuck registrar and buries the
+      // give-up that actually matters).
+      if (attempts === 1) {
+        debug(
+          `${name} threw on first attach, will retry until binding resolves`,
+          err
+        );
+      }
+      return false;
+    }
+  };
+
+  if (attempt()) {
+    return;
+  }
+
+  // consistent* timers: WhatsApp Web swaps the global timer implementations
+  // during boot and timer IDs are not portable across the swap — a plain
+  // `clearInterval` here can silently no-op, leaving the retry loop running
+  // forever (see util/consistentTimers.ts).
+  let settled = false;
+
+  // Both timers are held in a mutable object so each callback can clear the
+  // other: `check` cancels `giveUp` on success, `giveUp` clears `check` on
+  // give-up. (A plain `const check`/`const giveUp` can't express the mutual
+  // reference — each is named inside the other's callback.)
+  const timers: {
+    check?: ReturnType<typeof setInterval>;
+    giveUp?: ReturnType<typeof setTimeout>;
+  } = {};
+
+  timers.check = consistentSetInterval(() => {
+    if (attempt()) {
+      settled = true;
+      consistentClearInterval(timers.check);
+      // Findings confirmed by independent simulation: the give-up timeout below
+      // arms unconditionally on the first failure and used to fire even after
+      // the registrar SUCCEEDED — one bogus "gave up" console.error per boot,
+      // for every registrar that recovered. That is the normal Meta-loader path,
+      // so a successful boot produced the exact error storm the give-up log was
+      // added to expose. Cancel it on success.
+      consistentClearTimeout(timers.giveUp);
+    }
+  }, 100);
+
+  // Stop retrying after 60s to avoid a permanent timer on pages where the
+  // binding genuinely never appears. This give-up is TERMINAL and post-boot, so
+  // it surfaces at console.error — a registrar that never attached is a real
+  // defect (its store never resolved), and hiding it behind debug() was the
+  // error-visibility regression flagged in review.
+  timers.giveUp = consistentSetTimeout(() => {
+    if (settled) return;
+    settled = true;
+    consistentClearInterval(timers.check);
+    console.error(
+      `[WA-JS] loader internal registrar '${name}' gave up after 60s: its binding never resolved. ` +
+        'The affected feature is unavailable for this boot.'
+    );
+  }, 60_000);
+}
+
 export function onInjected(listener: () => void, delay = 0): void {
   internalEv.on('loader.injected', () => {
     setTimeout(listener, delay);
@@ -56,6 +175,42 @@ export function onReady(listener: () => void, delay = 0): void {
 export function onFullReady(listener: () => void, delay = 0): void {
   internalEv.on('loader.full_ready', () => {
     setTimeout(listener, delay);
+  });
+}
+
+/**
+ * INTERNAL registration points for wa-js's own event/patch registrars.
+ *
+ * These are the ONLY call sites allowed to retry: the loader's public
+ * `onInjected`/`onReady`/`onFullReady` are documented one-shot consumer APIs
+ * (see the public functions above), so the lazy-binding retry that #3481 needs
+ * is confined here. The retry is what keeps a registrar from dying silently
+ * when its store binding is still `undefined` at first fire.
+ */
+export function onInjectedInternal(
+  listener: () => void | boolean,
+  delay = 0
+): void {
+  internalEv.on('loader.injected', () => {
+    setTimeout(() => runListenerWithRetry(listener), delay);
+  });
+}
+
+export function onReadyInternal(
+  listener: () => void | boolean,
+  delay = 0
+): void {
+  internalEv.on('loader.ready', () => {
+    setTimeout(() => runListenerWithRetry(listener), delay);
+  });
+}
+
+export function onFullReadyInternal(
+  listener: () => void | boolean,
+  delay = 0
+): void {
+  internalEv.on('loader.full_ready', () => {
+    setTimeout(() => runListenerWithRetry(listener), delay);
   });
 }
 
@@ -100,7 +255,23 @@ let metaModulesCache: { [key: string]: any } | null = null;
 let metaModulesCacheKey = -1;
 
 function buildMetaModulesMap(): { [key: string]: any } {
-  const modulesMap = __debug().modulesMap;
+  // On WhatsApp Web >= 2.3000 the Meta `require('__debug')` module is itself
+  // registered progressively — during the very first moments after injection
+  // `__debug()` throws `ModuleError: Requiring unknown module`. That throw used
+  // to propagate up through `searchId` (which reads `moduleRequire.m`) into
+  // every binding getter, turning what should be a graceful "not found yet"
+  // into an uncaught exception that aborted consumer registration (#3481).
+  // Degrade gracefully instead: return the last good cache, or an empty map, so
+  // finders simply miss early and recover once the module graph is queryable.
+  let modulesMap: { [key: string]: any };
+  try {
+    modulesMap = __debug().modulesMap;
+  } catch {
+    return metaModulesCache || {};
+  }
+  if (!modulesMap) {
+    return metaModulesCache || {};
+  }
   const allIds = Object.keys(modulesMap);
 
   if (metaModulesCache && allIds.length === metaModulesCacheKey) {
@@ -232,9 +403,9 @@ function setupMetaLoaderWatcher(global: any): void {
 
   // Fallback poll – cheap safety net if the traps could not be installed
   // or were overwritten with a non-configurable property by the host.
-  const fallbackTimer = setInterval(() => {
+  const fallbackTimer = consistentSetInterval(() => {
     if (loaderType !== 'unknown') {
-      clearInterval(fallbackTimer);
+      consistentClearInterval(fallbackTimer);
       return;
     }
     tryStart();
@@ -242,7 +413,7 @@ function setupMetaLoaderWatcher(global: any): void {
 
   // Stop the fallback after 60s; by then either the loader started or
   // it never will on this page.
-  setTimeout(() => clearInterval(fallbackTimer), 60_000);
+  consistentSetTimeout(() => consistentClearInterval(fallbackTimer), 60_000);
 
   if (!trappedD || !trappedReq) {
     debug('meta loader: setter trap unavailable, relying on fallback poll');
@@ -487,6 +658,77 @@ const searchIdCache = new Map<SearchModuleCondition, string | null>();
 // while the module set is unchanged, and re-scan once new modules appear.
 const searchIdMissModuleCount = new Map<SearchModuleCondition, number>();
 
+// Meta-loader miss recovery. On WhatsApp Web >= 2.3000 all module *factories*
+// are registered up front (so the count above is constant from early load and
+// the count-based invalidation never fires — the gap that left #3419/#3476
+// incomplete and reproduces as #3481), but factories execute lazily. We instead
+// bump a generation counter on a timer while the loader is not full-ready, and
+// re-scan a cached miss only when the generation advanced since the miss was
+// recorded. This lets a binding resolve as soon as its module executes, while
+// bounding full-graph re-scans to at most once per interval per condition
+// (a full scan iterates ~13k modules and resolves each one, so re-running it on
+// every property access of a still-missing binding would be needlessly costly).
+const searchIdMissGeneration = new Map<SearchModuleCondition, number>();
+// Wall-clock stamp of each cached miss, for the post-full_ready time-based
+// re-scan (see searchId): lazy factory execution doesn't stop at full_ready, so
+// a miss must be retryable after it. Generation ticks end at full_ready; the
+// clock is the only signal that doesn't rely on a timer staying alive.
+const searchIdMissAt = new Map<SearchModuleCondition, number>();
+// How long a cached miss is trusted AFTER the loader is full-ready. Long enough
+// that ordinary misses stay cheap, short enough that a binding whose module
+// executes late recovers on a plausible timescale.
+const POST_READY_MISS_RESCAN_MS = 30_000;
+let metaScanGeneration = 0;
+// Aggregate throttle for finder re-scans during boot (see searchId): at most this
+// many full-graph re-scans per generation tick, no matter how many conditions
+// became eligible. Reset on every tick in ensureMetaScanTimer.
+const META_RESCAN_PER_TICK = 3;
+let metaScanRescansThisTick = 0;
+let metaScanTimer: ReturnType<typeof setInterval> | null = null;
+let metaScanStartedAt = 0;
+// Terminal state for the give-up below. Without it `searchId` re-arms the timer
+// on every cached-miss lookup (`searchId` calls `ensureMetaScanTimer()` when
+// `metaScanTimer === null && !isFullReady`, and resetting `metaScanStartedAt`
+// there restarts the cap clock forever — so the 60s ceiling bounded nothing on
+// exactly the half-booted page it exists for, and the interval ran for the life
+// of the tab). The flag, not the null timer, is what "gave up" means.
+let metaScanGaveUp = false;
+
+// Same 60s ceiling as the registrar retry: if the page never reaches
+// full-ready the generation counter would otherwise tick forever — the only
+// unbounded timer this loader owns. Bumping a counter every 500ms is cheap, but
+// an interval that can never clear is a leak on a page that stays half-booted.
+function ensureMetaScanTimer(): void {
+  if (metaScanTimer !== null || isFullReady || metaScanGaveUp) {
+    return;
+  }
+  metaScanStartedAt = Date.now();
+  metaScanTimer = consistentSetInterval(() => {
+    metaScanGeneration++;
+    // New tick: every missed condition becomes eligible again, but only
+    // META_RESCAN_PER_TICK of them may actually re-scan this tick (aggregate
+    // throttle — see the per-tick budget in searchId).
+    metaScanRescansThisTick = 0;
+    if (
+      (isFullReady || Date.now() - metaScanStartedAt > 60_000) &&
+      metaScanTimer !== null
+    ) {
+      if (!isFullReady) {
+        metaScanGaveUp = true;
+        // Terminal, post-boot, and silent-on-default otherwise — same visibility
+        // rule as the registrar give-up: this is a real defect (bindings that
+        // never recovered), so it must surface, not hide behind debug().
+        console.error(
+          '[WA-JS] meta module scan gave up after 60s without full readiness; ' +
+            'unresolved bindings will not recover for this boot.'
+        );
+      }
+      consistentClearInterval(metaScanTimer);
+      metaScanTimer = null;
+    }
+  }, 500);
+}
+
 function isReactResolvedCached(moduleId: string, module: any): boolean {
   if (pureComponentMap.has(moduleId)) {
     return pureComponentMap.get(moduleId) as boolean;
@@ -608,13 +850,52 @@ export function searchId(
     return cached;
   }
   if (cached === null) {
-    if (
+    if (loaderType === 'meta') {
+      // Meta loader: the module count is constant, so recover misses via the
+      // generation timer instead (see searchIdMissGeneration above). While the
+      // loader is still coming up, re-scan when the generation advanced since
+      // this miss; otherwise trust the miss to avoid re-scanning the whole
+      // module graph on every property access.
+      if (!isFullReady) {
+        ensureMetaScanTimer();
+        if (searchIdMissGeneration.get(condition) === metaScanGeneration) {
+          return null;
+        }
+        // Generation advanced: new modules may have executed. But the per-condition
+        // gate alone is per-CONDITION, not per-tick — N distinct missed conditions
+        // all become eligible on the same tick, and a re-scan iterates ~13k modules
+        // resolving each. During a slow boot with many unresolved bindings that's
+        // ~N×13k module resolutions per 500ms (the CPU-pinning symptom this loader
+        // is meant to avoid). Global-throttle it: only the first
+        // META_RESCAN_PER_TICK conditions re-scan this tick; the rest stay cached
+        // null until a later generation. This trades a slightly slower recovery
+        // (a binding may wait one extra tick) for a bounded aggregate cost.
+        if (metaScanRescansThisTick >= META_RESCAN_PER_TICK) {
+          return null;
+        }
+        metaScanRescansThisTick += 1;
+        // Fall through and re-scan.
+      } else if (
+        Date.now() - (searchIdMissAt.get(condition) ?? 0) <=
+        POST_READY_MISS_RESCAN_MS
+      ) {
+        // Lazy factory EXECUTION continues past full_ready (a feature module can
+        // first run minutes later), but the old count comparison below can never
+        // fire on the Meta loader — its count is constant. Without a clock here a
+        // post-boot miss is a PERMANENT cached null (#3481's mode, deferred). Retry
+        // a miss at most once per POST_READY_MISS_RESCAN_MS per condition instead.
+        return null;
+      }
+      // Either the window elapsed (re-scan) or there's no stamp yet — fall through,
+      // refreshing the stamp on the miss below so repeated property access on a
+      // still-missing binding doesn't re-scan the whole graph every time.
+    } else if (
       searchIdMissModuleCount.get(condition) ===
       Object.keys(moduleRequire.m).length
     ) {
       return null;
     }
-    // Stale negative cache: new modules appeared, fall through and re-scan.
+    // Stale negative cache: fall through and re-scan.
   }
 
   const allIds = Object.keys(moduleRequire.m);
@@ -692,6 +973,14 @@ export function searchId(
   // Remember the module count at miss time so the cached null is re-evaluated
   // once WhatsApp registers more modules (see searchIdMissModuleCount above).
   searchIdMissModuleCount.set(condition, allIds.length);
+  if (loaderType === 'meta') {
+    // On the Meta loader also remember the scan generation, so the miss is
+    // re-evaluated on the next generation tick while the loader comes up.
+    searchIdMissGeneration.set(condition, metaScanGeneration);
+    // And the wall clock, so the miss is re-evaluated after full_ready too
+    // (lazy execution continues past it; see the POST_READY_MISS_RESCAN_MS gate).
+    searchIdMissAt.set(condition, Date.now());
+  }
   return null;
 }
 

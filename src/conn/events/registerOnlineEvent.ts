@@ -18,7 +18,7 @@ import { internalEv } from '../../eventEmitter';
 import * as loader from '../../loader';
 import { NetworkStatus, NetworkStatusModel } from '../../whatsapp';
 
-loader.onInjected(register);
+loader.onInjectedInternal(register);
 
 function register() {
   NetworkStatus.on(
