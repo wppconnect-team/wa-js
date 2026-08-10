@@ -67,7 +67,7 @@ export async function deleteMessage(
 
   const results: DeleteMessageReturn[] = [];
   for (const msg of msgs) {
-    let sendMsgResult: SendMsgResult = SendMsgResult.ERROR_UNKNOWN;
+    let sendMsgResult: SendMsgResult;
     let isRevoked = false;
     let isDeleted = false;
     const isSentByMe = msg.senderObj.isMe;
