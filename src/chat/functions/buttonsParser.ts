@@ -36,10 +36,9 @@ function parserButtons(
     ];
     let header = undefined;
     let headerType = 1;
-    for (let part of mediaPart) {
+    for (const part of mediaPart) {
       if (part in interactiveMessage.header) {
         const partName = part;
-        if (part === 'documentWithCaptionMessage') part = 'documentMessage';
 
         header = { [partName]: interactiveMessage.header[partName] };
         headerType =

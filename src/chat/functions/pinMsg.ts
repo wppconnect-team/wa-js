@@ -64,8 +64,7 @@ export async function pinMsg(
   pin = true,
   duration: number | PinExpiryDurationOption = PinExpiryDurationOption.SevenDays
 ): Promise<{ message: MsgModel; pinned: boolean; result: SendMsgResult }> {
-  let normalizedDuration: PinExpiryDurationOption =
-    PinExpiryDurationOption.SevenDays;
+  let normalizedDuration: PinExpiryDurationOption;
 
   if (typeof duration === 'number') {
     console.warn(
