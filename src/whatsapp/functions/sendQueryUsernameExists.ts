@@ -46,10 +46,34 @@ export declare function queryUsernameExists(
   | null
 >;
 
+/**
+ * Query the username currently associated with a LID
+ *
+ * Returns `undefined` when the wid is not a LID or the server has no record
+ * for it. As a side effect, WhatsApp stores the result, so a subsequent
+ * `ContactStore` read reflects the refreshed username.
+ */
+export declare function queryWidUsernameExists(
+  wid: Wid,
+  requestOrigin?: string // Telemetry only, not used for the actual query
+): Promise<
+  | {
+      username?: string;
+      usernameChanged: boolean;
+      wasPreviouslyKnown: boolean;
+      isPhoneNumberKnown: boolean;
+      oldUsername?: string;
+    }
+  | undefined
+>;
+
 exportModule(
   exports,
   {
     queryUsernameExists: ['queryUsernameExists'],
+    queryWidUsernameExists: ['queryWidUsernameExists'],
   },
+  // Match on queryUsernameExists alone: queryWidUsernameExists is newer, and
+  // requiring both would break the username lookup on versions that predate it
   (m) => m.queryUsernameExists
 );
