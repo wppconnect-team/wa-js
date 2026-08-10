@@ -15,8 +15,9 @@
  */
 
 import { WPPError } from '../../util';
-import { CallModel, CallStore, websocket } from '../../whatsapp';
-import { CALL_STATES } from '../../whatsapp/enums';
+import { websocket } from '../../whatsapp';
+import { getVoipStackInterface } from '../../whatsapp/functions';
+import { getCall, isActiveCall, isIncomingCall } from './getCall';
 
 /**
  * Accept a incoming call
@@ -41,16 +42,7 @@ import { CALL_STATES } from '../../whatsapp/enums';
  * @return  {[type]}          [return description]
  */
 export async function accept(callId?: string): Promise<boolean> {
-  let call: CallModel | undefined = undefined;
-
-  if (callId) {
-    call = CallStore.get(callId);
-  } else {
-    // First incoming ring or call group
-    call = CallStore.getModelsArray().find(
-      (c) => c.getState() === CALL_STATES.INCOMING_RING || c.isGroup
-    );
-  }
+  const call = getCall(callId);
 
   if (!call) {
     throw new WPPError(
@@ -62,7 +54,7 @@ export async function accept(callId?: string): Promise<boolean> {
     );
   }
 
-  if (call.getState() !== 'INCOMING_RING' && !call.isGroup) {
+  if (!isIncomingCall(call) && !call.isGroup) {
     throw new WPPError(
       'call_is_not_incoming_ring',
       `Call ${callId || '<empty>'} is not incoming ring`,
@@ -73,6 +65,27 @@ export async function accept(callId?: string): Promise<boolean> {
     );
   }
 
+  /**
+   * Native VoIP stack (WhatsApp >= 2.3000): same path used by the accept
+   * button in `useWAWebVoipCallHandlers`. It has no call id argument, so it is
+   * only usable for the active call.
+   */
+  if (isActiveCall(call) && typeof getVoipStackInterface === 'function') {
+    const voipStack = await getVoipStackInterface();
+
+    if (typeof voipStack?.acceptCall === 'function') {
+      // acceptCall(isMicEnabled, isCameraEnabled)
+      await voipStack.acceptCall(true, call.isVideo === true);
+
+      return true;
+    }
+  }
+
+  /**
+   * Legacy path, for WhatsApp versions without the native VoIP stack
+   *
+   * TODO: remove when 2.3000.10xx is no longer available in wa-version/html
+   */
   if (!call.peerJid.isGroupCall()) {
     await websocket.ensureE2ESessions([call.peerJid]);
   }

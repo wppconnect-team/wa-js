@@ -15,7 +15,13 @@
  */
 
 import { WPPError } from '../../util';
+import { CallStore } from '../../whatsapp';
 import { getVoipStackInterface } from '../../whatsapp/functions';
+
+/**
+ * `WAWebVoipSignalingEnums.EndCallReason.Self` - ended by the local user
+ */
+const END_CALL_REASON_SELF = 2;
 
 /**
  * End a call using the WhatsApp Web native VoIP stack
@@ -37,10 +43,15 @@ export async function end(): Promise<boolean> {
     );
   }
 
-  // Executa o encerramento da chamada ativa na pilha VoIP nativa
-  // 2 = Encerramento solicitado pelo usuário
-  // true = Iniciado pelo usuário local
-  await voipStack.endCall(2, true);
+  // Marks the call as ended by us instead of missed on the call log,
+  // like the end button in `useWAWebVoipCallHandlers` does
+  const activeCall: any = (CallStore as any)?.activeCall;
+  if (activeCall) {
+    activeCall.userEndedCall = true;
+  }
+
+  // endCall(reason, isUserInitiated)
+  await voipStack.endCall(END_CALL_REASON_SELF, true);
 
   return true;
 }
