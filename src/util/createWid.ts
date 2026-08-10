@@ -52,12 +52,12 @@ export function createWid(
     return factory.createWidFromWidLike(id);
   }
 
-  if (id && typeof id === 'object' && typeof id._serialized === 'object') {
+  if (typeof id === 'object' && typeof id._serialized === 'object') {
     id = id._serialized;
   }
 
   // If id is an object with _serialized string, extract it
-  if (id && typeof id === 'object' && typeof id._serialized === 'string') {
+  if (typeof id === 'object' && typeof id._serialized === 'string') {
     id = id._serialized;
   }
 
