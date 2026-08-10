@@ -26,6 +26,10 @@ on:
         description: 'Pre-release tag (e.g. alpha, beta, rc) — only used with pre* increments'
         required: false
         default: ''
+
+permissions:
+  contents: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
