@@ -19,6 +19,7 @@ import { ChatModel, functions } from '../whatsapp';
 import { wrapModuleFunction } from '../whatsapp/exportModule';
 import {
   createChatRecord,
+  getABPropConfigValue,
   isLidMigrated,
   isUnreadTypeMsg,
   mediaTypeFromProtobuf,
@@ -108,6 +109,30 @@ function applyPatch() {
     } catch {
       return false;
     }
+  });
+
+  /**
+   * Keep media encryption/upload on the main thread.
+   *
+   * When the `web_media_encrypt_upload_in_worker_enabled` AB prop is enabled,
+   * WAWebUploadManager routes `encryptAndUpload` through
+   * WAWebUploadManagerWorkerBridge, which delegates the work to a backend
+   * worker with `sendAndReceive('media', 'encryptAndUpload', ...)`. That worker
+   * never answers in an injected page, so the returned promise never settles:
+   * the message stays at `mediaStage=UPLOADING` with no HTTP request and no
+   * error, and any send queued behind it stalls too.
+   *
+   * Forcing the prop off selects WAWebUploadManagerMainThread, which uploads
+   * normally. Text sending is not affected either way.
+   */
+  wrapModuleFunction(getABPropConfigValue, (func, ...args) => {
+    const [key] = args;
+
+    if (key === 'web_media_encrypt_upload_in_worker_enabled') {
+      return false;
+    }
+
+    return func(...args);
   });
 }
 
