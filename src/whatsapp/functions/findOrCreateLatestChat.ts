@@ -18,15 +18,33 @@ import { exportModule } from '../exportModule';
 import { Wid } from '../misc';
 import { ChatModel } from '../models';
 
+/**
+ * Origin of a chat creation, forwarded to WhatsApp as `chatOriginType`.
+ *
+ * WhatsApp keeps an allow list of origins that may create a LID chat
+ * (`WAWebChatOriginTypes.VALID_LID_ORIGINS`). Creating a LID chat with an
+ * origin outside that list makes `WAWebCreateChat` emit an error-level log
+ * and report it, so prefer one of the allowed values below.
+ */
+export type ChatOriginType =
+  /** Generic chat creation. Allowed to create LID chats. */
+  | 'createChat'
+  /** Chat created from a `@username` lookup. Allowed to create LID chats. */
+  | 'username_contactless_search'
+  /** Chat created from a username change notification. Allowed to create LID chats. */
+  | 'username_change_notification'
+  /** @deprecated Not allowed to create LID chats. */
+  | 'forwardSelectedModals'
+  /** @deprecated Not allowed to create LID chats. */
+  | 'newChatFlow'
+  /** @deprecated Not allowed to create LID chats. */
+  | 'chatInfoTopCard';
+
 /** @whatsapp WAWebFindChatAction
  */
 export declare function findOrCreateLatestChat(
   wid: Wid,
-  type?:
-    | 'username_contactless_search'
-    | 'forwardSelectedModals'
-    | 'newChatFlow'
-    | 'chatInfoTopCard'
+  type?: ChatOriginType
 ): Promise<{
   chat: ChatModel;
   created: boolean;
