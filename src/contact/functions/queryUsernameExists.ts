@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { assertUsername, assertUsernameKey } from '../../assert';
 import { Wid } from '../../whatsapp';
 import { queryUsernameExists as nativeQueryUsernameExists } from '../../whatsapp/functions/sendQueryUsernameExists';
 
@@ -43,23 +44,41 @@ export interface QueryUsernameExistsKeyRequired {
 /**
  * Check if a WhatsApp username (@username) exists
  *
- * Some accounts protect their username with a PIN. When the account has PIN
- * protection enabled, this function returns `{ keyRequired: true }` instead of
- * contact info. Pass the numeric PIN as `key` to unlock the result.
+ * A leading `@` is optional and stripped before querying. The username is
+ * validated locally first, using the same rules as WhatsApp Web, and throws
+ * {@link InvalidUsername} when malformed — WhatsApp reports a malformed
+ * username and an unknown one identically, so validating up front keeps the
+ * two distinguishable and avoids a pointless round trip.
+ *
+ * Some accounts protect their username with a 4 digit PIN. When the account
+ * has PIN protection enabled, this function returns `{ keyRequired: true }`
+ * instead of contact info. Pass the PIN as `key` to unlock the result.
+ *
+ * The returned `wid` is the contact's LID. Usernames are mutable and the LID
+ * is not, so resolve once and store the LID: use it for every later operation
+ * instead of looking the username up again.
  *
  * @example
  * ```javascript
- * // Basic lookup
- * const result = await WPP.contact.queryUsernameExists('someusername');
- * if (result && 'keyRequired' in result) {
+ * // Basic lookup, with or without the @ prefix
+ * const result = await WPP.contact.queryUsernameExists('@someusername');
+ * if (!result) {
+ *   // Username does not exist
+ * } else if ('keyRequired' in result) {
  *   // Username is PIN-protected — prompt the user for the PIN
- * } else if (result) {
- *   console.log(result.wid); // The contact's WID
+ * } else {
+ *   console.log(result.wid); // The contact's LID, store this
  * }
  *
  * // With PIN
  * const result = await WPP.contact.queryUsernameExists('someusername', '1234');
  * ```
+ *
+ * @param username The username, with or without the leading `@`
+ * @param key The 4 digit numeric PIN, for PIN-protected usernames
+ *
+ * @throws {InvalidUsername} When the username does not match WhatsApp's rules
+ * @throws {InvalidUsernameKey} When `key` is not a 4 digit numeric PIN
  *
  * @category Contact
  */
@@ -67,7 +86,13 @@ export async function queryUsernameExists(
   username: string,
   key?: string
 ): Promise<QueryUsernameExistsResult | QueryUsernameExistsKeyRequired | null> {
-  return nativeQueryUsernameExists(username, key) as Promise<
+  const normalized = assertUsername(username);
+
+  if (key != null) {
+    assertUsernameKey(key);
+  }
+
+  return nativeQueryUsernameExists(normalized, key) as Promise<
     QueryUsernameExistsResult | QueryUsernameExistsKeyRequired | null
   >;
 }

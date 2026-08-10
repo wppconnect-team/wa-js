@@ -28,4 +28,5 @@ export * from './isUrl';
 export * from './resizeImage';
 export * from './toArrayBuffer';
 export * from './types';
+export * from './username';
 export * from './wrapFunction';

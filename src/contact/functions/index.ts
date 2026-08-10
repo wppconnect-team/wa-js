@@ -26,6 +26,7 @@ export {
 } from './getPnLidEntry';
 export { getProfilePictureUrl } from './getProfilePictureUrl';
 export { getStatus } from './getStatus';
+export { getUsername, GetUsernameResult } from './getUsername';
 export { ContactListOptions, list } from './list';
 /**
  * @deprecated Use queryWidExists instead
