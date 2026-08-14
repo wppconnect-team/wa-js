@@ -19,12 +19,16 @@ import { isMultiDevice } from '../../conn';
 import { MsgKey, MsgModel, MsgStore, Wid } from '../../whatsapp';
 import { MSG_TYPE } from '../../whatsapp/enums';
 import {
+  msgFindAfter,
+  msgFindBefore,
   msgFindByDirection,
   msgFindCallLog,
   msgFindMedia,
   msgFindQuery,
 } from '../../whatsapp/functions';
 import { RawMessage } from '..';
+
+const MSG_FIND_BY_DIRECTION_FALLBACK_TIMEOUT_MS = 10000;
 
 export interface GetMessagesOptions {
   count?: number;
@@ -33,6 +37,56 @@ export interface GetMessagesOptions {
   onlyUnread?: boolean;
   media?: 'url' | 'document' | 'all' | 'image';
   includeCallMessages?: boolean;
+}
+
+function withTimeout<T>(
+  promise: Promise<T>,
+  timeoutMs: number,
+  label: string
+): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      reject(new Error(`${label} timed out after ${timeoutMs}ms`));
+    }, timeoutMs);
+
+    promise
+      .then(resolve)
+      .catch(reject)
+      .finally(() => {
+        clearTimeout(timeout);
+      });
+  });
+}
+
+async function msgFindByDirectionWithFallback(params: {
+  anchor: MsgKey;
+  count: number;
+  direction: 'after' | 'before';
+}) {
+  try {
+    return await withTimeout(
+      msgFindByDirection(params),
+      MSG_FIND_BY_DIRECTION_FALLBACK_TIMEOUT_MS,
+      'msgFindByDirection'
+    );
+  } catch (error) {
+    console.warn(
+      'msgFindByDirection failed, falling back to directional message finder:',
+      error
+    );
+
+    if (params.direction === 'after') {
+      return msgFindAfter({
+        anchor: params.anchor,
+        count: params.count,
+      });
+    }
+
+    return msgFindBefore({
+      anchor: params.anchor,
+      count: params.count,
+    });
+  }
 }
 
 /**
@@ -239,7 +293,7 @@ export async function getMessages(
         return [];
       }
 
-      const result = await msgFindByDirection({
+      const result = await msgFindByDirectionWithFallback({
         anchor: newAPIAnchor,
         count,
         direction,
