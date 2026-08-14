@@ -25,7 +25,6 @@ export { deleteMessage, DeleteMessageReturn } from './deleteMessage';
 export { downloadMedia } from './downloadMedia';
 export { editMessage } from './editMessage';
 export { find } from './find';
-export { forwardMessage, ForwardMessageOptions } from './forwardMessage';
 export { forwardMessages, ForwardMessagesOptions } from './forwardMessages';
 export { generateMessageID } from './generateMessageID';
 export { get } from './get';
