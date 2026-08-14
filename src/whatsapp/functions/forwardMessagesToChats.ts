@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-import { injectFallbackModule } from '../../loader';
 import { exportModule } from '../exportModule';
 import { ChatModel, MsgModel } from '../models';
-import { ChatStore } from '../stores';
 
 /** @whatsapp 69951
  * @whatsapp 450192 >= 2.2353.0
@@ -28,34 +26,17 @@ export declare function forwardMessagesToChats(
   displayCaptionText?: boolean
 ): Promise<boolean>;
 
+/**
+ * `WAWebForwardMessagesToChat` ships in a bundle WhatsApp only fetches on
+ * demand, so this misses until `ensureLazyModule()` loads it (see
+ * `src/loader/lazyModules.ts`). There used to be a fallback here delegating to
+ * `ChatStore.forwardMessagesToChats` (#1535, WA ~2.2350); the Chat collection
+ * dropped that method on WA >= 2.3000, so the fallback only served to claim the
+ * name while the bundle was still absent — and `exportModule` then pinned the
+ * binding to it for the rest of the page.
+ */
 exportModule(
   exports,
   { forwardMessagesToChats: 'forwardMessagesToChats' },
   (m) => m.forwardMessagesToChats
 );
-
-/**
- * On WhatsApp Web >= 2.3000 the Chat collection no longer carries
- * `forwardMessagesToChats`, and `WAWebForwardMessagesToChat` ships in a bundle
- * WhatsApp only fetches on demand (see `LAZY_MODULES`). Offering this fallback
- * unconditionally made `searchId` resolve to it while that bundle was still
- * absent, and `exportModule` then pins the binding for the rest of the page —
- * so the real function could never take over and calls failed inside
- * `ChatStore.forwardMessagesToChats`. Only claim the name where the collection
- * method actually exists; elsewhere the miss stays unpinned and the binding
- * recovers as soon as the bundle is loaded.
- */
-injectFallbackModule('forwardMessagesToChats', {
-  get forwardMessagesToChats() {
-    if (typeof ChatStore?.forwardMessagesToChats !== 'function') {
-      return undefined;
-    }
-
-    return (
-      msgs: MsgModel[],
-      chats: ChatModel[],
-      displayCaptionText?: boolean
-    ): Promise<boolean> =>
-      ChatStore.forwardMessagesToChats(msgs, chats, displayCaptionText);
-  },
-});
