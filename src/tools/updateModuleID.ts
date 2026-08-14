@@ -132,7 +132,12 @@ async function start() {
     'functions.createCollection',
     'functions.deleteCollection',
     'functions.editCollection',
+    // Both forward modules ship in a resource bundle WhatsApp's Bootloader only
+    // fetches on demand, so they are legitimately unresolved on a session that
+    // never forwards. `WPP.chat.forwardMessage(s)` load it through
+    // `ensureLazyModule()` before use (see src/loader/lazyModules.ts).
     'functions.forwardMessages',
+    'functions.forwardMessagesToChats',
     'functions.setPushname',
     'functions.revokeStatus',
     'functions.muteNewsletter', // removed in version 2.3000.1032373751

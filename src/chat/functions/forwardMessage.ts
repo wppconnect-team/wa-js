@@ -15,6 +15,8 @@
  */
 
 import { assertFindChat } from '../../assert';
+import { ensureLazyModule } from '../../loader';
+import { WPPError } from '../../util';
 import { MsgKey, Wid } from '../../whatsapp';
 import { forwardMessagesToChats } from '../../whatsapp/functions';
 import { getMessageById } from '..';
@@ -64,6 +66,20 @@ export async function forwardMessage(
   const chat = await assertFindChat(toChatId);
 
   const msg = await getMessageById(msgId);
+
+  /**
+   * `WAWebForwardMessagesToChat` ships in the same on-demand bundle as
+   * `WAWebChatForwardMessage`, so it is missing for the same reason: a session
+   * that never opens the forward UI never fetches it.
+   */
+  await ensureLazyModule('WAWebForwardMessagesToChat');
+
+  if (typeof forwardMessagesToChats !== 'function') {
+    throw new WPPError(
+      'forward_messages_to_chats_not_available',
+      "WhatsApp's forwardMessagesToChats function is not available in this session"
+    );
+  }
 
   return await forwardMessagesToChats(
     [msg],
