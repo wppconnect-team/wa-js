@@ -33,10 +33,12 @@ export interface ForwardMessagesOptions {
  * @example
  * ```javascript
  * // Forward messages
- * WPP.chat.forwardMessagesWhatsApp('[number]@c.us', ['true_[number]@c.us_ABCDEF', ...]);
+ * WPP.chat.forwardMessages('[number]@c.us', ['true_[number]@c.us_ABCDEF', ...]);
  * ```
  * @category Message
- * @return  {any} Any
+ * @returns The messages that could **not** be forwarded — an empty array means
+ * every message went through. WhatsApp collects them as it forwards and does
+ * not reject, so a resolved promise is not by itself a success.
  */
 export async function forwardMessages(
   toChatId: string | Wid,
