@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { exportProxyModel } from '../exportModule';
+import { exportModule } from '../exportModule';
 import {
   Model,
   ModelOptions,
@@ -52,6 +52,8 @@ interface Derived {
 
 /** @whatsapp 74470
  * @whatsapp 574470 >= 2.2222.8
+ * @whatsapp WAWebStickerPackModel >= 2.3000.0
+ * @whatsapp WAWebStickerPackModelMd >= 2.3000.1045213319
  */
 export declare interface StickerPackModel extends ModelProxy<
   Props,
@@ -61,6 +63,8 @@ export declare interface StickerPackModel extends ModelProxy<
 
 /** @whatsapp 74470
  * @whatsapp 574470 >= 2.2222.8
+ * @whatsapp WAWebStickerPackModel >= 2.3000.0
+ * @whatsapp WAWebStickerPackModelMd >= 2.3000.1045213319
  */
 export declare class StickerPackModel extends Model {
   constructor(
@@ -72,4 +76,17 @@ export declare class StickerPackModel extends Model {
   static isPlaceholderId(): boolean;
 }
 
-exportProxyModel(exports, 'StickerPackModel');
+exportModule(
+  exports,
+  { StickerPackModel: ['default', 'StickerPackModel', 'StickerPack'] },
+  (m, id) =>
+    // WA >= 2.3000.10452: WAWebStickerPackModel (proxyName 'stickerPack') was
+    // removed; only WAWebStickerPackModelMd (proxyName 'stickerPackMd') remains
+    id === 'WAWebStickerPackModelMd' ||
+    // Older versions: find by proxyName, like exportProxyModel does
+    ['StickerPack', 'stickerPack', 'sticker-pack', 'sticker_pack'].includes(
+      m.default?.prototype?.proxyName ||
+        m.StickerPackModel?.prototype?.proxyName ||
+        m.StickerPack?.prototype?.proxyName
+    )
+);
