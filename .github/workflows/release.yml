@@ -39,6 +39,10 @@ jobs:
         with:
           token: ${{ secrets.PERSONAL_TOKEN }}
           ref: ${{ github.event.inputs.branch }}
+          # `changelog:update` runs `conventional-changelog -r 0`, which walks
+          # every tag. On the default shallow clone it saw a single commit and
+          # no tags, so each release rewrote CHANGELOG.md down to one entry.
+          fetch-depth: 0
 
       - name: Setup GIT
         run: |
