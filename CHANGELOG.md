@@ -1,3 +1,3 @@
-## 4.5.0 (2026-07-31)
+## 4.6.0 (2026-08-14)
 
-* build(deps-dev): update dependency @wppconnect/wa-version to ^1.5.4476 (#3545) ([9490f3f0e532d089c2be64cab918c3154d0bdd80](https://github.com/wppconnect-team/wa-js/commit/9490f3f0e532d089c2be64cab918c3154d0bdd80)), closes [#3545](https://github.com/wppconnect-team/wa-js/issues/3545)
+* fix(chat): load the forward bundle before forwarding (#3582) ([e84b573cace352cc563eb30d2a242f3f4726a3f9](https://github.com/wppconnect-team/wa-js/commit/e84b573cace352cc563eb30d2a242f3f4726a3f9)), closes [#3582](https://github.com/wppconnect-team/wa-js/issues/3582) [#1535](https://github.com/wppconnect-team/wa-js/issues/1535)
