@@ -34,11 +34,28 @@ exportModule(
   (m) => m.forwardMessagesToChats
 );
 
+/**
+ * On WhatsApp Web >= 2.3000 the Chat collection no longer carries
+ * `forwardMessagesToChats`, and `WAWebForwardMessagesToChat` ships in a bundle
+ * WhatsApp only fetches on demand (see `LAZY_MODULES`). Offering this fallback
+ * unconditionally made `searchId` resolve to it while that bundle was still
+ * absent, and `exportModule` then pins the binding for the rest of the page —
+ * so the real function could never take over and calls failed inside
+ * `ChatStore.forwardMessagesToChats`. Only claim the name where the collection
+ * method actually exists; elsewhere the miss stays unpinned and the binding
+ * recovers as soon as the bundle is loaded.
+ */
 injectFallbackModule('forwardMessagesToChats', {
-  forwardMessagesToChats: (
-    msgs: MsgModel[],
-    chats: ChatModel[],
-    displayCaptionText?: boolean
-  ): Promise<boolean> =>
-    ChatStore.forwardMessagesToChats(msgs, chats, displayCaptionText),
+  get forwardMessagesToChats() {
+    if (typeof ChatStore?.forwardMessagesToChats !== 'function') {
+      return undefined;
+    }
+
+    return (
+      msgs: MsgModel[],
+      chats: ChatModel[],
+      displayCaptionText?: boolean
+    ): Promise<boolean> =>
+      ChatStore.forwardMessagesToChats(msgs, chats, displayCaptionText);
+  },
 });

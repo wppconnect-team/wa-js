@@ -15,6 +15,8 @@
  */
 
 import { assertFindChat } from '../../assert';
+import { ensureLazyModule } from '../../loader';
+import { WPPError } from '../../util';
 import { MsgKey, MsgModel, Wid } from '../../whatsapp';
 import { forwardMessages as forwardMessagesWhatsApp } from '../../whatsapp/functions';
 import { getMessageById } from './getMessageById';
@@ -50,6 +52,22 @@ export async function forwardMessages(
     } else {
       msgs.push(await getMessageById(msg));
     }
+  }
+
+  /**
+   * `WAWebChatForwardMessage` ships in a bundle WhatsApp only fetches when
+   * something needs it, and a session that never opens the forward UI never
+   * does. Ask for the bundle before touching the binding: otherwise the module
+   * is missing from the registry, the getter resolves to `undefined` and every
+   * forward on that page fails with "forwardMessages is not a function".
+   */
+  await ensureLazyModule('WAWebChatForwardMessage');
+
+  if (typeof forwardMessagesWhatsApp !== 'function') {
+    throw new WPPError(
+      'forward_messages_not_available',
+      "WhatsApp's forwardMessages function is not available in this session"
+    );
   }
 
   return await forwardMessagesWhatsApp({
