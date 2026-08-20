@@ -65,6 +65,9 @@ export const IGNORE_FAIL_MODULES: ReadonlySet<string> = new Set([
   // getUserhash was removed from WAWebContactGetters in WA ~2.3000.1043126001;
   // src/contact/patch.ts reimplements it with WAMd5's md5 when it is missing.
   'getUserhash',
+  // WAWebConnGetters was introduced in WA ~2.3000.1045643679; older versions
+  // still have isSMB directly on Conn.
+  'ConnGetters',
   // WAWebConstantsDeprecated was removed from WA ~2.3000.1044096409; its values
   // are now spread across specific modules (WAWebMediaConstants,
   // WAWebBizCommerceConstants, ...).

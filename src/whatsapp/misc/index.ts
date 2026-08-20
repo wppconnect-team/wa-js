@@ -22,6 +22,7 @@ export * from './ChatPresence';
 export * from './Cmd';
 export * from './ComposeBoxActions';
 export * from './Conn';
+export * from './ConnGetters';
 export * from './Constants';
 export * from './Enviroment';
 export * from './EventEmitter';
