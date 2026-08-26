@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-import { Conn, ConnGetters } from '../../whatsapp';
+import { exportModule } from '../exportModule';
 
-/**
- * Return the current logged user is Bussiness or not
- *
- * @example
- * ```javascript
- * WPP.profile.isBusiness();
- * ```
- * @category Profile
- */
-export function isBusiness(): boolean | undefined {
-  return ConnGetters?.getIsSMB(Conn) ?? Conn.isSMB;
-}
+export declare const ConnGetters: {
+  getIsSMB(conn: any): boolean;
+};
+
+exportModule(
+  exports,
+  { ConnGetters: null },
+  (m, moduleId) => moduleId === 'WAWebConnGetters' || m.getIsSMB
+);
