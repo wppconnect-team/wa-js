@@ -74,6 +74,18 @@ export const LAZY_MODULES: {
     ],
     pattern: /forward/i,
   },
+  // Moved out of the eagerly loaded bundles in WA ~2.3000.1045986927. Only
+  // `.react` flows pull this bundle, so there is no side-effect-free utility
+  // component to prefer; `WAWebDeactivateCommunityDrawer.react` is first
+  // because its bundle set is by far the smallest (18 chunks against 39+).
+  WAWebGroupCommunityJob: {
+    components: [
+      'WAWebDeactivateCommunityDrawer.react',
+      'WAWebCommunityFlow.react',
+      'WAWebNewGroupFlow.react',
+    ],
+    pattern: /communit/i,
+  },
 };
 
 /**

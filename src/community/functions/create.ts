@@ -20,6 +20,7 @@ import {
   sendCreateCommunity,
   sendLinkSubgroups,
 } from '../../whatsapp/functions';
+import { ensureCommunityJob } from '../ensureCommunityJob';
 
 /**
  * Create a community
@@ -41,12 +42,15 @@ export async function create(
   }
 
   const subGroupsWids = subGroupsIds.map(assertWid);
-  const result = await sendCreateCommunity({
+  const createCommunity = await ensureCommunityJob(() => sendCreateCommunity);
+  const linkSubgroups = await ensureCommunityJob(() => sendLinkSubgroups);
+
+  const result = await createCommunity({
     name: name,
     desc: desc,
     closed: false,
   });
-  const linkGroups = await sendLinkSubgroups({
+  const linkGroups = await linkSubgroups({
     parentGroupId: result.wid,
     subgroupIds: subGroupsWids,
   });

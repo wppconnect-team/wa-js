@@ -17,6 +17,7 @@
 import { assertWid } from '../../assert';
 import { Wid } from '../../whatsapp';
 import { sendUnlinkSubgroups as SendUnlinkSubgroups } from '../../whatsapp/functions';
+import { ensureCommunityJob } from '../ensureCommunityJob';
 
 /**
  * Remove groups from community
@@ -41,7 +42,9 @@ export async function removeSubgroups(
   }
   const parentWid = assertWid(parentGroupId);
   const subGroupsWids = subgroupIds.map(assertWid);
-  return await SendUnlinkSubgroups({
+  const unlinkSubgroups = await ensureCommunityJob(() => SendUnlinkSubgroups);
+
+  return await unlinkSubgroups({
     parentGroupId: parentWid,
     subgroupIds: subGroupsWids,
   });
