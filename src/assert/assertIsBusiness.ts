@@ -15,7 +15,7 @@
  */
 
 import { WPPError } from '../util';
-import { Conn } from '../whatsapp';
+import { Conn, ConnGetters } from '../whatsapp';
 
 export class NotIsBusinessError extends WPPError {
   constructor() {
@@ -24,7 +24,7 @@ export class NotIsBusinessError extends WPPError {
 }
 
 export function assertIsBusiness(): void {
-  if (!Conn.isSMB) {
+  if (!(ConnGetters?.getIsSMB(Conn) ?? Conn.isSMB)) {
     throw new NotIsBusinessError();
   }
 }

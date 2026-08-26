@@ -20,6 +20,7 @@ import {
   BusinessProfileModel,
   BusinessProfileStore,
   Conn,
+  ConnGetters,
 } from '../../whatsapp';
 import { editBusinessProfile as editProfile } from '../../whatsapp/functions';
 
@@ -219,7 +220,7 @@ import { editBusinessProfile as editProfile } from '../../whatsapp/functions';
  */
 
 export async function editBusinessProfile(params: BusinessProfileModel) {
-  if (!Conn.isSMB)
+  if (!(ConnGetters?.getIsSMB(Conn) ?? Conn.isSMB))
     throw new WPPError('NOT_BUSINESS_PROFILE', 'Not a business profile');
 
   if (params.website && Array.isArray(params.website)) {

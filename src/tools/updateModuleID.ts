@@ -156,6 +156,10 @@ async function start() {
     'functions.subscribeGroupPresence', // added in WAWebContactPresenceBridge >= ~2.3000.1039447205
     'functions.getUserhash', // removed from WAWebContactGetters in WA ~2.3000.1043126001, reimplemented in src/contact/patch.ts
     'Constants', // WAWebConstantsDeprecated removed from WA ~= 2.3000.1044096409
+    // WAWebConnGetters was introduced in WA ~2.3000.1045643679; every older
+    // version still exposes isSMB directly on Conn, so the miss is expected
+    // there (src/whatsapp/misc/ConnGetters.ts falls back to Conn.isSMB).
+    'ConnGetters',
     'functions.createGroup', // WAWebGroupCreateJob only registers after login on WA >= ~2.3000.1044096409
     // The group invite-code modules load lazily and are not registered on the
     // QR screen on WA >= ~2.3000.1040 (this test never logs in)
