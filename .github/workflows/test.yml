@@ -43,6 +43,9 @@ jobs:
       - name: Install Dependencies
         run: npm ci || npm install
 
+      - name: Test media upload patch
+        run: npx playwright test tests/media-upload-patch.unit.spec.ts --project tests
+
       - uses: actions/github-script@v9
         id: versions
         with:

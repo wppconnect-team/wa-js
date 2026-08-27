@@ -25,6 +25,7 @@ import {
   mediaTypeFromProtobuf,
   typeAttributeFromProtobuf,
 } from '../whatsapp/functions';
+import { forceMediaUploadMainThread } from './functions/forceMediaUploadMainThread';
 
 loader.onFullReady(applyPatch, 1000);
 loader.onFullReady(applyPatchModel);
@@ -126,13 +127,7 @@ function applyPatch() {
    * normally. Text sending is not affected either way.
    */
   wrapModuleFunction(getABPropConfigValue, (func, ...args) => {
-    const [key] = args;
-
-    if (key === 'web_media_encrypt_upload_in_worker_enabled') {
-      return false;
-    }
-
-    return func(...args);
+    return forceMediaUploadMainThread(func, ...args);
   });
 }
 
