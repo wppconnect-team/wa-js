@@ -17,6 +17,7 @@
 import { assertWid } from '../../assert';
 import { Wid } from '../../whatsapp';
 import { sendDeactivateCommunity as SendDeactivateCommunity } from '../../whatsapp/functions';
+import { ensureCommunityJob } from '../ensureCommunityJob';
 
 /**
  * Deactivated a community
@@ -31,7 +32,11 @@ import { sendDeactivateCommunity as SendDeactivateCommunity } from '../../whatsa
 
 export async function deactivate(communityId: string | Wid): Promise<any> {
   const wid = assertWid(communityId);
-  return SendDeactivateCommunity({
+  const deactivateCommunity = await ensureCommunityJob(
+    () => SendDeactivateCommunity
+  );
+
+  return deactivateCommunity({
     parentGroupId: wid,
   });
 }

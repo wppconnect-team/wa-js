@@ -161,6 +161,14 @@ async function start() {
     // there (src/whatsapp/misc/ConnGetters.ts falls back to Conn.isSMB).
     'ConnGetters',
     'functions.createGroup', // WAWebGroupCreateJob only registers after login on WA >= ~2.3000.1044096409
+    // WAWebGroupCommunityJob moved into an on-demand resource bundle in WA
+    // ~2.3000.1045986927 and only `.react` community flows pull it, so it is
+    // unresolved on this test (which never logs in). `WPP.community.*` loads
+    // it through `ensureCommunityJob()` before use.
+    'functions.sendCreateCommunity',
+    'functions.sendDeactivateCommunity',
+    'functions.sendLinkSubgroups',
+    'functions.sendUnlinkSubgroups',
     // The group invite-code modules load lazily and are not registered on the
     // QR screen on WA >= ~2.3000.1040 (this test never logs in)
     'functions.joinGroupViaInvite',
