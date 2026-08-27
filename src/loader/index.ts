@@ -827,11 +827,18 @@ function getBootloader(): Bootloader | null {
 }
 
 /**
- * Whether `moduleId` is currently in the registry `searchId` scans.
+ * Whether `moduleId` resolves to usable exports.
+ *
+ * A key in `moduleRequire.m` is not enough. WhatsApp pre-declares ids whose
+ * resource bundle has not been fetched yet, and requiring one of those returns
+ * `null` rather than throwing (measured on 2.3000.1046070720 for
+ * `WAWebGroupCommunityJob`). `searchId` skips those entries, so counting them
+ * as registered made `ensureLazyModule` report success without ever asking the
+ * Bootloader for the bundle, and the binding stayed `undefined`.
  */
 function isModuleRegistered(moduleId: string): boolean {
   try {
-    return moduleId in moduleRequire.m;
+    return moduleId in moduleRequire.m && !!moduleRequire(moduleId);
   } catch (_error) {
     return false;
   }

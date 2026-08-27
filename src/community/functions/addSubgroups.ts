@@ -17,6 +17,7 @@
 import { assertWid } from '../../assert';
 import { Wid } from '../../whatsapp';
 import { sendLinkSubgroups as SendLinkSubgroups } from '../../whatsapp/functions';
+import { ensureCommunityJob } from '../ensureCommunityJob';
 
 /**
  * Add groups do community
@@ -41,7 +42,9 @@ export async function addSubgroups(
   }
   const parentWid = assertWid(parentGroupId);
   const subGroupsWids = subgroupIds.map(assertWid);
-  return await SendLinkSubgroups({
+  const linkSubgroups = await ensureCommunityJob(() => SendLinkSubgroups);
+
+  return await linkSubgroups({
     parentGroupId: parentWid,
     subgroupIds: subGroupsWids,
   });
