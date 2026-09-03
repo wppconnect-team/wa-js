@@ -18,7 +18,7 @@ import * as loader from '../loader';
 import { IsOfficialClient } from '../whatsapp';
 import { SANITIZED_VERSION_STR } from '../whatsapp/contants';
 
-loader.onInjected(() => {
+loader.onInjectedInternal(() => {
   /**
    * When sending logs to the WhatsApp server, it will always report that the ocVersion is true.
    */

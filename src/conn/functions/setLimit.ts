@@ -22,7 +22,7 @@ import { getNumChatsPinned } from '../../whatsapp/functions';
 
 let unlimitedPin: undefined | boolean = undefined;
 
-loader.onFullReady(() => {
+loader.onFullReadyInternal(() => {
   wrapModuleFunction(getNumChatsPinned, (func, ...args) => {
     const getNumChatsPinnedOriginal = func(...args);
     return unlimitedPin ? 1 : getNumChatsPinnedOriginal;

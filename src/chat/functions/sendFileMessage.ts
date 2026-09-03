@@ -579,7 +579,7 @@ function generateWhiteThumb(width: number, height: number, maxSize: number) {
   };
 }
 
-loader.onFullReady(() => {
+loader.onFullReadyInternal(() => {
   wrapModuleFunction(generateVideoThumbsAndDuration, async (func, ...args) => {
     const [data] = args;
 

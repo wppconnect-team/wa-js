@@ -19,7 +19,7 @@ import * as loader from '../../loader';
 import { Conn } from '../../whatsapp';
 import { getAuthCode } from '..';
 
-loader.onInjected(registerAuthCodeChangeEvent);
+loader.onInjectedInternal(registerAuthCodeChangeEvent);
 
 function registerAuthCodeChangeEvent() {
   const trigger = async () => {

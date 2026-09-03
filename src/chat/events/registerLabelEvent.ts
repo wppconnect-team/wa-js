@@ -26,7 +26,7 @@ import {
 } from '../../whatsapp/functions';
 import { get as getChat } from '../functions/';
 
-loader.onFullReady(register);
+loader.onFullReadyInternal(register);
 
 function register() {
   async function processLabelEvent(event: 'add' | 'remove', ...args: any) {

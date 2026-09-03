@@ -18,7 +18,7 @@ import { internalEv } from '../../eventEmitter';
 import * as loader from '../../loader';
 import { MsgModel, MsgStore } from '../../whatsapp';
 
-loader.onFullReady(registerAckMessageEvent);
+loader.onFullReadyInternal(registerAckMessageEvent);
 
 function registerAckMessageEvent() {
   MsgStore.on('change:latestEditMsgKey', (msg: MsgModel) => {

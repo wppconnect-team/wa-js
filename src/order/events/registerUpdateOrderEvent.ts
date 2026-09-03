@@ -18,7 +18,7 @@ import { internalEv } from '../../eventEmitter';
 import * as loader from '../../loader';
 import { MsgModel, MsgStore } from '../../whatsapp';
 
-loader.onInjected(() => registerUpdateOrderEvent());
+loader.onInjectedInternal(() => registerUpdateOrderEvent());
 
 function registerUpdateOrderEvent() {
   MsgStore.on('add', (msg: MsgModel) => {
