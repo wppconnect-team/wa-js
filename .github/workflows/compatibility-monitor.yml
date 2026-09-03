@@ -1,0 +1,114 @@
+name: WA-JS compatibility monitor
+
+on:
+  schedule:
+    - cron: '15,45 * * * *'
+  workflow_dispatch:
+    inputs:
+      trigger:
+        description: Source that requested the check
+        required: false
+        default: manual
+
+concurrency:
+  group: wa-js-compatibility-monitor
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  module-resolution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 24.20.0
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Probe WhatsApp module resolution
+        id: probe
+        continue-on-error: true
+        uses: nick-fields/retry@v4
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: npx ts-node ./src/tools/updateModuleID.ts --dry-run
+        env:
+          SEND_WEBHOOK_FAILURE: 'false'
+
+      - name: Report compatibility signal
+        if: always()
+        uses: actions/github-script@v9
+        env:
+          COMPATIBILITY_MONITOR_URL: ${{ secrets.COMPATIBILITY_MONITOR_URL }}
+          COMPATIBILITY_MONITOR_SECRET: ${{ secrets.COMPATIBILITY_MONITOR_SECRET }}
+          PROBE_OUTCOME: ${{ steps.probe.outcome }}
+          TRIGGER_SOURCE: ${{ inputs.trigger || github.event_name }}
+        with:
+          script: |
+            const crypto = require('node:crypto');
+            const url = process.env.COMPATIBILITY_MONITOR_URL;
+            const secret = process.env.COMPATIBILITY_MONITOR_SECRET;
+            if (!url || !secret) {
+              core.notice('Compatibility monitor endpoint is not configured; skipping signal delivery.');
+              return;
+            }
+
+            const outcome = process.env.PROBE_OUTCOME;
+            const status = outcome === 'success' ? 'passing' : outcome === 'failure' ? 'failing' : 'unknown';
+            const packageJson = require('./package.json');
+            const observedAt = new Date().toISOString();
+            const payload = {
+              schemaVersion: '1',
+              idempotencyKey: `${context.repo.owner}/${context.repo.repo}:${context.runId}:${process.env.GITHUB_RUN_ATTEMPT}:module-resolution`,
+              monitorKey: 'wa-js:module-resolution',
+              project: '@wppconnect/wa-js',
+              status,
+              severity: 'critical',
+              observedAt,
+              whatsappVersion: packageJson.engines?.['whatsapp-web'],
+              affectedCapabilities: ['module-resolution', 'browser-injection'],
+              evidenceUrl: `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+            };
+
+            function canonicalize(value) {
+              if (Array.isArray(value)) return value.map(canonicalize);
+              if (value && typeof value === 'object') {
+                return Object.fromEntries(
+                  Object.entries(value)
+                    .sort(([left], [right]) => left.localeCompare(right))
+                    .map(([key, nested]) => [key, canonicalize(nested)])
+                );
+              }
+              return value;
+            }
+
+            const body = JSON.stringify(canonicalize(payload));
+            const timestamp = Math.floor(Date.now() / 1000);
+            const signature = `sha256=${crypto.createHmac('sha256', secret).update(`${timestamp}.${body}`).digest('hex')}`;
+            const response = await fetch(url, {
+              method: 'POST',
+              headers: {
+                'content-type': 'application/json',
+                'x-wppconnect-timestamp': String(timestamp),
+                'x-wppconnect-signature': signature,
+              },
+              body,
+            });
+            if (!response.ok) {
+              throw new Error(`Compatibility signal returned HTTP ${response.status}: ${await response.text()}`);
+            }
+            core.info(`Reported ${status} compatibility signal (${process.env.TRIGGER_SOURCE}).`);
+
+      - name: Fail when compatibility probe failed
+        if: steps.probe.outcome == 'failure'
+        run: exit 1
