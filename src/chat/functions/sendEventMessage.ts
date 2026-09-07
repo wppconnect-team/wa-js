@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { ensureLazyModule } from '../../loader';
 import { WPPError } from '../../util';
 import { createEventCallLink } from '../../whatsapp/functions';
 import {
@@ -94,6 +95,10 @@ export async function sendEventMessage(
   const date = new Date(options.startTime * 1000);
   date.setHours(date.getHours() + 2);
   const defaultEndTime = Math.floor(date.getTime() / 1000);
+
+  if (typeof options.callType === 'string') {
+    await ensureLazyModule('WAWebGenerateEventCallLink');
+  }
 
   const rawMessage: RawMessage = {
     type: 'event_creation',

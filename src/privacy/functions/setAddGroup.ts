@@ -36,6 +36,7 @@
  */
 
 import { PrivacyDisallowedListType } from '../../enums';
+import { ensureLazyModule } from '../../loader';
 import { WPPError } from '../../util';
 import {
   getUserPrivacySettings,
@@ -69,6 +70,7 @@ export async function setAddGroup(
     value,
     disallowedList
   );
+  await ensureLazyModule('WAWebSetPrivacyForOneCategoryAction');
   await setPrivacyForOneCategory(
     {
       name: PrivacyDisallowedListType.GroupAdd,

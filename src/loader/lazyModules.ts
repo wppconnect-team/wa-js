@@ -54,6 +54,20 @@ export interface LazyModuleSource {
 export const LAZY_MODULES: {
   readonly [moduleId: string]: LazyModuleSource;
 } = {
+  // Verified on a cold QR page in WA 2.3000.1046899131. These components
+  // register the original exports without opening UI or invoking actions.
+  WAWebGenerateEventCallLink: {
+    components: ['WAWebEventsCreateEventModalFlow.react'],
+    pattern: /EventsCreateEvent/,
+  },
+  WAWebGroupGetCommunityParticipantsJob: {
+    components: ['WAWebViewCommunityMembersModal.react'],
+    pattern: /ViewCommunityMembers/,
+  },
+  WAWebSetPrivacyForOneCategoryAction: {
+    components: ['WAWebPrivacyVisibilityEditDrawer.react'],
+    pattern: /PrivacyVisibility/,
+  },
   // Both forward modules ship in the same bundle, so either entry recovers
   // the other. `WAWebMediaForwardMediaMsg` is preferred because it is a plain
   // utility module: requiring it has no UI side effects, unlike the `.react`

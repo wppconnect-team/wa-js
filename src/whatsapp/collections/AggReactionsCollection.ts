@@ -28,6 +28,15 @@ export declare class AggReactionsCollection extends Collection<AggReactionsModel
 
 exportModule(
   exports,
-  { AggReactionsCollection: 'AggReactionsCollection' },
-  (m) => m.AggReactionsCollection
+  {
+    // WA 2.3000.1046899131 stopped exporting the constructor directly, but
+    // the Reactions model still registers the same class for its child list.
+    AggReactionsCollection: [
+      'AggReactionsCollection',
+      'Reactions.prototype._collections.reactions',
+    ],
+  },
+  (m) =>
+    m.AggReactionsCollection ||
+    (m.AggReactions && m.Reactions?.prototype?._collections?.reactions)
 );
