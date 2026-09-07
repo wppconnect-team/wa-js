@@ -80,6 +80,18 @@ async function start() {
     }
   });
 
+  // Verify lazy bindings after requesting their bundles; they must still
+  // resolve below, so a removed export or broken finder remains a failure.
+  await page.evaluate(async () => {
+    for (const moduleId of [
+      'WAWebGenerateEventCallLink',
+      'WAWebGroupGetCommunityParticipantsJob',
+      'WAWebSetPrivacyForOneCategoryAction',
+    ]) {
+      await window.WPP.loader.ensureLazyModule(moduleId);
+    }
+  });
+
   const result = await page.evaluate((dirs: string[]) => {
     const result: any = {};
 

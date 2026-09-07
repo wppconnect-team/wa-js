@@ -15,6 +15,7 @@
  */
 
 import { assertWid } from '../../assert';
+import { ensureLazyModule } from '../../loader';
 import { Wid } from '../../whatsapp';
 import { getCommunityParticipants as GetCommunityParticipants } from '../../whatsapp/functions';
 
@@ -31,5 +32,6 @@ import { getCommunityParticipants as GetCommunityParticipants } from '../../what
 
 export async function getParticipants(communityId: string | Wid): Promise<any> {
   const wid = assertWid(communityId);
+  await ensureLazyModule('WAWebGroupGetCommunityParticipantsJob');
   return GetCommunityParticipants(wid);
 }

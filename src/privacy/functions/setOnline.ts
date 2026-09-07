@@ -29,6 +29,7 @@
  * @category Privacy
  */
 
+import { ensureLazyModule } from '../../loader';
 import { WPPError } from '../../util';
 import {
   getUserPrivacySettings,
@@ -54,6 +55,7 @@ export async function setOnline(
       }
     );
   }
+  await ensureLazyModule('WAWebSetPrivacyForOneCategoryAction');
   await setPrivacyForOneCategory({
     name: 'online',
     value: value,
