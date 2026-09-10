@@ -17,10 +17,16 @@
 import { exportModule } from '../exportModule';
 import { MsgKey, Wid } from '../misc';
 import { MsgModel } from '../models';
+import type { encryptAndSendMsg } from './encryptAndSendMsg';
 
 /**
  * @whatsapp WAWebEncryptAndSendStatusMsg
  */
+export declare function encryptAndSendStatusMsg(options: {
+  metricsReporter: any;
+  msgProtobuf: any;
+  sendMsgRecord: Parameters<typeof encryptAndSendMsg>[0];
+}): Promise<any>;
 export declare function encryptAndSendStatusMsg(
   msg: {
     msg: {

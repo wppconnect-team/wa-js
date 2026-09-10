@@ -49,6 +49,9 @@ jobs:
       - name: Test group description signatures
         run: npx playwright test tests/group-description.unit.spec.ts --project tests
 
+      - name: Test status encryption signatures
+        run: npx playwright test tests/status-encryption.unit.spec.ts --project tests
+
       - name: Test cold-page compatibility bindings
         run: npx playwright test tests/compatibility-monitor-lazy-modules.spec.ts --project tests
 
