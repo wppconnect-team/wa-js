@@ -16,25 +16,20 @@
 
 import { exportModule } from '../exportModule';
 import { Wid } from '../misc';
-import { GroupMutationParticipant } from './getGroupMutationParticipant';
+import { ContactModel } from '../models';
 
-/** @whatsapp 290542
- */
-export declare function membershipApprovalRequestAction(
-  groupId: Wid,
-  requestedMembersId: GroupMutationParticipant[],
-  type: 'Approve' | 'Reject'
-): Promise<
-  {
-    error: any;
-    wid: Wid;
-  }[]
->;
+export type GroupMutationParticipant =
+  | { phoneNumber: Wid; lid?: Wid; username?: string }
+  | { lid: Wid; username: string; phoneNumber?: Wid };
+
+export declare function getGroupMutationParticipant(
+  contact: ContactModel,
+  isLidAddressingMode: boolean,
+  context: string
+): GroupMutationParticipant;
 
 exportModule(
   exports,
-  {
-    membershipApprovalRequestAction: 'membershipApprovalRequestAction',
-  },
-  (m) => m.membershipApprovalRequestAction
+  { getGroupMutationParticipant: 'getGroupMutationParticipant' },
+  (m) => m.getGroupMutationParticipant
 );

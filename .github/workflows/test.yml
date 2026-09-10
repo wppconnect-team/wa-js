@@ -55,6 +55,9 @@ jobs:
       - name: Test cold-page compatibility bindings
         run: npx playwright test tests/compatibility-monitor-lazy-modules.spec.ts --project tests
 
+      - name: Test membership request participants
+        run: npx playwright test tests/group-membership.unit.spec.ts --project tests
+
       - uses: actions/github-script@v9
         id: versions
         with:
