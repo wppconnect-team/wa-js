@@ -53,12 +53,22 @@ export async function setDescription(
    */
   const tagId = await Promise.resolve(randomMessageId());
 
-  await sendSetGroupDescription(
-    groupChat.id,
-    description,
-    tagId,
-    groupChat.groupMetadata?.descId
-  );
+  if (sendSetGroupDescription.length === 1) {
+    await sendSetGroupDescription({
+      groupWid: groupChat.id,
+      desc: description || null,
+      newDescId: tagId,
+      prevDescId: groupChat.groupMetadata?.descId,
+    });
+  } else {
+    // TODO: remove when positional-signature builds leave wa-version.
+    await sendSetGroupDescription(
+      groupChat.id,
+      description,
+      tagId,
+      groupChat.groupMetadata?.descId
+    );
+  }
 
   groupChat.groupMetadata!.descId = tagId;
   groupChat.groupMetadata!.desc = description;

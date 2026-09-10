@@ -29,6 +29,12 @@ export declare function sendSetGroupSubject(
 /** @whatsapp 57490
  * @whatsapp 357490 >= 2.2222.8
  */
+export declare function sendSetGroupDescription(options: {
+  groupWid: Wid;
+  desc: string | null;
+  newDescId: string;
+  prevDescId?: string;
+}): Promise<void>;
 export declare function sendSetGroupDescription(
   groupId: Wid,
   description: string,
