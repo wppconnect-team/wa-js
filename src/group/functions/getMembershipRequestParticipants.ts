@@ -14,27 +14,21 @@
  * limitations under the License.
  */
 
-import { exportModule } from '../exportModule';
-import { Wid } from '../misc';
-import { GroupMutationParticipant } from './getGroupMutationParticipant';
+import { ContactStore, GroupMetadataStore, Wid } from '../../whatsapp';
+import { getGroupMutationParticipant } from '../../whatsapp/functions';
 
-/** @whatsapp 290542
- */
-export declare function membershipApprovalRequestAction(
+/** Resolve the same participant identities used by WhatsApp's approval UI. */
+export async function getMembershipRequestParticipants(
   groupId: Wid,
-  requestedMembersId: GroupMutationParticipant[],
-  type: 'Approve' | 'Reject'
-): Promise<
-  {
-    error: any;
-    wid: Wid;
-  }[]
->;
-
-exportModule(
-  exports,
-  {
-    membershipApprovalRequestAction: 'membershipApprovalRequestAction',
-  },
-  (m) => m.membershipApprovalRequestAction
-);
+  wids: Wid[]
+) {
+  const metadata = await GroupMetadataStore.find(groupId);
+  const contacts = await Promise.all(wids.map((wid) => ContactStore.find(wid)));
+  return contacts.map((contact) =>
+    getGroupMutationParticipant(
+      contact,
+      metadata.isLidAddressingMode === true,
+      'membershipApprovalRequest'
+    )
+  );
+}
