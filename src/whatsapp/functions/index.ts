@@ -73,6 +73,7 @@ export * from './getEnforceCurrentLid';
 export * from './getEphemeralFields';
 export * from './getExisting';
 export * from './getFanOutList';
+export * from './getGroupMutationParticipant';
 export * from './getGroupSenderKeyList';
 export * from './getGroupSizeLimit';
 export * from './getHistorySyncProgress';
