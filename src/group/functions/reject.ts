@@ -18,6 +18,7 @@ import { assertWid } from '../../assert';
 import { WPPError } from '../../util';
 import { Wid } from '../../whatsapp';
 import { membershipApprovalRequestAction } from '../../whatsapp/functions';
+import { getMembershipRequestParticipants } from './getMembershipRequestParticipants';
 
 /**
  * Reject a membership request to group
@@ -45,7 +46,12 @@ export async function reject(
   const wids = membershipIds.map(assertWid);
 
   try {
-    return await membershipApprovalRequestAction(groupId, wids, 'Reject');
+    const participants = await getMembershipRequestParticipants(groupId, wids);
+    return await membershipApprovalRequestAction(
+      groupId,
+      participants,
+      'Reject'
+    );
   } catch (_error) {
     throw new WPPError(
       'error_on_reject_membership_request',
