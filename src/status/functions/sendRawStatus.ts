@@ -100,7 +100,16 @@ loader.onInjected(() => {
     if (msg.data.to?.toString() == 'status@broadcast') {
       const proto = createMsgProtobuf(msg.data);
       try {
-        await encryptAndSendStatusMsg(msg as any, proto, perf);
+        if (encryptAndSendStatusMsg.length === 1) {
+          await encryptAndSendStatusMsg({
+            metricsReporter: perf,
+            msgProtobuf: proto,
+            sendMsgRecord: msg,
+          });
+        } else {
+          // TODO: remove when positional-signature builds leave wa-version.
+          await encryptAndSendStatusMsg(msg as any, proto, perf);
+        }
         return {
           t: msg.data.t,
           sync: null,
