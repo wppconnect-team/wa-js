@@ -111,6 +111,7 @@ export * from './isWid';
 export * from './joinGroupViaInvite';
 export * from './keepMessage';
 export * from './labelAddAction';
+export * from './labelsEditingEnabled';
 export * from './logoutReason';
 export * from './markSeen';
 export * from './md5';

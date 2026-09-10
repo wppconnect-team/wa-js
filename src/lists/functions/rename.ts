@@ -17,6 +17,7 @@
 import { WPPError } from '../../util';
 import { LabelStore } from '../../whatsapp';
 import { labelEditAction } from '../../whatsapp/functions';
+import { assertListEditingAvailable } from './assertListEditingAvailable';
 
 /**
  * Rename a list
@@ -32,6 +33,7 @@ export async function rename(listId: string, newName: string): Promise<void> {
   if (!newName?.trim()) {
     throw new WPPError('list_name_required', 'List name is required');
   }
+  assertListEditingAvailable();
   const label = LabelStore.get(listId);
   if (!label) {
     throw new WPPError('list_not_found', `List ${listId} not found`, {
@@ -42,6 +44,8 @@ export async function rename(listId: string, newName: string): Promise<void> {
     listId,
     newName.trim(),
     label.predefinedId ?? 0,
-    label.colorIndex ?? 0
+    label.colorIndex ?? null,
+    label.isActive,
+    label.type
   );
 }

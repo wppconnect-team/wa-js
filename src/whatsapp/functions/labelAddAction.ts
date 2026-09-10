@@ -20,23 +20,25 @@ import { exportModule } from '../exportModule';
  */
 export declare function labelAddAction(
   name: string,
-  colorIndex: number
-): Promise<any>;
+  colorIndex: number | null
+): Promise<number | undefined>;
 export declare function labelDeleteAction(
   id: string,
   name: string,
-  colorIndex: number
+  colorIndex: number | null
 ): Promise<number>;
 export declare function labelDeleteAction(options: {
   labelId: string;
   name: string;
-  color: number;
+  color: number | null;
 }): Promise<void>;
 export declare function labelEditAction(
   id: string,
   name: string,
   predefinedId: number,
-  colorIndex: number
+  colorIndex: number | null,
+  isActive?: boolean,
+  type?: number
 ): Promise<any>;
 
 exportModule(

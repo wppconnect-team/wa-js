@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-import { labelDeleteAction } from './labelAddAction';
+import { exportModule } from '../exportModule';
 
-/**
- * Call labelDeleteAction using the signature supported by the current
- * WhatsApp Web version.
- */
-export function callLabelDeleteAction(
-  id: string,
-  name: string,
-  colorIndex: number | null
-): Promise<number | void> {
-  if (labelDeleteAction.length === 1) {
-    return labelDeleteAction({ labelId: id, name, color: colorIndex });
-  }
+export declare function labelsEditingEnabled(): boolean;
 
-  return labelDeleteAction(id, name, colorIndex);
-}
+exportModule(
+  exports,
+  { labelsEditingEnabled: 'labelsEditingEnabled' },
+  (m) => m.labelsEditingEnabled && m.smartFiltersEnabled
+);

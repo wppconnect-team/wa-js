@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-import { labelDeleteAction } from './labelAddAction';
+import { WPPError } from '../../util';
+import { labelsEditingEnabled } from '../../whatsapp/functions';
 
-/**
- * Call labelDeleteAction using the signature supported by the current
- * WhatsApp Web version.
- */
-export function callLabelDeleteAction(
-  id: string,
-  name: string,
-  colorIndex: number | null
-): Promise<number | void> {
-  if (labelDeleteAction.length === 1) {
-    return labelDeleteAction({ labelId: id, name, color: colorIndex });
+export function assertListEditingAvailable(): void {
+  if (!labelsEditingEnabled()) {
+    throw new WPPError(
+      'list_editing_not_available',
+      'WhatsApp has not enabled list editing for this account'
+    );
   }
-
-  return labelDeleteAction(id, name, colorIndex);
 }

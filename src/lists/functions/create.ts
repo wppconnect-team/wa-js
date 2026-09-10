@@ -15,13 +15,16 @@
  */
 
 import { assertGetChat } from '../../assert';
+import { isBusiness } from '../../profile/functions/isBusiness';
 import { WPPError } from '../../util';
 import { LabelStore, Wid } from '../../whatsapp';
-import { getNextLabelId, labelAddAction } from '../../whatsapp/functions';
+import { labelAddAction } from '../../whatsapp/functions';
+import { assertListEditingAvailable } from './assertListEditingAvailable';
 
 /**
  * Create a new list and optionally add chats to it.
- * Works for both personal and business accounts.
+ * Available when WhatsApp enables list editing for the account.
+ * Throws `list_editing_not_available` when the native feature is disabled.
  *
  * @example
  * ```javascript
@@ -50,18 +53,24 @@ export async function create(
     );
   }
 
+  assertListEditingAvailable();
+  const chats = chatIds.map((id) => assertGetChat(id));
   const color =
     colorIndex !== undefined
       ? colorIndex
-      : ((await LabelStore.getNextAvailableColor()) ?? 0);
+      : isBusiness()
+        ? ((await LabelStore.getNextAvailableColor()) ?? 0)
+        : null;
 
-  // Capture the next ID before calling labelAddAction — the action's return
-  // value is untyped (Promise<any>) and cannot be relied on as the list ID.
-  const listId = await getNextLabelId();
-  await labelAddAction(name.trim(), color);
+  const listId = await labelAddAction(name.trim(), color);
+  if (listId == null) {
+    throw new WPPError(
+      'list_create_failed',
+      'WhatsApp did not create the list'
+    );
+  }
 
-  if (chatIds.length > 0) {
-    const chats = chatIds.map((id) => assertGetChat(id));
+  if (chats.length > 0) {
     await LabelStore.addOrRemoveLabels(
       [{ id: String(listId), type: 'add' }],
       chats
