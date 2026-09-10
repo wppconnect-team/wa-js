@@ -17,7 +17,8 @@
 <div class="tsd-signature tsd-anchor-link" id="create"><span class="tsd-kind-call-signature">create</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">name</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">chatIds</span><span class="tsd-signature-symbol">?:</span> (<span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <a href="../classes/whatsapp.Wid.html" class="tsd-signature-type tsd-kind-class">Wid</a>)<span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">,</span><br/>    <span class="tsd-kind-parameter">colorIndex</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise" class="tsd-signature-type external" target="_blank">Promise</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><a href="#create" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Create a new list and optionally add chats to it.
-Works for both personal and business accounts.</p>
+Available when WhatsApp enables list editing for the account.
+Throws <code>list_editing_not_available</code> when the native feature is disabled.</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -33,7 +34,7 @@ Works for both personal and business accounts.</p>
 
 </div></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/lists/functions/create.ts#L34">src/lists/functions/create.ts:34</a></li></ul></aside></div></li></ul></section></div>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/lists/functions/create.ts#L37">src/lists/functions/create.ts:37</a></li></ul></aside></div></li></ul></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
