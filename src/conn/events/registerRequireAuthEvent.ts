@@ -20,7 +20,7 @@ import { Socket } from '../../whatsapp';
 import { SOCKET_STATE } from '../../whatsapp/enums/SOCKET_STATE';
 import { isAuthenticated } from '..';
 
-loader.onInjected(registerRequireAuthEvent);
+loader.onInjectedInternal(registerRequireAuthEvent);
 
 function registerRequireAuthEvent() {
   let fired = false;

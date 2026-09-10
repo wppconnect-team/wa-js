@@ -571,6 +571,33 @@ window.MYWPP.loader.onReady(function () {
 
 Basically, you need to inject the `wppconnect-wa.js` file into the browser after WhatsApp page load.
 
+### ⚠️ Content Security Policy (CSP)
+
+Recent WhatsApp Web builds (>= `2.3000`) serve a strict, **nonce-based** Content
+Security Policy — its `script-src` has no `'unsafe-inline'`, only a per-response
+`'nonce-…'`. That means you **cannot** inject WA-JS by adding an inline `<script>`
+tag to the page: the browser blocks it with
+
+```
+Refused to execute inline script because it violates the following
+Content Security Policy directive: "script-src 'self' 'nonce-…' …"
+```
+
+Injection must instead happen in the page's **MAIN world via a channel that is not
+subject to the page's `script-src`**. Working approaches:
+
+- **Browser extension** — a content script declared with `"world": "MAIN"`
+  (Manifest V3, Chrome 111+), or `chrome.scripting.executeScript({ world: 'MAIN' })`.
+  Extension-injected scripts are not gated by the page CSP.
+- **Userscript managers** (Tampermonkey/GreaseMonkey) — `@require` loads the bundle
+  through the userscript engine, outside the page CSP (see below).
+- **Playwright/Puppeteer** — use `page.addInitScript(...)` /
+  `page.evaluateOnNewDocument(...)`, which the browser evaluates via the DevTools
+  protocol before the page's own scripts and **outside** the page CSP.
+
+Avoid `page.addScriptTag(...)` and manually appending a `<script>` element — both
+create a DOM script node that the page CSP blocks on current builds.
+
 ### TamperMonkey or GreaseMonkey
 
 ```javascript
@@ -608,11 +635,14 @@ async function start() {
   const browser = await playwright.chromium.launch();
   const page = await browser.newPage();
 
-  await page.goto('https://web.whatsapp.com/');
-
-  await page.addScriptTag({
+  // Inject before navigation via addInitScript, NOT addScriptTag: WhatsApp Web's
+  // CSP blocks inline <script> tags (see the "Content Security Policy" note
+  // above). addInitScript runs in the page before its own scripts, outside CSP.
+  await page.addInitScript({
     path: require.resolve('@wppconnect/wa-js'),
   });
+
+  await page.goto('https://web.whatsapp.com/');
 
   // Wait WA-JS load
   await page.waitForFunction(() => window.WPP?.isReady);

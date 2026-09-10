@@ -20,7 +20,7 @@ import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { upsertVotes } from '../../whatsapp/functions';
 import { getMessageById } from '../functions';
 
-loader.onFullReady(register);
+loader.onFullReadyInternal(register);
 
 const now = Date.now();
 

@@ -69,7 +69,7 @@ export async function sendRawStatus(
   return result;
 }
 
-loader.onInjected(() => {
+loader.onInjectedInternal(() => {
   // allow to send backgroundColor, textColor and font for status
   wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
     const [msg] = args;
@@ -117,7 +117,7 @@ loader.onInjected(() => {
   });
 });
 
-loader.onFullReady(() => {
+loader.onFullReadyInternal(() => {
   // Force to load buttons and post status in whatsapp web
   wrapModuleFunction(getABPropConfigValue, (func, ...args) => {
     const [key] = args;

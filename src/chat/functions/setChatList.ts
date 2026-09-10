@@ -170,7 +170,7 @@ export async function setChatList(
   }
 }
 
-loader.onFullReady(applyPatch, 1000);
+loader.onFullReadyInternal(applyPatch, 1000);
 
 function applyPatch() {
   wrapModuleFunction(getShouldAppearInList, (func, ...args) => {

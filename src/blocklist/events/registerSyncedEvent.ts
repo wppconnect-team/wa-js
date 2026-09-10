@@ -18,7 +18,7 @@ import { internalEv } from '../../eventEmitter';
 import * as loader from '../../loader';
 import { BlocklistStore } from '../../whatsapp';
 
-loader.onInjected(() => registerSyncedEvent());
+loader.onInjectedInternal(() => registerSyncedEvent());
 
 function registerSyncedEvent() {
   BlocklistStore.on('sort', () => {

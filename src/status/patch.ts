@@ -20,7 +20,7 @@ import * as loader from '../loader';
 import { wrapModuleFunction } from '../whatsapp/exportModule';
 import { handleSingleMsg } from '../whatsapp/functions';
 
-loader.onFullReady(applyPatch);
+loader.onFullReadyInternal(applyPatch);
 
 function applyPatch() {
   wrapModuleFunction(handleSingleMsg, async (func, ...args) => {

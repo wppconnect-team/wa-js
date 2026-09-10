@@ -18,7 +18,7 @@ import { internalEv } from '../../eventEmitter';
 import * as loader from '../../loader';
 import { ChatModel, ChatStore } from '../../whatsapp';
 
-loader.onInjected(() => registerNewChat());
+loader.onInjectedInternal(() => registerNewChat());
 
 function registerNewChat() {
   ChatStore.on('add', (chat: ChatModel) => {

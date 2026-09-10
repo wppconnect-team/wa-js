@@ -19,7 +19,7 @@ import * as loader from '../../loader';
 import { Socket } from '../../whatsapp';
 import { isIdle } from '..';
 
-loader.onInjected(registerQRCodeIdleEvent);
+loader.onInjectedInternal(registerQRCodeIdleEvent);
 
 function registerQRCodeIdleEvent() {
   const trigger = async () => {

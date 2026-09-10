@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+import {
+  consistentClearInterval,
+  consistentSetInterval,
+} from '../../util/consistentTimers';
+
 const originalHasFocus = document.hasFocus;
 let interval: any;
 
@@ -32,14 +37,17 @@ let interval: any;
 export function setKeepAlive(enable = true) {
   if (enable) {
     document.hasFocus = () => true;
-    interval = setInterval(
+    // consistent* timers: a consumer can enable this before WhatsApp's mid-boot
+    // scheduler swap and disable it after, so create and clear must go through the
+    // captured implementations (timer IDs are not portable across the swap).
+    interval = consistentSetInterval(
       () => document.dispatchEvent(new Event('scroll')),
       15000
     );
   } else {
     document.hasFocus = originalHasFocus;
     if (interval) {
-      clearInterval(interval);
+      consistentClearInterval(interval);
       interval = null;
     }
   }

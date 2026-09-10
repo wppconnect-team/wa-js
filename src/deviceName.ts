@@ -18,7 +18,7 @@ import { config } from './config';
 import * as loader from './loader';
 
 // Update deviceName connected
-loader.onInjected(() => {
+loader.onInjectedInternal(() => {
   if (!config.deviceName) {
     return;
   }

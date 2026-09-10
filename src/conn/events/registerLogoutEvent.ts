@@ -18,7 +18,7 @@ import { internalEv } from '../../eventEmitter';
 import * as loader from '../../loader';
 import { Cmd } from '../../whatsapp';
 
-loader.onInjected(registerLogoutEvent);
+loader.onInjectedInternal(registerLogoutEvent);
 
 function registerLogoutEvent() {
   Cmd.on('logout', () => internalEv.emit('conn.logout'));

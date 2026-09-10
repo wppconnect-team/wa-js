@@ -19,7 +19,7 @@ import * as loader from '../../loader';
 import { MsgStore, Wid } from '../../whatsapp';
 import { RawMessage } from '..';
 
-loader.onInjected(() => registerRevokeMessageEvent());
+loader.onInjectedInternal(() => registerRevokeMessageEvent());
 
 function registerRevokeMessageEvent() {
   /**

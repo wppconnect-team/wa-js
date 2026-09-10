@@ -18,7 +18,7 @@ import { internalEv } from '../../eventEmitter';
 import * as loader from '../../loader';
 import { Stream } from '../../whatsapp';
 
-loader.onInjected(register);
+loader.onInjectedInternal(register);
 
 function register() {
   const trigger = async () => {

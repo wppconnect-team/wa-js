@@ -19,7 +19,7 @@ import * as loader from '../../loader';
 import { Stream, StreamModel } from '../../whatsapp';
 import { StreamInfo, StreamMode } from '../../whatsapp/enums';
 
-loader.onInjected(register);
+loader.onInjectedInternal(register);
 
 function register() {
   // Emit current StreamMode immediately

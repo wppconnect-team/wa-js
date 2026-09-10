@@ -22,7 +22,7 @@ import { StreamMode } from '../../whatsapp/enums';
 
 const debug = Debug('WA-JS:conn:main_ready');
 
-loader.onInjected(register);
+loader.onInjectedInternal(register);
 
 function register() {
   const isReadyMode = (mode: StreamMode) =>
