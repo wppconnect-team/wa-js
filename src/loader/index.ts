@@ -485,8 +485,12 @@ const searchIdCache = new Map<SearchModuleCondition, string | null>();
 // that runs early can miss a module that simply hasn't been registered yet.
 // Caching that miss permanently means the binding never recovers even after the
 // module loads (root cause of #3419). We therefore only trust a cached null
-// while the module set is unchanged, and re-scan once new modules appear.
+// while the module set is unchanged and the miss is recent.
 const searchIdMissModuleCount = new Map<SearchModuleCondition, number>();
+// Meta predeclares IDs before their dependencies/exports are ready. A stable
+// count therefore cannot make a miss permanent. Retry each predicate separately.
+const searchIdMissTime = new Map<SearchModuleCondition, number>();
+const SEARCH_MISS_TTL = 1_000;
 
 function isReactResolvedCached(moduleId: string, module: any): boolean {
   if (pureComponentMap.has(moduleId)) {
@@ -602,8 +606,8 @@ export function searchId(
   hint?: string | RegExp
 ): string | null {
   // Check cache first. Positive results are stable; a cached null is only
-  // trustworthy while no new modules have registered since the miss — otherwise
-  // the module we wanted may have loaded in the meantime (#3419).
+  // trustworthy while no new modules have registered and the Meta miss is
+  // recent: predeclared modules can become usable without changing the count.
   const cached = searchIdCache.get(condition);
   if (cached) {
     return cached;
@@ -611,11 +615,13 @@ export function searchId(
   if (cached === null) {
     if (
       searchIdMissModuleCount.get(condition) ===
-      Object.keys(moduleRequire.m).length
+        Object.keys(moduleRequire.m).length &&
+      (loaderType !== 'meta' ||
+        Date.now() - (searchIdMissTime.get(condition) ?? 0) < SEARCH_MISS_TTL)
     ) {
       return null;
     }
-    // Stale negative cache: new modules appeared, fall through and re-scan.
+    // New IDs or expired miss: exports may now be ready, so re-scan.
   }
 
   const allIds = Object.keys(moduleRequire.m);
@@ -693,6 +699,7 @@ export function searchId(
   // Remember the module count at miss time so the cached null is re-evaluated
   // once WhatsApp registers more modules (see searchIdMissModuleCount above).
   searchIdMissModuleCount.set(condition, allIds.length);
+  searchIdMissTime.set(condition, Date.now());
   return null;
 }
 
