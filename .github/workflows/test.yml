@@ -46,6 +46,9 @@ jobs:
       - name: Test media upload patch
         run: npx playwright test tests/media-upload-patch.unit.spec.ts --project tests
 
+      - name: Test group description signatures
+        run: npx playwright test tests/group-description.unit.spec.ts --project tests
+
       - name: Test cold-page compatibility bindings
         run: npx playwright test tests/compatibility-monitor-lazy-modules.spec.ts --project tests
 
