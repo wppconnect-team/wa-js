@@ -17,6 +17,7 @@
 import * as loader from '../../loader';
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
+import { ensureGroupInviteLoaded } from './ensureGroupInviteLoaded';
 import { resetGroupInviteCode } from './resetGroupInviteCode';
 
 /** @whatsapp 69586
@@ -38,7 +39,9 @@ exportModule(
  * @whatsapp >= 2.2301.5
  */
 loader.injectFallbackModule('sendRevokeGroupInviteCode', {
-  sendRevokeGroupInviteCode: async (groupId: Wid) => {
-    return await resetGroupInviteCode(groupId).then((value) => value.code);
+  sendRevokeGroupInviteCode: async (groupId: Wid): Promise<string> => {
+    await ensureGroupInviteLoaded();
+    const result = await resetGroupInviteCode(groupId);
+    return typeof result === 'string' ? result : result.code;
   },
 });

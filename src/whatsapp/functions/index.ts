@@ -50,6 +50,7 @@ export * from './encryptAndSendMsg';
 export * from './encryptAndSendSenderKeyMsg';
 export * from './encryptAndSendStatusMsg';
 export * from './encryptMsgProtobuf';
+export * from './ensureGroupInviteLoaded';
 export * from './fetchLinkPreview';
 export * from './fetchMexGroupInviteCode';
 export * from './findChat';
