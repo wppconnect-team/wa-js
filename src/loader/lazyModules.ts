@@ -100,6 +100,31 @@ export const LAZY_MODULES: {
     ],
     pattern: /communit/i,
   },
+  // The group invite modules moved to an on-demand resource bundle
+  // in WA >= ~2.3000.1040. Both drawer and modal components pull the bundle
+  // defining WAWebGroupInviteJob, WAWebGroupInviteAction, and
+  // WAWebMexFetchGroupInviteCodeJob.
+  WAWebGroupInviteJob: {
+    components: [
+      'WAWebGroupInviteLinkDrawer.react',
+      'WAWebGroupInviteLinkModal.react',
+    ],
+    pattern: /GroupInviteLink/i,
+  },
+  WAWebGroupInviteAction: {
+    components: [
+      'WAWebGroupInviteLinkDrawer.react',
+      'WAWebGroupInviteLinkModal.react',
+    ],
+    pattern: /GroupInviteLink/i,
+  },
+  WAWebMexFetchGroupInviteCodeJob: {
+    components: [
+      'WAWebGroupInviteLinkDrawer.react',
+      'WAWebGroupInviteLinkModal.react',
+    ],
+    pattern: /GroupInviteLink/i,
+  },
 };
 
 /**

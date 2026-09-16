@@ -18,7 +18,6 @@ import { getGroupInfoFromInviteCode, iAmMember } from '../../group';
 import * as loader from '../../loader';
 import { ChatStore, Wid } from '..';
 import { exportModule } from '../exportModule';
-import { ensureGroupInviteLoaded } from './ensureGroupInviteLoaded';
 import { joinGroupViaInvite } from './joinGroupViaInvite';
 
 /**
@@ -67,7 +66,7 @@ loader.injectFallbackModule('sendJoinGroupViaInvite', {
       const isMember = await iAmMember(group.id.toString());
       if (isMember) return { gid: existChat.id, membershipApprovalMode: false };
     }
-    await ensureGroupInviteLoaded();
+    await loader.ensureLazyModule('WAWebGroupInviteJob');
     const result = await joinGroupViaInvite(code, group.membershipApprovalMode);
     return {
       gid: result.gid,

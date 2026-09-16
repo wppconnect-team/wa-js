@@ -18,7 +18,6 @@ import * as loader from '../../loader';
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
 import { fetchMexGroupInviteCode } from './';
-import { ensureGroupInviteLoaded } from './ensureGroupInviteLoaded';
 
 /** @whatsapp 65705 */
 export declare function sendQueryGroupInviteCode(groupId: Wid): Promise<string>;
@@ -33,7 +32,7 @@ exportModule(
 
 loader.injectFallbackModule('sendQueryGroupInviteCode', {
   sendQueryGroupInviteCode: async (groupId: Wid): Promise<string> => {
-    await ensureGroupInviteLoaded();
+    await loader.ensureLazyModule('WAWebMexFetchGroupInviteCodeJob');
     const result = await fetchMexGroupInviteCode(groupId);
     if (typeof result === 'string') {
       return result;
