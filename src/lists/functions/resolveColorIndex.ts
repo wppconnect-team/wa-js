@@ -41,7 +41,7 @@ export function resolveColorIndex(color: ListColor): number {
 
     if (index === -1) {
       throw new WPPError(
-        'list_color_not_in_palette',
+        'list_invalid_color',
         `Color ${color} is not in the list color palette`,
         { color, palette }
       );
@@ -52,7 +52,7 @@ export function resolveColorIndex(color: ListColor): number {
 
   if (!Number.isInteger(color) || color < 0 || color >= palette.length) {
     throw new WPPError(
-      'list_color_not_in_palette',
+      'list_invalid_color',
       `colorIndex must be an integer between 0 and ${palette.length - 1}`,
       { color, palette }
     );
