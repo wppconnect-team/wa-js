@@ -1,0 +1,15 @@
+# Normalize line endings to LF in the repository and on checkout.
+#
+# Without this, a Windows clone with the default core.autocrlf=true checks out
+# CRLF, and Prettier — whose endOfLine defaults to "lf", matching the
+# end_of_line = lf in .editorconfig — then fails on every line of every file.
+# CI runs on Linux and never sees it, so the breakage only hits contributors
+# on Windows.
+* text=auto eol=lf
+
+# Windows-only scripts must keep CRLF to stay executable by cmd.exe.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Let Git detect binary content on its own for everything else; no binary
+# assets are tracked today, so there is nothing to pin here.
