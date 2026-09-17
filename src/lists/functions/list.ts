@@ -15,11 +15,14 @@
  */
 
 import { LabelStore } from '../../whatsapp';
+import { colorIndexToHex } from '../../whatsapp/functions';
 
 export interface ListInfo {
   id: string;
   name: string;
   colorIndex: number;
+  /** The `colorIndex` as a hex code, e.g. `'#64c4ff'` */
+  hexColor: string;
 }
 
 // ListType.CUSTOM = 5 (personal account lists)
@@ -41,9 +44,13 @@ const LIST_TYPE_CUSTOM = 5;
 export function list(): ListInfo[] {
   return LabelStore.getModelsArray()
     .filter((l) => l.type === LIST_TYPE_CUSTOM)
-    .map((l) => ({
-      id: String(l.id),
-      name: l.name,
-      colorIndex: l.colorIndex ?? 0,
-    }));
+    .map((l) => {
+      const colorIndex = l.colorIndex ?? 0;
+      return {
+        id: String(l.id),
+        name: l.name,
+        colorIndex,
+        hexColor: colorIndexToHex(colorIndex),
+      };
+    });
 }

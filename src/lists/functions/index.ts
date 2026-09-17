@@ -16,7 +16,10 @@
 
 export { addChats } from './addChats';
 export { create } from './create';
+export { getColorPalette } from './getColorPalette';
 export { list, ListInfo } from './list';
 export { remove } from './remove';
 export { removeChats } from './removeChats';
 export { rename } from './rename';
+export { ListColor } from './resolveColorIndex';
+export { setColor } from './setColor';
