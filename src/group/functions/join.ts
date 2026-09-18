@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-import { Wid } from '../../whatsapp';
-import { sendJoinGroupViaInvite } from '../../whatsapp/functions';
+import { ChatStore, Wid } from '../../whatsapp';
+import {
+  findOrCreateLatestChat,
+  sendJoinGroupViaInvite,
+} from '../../whatsapp/functions';
 
 /**
  * Thrown by `joinGroupViaInvite` (WAWebBackendErrors) when the server returns
@@ -79,6 +82,20 @@ export async function join(inviteCode: string): Promise<JoinGroupResult> {
 
   try {
     const result = await sendJoinGroupViaInvite(inviteCode);
+
+    // If joined immediately, ensure chat exists in ChatStore so UI updates
+    if (!result.membershipApprovalMode && result.gid) {
+      try {
+        await findOrCreateLatestChat(result.gid, 'queryGroupInviteCode', {
+          isGroupJoin: true,
+        });
+      } catch (_) {
+        try {
+          await ChatStore.find(result.gid);
+        } catch (_) {}
+      }
+    }
+
     return {
       id: result.gid.toString(),
       pendingApproval: result.membershipApprovalMode,

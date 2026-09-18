@@ -66,6 +66,7 @@ loader.injectFallbackModule('sendJoinGroupViaInvite', {
       const isMember = await iAmMember(group.id.toString());
       if (isMember) return { gid: existChat.id, membershipApprovalMode: false };
     }
+    await loader.ensureLazyModule('WAWebGroupInviteJob');
     const result = await joinGroupViaInvite(code, group.membershipApprovalMode);
     return {
       gid: result.gid,
