@@ -38,7 +38,9 @@ exportModule(
  * @whatsapp >= 2.2301.5
  */
 loader.injectFallbackModule('sendRevokeGroupInviteCode', {
-  sendRevokeGroupInviteCode: async (groupId: Wid) => {
-    return await resetGroupInviteCode(groupId).then((value) => value.code);
+  sendRevokeGroupInviteCode: async (groupId: Wid): Promise<string> => {
+    await loader.ensureLazyModule('WAWebGroupInviteJob');
+    const result = await resetGroupInviteCode(groupId);
+    return typeof result === 'string' ? result : result.code;
   },
 });

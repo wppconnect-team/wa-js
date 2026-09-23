@@ -87,6 +87,7 @@ async function start() {
       'WAWebGenerateEventCallLink',
       'WAWebGroupGetCommunityParticipantsJob',
       'WAWebSetPrivacyForOneCategoryAction',
+      'WAWebGroupInviteJob',
     ]) {
       await window.WPP.loader.ensureLazyModule(moduleId);
     }

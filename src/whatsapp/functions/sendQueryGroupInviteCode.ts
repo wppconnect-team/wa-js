@@ -31,7 +31,12 @@ exportModule(
 );
 
 loader.injectFallbackModule('sendQueryGroupInviteCode', {
-  sendQueryGroupInviteCode: async (groupId: Wid) => {
-    return await fetchMexGroupInviteCode(groupId);
+  sendQueryGroupInviteCode: async (groupId: Wid): Promise<string> => {
+    await loader.ensureLazyModule('WAWebMexFetchGroupInviteCodeJob');
+    const result = await fetchMexGroupInviteCode(groupId);
+    if (typeof result === 'string') {
+      return result;
+    }
+    return result.inviteCode;
   },
 });
