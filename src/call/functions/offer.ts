@@ -17,7 +17,7 @@
 import { assertWid } from '../../assert';
 import { queryExists } from '../../contact/functions/queryExists';
 import { WPPError } from '../../util';
-import { CallStore, Wid } from '../../whatsapp';
+import { CallModel, CallStore, Wid } from '../../whatsapp';
 import {
   getVoipStackInterface,
   startWAWebVoipCall,
@@ -87,13 +87,24 @@ export async function offer(
     entryTrust: 'user_gesture',
   });
 
-  // Busca o modelo de chamada recém-criado na Store nativa do WhatsApp
-  const call = CallStore.getModelsArray().find(
-    (c) =>
-      c.peerJid.toString({ legacy: true }) ===
-        targetWid.toString({ legacy: true }) ||
-      c.peerJid.toString({ legacy: true }) === toWid.toString({ legacy: true })
-  );
+  // Busca o modelo de chamada recém-criado na Store nativa do WhatsApp.
+  // Nas versões atuais a chamada não entra nos modelos da CallStore, fica em
+  // activeCall, que é preenchido logo depois que a oferta é enviada
+  const isTarget = (c: CallModel) =>
+    c.peerJid.toString({ legacy: true }) ===
+      targetWid.toString({ legacy: true }) ||
+    c.peerJid.toString({ legacy: true }) === toWid.toString({ legacy: true });
 
-  return call;
+  for (let i = 0; i < 30; i++) {
+    const activeCall: CallModel | undefined = (CallStore as any).activeCall;
+    const call = [activeCall, ...CallStore.getModelsArray()].find(
+      (c) => c && isTarget(c)
+    );
+    if (call) {
+      return call;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+
+  return undefined;
 }
