@@ -79,9 +79,13 @@ export async function offer(
   await getVoipStackInterface();
 
   // Dispara a chamada nativa de alto nível do WhatsApp Web
-  // lobbyEntryPoint = 8 (CHAT_HEADER)
-  // channel = 5 (interno)
-  await startWAWebVoipCall(targetWid, !!options.isVideo, 8, 5);
+  // callFromUi = 8 (CALL_FROM_UI.CONVERSATION)
+  // lobbyEntryPoint = 5 (LOBBY_ENTRY_POINT_TYPE.NOT_OPENED)
+  // Sem entryTrust 'user_gesture' o WhatsApp trata a chamada como deep link
+  // e aguarda um popup de confirmação antes de enviar a oferta
+  await startWAWebVoipCall(targetWid, !!options.isVideo, 8, 5, null, {
+    entryTrust: 'user_gesture',
+  });
 
   // Busca o modelo de chamada recém-criado na Store nativa do WhatsApp
   const call = CallStore.getModelsArray().find(
