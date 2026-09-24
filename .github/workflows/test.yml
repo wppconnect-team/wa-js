@@ -61,6 +61,9 @@ jobs:
       - name: Test list mutations
         run: npx playwright test tests/lists-mutations.unit.spec.ts --project tests
 
+      - name: Test call offer
+        run: npx playwright test tests/call-offer.unit.spec.ts --project tests
+
       - name: Test membership request participants
         run: npx playwright test tests/group-membership.unit.spec.ts --project tests
 

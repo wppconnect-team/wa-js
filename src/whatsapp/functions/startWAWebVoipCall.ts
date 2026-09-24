@@ -23,8 +23,10 @@ import { Wid } from '../misc';
 export declare function startWAWebVoipCall(
   peerWid: Wid,
   isVideo: boolean,
+  callFromUi: number,
   lobbyEntryPoint: number,
-  channel: number
+  callId?: string | null,
+  options?: { entryTrust?: 'user_gesture' | 'deep_link' }
 ): Promise<any>;
 
 exportModule(
