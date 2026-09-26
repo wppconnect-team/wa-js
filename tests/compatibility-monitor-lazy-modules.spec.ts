@@ -46,6 +46,7 @@ test('compatibility bindings resolve on a cold WhatsApp page', async () => {
       ['WAWebGroupGetCommunityParticipantsJob', 'getCommunityParticipants'],
       ['WAWebSetPrivacyForOneCategoryAction', 'setPrivacyForOneCategory'],
       ['WAWebSetPushnameConnAction', 'setPushname'],
+      ['WAWebGroupCreateJob', 'createGroup'],
     ]) {
       const result = await page.evaluate(
         async ({ moduleId, binding }) => {

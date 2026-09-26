@@ -73,6 +73,11 @@ export const LAZY_MODULES: {
     components: ['WAWebProfileDrawer.react'],
     pattern: /^WAWebProfileDrawer/,
   },
+  // The new-group flow registers createGroup without creating a group.
+  WAWebGroupCreateJob: {
+    components: ['WAWebNewGroupFlow.react'],
+    pattern: /NewGroupFlow/,
+  },
   // Both forward modules ship in the same bundle, so either entry recovers
   // the other. `WAWebMediaForwardMediaMsg` is preferred because it is a plain
   // utility module: requiring it has no UI side effects, unlike the `.react`
