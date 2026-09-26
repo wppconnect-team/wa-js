@@ -15,7 +15,7 @@
  */
 
 import { iAmAdmin } from '../../group';
-import { injectFallbackModule } from '../../loader';
+import { ensureLazyModule, injectFallbackModule } from '../../loader';
 import { Wid } from '..';
 import { exportModule } from '../exportModule';
 import { queryGroupInviteCode } from './queryGroupInviteCode';
@@ -25,7 +25,7 @@ import { queryGroupInviteCode } from './queryGroupInviteCode';
  */
 export declare function fetchMexGroupInviteCode(
   groupId: Wid
-): Promise<{ inviteCode: string }>;
+): Promise<{ inviteCode: string } | string>;
 
 exportModule(
   exports,
@@ -36,10 +36,12 @@ exportModule(
 );
 
 injectFallbackModule('fetchMexGroupInviteCode', {
-  fetchMexGroupInviteCode: async (groupId: Wid) => {
+  fetchMexGroupInviteCode: async (
+    groupId: Wid
+  ): Promise<{ inviteCode: string } | string> => {
+    await ensureLazyModule('WAWebMexFetchGroupInviteCodeJob');
     const isAdmin = await iAmAdmin(groupId);
-    return await queryGroupInviteCode(groupId, isAdmin).then(
-      (value) => value.code
-    );
+    const result = await queryGroupInviteCode(groupId, isAdmin);
+    return result.code;
   },
 });

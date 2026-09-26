@@ -33,6 +33,8 @@ export type ChatOriginType =
   | 'username_contactless_search'
   /** Chat created from a username change notification. Allowed to create LID chats. */
   | 'username_change_notification'
+  /** Chat created or opened after joining a group via invite link. */
+  | 'queryGroupInviteCode'
   /** @deprecated Not allowed to create LID chats. */
   | 'forwardSelectedModals'
   /** @deprecated Not allowed to create LID chats. */
@@ -40,11 +42,21 @@ export type ChatOriginType =
   /** @deprecated Not allowed to create LID chats. */
   | 'chatInfoTopCard';
 
+export interface FindOrCreateLatestChatOptions {
+  isGroupJoin?: boolean;
+  nextPrivacyMode?: {
+    actualActors?: number;
+    hostStorage?: number;
+    privacyModeTs?: number;
+  };
+}
+
 /** @whatsapp WAWebFindChatAction
  */
 export declare function findOrCreateLatestChat(
   wid: Wid,
-  type?: ChatOriginType
+  type?: ChatOriginType,
+  options?: FindOrCreateLatestChatOptions
 ): Promise<{
   chat: ChatModel;
   created: boolean;

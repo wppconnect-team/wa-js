@@ -22,7 +22,7 @@ import { exportModule } from '../exportModule';
  */
 export declare function resetGroupInviteCode(
   groupId: Wid
-): Promise<{ code: string }>;
+): Promise<{ code: string } | string>;
 
 exportModule(
   exports,
