@@ -49,6 +49,9 @@ jobs:
       - name: Test loader miss recovery
         run: npx playwright test tests/loader-negative-cache.unit.spec.ts --project tests
 
+      - name: Test late Stream registration
+        run: npx playwright test tests/stream-registration.unit.spec.ts --project tests
+
       - name: Test group description signatures
         run: npx playwright test tests/group-description.unit.spec.ts --project tests
 
