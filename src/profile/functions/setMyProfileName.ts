@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { ensureLazyModule } from '../../loader';
 import { functions } from '../../whatsapp';
 
 /**
@@ -28,6 +29,7 @@ import { functions } from '../../whatsapp';
  */
 
 export async function setMyProfileName(name: string) {
+  await ensureLazyModule('WAWebSetPushnameConnAction');
   await functions.setPushname(name);
 
   return true;

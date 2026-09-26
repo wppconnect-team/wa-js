@@ -55,6 +55,9 @@ jobs:
       - name: Test group description signatures
         run: npx playwright test tests/group-description.unit.spec.ts --project tests
 
+      - name: Test profile name lazy loading
+        run: npx playwright test tests/profile-name-lazy.unit.spec.ts --project tests
+
       - name: Test group creation lazy loading
         run: npx playwright test tests/group-create-lazy.unit.spec.ts --project tests
 

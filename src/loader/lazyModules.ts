@@ -68,6 +68,11 @@ export const LAZY_MODULES: {
     components: ['WAWebPrivacyVisibilityEditDrawer.react'],
     pattern: /PrivacyVisibility/,
   },
+  // The profile drawer registers the setter without changing the profile.
+  WAWebSetPushnameConnAction: {
+    components: ['WAWebProfileDrawer.react'],
+    pattern: /^WAWebProfileDrawer/,
+  },
   // The new-group flow registers createGroup without creating a group.
   WAWebGroupCreateJob: {
     components: ['WAWebNewGroupFlow.react'],
