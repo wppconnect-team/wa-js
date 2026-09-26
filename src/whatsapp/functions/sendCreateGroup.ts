@@ -65,6 +65,8 @@ loader.injectFallbackModule('sendCreateGroup', {
     ephemeral?: number,
     parentGroup?: Wid
   ) => {
+    await loader.ensureLazyModule('WAWebGroupCreateJob');
+
     if (compare(SANITIZED_VERSION_STR, '2.3000.1027323699', '>=')) {
       return await createGroup(
         {
