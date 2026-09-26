@@ -68,6 +68,11 @@ export const LAZY_MODULES: {
     components: ['WAWebPrivacyVisibilityEditDrawer.react'],
     pattern: /PrivacyVisibility/,
   },
+  // The profile drawer registers the setter without changing the profile.
+  WAWebSetPushnameConnAction: {
+    components: ['WAWebProfileDrawer.react'],
+    pattern: /^WAWebProfileDrawer/,
+  },
   // Both forward modules ship in the same bundle, so either entry recovers
   // the other. `WAWebMediaForwardMediaMsg` is preferred because it is a plain
   // utility module: requiring it has no UI side effects, unlike the `.react`
