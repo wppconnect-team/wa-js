@@ -100,6 +100,18 @@ export const LAZY_MODULES: {
     ],
     pattern: /communit/i,
   },
+  // Verified on WA 2.3000.1047548844: a session that never opens the group
+  // "Invite via link" drawer registers neither module. Bootloading
+  // `WAWebGroupInviteLinkDrawer.react` registers both, since they ship in the
+  // same resource bundle.
+  WAWebMexFetchGroupInviteCodeJob: {
+    components: ['WAWebGroupInviteLinkDrawer.react'],
+    pattern: /GroupInvite/i,
+  },
+  WAWebGroupInviteJob: {
+    components: ['WAWebGroupInviteLinkDrawer.react'],
+    pattern: /GroupInvite/i,
+  },
 };
 
 /**

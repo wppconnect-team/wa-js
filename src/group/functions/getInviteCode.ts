@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { ensureLazyModule } from '../../loader';
 import { Wid } from '../../whatsapp';
 import { sendQueryGroupInviteCode } from '../../whatsapp/functions';
 import { ensureGroup } from './';
@@ -31,6 +32,14 @@ import { ensureGroup } from './';
  */
 export async function getInviteCode(groupId: string | Wid) {
   const groupChat = await ensureGroup(groupId, true);
+
+  /**
+   * `WAWebMexFetchGroupInviteCodeJob` ships in the on-demand bundle for the
+   * group "Invite via link" drawer, so a session that never opens it never
+   * fetches the module and this call fails forever (see
+   * src/loader/lazyModules.ts).
+   */
+  await ensureLazyModule('WAWebMexFetchGroupInviteCodeJob');
 
   return await sendQueryGroupInviteCode(groupChat.id);
 }

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { ensureLazyModule } from '../../loader';
 import { Wid } from '../../whatsapp';
 import { sendRevokeGroupInviteCode } from '../../whatsapp/functions';
 import { ensureGroup } from '.';
@@ -31,6 +32,14 @@ import { ensureGroup } from '.';
  */
 export async function revokeInviteCode(groupId: string | Wid) {
   const groupChat = await ensureGroup(groupId, true);
+
+  /**
+   * `WAWebGroupInviteJob` ships in the same on-demand bundle as
+   * `WAWebMexFetchGroupInviteCodeJob` (see getInviteCode.ts), so it is
+   * missing for the same reason: a session that never opens the group
+   * "Invite via link" drawer never fetches it.
+   */
+  await ensureLazyModule('WAWebGroupInviteJob');
 
   return await sendRevokeGroupInviteCode(groupChat.id);
 }
