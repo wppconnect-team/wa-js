@@ -35,8 +35,20 @@ function listsApi({
     type: 5,
     isActive: true,
   };
+  const palette = [
+    '#ff9485',
+    '#64c4ff',
+    '#ffd429',
+    '#dfaef0',
+    '#95a5a6',
+    '#5ccfa5',
+    '#ff8f8f',
+    '#a5b1f7',
+  ];
   const functions = {
     labelsEditingEnabled: () => enabled,
+    getAllLabelColors: () => palette,
+    colorIndexToHex: (index: number) => palette[index],
     getNextLabelId: async () => {
       calls.push(['allocate']);
       return 41;
@@ -78,6 +90,7 @@ function listsApi({
             return {
               LabelStore: {
                 get: () => label,
+                getModelsArray: () => [label],
                 getNextAvailableColor: () => {
                   calls.push(['color']);
                   return 7;
@@ -88,6 +101,10 @@ function listsApi({
             };
           if (id === './assertListEditingAvailable')
             return load('lists/functions/assertListEditingAvailable.ts');
+          if (id === './getColorPalette')
+            return load('lists/functions/getColorPalette.ts');
+          if (id === './resolveColorIndex')
+            return load('lists/functions/resolveColorIndex.ts');
           if (id === '../../whatsapp/functions/callLabelDeleteAction')
             return load('whatsapp/functions/callLabelDeleteAction.ts');
           throw Error(`Unexpected dependency ${id}`);
@@ -106,6 +123,16 @@ function listsApi({
       ),
     remove: () =>
       Promise.resolve(load('lists/functions/remove.ts').remove('42')),
+    setColor: (...args: any[]) =>
+      Promise.resolve(
+        load('lists/functions/setColor.ts').setColor(
+          ...(args.length ? args : ['42', 0])
+        )
+      ),
+    getColorPalette: () =>
+      load('lists/functions/getColorPalette.ts').getColorPalette(),
+    list: () => load('lists/functions/list.ts').list(),
+    palette,
   };
 }
 
@@ -129,7 +156,7 @@ test('business creation retains automatic and explicit colors', async () => {
   ]);
 });
 
-for (const action of ['create', 'rename', 'remove'] as const) {
+for (const action of ['create', 'rename', 'remove', 'setColor'] as const) {
   test(`${action} reports unavailable editing before native side effects`, async () => {
     const api = listsApi({ enabled: false });
     await expect(api[action]('Family')).rejects.toMatchObject({
@@ -170,4 +197,56 @@ test('invalid list input is rejected before any mutation', async () => {
     code: 'list_invalid_color',
   });
   expect(api.calls).toEqual([]);
+});
+
+test('list exposes the palette hex alongside the color index', () => {
+  const api = listsApi();
+  expect(api.list()).toEqual([
+    { id: '42', name: 'Family', colorIndex: 0, hexColor: api.palette[0] },
+  ]);
+});
+
+test('getColorPalette returns the native palette', () => {
+  const api = listsApi();
+  expect(api.getColorPalette()).toEqual(api.palette);
+});
+
+test('setColor preserves list metadata and applies the index', async () => {
+  const api = listsApi();
+  await api.setColor('42', 3);
+  expect(api.calls).toEqual([['rename', '42', 'Family', 0, 3, true, 5]]);
+});
+
+test('setColor accepts a hex code from the palette', async () => {
+  const api = listsApi();
+  await api.setColor('42', api.palette[5]);
+  expect(api.calls).toEqual([['rename', '42', 'Family', 0, 5, true, 5]]);
+});
+
+test('setColor matches hex codes regardless of case and padding', async () => {
+  const api = listsApi();
+  await api.setColor('42', '  #64C4FF  ');
+  expect(api.calls).toEqual([['rename', '42', 'Family', 0, 1, true, 5]]);
+});
+
+test('setColor rejects colors outside the palette before mutating', async () => {
+  for (const invalid of [-1, 1.5, 8, '#000000']) {
+    const api = listsApi();
+    await expect(api.setColor('42', invalid)).rejects.toMatchObject({
+      code: 'list_invalid_color',
+    });
+    expect(api.calls).toEqual([]);
+  }
+});
+
+test('create accepts a hex code and rejects one outside the palette', async () => {
+  const api = listsApi();
+  await api.create('Work', [], api.palette[2]);
+  expect(api.calls).toEqual([['create', 'Work', 2]]);
+
+  const invalid = listsApi();
+  await expect(invalid.create('Work', [], '#000000')).rejects.toMatchObject({
+    code: 'list_invalid_color',
+  });
+  expect(invalid.calls).toEqual([]);
 });
