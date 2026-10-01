@@ -61,7 +61,7 @@
     "@wppconnect/wa-version": "^1.5.4943",
     "buffer": "^6.0.3",
     "compare-versions": "^6.1.1",
-    "compressorjs": "^1.3.0",
+    "compressorjs": "^1.4.0",
     "conventional-changelog-angular": "^9.4.0",
     "conventional-changelog-cli": "^5.0.0",
     "debug": "^4.4.3",
