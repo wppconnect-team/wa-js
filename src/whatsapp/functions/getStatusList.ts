@@ -33,13 +33,23 @@ export declare function setStatusPrivacyConfig(attributes?: {
 exportModule(
   exports,
   {
-    getStatusAllowList: 'default.getStatusAllowList',
-    getStatusContacts: 'default.getStatusContacts',
-    getStatusDenyList: 'default.getStatusDenyList',
-    getStatusList: 'default.getStatusList',
-    getStatusPrivacySetting: 'default.getStatusPrivacySetting',
-    getStatusPrivacySettingConfig: 'default.getStatusPrivacySettingConfig',
-    setStatusPrivacyConfig: 'default.setStatusPrivacyConfig',
+    getStatusAllowList: ['getStatusAllowList', 'default.getStatusAllowList'],
+    getStatusContacts: ['getStatusContacts', 'default.getStatusContacts'],
+    getStatusDenyList: ['getStatusDenyList', 'default.getStatusDenyList'],
+    getStatusList: ['getStatusList', 'default.getStatusList'],
+    getStatusPrivacySetting: [
+      'getStatusPrivacySetting',
+      'default.getStatusPrivacySetting',
+    ],
+    getStatusPrivacySettingConfig: [
+      'getStatusPrivacySettingConfig',
+      'default.getStatusPrivacySettingConfig',
+    ],
+    setStatusPrivacyConfig: [
+      'setStatusPrivacyConfig',
+      'default.setStatusPrivacyConfig',
+    ],
   },
-  (m) => m.default.getStatusList
+  // TODO: remove the default fallback when 2.3000.1048742918 is no longer available in wa-version/html
+  (m) => m.getStatusList || m.default?.getStatusList
 );
