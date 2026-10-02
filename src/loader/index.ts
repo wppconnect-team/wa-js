@@ -659,6 +659,12 @@ export function searchId(
     try {
       const module = moduleRequire(moduleId);
 
+      // Meta returns null for ids whose deps are not loaded yet; an id-only
+      // condition would otherwise cache a module without exports.
+      if (loaderType === 'meta' && module == null) {
+        continue;
+      }
+
       // For Meta loader, check on the already-resolved module to avoid
       // resolving twice.
       if (loaderType !== 'webpack' && isReactResolvedCached(moduleId, module)) {
@@ -933,8 +939,8 @@ function bootloadComponent(
  *
  * Best-effort by design. Returns whether `moduleId` is registered when it
  * finishes; `false` on the legacy webpack loader (where nothing is lazy) and
- * for modules absent from {@link LAZY_MODULES}. Each component is fetched at
- * most once per page, so repeated calls after a failure cost nothing.
+ * for modules absent from {@link LAZY_MODULES}. A component that loaded is never
+ * fetched again; one that failed is retried on the next call.
  *
  * @param moduleId The module the caller needs
  */
@@ -971,16 +977,17 @@ async function resolveLazyModule(moduleId: string): Promise<boolean> {
     if (bootloadedComponents.has(component)) {
       continue;
     }
-    bootloadedComponents.add(component);
-
     debug(`Bootloading '${component}' to register '${moduleId}'`);
 
     try {
       await bootloadComponent(bootloader, component);
     } catch (error) {
+      // Not marked as loaded, so a transient failure is retried next call.
       debug(`Bootloading '${component}' failed: ${error}`);
       continue;
     }
+
+    bootloadedComponents.add(component);
 
     if (isModuleRegistered(moduleId)) {
       debug(`'${moduleId}' registered by '${component}'`);

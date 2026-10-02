@@ -131,6 +131,11 @@ export function exportModule(
 
         const module = loader.loadModule(moduleId);
 
+        // Not ready yet (unresolved deps): keep the lazy getter so it can retry.
+        if (module == null) {
+          return undefined;
+        }
+
         if (Array.isArray(property)) {
           for (const p of property) {
             valueFn = () => p.split('.').reduce((a, b) => a?.[b], module);
