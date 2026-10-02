@@ -1,3 +1,103 @@
+## <small>4.6.1 (2026-10-02)</small>
+
+### Bug Fixes
+
+* **call:** place calls without the deep-link confirmation and return the call (#3677) ([b35d2f0](https://github.com/wppconnect-team/wa-js/commit/b35d2f0)), closes [#3677](https://github.com/wppconnect-team/wa-js/issues/3677)
+* **changelog:** restore grouped release notes and full CHANGELOG history (#3587) ([f2458fd](https://github.com/wppconnect-team/wa-js/commit/f2458fd)), closes [#3587](https://github.com/wppconnect-team/wa-js/issues/3587)
+* **chat:** keep media encrypt/upload on the main thread (#3575) ([0beac7e](https://github.com/wppconnect-team/wa-js/commit/0beac7e)), closes [#3575](https://github.com/wppconnect-team/wa-js/issues/3575)
+* **community:** bootload WAWebGroupCommunityJob before use (#3603) ([93b9daa](https://github.com/wppconnect-team/wa-js/commit/93b9daa)), closes [#3603](https://github.com/wppconnect-team/wa-js/issues/3603)
+* **conn:** recover event registration when Stream arrives late (#3683) ([98b435e](https://github.com/wppconnect-team/wa-js/commit/98b435e)), closes [#3683](https://github.com/wppconnect-team/wa-js/issues/3683)
+* **group:** load the group creation job before use (#3681) ([b4d9551](https://github.com/wppconnect-team/wa-js/commit/b4d9551)), closes [#3681](https://github.com/wppconnect-team/wa-js/issues/3681)
+* **group:** register the invite-code lazy module (#3654) ([4ad31a0](https://github.com/wppconnect-team/wa-js/commit/4ad31a0)), closes [#3654](https://github.com/wppconnect-team/wa-js/issues/3654)
+* **group:** resolve membership request participant identities (#3639) ([53c9bec](https://github.com/wppconnect-team/wa-js/commit/53c9bec)), closes [#3639](https://github.com/wppconnect-team/wa-js/issues/3639)
+* **group:** support named description arguments (#3638) ([ad0cd96](https://github.com/wppconnect-team/wa-js/commit/ad0cd96)), closes [#3638](https://github.com/wppconnect-team/wa-js/issues/3638)
+* **lists:** preserve native mutation results and availability (#3641) ([05e4ba7](https://github.com/wppconnect-team/wa-js/commit/05e4ba7)), closes [#3641](https://github.com/wppconnect-team/wa-js/issues/3641)
+* **loader:** expire misses for predeclared Meta modules (#3640) ([3d91212](https://github.com/wppconnect-team/wa-js/commit/3d91212)), closes [#3640](https://github.com/wppconnect-team/wa-js/issues/3640)
+* **loader:** retry failed lazy bundles and skip unresolved modules (#3692) ([93bca15](https://github.com/wppconnect-team/wa-js/commit/93bca15)), closes [#3692](https://github.com/wppconnect-team/wa-js/issues/3692)
+* **profile:** load the profile name setter before use (#3682) ([a1e8ffb](https://github.com/wppconnect-team/wa-js/commit/a1e8ffb)), closes [#3682](https://github.com/wppconnect-team/wa-js/issues/3682)
+* **profile:** read isSMB from WAWebConnGetters (#3602) ([0c211f3](https://github.com/wppconnect-team/wa-js/commit/0c211f3)), closes [#3602](https://github.com/wppconnect-team/wa-js/issues/3602)
+* recover compatibility bindings on recent WhatsApp builds (#3632) ([5ff28a1](https://github.com/wppconnect-team/wa-js/commit/5ff28a1)), closes [#3632](https://github.com/wppconnect-team/wa-js/issues/3632)
+* **status:** support named encryption arguments (#3637) ([7f326a0](https://github.com/wppconnect-team/wa-js/commit/7f326a0)), closes [#3637](https://github.com/wppconnect-team/wa-js/issues/3637)
+
+### Tests
+
+* **chat:** cover main-thread media upload patch (#3611) ([e4e54a4](https://github.com/wppconnect-team/wa-js/commit/e4e54a4)), closes [#3611](https://github.com/wppconnect-team/wa-js/issues/3611)
+
+### Build System
+
+* **deps-dev:** update commitlint monorepo to ^21.2.3 (#3667) ([90fed63](https://github.com/wppconnect-team/wa-js/commit/90fed63)), closes [#3667](https://github.com/wppconnect-team/wa-js/issues/3667)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4605 (#3588) ([22efae5](https://github.com/wppconnect-team/wa-js/commit/22efae5)), closes [#3588](https://github.com/wppconnect-team/wa-js/issues/3588)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4672 (#3589) ([5c97f38](https://github.com/wppconnect-team/wa-js/commit/5c97f38)), closes [#3589](https://github.com/wppconnect-team/wa-js/issues/3589)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4744 (#3593) ([831e497](https://github.com/wppconnect-team/wa-js/commit/831e497)), closes [#3593](https://github.com/wppconnect-team/wa-js/issues/3593)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4745 (#3605) ([33022f4](https://github.com/wppconnect-team/wa-js/commit/33022f4)), closes [#3605](https://github.com/wppconnect-team/wa-js/issues/3605)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4746 (#3607) ([6ddd94d](https://github.com/wppconnect-team/wa-js/commit/6ddd94d)), closes [#3607](https://github.com/wppconnect-team/wa-js/issues/3607)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4747 (#3610) ([245514a](https://github.com/wppconnect-team/wa-js/commit/245514a)), closes [#3610](https://github.com/wppconnect-team/wa-js/issues/3610)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4748 (#3613) ([27ab2c7](https://github.com/wppconnect-team/wa-js/commit/27ab2c7)), closes [#3613](https://github.com/wppconnect-team/wa-js/issues/3613)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4749 (#3614) ([2e4eed0](https://github.com/wppconnect-team/wa-js/commit/2e4eed0)), closes [#3614](https://github.com/wppconnect-team/wa-js/issues/3614)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4750 (#3616) ([117cc58](https://github.com/wppconnect-team/wa-js/commit/117cc58)), closes [#3616](https://github.com/wppconnect-team/wa-js/issues/3616)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4798 (#3617) ([ea51176](https://github.com/wppconnect-team/wa-js/commit/ea51176)), closes [#3617](https://github.com/wppconnect-team/wa-js/issues/3617)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4817 (#3630) ([b9b8a2f](https://github.com/wppconnect-team/wa-js/commit/b9b8a2f)), closes [#3630](https://github.com/wppconnect-team/wa-js/issues/3630)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4831 (#3634) ([cb6fd25](https://github.com/wppconnect-team/wa-js/commit/cb6fd25)), closes [#3634](https://github.com/wppconnect-team/wa-js/issues/3634)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4833 (#3636) ([0914a72](https://github.com/wppconnect-team/wa-js/commit/0914a72)), closes [#3636](https://github.com/wppconnect-team/wa-js/issues/3636)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4837 (#3642) ([c7e4b7d](https://github.com/wppconnect-team/wa-js/commit/c7e4b7d)), closes [#3642](https://github.com/wppconnect-team/wa-js/issues/3642)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4843 (#3645) ([961e2b2](https://github.com/wppconnect-team/wa-js/commit/961e2b2)), closes [#3645](https://github.com/wppconnect-team/wa-js/issues/3645)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4845 (#3646) ([cb37013](https://github.com/wppconnect-team/wa-js/commit/cb37013)), closes [#3646](https://github.com/wppconnect-team/wa-js/issues/3646)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4851 (#3647) ([40fda71](https://github.com/wppconnect-team/wa-js/commit/40fda71)), closes [#3647](https://github.com/wppconnect-team/wa-js/issues/3647)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4858 (#3648) ([e4d4439](https://github.com/wppconnect-team/wa-js/commit/e4d4439)), closes [#3648](https://github.com/wppconnect-team/wa-js/issues/3648)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4889 (#3652) ([cf3bea5](https://github.com/wppconnect-team/wa-js/commit/cf3bea5)), closes [#3652](https://github.com/wppconnect-team/wa-js/issues/3652)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4904 (#3666) ([94574c7](https://github.com/wppconnect-team/wa-js/commit/94574c7)), closes [#3666](https://github.com/wppconnect-team/wa-js/issues/3666)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4910 (#3670) ([386123b](https://github.com/wppconnect-team/wa-js/commit/386123b)), closes [#3670](https://github.com/wppconnect-team/wa-js/issues/3670)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4917 (#3672) ([3e234f3](https://github.com/wppconnect-team/wa-js/commit/3e234f3)), closes [#3672](https://github.com/wppconnect-team/wa-js/issues/3672)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4935 (#3675) ([39a4757](https://github.com/wppconnect-team/wa-js/commit/39a4757)), closes [#3675](https://github.com/wppconnect-team/wa-js/issues/3675)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4938 (#3679) ([317b9ef](https://github.com/wppconnect-team/wa-js/commit/317b9ef)), closes [#3679](https://github.com/wppconnect-team/wa-js/issues/3679)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4941 (#3680) ([0db0c0b](https://github.com/wppconnect-team/wa-js/commit/0db0c0b)), closes [#3680](https://github.com/wppconnect-team/wa-js/issues/3680)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4943 (#3684) ([1ee6d38](https://github.com/wppconnect-team/wa-js/commit/1ee6d38)), closes [#3684](https://github.com/wppconnect-team/wa-js/issues/3684)
+* **deps-dev:** update dependency compressorjs to ^1.4.0 (#3691) ([6ebc8f2](https://github.com/wppconnect-team/wa-js/commit/6ebc8f2)), closes [#3691](https://github.com/wppconnect-team/wa-js/issues/3691)
+* **deps-dev:** update dependency conventional-changelog-angular to ^9.4.0 (#3591) ([e0a9efd](https://github.com/wppconnect-team/wa-js/commit/e0a9efd)), closes [#3591](https://github.com/wppconnect-team/wa-js/issues/3591)
+* **deps-dev:** update dependency eslint to ^10.10.0 (#3626) ([8d6b496](https://github.com/wppconnect-team/wa-js/commit/8d6b496)), closes [#3626](https://github.com/wppconnect-team/wa-js/issues/3626)
+* **deps-dev:** update dependency eslint to ^10.11.0 (#3663) ([ed34b77](https://github.com/wppconnect-team/wa-js/commit/ed34b77)), closes [#3663](https://github.com/wppconnect-team/wa-js/issues/3663)
+* **deps-dev:** update dependency eslint to ^10.9.0 (#3594) ([6972a84](https://github.com/wppconnect-team/wa-js/commit/6972a84)), closes [#3594](https://github.com/wppconnect-team/wa-js/issues/3594)
+* **deps-dev:** update dependency eslint to ^10.9.1 (#3599) ([0d548be](https://github.com/wppconnect-team/wa-js/commit/0d548be)), closes [#3599](https://github.com/wppconnect-team/wa-js/issues/3599)
+* **deps-dev:** update dependency lint-staged to ^17.4.1 (#3608) ([4eee1d8](https://github.com/wppconnect-team/wa-js/commit/4eee1d8)), closes [#3608](https://github.com/wppconnect-team/wa-js/issues/3608)
+* **deps-dev:** update dependency lint-staged to ^17.5.0 (#3628) ([0742e2a](https://github.com/wppconnect-team/wa-js/commit/0742e2a)), closes [#3628](https://github.com/wppconnect-team/wa-js/issues/3628)
+* **deps-dev:** update dependency lint-staged to ^17.5.1 (#3643) ([115c485](https://github.com/wppconnect-team/wa-js/commit/115c485)), closes [#3643](https://github.com/wppconnect-team/wa-js/issues/3643)
+* **deps-dev:** update dependency lint-staged to ^17.6.0 (#3678) ([706b882](https://github.com/wppconnect-team/wa-js/commit/706b882)), closes [#3678](https://github.com/wppconnect-team/wa-js/issues/3678)
+* **deps-dev:** update dependency prettier to ^3.9.7 (#3656) ([1f87c45](https://github.com/wppconnect-team/wa-js/commit/1f87c45)), closes [#3656](https://github.com/wppconnect-team/wa-js/issues/3656)
+* **deps-dev:** update dependency prettier to ^3.9.8 (#3661) ([bd032b8](https://github.com/wppconnect-team/wa-js/commit/bd032b8)), closes [#3661](https://github.com/wppconnect-team/wa-js/issues/3661)
+* **deps-dev:** update dependency prettier to ^3.9.9 (#3676) ([744e3d8](https://github.com/wppconnect-team/wa-js/commit/744e3d8)), closes [#3676](https://github.com/wppconnect-team/wa-js/issues/3676)
+* **deps-dev:** update dependency release-it to ^21.0.3 (#3650) ([b05ef37](https://github.com/wppconnect-team/wa-js/commit/b05ef37)), closes [#3650](https://github.com/wppconnect-team/wa-js/issues/3650)
+* **deps-dev:** update dependency release-it to ^21.1.0 (#3664) ([656cdeb](https://github.com/wppconnect-team/wa-js/commit/656cdeb)), closes [#3664](https://github.com/wppconnect-team/wa-js/issues/3664)
+* **deps-dev:** update dependency webpack to ^5.110.0 (#3609) ([1f922b1](https://github.com/wppconnect-team/wa-js/commit/1f922b1)), closes [#3609](https://github.com/wppconnect-team/wa-js/issues/3609)
+* **deps-dev:** update dependency webpack to ^5.110.1 (#3612) ([c46ba6e](https://github.com/wppconnect-team/wa-js/commit/c46ba6e)), closes [#3612](https://github.com/wppconnect-team/wa-js/issues/3612)
+* **deps-dev:** update dependency webpack to ^5.110.2 (#3619) ([f7a7041](https://github.com/wppconnect-team/wa-js/commit/f7a7041)), closes [#3619](https://github.com/wppconnect-team/wa-js/issues/3619)
+* **deps-dev:** update dependency webpack to ^5.110.3 (#3624) ([f5500bf](https://github.com/wppconnect-team/wa-js/commit/f5500bf)), closes [#3624](https://github.com/wppconnect-team/wa-js/issues/3624)
+* **deps-dev:** update dependency webpack to ^5.111.0 (#3651) ([ff05c46](https://github.com/wppconnect-team/wa-js/commit/ff05c46)), closes [#3651](https://github.com/wppconnect-team/wa-js/issues/3651)
+* **deps-dev:** update dependency webpack to ^5.111.1 (#3662) ([5581ce3](https://github.com/wppconnect-team/wa-js/commit/5581ce3)), closes [#3662](https://github.com/wppconnect-team/wa-js/issues/3662)
+* **deps-dev:** update dependency webpack-cli to ^7.2.3 (#3615) ([ccbffe0](https://github.com/wppconnect-team/wa-js/commit/ccbffe0)), closes [#3615](https://github.com/wppconnect-team/wa-js/issues/3615)
+* **deps-dev:** update playwright monorepo to ^1.63.0 (#3627) ([31321dc](https://github.com/wppconnect-team/wa-js/commit/31321dc)), closes [#3627](https://github.com/wppconnect-team/wa-js/issues/3627)
+* **deps-dev:** update typescript-eslint monorepo to ^8.68.0 (#3600) ([9379509](https://github.com/wppconnect-team/wa-js/commit/9379509)), closes [#3600](https://github.com/wppconnect-team/wa-js/issues/3600)
+* **deps-dev:** update typescript-eslint monorepo to ^8.69.0 (#3623) ([c26f7d4](https://github.com/wppconnect-team/wa-js/commit/c26f7d4)), closes [#3623](https://github.com/wppconnect-team/wa-js/issues/3623)
+* **deps-dev:** update typescript-eslint monorepo to ^8.70.0 (#3633) ([a363180](https://github.com/wppconnect-team/wa-js/commit/a363180)), closes [#3633](https://github.com/wppconnect-team/wa-js/issues/3633)
+* **deps-dev:** update typescript-eslint monorepo to ^8.70.1 (#3671) ([be5a182](https://github.com/wppconnect-team/wa-js/commit/be5a182)), closes [#3671](https://github.com/wppconnect-team/wa-js/issues/3671)
+* **deps-dev:** update typescript-eslint monorepo to ^8.71.0 (#3688) ([879d5c2](https://github.com/wppconnect-team/wa-js/commit/879d5c2)), closes [#3688](https://github.com/wppconnect-team/wa-js/issues/3688)
+* **deps:** update node.js to v24.20.0 (#3604) ([439bdde](https://github.com/wppconnect-team/wa-js/commit/439bdde)), closes [#3604](https://github.com/wppconnect-team/wa-js/issues/3604)
+* **deps:** update node.js to v24.21.0 (#3635) ([8e546f4](https://github.com/wppconnect-team/wa-js/commit/8e546f4)), closes [#3635](https://github.com/wppconnect-team/wa-js/issues/3635)
+* normaliza quebras de linha com .gitattributes (#3660) ([c431dbb](https://github.com/wppconnect-team/wa-js/commit/c431dbb)), closes [#3660](https://github.com/wppconnect-team/wa-js/issues/3660)
+
+### Continuous Integration
+
+* add scheduled compatibility monitor (#3625) ([c145889](https://github.com/wppconnect-team/wa-js/commit/c145889)), closes [#3625](https://github.com/wppconnect-team/wa-js/issues/3625)
+* **deps:** update dependency node to v24.20.0 (#3606) ([078df97](https://github.com/wppconnect-team/wa-js/commit/078df97)), closes [#3606](https://github.com/wppconnect-team/wa-js/issues/3606)
+
+### Chores
+
+* **deps:** lock file maintenance (#3590) ([ba54255](https://github.com/wppconnect-team/wa-js/commit/ba54255)), closes [#3590](https://github.com/wppconnect-team/wa-js/issues/3590)
+* **deps:** lock file maintenance (#3596) ([8bf55f9](https://github.com/wppconnect-team/wa-js/commit/8bf55f9)), closes [#3596](https://github.com/wppconnect-team/wa-js/issues/3596)
+* **deps:** lock file maintenance (#3620) ([0f95fac](https://github.com/wppconnect-team/wa-js/commit/0f95fac)), closes [#3620](https://github.com/wppconnect-team/wa-js/issues/3620)
+* **deps:** lock file maintenance (#3631) ([c66b4be](https://github.com/wppconnect-team/wa-js/commit/c66b4be)), closes [#3631](https://github.com/wppconnect-team/wa-js/issues/3631)
+* **deps:** lock file maintenance (#3649) ([98520a7](https://github.com/wppconnect-team/wa-js/commit/98520a7)), closes [#3649](https://github.com/wppconnect-team/wa-js/issues/3649)
+* **deps:** lock file maintenance (#3669) ([a449935](https://github.com/wppconnect-team/wa-js/commit/a449935)), closes [#3669](https://github.com/wppconnect-team/wa-js/issues/3669)
+* **deps:** lock file maintenance (#3686) ([2e1961b](https://github.com/wppconnect-team/wa-js/commit/2e1961b)), closes [#3686](https://github.com/wppconnect-team/wa-js/issues/3686)
 
 ## 4.6.0 (2026-08-14)
 
@@ -5402,26 +5502,12 @@
 
 ### Bug Fixes
 
+* Fixed compatibility with WhatsApp 2.2208.11 ([8894d1a](https://github.com/wppconnect-team/wa-js/commit/8894d1a))
 * Fixed compatibility with WhatsApp 2.2211.2 ([d0c92b6](https://github.com/wppconnect-team/wa-js/commit/d0c92b6))
 
 ### Documentation
 
 * Updated attributes of MsgModel ([1ceaf5d](https://github.com/wppconnect-team/wa-js/commit/1ceaf5d))
-
-### Chores
-
-* **deps-dev:** Bump @typescript-eslint/eslint-plugin (#294) ([3d3f8a4](https://github.com/wppconnect-team/wa-js/commit/3d3f8a4)), closes [#294](https://github.com/wppconnect-team/wa-js/issues/294)
-* **deps-dev:** Bump @typescript-eslint/parser from 5.15.0 to 5.16.0 (#293) ([37ba718](https://github.com/wppconnect-team/wa-js/commit/37ba718)), closes [#293](https://github.com/wppconnect-team/wa-js/issues/293)
-* **deps-dev:** Bump @wppconnect/wa-version from 1.1.46 to 1.1.47 (#289) ([4d6e42c](https://github.com/wppconnect-team/wa-js/commit/4d6e42c)), closes [#289](https://github.com/wppconnect-team/wa-js/issues/289)
-* **deps-dev:** Bump debug from 4.3.3 to 4.3.4 (#288) ([768e516](https://github.com/wppconnect-team/wa-js/commit/768e516)), closes [#288](https://github.com/wppconnect-team/wa-js/issues/288)
-* **deps-dev:** Bump release-it from 14.12.5 to 14.13.1 (#291) ([761493c](https://github.com/wppconnect-team/wa-js/commit/761493c)), closes [#291](https://github.com/wppconnect-team/wa-js/issues/291)
-* **deps:** Bump actions/cache from 2 to 3 (#290) ([21b4f28](https://github.com/wppconnect-team/wa-js/commit/21b4f28)), closes [#290](https://github.com/wppconnect-team/wa-js/issues/290)
-
-## <small>1.2.3 (2022-03-16)</small>
-
-### Bug Fixes
-
-* Fixed compatibility with WhatsApp 2.2208.11 ([8894d1a](https://github.com/wppconnect-team/wa-js/commit/8894d1a))
 
 ### Continuous Integration
 
@@ -5434,13 +5520,19 @@
 * **deps-dev:** Bump @commitlint/prompt-cli from 16.2.1 to 16.2.3 (#284) ([1fec78c](https://github.com/wppconnect-team/wa-js/commit/1fec78c)), closes [#284](https://github.com/wppconnect-team/wa-js/issues/284)
 * **deps-dev:** Bump @playwright/test from 1.19.2 to 1.20.0 (#281) ([f85f41d](https://github.com/wppconnect-team/wa-js/commit/f85f41d)), closes [#281](https://github.com/wppconnect-team/wa-js/issues/281)
 * **deps-dev:** Bump @typescript-eslint/eslint-plugin (#279) ([2bd12a6](https://github.com/wppconnect-team/wa-js/commit/2bd12a6)), closes [#279](https://github.com/wppconnect-team/wa-js/issues/279)
+* **deps-dev:** Bump @typescript-eslint/eslint-plugin (#294) ([3d3f8a4](https://github.com/wppconnect-team/wa-js/commit/3d3f8a4)), closes [#294](https://github.com/wppconnect-team/wa-js/issues/294)
 * **deps-dev:** Bump @typescript-eslint/parser from 5.14.0 to 5.15.0 (#282) ([2bb6004](https://github.com/wppconnect-team/wa-js/commit/2bb6004)), closes [#282](https://github.com/wppconnect-team/wa-js/issues/282)
+* **deps-dev:** Bump @typescript-eslint/parser from 5.15.0 to 5.16.0 (#293) ([37ba718](https://github.com/wppconnect-team/wa-js/commit/37ba718)), closes [#293](https://github.com/wppconnect-team/wa-js/issues/293)
 * **deps-dev:** Bump @wppconnect/wa-version from 1.1.40 to 1.1.42 (#277) ([93f02fe](https://github.com/wppconnect-team/wa-js/commit/93f02fe)), closes [#277](https://github.com/wppconnect-team/wa-js/issues/277)
 * **deps-dev:** Bump @wppconnect/wa-version from 1.1.42 to 1.1.43 (#283) ([1aedcdb](https://github.com/wppconnect-team/wa-js/commit/1aedcdb)), closes [#283](https://github.com/wppconnect-team/wa-js/issues/283)
 * **deps-dev:** Bump @wppconnect/wa-version from 1.1.43 to 1.1.46 (#285) ([1af9e4f](https://github.com/wppconnect-team/wa-js/commit/1af9e4f)), closes [#285](https://github.com/wppconnect-team/wa-js/issues/285)
+* **deps-dev:** Bump @wppconnect/wa-version from 1.1.46 to 1.1.47 (#289) ([4d6e42c](https://github.com/wppconnect-team/wa-js/commit/4d6e42c)), closes [#289](https://github.com/wppconnect-team/wa-js/issues/289)
+* **deps-dev:** Bump debug from 4.3.3 to 4.3.4 (#288) ([768e516](https://github.com/wppconnect-team/wa-js/commit/768e516)), closes [#288](https://github.com/wppconnect-team/wa-js/issues/288)
 * **deps-dev:** Bump eslint from 8.10.0 to 8.11.0 (#278) ([bd46f61](https://github.com/wppconnect-team/wa-js/commit/bd46f61)), closes [#278](https://github.com/wppconnect-team/wa-js/issues/278)
 * **deps-dev:** Bump playwright-chromium from 1.19.2 to 1.20.0 (#280) ([41f2b70](https://github.com/wppconnect-team/wa-js/commit/41f2b70)), closes [#280](https://github.com/wppconnect-team/wa-js/issues/280)
 * **deps-dev:** Bump prettier from 2.5.1 to 2.6.0 (#287) ([6aa64bd](https://github.com/wppconnect-team/wa-js/commit/6aa64bd)), closes [#287](https://github.com/wppconnect-team/wa-js/issues/287)
+* **deps-dev:** Bump release-it from 14.12.5 to 14.13.1 (#291) ([761493c](https://github.com/wppconnect-team/wa-js/commit/761493c)), closes [#291](https://github.com/wppconnect-team/wa-js/issues/291)
+* **deps:** Bump actions/cache from 2 to 3 (#290) ([21b4f28](https://github.com/wppconnect-team/wa-js/commit/21b4f28)), closes [#290](https://github.com/wppconnect-team/wa-js/issues/290)
 * Fix dependabot ref ([ab1ab05](https://github.com/wppconnect-team/wa-js/commit/ab1ab05))
 
 ## <small>1.2.2 (2022-03-12)</small>
