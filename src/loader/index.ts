@@ -17,7 +17,7 @@
 import Debug from 'debug';
 
 import { internalEv } from '../eventEmitter';
-import { META_MODULE_ID_BLACKLIST } from './blacklist';
+import { isMetaModuleBlacklisted } from './blacklist';
 import { LAZY_MODULES, MAX_DISCOVERED_COMPONENTS } from './lazyModules';
 
 const debug = Debug('WA-JS:loader');
@@ -110,7 +110,7 @@ function buildMetaModulesMap(): { [key: string]: any } {
 
   const result: { [key: string]: any } = {};
   for (const id of allIds) {
-    if (!/^(?:use)?WA/.test(id) || META_MODULE_ID_BLACKLIST.has(id)) {
+    if (!/^(?:use)?WA/.test(id) || isMetaModuleBlacklisted(id)) {
       continue;
     }
     result[id] = modulesMap[id]?.factory;

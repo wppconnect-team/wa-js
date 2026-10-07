@@ -58,7 +58,7 @@ function loaderFixture() {
         if (id === '../eventEmitter')
           return { internalEv: { waitFor: () => new Promise(() => {}) } };
         if (id === './blacklist')
-          return { META_MODULE_ID_BLACKLIST: new Set() };
+          return { isMetaModuleBlacklisted: () => false };
         if (id === './lazyModules')
           return {
             LAZY_MODULES: { [ID]: { components: ['WAWebForwardFlow'] } },
