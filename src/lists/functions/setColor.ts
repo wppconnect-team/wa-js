@@ -25,7 +25,7 @@ import { ListColor, resolveColorIndex } from './resolveColorIndex';
  * Available when WhatsApp enables list editing for the account.
  * Throws `list_editing_not_available` when the native feature is disabled.
  *
- * The color must be one of the WhatsApp palette entries — pass either its
+ * The color must be one of the WhatsApp palette entries - pass either its
  * index or its hex code. Use {@link getColorPalette} to list them.
  *
  * @example

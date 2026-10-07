@@ -18,7 +18,9 @@ import { WPPError } from '../../util';
 import { labelsEditingEnabled } from '../../whatsapp/functions';
 
 export function assertListEditingAvailable(): void {
-  if (!labelsEditingEnabled()) {
+  // Recent WhatsApp versions removed this gate from the native mutations.
+  // Preserve it where available; otherwise let the native action validate.
+  if (typeof labelsEditingEnabled === 'function' && !labelsEditingEnabled()) {
     throw new WPPError(
       'list_editing_not_available',
       'WhatsApp has not enabled list editing for this account'

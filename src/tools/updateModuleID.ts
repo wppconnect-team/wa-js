@@ -139,6 +139,9 @@ async function start() {
    * This will not directly affect the function call, it continues to work normally.
    */
   const ignoreFailModules: string[] = [
+    // Removed from native list mutations on recent WA builds; older versions
+    // still enforce it through lists/assertListEditingAvailable.
+    'functions.labelsEditingEnabled',
     'enums.StreamInfo', // Plain TypeScript enum, not a webpack module
     'enums.StreamMode', // Plain TypeScript enum, not a webpack module
     'functions.createCollection',

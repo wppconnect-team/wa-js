@@ -24,6 +24,7 @@ import { WPPError } from '../src/util/errors';
 
 function listsApi({
   enabled = true,
+  hasEditingGate = true,
   business = false,
   nativeId = 42 as number | undefined,
 } = {}) {
@@ -46,7 +47,7 @@ function listsApi({
     '#a5b1f7',
   ];
   const functions = {
-    labelsEditingEnabled: () => enabled,
+    labelsEditingEnabled: hasEditingGate ? () => enabled : undefined,
     getAllLabelColors: () => palette,
     colorIndexToHex: (index: number) => palette[index],
     getNextLabelId: async () => {
@@ -250,3 +251,19 @@ test('create accepts a hex code and rejects one outside the palette', async () =
   });
   expect(invalid.calls).toEqual([]);
 });
+
+for (const action of ['create', 'rename', 'remove', 'setColor'] as const) {
+  test(`${action} supports native versions without the editing gate`, async () => {
+    const api = listsApi({ hasEditingGate: false });
+    await (action === 'create' ? api.create('Family') : api[action]());
+    expect(api.calls).toHaveLength(1);
+  });
+
+  test(`${action} propagates native errors when the editing gate is absent`, async () => {
+    const api = listsApi({ hasEditingGate: false, enabled: false });
+    await expect(
+      action === 'create' ? api.create('Family') : api[action]()
+    ).rejects.toThrow('Minified invariant');
+    expect(api.calls).toEqual([]);
+  });
+}

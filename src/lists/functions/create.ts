@@ -27,9 +27,10 @@ import { ListColor, resolveColorIndex } from './resolveColorIndex';
  * Available when WhatsApp enables list editing for the account.
  * Throws `list_editing_not_available` when the native feature is disabled.
  *
- * The color must be one of the WhatsApp palette entries — pass either its
+ * The color must be one of the WhatsApp palette entries - pass either its
  * index or its hex code. Use {@link getColorPalette} to list them.
- * When omitted, WhatsApp picks the next available color.
+ * When omitted, business accounts use the next available color and personal
+ * accounts leave the color unset in the native action.
  *
  * @example
  * ```javascript
@@ -55,8 +56,7 @@ export async function create(
   assertListEditingAvailable();
   const chats = chatIds.map((id) => assertGetChat(id));
 
-  // A null color lets WhatsApp pick one, which is the only supported
-  // behavior for non-business accounts.
+  // Preserve the native personal-account default when no color is supplied.
   const colorIndex =
     color !== undefined
       ? resolveColorIndex(color)
