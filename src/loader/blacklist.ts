@@ -52,6 +52,9 @@ export function isMetaModuleBlacklisted(id: string): boolean {
  * specific WA version). When missing, no error is reported.
  */
 export const IGNORE_FAIL_MODULES: ReadonlySet<string> = new Set([
+  // Recent WhatsApp versions removed this gate from native list mutations.
+  // lists/assertListEditingAvailable preserves it only where it still exists.
+  'labelsEditingEnabled',
   'revokeStatus',
   'toggleNewsletterAdminActivityMuteStateAction',
   // stopped working in WA version ~2.3000.1034162388

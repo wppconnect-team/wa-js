@@ -15,15 +15,31 @@
  */
 
 import { WPPError } from '../../util';
-import { labelsEditingEnabled } from '../../whatsapp/functions';
+import { getAllLabelColors } from '../../whatsapp/functions';
 
-export function assertListEditingAvailable(): void {
-  // Recent WhatsApp versions removed this gate from the native mutations.
-  // Preserve it where available; otherwise let the native action validate.
-  if (typeof labelsEditingEnabled === 'function' && !labelsEditingEnabled()) {
+/**
+ * Return the list color palette as hex codes.
+ * The index of each entry is the `colorIndex` accepted by
+ * {@link create} and {@link setColor}.
+ * Works for both personal and business accounts.
+ *
+ * @example
+ * ```javascript
+ * const palette = WPP.lists.getColorPalette();
+ * console.log(palette); // ['#ff9485', '#64c4ff', ...]
+ * ```
+ *
+ * @category Lists
+ */
+export function getColorPalette(): string[] {
+  const palette = getAllLabelColors();
+
+  if (!palette) {
     throw new WPPError(
-      'list_editing_not_available',
-      'WhatsApp has not enabled list editing for this account'
+      'list_cannot_get_color_palette',
+      `Can't get list color palette`
     );
   }
+
+  return palette;
 }
