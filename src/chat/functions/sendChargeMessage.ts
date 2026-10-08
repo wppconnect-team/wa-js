@@ -16,7 +16,7 @@
 
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import { generateOrderUniqueId, WPPError } from '../../util';
-import { CatalogStore, UserPrefs } from '../../whatsapp';
+import { CatalogStore, UserPrefs, Wid } from '../../whatsapp';
 import {
   currencyForCountryShortcode,
   getCountryShortcodeByPhone,
@@ -38,6 +38,8 @@ export interface OrderItems {
   qnt?: number;
 }
 
+export type PixKeyType = 'CNPJ' | 'CPF' | 'PHONE' | 'EMAIL' | 'EVP';
+
 export interface OrderMessageOptions extends SendMessageOptions {
   notes?: string;
   discount?: number;
@@ -45,13 +47,40 @@ export interface OrderMessageOptions extends SendMessageOptions {
   shipping?: number;
   offset?: number;
   pix?: {
-    keyType: 'CNPJ' | 'CPF' | 'PHONE' | 'EMAIL' | 'EVP';
+    keyType: PixKeyType;
     name: string;
     key: string;
   };
+  /** Payment methods presented to the customer inside the order message. */
+  paymentSettings?: OrderPaymentSettings;
   // Text for external payment (out of whatsapp)
   payment_instruction?: string;
 }
+
+export interface OrderPaymentSettings {
+  /** Digitable line for a boleto. */
+  boletoCode?: string;
+  /** Whether card brands should be offered. */
+  cards?: boolean;
+  /** URL opened by the payment-link action. */
+  paymentLink?: string;
+  /** Complete dynamic Pix copy-and-paste code. */
+  pixCode?: string;
+}
+
+type PaymentSetting =
+  | {
+      type: 'pix_static_code';
+      pix_static_code: {
+        key: string;
+        key_type: PixKeyType;
+        merchant_name: string;
+      };
+    }
+  | { type: 'pix_dynamic_code'; pix_dynamic_code: { code: string } }
+  | { type: 'payment_link'; payment_link: { uri: string } }
+  | { type: 'boleto'; boleto: { digitable_line: string } }
+  | { type: 'cards'; cards: { enabled: boolean } };
 
 /**
  * Send a order message
@@ -91,11 +120,23 @@ export interface OrderMessageOptions extends SendMessageOptions {
  *     name: 'Name of seller',
  *   },
  * });
+ *
+ * // Send a charge with Pix, payment link, boleto, and cards
+ * WPP.chat.sendChargeMessage('[number]@c.us', [
+ *   { type: 'custom', name: 'Product', price: 20000, qnt: 1 },
+ * ], {
+ *   paymentSettings: {
+ *     pixCode: '000201...',
+ *     paymentLink: 'https://example.com/pay/123',
+ *     boletoCode: '00190...',
+ *     cards: true,
+ *   },
+ * });
  * ```
  * @category Message
  */
 export async function sendChargeMessage(
-  chatId: any,
+  chatId: string | Wid,
   items: OrderItems[],
   options?: OrderMessageOptions
 ): Promise<SendMessageReturn> {
@@ -132,8 +173,9 @@ export async function sendChargeMessage(
           `The product id ${product.id} not found`
         );
 
-      const collection = (catalog?.productCollection as any).get(
-        product.id as any
+      const collection = getCatalogProduct(
+        catalog?.productCollection,
+        product.id
       );
       if (!thumbDefault) {
         const mediaProductImage = collection.getProductImageCollectionHead();
@@ -204,25 +246,7 @@ export async function sendChargeMessage(
         ? { value: options?.discount, offset: Number(options.offset) || 1000 }
         : null,
     },
-    payment_settings:
-      typeof options.pix !== 'undefined'
-        ? [
-            {
-              pix_static_code: {
-                key: options.pix.key,
-                key_type: options.pix.keyType,
-                merchant_name: options.pix.name,
-              },
-              type: 'pix_static_code',
-            },
-            {
-              cards: {
-                enabled: true,
-              },
-              type: 'cards',
-            },
-          ]
-        : undefined,
+    payment_settings: createPaymentSettings(options),
     external_payment_configurations: options.payment_instruction
       ? [
           {
@@ -256,4 +280,83 @@ export async function sendChargeMessage(
     },
   };
   return await sendRawMessage(chatId, message, options);
+}
+
+interface CatalogProductCollection {
+  get(id: OrderItems['id']): CatalogProduct;
+}
+
+interface CatalogProduct {
+  getProductImageCollectionHead(): {
+    mediaData: { preview: { getBase64(): string } };
+  };
+}
+
+function getCatalogProduct(
+  collection: unknown,
+  id: OrderItems['id']
+): CatalogProduct {
+  if (!isCatalogProductCollection(collection)) {
+    throw new WPPError(
+      'product_collection_unavailable',
+      'The catalog product collection is unavailable'
+    );
+  }
+
+  return collection.get(id);
+}
+
+function isCatalogProductCollection(
+  collection: unknown
+): collection is CatalogProductCollection {
+  return (
+    typeof collection === 'object' &&
+    collection !== null &&
+    'get' in collection &&
+    typeof collection.get === 'function'
+  );
+}
+
+function createPaymentSettings(
+  options: OrderMessageOptions
+): PaymentSetting[] | undefined {
+  const settings: PaymentSetting[] = [];
+
+  if (options.pix) {
+    settings.push({
+      type: 'pix_static_code',
+      pix_static_code: {
+        key: options.pix.key,
+        key_type: options.pix.keyType,
+        merchant_name: options.pix.name,
+      },
+    });
+  }
+
+  const payment = options.paymentSettings;
+  if (payment?.pixCode) {
+    settings.push({
+      type: 'pix_dynamic_code',
+      pix_dynamic_code: { code: payment.pixCode },
+    });
+  }
+  if (payment?.paymentLink) {
+    settings.push({
+      type: 'payment_link',
+      payment_link: { uri: payment.paymentLink },
+    });
+  }
+  if (payment?.boletoCode) {
+    settings.push({
+      type: 'boleto',
+      boleto: { digitable_line: payment.boletoCode },
+    });
+  }
+  if (payment?.cards !== undefined) {
+    settings.push({ type: 'cards', cards: { enabled: payment.cards } });
+  } else if (options.pix) {
+    settings.push({ type: 'cards', cards: { enabled: true } });
+  }
+
+  return settings.length > 0 ? settings : undefined;
 }

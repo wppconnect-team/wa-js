@@ -402,6 +402,7 @@ export async function sendFileMessage(
     productMsgOptions: chatId === 'status@broadcast' ? undefined : rawMessage,
     addEvenWhilePreparing: false,
     type: rawMessage.type,
+    useBasePropsType: rawMessage.type === 'interactive',
   };
 
   let sendMsgResult;
