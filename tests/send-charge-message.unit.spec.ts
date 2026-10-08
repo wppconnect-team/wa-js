@@ -127,9 +127,13 @@ test('adds all supported commerce payment methods to an order', async () => {
     buttons: Array<{ buttonParamsJson: string }>;
   };
   const params = JSON.parse(payload.buttons[0].buttonParamsJson) as {
+    order: { status: string };
+    order_request_id?: string;
     payment_settings: unknown[];
   };
 
+  expect(params.order_request_id).toBe('ORDER-123');
+  expect(params.order.status).toBe('payment_requested');
   expect(params.payment_settings).toEqual([
     {
       type: 'pix_dynamic_code',
@@ -147,4 +151,25 @@ test('adds all supported commerce payment methods to an order', async () => {
     },
     { type: 'cards', cards: { enabled: true } },
   ]);
+});
+
+test('keeps a regular order pending when it has no payment methods', async () => {
+  const loaded = loadSendChargeMessage();
+  const sendChargeMessage = loaded.moduleExports.sendChargeMessage;
+
+  expect(typeof sendChargeMessage).toBe('function');
+  if (!sendChargeMessage) throw new Error('sendChargeMessage was not exported');
+
+  await sendChargeMessage('123@c.us', [
+    { type: 'custom', name: 'Seu produto', price: 20000, qnt: 1 },
+  ]);
+
+  const payload = loaded.captured.message?.interactivePayload as {
+    buttons: Array<{ buttonParamsJson: string }>;
+  };
+  const params = JSON.parse(payload.buttons[0].buttonParamsJson) as {
+    order: { status: string };
+  };
+
+  expect(params.order.status).toBe('pending');
 });

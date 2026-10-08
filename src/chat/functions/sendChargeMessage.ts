@@ -217,8 +217,10 @@ export async function sendChargeMessage(
     Number(options?.tax || 0) +
     Number(options?.shipping || 0) -
     Number(options?.discount || 0);
+  const paymentSettings = createPaymentSettings(options);
   const buttonParamsJson = {
     reference_id: generateOrderUniqueId(),
+    order_request_id: generateOrderUniqueId(),
     type: 'physical-goods',
     payment_configuration: 'merchant_categorization_code',
     currency: await currencyForCountryShortcode(
@@ -230,7 +232,7 @@ export async function sendChargeMessage(
     },
     order_type: 'ORDER',
     order: {
-      status: 'pending',
+      status: paymentSettings ? 'payment_requested' : 'pending',
       items: products,
       subtotal: {
         value: Number(subtotal),
@@ -246,7 +248,7 @@ export async function sendChargeMessage(
         ? { value: options?.discount, offset: Number(options.offset) || 1000 }
         : null,
     },
-    payment_settings: createPaymentSettings(options),
+    payment_settings: paymentSettings,
     external_payment_configurations: options.payment_instruction
       ? [
           {
