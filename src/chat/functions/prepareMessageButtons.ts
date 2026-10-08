@@ -16,11 +16,7 @@
 
 import * as loader from '../../loader';
 import { WPPError } from '../../util';
-import {
-  TemplateButtonCollection,
-  TemplateButtonModel,
-  websocket,
-} from '../../whatsapp';
+import { websocket } from '../../whatsapp';
 import { DROP_ATTR } from '../../whatsapp/contants';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
@@ -33,24 +29,12 @@ import {
 } from '../../whatsapp/functions';
 import { RawMessage } from '..';
 import { encryptAndParserMsgButtons } from './buttonsParser';
+import {
+  createNativeFlowButtons,
+  MessageButtonsTypes,
+} from './createNativeFlowButtons';
 
-export type MessageButtonsTypes =
-  | {
-      id: string;
-      text: string;
-    }
-  | {
-      phoneNumber: string;
-      text: string;
-    }
-  | {
-      url: string;
-      text: string;
-    }
-  | {
-      code: string;
-      text: string;
-    };
+export type { MessageButtonsTypes } from './createNativeFlowButtons';
 
 export interface MessageButtonsOptions {
   /**
@@ -79,162 +63,53 @@ export function prepareMessageButtons<T extends RawMessage>(
   options: MessageButtonsOptions
 ): T {
   if (!options.buttons) {
-    return message as any;
+    return message;
   }
 
-  if (!Array.isArray(options.buttons)) {
-    throw new WPPError('buttons_not_a_array', 'Buttons options is not a array');
-  } else if (message.type !== 'chat' && options.buttons.length > 2) {
+  const nativeFlow = createNativeFlowButtons(options.buttons);
+  const headerMediaType = getInteractiveHeaderMediaType(message.type);
+
+  if (message.type !== 'chat' && nativeFlow.buttons.length > 2) {
     throw new WPPError(
       'not_alowed_more_then_three_buttons',
       'Not allowed more then three buttons in file messages'
-    );
-  } else if (options.buttons.length === 0 || options.buttons.length > 3) {
-    throw new WPPError(
-      'buttons_must_between_1_and_3_options',
-      'Buttons options must have between 1 and 3 options'
-    );
-  } else if (
-    options.buttons.find((i: any) => i.phoneNumber || i.url) &&
-    options.buttons.find((i: any) => i.id && i.text)
-  ) {
-    throw new WPPError(
-      'reply_and_cta_btn_not_allowed',
-      'It is not possible to send reply buttons and action buttons togetherButtons options must have between 1 and 3 options'
     );
   }
 
   message.title = options.title;
   message.footer = options.footer;
-
-  message.interactiveMessage = {
-    header: {
-      title: options.title || ' ',
-      hasMediaAttachment: false,
-    },
-    body: {
-      text: message.body || message.caption || ' ',
-    },
-    footer: {
-      text: options.footer || ' ',
-    },
-    nativeFlowMessage: {
-      buttons: options.buttons.map((button, index) => {
-        if ('phoneNumber' in button) {
-          return {
-            name: 'cta_call',
-            buttonParamsJson: JSON.stringify({
-              display_text: button.text,
-              phone_number: button.phoneNumber,
-            }),
-          };
-        }
-        if ('url' in button) {
-          return {
-            name: 'cta_url',
-            buttonParamsJson: JSON.stringify({
-              display_text: button.text,
-              url: button.url,
-              merchant_url: button.url,
-            }),
-          };
-        }
-        if ('code' in button) {
-          return {
-            name: 'cta_copy',
-            buttonParamsJson: JSON.stringify({
-              display_text: button.text,
-              copy_code: button.code,
-            }),
-          };
-        }
-        if ('raw' in button) {
-          return button.raw;
-        }
-        return {
-          name: 'quick_reply',
-          buttonParamsJson: JSON.stringify({
-            display_text: button.text,
-            id: button.id || `${index}`,
-          }),
-        };
-      }),
-    },
+  message.caption = message.body || message.caption || ' ';
+  message.type = 'interactive';
+  message.interactiveType = 'native_flow';
+  message.nativeFlowInteractiveMsg = true;
+  message.interactiveHeader = {
+    title: options.title,
+    hasMediaAttachment: Boolean(headerMediaType),
+    ...(headerMediaType ? { mediaType: headerMediaType } : {}),
   };
 
-  // This code is only for see buttons on sended device
-  message.isFromTemplate = true;
-  message.buttons = new TemplateButtonCollection();
-  message.hydratedButtons = options.buttons.map((button, index) => {
-    if ('phoneNumber' in button) {
-      return {
-        index: index,
-        callButton: {
-          displayText: button.text,
-          phoneNumber: button.phoneNumber,
-        },
-      };
-    }
-    if ('url' in button) {
-      return {
-        index: index,
-        urlButton: {
-          displayText: button.text,
-          url: button.url,
-        },
-      };
-    }
-    if ('code' in button) {
-      return {
-        index: index,
-        urlButton: {
-          displayText: button.text,
-          url: `https://www.whatsapp.com/otp/code/?otp_type=COPY_CODE&code=otp${button.code}`,
-        },
-      };
-    }
-
-    return {
-      index: index,
-      quickReplyButton: {
-        displayText: button.text,
-        id: button.id || `${index}`,
-      },
-    };
-  });
-
-  message.buttons.add(
-    message.hydratedButtons.map((e, t: number) => {
-      const i = `${null != e.index ? e.index : t}`;
-
-      if (e.urlButton) {
-        return new TemplateButtonModel({
-          id: i,
-          displayText: e.urlButton?.displayText,
-          url: e.urlButton?.url,
-          subtype: 'url',
-        });
-      }
-
-      if (e.callButton) {
-        return new TemplateButtonModel({
-          id: i,
-          displayText: e.callButton.displayText,
-          phoneNumber: e.callButton.phoneNumber,
-          subtype: 'call',
-        });
-      }
-
-      return new TemplateButtonModel({
-        id: i,
-        displayText: e.quickReplyButton?.displayText,
-        selectionId: e.quickReplyButton?.id,
-        subtype: 'quick_reply',
-      });
-    })
-  );
+  message.nativeFlowName = nativeFlow.name;
+  message.interactivePayload = {
+    buttons: nativeFlow.buttons,
+    messageVersion: 1,
+  };
 
   return message;
+}
+
+function getInteractiveHeaderMediaType(
+  type?: string
+): 'DOCUMENT' | 'IMAGE' | 'VIDEO' | undefined {
+  switch (type) {
+    case 'document':
+      return 'DOCUMENT';
+    case 'image':
+      return 'IMAGE';
+    case 'video':
+      return 'VIDEO';
+    default:
+      return undefined;
+  }
 }
 
 loader.onFullReady(() => {

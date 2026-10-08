@@ -66,10 +66,21 @@ export {
   replyToButtonMessage,
 } from './replyToButtonMessage';
 export { requestPhoneNumber } from './requestPhoneNumber';
+export {
+  BookingMessageOptions,
+  sendBookingMessage,
+} from './sendBookingMessage';
+export {
+  CarouselCard,
+  CarouselMessageOptions,
+  sendCarouselMessage,
+} from './sendCarouselMessage';
 export { sendCatalogMessage } from './sendCatalogMessage';
 export {
   OrderItems,
   OrderMessageOptions,
+  OrderPaymentSettings,
+  PixKeyType,
   sendChargeMessage,
 } from './sendChargeMessage';
 export {

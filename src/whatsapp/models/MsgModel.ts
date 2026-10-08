@@ -31,6 +31,27 @@ import {
   ModelProxy,
 } from './Model';
 
+interface InteractiveHeader {
+  title?: string | null;
+  subtitle?: string | null;
+  hasMediaAttachment?: boolean;
+  hasmediaAttachment?: boolean;
+  mediaType?: 'DOCUMENT' | 'IMAGE' | 'PRODUCT' | 'VIDEO';
+  thumbnail?: unknown;
+}
+
+interface NativeFlowButton {
+  name: string;
+  buttonParamsJson?: string;
+}
+
+interface InteractivePayload {
+  buttons?: NativeFlowButton[];
+  cards?: Array<Record<string, unknown>>;
+  carouselCardType?: number;
+  messageVersion: number;
+}
+
 interface Props {
   id: MsgKey;
   rowId?: any;
@@ -258,6 +279,15 @@ interface Props {
   buttonsResponse?: any;
   selectedButtonId?: string;
   interactiveMessage?: any;
+  nativeFlowInteractiveMsg?: boolean;
+  nativeFlowName?: string;
+  interactiveHeader?: InteractiveHeader;
+  interactiveType?: string;
+  interactivePayload?: InteractivePayload;
+  carouselCardsParsed?: Array<Record<string, unknown>>;
+  isCarouselCard?: boolean;
+  parentMsgId?: MsgKey | null;
+  bloksWidget?: unknown;
   isMdHistoryMsg: boolean;
 }
 

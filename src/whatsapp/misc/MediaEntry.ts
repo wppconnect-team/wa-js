@@ -36,6 +36,9 @@ export declare class MediaEntry {
   staticUrl: any;
 
   url(e: any): any;
+  getEncfilehash(): string | undefined;
+  getMediaKey(): string | undefined;
+  getMediaKeyTimestamp(): number | undefined;
   canReuseMediaKey(): void;
   markWhetherOnServer(e: any): any;
 }
