@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2026 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-import './registerAckMessageEvent';
-import './registerActiveChatEvent';
-import './registerActiveFilterEvent';
-import './registerCommentEvent';
-import './registerEditedMessageEvent';
-import './registerLabelEvent';
-import './registerLiveLocationUpdateEvent';
-import './registerNewChat';
-import './registerNewMessageEvent';
-import './registerPollEvent';
-import './registerPresenceChange';
-import './registerReactionsEvent';
-import './registerRevokeMessageEvent';
-import './registerUnreadCountEvent';
+import { MsgKey, Wid } from '../misc';
+import { Model } from './Model';
+
+/** A community announcement comment, revoked comment or encrypted placeholder. */
+export interface CommentModel extends Model {
+  id: MsgKey;
+  parentMsgKey: MsgKey;
+  author?: Wid;
+  body?: string;
+  t: number;
+  type: 'comment' | 'revoked' | 'ciphertext';
+  ack?: number;
+  read?: boolean;
+  protocolMessageKey?: MsgKey;
+}
