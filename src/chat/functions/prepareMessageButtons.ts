@@ -37,9 +37,11 @@ import {
 } from './createNativeFlowButtons';
 import {
   applyNativeFlowBiz,
+  detectCarousel,
   detectNativeFlow,
   NativeFlowBizExperiment,
   summarizeBiz,
+  unwrapKnownMessage,
 } from './nativeFlowBiz';
 
 const debug = Debug('WA-JS:native-flow');
@@ -314,13 +316,18 @@ loader.onFullReady(() => {
       (node.content as websocket.WapNode[]) || (node as any).stanza?.content;
 
     if (!buttonNode) {
-      // Initial Native Flow messages (responses and legacy are not matched)
-      const nativeFlow = detectNativeFlow(proto);
+      // Initial Native Flow and carousel messages (responses and legacy are not matched)
+      const record: any = namedParams ? namedParams.msgRecord : args[0];
+      const experiment: NativeFlowBizExperiment | undefined =
+        record?.data?.nativeFlowBizExperiment ??
+        record?.nativeFlowBizExperiment;
+      const carousel = detectCarousel(proto);
+      const nativeFlow =
+        detectNativeFlow(proto) ||
+        (carousel
+          ? { kind: 'interactive' as const, path: carousel.path }
+          : null);
       if (nativeFlow) {
-        const record: any = namedParams ? namedParams.msgRecord : args[0];
-        const experiment: NativeFlowBizExperiment | undefined =
-          record?.data?.nativeFlowBizExperiment ??
-          record?.nativeFlowBizExperiment;
         const result = applyNativeFlowBiz(
           content,
           nativeFlow.kind,
@@ -334,6 +341,16 @@ loader.onFullReady(() => {
           result,
           experiment ? JSON.stringify(experiment) : '-',
           summarizeBiz(content)
+        );
+      } else if (experiment) {
+        // Field names only (no values), to find where the experiment is lost
+        const { message, path } = unwrapKnownMessage(proto);
+        debug(
+          'native_flow experiment set but not detected: proto=%s wrappers=%s message=%s interactive=%s',
+          Object.keys(proto || {}).join(','),
+          path.join('>') || '-',
+          Object.keys(message || {}).join(','),
+          Object.keys(message?.interactiveMessage || {}).join(',')
         );
       }
       return node;

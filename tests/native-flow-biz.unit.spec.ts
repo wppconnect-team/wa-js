@@ -18,6 +18,7 @@ import { expect, test } from '@playwright/test';
 
 import {
   applyNativeFlowBiz,
+  detectCarousel,
   detectNativeFlow,
   ensureNativeFlowBiz,
   summarizeBiz,
@@ -314,5 +315,19 @@ test.describe('applyNativeFlowBiz experiments', () => {
       v: '9',
       name: 'quick_reply',
     });
+  });
+});
+
+test.describe('detectCarousel', () => {
+  test('matches carousels but not native flow, legacy or null', () => {
+    const carousel = { interactiveMessage: { carouselMessage: { cards: [] } } };
+    expect(detectCarousel(carousel)).toEqual({ path: [] });
+    expect(detectCarousel({ viewOnceMessage: { message: carousel } })).toEqual({
+      path: ['viewOnceMessage'],
+    });
+    expect(detectCarousel(flow('quick_reply'))).toBeNull();
+    expect(detectNativeFlow(carousel)).toBeNull();
+    expect(detectCarousel({ buttonsMessage: {} })).toBeNull();
+    expect(detectCarousel(null)).toBeNull();
   });
 });

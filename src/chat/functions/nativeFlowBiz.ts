@@ -101,6 +101,15 @@ export function detectNativeFlow(proto: any): NativeFlowDetection | null {
   return { kind, path };
 }
 
+/**
+ * Detects an interactive carousel (`interactiveMessage.carouselMessage`).
+ * It needs the same `<native_flow v="9" name="mixed">` envelope as buttons.
+ */
+export function detectCarousel(proto: any): { path: string[] } | null {
+  const { message, path } = unwrapKnownMessage(proto);
+  return message?.interactiveMessage?.carouselMessage ? { path } : null;
+}
+
 function nativeFlowAttrs(kind: NativeFlowAddonKind) {
   // Zapo: only the generic flow carries v="9"; payment ones carry just the name
   return kind === 'interactive' ? { v: '9', name: 'mixed' } : { name: kind };

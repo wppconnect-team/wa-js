@@ -16,6 +16,7 @@
 
 import Debug from 'debug';
 
+import { getMyUserLid, getMyUserWid } from '../../conn';
 import { convertToFile, isBase64, isUrl, WPPError } from '../../util';
 import { MediaPrep, MsgModel, MsgStore, OpaqueData, Wid } from '../../whatsapp';
 import {
@@ -35,6 +36,7 @@ import {
   MessageButtonsTypes,
   NativeFlowButtons,
 } from './createNativeFlowButtons';
+import { NativeFlowBizExperiment } from './nativeFlowBiz';
 
 const debug = Debug('WA-JS:chat:sendCarouselMessage');
 
@@ -51,6 +53,11 @@ export interface CarouselMessageOptions extends SendMessageOptions {
   body: string;
   footer?: string;
   cards: CarouselCard[];
+  /**
+   * Experimental `<biz>` node variations, to test what WhatsApp accepts for
+   * carousels. Not validated; leave undefined in production.
+   */
+  experimentalNativeFlowBiz?: NativeFlowBizExperiment;
 }
 
 interface ResolvedCarouselCard {
@@ -80,15 +87,37 @@ interface CarouselProtoCard {
  *
  * @example
  * ```javascript
+ * // Solid color images generated in the browser, for testing
+ * const img = (color, label) => {
+ *   const c = document.createElement('canvas');
+ *   c.width = c.height = 400;
+ *   const g = c.getContext('2d');
+ *   g.fillStyle = color;
+ *   g.fillRect(0, 0, 400, 400);
+ *   g.fillStyle = '#fff';
+ *   g.font = 'bold 60px sans-serif';
+ *   g.textAlign = 'center';
+ *   g.fillText(label, 200, 220);
+ *   return c.toDataURL('image/jpeg', 0.9);
+ * };
+ *
  * await WPP.chat.sendCarouselMessage('[number]@c.us', {
  *   body: 'Choose a product',
+ *   footer: 'Swipe to see more options',
  *   cards: [
  *     {
- *       image: 'data:image/jpeg;base64,...',
+ *       image: img('#d93232', 'Product 1'),
  *       title: 'Product 1',
  *       description: 'First product',
- *       footer: 'Tap to choose',
+ *       footer: 'In stock',
  *       buttons: [{ id: 'product-1', text: 'Choose' }]
+ *     },
+ *     {
+ *       image: img('#3264dc', 'Product 2'),
+ *       title: 'Product 2',
+ *       description: 'Second product',
+ *       footer: 'In stock',
+ *       buttons: [{ id: 'product-2', text: 'Choose' }]
  *     }
  *   ]
  * });
@@ -118,6 +147,10 @@ export async function sendCarouselMessage(
       carouselCardType: 1,
     },
   };
+  if (options.experimentalNativeFlowBiz) {
+    (rawMessage as any).nativeFlowBizExperiment =
+      options.experimentalNativeFlowBiz;
+  }
   const sendOptions = createSendOptions(options);
   const result = await sendRawMessage(chatId, rawMessage, sendOptions);
   const sentMessage = MsgStore.get(result.id);
@@ -206,6 +239,9 @@ async function resolveImage(
   const message = new MsgModel({
     ...mediaProps,
     id: await generateMessageID(chatId),
+    // Required: WhatsApp calls `from.isBot()` on every message associated with
+    // a media object when the same file is sent again
+    from: getMyUserLid() ?? getMyUserWid(),
     isNewMsg: true,
     type: 'image',
   });
@@ -247,10 +283,12 @@ function isImageContent(image: string): boolean {
 function createSendOptions(
   options: CarouselMessageOptions
 ): SendMessageOptions {
-  const { body, cards, footer, ...sendOptions } = options;
+  const { body, cards, footer, experimentalNativeFlowBiz, ...sendOptions } =
+    options;
   void body;
   void cards;
   void footer;
+  void experimentalNativeFlowBiz;
 
   return {
     ...defaultSendMessageOptions,

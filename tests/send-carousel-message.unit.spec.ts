@@ -144,7 +144,8 @@ function loadSendCarouselMessage(mediaType: 'image' | 'video' = 'image') {
     messageId?: string;
     rawMessage?: Record<string, unknown>;
     uploaded?: boolean;
-  } = { events: [] };
+    createdFrom: unknown[];
+  } = { events: [], createdFrom: [] };
 
   class TestMsgModel {
     body?: string;
@@ -155,6 +156,7 @@ function loadSendCarouselMessage(mediaType: 'image' | 'video' = 'image') {
 
     constructor(properties: Record<string, unknown>) {
       Object.assign(this, properties);
+      captured.createdFrom.push(properties.from);
       this.id = properties.id as MessageKey;
       this.type = properties.type as string;
       this.mediaObject = { filehash: 'fresh-hash', size: 123 };
@@ -237,6 +239,12 @@ function loadSendCarouselMessage(mediaType: 'image' | 'video' = 'image') {
                 mmsThumbnailData: null,
               };
             },
+          };
+        }
+        if (id === '../../conn') {
+          return {
+            getMyUserLid: () => 'me@lid',
+            getMyUserWid: () => 'me@c.us',
           };
         }
         if (id === '..') {
@@ -415,6 +423,8 @@ test('prepares and uploads image content without requiring an existing message',
   expect(loaded.captured.messageId).toBeUndefined();
   expect(loaded.captured.uploaded).toBe(true);
   expect(loaded.captured.events).toEqual(['prepared', 'uploaded']);
+  // WhatsApp calls `from.isBot()` when the same image is sent again
+  expect(loaded.captured.createdFrom).toEqual(['me@lid']);
   expect(loaded.captured.rawMessage).toMatchObject({
     interactivePayload: {
       cards: [
