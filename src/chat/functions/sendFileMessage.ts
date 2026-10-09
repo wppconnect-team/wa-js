@@ -377,6 +377,21 @@ export async function sendFileMessage(
     options
   );
 
+  if ((options as any).buttons) {
+    // The interactive header needs the media kind (document/image/video)
+    const kind: string =
+      options.type !== 'auto-detect'
+        ? options.type
+        : file.type.startsWith('image/')
+          ? 'image'
+          : file.type.startsWith('video/')
+            ? 'video'
+            : 'document';
+    if (!rawMessage.type || rawMessage.type === 'chat') {
+      rawMessage.type = kind;
+    }
+  }
+
   rawMessage = prepareMessageButtons(rawMessage, options as any);
 
   if (options.markIsRead) {
@@ -403,6 +418,17 @@ export async function sendFileMessage(
     addEvenWhilePreparing: false,
     type: rawMessage.type,
     useBasePropsType: rawMessage.type === 'interactive',
+    // WhatsApp reads these interactive fields from the options (not only from
+    // `productMsgOptions`) and overwrites the message props with them
+    ...(rawMessage.type === 'interactive'
+      ? {
+          nativeFlowInteractiveMsg: rawMessage.nativeFlowInteractiveMsg,
+          nativeFlowName: rawMessage.nativeFlowName,
+          interactiveHeader: rawMessage.interactiveHeader,
+          interactiveType: rawMessage.interactiveType,
+          interactivePayload: rawMessage.interactivePayload,
+        }
+      : {}),
   };
 
   let sendMsgResult;
