@@ -74,6 +74,8 @@ function prepareMessageButtons(message: TestMessage, options: TestOptions) {
     {
       exports: moduleExports,
       require(id: string) {
+        if (id === 'debug') return () => () => undefined;
+        if (id === './nativeFlowBiz') return {};
         if (id === '../../loader') return { onFullReady: () => undefined };
         if (id === '../../util') return { WPPError };
         if (id === '../../whatsapp') {

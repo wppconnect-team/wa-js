@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import Debug from 'debug';
+
 import * as loader from '../../loader';
 import { WPPError } from '../../util';
 import { websocket } from '../../whatsapp';
@@ -33,6 +35,14 @@ import {
   createNativeFlowButtons,
   MessageButtonsTypes,
 } from './createNativeFlowButtons';
+import {
+  applyNativeFlowBiz,
+  detectNativeFlow,
+  NativeFlowBizExperiment,
+  summarizeBiz,
+} from './nativeFlowBiz';
+
+const debug = Debug('WA-JS:native-flow');
 
 export type { MessageButtonsTypes } from './createNativeFlowButtons';
 
@@ -49,6 +59,11 @@ export interface MessageButtonsOptions {
    * Footer text for buttons
    */
   footer?: string;
+  /**
+   * Experimental variations of the `<biz>` node sent with the buttons, only
+   * to test what WhatsApp accepts. Not validated; leave undefined in production.
+   */
+  experimentalNativeFlowBiz?: NativeFlowBizExperiment;
 }
 
 /**
@@ -89,6 +104,10 @@ export function prepareMessageButtons<T extends RawMessage>(
   };
 
   message.nativeFlowName = nativeFlow.name;
+  if (options.experimentalNativeFlowBiz) {
+    (message as any).nativeFlowBizExperiment =
+      options.experimentalNativeFlowBiz;
+  }
   message.interactivePayload = {
     buttons: nativeFlow.buttons,
     messageVersion: 1,
@@ -291,12 +310,34 @@ loader.onFullReady(() => {
       }
     }
 
+    const content =
+      (node.content as websocket.WapNode[]) || (node as any).stanza?.content;
+
     if (!buttonNode) {
+      // Initial Native Flow messages (responses and legacy are not matched)
+      const nativeFlow = detectNativeFlow(proto);
+      if (nativeFlow) {
+        const record: any = namedParams ? namedParams.msgRecord : args[0];
+        const experiment: NativeFlowBizExperiment | undefined =
+          record?.data?.nativeFlowBizExperiment ??
+          record?.nativeFlowBizExperiment;
+        const result = applyNativeFlowBiz(
+          content,
+          nativeFlow.kind,
+          (tag, attrs, c) => websocket.smax(tag, attrs, c),
+          experiment
+        );
+        debug(
+          'native_flow addon=%s wrappers=%s result=%s experiment=%s envelope=%s',
+          nativeFlow.kind,
+          nativeFlow.path.join('>') || '-',
+          result,
+          experiment ? JSON.stringify(experiment) : '-',
+          summarizeBiz(content)
+        );
+      }
       return node;
     }
-
-    const content =
-      (node.content as websocket.WapNode[]) || (node as any).stanza.content;
 
     let bizNode = content.find((c) => c.tag === 'biz');
 
