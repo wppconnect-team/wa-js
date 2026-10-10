@@ -113,6 +113,7 @@ export * from './keepMessage';
 export * from './labelAddAction';
 export * from './labelsEditingEnabled';
 export * from './logoutReason';
+export * from './markChatRead';
 export * from './markSeen';
 export * from './md5';
 export * from './mediaTypeFromProtobuf';
