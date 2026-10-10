@@ -54,6 +54,12 @@ export interface LazyModuleSource {
 export const LAZY_MODULES: {
   readonly [moduleId: string]: LazyModuleSource;
 } = {
+  // Verified on a cold QR page in WA 2.3000.1049878396.
+  // The comments modal imports the sender; loading it does not open the modal.
+  WAWebSendCommentMessageAction: {
+    components: ['WAWebCommentsModal.react'],
+    pattern: /CommentsModal/,
+  },
   // Verified on a cold QR page in WA 2.3000.1046899131. These components
   // register the original exports without opening UI or invoking actions.
   WAWebGenerateEventCallLink: {

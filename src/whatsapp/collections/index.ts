@@ -28,6 +28,7 @@ export * from './CatalogCollection';
 export * from './ChatCollection';
 export * from './ChatstateCollection';
 export * from './Collection';
+export * from './CommentCollection';
 export * from './ContactCollection';
 export * from './ContactCollection';
 export * from './ContactCollection';

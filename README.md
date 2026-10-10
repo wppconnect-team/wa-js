@@ -648,3 +648,24 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+### Community announcement replies
+
+`WPP.chat.getComments(messageId)` reads locally synchronized comments for an
+announcement (including voice messages) in a community's announcement group.
+It returns safe plain records, sorted oldest first, without marking them read.
+Only history already synchronized to this linked device is available.
+`type` distinguishes `comment`, `revoked` and `ciphertext`; the last two have no text.
+
+`WPP.chat.sendCommentMessage(messageId, text)` sends a comment through WhatsApp's
+native comment sender, not a quoted group message. Check `messageSendResult`: only
+`OK` confirms sending. On a failed verdict or exception, check the conversation
+before retrying. The API never retries or falls back to a normal group message.
+Membership and permissions remain enforced by WhatsApp.
+
+Listen to `WPP.on('chat.comment', ({action, comment}) => ...)` for collection
+changes (`add`, `update`, `remove`). Adds can include history hydrated by WhatsApp;
+upsert by `comment.id`, use `parentMsgId` to select the announcement, and handle
+revoked/encrypted records without displaying a stale body. No encryption keys
+are included in records. Older builds without this feature raise
+`comments_not_available` when invoked.

@@ -17,6 +17,9 @@
 import * as collections from './collections';
 import { exportModule } from './exportModule';
 
+/** @whatsapp WAWebCommentCollection */
+export declare const CommentStore: collections.CommentCollection;
+
 /**
  * @whatsapp WAWebBlocklistCollection >= 2.3000.1032534684
  */
@@ -413,4 +416,10 @@ exportModule(
     ChatStore: ['ChatCollection'],
   },
   (m) => m.ChatCollection
+);
+
+exportModule(
+  exports,
+  { CommentStore: 'CommentCollection' },
+  (m) => m.CommentCollection?.byParent
 );

@@ -30,6 +30,7 @@ export { forwardMessages, ForwardMessagesOptions } from './forwardMessages';
 export { generateMessageID } from './generateMessageID';
 export { get } from './get';
 export { getActiveChat } from './getActiveChat';
+export * from './getComments';
 export { getLastSeen } from './getLastSeen';
 export { getMessageACK } from './getMessageACK';
 export { getMessageById } from './getMessageById';
@@ -72,6 +73,7 @@ export {
   OrderMessageOptions,
   sendChargeMessage,
 } from './sendChargeMessage';
+export * from './sendCommentMessage';
 export {
   PoolMessageOptions,
   sendCreatePollMessage,
