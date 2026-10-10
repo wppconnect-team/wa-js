@@ -191,7 +191,7 @@ test('summarizeBiz exposes only whitelisted attributes', () => {
   ];
   const s = summarizeBiz(content);
   expect(s).toBe(
-    '<biz><interactive type=native_flow v=1><native_flow v=9 name=mixed>'
+    '<biz host_storage=2 privacy_mode_ts=123><interactive type=native_flow v=1><native_flow v=9 name=mixed>'
   );
   expect(s).not.toContain('5511');
   expect(summarizeBiz([])).toBe('biz:absent');
@@ -329,5 +329,44 @@ test.describe('detectCarousel', () => {
     expect(detectNativeFlow(carousel)).toBeNull();
     expect(detectCarousel({ buttonsMessage: {} })).toBeNull();
     expect(detectCarousel(null)).toBeNull();
+  });
+
+  test('qualityControl adds the node once, without touching other children', () => {
+    const content: any[] = [];
+    const first = applyNativeFlowBiz(content, 'interactive', create, {
+      qualityControl: true,
+    });
+    expect(first).toBe('added');
+    const biz = content[0];
+    const qc = biz.content.find((c: any) => c.tag === 'quality_control');
+    expect(qc.attrs.source_type).toBe('third_party');
+    expect(qc.attrs.decision_id).toMatch(/^[0-9a-f]{40}$/);
+    expect(qc.content[0]).toMatchObject({
+      tag: 'decision_source',
+      attrs: { value: 'df' },
+    });
+    applyNativeFlowBiz(content, 'interactive', create, {
+      qualityControl: true,
+    });
+    expect(
+      biz.content.filter((c: any) => c.tag === 'quality_control').length
+    ).toBe(1);
+    expect(biz.content[0].tag).toBe('interactive');
+  });
+
+  test('summarizeBiz exposes the group biz attributes but not decision_id', () => {
+    const content: any[] = [];
+    applyNativeFlowBiz(content, 'interactive', create, {
+      qualityControl: true,
+      bizAttrs: {
+        host_storage: '2',
+        actual_actors: '2',
+        privacy_mode_ts: '1',
+      },
+    });
+    const s = summarizeBiz(content);
+    expect(s).toContain('host_storage=2');
+    expect(s).toContain('<quality_control source_type=third_party>');
+    expect(s).not.toMatch(/decision_id|[0-9a-f]{40}/);
   });
 });

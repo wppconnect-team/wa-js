@@ -24,7 +24,9 @@ import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   createFanoutMsgStanza,
   createMsgProtobuf,
+  deprecatedSendStanzaAndReturnAck,
   encodeMaybeMediaType,
+  encryptAndSendSenderKeyMsg,
   getABPropConfigValue,
   mediaTypeFromProtobuf,
   typeAttributeFromProtobuf,
@@ -132,6 +134,71 @@ function getInteractiveHeaderMediaType(
       return undefined;
   }
 }
+
+/**
+ * Completes the `<biz>` node of an initial Native Flow / carousel stanza and
+ * logs a sanitized summary (when the `WA-JS:native-flow` debug is enabled).
+ */
+function completeNativeFlowBiz(
+  content: unknown,
+  proto: any,
+  record: any,
+  chatWid: any,
+  via: string
+): boolean {
+  const experiment: NativeFlowBizExperiment | undefined =
+    record?.data?.nativeFlowBizExperiment ?? record?.nativeFlowBizExperiment;
+  const carousel = detectCarousel(proto);
+  const nativeFlow =
+    detectNativeFlow(proto) ||
+    (carousel ? { kind: 'interactive' as const, path: carousel.path } : null);
+
+  if (nativeFlow) {
+    const result = applyNativeFlowBiz(
+      content,
+      nativeFlow.kind,
+      (tag, attrs, c) => websocket.smax(tag, attrs, c),
+      experiment
+    );
+    let isGroup = false;
+    try {
+      isGroup = Boolean((chatWid ?? record?.data?.to)?.isGroup?.());
+    } catch {
+      // diagnostics only
+    }
+    debug(
+      'native_flow via=%s group=%s addon=%s wrappers=%s result=%s experiment=%s envelope=%s',
+      via,
+      isGroup,
+      nativeFlow.kind,
+      nativeFlow.path.join('>') || '-',
+      result,
+      experiment ? JSON.stringify(experiment) : '-',
+      summarizeBiz(content)
+    );
+    return true;
+  }
+
+  if (experiment) {
+    // Field names only (no values), to find where the experiment is lost
+    const { message, path } = unwrapKnownMessage(proto);
+    debug(
+      'native_flow experiment set but not detected: proto=%s wrappers=%s message=%s interactive=%s',
+      Object.keys(proto || {}).join(','),
+      path.join('>') || '-',
+      Object.keys(message || {}).join(','),
+      Object.keys(message?.interactiveMessage || {}).join(',')
+    );
+  }
+
+  return false;
+}
+
+// Group messages sent with a sender key do not go through
+// `createFanoutMsgStanza`: WhatsApp builds the stanza inside
+// `encryptAndSendSenderKeyMsg` and sends it right away. The context is kept
+// only while that function runs, so the stanza can be completed before it is sent.
+let pendingGroupSend: { proto: any; record: any } | null = null;
 
 loader.onFullReady(() => {
   wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
@@ -318,41 +385,13 @@ loader.onFullReady(() => {
     if (!buttonNode) {
       // Initial Native Flow and carousel messages (responses and legacy are not matched)
       const record: any = namedParams ? namedParams.msgRecord : args[0];
-      const experiment: NativeFlowBizExperiment | undefined =
-        record?.data?.nativeFlowBizExperiment ??
-        record?.nativeFlowBizExperiment;
-      const carousel = detectCarousel(proto);
-      const nativeFlow =
-        detectNativeFlow(proto) ||
-        (carousel
-          ? { kind: 'interactive' as const, path: carousel.path }
-          : null);
-      if (nativeFlow) {
-        const result = applyNativeFlowBiz(
-          content,
-          nativeFlow.kind,
-          (tag, attrs, c) => websocket.smax(tag, attrs, c),
-          experiment
-        );
-        debug(
-          'native_flow addon=%s wrappers=%s result=%s experiment=%s envelope=%s',
-          nativeFlow.kind,
-          nativeFlow.path.join('>') || '-',
-          result,
-          experiment ? JSON.stringify(experiment) : '-',
-          summarizeBiz(content)
-        );
-      } else if (experiment) {
-        // Field names only (no values), to find where the experiment is lost
-        const { message, path } = unwrapKnownMessage(proto);
-        debug(
-          'native_flow experiment set but not detected: proto=%s wrappers=%s message=%s interactive=%s',
-          Object.keys(proto || {}).join(','),
-          path.join('>') || '-',
-          Object.keys(message || {}).join(','),
-          Object.keys(message?.interactiveMessage || {}).join(',')
-        );
-      }
+      completeNativeFlowBiz(
+        content,
+        proto,
+        record,
+        namedParams?.chatId,
+        'fanout'
+      );
       return node;
     }
 
@@ -376,6 +415,52 @@ loader.onFullReady(() => {
     }
 
     return node;
+  });
+
+  wrapModuleFunction(encryptAndSendSenderKeyMsg, async (func, ...wrapArgs) => {
+    const args: any[] = wrapArgs;
+    // The protobuf is the 2nd argument in current WhatsApp versions and the 3rd
+    // in older ones
+    const proto = [args[1], args[2]].find(
+      (p) => p && (detectNativeFlow(p) || detectCarousel(p))
+    );
+
+    if (!proto) {
+      return (func as (...a: any[]) => any)(...args);
+    }
+
+    const context = { proto, record: args[0] };
+    pendingGroupSend = context;
+
+    try {
+      return await (func as (...a: any[]) => any)(...args);
+    } finally {
+      if (pendingGroupSend === context) {
+        pendingGroupSend = null;
+      }
+    }
+  });
+
+  wrapModuleFunction(deprecatedSendStanzaAndReturnAck, (func, ...args) => {
+    const context = pendingGroupSend;
+    const stanza: any = args[0];
+
+    if (context && stanza?.tag === 'message') {
+      pendingGroupSend = null;
+      try {
+        completeNativeFlowBiz(
+          stanza.content,
+          context.proto,
+          context.record,
+          undefined,
+          'sender-key'
+        );
+      } catch (error) {
+        debug('native_flow sender-key biz failed: %O', error);
+      }
+    }
+
+    return (func as (...a: any[]) => any)(...args);
   });
 
   wrapModuleFunction(getABPropConfigValue, (func, ...args) => {

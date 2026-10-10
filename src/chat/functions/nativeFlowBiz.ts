@@ -196,6 +196,21 @@ export interface NativeFlowBizExperiment {
   nativeFlowName?: string;
   /** Extra/overriding attributes on `<biz>` (e.g. `{ native_flow_name: 'mixed' }`) */
   bizAttrs?: { [key: string]: string };
+  /**
+   * Adds `<quality_control decision_id=... source_type="third_party">` with
+   * `<decision_source value="df"/>` to `<biz>` (hypothesis from WhatsMeow #1235)
+   */
+  qualityControl?: boolean;
+}
+
+function randomHex(bytes: number): string {
+  const values = new Uint8Array(bytes);
+  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+    crypto.getRandomValues(values);
+  } else {
+    for (let i = 0; i < bytes; i++) values[i] = Math.floor(Math.random() * 256);
+  }
+  return Array.from(values, (b) => b.toString(16).padStart(2, '0')).join('');
 }
 
 export type ApplyResult = EnsureResult | 'off' | 'removed' | 'modified';
@@ -272,12 +287,41 @@ export function applyNativeFlowBiz<
     flow.attrs = attrs;
   }
 
+  let added = false;
+  if (
+    biz &&
+    experiment.qualityControl &&
+    Array.isArray(biz.content) &&
+    !biz.content.some((c: any) => c?.tag === 'quality_control')
+  ) {
+    biz.content.push(
+      create(
+        'quality_control',
+        { decision_id: randomHex(20), source_type: 'third_party' },
+        [create('decision_source', { value: 'df' })]
+      )
+    );
+    added = true;
+  }
+
   const after = JSON.stringify([biz?.attrs, interactive?.attrs, flow?.attrs]);
-  if (result === 'unchanged' && before !== after) result = 'modified';
+  if (result === 'unchanged' && (before !== after || added)) {
+    result = 'modified';
+  }
   return result;
 }
 
-const SAFE_ATTRS = new Set(['type', 'v', 'name', 'native_flow_name']);
+const SAFE_ATTRS = new Set([
+  'type',
+  'v',
+  'name',
+  'native_flow_name',
+  'host_storage',
+  'actual_actors',
+  'privacy_mode_ts',
+  'source_type',
+  'value',
+]);
 
 /**
  * Sanitized summary of the biz node for diagnostics: tags and a whitelist of

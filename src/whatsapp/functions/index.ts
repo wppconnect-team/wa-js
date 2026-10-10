@@ -42,6 +42,7 @@ export * from './createOrUpdateReactions';
 export * from './currencyForCountryShortcode';
 export * from './deleteContactAction';
 export * from './deleteNewsletter';
+export * from './deprecatedSendStanzaAndReturnAck';
 export * from './editBusinessProfile';
 export * from './editNewsletterMetadataAction';
 export * from './encodeMaybeMediaType';
