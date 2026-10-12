@@ -23,6 +23,10 @@
 export const META_MODULE_ID_BLACKLIST: ReadonlySet<string> = new Set([
   // Throws "bx(...): Unknown file path "9550""
   'WAWebEmojiPanelContentEmojiSearchEmpty.react',
+  // WA 2.3000.1050016271: eagerly loading the attachment UI before its lazy
+  // resource causes native file selection to wait indefinitely for the preview.
+  // Leave this UI module to WhatsApp; explicit loadModule calls remain available.
+  'WAWebAttachMediaFlow.react',
   // Locale shim that fails to resolve
   'WAWebMoment-es-do',
 ]);
