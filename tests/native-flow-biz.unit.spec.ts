@@ -370,3 +370,60 @@ test.describe('detectCarousel', () => {
     expect(s).not.toMatch(/decision_id|[0-9a-f]{40}/);
   });
 });
+
+test.describe('payment messages with the WhatsApp native_flow_name attribute', () => {
+  const withAttribute = (name: string) => [
+    create('biz', { native_flow_name: name }),
+  ];
+
+  for (const kind of ['payment_info', 'order_details'] as const) {
+    test(`${kind}: leaves the attribute-only biz untouched`, () => {
+      const content: any[] = withAttribute(kind);
+      expect(applyNativeFlowBiz(content, kind, create)).toBe('unchanged');
+      expect(content.length).toBe(1);
+      expect(content[0].attrs).toEqual({ native_flow_name: kind });
+      expect(content[0].content).toBeUndefined();
+    });
+  }
+
+  test('payment_info: still builds the node when WhatsApp added no biz', () => {
+    const content: any[] = [];
+    expect(applyNativeFlowBiz(content, 'payment_info', create)).toBe('added');
+    expect(content[0].content[0].content[0].attrs).toEqual({
+      name: 'payment_info',
+    });
+  });
+
+  test('payment_info: keeps the interactive node WhatsApp already built', () => {
+    const content: any[] = [
+      create('biz', {}, [
+        create('interactive', { type: 'native_flow', v: '1' }, [
+          create('native_flow', { name: 'payment_info' }),
+        ]),
+      ]),
+    ];
+    expect(applyNativeFlowBiz(content, 'payment_info', create)).toBe(
+      'unchanged'
+    );
+  });
+
+  test('generic native flow keeps its previous behavior with the attribute', () => {
+    const content: any[] = withAttribute('quick_reply');
+    expect(applyNativeFlowBiz(content, 'interactive', create)).toBe('added');
+    expect(content[0].content[0].content[0].attrs).toEqual({
+      v: '9',
+      name: 'mixed',
+    });
+  });
+
+  test('an explicit experiment still applies to payment messages', () => {
+    const content: any[] = withAttribute('payment_info');
+    applyNativeFlowBiz(content, 'payment_info', create, {
+      bizAttrs: { host_storage: '2' },
+    });
+    expect(content[0].attrs).toEqual({
+      native_flow_name: 'payment_info',
+      host_storage: '2',
+    });
+  });
+});

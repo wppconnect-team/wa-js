@@ -243,7 +243,20 @@ export function applyNativeFlowBiz<
     return biz.content.length !== before ? 'removed' : 'unchanged';
   }
 
-  let result: ApplyResult = ensureNativeFlowBiz(content, kind, create);
+  // WhatsApp builds `<biz native_flow_name="payment_info"/>` (attribute only)
+  // for payment messages that do not set `nativeFlowInteractiveMsg`. Adding the
+  // `<interactive>` child on top of it makes a node that WhatsApp itself, Zapo
+  // and WhatsMeow never send (the server answers error 479), so leave it as is.
+  const hasNameAttribute =
+    kind !== 'interactive' &&
+    Array.isArray(content) &&
+    content.some(
+      (c: any) => c?.tag === 'biz' && c.attrs?.native_flow_name != null
+    );
+
+  let result: ApplyResult = hasNameAttribute
+    ? 'unchanged'
+    : ensureNativeFlowBiz(content, kind, create);
   if (result === 'skipped') return result;
 
   // Default for generic Native Flow: v="9" name="mixed" (validated manually on
