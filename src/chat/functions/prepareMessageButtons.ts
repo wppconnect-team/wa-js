@@ -38,8 +38,10 @@ import {
   MessageButtonsTypes,
 } from './createNativeFlowButtons';
 import {
+  applyGroupListStanza,
   applyNativeFlowBiz,
   detectCarousel,
+  detectList,
   detectNativeFlow,
   NativeFlowBizExperiment,
   summarizeBiz,
@@ -199,7 +201,10 @@ function completeNativeFlowBiz(
 // `encryptAndSendSenderKeyMsg` and sends it right away. The context is kept
 // only while that function runs, keyed by destination and message id so concurrent
 // sends cannot apply another message's envelope.
-const pendingGroupSends = new Map<string, { proto: any; record: any }>();
+const pendingGroupSends = new Map<
+  string,
+  { proto: any; record: any; kind: 'native-flow' | 'list' }
+>();
 
 function groupSendKey(id: any, to: any): string | undefined {
   const messageId = typeof id === 'string' ? id : id?.id;
@@ -430,7 +435,7 @@ loader.onFullReady(() => {
     // The protobuf is the 2nd argument in current WhatsApp versions and the 3rd
     // in older ones
     const proto = [args[1], args[2]].find(
-      (p) => p && (detectNativeFlow(p) || detectCarousel(p))
+      (p) => p && (detectNativeFlow(p) || detectCarousel(p) || detectList(p))
     );
 
     if (!proto) {
@@ -444,7 +449,11 @@ loader.onFullReady(() => {
       debug('native_flow sender-key missing message correlation key');
       return (func as (...a: any[]) => any)(...args);
     }
-    const context = { proto, record };
+    const context = {
+      proto,
+      record,
+      kind: detectList(proto) ? ('list' as const) : ('native-flow' as const),
+    };
     pendingGroupSends.set(key, context);
 
     try {
@@ -464,13 +473,24 @@ loader.onFullReady(() => {
     if (context && stanza?.tag === 'message') {
       pendingGroupSends.delete(key!);
       try {
-        completeNativeFlowBiz(
-          stanza.content,
-          context.proto,
-          context.record,
-          undefined,
-          'sender-key'
-        );
+        if (context.kind === 'list') {
+          const result = applyGroupListStanza(stanza, (tag, attrs, c) =>
+            websocket.smax(tag, attrs, c)
+          );
+          debug(
+            'list via=sender-key group=true result=%s envelope=%s',
+            result,
+            summarizeBiz(stanza.content)
+          );
+        } else {
+          completeNativeFlowBiz(
+            stanza.content,
+            context.proto,
+            context.record,
+            undefined,
+            'sender-key'
+          );
+        }
       } catch (error) {
         debug('native_flow sender-key biz failed: %O', error);
       }

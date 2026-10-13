@@ -110,6 +110,66 @@ export function detectCarousel(proto: any): { path: string[] } | null {
   return message?.interactiveMessage?.carouselMessage ? { path } : null;
 }
 
+/**
+ * Detects a legacy list message (`listMessage`) through the known wrappers.
+ */
+export function detectList(proto: any): { path: string[] } | null {
+  const { message, path } = unwrapKnownMessage(proto);
+  return message?.listMessage ? { path } : null;
+}
+
+export type GroupListResult = 'added' | 'unchanged' | 'skipped';
+
+/**
+ * Completes the stanza of a list sent to a group with a sender key, as Zapo
+ * does: `<message type="media">` + `<enc type="skmsg" mediatype="list">` +
+ * `<biz><list v="2" type="product_list"/></biz>`. Without them the server
+ * answers error 479. Existing nodes and attributes are preserved.
+ */
+export function applyGroupListStanza<
+  N extends { tag: any; attrs?: any; content?: any },
+>(stanza: N | null | undefined, create: NodeFactory<N>): GroupListResult {
+  if (!stanza || !Array.isArray(stanza.content)) {
+    return 'skipped';
+  }
+
+  let changed = false;
+  const content = stanza.content as any[];
+
+  if (stanza.attrs?.type !== 'media') {
+    stanza.attrs = { ...stanza.attrs, type: 'media' };
+    changed = true;
+  }
+
+  // Only the top-level `<enc>` (the sender-key payload); the `<enc>` of the
+  // sender key distribution live inside `<participants>`
+  for (const child of content) {
+    if (child?.tag === 'enc' && child.attrs?.mediatype !== 'list') {
+      child.attrs = { ...child.attrs, mediatype: 'list' };
+      changed = true;
+    }
+  }
+
+  let biz = content.find((c: any) => c?.tag === 'biz');
+  if (!biz) {
+    biz = create('biz', {}, null);
+    content.push(biz);
+    changed = true;
+  }
+  if (!Array.isArray(biz.content)) {
+    if (biz.content !== undefined && biz.content !== null) {
+      return changed ? 'added' : 'skipped';
+    }
+    biz.content = [];
+  }
+  if (!biz.content.some((c: any) => c?.tag === 'list')) {
+    biz.content.push(create('list', { v: '2', type: 'product_list' }));
+    changed = true;
+  }
+
+  return changed ? 'added' : 'unchanged';
+}
+
 function nativeFlowAttrs(kind: NativeFlowAddonKind) {
   // Zapo: only the generic flow carries v="9"; payment ones carry just the name
   return kind === 'interactive' ? { v: '9', name: 'mixed' } : { name: kind };
