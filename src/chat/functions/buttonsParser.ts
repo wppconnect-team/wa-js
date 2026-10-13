@@ -37,7 +37,7 @@ function parserButtons(
     let header = undefined;
     let headerType = 1;
     for (const part of mediaPart) {
-      if (part in interactiveMessage.header) {
+      if (part in (interactiveMessage.header ?? {})) {
         const partName = part;
 
         header = { [partName]: interactiveMessage.header[partName] };
@@ -155,6 +155,13 @@ function parserButtons(
     { proto: protoForWeb, devices: webDevices },
   ];
 }
+function getParticipantsNode(node: any): websocket.WapNode | null {
+  const first = node?.stanza?.content?.[0];
+  return first?.tag === 'participants' && Array.isArray(first.content)
+    ? first
+    : null;
+}
+
 export async function encryptAndParserMsgButtons<
   TFunc extends (...args: any[]) => any,
 >(
@@ -169,22 +176,6 @@ export async function encryptAndParserMsgButtons<
   if (typeof groupData === 'function') {
     func = groupData;
   }
-  const parts: any[] = [];
-  if (proto?.viewOnceMessage?.message?.interactiveMessage) {
-    const buttons = parserButtons(proto, devices);
-    buttons.map(async (btn) => {
-      const result = await func(
-        message,
-        btn.proto,
-        btn.devices,
-        options,
-        reporter,
-        typeof groupData !== 'function' ? groupData : undefined
-      );
-      parts.push(...(result as any).stanza.content[0].content);
-    });
-  }
-
   const node = await func(
     message,
     proto,
@@ -193,7 +184,53 @@ export async function encryptAndParserMsgButtons<
     reporter,
     typeof groupData !== 'function' ? groupData : undefined
   );
-  if (parts.length > 0) (node as any).stanza.content[0].content = parts;
+
+  const interactive = proto?.viewOnceMessage?.message?.interactiveMessage;
+  const buttons = interactive?.nativeFlowMessage?.buttons;
+  // Only these buttons have a legacy representation. Keep carousel, payment
+  // and custom native flows intact for every device.
+  if (
+    interactive?.carouselMessage ||
+    !Array.isArray(buttons) ||
+    buttons.length === 0 ||
+    buttons.some(
+      (button: any) =>
+        !['quick_reply', 'cta_url', 'cta_call', 'cta_copy'].includes(
+          button?.name
+        )
+    )
+  ) {
+    return node;
+  }
+
+  // Only `<participants>` can be replaced. In groups it is absent when nobody
+  // needs the sender key, and `content[0]` is then the encrypted `<enc>`
+  const target = getParticipantsNode(node);
+  if (!target) {
+    return node;
+  }
+
+  const results = await Promise.all(
+    parserButtons(proto, devices).map(async (btn) => {
+      if (btn.devices.length === 0) {
+        return [];
+      }
+      const result = await func(
+        message,
+        btn.proto,
+        btn.devices,
+        options,
+        reporter,
+        typeof groupData !== 'function' ? groupData : undefined
+      );
+      return (getParticipantsNode(result)?.content ??
+        []) as websocket.WapNode[];
+    })
+  );
+
+  const parts = results.flat();
+
+  if (parts.length > 0) target.content = parts;
 
   return node;
 }
