@@ -88,5 +88,9 @@ export async function createProduct(
   if (params.url) Product.url = params.url;
   if (params.retailerId) Product.retailerId = params.retailerId;
 
-  return await addProduct(Product, 100, 100);
+  // Current WhatsApp builds accept one options object; older builds use
+  // positional arguments. exportModule preserves the original function arity.
+  return addProduct.length === 1
+    ? await addProduct({ product: Product, width: 100, height: 100 })
+    : await addProduct(Product, 100, 100);
 }
