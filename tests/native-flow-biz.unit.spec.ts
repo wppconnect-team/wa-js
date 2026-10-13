@@ -17,8 +17,10 @@
 import { expect, test } from '@playwright/test';
 
 import {
+  applyGroupListStanza,
   applyNativeFlowBiz,
   detectCarousel,
+  detectList,
   detectNativeFlow,
   ensureNativeFlowBiz,
   summarizeBiz,
@@ -425,5 +427,67 @@ test.describe('payment messages with the WhatsApp native_flow_name attribute', (
       native_flow_name: 'payment_info',
       host_storage: '2',
     });
+  });
+});
+
+test.describe('legacy list sent to a group', () => {
+  const stanza = (extra: any[] = []) =>
+    create('message', { id: 'x', type: 'text' }, [
+      create('participants', {}, [
+        create('to', {}, [create('enc', { type: 'pkmsg' })]),
+      ]),
+      create('enc', { type: 'skmsg', v: '2' }),
+      ...extra,
+    ]);
+
+  test('detects listMessage through wrappers only', () => {
+    expect(detectList({ listMessage: {} })).toEqual({ path: [] });
+    expect(
+      detectList({ viewOnceMessage: { message: { listMessage: {} } } })
+    ).toEqual({ path: ['viewOnceMessage'] });
+    expect(detectList(flow('quick_reply'))).toBeNull();
+    expect(detectList({ buttonsMessage: {} })).toBeNull();
+    expect(detectList(null)).toBeNull();
+  });
+
+  test('sets type=media, the enc mediatype and the biz list', () => {
+    const node: any = stanza();
+    expect(applyGroupListStanza(node, create)).toBe('added');
+    expect(node.attrs).toEqual({ id: 'x', type: 'media' });
+    const enc = node.content.find((c: any) => c.tag === 'enc');
+    expect(enc.attrs).toEqual({ type: 'skmsg', v: '2', mediatype: 'list' });
+    const biz = node.content.find((c: any) => c.tag === 'biz');
+    expect(biz.content[0]).toMatchObject({
+      tag: 'list',
+      attrs: { v: '2', type: 'product_list' },
+    });
+  });
+
+  test('does not touch the enc nodes inside participants', () => {
+    const node: any = stanza();
+    applyGroupListStanza(node, create);
+    const inner = node.content[0].content[0].content[0];
+    expect(inner.attrs).toEqual({ type: 'pkmsg' });
+  });
+
+  test('is idempotent and keeps an existing biz with its children', () => {
+    const quality = create('quality_control');
+    const node: any = stanza([create('biz', { host_storage: '2' }, [quality])]);
+    expect(applyGroupListStanza(node, create)).toBe('added');
+    expect(applyGroupListStanza(node, create)).toBe('unchanged');
+    const bizzes = node.content.filter((c: any) => c.tag === 'biz');
+    expect(bizzes.length).toBe(1);
+    expect(bizzes[0].attrs).toEqual({ host_storage: '2' });
+    expect(bizzes[0].content.map((c: any) => c.tag)).toEqual([
+      'quality_control',
+      'list',
+    ]);
+  });
+
+  test('skips a stanza without a content array', () => {
+    expect(applyGroupListStanza(undefined, create)).toBe('skipped');
+    expect(
+      applyGroupListStanza(create('message', {}, 'raw') as any, create)
+    ).toBe('skipped');
   });
 });

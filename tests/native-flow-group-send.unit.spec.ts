@@ -336,4 +336,34 @@ test.describe('native flow in group sender-key sends', () => {
     );
     expect(stanza.content.some((node) => node.tag === 'biz')).toBe(false);
   });
+
+  test('completes the stanza of a legacy list sent to a group', async () => {
+    const { fns, wrapped } = load();
+    const sent: any[] = [];
+    const send = wrapped.get(fns.deprecatedSendStanzaAndReturnAck)!;
+    const encrypt = wrapped.get(fns.encryptAndSendSenderKeyMsg)!;
+
+    await encrypt(
+      async () =>
+        send(
+          async (stanza: any) => {
+            sent.push(plain(stanza));
+          },
+          {
+            ...skmsgStanza(),
+            attrs: { id: 'MESSAGE', to: '123@g.us', type: 'text' },
+          }
+        ),
+      groupRecord(),
+      { listMessage: { title: 'x' } },
+      {}
+    );
+
+    expect(sent[0].attrs.type).toBe('media');
+    expect(
+      sent[0].content.find((c: any) => c.tag === 'enc').attrs.mediatype
+    ).toBe('list');
+    const biz = sent[0].content.find((c: any) => c.tag === 'biz');
+    expect(biz.content[0].attrs).toEqual({ v: '2', type: 'product_list' });
+  });
 });
