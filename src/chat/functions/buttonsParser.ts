@@ -37,7 +37,7 @@ function parserButtons(
     let header = undefined;
     let headerType = 1;
     for (const part of mediaPart) {
-      if (part in interactiveMessage.header) {
+      if (part in (interactiveMessage.header ?? {})) {
         const partName = part;
 
         header = { [partName]: interactiveMessage.header[partName] };
@@ -185,7 +185,21 @@ export async function encryptAndParserMsgButtons<
     typeof groupData !== 'function' ? groupData : undefined
   );
 
-  if (!proto?.viewOnceMessage?.message?.interactiveMessage) {
+  const interactive = proto?.viewOnceMessage?.message?.interactiveMessage;
+  const buttons = interactive?.nativeFlowMessage?.buttons;
+  // Only these buttons have a legacy representation. Keep carousel, payment
+  // and custom native flows intact for every device.
+  if (
+    interactive?.carouselMessage ||
+    !Array.isArray(buttons) ||
+    buttons.length === 0 ||
+    buttons.some(
+      (button: any) =>
+        !['quick_reply', 'cta_url', 'cta_call', 'cta_copy'].includes(
+          button?.name
+        )
+    )
+  ) {
     return node;
   }
 

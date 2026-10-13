@@ -52,6 +52,19 @@ jobs:
       - name: Test native attachment UI preload isolation
         run: npx playwright test tests/loader-media-preload.unit.spec.ts --project tests
 
+      - name: Test native flow buttons, payments and carousels
+        run: >-
+          npx playwright test
+          tests/buttons-parser.unit.spec.ts
+          tests/native-flow-biz.unit.spec.ts
+          tests/native-flow-group-send.unit.spec.ts
+          tests/prepare-message-buttons.unit.spec.ts
+          tests/send-booking-message.unit.spec.ts
+          tests/send-carousel-message.unit.spec.ts
+          tests/send-charge-message.unit.spec.ts
+          tests/send-pix-key-message.unit.spec.ts
+          --project tests
+
       - name: Test lazy bundle retry
         run: npx playwright test tests/loader-lazy-retry.unit.spec.ts --project tests
 

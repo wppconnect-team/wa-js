@@ -107,9 +107,13 @@ const nativeFlowProto = {
   },
 };
 
-const skmsgStanza = () => ({
+const groupRecord = (id = 'MESSAGE', to = '123@g.us') => ({
+  data: { id: { id, remote: to }, to },
+});
+
+const skmsgStanza = (id = 'MESSAGE', to = '123@g.us') => ({
   tag: 'message',
-  attrs: {},
+  attrs: { id, to },
   content: [
     { tag: 'enc', attrs: { type: 'skmsg' }, content: new Uint8Array(2) },
   ],
@@ -132,7 +136,7 @@ test.describe('native flow in group sender-key sends', () => {
     // current signature: (msgRecord, proto, senderKeyList, groupData, ...)
     const result = await encrypt(
       async () => send(sendFn, skmsgStanza(), {}),
-      { data: {} },
+      groupRecord(),
       nativeFlowProto,
       {},
       {}
@@ -156,7 +160,7 @@ test.describe('native flow in group sender-key sends', () => {
         send(async (stanza: any) => {
           sent.push(plain(stanza));
         }, skmsgStanza()),
-      { data: {} },
+      groupRecord(),
       { id: 'x' },
       nativeFlowProto
     );
@@ -175,7 +179,7 @@ test.describe('native flow in group sender-key sends', () => {
 
     await encrypt(
       async () => send(sender, skmsgStanza()),
-      { data: {} },
+      groupRecord(),
       { conversation: 'oi' },
       {}
     );
@@ -202,7 +206,7 @@ test.describe('native flow in group sender-key sends', () => {
         async () => {
           throw new Error('boom');
         },
-        { data: {} },
+        groupRecord(),
         nativeFlowProto,
         {}
       );
@@ -219,7 +223,7 @@ test.describe('native flow in group sender-key sends', () => {
         await send(sender, skmsgStanza());
         await send(sender, skmsgStanza());
       },
-      { data: {} },
+      groupRecord(),
       nativeFlowProto,
       {}
     );
@@ -240,6 +244,7 @@ test.describe('native flow in group sender-key sends', () => {
         }, skmsgStanza()),
       {
         data: {
+          ...groupRecord().data,
           nativeFlowBizExperiment: {
             qualityControl: true,
             bizAttrs: { host_storage: '2' },
@@ -256,5 +261,79 @@ test.describe('native flow in group sender-key sends', () => {
       'interactive',
       'quality_control',
     ]);
+  });
+
+  test('isolates concurrent native flow and Pix sends with the same id in different groups', async () => {
+    const { fns, wrapped } = load();
+    const send = wrapped.get(fns.deprecatedSendStanzaAndReturnAck)!;
+    const encrypt = wrapped.get(fns.encryptAndSendSenderKeyMsg)!;
+    let release!: () => void;
+    const ready = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const buttons = skmsgStanza('SAME', '123@g.us');
+    const pix = skmsgStanza('SAME', '456@g.us');
+    const first = encrypt(
+      async () => {
+        await ready;
+        return send(async () => 'buttons', buttons);
+      },
+      groupRecord('SAME', '123@g.us'),
+      nativeFlowProto
+    );
+    const second = encrypt(
+      async () => {
+        release();
+        await first;
+        return send(async () => 'pix', pix);
+      },
+      groupRecord('SAME', '456@g.us'),
+      {
+        interactiveMessage: {
+          nativeFlowMessage: { buttons: [{ name: 'payment_info' }] },
+        },
+      }
+    );
+    await Promise.all([first, second]);
+    const buttonBiz = buttons.content.find((node) => node.tag === 'biz') as any;
+    const pixBiz = pix.content.find((node) => node.tag === 'biz') as any;
+    expect(buttonBiz?.content[0].content[0].attrs).toEqual({
+      v: '9',
+      name: 'mixed',
+    });
+    expect(pixBiz?.content[0].content[0].attrs).toEqual({
+      name: 'payment_info',
+    });
+  });
+
+  test('does not attach pending buttons to an unrelated plain message', async () => {
+    const { fns, wrapped } = load();
+    const send = wrapped.get(fns.deprecatedSendStanzaAndReturnAck)!;
+    const encrypt = wrapped.get(fns.encryptAndSendSenderKeyMsg)!;
+    const plainMessage = skmsgStanza('PLAIN');
+    const buttons = skmsgStanza('BUTTONS');
+    await encrypt(
+      async () => {
+        await send(async () => undefined, plainMessage);
+        await send(async () => undefined, buttons);
+      },
+      groupRecord('BUTTONS'),
+      nativeFlowProto
+    );
+    expect(plainMessage.content.some((node) => node.tag === 'biz')).toBe(false);
+    expect(buttons.content.some((node) => node.tag === 'biz')).toBe(true);
+  });
+
+  test('skips sends with no correlation key instead of consuming another context', async () => {
+    const { fns, wrapped } = load();
+    const send = wrapped.get(fns.deprecatedSendStanzaAndReturnAck)!;
+    const encrypt = wrapped.get(fns.encryptAndSendSenderKeyMsg)!;
+    const stanza = skmsgStanza();
+    await encrypt(
+      async () => send(async () => undefined, stanza),
+      { data: {} },
+      nativeFlowProto
+    );
+    expect(stanza.content.some((node) => node.tag === 'biz')).toBe(false);
   });
 });

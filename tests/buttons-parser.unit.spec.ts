@@ -42,6 +42,74 @@ const wid = (device?: number) => ({ device }) as any;
 const node = (first: any) => ({ stanza: { content: [first, { tag: 'biz' }] } });
 
 test.describe('encryptAndParserMsgButtons', () => {
+  for (const payload of [
+    { carouselMessage: { cards: [{ body: { text: 'Card' } }] } },
+    {
+      nativeFlowMessage: {
+        buttons: [{ name: 'payment_info', buttonParamsJson: '{}' }],
+      },
+    },
+    {
+      nativeFlowMessage: {
+        buttons: [{ name: 'custom_native_flow', buttonParamsJson: '{}' }],
+      },
+    },
+  ]) {
+    test(`preserves ${JSON.stringify(payload)} without a legacy conversion`, async () => {
+      const proto = {
+        viewOnceMessage: { message: { interactiveMessage: payload } },
+      };
+      const captured: unknown[] = [];
+      const func = async (
+        _message: any,
+        encryptedProto: any,
+        devices: any[]
+      ) => {
+        captured.push(encryptedProto);
+        return node({
+          tag: 'participants',
+          content: devices.map(() => ({ tag: 'to' })),
+        });
+      };
+      await encryptAndParserMsgButtons(
+        { type: 'chat', data: {} as any },
+        proto,
+        [wid(), wid(3)],
+        {},
+        undefined,
+        undefined,
+        func
+      );
+      expect(captured).toEqual([proto]);
+    });
+  }
+
+  test('converts quick replies even when the optional header is absent', async () => {
+    const proto = JSON.parse(JSON.stringify(interactive));
+    delete proto.viewOnceMessage.message.interactiveMessage.header;
+    const captured: any[] = [];
+    const func = async (_message: any, encryptedProto: any, devices: any[]) => {
+      captured.push(encryptedProto);
+      return node({
+        tag: 'participants',
+        content: devices.map(() => ({ tag: 'to' })),
+      });
+    };
+    await encryptAndParserMsgButtons(
+      { type: 'chat', data: {} as any },
+      proto,
+      [wid(3)],
+      {},
+      undefined,
+      undefined,
+      func
+    );
+    expect(
+      captured[1].documentWithCaptionMessage.message.buttonsMessage.buttons[0]
+        .buttonId
+    ).toBe('a');
+  });
+
   test('group without sender key distribution keeps the encrypted enc node', async () => {
     const cipher = new Uint8Array([1, 2, 3, 4]);
     const calls: unknown[] = [];

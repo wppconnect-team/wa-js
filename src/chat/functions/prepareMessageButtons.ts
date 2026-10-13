@@ -197,8 +197,16 @@ function completeNativeFlowBiz(
 // Group messages sent with a sender key do not go through
 // `createFanoutMsgStanza`: WhatsApp builds the stanza inside
 // `encryptAndSendSenderKeyMsg` and sends it right away. The context is kept
-// only while that function runs, so the stanza can be completed before it is sent.
-let pendingGroupSend: { proto: any; record: any } | null = null;
+// only while that function runs, keyed by destination and message id so concurrent
+// sends cannot apply another message's envelope.
+const pendingGroupSends = new Map<string, { proto: any; record: any }>();
+
+function groupSendKey(id: any, to: any): string | undefined {
+  const messageId = typeof id === 'string' ? id : id?.id;
+  const destination = to?.toString();
+  if (typeof messageId !== 'string' || !messageId || !destination) return;
+  return JSON.stringify([destination, messageId]);
+}
 
 loader.onFullReady(() => {
   wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
@@ -429,24 +437,32 @@ loader.onFullReady(() => {
       return (func as (...a: any[]) => any)(...args);
     }
 
-    const context = { proto, record: args[0] };
-    pendingGroupSend = context;
+    const record = args[0];
+    const data = record?.data ?? record;
+    const key = groupSendKey(data?.id, data?.to ?? data?.id?.remote);
+    if (!key) {
+      debug('native_flow sender-key missing message correlation key');
+      return (func as (...a: any[]) => any)(...args);
+    }
+    const context = { proto, record };
+    pendingGroupSends.set(key, context);
 
     try {
       return await (func as (...a: any[]) => any)(...args);
     } finally {
-      if (pendingGroupSend === context) {
-        pendingGroupSend = null;
+      if (pendingGroupSends.get(key) === context) {
+        pendingGroupSends.delete(key);
       }
     }
   });
 
   wrapModuleFunction(deprecatedSendStanzaAndReturnAck, (func, ...args) => {
-    const context = pendingGroupSend;
     const stanza: any = args[0];
+    const key = groupSendKey(stanza?.attrs?.id, stanza?.attrs?.to);
+    const context = key ? pendingGroupSends.get(key) : undefined;
 
     if (context && stanza?.tag === 'message') {
-      pendingGroupSend = null;
+      pendingGroupSends.delete(key!);
       try {
         completeNativeFlowBiz(
           stanza.content,

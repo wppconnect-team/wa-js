@@ -41,8 +41,7 @@ export interface OrderMessageOptions extends SendMessageOptions {
 }
 
 /**
- * Send a invoice message
- * To send (prices, tax, shipping or discount), for example: USD 12.90, send them without dots or commas, like: 12900
+ * Send a Brazilian Pix key payment request without an amount.
  *
  * @example
  * ```javascript
