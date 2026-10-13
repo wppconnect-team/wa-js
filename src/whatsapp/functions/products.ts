@@ -31,6 +31,13 @@ export declare function addProduct(
   imageHeight?: number
 ): Promise<any>;
 
+/** Options-object signature used by current WhatsApp Web builds. */
+export declare function addProduct(options: {
+  product: ProductModel;
+  width?: number;
+  height?: number;
+}): Promise<any>;
+
 /** @whatsapp 96519
  * @whatsapp 196519 >= 2.2222.8
  * @whatsapp 895697 >= 2.2228.4
