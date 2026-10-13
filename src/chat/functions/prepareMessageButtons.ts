@@ -14,43 +14,41 @@
  * limitations under the License.
  */
 
+import Debug from 'debug';
+
 import * as loader from '../../loader';
 import { WPPError } from '../../util';
-import {
-  TemplateButtonCollection,
-  TemplateButtonModel,
-  websocket,
-} from '../../whatsapp';
+import { websocket } from '../../whatsapp';
 import { DROP_ATTR } from '../../whatsapp/contants';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   createFanoutMsgStanza,
   createMsgProtobuf,
+  deprecatedSendStanzaAndReturnAck,
   encodeMaybeMediaType,
+  encryptAndSendSenderKeyMsg,
   getABPropConfigValue,
   mediaTypeFromProtobuf,
   typeAttributeFromProtobuf,
 } from '../../whatsapp/functions';
 import { RawMessage } from '..';
 import { encryptAndParserMsgButtons } from './buttonsParser';
+import {
+  createNativeFlowButtons,
+  MessageButtonsTypes,
+} from './createNativeFlowButtons';
+import {
+  applyNativeFlowBiz,
+  detectCarousel,
+  detectNativeFlow,
+  NativeFlowBizExperiment,
+  summarizeBiz,
+  unwrapKnownMessage,
+} from './nativeFlowBiz';
 
-export type MessageButtonsTypes =
-  | {
-      id: string;
-      text: string;
-    }
-  | {
-      phoneNumber: string;
-      text: string;
-    }
-  | {
-      url: string;
-      text: string;
-    }
-  | {
-      code: string;
-      text: string;
-    };
+const debug = Debug('WA-JS:native-flow');
+
+export type { MessageButtonsTypes } from './createNativeFlowButtons';
 
 export interface MessageButtonsOptions {
   /**
@@ -65,6 +63,11 @@ export interface MessageButtonsOptions {
    * Footer text for buttons
    */
   footer?: string;
+  /**
+   * Experimental variations of the `<biz>` node sent with the buttons, only
+   * to test what WhatsApp accepts. Not validated; leave undefined in production.
+   */
+  experimentalNativeFlowBiz?: NativeFlowBizExperiment;
 }
 
 /**
@@ -79,163 +82,123 @@ export function prepareMessageButtons<T extends RawMessage>(
   options: MessageButtonsOptions
 ): T {
   if (!options.buttons) {
-    return message as any;
+    return message;
   }
 
-  if (!Array.isArray(options.buttons)) {
-    throw new WPPError('buttons_not_a_array', 'Buttons options is not a array');
-  } else if (message.type !== 'chat' && options.buttons.length > 2) {
+  const nativeFlow = createNativeFlowButtons(options.buttons);
+  const headerMediaType = getInteractiveHeaderMediaType(message.type);
+
+  if (message.type !== 'chat' && nativeFlow.buttons.length > 2) {
     throw new WPPError(
       'not_alowed_more_then_three_buttons',
       'Not allowed more then three buttons in file messages'
-    );
-  } else if (options.buttons.length === 0 || options.buttons.length > 3) {
-    throw new WPPError(
-      'buttons_must_between_1_and_3_options',
-      'Buttons options must have between 1 and 3 options'
-    );
-  } else if (
-    options.buttons.find((i: any) => i.phoneNumber || i.url) &&
-    options.buttons.find((i: any) => i.id && i.text)
-  ) {
-    throw new WPPError(
-      'reply_and_cta_btn_not_allowed',
-      'It is not possible to send reply buttons and action buttons togetherButtons options must have between 1 and 3 options'
     );
   }
 
   message.title = options.title;
   message.footer = options.footer;
-
-  message.interactiveMessage = {
-    header: {
-      title: options.title || ' ',
-      hasMediaAttachment: false,
-    },
-    body: {
-      text: message.body || message.caption || ' ',
-    },
-    footer: {
-      text: options.footer || ' ',
-    },
-    nativeFlowMessage: {
-      buttons: options.buttons.map((button, index) => {
-        if ('phoneNumber' in button) {
-          return {
-            name: 'cta_call',
-            buttonParamsJson: JSON.stringify({
-              display_text: button.text,
-              phone_number: button.phoneNumber,
-            }),
-          };
-        }
-        if ('url' in button) {
-          return {
-            name: 'cta_url',
-            buttonParamsJson: JSON.stringify({
-              display_text: button.text,
-              url: button.url,
-              merchant_url: button.url,
-            }),
-          };
-        }
-        if ('code' in button) {
-          return {
-            name: 'cta_copy',
-            buttonParamsJson: JSON.stringify({
-              display_text: button.text,
-              copy_code: button.code,
-            }),
-          };
-        }
-        if ('raw' in button) {
-          return button.raw;
-        }
-        return {
-          name: 'quick_reply',
-          buttonParamsJson: JSON.stringify({
-            display_text: button.text,
-            id: button.id || `${index}`,
-          }),
-        };
-      }),
-    },
+  message.caption = message.body || message.caption || ' ';
+  message.type = 'interactive';
+  message.interactiveType = 'native_flow';
+  message.nativeFlowInteractiveMsg = true;
+  message.interactiveHeader = {
+    title: options.title,
+    hasMediaAttachment: Boolean(headerMediaType),
+    ...(headerMediaType ? { mediaType: headerMediaType } : {}),
   };
 
-  // This code is only for see buttons on sended device
-  message.isFromTemplate = true;
-  message.buttons = new TemplateButtonCollection();
-  message.hydratedButtons = options.buttons.map((button, index) => {
-    if ('phoneNumber' in button) {
-      return {
-        index: index,
-        callButton: {
-          displayText: button.text,
-          phoneNumber: button.phoneNumber,
-        },
-      };
-    }
-    if ('url' in button) {
-      return {
-        index: index,
-        urlButton: {
-          displayText: button.text,
-          url: button.url,
-        },
-      };
-    }
-    if ('code' in button) {
-      return {
-        index: index,
-        urlButton: {
-          displayText: button.text,
-          url: `https://www.whatsapp.com/otp/code/?otp_type=COPY_CODE&code=otp${button.code}`,
-        },
-      };
-    }
-
-    return {
-      index: index,
-      quickReplyButton: {
-        displayText: button.text,
-        id: button.id || `${index}`,
-      },
-    };
-  });
-
-  message.buttons.add(
-    message.hydratedButtons.map((e, t: number) => {
-      const i = `${null != e.index ? e.index : t}`;
-
-      if (e.urlButton) {
-        return new TemplateButtonModel({
-          id: i,
-          displayText: e.urlButton?.displayText,
-          url: e.urlButton?.url,
-          subtype: 'url',
-        });
-      }
-
-      if (e.callButton) {
-        return new TemplateButtonModel({
-          id: i,
-          displayText: e.callButton.displayText,
-          phoneNumber: e.callButton.phoneNumber,
-          subtype: 'call',
-        });
-      }
-
-      return new TemplateButtonModel({
-        id: i,
-        displayText: e.quickReplyButton?.displayText,
-        selectionId: e.quickReplyButton?.id,
-        subtype: 'quick_reply',
-      });
-    })
-  );
+  message.nativeFlowName = nativeFlow.name;
+  if (options.experimentalNativeFlowBiz) {
+    (message as any).nativeFlowBizExperiment =
+      options.experimentalNativeFlowBiz;
+  }
+  message.interactivePayload = {
+    buttons: nativeFlow.buttons,
+    messageVersion: 1,
+  };
 
   return message;
 }
+
+function getInteractiveHeaderMediaType(
+  type?: string
+): 'DOCUMENT' | 'IMAGE' | 'VIDEO' | undefined {
+  switch (type) {
+    case 'document':
+      return 'DOCUMENT';
+    case 'image':
+      return 'IMAGE';
+    case 'video':
+      return 'VIDEO';
+    default:
+      return undefined;
+  }
+}
+
+/**
+ * Completes the `<biz>` node of an initial Native Flow / carousel stanza and
+ * logs a sanitized summary (when the `WA-JS:native-flow` debug is enabled).
+ */
+function completeNativeFlowBiz(
+  content: unknown,
+  proto: any,
+  record: any,
+  chatWid: any,
+  via: string
+): boolean {
+  const experiment: NativeFlowBizExperiment | undefined =
+    record?.data?.nativeFlowBizExperiment ?? record?.nativeFlowBizExperiment;
+  const carousel = detectCarousel(proto);
+  const nativeFlow =
+    detectNativeFlow(proto) ||
+    (carousel ? { kind: 'interactive' as const, path: carousel.path } : null);
+
+  if (nativeFlow) {
+    const result = applyNativeFlowBiz(
+      content,
+      nativeFlow.kind,
+      (tag, attrs, c) => websocket.smax(tag, attrs, c),
+      experiment
+    );
+    let isGroup = false;
+    try {
+      isGroup = Boolean((chatWid ?? record?.data?.to)?.isGroup?.());
+    } catch {
+      // diagnostics only
+    }
+    debug(
+      'native_flow via=%s group=%s addon=%s wrappers=%s result=%s experiment=%s envelope=%s',
+      via,
+      isGroup,
+      nativeFlow.kind,
+      nativeFlow.path.join('>') || '-',
+      result,
+      experiment ? JSON.stringify(experiment) : '-',
+      summarizeBiz(content)
+    );
+    return true;
+  }
+
+  if (experiment) {
+    // Field names only (no values), to find where the experiment is lost
+    const { message, path } = unwrapKnownMessage(proto);
+    debug(
+      'native_flow experiment set but not detected: proto=%s wrappers=%s message=%s interactive=%s',
+      Object.keys(proto || {}).join(','),
+      path.join('>') || '-',
+      Object.keys(message || {}).join(','),
+      Object.keys(message?.interactiveMessage || {}).join(',')
+    );
+  }
+
+  return false;
+}
+
+// Group messages sent with a sender key do not go through
+// `createFanoutMsgStanza`: WhatsApp builds the stanza inside
+// `encryptAndSendSenderKeyMsg` and sends it right away. The context is kept
+// only while that function runs, so the stanza can be completed before it is sent.
+let pendingGroupSend: { proto: any; record: any } | null = null;
 
 loader.onFullReady(() => {
   wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
@@ -416,12 +379,21 @@ loader.onFullReady(() => {
       }
     }
 
+    const content =
+      (node.content as websocket.WapNode[]) || (node as any).stanza?.content;
+
     if (!buttonNode) {
+      // Initial Native Flow and carousel messages (responses and legacy are not matched)
+      const record: any = namedParams ? namedParams.msgRecord : args[0];
+      completeNativeFlowBiz(
+        content,
+        proto,
+        record,
+        namedParams?.chatId,
+        'fanout'
+      );
       return node;
     }
-
-    const content =
-      (node.content as websocket.WapNode[]) || (node as any).stanza.content;
 
     let bizNode = content.find((c) => c.tag === 'biz');
 
@@ -443,6 +415,52 @@ loader.onFullReady(() => {
     }
 
     return node;
+  });
+
+  wrapModuleFunction(encryptAndSendSenderKeyMsg, async (func, ...wrapArgs) => {
+    const args: any[] = wrapArgs;
+    // The protobuf is the 2nd argument in current WhatsApp versions and the 3rd
+    // in older ones
+    const proto = [args[1], args[2]].find(
+      (p) => p && (detectNativeFlow(p) || detectCarousel(p))
+    );
+
+    if (!proto) {
+      return (func as (...a: any[]) => any)(...args);
+    }
+
+    const context = { proto, record: args[0] };
+    pendingGroupSend = context;
+
+    try {
+      return await (func as (...a: any[]) => any)(...args);
+    } finally {
+      if (pendingGroupSend === context) {
+        pendingGroupSend = null;
+      }
+    }
+  });
+
+  wrapModuleFunction(deprecatedSendStanzaAndReturnAck, (func, ...args) => {
+    const context = pendingGroupSend;
+    const stanza: any = args[0];
+
+    if (context && stanza?.tag === 'message') {
+      pendingGroupSend = null;
+      try {
+        completeNativeFlowBiz(
+          stanza.content,
+          context.proto,
+          context.record,
+          undefined,
+          'sender-key'
+        );
+      } catch (error) {
+        debug('native_flow sender-key biz failed: %O', error);
+      }
+    }
+
+    return (func as (...a: any[]) => any)(...args);
   });
 
   wrapModuleFunction(getABPropConfigValue, (func, ...args) => {

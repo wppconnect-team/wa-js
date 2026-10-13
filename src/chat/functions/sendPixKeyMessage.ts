@@ -22,6 +22,7 @@ import {
   SendMessageReturn,
 } from '..';
 import { sendRawMessage } from '.';
+import { NativeFlowBizExperiment } from './nativeFlowBiz';
 
 export interface OrderItems {
   type: 'product' | 'custom';
@@ -64,16 +65,23 @@ export async function sendPixKeyMessage(
     key: string;
     instructions?: string;
   },
-  options?: SendMessageOptions
+  options?: SendMessageOptions & {
+    /**
+     * Experimental `<biz>` node variations, to test what WhatsApp accepts.
+     * Not validated; leave undefined in production.
+     */
+    experimentalNativeFlowBiz?: NativeFlowBizExperiment;
+  }
 ): Promise<SendMessageReturn> {
   if (!chatId || !params.keyType || !params.name || !params.key)
     throw new WPPError(
       'parameter_not_fount',
       'Please, send all the required parameters'
     );
+  const { experimentalNativeFlowBiz, ...sendOptions } = options ?? {};
   options = {
     ...defaultSendMessageOptions,
-    ...options,
+    ...sendOptions,
   };
 
   const buttonParamsJson = {
@@ -144,5 +152,8 @@ export async function sendPixKeyMessage(
     },
     messageSecret: self.crypto.getRandomValues(new Uint8Array(32)),
   };
+  if (experimentalNativeFlowBiz) {
+    (message as any).nativeFlowBizExperiment = experimentalNativeFlowBiz;
+  }
   return await sendRawMessage(chatId, message, options);
 }
