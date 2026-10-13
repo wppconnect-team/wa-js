@@ -29,6 +29,8 @@ export interface ChatFilter {
 }
 
 export interface ChatEventTypes {
+  /** Comment collection changes, including hydrated history and revocations. */
+  'chat.comment': import('../comments').CommentEvent;
   /**
    * Triggered when change the active chat
    *

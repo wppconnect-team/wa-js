@@ -17,6 +17,7 @@
 import './registerAckMessageEvent';
 import './registerActiveChatEvent';
 import './registerActiveFilterEvent';
+import './registerCommentEvent';
 import './registerEditedMessageEvent';
 import './registerLabelEvent';
 import './registerLiveLocationUpdateEvent';

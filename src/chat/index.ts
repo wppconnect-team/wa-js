@@ -17,6 +17,7 @@
 import './events';
 import './patch';
 
+export type { Comment, CommentEvent } from './comments';
 export * from './defaultSendMessageOptions';
 export * from './functions';
 export * from './types';
