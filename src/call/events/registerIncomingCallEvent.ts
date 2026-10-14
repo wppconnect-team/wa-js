@@ -114,6 +114,7 @@ function emitIncomingCall(call: CallModel, origin: string): void {
       offerTime: call.offerTime || Math.floor(Date.now() / 1000),
       sender: createWid(call.peerJid),
       peerJid: call.peerJid,
+      groupJid: call.isGroup ? call.groupJid : undefined,
     });
   }, 0);
 }

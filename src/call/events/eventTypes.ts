@@ -52,5 +52,10 @@ export interface CallEventTypes {
      * Wid of sender with device id
      */
     peerJid: any;
+    /**
+     * Group identifier supplied by WhatsApp for an incoming group call.
+     * Undefined for individual calls or when WhatsApp does not supply it.
+     */
+    groupJid?: any;
   };
 }
