@@ -28,6 +28,7 @@ import {
 interface Props {
   id: string;
   peerJid: Wid;
+  groupJid?: Wid;
   offerTime: number;
   isVideo: boolean;
   isGroup: boolean;
