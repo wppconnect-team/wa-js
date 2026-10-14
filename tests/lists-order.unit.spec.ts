@@ -24,7 +24,13 @@ import { WPPError } from '../src/util/errors';
 
 function listsApi(
   models: any[],
-  { enabled = true, available = true, rollback = false, failure = false } = {}
+  {
+    enabled = true,
+    available = true,
+    rollback = false,
+    failure = false,
+    nativeAction = undefined as ((ids: string[]) => Promise<void>) | undefined,
+  } = {}
 ) {
   const calls: string[][] = [];
   const functions: any = {
@@ -33,6 +39,7 @@ function listsApi(
   };
   const persist = async (ids: string[]) => {
     calls.push([...ids]);
+    if (nativeAction) return nativeAction(ids);
     if (failure) throw new Error('native sync failed');
     if (!rollback)
       ids.forEach((id, index) => {
@@ -182,4 +189,58 @@ test('an existing order is a no-op and caller changes do not alter a pending req
   ids.reverse();
   await pending;
   expect(api.list().map((item) => item.id)).toEqual(['2', '1']);
+});
+
+test('serializes native optimistic changes and keeps the queue usable after rollback', async () => {
+  const labels = ['1', '2', '3'].map((id, orderIndex) => ({
+    id,
+    type: 5,
+    orderIndex,
+  }));
+  let release!: () => void;
+  let started!: () => void;
+  let complete!: () => void;
+  const hold = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  const firstStarted = new Promise<void>((resolve) => {
+    started = resolve;
+  });
+  const firstComplete = new Promise<void>((resolve) => {
+    complete = resolve;
+  });
+  let mutations = 0;
+  const api = listsApi(labels, {
+    nativeAction: async (ids) => {
+      const snapshot = labels.map((label) => label.orderIndex);
+      ids.forEach((id, index) => {
+        labels.find((label) => label.id === id)!.orderIndex = index;
+      });
+      if (++mutations === 1) {
+        started();
+        await hold;
+        labels.forEach((label, index) => {
+          label.orderIndex = snapshot[index];
+        });
+        complete();
+      } else {
+        // lockForSync waits for the earlier action but does not reapply models.
+        await firstComplete;
+      }
+    },
+  });
+  const first = api.setOrder(['2', '1', '3']).then(
+    () => undefined,
+    (error) => error.code
+  );
+  await firstStarted;
+  const second = api.setOrder(['3', '2', '1']).then(
+    () => undefined,
+    (error) => error.code
+  );
+  await new Promise((resolve) => setImmediate(resolve));
+  release();
+  expect(await first).toBe('list_order_update_failed');
+  expect(await second).toBeUndefined();
+  expect(api.list().map((item) => item.id)).toEqual(['3', '2', '1']);
 });

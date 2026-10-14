@@ -16,6 +16,8 @@
 
 import { LabelModel, LabelStore } from '../../whatsapp';
 
+export const LIST_TYPE_CUSTOM = 5;
+
 export function getOrderedLabels(): LabelModel[] {
   return LabelStore.getModelsArray()
     .slice()

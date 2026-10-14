@@ -22,7 +22,11 @@ import {
   persistLabelReorder,
 } from '../../whatsapp/functions';
 import { assertListEditingAvailable } from './assertListEditingAvailable';
-import { getOrderedLabels } from './getOrderedLabels';
+import { getOrderedLabels, LIST_TYPE_CUSTOM } from './getOrderedLabels';
+
+// The native action optimistically edits models before locking persistence.
+// Serializing WPP calls prevents a failed action from undoing a later one.
+let pendingOrder: Promise<void> = Promise.resolve();
 
 /**
  * Set the order of custom lists using WhatsApp's native synchronized action.
@@ -50,6 +54,12 @@ export async function setOrder(listIds: string[]): Promise<void> {
     );
   }
   const ids = [...listIds];
+  const update = pendingOrder.then(() => applyOrder(ids));
+  pendingOrder = update.catch(() => undefined);
+  await update;
+}
+
+async function applyOrder(ids: string[]): Promise<void> {
   assertListEditingAvailable();
   await loader.ensureLazyModule('WAWebListsActions');
   if (
@@ -63,7 +73,7 @@ export async function setOrder(listIds: string[]): Promise<void> {
   }
 
   const labels = getOrderedLabels();
-  const custom = labels.filter((label) => label.type === 5);
+  const custom = labels.filter((label) => label.type === LIST_TYPE_CUSTOM);
   const customIds = new Set(custom.map((label) => String(label.id)));
   if (
     ids.length !== custom.length ||
@@ -79,7 +89,7 @@ export async function setOrder(listIds: string[]): Promise<void> {
 
   let index = 0;
   const sortedIds = labels.map((label) =>
-    label.type === 5 ? ids[index++] : String(label.id)
+    label.type === LIST_TYPE_CUSTOM ? ids[index++] : String(label.id)
   );
   await persistLabelReorder(sortedIds);
   // Native persistence catches sync failures and rolls the models back. Do not

@@ -15,7 +15,7 @@
  */
 
 import { colorIndexToHex } from '../../whatsapp/functions';
-import { getOrderedLabels } from './getOrderedLabels';
+import { getOrderedLabels, LIST_TYPE_CUSTOM } from './getOrderedLabels';
 
 export interface ListInfo {
   id: string;
@@ -26,9 +26,6 @@ export interface ListInfo {
   /** The `colorIndex` as a hex code, e.g. `'#64c4ff'` */
   hexColor: string;
 }
-
-// ListType.CUSTOM = 5 (personal account lists)
-const LIST_TYPE_CUSTOM = 5;
 
 /**
  * Return custom lists in the order synchronized by WhatsApp.
