@@ -54,6 +54,12 @@ export interface LazyModuleSource {
 export const LAZY_MODULES: {
   readonly [moduleId: string]: LazyModuleSource;
 } = {
+  // WA 2.3000.1049703040-alpha: the label utility component loads the native
+  // persistence action without opening a drawer or changing any lists.
+  WAWebListsActions: {
+    components: ['WAWebSmbMarkAsXLabelAction'],
+    pattern: /Lists.*(?:Drawer|Settings|Manage)|SmbMarkAsXLabel/,
+  },
   // Verified on a cold QR page in WA 2.3000.1046899131. These components
   // register the original exports without opening UI or invoking actions.
   WAWebGenerateEventCallLink: {

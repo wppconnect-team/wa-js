@@ -23,3 +23,4 @@ export { removeChats } from './removeChats';
 export { rename } from './rename';
 export { ListColor } from './resolveColorIndex';
 export { setColor } from './setColor';
+export { setOrder } from './setOrder';
