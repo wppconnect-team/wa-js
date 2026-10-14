@@ -102,6 +102,8 @@ function listsApi({
             };
           if (id === './assertListEditingAvailable')
             return load('lists/functions/assertListEditingAvailable.ts');
+          if (id === './getOrderedLabels')
+            return load('lists/functions/getOrderedLabels.ts');
           if (id === './getColorPalette')
             return load('lists/functions/getColorPalette.ts');
           if (id === './resolveColorIndex')

@@ -56,6 +56,10 @@ export function isMetaModuleBlacklisted(id: string): boolean {
  * specific WA version). When missing, no error is reported.
  */
 export const IGNORE_FAIL_MODULES: ReadonlySet<string> = new Set([
+  // List reordering may be lazy or unavailable on older supported versions.
+  // setOrder resolves the native action and reports feature availability.
+  'persistLabelReorder',
+  'isLabelReorderEnabled',
   // Recent WhatsApp versions removed this gate from native list mutations.
   // lists/assertListEditingAvailable preserves it only where it still exists.
   'labelsEditingEnabled',

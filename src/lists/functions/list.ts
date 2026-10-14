@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-import { LabelStore } from '../../whatsapp';
 import { colorIndexToHex } from '../../whatsapp/functions';
+import { getOrderedLabels, LIST_TYPE_CUSTOM } from './getOrderedLabels';
 
 export interface ListInfo {
   id: string;
   name: string;
+  /** Position synchronized by WhatsApp across devices. */
+  orderIndex?: number;
   colorIndex: number;
   /** The `colorIndex` as a hex code, e.g. `'#64c4ff'` */
   hexColor: string;
 }
 
-// ListType.CUSTOM = 5 (personal account lists)
-const LIST_TYPE_CUSTOM = 5;
-
 /**
- * Return all custom lists (personal account lists)
+ * Return custom lists in the order synchronized by WhatsApp.
  *
  * @example
  * ```javascript
@@ -42,13 +41,14 @@ const LIST_TYPE_CUSTOM = 5;
  * @category Lists
  */
 export function list(): ListInfo[] {
-  return LabelStore.getModelsArray()
+  return getOrderedLabels()
     .filter((l) => l.type === LIST_TYPE_CUSTOM)
     .map((l) => {
       const colorIndex = l.colorIndex ?? 0;
       return {
         id: String(l.id),
         name: l.name,
+        orderIndex: l.orderIndex ?? undefined,
         colorIndex,
         hexColor: colorIndexToHex(colorIndex),
       };
