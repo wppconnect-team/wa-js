@@ -91,7 +91,21 @@ async function applyOrder(ids: string[]): Promise<void> {
   const sortedIds = labels.map((label) =>
     label.type === LIST_TYPE_CUSTOM ? ids[index++] : String(label.id)
   );
-  await persistLabelReorder(sortedIds);
+  // Native storage indexes the payload by numeric id, and the sync action
+  // carries integer label ids. Strings would leave database records unchanged.
+  const nativeIds = sortedIds.map(Number);
+  if (
+    nativeIds.some(
+      (id, index) =>
+        !Number.isSafeInteger(id) || id < 0 || String(id) !== sortedIds[index]
+    )
+  ) {
+    throw new WPPError(
+      'invalid_list_order',
+      'WhatsApp list ids must be numeric'
+    );
+  }
+  await persistLabelReorder(nativeIds);
   // Native persistence catches sync failures and rolls the models back. Do not
   // report success when that rollback or a native no-op occurred.
   if (sortedIds.some((id, index) => LabelStore.get(id)?.orderIndex !== index)) {

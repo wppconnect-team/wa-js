@@ -29,21 +29,21 @@ function listsApi(
     available = true,
     rollback = false,
     failure = false,
-    nativeAction = undefined as ((ids: string[]) => Promise<void>) | undefined,
+    nativeAction = undefined as ((ids: number[]) => Promise<void>) | undefined,
   } = {}
 ) {
-  const calls: string[][] = [];
+  const calls: number[][] = [];
   const functions: any = {
     colorIndexToHex: () => '#64c4ff',
     isLabelReorderEnabled: () => enabled,
   };
-  const persist = async (ids: string[]) => {
+  const persist = async (ids: number[]) => {
     calls.push([...ids]);
     if (nativeAction) return nativeAction(ids);
     if (failure) throw new Error('native sync failed');
     if (!rollback)
       ids.forEach((id, index) => {
-        models.find((model) => model.id === id).orderIndex = index;
+        models.find((model) => model.id === String(id)).orderIndex = index;
       });
   };
   function load(file: string): any {
@@ -129,11 +129,32 @@ test('setOrder bootloads native persistence and preserves preset slots and color
   const labels = models();
   const api = listsApi(labels);
   await api.setOrder(['2', '1']);
-  expect(api.calls).toEqual([['9', '2', '8', '1']]);
+  expect(api.calls).toEqual([[9, 2, 8, 1]]);
   expect(api.list().map((item) => item.id)).toEqual(['2', '1']);
   expect(labels[0]).toMatchObject({ name: 'Family', colorIndex: 3 });
   expect(labels[1]).toMatchObject({ name: 'Work', colorIndex: 5 });
   expect(labels[2].orderIndex).toBe(2);
+});
+
+test('native database order receives numeric ids rather than only updating frontend models', async () => {
+  const labels = models();
+  const stored = new Map(labels.map((label) => [label.id, label.orderIndex]));
+  const api = listsApi(labels, {
+    nativeAction: async (ids) => {
+      const positions = new Map(ids.map((id, index) => [id, index]));
+      ids.forEach((id, index) => {
+        labels.find((label) => label.id === String(id))!.orderIndex = index;
+      });
+      // WAWebDBLabelsReorder looks up each database record with Number(record.id).
+      for (const label of labels) {
+        const position = positions.get(Number(label.id));
+        if (position !== undefined) stored.set(label.id, position);
+      }
+    },
+  });
+  await api.setOrder(['2', '1']);
+  expect(stored.get('2')).toBe(1);
+  expect(stored.get('1')).toBe(3);
 });
 
 for (const ids of [[], ['1'], ['1', '1'], ['1', '9'], ['1', 'missing']]) {
@@ -214,7 +235,7 @@ test('serializes native optimistic changes and keeps the queue usable after roll
     nativeAction: async (ids) => {
       const snapshot = labels.map((label) => label.orderIndex);
       ids.forEach((id, index) => {
-        labels.find((label) => label.id === id)!.orderIndex = index;
+        labels.find((label) => label.id === String(id))!.orderIndex = index;
       });
       if (++mutations === 1) {
         started();

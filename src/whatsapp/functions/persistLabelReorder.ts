@@ -18,7 +18,7 @@ import { exportModule } from '../exportModule';
 
 /** @whatsapp WAWebListsActions */
 export declare function persistLabelReorder(
-  sortedLabelIds: string[]
+  sortedLabelIds: number[]
 ): Promise<void>;
 
 exportModule(
