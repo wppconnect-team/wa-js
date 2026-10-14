@@ -21,13 +21,37 @@ import { ModuleKind, transpileModule } from 'typescript';
 import { createContext, runInContext } from 'vm';
 
 class FakeMsgModel {
-  constructor(public id: any) {}
+  read = false;
+
+  constructor(
+    public id: any,
+    public t: number
+  ) {}
 }
 
-function markApi(unreadCount: number) {
-  const chat = { id: 'chat', unreadCount };
-  const calls: any[] = [];
+interface ApiOptions {
+  /**
+   * The native markChatRead sends the read receipt "up to" the given message.
+   * It may refresh the chat counter or leave it stale.
+   */
+  updatesCounter?: boolean;
+  delay?: number;
+  fail?: () => boolean;
+}
+
+function markApi(options: ApiOptions = {}) {
+  const messages = new Map<string, FakeMsgModel>();
+  const chat: any = {
+    id: 'chat',
+    unreadCount: 0,
+    msgs: { getModelsArray: () => Array.from(messages.values()) },
+  };
+  const calls: string[] = [];
   const exports: any = {};
+
+  const recount = () =>
+    Array.from(messages.values()).filter((m) => !m.id.fromMe && !m.read).length;
+
   const context = createContext({
     exports,
     require(id: string) {
@@ -35,8 +59,19 @@ function markApi(unreadCount: number) {
       if (id === '../../whatsapp') return { MsgModel: FakeMsgModel };
       if (id === '../../whatsapp/functions') {
         return {
-          markChatRead: async (...args: any[]) => {
-            calls.push(args);
+          markChatRead: async (_chat: any, key: any) => {
+            calls.push(key.toString());
+            if (options.delay) {
+              await new Promise((resolve) =>
+                setTimeout(resolve, options.delay)
+              );
+            }
+            if (options.fail?.()) throw new Error('native failure');
+            const target = messages.get(key.toString())!;
+            for (const msg of messages.values()) {
+              if (!msg.id.fromMe && msg.t <= target.t) msg.read = true;
+            }
+            if (options.updatesCounter) chat.unreadCount = recount();
           },
         };
       }
@@ -46,7 +81,6 @@ function markApi(unreadCount: number) {
       throw new Error(`Unexpected dependency: ${id}`);
     },
   });
-  const messages = new Map<string, FakeMsgModel>();
   runInContext(
     transpileModule(
       readFileSync(
@@ -57,15 +91,17 @@ function markApi(unreadCount: number) {
     ).outputText,
     context
   );
-  const addMessage = (idStr: string, fromMe = false) => {
-    const msg = new FakeMsgModel({
-      fromMe,
-      remote: 'chat',
-      toString: () => idStr,
-    });
+
+  const addMessage = (idStr: string, t: number, fromMe = false) => {
+    const msg = new FakeMsgModel(
+      { fromMe, remote: 'chat', toString: () => idStr },
+      t
+    );
     messages.set(idStr, msg);
+    chat.unreadCount = recount();
     return msg;
   };
+
   return {
     chat,
     calls,
@@ -75,60 +111,131 @@ function markApi(unreadCount: number) {
   };
 }
 
-test('sends the native receipt only for the selected message', async () => {
-  const api = markApi(3);
-  const target = api.addMessage('false_chat_A');
-  api.addMessage('false_chat_B');
+for (const updatesCounter of [true, false]) {
+  const label = updatesCounter
+    ? 'native refreshes the counter'
+    : 'native leaves the counter stale';
 
+  test.describe(label, () => {
+    test('reads up to the selected message and keeps newer ones unread', async () => {
+      const api = markApi({ updatesCounter });
+      const a = api.addMessage('false_chat_A', 1);
+      const b = api.addMessage('false_chat_B', 2);
+      const c = api.addMessage('false_chat_C', 3);
+
+      const result = await api.markMessageAsRead('false_chat_B');
+
+      expect(api.calls).toEqual(['false_chat_B']);
+      expect([a.read, b.read, c.read]).toEqual([true, true, false]);
+      expect(result.unreadCount).toBe(1);
+      expect(api.chat.unreadCount).toBe(1);
+    });
+
+    test('repeated calls send one receipt and do not reduce the counter again', async () => {
+      const api = markApi({ updatesCounter });
+      api.addMessage('false_chat_A', 1);
+      api.addMessage('false_chat_B', 2);
+      api.addMessage('false_chat_C', 3);
+
+      await api.markMessageAsRead('false_chat_B');
+      const second = await api.markMessageAsRead('false_chat_B');
+      const third = await api.markMessageAsRead('false_chat_B');
+
+      expect(api.calls).toEqual(['false_chat_B']);
+      expect(second.unreadCount).toBe(1);
+      expect(third.unreadCount).toBe(1);
+      expect(api.chat.unreadCount).toBe(1);
+    });
+
+    test('an already read older message does not change the counter', async () => {
+      const api = markApi({ updatesCounter });
+      api.addMessage('false_chat_A', 1);
+      const b = api.addMessage('false_chat_B', 2);
+      const c = api.addMessage('false_chat_C', 3);
+
+      await api.markMessageAsRead('false_chat_B');
+      const result = await api.markMessageAsRead('false_chat_A');
+
+      expect(result.unreadCount).toBe(1);
+      expect(api.chat.unreadCount).toBe(1);
+      expect([b.read, c.read]).toEqual([true, false]);
+    });
+
+    test('marking the newest message clears the counter', async () => {
+      const api = markApi({ updatesCounter });
+      api.addMessage('false_chat_A', 1);
+      api.addMessage('false_chat_B', 2);
+
+      const result = await api.markMessageAsRead('false_chat_B');
+
+      expect(result.unreadCount).toBe(0);
+      expect(api.chat.unreadCount).toBe(0);
+    });
+
+    test('concurrent calls for the same message send a single receipt', async () => {
+      const api = markApi({ updatesCounter, delay: 20 });
+      api.addMessage('false_chat_A', 1);
+      api.addMessage('false_chat_B', 2);
+      api.addMessage('false_chat_C', 3);
+
+      const results = await Promise.all([
+        api.markMessageAsRead('false_chat_B'),
+        api.markMessageAsRead('false_chat_B'),
+        api.markMessageAsRead('false_chat_B'),
+      ]);
+
+      expect(api.calls).toEqual(['false_chat_B']);
+      expect(results.map((r) => r.unreadCount)).toEqual([1, 1, 1]);
+      expect(api.chat.unreadCount).toBe(1);
+    });
+  });
+}
+
+test('does not mark as completed when the native receipt fails', async () => {
+  let shouldFail = true;
+  const api = markApi({ updatesCounter: true, fail: () => shouldFail });
+  api.addMessage('false_chat_A', 1);
+  api.addMessage('false_chat_B', 2);
+
+  await expect(api.markMessageAsRead('false_chat_A')).rejects.toThrow(
+    'native failure'
+  );
+  expect(api.chat.unreadCount).toBe(2);
+
+  shouldFail = false;
   const result = await api.markMessageAsRead('false_chat_A');
 
-  expect(api.calls).toEqual([[api.chat, target.id]]);
-  expect(result.unreadCount).toBe(2);
-  expect(api.chat.unreadCount).toBe(2);
-});
-
-test('does not decrement again when the same message is repeated', async () => {
-  const api = markApi(3);
-  api.addMessage('false_chat_A');
-
-  await api.markMessageAsRead('false_chat_A');
-  const second = await api.markMessageAsRead('false_chat_A');
-  const third = await api.markMessageAsRead('false_chat_A');
-
-  expect(api.calls).toHaveLength(1);
-  expect(second.unreadCount).toBe(2);
-  expect(third.unreadCount).toBe(2);
-  expect(api.chat.unreadCount).toBe(2);
-});
-
-test('decrements once per distinct message', async () => {
-  const api = markApi(3);
-  api.addMessage('false_chat_A');
-  api.addMessage('false_chat_B');
-
-  await api.markMessageAsRead('false_chat_A');
-  await api.markMessageAsRead('false_chat_B');
-
-  expect(api.calls).toHaveLength(2);
-  expect(api.chat.unreadCount).toBe(1);
+  expect(api.calls).toEqual(['false_chat_A', 'false_chat_A']);
+  expect(result.unreadCount).toBe(1);
 });
 
 test('ignores messages sent by me', async () => {
-  const api = markApi(2);
-  api.addMessage('true_chat_A', true);
+  const api = markApi({ updatesCounter: true });
+  api.addMessage('false_chat_A', 1);
+  api.addMessage('true_chat_B', 2, true);
 
-  const result = await api.markMessageAsRead('true_chat_A');
+  const result = await api.markMessageAsRead('true_chat_B');
 
   expect(api.calls).toHaveLength(0);
-  expect(result.unreadCount).toBe(2);
+  expect(result.unreadCount).toBe(1);
 });
 
-test('never makes unreadCount negative for already read chats', async () => {
-  const api = markApi(0);
-  api.addMessage('false_chat_A');
+test('keeps a bounded history of completed messages', async () => {
+  const api = markApi({ updatesCounter: true });
+  const total = 520;
+  for (let i = 0; i < total; i++) {
+    api.addMessage(`false_chat_${i}`, i + 1);
+  }
 
-  const result = await api.markMessageAsRead('false_chat_A');
+  for (let i = 0; i < total; i++) {
+    await api.markMessageAsRead(`false_chat_${i}`);
+  }
+  api.calls.length = 0;
 
-  expect(result.unreadCount).toBe(0);
+  await api.markMessageAsRead('false_chat_0');
+  expect(api.calls).toEqual(['false_chat_0']);
+
+  await api.markMessageAsRead(`false_chat_${total - 1}`);
+  expect(api.calls).toEqual(['false_chat_0']);
   expect(api.chat.unreadCount).toBe(0);
 });

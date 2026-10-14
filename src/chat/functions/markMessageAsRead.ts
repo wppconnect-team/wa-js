@@ -20,10 +20,26 @@ import { MsgKey, MsgModel } from '../../whatsapp';
 import { markChatRead } from '../../whatsapp/functions';
 import { getMessageById } from './getMessageById';
 
-const markedAsRead = new Set<string>();
+const MAX_COMPLETED = 500;
+const inFlight = new Map<string, Promise<void>>();
+const completed = new Set<string>();
+
+function remember(key: string) {
+  completed.delete(key);
+  completed.add(key);
+  if (completed.size > MAX_COMPLETED) {
+    completed.delete(completed.values().next().value as string);
+  }
+}
 
 /**
- * Mark only one message as read, instead of the whole chat
+ * Mark a message as read, sending the native read receipt for it.
+ *
+ * The native receipt (`markChatRead`) has "read up to this message" semantics:
+ * older unread messages of the same chat are read together with the selected
+ * one, while newer messages stay unread. The chat counter is set to the number
+ * of received messages newer than the selected one (never above the current
+ * value), so repeated, concurrent or already read calls do not reduce it again.
  *
  * @example
  * ```javascript
@@ -40,19 +56,25 @@ export async function markMessageAsRead(
       : await getMessageById(messageId.toString());
 
   const chat = assertGetChat(msg.id.remote);
-
   const key = msg.id.toString();
 
-  if (msg.id.fromMe || markedAsRead.has(key)) {
-    return { id: msg.id, unreadCount: chat.unreadCount || 0 };
+  if (!msg.id.fromMe && !completed.has(key)) {
+    let pending = inFlight.get(key);
+    if (!pending) {
+      pending = markChatRead(chat, msg.id)
+        .then(() => remember(key))
+        .finally(() => inFlight.delete(key));
+      inFlight.set(key, pending);
+    }
+    await pending;
   }
 
-  await markChatRead(chat, msg.id);
-  markedAsRead.add(key);
-
-  const unreadCount = chat.unreadCount || 0;
-  if (unreadCount > 0) {
-    chat.unreadCount = unreadCount - 1;
+  const current = chat.unreadCount || 0;
+  if (!msg.id.fromMe && current > 0) {
+    const newer = chat.msgs
+      .getModelsArray()
+      .filter((m) => !m.id.fromMe && (m.t || 0) > (msg.t || 0)).length;
+    chat.unreadCount = Math.min(current, newer);
   }
 
   return { id: msg.id, unreadCount: chat.unreadCount || 0 };
