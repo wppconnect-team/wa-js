@@ -20,6 +20,8 @@ import { MsgKey, MsgModel } from '../../whatsapp';
 import { markChatRead } from '../../whatsapp/functions';
 import { getMessageById } from './getMessageById';
 
+const markedAsRead = new Set<string>();
+
 /**
  * Mark only one message as read, instead of the whole chat
  *
@@ -39,11 +41,17 @@ export async function markMessageAsRead(
 
   const chat = assertGetChat(msg.id.remote);
 
-  const unreadCount = chat.unreadCount || 0;
+  const key = msg.id.toString();
+
+  if (msg.id.fromMe || markedAsRead.has(key)) {
+    return { id: msg.id, unreadCount: chat.unreadCount || 0 };
+  }
 
   await markChatRead(chat, msg.id);
+  markedAsRead.add(key);
 
-  if (!msg.id.fromMe && unreadCount > 0) {
+  const unreadCount = chat.unreadCount || 0;
+  if (unreadCount > 0) {
     chat.unreadCount = unreadCount - 1;
   }
 
