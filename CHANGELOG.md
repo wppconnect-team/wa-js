@@ -1,3 +1,57 @@
+## 4.7.0 (2026-10-14)
+
+### Features
+
+* **chat:** support native flow commerce messages ([6842e38](https://github.com/wppconnect-team/wa-js/commit/6842e38))
+* **lists:** permite definir e alterar a cor das listas (#3657) ([879f324](https://github.com/wppconnect-team/wa-js/commit/879f324)), closes [#3657](https://github.com/wppconnect-team/wa-js/issues/3657) [#3661](https://github.com/wppconnect-team/wa-js/issues/3661) [#3662](https://github.com/wppconnect-team/wa-js/issues/3662) [#3652](https://github.com/wppconnect-team/wa-js/issues/3652) [#3663](https://github.com/wppconnect-team/wa-js/issues/3663) [#3664](https://github.com/wppconnect-team/wa-js/issues/3664) [#3667](https://github.com/wppconnect-team/wa-js/issues/3667) [#3666](https://github.com/wppconnect-team/wa-js/issues/3666) [#3669](https://github.com/wppconnect-team/wa-js/issues/3669) [#3671](https://github.com/wppconnect-team/wa-js/issues/3671) [#3670](https://github.com/wppconnect-team/wa-js/issues/3670) [#3672](https://github.com/wppconnect-team/wa-js/issues/3672) [#3676](https://github.com/wppconnect-team/wa-js/issues/3676) [#3675](https://github.com/wppconnect-team/wa-js/issues/3675) [#3678](https://github.com/wppconnect-team/wa-js/issues/3678) [#3660](https://github.com/wppconnect-team/wa-js/issues/3660) [#3679](https://github.com/wppconnect-team/wa-js/issues/3679) [#3654](https://github.com/wppconnect-team/wa-js/issues/3654) [#3677](https://github.com/wppconnect-team/wa-js/issues/3677) [#3681](https://github.com/wppconnect-team/wa-js/issues/3681) [#3683](https://github.com/wppconnect-team/wa-js/issues/3683) [#3682](https://github.com/wppconnect-team/wa-js/issues/3682) [#3680](https://github.com/wppconnect-team/wa-js/issues/3680) [#3684](https://github.com/wppconnect-team/wa-js/issues/3684) [#3686](https://github.com/wppconnect-team/wa-js/issues/3686) [#3688](https://github.com/wppconnect-team/wa-js/issues/3688) [#3691](https://github.com/wppconnect-team/wa-js/issues/3691) [#3692](https://github.com/wppconnect-team/wa-js/issues/3692) [#3693](https://github.com/wppconnect-team/wa-js/issues/3693) [#3685](https://github.com/wppconnect-team/wa-js/issues/3685) [#3695](https://github.com/wppconnect-team/wa-js/issues/3695) [#3694](https://github.com/wppconnect-team/wa-js/issues/3694) [#3697](https://github.com/wppconnect-team/wa-js/issues/3697) [#3698](https://github.com/wppconnect-team/wa-js/issues/3698) [#3699](https://github.com/wppconnect-team/wa-js/issues/3699) [#3700](https://github.com/wppconnect-team/wa-js/issues/3700) [#3701](https://github.com/wppconnect-team/wa-js/issues/3701)
+* **lists:** read and persist synchronized list order ([6557e97](https://github.com/wppconnect-team/wa-js/commit/6557e97))
+
+### Bug Fixes
+
+* **call:** expose incoming group call identifier (#3725) ([60732f6](https://github.com/wppconnect-team/wa-js/commit/60732f6)), closes [#3725](https://github.com/wppconnect-team/wa-js/issues/3725)
+* **catalog:** support options-object product creation (#3723) ([4e8707f](https://github.com/wppconnect-team/wa-js/commit/4e8707f)), closes [#3723](https://github.com/wppconnect-team/wa-js/issues/3723)
+* **chat:** do not corrupt the group stanza when splitting button encryptions ([af7bfa4](https://github.com/wppconnect-team/wa-js/commit/af7bfa4))
+* **chat:** isolate native flow sends and preserve payment payloads ([12c8c2f](https://github.com/wppconnect-team/wa-js/commit/12c8c2f))
+* **chat:** keep interactive header when sending files with buttons ([8222449](https://github.com/wppconnect-team/wa-js/commit/8222449))
+* **chat:** keep the native_flow_name attribute biz of payment messages ([61c3e1b](https://github.com/wppconnect-team/wa-js/commit/61c3e1b))
+* **chat:** send carousel messages with the native flow biz node ([20f27ba](https://github.com/wppconnect-team/wa-js/commit/20f27ba))
+* **chat:** send legacy list messages to groups with the list stanza shape (#3722) ([cb53dd5](https://github.com/wppconnect-team/wa-js/commit/cb53dd5)), closes [#3722](https://github.com/wppconnect-team/wa-js/issues/3722)
+* **chat:** send native flow biz node as v=9 mixed ([2d7f36a](https://github.com/wppconnect-team/wa-js/commit/2d7f36a))
+* **chat:** send the native flow biz node on group sender-key messages ([75e328e](https://github.com/wppconnect-team/wa-js/commit/75e328e)), closes [#1235](https://github.com/wppconnect-team/wa-js/issues/1235)
+* **lists:** serialize native reorder mutations ([62a1479](https://github.com/wppconnect-team/wa-js/commit/62a1479))
+* **lists:** use numeric ids in reorder sync payloads ([87e8290](https://github.com/wppconnect-team/wa-js/commit/87e8290))
+* **loader:** avoid preloading native attachment preview UI (#3718) ([c457a60](https://github.com/wppconnect-team/wa-js/commit/c457a60)), closes [#3718](https://github.com/wppconnect-team/wa-js/issues/3718)
+* **loader:** skip WAWebMoment locale modules when enumerating modules (#3704) ([6537820](https://github.com/wppconnect-team/wa-js/commit/6537820)), closes [#3704](https://github.com/wppconnect-team/wa-js/issues/3704)
+* resolve status privacy functions from named exports (#3693) ([8af2b01](https://github.com/wppconnect-team/wa-js/commit/8af2b01)), closes [#3693](https://github.com/wppconnect-team/wa-js/issues/3693)
+
+### Build System
+
+* **deps-dev:** bump handlebars from 4.7.9 to 4.7.10 (#3710) ([8189927](https://github.com/wppconnect-team/wa-js/commit/8189927)), closes [#3710](https://github.com/wppconnect-team/wa-js/issues/3710)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4971 (#3685) ([ee5bb97](https://github.com/wppconnect-team/wa-js/commit/ee5bb97)), closes [#3685](https://github.com/wppconnect-team/wa-js/issues/3685)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4975 (#3694) ([051c4d3](https://github.com/wppconnect-team/wa-js/commit/051c4d3)), closes [#3694](https://github.com/wppconnect-team/wa-js/issues/3694)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4977 (#3697) ([f65f291](https://github.com/wppconnect-team/wa-js/commit/f65f291)), closes [#3697](https://github.com/wppconnect-team/wa-js/issues/3697)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4983 (#3698) ([ece1a64](https://github.com/wppconnect-team/wa-js/commit/ece1a64)), closes [#3698](https://github.com/wppconnect-team/wa-js/issues/3698)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4987 (#3699) ([2b81c44](https://github.com/wppconnect-team/wa-js/commit/2b81c44)), closes [#3699](https://github.com/wppconnect-team/wa-js/issues/3699)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.4989 (#3701) ([d8e7259](https://github.com/wppconnect-team/wa-js/commit/d8e7259)), closes [#3701](https://github.com/wppconnect-team/wa-js/issues/3701)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.5004 (#3702) ([36b0d74](https://github.com/wppconnect-team/wa-js/commit/36b0d74)), closes [#3702](https://github.com/wppconnect-team/wa-js/issues/3702)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.5005 (#3709) ([b9f8e4e](https://github.com/wppconnect-team/wa-js/commit/b9f8e4e)), closes [#3709](https://github.com/wppconnect-team/wa-js/issues/3709)
+* **deps-dev:** update dependency eslint to ^10.12.0 (#3695) ([a054087](https://github.com/wppconnect-team/wa-js/commit/a054087)), closes [#3695](https://github.com/wppconnect-team/wa-js/issues/3695)
+* **deps-dev:** update dependency eslint-plugin-prettier to ^5.5.7 (#3721) ([186eef8](https://github.com/wppconnect-team/wa-js/commit/186eef8)), closes [#3721](https://github.com/wppconnect-team/wa-js/issues/3721)
+* **deps-dev:** update dependency prettier to ^3.9.10 (#3714) ([3f4be3b](https://github.com/wppconnect-team/wa-js/commit/3f4be3b)), closes [#3714](https://github.com/wppconnect-team/wa-js/issues/3714)
+* **deps-dev:** update dependency release-it to ^21.1.1 (#3705) ([bb6a739](https://github.com/wppconnect-team/wa-js/commit/bb6a739)), closes [#3705](https://github.com/wppconnect-team/wa-js/issues/3705)
+* **deps-dev:** update playwright monorepo to ^1.64.0 (#3706) ([ce09fd2](https://github.com/wppconnect-team/wa-js/commit/ce09fd2)), closes [#3706](https://github.com/wppconnect-team/wa-js/issues/3706)
+* **deps-dev:** update playwright monorepo to ^1.64.1 (#3726) ([4cc9229](https://github.com/wppconnect-team/wa-js/commit/4cc9229)), closes [#3726](https://github.com/wppconnect-team/wa-js/issues/3726)
+* **deps-dev:** update typescript-eslint monorepo to ^8.71.1 (#3703) ([e52f1b5](https://github.com/wppconnect-team/wa-js/commit/e52f1b5)), closes [#3703](https://github.com/wppconnect-team/wa-js/issues/3703)
+* **deps-dev:** update typescript-eslint monorepo to ^8.71.2 (#3720) ([7c0fbd7](https://github.com/wppconnect-team/wa-js/commit/7c0fbd7)), closes [#3720](https://github.com/wppconnect-team/wa-js/issues/3720)
+
+### Continuous Integration
+
+* **deps:** update actions/setup-node action to v7.1.0 (#3708) ([27bcc00](https://github.com/wppconnect-team/wa-js/commit/27bcc00)), closes [#3708](https://github.com/wppconnect-team/wa-js/issues/3708)
+
+### Chores
+
+* **deps:** lock file maintenance (#3700) ([35a73de](https://github.com/wppconnect-team/wa-js/commit/35a73de)), closes [#3700](https://github.com/wppconnect-team/wa-js/issues/3700)
+
 ## <small>4.6.1 (2026-10-02)</small>
 
 ### Bug Fixes
