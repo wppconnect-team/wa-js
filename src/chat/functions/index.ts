@@ -48,6 +48,7 @@ export { markIsPaused } from './markIsPaused';
 export { markIsRead } from './markIsRead';
 export { markIsRecording } from './markIsRecording';
 export { markIsUnread } from './markIsUnread';
+export { markMessageAsRead } from './markMessageAsRead';
 export { markPlayed } from './markPlayed';
 export { mute } from './mute';
 export { openChatAt } from './openChatAt';
