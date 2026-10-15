@@ -19,7 +19,6 @@ import {
   MediaDataModel,
   ModelPropertiesContructor,
   MsgModel,
-  OpaqueData,
 } from '..';
 import { OUTWARD_TYPES } from '../enums';
 import { exportModule } from '../exportModule';
@@ -49,18 +48,6 @@ export type SendToChatProps = {
  * @whatsapp 778986 >= 2.2222.8
  */
 export declare namespace MediaPrep {
-  function prepRawMedia(
-    data: OpaqueData,
-    options: {
-      isPtt?: boolean;
-      asDocument?: boolean;
-      asGif?: boolean;
-      isAudio?: boolean;
-      asSticker?: boolean;
-      maxDimension?: number;
-    }
-  ): MediaPrep;
-
   class MediaPrep {
     constructor(type: OUTWARD_TYPES, p: any);
 
@@ -80,4 +67,8 @@ export declare namespace MediaPrep {
   }
 }
 
-exportModule(exports, 'MediaPrep', (m) => m.uploadProductImage && m.MediaPrep);
+exportModule(
+  exports,
+  'MediaPrep',
+  (m) => m.MediaPrep && (m.getMediaPropsNew || m.sendMediaMsgToChat)
+);

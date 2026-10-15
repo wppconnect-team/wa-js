@@ -17,7 +17,8 @@
 import { OpaqueData } from '..';
 import { exportModule } from '../exportModule';
 
-/** @whatsapp 78986
+/** @whatsapp WAWebMediaProduct
+ * @whatsapp 78986
  * @whatsapp 778986 >= 2.2222.8
  */
 export declare function uploadProductImage(
@@ -30,5 +31,5 @@ exportModule(
   {
     uploadProductImage: 'uploadProductImage',
   },
-  (m) => m.uploadProductImage && m.MediaPrep
+  (m) => m.uploadProductImage
 );
