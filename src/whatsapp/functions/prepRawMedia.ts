@@ -35,7 +35,7 @@ export declare function prepRawMedia(
     maxDimension?: number;
     filename?: string;
   }
-): MediaPrep.MediaPrep;
+): MediaPrep;
 
 exportModule(
   exports,

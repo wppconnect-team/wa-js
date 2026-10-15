@@ -44,31 +44,34 @@ export type SendToChatProps = {
   };
 };
 
-/** @whatsapp 78986
+/** @whatsapp WAWebMediaPrep
+ * @whatsapp 78986
  * @whatsapp 778986 >= 2.2222.8
  */
-export declare namespace MediaPrep {
-  class MediaPrep {
-    constructor(type: OUTWARD_TYPES, p: any);
+export declare class MediaPrep {
+  constructor(type: OUTWARD_TYPES, p: any);
 
-    sendToChat(params: SendToChatProps): Promise<SendMsgResultObject>;
-    /**
-     * @deprecated Use sendToChat(params: SendToChatProps) instead
-     *
-     * @param chat
-     * @param params
-     */
-    sendToChat(
-      chat: ChatModel,
-      params: Omit<SendToChatProps, 'chat'>
-    ): Promise<SendMsgResultObject>;
+  sendToChat(params: SendToChatProps): Promise<SendMsgResultObject>;
+  /**
+   * @deprecated Use sendToChat(params: SendToChatProps) instead
+   *
+   * @param chat
+   * @param params
+   */
+  sendToChat(
+    chat: ChatModel,
+    params: Omit<SendToChatProps, 'chat'>
+  ): Promise<SendMsgResultObject>;
 
-    waitForPrep(): Promise<MediaDataModel>;
-  }
+  waitForPrep(): Promise<MediaDataModel>;
 }
 
+// The class became the module's only (default) export in 2.3000.1050509545
+// TODO: remove the old name when versions before 2.3000.1050509545 are no longer available in wa-version/html
 exportModule(
   exports,
-  'MediaPrep',
-  (m) => m.MediaPrep && (m.getMediaPropsNew || m.sendMediaMsgToChat)
+  { MediaPrep: ['MediaPrep', 'default'] },
+  (m, id) =>
+    id === 'WAWebMediaPrep' ||
+    (m.MediaPrep && (m.getMediaPropsNew || m.sendMediaMsgToChat))
 );
