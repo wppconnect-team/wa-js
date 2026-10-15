@@ -17,29 +17,26 @@
 import { assertGetChat } from '../../assert';
 import { Stringable } from '../../types';
 import { MsgKey, MsgModel } from '../../whatsapp';
-import { markChatRead } from '../../whatsapp/functions';
+import {
+  markChatRead,
+  queryPendingReadReceiptMsgRows,
+  updateUnreadCountMD,
+} from '../../whatsapp/functions';
 import { getMessageById } from './getMessageById';
 
-const MAX_COMPLETED = 500;
+// Serialize this API's operations per chat so another requested boundary cannot
+// consume the selected message between the pending-receipt query and the call.
 const inFlight = new Map<string, Promise<void>>();
-const completed = new Set<string>();
-
-function remember(key: string) {
-  completed.delete(key);
-  completed.add(key);
-  if (completed.size > MAX_COMPLETED) {
-    completed.delete(completed.values().next().value as string);
-  }
-}
 
 /**
  * Mark a message as read, sending the native read receipt for it.
  *
  * The native receipt (`markChatRead`) has "read up to this message" semantics:
  * older unread messages of the same chat are read together with the selected
- * one, while newer messages stay unread. The chat counter is set to the number
- * of received messages newer than the selected one (never above the current
- * value), so repeated, concurrent or already read calls do not reduce it again.
+ * one, while newer messages stay unread. The counter is refreshed from native
+ * database metadata, independent of timestamps or locally loaded messages.
+ * Already read messages do not send another receipt. Operations made through
+ * this API are serialized per chat; independent native readers may still race.
  *
  * @example
  * ```javascript
@@ -56,25 +53,26 @@ export async function markMessageAsRead(
       : await getMessageById(messageId.toString());
 
   const chat = assertGetChat(msg.id.remote);
-  const key = msg.id.toString();
-
-  if (!msg.id.fromMe && !completed.has(key)) {
-    let pending = inFlight.get(key);
-    if (!pending) {
-      pending = markChatRead(chat, msg.id)
-        .then(() => remember(key))
-        .finally(() => inFlight.delete(key));
-      inFlight.set(key, pending);
+  if (!msg.id.fromMe) {
+    const chatId = chat.id.toString();
+    const previous = inFlight.get(chatId) || Promise.resolve();
+    const pending = previous
+      .catch(() => undefined)
+      .then(async () => {
+        const rows = await queryPendingReadReceiptMsgRows(chatId);
+        // Native markChatRead falls back to the newest pending message when the
+        // selected key is absent. Avoid reading newer messages on a repeat call.
+        if (rows.some((row) => row.id === msg.id.toString())) {
+          await markChatRead(chat, msg.id);
+        }
+        await updateUnreadCountMD(chat, 0, false);
+      });
+    inFlight.set(chatId, pending);
+    try {
+      await pending;
+    } finally {
+      if (inFlight.get(chatId) === pending) inFlight.delete(chatId);
     }
-    await pending;
-  }
-
-  const current = chat.unreadCount || 0;
-  if (!msg.id.fromMe && current > 0) {
-    const newer = chat.msgs
-      .getModelsArray()
-      .filter((m) => !m.id.fromMe && (m.t || 0) > (msg.t || 0)).length;
-    chat.unreadCount = Math.min(current, newer);
   }
 
   return { id: msg.id, unreadCount: chat.unreadCount || 0 };

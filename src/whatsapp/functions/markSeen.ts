@@ -27,6 +27,16 @@ export declare function markUnread(
 ): Promise<ChatModel>;
 
 /**
+ * Refresh the chat unread counter from its database metadata.
+ * @whatsapp WAWebUpdateUnreadChatAction >= 2.3000.1031992593
+ */
+export declare function updateUnreadCountMD(
+  chat: ChatModel,
+  markedAsReadCount: number,
+  updatePendingSeenCount?: boolean
+): Promise<void>;
+
+/**
  * @whatsapp 561498 >= 2.2228.4
  * @deprecated Use sendSeen({chat}) for versions >= 2.3000.1031992593
  */
@@ -61,6 +71,7 @@ exportModule(
   {
     markUnread: 'markUnread',
     sendSeen: 'sendSeen',
+    updateUnreadCountMD: 'updateUnreadCountMD',
   },
   (m) => m.markUnread && m.sendSeen
 );

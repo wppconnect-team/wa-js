@@ -26,7 +26,7 @@ import { ChatModel } from '../models';
 export declare function markChatRead(
   chat: ChatModel,
   msgKey: MsgKey,
-  unknown?: any
+  threadId?: string | null
 ): Promise<void>;
 
 exportModule(
@@ -35,4 +35,18 @@ exportModule(
     markChatRead: 'markChatRead',
   },
   (m) => m.markChatRead && m.markStatusRead && m.sendAddOnReadReceipts
+);
+
+/**
+ * @whatsapp WAWebDBPendingReadReceiptQueries
+ */
+export declare function queryPendingReadReceiptMsgRows(
+  chatId: string,
+  threadId?: string | null
+): Promise<{ id: string }[]>;
+
+exportModule(
+  exports,
+  { queryPendingReadReceiptMsgRows: 'queryPendingReadReceiptMsgRows' },
+  (m) => typeof m.queryPendingReadReceiptMsgRows === 'function'
 );

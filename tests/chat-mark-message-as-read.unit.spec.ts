@@ -37,14 +37,17 @@ interface ApiOptions {
   updatesCounter?: boolean;
   delay?: number;
   fail?: () => boolean;
+  refreshFail?: () => boolean;
+  queryFail?: () => boolean;
 }
 
 function markApi(options: ApiOptions = {}) {
   const messages = new Map<string, FakeMsgModel>();
+  const loaded = new Set<FakeMsgModel>();
   const chat: any = {
     id: 'chat',
     unreadCount: 0,
-    msgs: { getModelsArray: () => Array.from(messages.values()) },
+    msgs: { getModelsArray: () => Array.from(loaded) },
   };
   const calls: string[] = [];
   const exports: any = {};
@@ -59,6 +62,23 @@ function markApi(options: ApiOptions = {}) {
       if (id === '../../whatsapp') return { MsgModel: FakeMsgModel };
       if (id === '../../whatsapp/functions') {
         return {
+          queryPendingReadReceiptMsgRows: async (chatId: string) => {
+            expect(chatId).toBe('chat');
+            if (options.queryFail?.()) throw new Error('query failure');
+            return Array.from(messages.values())
+              .filter((msg) => !msg.id.fromMe && !msg.read)
+              .map((msg) => ({ id: msg.id.toString() }));
+          },
+          updateUnreadCountMD: async (
+            selectedChat: any,
+            count: number,
+            updatePending: boolean
+          ) => {
+            expect(selectedChat).toBe(chat);
+            expect([count, updatePending]).toEqual([0, false]);
+            if (options.refreshFail?.()) throw new Error('refresh failure');
+            chat.unreadCount = recount();
+          },
           markChatRead: async (_chat: any, key: any) => {
             calls.push(key.toString());
             if (options.delay) {
@@ -67,9 +87,16 @@ function markApi(options: ApiOptions = {}) {
               );
             }
             if (options.fail?.()) throw new Error('native failure');
-            const target = messages.get(key.toString())!;
-            for (const msg of messages.values()) {
-              if (!msg.id.fromMe && msg.t <= target.t) msg.read = true;
+            const pending = Array.from(messages.values()).filter(
+              (msg) => !msg.id.fromMe && !msg.read
+            );
+            let boundary = pending.findIndex(
+              (msg) => msg.id.toString() === key.toString()
+            );
+            // Match the native fallback for an absent read-receipt boundary.
+            if (boundary < 0) boundary = pending.length - 1;
+            for (const msg of pending.slice(0, boundary + 1)) {
+              msg.read = true;
             }
             if (options.updatesCounter) chat.unreadCount = recount();
           },
@@ -92,12 +119,18 @@ function markApi(options: ApiOptions = {}) {
     context
   );
 
-  const addMessage = (idStr: string, t: number, fromMe = false) => {
+  const addMessage = (
+    idStr: string,
+    t: number,
+    fromMe = false,
+    isLoaded = true
+  ) => {
     const msg = new FakeMsgModel(
       { fromMe, remote: 'chat', toString: () => idStr },
       t
     );
     messages.set(idStr, msg);
+    if (isLoaded) loaded.add(msg);
     chat.unreadCount = recount();
     return msg;
   };
@@ -220,7 +253,7 @@ test('ignores messages sent by me', async () => {
   expect(result.unreadCount).toBe(1);
 });
 
-test('keeps a bounded history of completed messages', async () => {
+test('does not resend an old receipt after more than 500 completed messages', async () => {
   const api = markApi({ updatesCounter: true });
   const total = 520;
   for (let i = 0; i < total; i++) {
@@ -232,10 +265,89 @@ test('keeps a bounded history of completed messages', async () => {
   }
   api.calls.length = 0;
 
+  api.addMessage('false_chat_new', total + 1);
   await api.markMessageAsRead('false_chat_0');
-  expect(api.calls).toEqual(['false_chat_0']);
+  expect(api.calls).toEqual([]);
 
   await api.markMessageAsRead(`false_chat_${total - 1}`);
-  expect(api.calls).toEqual(['false_chat_0']);
-  expect(api.chat.unreadCount).toBe(0);
+  expect(api.calls).toEqual([]);
+  expect(api.chat.unreadCount).toBe(1);
+});
+
+test('preserves a newer unread message with the same timestamp', async () => {
+  const api = markApi({ updatesCounter: true });
+  api.addMessage('false_chat_A', 100);
+  const later = api.addMessage('false_chat_B', 100);
+
+  const result = await api.markMessageAsRead('false_chat_A');
+
+  expect(result.unreadCount).toBe(1);
+  expect(api.chat.unreadCount).toBe(1);
+  expect(later.read).toBe(false);
+});
+
+test('preserves unread messages absent from the loaded collection', async () => {
+  const api = markApi({ updatesCounter: false });
+  api.addMessage('false_chat_A', 100);
+  for (let i = 0; i < 4; i++) {
+    api.addMessage(`false_chat_hidden_${i}`, 101 + i, false, false);
+  }
+  expect(api.chat.msgs.getModelsArray()).toHaveLength(1);
+
+  const result = await api.markMessageAsRead('false_chat_A');
+
+  expect(result.unreadCount).toBe(4);
+  expect(api.chat.unreadCount).toBe(4);
+});
+
+test('serializes different boundaries without falling back for an older read message', async () => {
+  const api = markApi({ updatesCounter: false, delay: 10 });
+  api.addMessage('false_chat_A', 1);
+  api.addMessage('false_chat_B', 2);
+  const later = api.addMessage('false_chat_C', 3);
+
+  await Promise.all([
+    api.markMessageAsRead('false_chat_B'),
+    api.markMessageAsRead('false_chat_A'),
+  ]);
+
+  expect(api.calls).toEqual(['false_chat_B']);
+  expect(api.chat.unreadCount).toBe(1);
+  expect(later.read).toBe(false);
+});
+
+test('a failed counter refresh does not resend a successful receipt on retry', async () => {
+  let fail = true;
+  const api = markApi({ refreshFail: () => fail });
+  const selected = api.addMessage('false_chat_A', 1);
+  const later = api.addMessage('false_chat_B', 2);
+
+  await expect(api.markMessageAsRead('false_chat_A')).rejects.toThrow(
+    'refresh failure'
+  );
+  expect(selected.read).toBe(true);
+  fail = false;
+
+  const result = await api.markMessageAsRead('false_chat_A');
+
+  expect(api.calls).toEqual(['false_chat_A']);
+  expect(result.unreadCount).toBe(1);
+  expect(later.read).toBe(false);
+});
+
+test('does not send a receipt when the pending-row query fails and allows retry', async () => {
+  let fail = true;
+  const api = markApi({ queryFail: () => fail });
+  const selected = api.addMessage('false_chat_A', 1);
+  api.addMessage('false_chat_B', 2);
+
+  await expect(api.markMessageAsRead('false_chat_A')).rejects.toThrow(
+    'query failure'
+  );
+  expect(api.calls).toEqual([]);
+  expect(selected.read).toBe(false);
+  fail = false;
+
+  expect((await api.markMessageAsRead('false_chat_A')).unreadCount).toBe(1);
+  expect(api.calls).toEqual(['false_chat_A']);
 });
