@@ -101,6 +101,9 @@ jobs:
       - name: Test membership request participants
         run: npx playwright test tests/group-membership.unit.spec.ts --project tests
 
+      - name: Test chat list onlyUsers with LID chats
+        run: npx playwright test tests/chat-list-only-users.unit.spec.ts --project tests
+
       - uses: actions/github-script@v9
         id: versions
         with:
