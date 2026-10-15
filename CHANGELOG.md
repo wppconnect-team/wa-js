@@ -1,3 +1,21 @@
+## <small>4.7.1 (2026-10-15)</small>
+
+### Features
+
+* mark messages as read with native unread counters (#3712) ([abba270](https://github.com/wppconnect-team/wa-js/commit/abba270)), closes [#3712](https://github.com/wppconnect-team/wa-js/issues/3712)
+
+### Bug Fixes
+
+* split MediaPrep bindings after WhatsApp moved prepRawMedia and uploadProductImage (#3732) ([0c6d784](https://github.com/wppconnect-team/wa-js/commit/0c6d784)), closes [#3732](https://github.com/wppconnect-team/wa-js/issues/3732)
+
+### Build System
+
+* **deps:** update node.js to v24.22.0 (#3728) ([2e21a8c](https://github.com/wppconnect-team/wa-js/commit/2e21a8c)), closes [#3728](https://github.com/wppconnect-team/wa-js/issues/3728)
+
+### Continuous Integration
+
+* **deps:** update dependency node to v24.22.0 (#3729) ([0a3bf38](https://github.com/wppconnect-team/wa-js/commit/0a3bf38)), closes [#3729](https://github.com/wppconnect-team/wa-js/issues/3729)
+
 ## 4.7.0 (2026-10-14)
 
 ### Features
