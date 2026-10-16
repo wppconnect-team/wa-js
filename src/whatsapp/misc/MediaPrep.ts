@@ -80,4 +80,10 @@ export declare namespace MediaPrep {
   }
 }
 
-exportModule(exports, 'MediaPrep', (m) => m.uploadProductImage && m.MediaPrep);
+exportModule(exports, 'MediaPrep', (m, id) =>
+  // Recent WhatsApp builds split media preparation out of the combined
+  // module: WAWebMediaPrep keeps only its display name while prepRawMedia
+  // lives in WAWebPrepRawMedia. Match either shape; id matching follows the
+  // revokeStatus binding precedent for renamed modules.
+  Boolean((m.uploadProductImage && m.MediaPrep) || id === 'WAWebPrepRawMedia')
+);

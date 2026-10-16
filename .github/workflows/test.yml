@@ -46,6 +46,9 @@ jobs:
       - name: Test media upload patch
         run: npx playwright test tests/media-upload-patch.unit.spec.ts --project tests
 
+      - name: Test media prep module finder across the split
+        run: npx playwright test tests/media-prep-finder.unit.spec.ts --project tests
+
       - name: Test message read boundaries and unread counter
         run: npx playwright test tests/chat-mark-message-as-read.unit.spec.ts --project tests
 
