@@ -19,7 +19,6 @@ import {
   MediaDataModel,
   ModelPropertiesContructor,
   MsgModel,
-  OpaqueData,
 } from '..';
 import { OUTWARD_TYPES } from '../enums';
 import { exportModule } from '../exportModule';
@@ -45,39 +44,34 @@ export type SendToChatProps = {
   };
 };
 
-/** @whatsapp 78986
+/** @whatsapp WAWebMediaPrep
+ * @whatsapp 78986
  * @whatsapp 778986 >= 2.2222.8
  */
-export declare namespace MediaPrep {
-  function prepRawMedia(
-    data: OpaqueData,
-    options: {
-      isPtt?: boolean;
-      asDocument?: boolean;
-      asGif?: boolean;
-      isAudio?: boolean;
-      asSticker?: boolean;
-      maxDimension?: number;
-    }
-  ): MediaPrep;
+export declare class MediaPrep {
+  constructor(type: OUTWARD_TYPES, p: any);
 
-  class MediaPrep {
-    constructor(type: OUTWARD_TYPES, p: any);
+  sendToChat(params: SendToChatProps): Promise<SendMsgResultObject>;
+  /**
+   * @deprecated Use sendToChat(params: SendToChatProps) instead
+   *
+   * @param chat
+   * @param params
+   */
+  sendToChat(
+    chat: ChatModel,
+    params: Omit<SendToChatProps, 'chat'>
+  ): Promise<SendMsgResultObject>;
 
-    sendToChat(params: SendToChatProps): Promise<SendMsgResultObject>;
-    /**
-     * @deprecated Use sendToChat(params: SendToChatProps) instead
-     *
-     * @param chat
-     * @param params
-     */
-    sendToChat(
-      chat: ChatModel,
-      params: Omit<SendToChatProps, 'chat'>
-    ): Promise<SendMsgResultObject>;
-
-    waitForPrep(): Promise<MediaDataModel>;
-  }
+  waitForPrep(): Promise<MediaDataModel>;
 }
 
-exportModule(exports, 'MediaPrep', (m) => m.uploadProductImage && m.MediaPrep);
+// The class became the module's only (default) export in 2.3000.1050509545
+// TODO: remove the old name when versions before 2.3000.1050509545 are no longer available in wa-version/html
+exportModule(
+  exports,
+  { MediaPrep: ['MediaPrep', 'default'] },
+  (m, id) =>
+    id === 'WAWebMediaPrep' ||
+    (m.MediaPrep && (m.getMediaPropsNew || m.sendMediaMsgToChat))
+);

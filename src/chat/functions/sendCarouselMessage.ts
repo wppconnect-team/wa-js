@@ -18,10 +18,11 @@ import Debug from 'debug';
 
 import { getMyUserLid, getMyUserWid } from '../../conn';
 import { convertToFile, isBase64, isUrl, WPPError } from '../../util';
-import { MediaPrep, MsgModel, MsgStore, OpaqueData, Wid } from '../../whatsapp';
+import { MsgModel, MsgStore, OpaqueData, Wid } from '../../whatsapp';
 import {
   createMsgProtobuf,
   getMediaPropsNew,
+  prepRawMedia,
   uploadMediaWithPrep,
 } from '../../whatsapp/functions';
 import {
@@ -232,7 +233,7 @@ async function resolveImage(
   }
 
   const opaqueData = await OpaqueData.createFromData(file, file.type);
-  const mediaPrep = MediaPrep.prepRawMedia(opaqueData, { maxDimension: 1600 });
+  const mediaPrep = prepRawMedia(opaqueData, { maxDimension: 1600 });
   const mediaProps = await getMediaPropsNew(mediaPrep, {
     type: 'image',
   });
