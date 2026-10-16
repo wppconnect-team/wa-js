@@ -80,6 +80,9 @@ jobs:
       - name: Test profile name lazy loading
         run: npx playwright test tests/profile-name-lazy.unit.spec.ts --project tests
 
+      - name: Test profile picture url getters with fallback
+        run: npx playwright test tests/contact-profile-picture-url.unit.spec.ts --project tests
+
       - name: Test group creation lazy loading
         run: npx playwright test tests/group-create-lazy.unit.spec.ts --project tests
 
