@@ -33,7 +33,6 @@ import * as whatsapp from '../../whatsapp';
 import {
   ChatModel,
   lidPnCache,
-  MediaPrep,
   MsgKey,
   MsgModel,
   OpaqueData,
@@ -45,6 +44,7 @@ import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import {
   generateVideoThumbsAndDuration,
   isAnimatedWebp,
+  prepRawMedia,
   processRawSticker,
   STATUS_JID,
   uploadMedia,
@@ -360,7 +360,7 @@ export async function sendFileMessage(
     rawMediaOptions.asSticker = true;
   }
 
-  const mediaPrep = MediaPrep.prepRawMedia(opaqueData, {
+  const mediaPrep = prepRawMedia(opaqueData, {
     ...rawMediaOptions,
     maxDimension,
   });

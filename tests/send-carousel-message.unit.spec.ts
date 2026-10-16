@@ -193,9 +193,6 @@ function loadSendCarouselMessage(mediaType: 'image' | 'video' = 'image') {
         }
         if (id === '../../whatsapp') {
           return {
-            MediaPrep: {
-              prepRawMedia: () => ({}),
-            },
             MsgModel: TestMsgModel,
             MsgStore: {
               get: (id: string) =>
@@ -220,6 +217,7 @@ function loadSendCarouselMessage(mediaType: 'image' | 'video' = 'image') {
               mimetype: 'image/jpeg',
               width: 800,
             }),
+            prepRawMedia: () => ({}),
             uploadMediaWithPrep: async () => {
               captured.events.push('uploaded');
               captured.uploaded = true;

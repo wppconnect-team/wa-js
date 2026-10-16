@@ -22,14 +22,19 @@ interface GetMediaPropsOptions {
   type?: string;
 }
 
-/** @whatsapp WAWebMediaPrep */
+/** @whatsapp WAWebMediaPrep
+ * @whatsapp WAWebMediaPrepMediaProps >= 2.3000.1050509545
+ */
 export declare function getMediaPropsNew(
-  prep: MediaPrep.MediaPrep,
+  prep: MediaPrep,
   options: GetMediaPropsOptions
 ): Promise<ModelPropertiesContructor<MsgModel>>;
 
+// Became the default export of its own module in 2.3000.1050509545
+// TODO: remove the old name when versions before 2.3000.1050509545 are no longer available in wa-version/html
 exportModule(
   exports,
-  { getMediaPropsNew: 'getMediaPropsNew' },
-  (module) => module.MediaPrep && module.getMediaPropsNew
+  { getMediaPropsNew: ['getMediaPropsNew', 'default'] },
+  (m, id) =>
+    id === 'WAWebMediaPrepMediaProps' || (m.MediaPrep && m.getMediaPropsNew)
 );
