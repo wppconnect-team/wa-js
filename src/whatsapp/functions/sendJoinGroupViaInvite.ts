@@ -66,6 +66,10 @@ loader.injectFallbackModule('sendJoinGroupViaInvite', {
       const isMember = await iAmMember(group.id.toString());
       if (isMember) return { gid: existChat.id, membershipApprovalMode: false };
     }
+    // The low-level IQ call lives in WAWebGroupInviteJob, which ships in a
+    // lazily bootloaded bundle: without this the binding below stays
+    // undefined and every join fails with "not a function" (#3734).
+    await loader.ensureLazyModule('WAWebGroupInviteJob');
     const result = await joinGroupViaInvite(code, group.membershipApprovalMode);
     return {
       gid: result.gid,
