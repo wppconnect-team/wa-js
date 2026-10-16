@@ -86,6 +86,9 @@ jobs:
       - name: Test status encryption signatures
         run: npx playwright test tests/status-encryption.unit.spec.ts --project tests
 
+      - name: Test status remove ensures the revoke action module
+        run: npx playwright test tests/status-remove-ensure-revoke-action.unit.spec.ts --project tests
+
       - name: Test cold-page compatibility bindings
         run: npx playwright test tests/compatibility-monitor-lazy-modules.spec.ts --project tests
 
