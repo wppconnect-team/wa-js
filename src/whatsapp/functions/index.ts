@@ -141,6 +141,7 @@ export * from './processRawSticker';
 export * from './products';
 export * from './productVisibilitySet';
 export * from './profilePic';
+export * from './profilePicThumbGetters';
 export * from './queryAllGroups';
 export * from './queryGroupInviteCode';
 export * from './queryNewsletterMetadataByJid';

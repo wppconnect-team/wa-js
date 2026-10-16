@@ -139,6 +139,10 @@ async function start() {
    * This will not directly affect the function call, it continues to work normally.
    */
   const ignoreFailModules: string[] = [
+    // Older builds retain img/imgFull model properties instead of the native
+    // thumb getters. getProfilePictureUrl explicitly covers that fallback.
+    'functions.getImg',
+    'functions.getImgFull',
     // Removed from native list mutations on recent WA builds; older versions
     // still enforce it through lists/assertListEditingAvailable.
     'functions.labelsEditingEnabled',

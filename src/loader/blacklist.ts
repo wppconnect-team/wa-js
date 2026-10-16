@@ -56,6 +56,10 @@ export function isMetaModuleBlacklisted(id: string): boolean {
  * specific WA version). When missing, no error is reported.
  */
 export const IGNORE_FAIL_MODULES: ReadonlySet<string> = new Set([
+  // Profile thumb getters are absent on older supported builds (for example
+  // WA 2.3000.1046899131). getProfilePictureUrl uses img/imgFull there.
+  'getImg',
+  'getImgFull',
   // List reordering may be lazy or unavailable on older supported versions.
   // setOrder resolves the native action and reports feature availability.
   'persistLabelReorder',
