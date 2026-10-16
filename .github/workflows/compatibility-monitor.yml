@@ -2,7 +2,7 @@ name: WA-JS compatibility monitor
 
 on:
   schedule:
-    - cron: '15,45 * * * *'
+    - cron: '15/30 * * * *'
   workflow_dispatch:
     inputs:
       trigger:
