@@ -98,7 +98,10 @@ export async function list(
 
   // Filtering Based on Options.
   if (options.onlyUsers) {
-    models = models.filter((c) => c.isUser);
+    // The isUser attribute predates the LID migration and stays false for
+    // @lid one-to-one chats, while Wid.isUser() covers the c.us, lid, bot
+    // and hosted servers. Keep both so nothing previously listed drops out.
+    models = models.filter((c) => c.isUser || c.id.isUser());
   }
 
   if (options.onlyGroups) {
