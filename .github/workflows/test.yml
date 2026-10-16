@@ -83,6 +83,9 @@ jobs:
       - name: Test group creation lazy loading
         run: npx playwright test tests/group-create-lazy.unit.spec.ts --project tests
 
+      - name: Test group join ensures the invite job module
+        run: npx playwright test tests/group-join-ensure-invite-job.unit.spec.ts --project tests
+
       - name: Test status encryption signatures
         run: npx playwright test tests/status-encryption.unit.spec.ts --project tests
 
