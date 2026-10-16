@@ -15,6 +15,7 @@
  */
 
 import { getMessageById } from '../../chat';
+import { ensureLazyModule } from '../../loader';
 import { WPPError } from '../../util';
 import { MsgKey, StatusV3Store, UserPrefs } from '../../whatsapp';
 import { revokeStatus } from '../../whatsapp/functions';
@@ -22,6 +23,9 @@ import { revokeStatus } from '../../whatsapp/functions';
 export async function remove(msgId: string | MsgKey): Promise<boolean> {
   const msg = await getMessageById(msgId);
   try {
+    // The revoke action ships in a lazily bootloaded bundle: without this
+    // the binding stays undefined and every remove fails (#3719).
+    await ensureLazyModule('WAWebRevokeStatusAction');
     await revokeStatus(
       StatusV3Store.get(UserPrefs.getMaybeMePnUser()) as any,
       msg

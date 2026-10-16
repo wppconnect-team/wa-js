@@ -128,6 +128,13 @@ export const LAZY_MODULES: {
     components: ['WAWebGroupInviteLinkDrawer.react'],
     pattern: /GroupInvite/i,
   },
+  // Verified on WA 2.3000.1050564944: bootloading the status drawer flow
+  // registers the revoke action without opening any status. The action
+  // module is absent from sessions that never render the status viewer.
+  WAWebRevokeStatusAction: {
+    components: ['WAWebStatusDrawerFlow.react'],
+    pattern: /StatusDrawerFlow/,
+  },
 };
 
 /**
