@@ -134,6 +134,7 @@ export * from './msgFindSearch';
 export * from './msgFindStarred';
 export * from './muteNewsletter';
 export * from './persistLabelReorder';
+export * from './prepRawMedia';
 export * from './processRawAudioVideo';
 export * from './processRawMedia';
 export * from './processRawSticker';
