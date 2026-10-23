@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
+import { compare } from 'compare-versions';
+
 import { assertGetChat } from '../../assert';
 import { Wid } from '../../whatsapp';
+import { SANITIZED_VERSION_STR } from '../../whatsapp/contants';
 import { markUnread } from '../../whatsapp/functions';
 
 /**
@@ -31,7 +34,14 @@ import { markUnread } from '../../whatsapp/functions';
 export async function markIsUnread(chatId: string | Wid) {
   const chat = assertGetChat(chatId);
 
-  await markUnread(chat, true);
+  // WhatsApp Web >= 2.3000.1051327739 takes an options object; the old
+  // boolean argument now lands in `options` and the chat is marked as read
+  if (compare(SANITIZED_VERSION_STR, '2.3000.1051327739', '>=')) {
+    await markUnread(chat, { unread: true, showToast: false });
+  } else {
+    // TODO: remove when versions < 2.3000.1051327739 are no longer available in wa-version/html
+    await markUnread(chat, true);
+  }
 
   return {
     wid: chat.id,
