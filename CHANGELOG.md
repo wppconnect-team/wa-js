@@ -1,3 +1,32 @@
+## <small>4.7.2 (2026-10-23)</small>
+
+### Bug Fixes
+
+* **chat:** avoid replaying notifications when reading history ([550966c](https://github.com/wppconnect-team/wa-js/commit/550966c))
+* **chat:** include LID chats in list onlyUsers filter ([c3e7729](https://github.com/wppconnect-team/wa-js/commit/c3e7729))
+* **chat:** pass options object to markUnread on WhatsApp >= 2.3000.1051327739 ([c202eb0](https://github.com/wppconnect-team/wa-js/commit/c202eb0))
+* **contact:** resolve profile picture through thumb getters ([626311c](https://github.com/wppconnect-team/wa-js/commit/626311c))
+* **group:** ensure invite job module before join fallback call ([6e7d96a](https://github.com/wppconnect-team/wa-js/commit/6e7d96a))
+* **status:** ensure revoke action module before remove ([831beec](https://github.com/wppconnect-team/wa-js/commit/831beec))
+
+### Tests
+
+* **chat:** cover unread action version compatibility ([42fe3d5](https://github.com/wppconnect-team/wa-js/commit/42fe3d5))
+
+### Build System
+
+* **deps-dev:** update commitlint monorepo to ^21.2.4 (#3740) ([b85ed2d](https://github.com/wppconnect-team/wa-js/commit/b85ed2d)), closes [#3740](https://github.com/wppconnect-team/wa-js/issues/3740)
+* **deps-dev:** update dependency eslint to ^10.13.0 ([7a3cdbe](https://github.com/wppconnect-team/wa-js/commit/7a3cdbe))
+* **deps-dev:** update dependency webpack to ^5.112.0 (#3733) ([62b507b](https://github.com/wppconnect-team/wa-js/commit/62b507b)), closes [#3733](https://github.com/wppconnect-team/wa-js/issues/3733)
+* **deps-dev:** update dependency webpack to ^5.112.1 (#3747) ([c25a840](https://github.com/wppconnect-team/wa-js/commit/c25a840)), closes [#3747](https://github.com/wppconnect-team/wa-js/issues/3747)
+* **deps-dev:** update typescript-eslint monorepo to ^8.72.0 (#3742) ([ecda587](https://github.com/wppconnect-team/wa-js/commit/ecda587)), closes [#3742](https://github.com/wppconnect-team/wa-js/issues/3742)
+* **deps:** bump markdown-it from 14.3.2 to 14.3.3 ([a85c3f7](https://github.com/wppconnect-team/wa-js/commit/a85c3f7))
+* **deps:** update node.js to v24.22.1 (#3744) ([d7601f2](https://github.com/wppconnect-team/wa-js/commit/d7601f2)), closes [#3744](https://github.com/wppconnect-team/wa-js/issues/3744)
+
+### Chores
+
+* **ci:** associate schedule with joaosouz4dev ([17fc1eb](https://github.com/wppconnect-team/wa-js/commit/17fc1eb))
+
 ## <small>4.7.1 (2026-10-15)</small>
 
 ### Features
