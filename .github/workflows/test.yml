@@ -49,6 +49,9 @@ jobs:
       - name: Test message read boundaries and unread counter
         run: npx playwright test tests/chat-mark-message-as-read.unit.spec.ts --project tests
 
+      - name: Test unread action version compatibility
+        run: npx playwright test tests/chat-mark-is-unread.unit.spec.ts --project tests
+
       - name: Test history reads without notification replay
         run: npx playwright test tests/chat-get-messages-history.unit.spec.ts --project tests
 

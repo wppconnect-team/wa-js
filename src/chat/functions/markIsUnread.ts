@@ -39,6 +39,7 @@ export async function markIsUnread(chatId: string | Wid) {
   if (compare(SANITIZED_VERSION_STR, '2.3000.1051327739', '>=')) {
     await markUnread(chat, { unread: true, showToast: false });
   } else {
+    // TODO: remove when versions < 2.3000.1051327739 are no longer available in wa-version/html
     await markUnread(chat, true);
   }
 
