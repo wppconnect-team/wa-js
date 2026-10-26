@@ -67,8 +67,13 @@ export const LAZY_MODULES: {
     pattern: /EventsCreateEvent/,
   },
   WAWebGroupGetCommunityParticipantsJob: {
-    components: ['WAWebViewCommunityMembersModal.react'],
-    pattern: /ViewCommunityMembers/,
+    // WA 2.3000.1051690951 moved the job out of the member modal bundle.
+    // Loading the action registers the job without querying participants.
+    components: [
+      'WAWebQueryAndUpdateCommunityParticipantsAction',
+      'WAWebViewCommunityMembersModal.react',
+    ],
+    pattern: /QueryAndUpdateCommunityParticipants|ViewCommunityMembers/,
   },
   WAWebSetPrivacyForOneCategoryAction: {
     components: ['WAWebPrivacyVisibilityEditDrawer.react'],
