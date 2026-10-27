@@ -95,5 +95,10 @@
   },
   "engines": {
     "whatsapp-web": ">=2.3000.1038792969-alpha"
+  },
+  "overrides": {
+    "release-it": {
+      "undici@7.29.1": "7.30.1"
+    }
   }
 }
