@@ -42,7 +42,8 @@
     "wa-source:clean": "shx rm -rf wa-source",
     "wa-source:format": "sh -c 'prettier --ignore-path .prettierignore --write ./wa-source/$1' --",
     "wa-source:populate": "ts-node ./src/tools/populateWaSources.ts",
-    "watch": "webpack watch --devtool inline-source-map --mode development"
+    "watch": "webpack watch --devtool inline-source-map --mode development",
+    "test:minimatch": "node --test test/minimatch-compat.test.cjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",
@@ -99,6 +100,10 @@
   "overrides": {
     "release-it": {
       "undici@7.29.1": "7.30.1"
+    },
+    "minimatch@>=4.0.0 <11.0.1": "11.0.1",
+    "eslint-plugin-import": {
+      "minimatch": "file:../../vendor/wppconnect-minimatch-legacy-compat-1.0.1.tgz"
     }
   }
 }

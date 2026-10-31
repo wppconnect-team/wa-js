@@ -36,7 +36,10 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install Dependencies
-        run: npm ci || npm install
+        run: npm ci
+
+      - name: Test patched glob engine and legacy consumers
+        run: npm run test:minimatch
 
       - name: Build source
         run: npm run build:prd
