@@ -46,6 +46,20 @@ test('legacy callers retain the callable API and attached matching helpers', () 
 });
 
 test('the installed facade is the reviewed source and delegates to a patched registry engine', () => {
+  assert.deepEqual(
+    JSON.parse(
+      fs.readFileSync(
+        path.join(path.dirname(owner.resolve('minimatch')), 'package.json'),
+        'utf8'
+      )
+    ),
+    JSON.parse(
+      fs.readFileSync(
+        path.join(root, 'vendor/minimatch-legacy-compat/package.json'),
+        'utf8'
+      )
+    )
+  );
   assert.equal(
     legacyRequire('minimatch-engine/package.json').version,
     '11.0.1'
