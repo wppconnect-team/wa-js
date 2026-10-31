@@ -128,7 +128,14 @@ export async function sendRawMessage(
         msg,
         type,
       });
-      result = [msg, sendResult];
+      result = [
+        msg,
+        {
+          messageSendResult: sendResult.messageSendResult,
+          ...(sendResult.t !== undefined && { t: sendResult.t }),
+          ...(sendResult.count !== undefined && { count: sendResult.count }),
+        },
+      ];
     }
   } else if (
     rawMessage.type === 'protocol' &&

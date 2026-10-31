@@ -75,6 +75,10 @@ function fixture(
             expect(data.chat.newsletterMetadata).toBe(chat.newsletterMetadata);
             expect(data.chat).toBe(chat);
             sentMsg = data.msg;
+            // Native models have graph references and must not escape inside
+            // sendMsgResult, which is also transported through page.evaluate.
+            data.msg.chat = data.chat;
+            data.chat.lastMessage = data.msg;
             sentType = data.type;
             events.push('action:store');
             chat.msgs.add(data.msg);
@@ -185,6 +189,13 @@ test('preserves the native action failure ACK and send result', async () => {
     sendMsgResult: { messageSendResult: 'ERROR_NETWORK' },
   });
   expect(f.events).toEqual(['action:store', 'ack:-1', 'action:update']);
+});
+
+test('returns a serializable public result without the native MsgModel', async () => {
+  const f = fixture('action');
+  const result = await f.send();
+  expect(result.sendMsgResult).toEqual({ messageSendResult: 'OK' });
+  expect(JSON.parse(JSON.stringify(result)).id).toBe('MESSAGE_ID');
 });
 
 test('keeps the legacy job storage path and a single MsgModel', async () => {
