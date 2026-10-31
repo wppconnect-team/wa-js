@@ -20,13 +20,13 @@ import { assertFindChat } from '../../assert';
 import { getAnnouncementGroup } from '../../community';
 import { WPPError } from '../../util';
 import { GroupMetadataStore, MsgModel } from '../../whatsapp';
-import { ACK } from '../../whatsapp/enums';
+import { ACK, SendMsgResult } from '../../whatsapp/enums';
 import {
   addAndSendMessageEdit,
   addAndSendMsgToChat,
   addNewsletterMsgsRecords,
   msgDataFromMsgModel,
-  sendNewsletterMessageJob,
+  newsletterMessageSender,
   updateNewsletterMsgRecord,
 } from '../../whatsapp/functions';
 import {
@@ -90,27 +90,53 @@ export async function sendRawMessage(
         'Please, send a valid type for send message to newsletter. Valid types: "chat", "image", "video", "poll_creation"'
       );
     const msg = new MsgModel(rawMessage as any);
-    await addNewsletterMsgsRecords([await msgDataFromMsgModel(msg)]);
-    const resultNewsletter = await sendNewsletterMessageJob({
-      type:
-        rawMessage.type == 'chat' && !rawMessage.editMsgType
-          ? 'text'
-          : rawMessage.type == 'poll_creation'
-            ? 'pollCreation'
-            : 'media',
-      msgData: rawMessage,
-      msg: new MsgModel(rawMessage as any),
-      newsletterJid: chat.id.toString(),
-    });
-    chat.msgs.add(msg);
+    const type =
+      rawMessage.type == 'chat' && !rawMessage.editMsgType
+        ? 'text'
+        : rawMessage.type == 'poll_creation'
+          ? 'pollCreation'
+          : 'media';
+    if (newsletterMessageSender.sendNewsletterMessageJob) {
+      await addNewsletterMsgsRecords([await msgDataFromMsgModel(msg)]);
+      const resultNewsletter =
+        await newsletterMessageSender.sendNewsletterMessageJob({
+          type,
+          msgData: rawMessage,
+          msg,
+          newsletterJid: chat.id.toString(),
+        });
+      chat.msgs.add(msg);
 
-    if (resultNewsletter.success) {
-      msg.t = resultNewsletter.ack.t;
-      msg.serverId = resultNewsletter.serverId;
+      if (resultNewsletter.success) {
+        msg.t = resultNewsletter.ack.t;
+        msg.serverId = resultNewsletter.serverId;
+      }
+      msg.updateAck(resultNewsletter.success ? ACK.SENT : ACK.FAILED, true);
+      await updateNewsletterMsgRecord(msg);
+      result = [
+        msg,
+        {
+          messageSendResult: resultNewsletter.success
+            ? SendMsgResult.OK
+            : SendMsgResult.ERROR_NETWORK,
+        },
+      ];
+    } else {
+      // The action owns the queues, records, collection and ACK updates.
+      const sendResult = await newsletterMessageSender.sendNewsletterMessage!({
+        chat,
+        msg,
+        type,
+      });
+      result = [
+        msg,
+        {
+          messageSendResult: sendResult.messageSendResult,
+          ...(sendResult.t !== undefined && { t: sendResult.t }),
+          ...(sendResult.count !== undefined && { count: sendResult.count }),
+        },
+      ];
     }
-    msg.updateAck(ACK.SENT, true);
-    await updateNewsletterMsgRecord(msg);
-    result = [msg, 'OK'];
   } else if (
     rawMessage.type === 'protocol' &&
     rawMessage.subtype === 'message_edit'

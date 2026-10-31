@@ -15,7 +15,8 @@
  */
 
 import { exportModule } from '../exportModule';
-import { MsgModel } from '../models';
+import { ChatModel, MsgModel } from '../models';
+import { SendMsgResultObject } from '../types';
 
 /** @whatsapp 397995
  */
@@ -36,4 +37,23 @@ exportModule(
     ],
   },
   (m) => m.sendNewsletterMessageJob || m.sendNewsletterMessage // <= 2.2326.x
+);
+
+/**
+ * Keep the native export name available: the job and the higher-level action
+ * have different input, result and message-lifecycle contracts.
+ */
+export declare const newsletterMessageSender: {
+  sendNewsletterMessageJob?: typeof sendNewsletterMessageJob;
+  sendNewsletterMessage?: (data: {
+    chat: ChatModel;
+    msg: MsgModel;
+    type: string;
+  }) => Promise<SendMsgResultObject>;
+};
+
+exportModule(
+  exports,
+  'newsletterMessageSender',
+  (m) => m.sendNewsletterMessageJob || m.sendNewsletterMessage
 );
