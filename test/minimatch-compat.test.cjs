@@ -10,6 +10,7 @@ const { createRequire } = require('node:module');
 const os = require('node:os');
 const path = require('node:path');
 const { test } = require('node:test');
+const { pathToFileURL } = require('node:url');
 
 const root = path.resolve(__dirname, '..');
 const isWaJs = require('../package.json').name === '@wppconnect/wa-js';
@@ -161,3 +162,70 @@ test('the actual legacy development consumer still works', async () => {
     }
   }
 });
+
+if (isWaJs) {
+  test('TypeDoc discovers nested entry points with row-specific partial matching', async () => {
+    const typedocOwner = createRequire(require.resolve('typedoc'));
+    const compatDir = path.dirname(typedocOwner.resolve('minimatch'));
+    const manifest = JSON.parse(
+      fs.readFileSync(path.join(compatDir, 'package.json'), 'utf8')
+    );
+    assert.equal(manifest.exports.import, './index.mjs');
+    const esmPath = path.join(compatDir, manifest.exports.import);
+    assert.equal(
+      fs.readFileSync(esmPath, 'utf8').replace(/\r\n/g, '\n'),
+      fs
+        .readFileSync(
+          path.join(root, 'vendor/minimatch-legacy-compat/index.mjs'),
+          'utf8'
+        )
+        .replace(/\r\n/g, '\n')
+    );
+    const { Minimatch } = await import(pathToFileURL(esmPath).href);
+    const model = new Minimatch('src/{a,b}/*.ts');
+    assert.equal(model.matchOne(['src', 'a'], model.set[0], true), true);
+    assert.equal(model.matchOne(['src', 'a'], model.set[1], true), false);
+    const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'wpp-minimatch-'));
+    try {
+      fs.mkdirSync(path.join(scratch, 'src', 'nested'), { recursive: true });
+      fs.writeFileSync(
+        path.join(scratch, 'src', 'nested', 'a.ts'),
+        'export function documented() {}'
+      );
+      fs.writeFileSync(
+        path.join(scratch, 'src', 'b.ts'),
+        'export function secondEntry() {}'
+      );
+      fs.writeFileSync(
+        path.join(scratch, 'tsconfig.json'),
+        JSON.stringify({
+          compilerOptions: {
+            target: 'ES2022',
+            module: 'ESNext',
+            skipLibCheck: true,
+          },
+          include: ['src/**/*.ts'],
+        })
+      );
+      const { Application } = await import('typedoc');
+      const app = await Application.bootstrap({
+        name: 'compat-typedoc',
+        tsconfig: path.join(scratch, 'tsconfig.json'),
+        entryPoints: [
+          path.join(scratch, 'src', '**', '*.ts').replace(/\\/g, '/'),
+        ],
+        entryPointStrategy: 'expand',
+        skipErrorChecking: true,
+      });
+      const project = await app.convert();
+      assert.ok(project);
+      const names = Object.values(project.reflections).map((item) => item.name);
+      assert.ok(names.includes('documented'));
+      assert.ok(names.includes('secondEntry'));
+    } finally {
+      assert.equal(path.dirname(scratch), path.resolve(os.tmpdir()));
+      assert.ok(path.basename(scratch).startsWith('wpp-minimatch-'));
+      fs.rmSync(scratch, { recursive: true, force: true });
+    }
+  });
+}

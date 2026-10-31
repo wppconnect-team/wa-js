@@ -7,3 +7,5 @@ This private facade supports only the contracts used by eslint-plugin-import and
 The override is scoped to the named legacy consumer. Its ../../vendor file spec resolves from that consumer under node_modules; npm records the canonical root-relative tarball and integrity in package-lock.json. A fresh npm ci and real-consumer tests are required after dependency layout changes.
 
 Regenerate the committed local package after source changes with `npm pack ./vendor/minimatch-legacy-compat --pack-destination vendor --ignore-scripts`. This local archive is not published. The registry engine retains its own license.
+
+The TypeDoc ESM consumer also receives a narrowly scoped matchOne bridge: it rebuilds and caches a single already-expanded compiled row with the patched native engine, preserving row-specific partial traversal. Other modern consumers still load unmodified upstream11.0.1. The CommonJS legacy interface is unchanged.

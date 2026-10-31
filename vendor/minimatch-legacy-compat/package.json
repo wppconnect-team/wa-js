@@ -1,6 +1,6 @@
 {
   "name": "@wppconnect/minimatch-legacy-compat",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "Callable CommonJS facade over the patched minimatch engine for legacy development consumers",
   "main": "index.cjs",
@@ -11,6 +11,11 @@
   "files": [
     "index.cjs",
     "README.md",
-    "LICENSE"
-  ]
+    "LICENSE",
+    "index.mjs"
+  ],
+  "exports": {
+    "import": "./index.mjs",
+    "require": "./index.cjs"
+  }
 }

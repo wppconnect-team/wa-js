@@ -103,7 +103,10 @@
     },
     "minimatch@>=4.0.0 <11.0.1": "11.0.1",
     "eslint-plugin-import": {
-      "minimatch": "file:../../vendor/wppconnect-minimatch-legacy-compat-1.0.1.tgz"
+      "minimatch": "file:../../vendor/wppconnect-minimatch-legacy-compat-1.0.2.tgz"
+    },
+    "typedoc": {
+      "minimatch": "file:../../vendor/wppconnect-minimatch-legacy-compat-1.0.2.tgz"
     }
   }
 }
