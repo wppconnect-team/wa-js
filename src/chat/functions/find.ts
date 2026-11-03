@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assertWid } from '../../assert';
+import { assertGetChat, assertWid } from '../../assert';
 import { ChatModel, ChatStore, GroupMetadataStore, Wid } from '../../whatsapp';
 import {
   ChatOriginType,
@@ -50,6 +50,12 @@ export async function find(
   originType: ChatOriginType = 'createChat'
 ): Promise<ChatModel> {
   const wid = assertWid(chatId);
+
+  // Newsletters live in NewsletterStore, outside the regular chat collection.
+  // Preserve the original model and its newsletter metadata for the sender.
+  if (wid.server === 'newsletter') {
+    return assertGetChat(wid);
+  }
 
   // Use findOrCreateLatestChat to match WhatsApp Web's native behavior
   // This ensures the chat is properly initialized and can be opened/clicked

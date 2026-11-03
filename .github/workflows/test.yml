@@ -53,7 +53,7 @@ jobs:
         run: npx playwright test tests/chat-mark-is-unread.unit.spec.ts --project tests
 
       - name: Test newsletter action and job contracts
-        run: npx playwright test tests/newsletter-send.unit.spec.ts --project tests
+        run: npx playwright test tests/newsletter-send.unit.spec.ts tests/chat-find-newsletter.unit.spec.ts --project tests
 
       - name: Test history reads without notification replay
         run: npx playwright test tests/chat-get-messages-history.unit.spec.ts --project tests
