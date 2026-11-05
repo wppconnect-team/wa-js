@@ -14,8 +14,17 @@
  * limitations under the License.
  */
 
-export { accept } from './accept';
+export { accept, CallAcceptOptions } from './accept';
+export { createCallLink, CreateCallLinkOptions } from './createCallLink';
 export { enableCallInterface } from './enableCallInterface';
 export { end } from './end';
-export { offer } from './offer';
+export { getActiveCall } from './getActiveCall';
+export { getCallInfo } from './getCallInfo';
+export { joinCallLink, JoinCallLinkOptions } from './joinCallLink';
+export { CallOfferOptions, offer } from './offer';
+export { offerGroup } from './offerGroup';
+export { raiseHand } from './raiseHand';
 export { reject, reject as rejectCall } from './reject';
+export { sendReaction } from './sendReaction';
+export { setMute } from './setMute';
+export { setVideoEnabled } from './setVideoEnabled';

@@ -17,14 +17,63 @@
 import { exportModule } from '../exportModule';
 
 /**
+ * The native VoIP stack. Every method acts on the single current call.
+ *
+ * Methods returning a number return a native status, where `0` means OK.
+ *
+ * @whatsapp WAWebVoipStackInterfaceWeb
+ */
+export interface VoipStackInterface {
+  type: 'web' | string;
+  parsers: {
+    parseCallInfo(json: string): any;
+    [key: string]: any;
+  };
+  acceptCall(
+    audioEnabled: boolean,
+    videoEnabled: boolean,
+    lobbyEntryPoint?: number | null
+  ): Promise<number>;
+  rejectCall(): Promise<number>;
+  endCall(reason: number, isUserInitiated: boolean): Promise<number>;
+  setCallMute(muted: boolean): Promise<number>;
+  setCallVideoMute(muted: boolean): Promise<number>;
+  requestVideoUpgrade(): Promise<number>;
+  sendReaction(emoji: string): Promise<number>;
+  raiseHand(raised: boolean): Promise<number>;
+  getCallInfo(): Promise<string>;
+  previewAndJoinCallLink(
+    token: string,
+    isVideo: boolean,
+    lobbyEntryPoint?: number,
+    username?: string
+  ): Promise<number>;
+  handleIncomingSignalingOffer(voipNode: any, ...args: any[]): Promise<any>;
+  handleIncomingSignalingMessage(args: {
+    xmlNode: any;
+    peerJid?: string;
+    [key: string]: any;
+  }): Promise<any>;
+  [key: string]: any;
+}
+
+/**
+ * Resolves to `null` when VoIP download is disabled
+ *
  * @whatsapp WAWebVoipStackInterface
  */
-export declare function getVoipStackInterface(): Promise<any>;
+export declare function getVoipStackInterface(): Promise<VoipStackInterface | null>;
+
+/**
+ * @whatsapp WAWebVoipStackInterface
+ */
+export declare function getCachedVoipStackInterface(): VoipStackInterface | null;
 
 exportModule(
   exports,
   {
     getVoipStackInterface: 'getVoipStackInterface',
+    getCachedVoipStackInterface: 'getCachedVoipStackInterface',
   },
   (m) => m.getVoipStackInterface
 );

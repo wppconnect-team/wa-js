@@ -27,4 +27,5 @@ export * from './PinExpiryDurationOption';
 export * from './SendMsgResult';
 export * from './StreamInfo';
 export * from './StreamMode';
+export * from './VOIP_CALL_ENUMS';
 export * from './WAWebNonJidMentionType';

@@ -17,6 +17,7 @@
 import { WPPError } from '../../util';
 import { CallStore } from '../../whatsapp';
 import { getVoipStackInterface } from '../../whatsapp/functions';
+import { requireActiveCall } from './requireVoipStack';
 
 /**
  * `WAWebVoipSignalingEnums.EndCallReason.Self` - ended by the local user
@@ -30,11 +31,18 @@ const END_CALL_REASON_SELF = 2;
  * ```javascript
  * // End any call
  * WPP.call.end();
+ *
+ * // End only if the active call is this one
+ * WPP.call.end(callId);
  * ```
  *
  * @return  {Promise<boolean>}
  */
-export async function end(): Promise<boolean> {
+export async function end(callId?: string): Promise<boolean> {
+  if (callId) {
+    requireActiveCall(callId);
+  }
+
   const voipStack = await getVoipStackInterface();
   if (!voipStack) {
     throw new WPPError(

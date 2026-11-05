@@ -19,6 +19,17 @@ import { websocket } from '../../whatsapp';
 import { getVoipStackInterface } from '../../whatsapp/functions';
 import { getCall, isActiveCall, isIncomingCall } from './getCall';
 
+export interface CallAcceptOptions {
+  /**
+   * Accept with the microphone enabled. Defaults to true
+   */
+  audio?: boolean;
+  /**
+   * Accept with the camera enabled. Defaults to true for video calls
+   */
+  video?: boolean;
+}
+
 /**
  * Accept a incoming call
  *
@@ -29,6 +40,9 @@ import { getCall, isActiveCall, isIncomingCall } from './getCall';
  *
  * // Accept specific call id
  * WPP.call.accept(callId);
+ *
+ * // Accept with the microphone muted and the camera off
+ * WPP.call.accept(callId, { audio: false, video: false });
  *
  * // Accept any incoming call
  * WPP.on('call.incoming_call', (call) => {
@@ -41,7 +55,10 @@ import { getCall, isActiveCall, isIncomingCall } from './getCall';
  * @param   {string}  callId  The call ID, empty to accept the first one
  * @return  {[type]}          [return description]
  */
-export async function accept(callId?: string): Promise<boolean> {
+export async function accept(
+  callId?: string,
+  options: CallAcceptOptions = {}
+): Promise<boolean> {
   const call = getCall(callId);
 
   if (!call) {
@@ -75,7 +92,10 @@ export async function accept(callId?: string): Promise<boolean> {
 
     if (typeof voipStack?.acceptCall === 'function') {
       // acceptCall(isMicEnabled, isCameraEnabled)
-      await voipStack.acceptCall(true, call.isVideo === true);
+      await voipStack.acceptCall(
+        options.audio ?? true,
+        options.video ?? call.isVideo === true
+      );
 
       return true;
     }
