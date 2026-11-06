@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+export * from './decodeStanza';
 export * from './ensureE2ESessions';
 export * from './generateId';
 export * from './sendSmaxStanza';

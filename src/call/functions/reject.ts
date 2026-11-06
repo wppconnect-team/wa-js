@@ -16,7 +16,7 @@
 
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import { WPPError } from '../../util';
-import { websocket } from '../../whatsapp';
+import { CallStore, websocket } from '../../whatsapp';
 import { getVoipStackInterface } from '../../whatsapp/functions';
 import { getCall, isActiveCall, isIncomingCall } from './getCall';
 
@@ -71,6 +71,19 @@ export async function reject(callId?: string): Promise<boolean> {
    */
   if (isActiveCall(call) && typeof getVoipStackInterface === 'function') {
     const voipStack = await getVoipStackInterface();
+
+    // The active call can change while the stack loads, and rejectCall has no
+    // call id argument
+    if (!isActiveCall(call)) {
+      throw new WPPError(
+        'call_not_found',
+        `Call ${call.id} is no longer the active call`,
+        {
+          callId: call.id,
+          activeCallId: (CallStore as any)?.activeCall?.id,
+        }
+      );
+    }
 
     if (typeof voipStack?.rejectCall === 'function') {
       // Marks the call as declined instead of missed on the call log
