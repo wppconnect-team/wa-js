@@ -147,6 +147,54 @@ test.describe('CallStateTracker', () => {
     ]);
   });
 
+  test('skips repeated group mute notifications', () => {
+    const tracker = new CallStateTracker();
+    const callInfo = (secondMuted: boolean) => ({
+      callId: 'CALL-1',
+      participants: [
+        { jid: 'me@lid', isSelf: true, isMuted: false },
+        { jid: 'a@lid', isSelf: false, isMuted: false },
+        { jid: 'b@lid', isSelf: false, isMuted: secondMuted },
+      ],
+    });
+    const mute = (secondMuted: boolean) =>
+      tracker.handle('handleMuteStateChange', {
+        callInfo: callInfo(secondMuted),
+      });
+
+    expect(mute(false)).toHaveLength(1);
+    expect(mute(false)).toEqual([]);
+    expect(mute(false)).toEqual([]);
+
+    const changed = mute(true);
+    expect(changed).toHaveLength(1);
+    expect(changed[0][1].participants[2]).toEqual({
+      jid: 'b@lid',
+      isSelf: false,
+      isMuted: true,
+    });
+  });
+
+  test('skips repeated video states of the same participant', () => {
+    const tracker = new CallStateTracker();
+    const video = (isSelf: boolean, videoState: number, userJid: string) =>
+      tracker
+        .handle(
+          'handleVideoStateChange',
+          { videoStateData: { isSelf, videoState, userJid } },
+          'CALL-1'
+        )
+        .map(([, data]) => data.stateName);
+
+    expect(video(false, 1, 'peer@lid')).toEqual(['enabled']);
+    expect(video(true, 6, 'me@lid')).toEqual(['stopped']);
+    expect(video(true, 6, 'me@lid')).toEqual([]);
+    expect(video(true, 1, 'me@lid')).toEqual(['enabled']);
+    // Same state, other participant
+    expect(video(false, 1, 'peer@lid')).toEqual([]);
+    expect(video(false, 6, 'peer@lid')).toEqual(['stopped']);
+  });
+
   test('ignores unrelated messages', () => {
     expect(new CallStateTracker().handle('trackVoipActivity', {})).toEqual([]);
   });

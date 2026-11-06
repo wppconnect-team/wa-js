@@ -15,7 +15,7 @@
  */
 
 import { WPPError } from '../../util';
-import { requireActiveCall, requireVoipStack } from './requireVoipStack';
+import { requireActiveCallStack } from './requireVoipStack';
 
 /**
  * Turn your camera on or off in the active call.
@@ -33,8 +33,7 @@ export async function setVideoEnabled(
   enabled: boolean,
   callId?: string
 ): Promise<boolean> {
-  const call = requireActiveCall(callId);
-  const voipStack = await requireVoipStack();
+  const { voipStack, call } = await requireActiveCallStack(callId);
 
   const status =
     enabled && !call.isVideo && !call.isGroup

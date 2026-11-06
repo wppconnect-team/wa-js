@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { requireActiveCall, requireVoipStack } from './requireVoipStack';
+import { requireActiveCallStack } from './requireVoipStack';
 
 /**
  * Send a reaction (emoji) in the active call. Use an empty string to clear it.
@@ -30,8 +30,7 @@ export async function sendReaction(
   emoji: string,
   callId?: string
 ): Promise<boolean> {
-  requireActiveCall(callId);
-  const voipStack = await requireVoipStack();
+  const { voipStack } = await requireActiveCallStack(callId);
 
   await voipStack.sendReaction(emoji || '');
 

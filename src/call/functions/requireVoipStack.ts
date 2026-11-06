@@ -60,6 +60,25 @@ export function requireActiveCall(callId?: string): CallModel {
 }
 
 /**
+ * Resolve the native VoIP stack for an operation on the active call.
+ *
+ * The stack resolves asynchronously and the active call can be replaced or
+ * end meanwhile. The requested call (`callId`, or the call active when the
+ * operation was requested) is pinned before waiting and checked again once
+ * the stack is ready, so the native method must be invoked right after this
+ * resolves, without awaiting anything in between.
+ */
+export async function requireActiveCallStack(
+  callId?: string
+): Promise<{ voipStack: VoipStackInterface; call: CallModel }> {
+  const requestedId = requireActiveCall(callId).id;
+  const voipStack = await requireVoipStack();
+  const call = requireActiveCall(requestedId);
+
+  return { voipStack, call };
+}
+
+/**
  * Wait for the VoIP stack to register the call started by us as active
  */
 export async function waitForActiveCall(

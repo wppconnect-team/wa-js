@@ -83,13 +83,23 @@ interface TrackedCall {
   ringing?: boolean;
   accepted?: boolean;
   ended?: boolean;
-  selfMuted?: boolean;
-  peerMuted?: boolean;
+  /**
+   * Mute state of every participant, to skip repeated notifications
+   */
+  muteKey?: string;
+  /**
+   * Last video state per participant
+   */
+  videoStates?: Map<string, number>;
 }
 
 export type TrackerEmission = [event: string, data: any];
 
 const MAX_TRACKED_CALLS = 20;
+
+function jidKey(jid: any): string {
+  return String(jid?._serialized ?? jid ?? '');
+}
 
 /**
  * Turns the VoIP bridge messages (`frontendFireAndForget` calls) into WA-JS
@@ -235,16 +245,15 @@ export class CallStateTracker {
 
     const call = this.getCall(id);
 
-    // Group calls report each participant, so always forward them
-    if (
-      peers.length <= 1 &&
-      call.selfMuted === selfMuted &&
-      call.peerMuted === peerMuted
-    ) {
+    // WhatsApp repeats the notification without changes, mostly in group
+    // calls, so only forward it when some participant changed
+    const muteKey = participants
+      .map((p: any) => `${jidKey(p.jid)}:${p.isSelf}:${p.isMuted}`)
+      .join('|');
+    if (call.muteKey === muteKey) {
       return [];
     }
-    call.selfMuted = selfMuted;
-    call.peerMuted = peerMuted;
+    call.muteKey = muteKey;
 
     return [['call.mute_state', { id, selfMuted, peerMuted, participants }]];
   }
@@ -256,6 +265,15 @@ export class CallStateTracker {
     if (!data || !activeCallId || typeof data.videoState !== 'number') {
       return [];
     }
+
+    // Skips repeated notifications of the same participant state
+    const call = this.getCall(activeCallId);
+    const videoStates = (call.videoStates ??= new Map());
+    const participant = `${!!data.isSelf}:${jidKey(data.userJid)}`;
+    if (videoStates.get(participant) === data.videoState) {
+      return [];
+    }
+    videoStates.set(participant, data.videoState);
 
     return [
       [

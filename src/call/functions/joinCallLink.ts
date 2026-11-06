@@ -65,5 +65,7 @@ export async function joinCallLink(
     );
   }
 
-  return waitForActiveCall(undefined, 10_000);
+  // The call is first registered under the link token, wait for the id the
+  // events and the other call functions use
+  return waitForActiveCall((c) => c.id !== token, 10_000);
 }

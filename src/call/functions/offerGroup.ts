@@ -18,7 +18,7 @@ import { assertFindChat, assertWid } from '../../assert';
 import { queryExists } from '../../contact/functions/queryExists';
 import { ensureLazyModule } from '../../loader';
 import { WPPError } from '../../util';
-import { CallModel, Wid } from '../../whatsapp';
+import { CallModel, CallStore, Wid } from '../../whatsapp';
 import {
   startWAWebVoipGroupCallFromChat,
   startWAWebVoipGroupCallFromWids,
@@ -28,6 +28,9 @@ import { requireVoipStack, waitForActiveCall } from './requireVoipStack';
 
 /**
  * Start a group call, with all members of a group or with a list of contacts
+ *
+ * When the group has a single other member, WhatsApp places a 1:1 call and
+ * the returned call has `isGroup` false.
  *
  * @example
  * ```javascript
@@ -52,6 +55,11 @@ export async function offerGroup(
   await requireVoipStack();
   await ensureLazyModule('WAWebVoipStartCall');
 
+  // WhatsApp places a 1:1 call when the group has a single other member, so
+  // wait for any new active call instead of only a group one
+  const previousId: string | undefined = (CallStore as any)?.activeCall?.id;
+  const isNewCall = (c: CallModel) => c.id !== previousId;
+
   if (!Array.isArray(to)) {
     const groupWid = assertWid(to);
 
@@ -68,7 +76,7 @@ export async function offerGroup(
     // callFromUi = 8 (CONVERSATION), lobbyEntryPoint = 5 (NOT_OPENED)
     await startWAWebVoipGroupCallFromChat(chat, isVideo, 8, 5);
 
-    return waitForActiveCall((c) => c.isGroup);
+    return waitForActiveCall(isNewCall);
   }
 
   if (to.length < 2) {
@@ -97,5 +105,5 @@ export async function offerGroup(
     entryTrust: 'user_gesture',
   });
 
-  return waitForActiveCall((c) => c.isGroup);
+  return waitForActiveCall(isNewCall);
 }

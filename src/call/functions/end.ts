@@ -39,9 +39,10 @@ const END_CALL_REASON_SELF = 2;
  * @return  {Promise<boolean>}
  */
 export async function end(callId?: string): Promise<boolean> {
-  if (callId) {
-    requireActiveCall(callId);
-  }
+  // Pins the requested call, the active one can change while the stack loads
+  const requestedId: string | undefined = callId
+    ? requireActiveCall(callId).id
+    : (CallStore as any)?.activeCall?.id;
 
   const voipStack = await getVoipStackInterface();
   if (!voipStack) {
@@ -51,9 +52,14 @@ export async function end(callId?: string): Promise<boolean> {
     );
   }
 
+  // endCall has no call id argument, so make sure it still hits the
+  // requested call
+  const activeCall: any = requestedId
+    ? requireActiveCall(requestedId)
+    : (CallStore as any)?.activeCall;
+
   // Marks the call as ended by us instead of missed on the call log,
   // like the end button in `useWAWebVoipCallHandlers` does
-  const activeCall: any = (CallStore as any)?.activeCall;
   if (activeCall) {
     activeCall.userEndedCall = true;
   }
