@@ -15,7 +15,7 @@
  */
 
 import { WPPError } from '../../util';
-import { requireActiveCallStack } from './requireVoipStack';
+import { requireActiveCall, requireActiveCallStack } from './requireVoipStack';
 
 /**
  * Mute or unmute your microphone in the active call
@@ -31,7 +31,8 @@ export async function setMute(
   muted: boolean,
   callId?: string
 ): Promise<boolean> {
-  const { voipStack } = await requireActiveCallStack(callId);
+  const { voipStack, call } = await requireActiveCallStack(callId);
+  requireActiveCall(call.id);
 
   const status = await voipStack.setCallMute(!!muted);
   if (status) {

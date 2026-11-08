@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { requireActiveCallStack } from './requireVoipStack';
+import { requireActiveCall, requireActiveCallStack } from './requireVoipStack';
 
 /**
  * Get detailed information about the active call from the VoIP engine:
@@ -29,7 +29,8 @@ import { requireActiveCallStack } from './requireVoipStack';
  * @category Call
  */
 export async function getCallInfo(callId?: string): Promise<any> {
-  const { voipStack } = await requireActiveCallStack(callId);
+  const { voipStack, call } = await requireActiveCallStack(callId);
+  requireActiveCall(call.id);
 
   const json = await voipStack.getCallInfo();
   if (!json) {

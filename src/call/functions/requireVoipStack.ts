@@ -65,8 +65,9 @@ export function requireActiveCall(callId?: string): CallModel {
  * The stack resolves asynchronously and the active call can be replaced or
  * end meanwhile. The requested call (`callId`, or the call active when the
  * operation was requested) is pinned before waiting and checked again once
- * the stack is ready, so the native method must be invoked right after this
- * resolves, without awaiting anything in between.
+ * the stack is ready. Its async return still yields before the caller resumes,
+ * so the caller must synchronously recheck `requireActiveCall(call.id)` after
+ * awaiting this helper, immediately before invoking the native method.
  */
 export async function requireActiveCallStack(
   callId?: string

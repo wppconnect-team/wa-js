@@ -17,8 +17,7 @@
 import { expect, test } from '@playwright/test';
 import { readFileSync } from 'fs';
 import * as path from 'path';
-import { ModuleKind, transpileModule } from 'typescript';
-import { createContext, runInContext } from 'vm';
+import { ModuleKind, ScriptTarget, transpileModule } from 'typescript';
 
 import { WPPError } from '../src/util/errors';
 
@@ -65,9 +64,14 @@ function callApi() {
   };
 
   let pending: Array<(value: any) => void> = [];
+  let stackReady: Promise<any> | undefined;
   const resolveStack = () => {
     pending.forEach((resolve) => resolve(stack));
     pending = [];
+  };
+  const afterStackReady = (change: () => void) => {
+    if (!stackReady) throw new Error('The native stack is not pending');
+    stackReady.then(() => queueMicrotask(change));
   };
 
   const whatsapp = {
@@ -94,7 +98,7 @@ function callApi() {
     '../../whatsapp/enums': { CALL_STATES: { ReceivedCall: RINGING } },
     '../../whatsapp/functions': {
       getVoipStackInterface: () =>
-        new Promise((resolve) => pending.push(resolve)),
+        (stackReady = new Promise((resolve) => pending.push(resolve))),
     },
     '../../conn/functions/getMyUserWid': { getMyUserWid: () => null },
     './enableCallInterface': { enableCallInterface: async () => undefined },
@@ -102,23 +106,24 @@ function callApi() {
 
   const load = (file: string) => {
     const exports: any = {};
-    const context = createContext({
-      exports,
-      require(id: string) {
-        if (id in modules) return modules[id];
-        throw new Error(`Unexpected dependency: ${id}`);
-      },
+    // Keep the modules and native promises in one realm, as in the page.
+    // Cross-realm promise adoption adds jobs and can hide this boundary.
+    const compiled = transpileModule(
+      readFileSync(
+        path.join(__dirname, `../src/call/functions/${file}.ts`),
+        'utf8'
+      ),
+      {
+        compilerOptions: {
+          module: ModuleKind.CommonJS,
+          target: ScriptTarget.ES2017,
+        },
+      }
+    ).outputText;
+    new Function('exports', 'require', compiled)(exports, (id: string) => {
+      if (id in modules) return modules[id];
+      throw new Error(`Unexpected dependency: ${id}`);
     });
-    runInContext(
-      transpileModule(
-        readFileSync(
-          path.join(__dirname, `../src/call/functions/${file}.ts`),
-          'utf8'
-        ),
-        { compilerOptions: { module: ModuleKind.CommonJS } }
-      ).outputText,
-      context
-    );
     return exports;
   };
 
@@ -139,7 +144,7 @@ function callApi() {
     Object.assign(api, load(file));
   }
 
-  return { api, store, native, resolveStack };
+  return { api, store, native, resolveStack, afterStackReady };
 }
 
 /**
@@ -231,4 +236,33 @@ test.describe('call operations while the VoIP stack is loading', () => {
     expect(outcome.value).toBe(true);
     expect(callA.userEndedCall).toBe(true);
   });
+});
+
+test.describe('call operations after the stack promise settles', () => {
+  const controls = operations.filter(
+    ([name]) => !['end', 'accept', 'reject'].includes(name)
+  );
+  for (const [name, run] of controls) {
+    for (const [changeName, change] of [
+      ['replaced', replaceWithB],
+      ['ended', endCall],
+    ] as const) {
+      test(`${name} does not dispatch when the call is ${changeName} before its continuation`, async () => {
+        const ctx = callApi();
+        ctx.store.activeCall = callModel('CALL-A');
+        const result = run(ctx.api).then(
+          (value) => ({ value, error: undefined }),
+          (error) => ({ value: undefined, error })
+        );
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        ctx.afterStackReady(() => change(ctx.store));
+        ctx.resolveStack();
+
+        const outcome = await result;
+        expect(outcome.error).toBeInstanceOf(WPPError);
+        expect(outcome.error.code).toBe('call_not_found');
+        expect(ctx.native).toEqual([]);
+      });
+    }
+  }
 });

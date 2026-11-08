@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { requireActiveCallStack } from './requireVoipStack';
+import { requireActiveCall, requireActiveCallStack } from './requireVoipStack';
 
 /**
  * Raise or lower your hand in the active call
@@ -30,7 +30,8 @@ export async function raiseHand(
   raised: boolean,
   callId?: string
 ): Promise<boolean> {
-  const { voipStack } = await requireActiveCallStack(callId);
+  const { voipStack, call } = await requireActiveCallStack(callId);
+  requireActiveCall(call.id);
 
   await voipStack.raiseHand(!!raised);
 
