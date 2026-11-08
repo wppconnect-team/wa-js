@@ -77,7 +77,13 @@ function emitSignaling(
  * argument: the id comes from the `call-id` attribute of the node.
  */
 function patchStack(stack: VoipStackInterface | null) {
-  if (!stack || patchedStacks.has(stack)) {
+  if (!stack) {
+    return;
+  }
+
+  ensureOutgoingWrapped();
+
+  if (patchedStacks.has(stack)) {
     return;
   }
   patchedStacks.add(stack);
@@ -110,14 +116,24 @@ function patchStack(stack: VoipStackInterface | null) {
       return original.apply(this, args);
     };
   }
-
-  wrapOutgoing();
 }
 
 /**
- * `WAWebVoipSendSignalingXmpp` ships in the stack implementation bundle, so
- * it can only be wrapped once the stack is loaded
+ * `WAWebVoipSendSignalingXmpp` ships in a lazy bundle, so its binding only
+ * resolves after the bundle is registered. Retried on every stack access
+ * until it is wrapped, in case the bundle failed to load.
  */
+function ensureOutgoingWrapped() {
+  if (isOutgoingWrapped) {
+    return;
+  }
+
+  loader
+    .ensureLazyModule('WAWebVoipSendSignalingXmpp')
+    .then(wrapOutgoing)
+    .catch((error) => debug('failed to load outgoing signaling', error));
+}
+
 function wrapOutgoing() {
   if (isOutgoingWrapped || typeof sendWAWebVoipSignalingXmpp !== 'function') {
     return;

@@ -119,6 +119,16 @@ jobs:
       - name: Test call offer
         run: npx playwright test tests/call-offer.unit.spec.ts --project tests
 
+      - name: Test call controls
+        run: >-
+          npx playwright test
+          tests/call-active-call-race.unit.spec.ts
+          tests/call-start-result.unit.spec.ts
+          tests/call-signaling-lazy.unit.spec.ts
+          tests/call-state-tracker.unit.spec.ts
+          tests/call-media-pcm.unit.spec.ts
+          --project tests
+
       - name: Test membership request participants
         run: npx playwright test tests/group-membership.unit.spec.ts --project tests
 
