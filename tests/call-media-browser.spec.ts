@@ -16,7 +16,6 @@
 
 import { chromium, expect, test } from '@playwright/test';
 import { readFileSync } from 'fs';
-import { createServer } from 'http';
 import * as path from 'path';
 import { ModuleKind, transpileModule } from 'typescript';
 
@@ -42,22 +41,26 @@ const modules = Object.fromEntries(
   ])
 );
 
-async function browserFixture() {
-  const server = createServer((_request, response) => {
-    response.end('<!doctype html><title>Call audio fixture</title>');
-  });
-  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
-  const address = server.address() as any;
-  const origin = `http://127.0.0.1:${address.port}`;
+async function browserFixture(microphone: 'allow' | 'deny' = 'allow') {
+  const origin = 'https://wa-js-media.test';
   const browser = await chromium.launch({
     executablePath: process.env.WPP_TEST_CHROME || undefined,
     args: [
       '--autoplay-policy=no-user-gesture-required',
       '--use-fake-device-for-media-stream',
+      microphone === 'allow'
+        ? '--use-fake-ui-for-media-stream'
+        : '--use-fake-ui-for-media-stream=deny',
     ],
   });
   const context = await browser.newContext();
   const page = await context.newPage();
+  await page.route(`${origin}/**`, (route) =>
+    route.fulfill({
+      contentType: 'text/html',
+      body: '<!doctype html><title>Call audio fixture</title>',
+    })
+  );
   await page.goto(origin);
   await page.evaluate((sources) => {
     const state: any = { activeCall: { id: 'A' } };
@@ -99,7 +102,6 @@ async function browserFixture() {
     origin,
     close: async () => {
       await browser.close();
-      await new Promise<void>((resolve) => server.close(() => resolve()));
     },
   };
 }
@@ -107,9 +109,6 @@ async function browserFixture() {
 test('real Web Audio injects PCM, captures frames, and cleans up across consecutive calls', async () => {
   const fixture = await browserFixture();
   try {
-    await fixture.context.grantPermissions(['microphone'], {
-      origin: fixture.origin,
-    });
     const result = await fixture.page.evaluate(async () => {
       const api = (window as any).fixture;
       const original = navigator.mediaDevices.getUserMedia;
@@ -182,14 +181,8 @@ test('real Web Audio injects PCM, captures frames, and cleans up across consecut
 });
 
 test('real microphone permission denial releases hooks and the recording', async () => {
-  const fixture = await browserFixture();
+  const fixture = await browserFixture('deny');
   try {
-    const session = await fixture.context.newCDPSession(fixture.page);
-    await session.send('Browser.setPermission', {
-      permission: { name: 'microphone' },
-      setting: 'denied',
-      origin: fixture.origin,
-    });
     const result = await fixture.page.evaluate(async () => {
       const api = (window as any).fixture;
       const original = navigator.mediaDevices.getUserMedia;
@@ -270,14 +263,8 @@ test('real remote worklet capture restores its hooks without closing the native 
 });
 
 test('cached microphone permission status keeps native event handlers and reverts after disable', async () => {
-  const fixture = await browserFixture();
+  const fixture = await browserFixture('deny');
   try {
-    const session = await fixture.context.newCDPSession(fixture.page);
-    await session.send('Browser.setPermission', {
-      permission: { name: 'microphone' },
-      setting: 'denied',
-      origin: fixture.origin,
-    });
     const result = await fixture.page.evaluate(async () => {
       const api = (window as any).fixture;
       const nativeState = (
