@@ -268,3 +268,40 @@ test('real remote worklet capture restores its hooks without closing the native 
     await fixture.close();
   }
 });
+
+test('cached microphone permission status keeps native event handlers and reverts after disable', async () => {
+  const fixture = await browserFixture();
+  try {
+    const session = await fixture.context.newCDPSession(fixture.page);
+    await session.send('Browser.setPermission', {
+      permission: { name: 'microphone' },
+      setting: 'denied',
+      origin: fixture.origin,
+    });
+    const result = await fixture.page.evaluate(async () => {
+      const api = (window as any).fixture;
+      api.enableAudioInjection();
+      const status = await navigator.permissions.query({
+        name: 'microphone' as any,
+      });
+      const listener = () => undefined;
+      status.onchange = listener;
+      status.addEventListener('change', listener);
+      status.removeEventListener('change', listener);
+      const before = status.state;
+      api.enableAudioInjection(false);
+      return {
+        before,
+        after: status.state,
+        handler: status.onchange === listener,
+      };
+    });
+    expect(result).toEqual({
+      before: 'granted',
+      after: 'denied',
+      handler: true,
+    });
+  } finally {
+    await fixture.close();
+  }
+});

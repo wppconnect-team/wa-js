@@ -203,6 +203,9 @@ export function installAudioInjector(): () => void {
       if (!active || !isEnabled || !owner || descriptor?.name !== 'microphone')
         return status;
       return new Proxy(status, {
+        set(target, prop, value) {
+          return Reflect.set(target, prop, value, target);
+        },
         get(target, prop) {
           if (
             prop === 'state' &&
@@ -212,7 +215,13 @@ export function installAudioInjector(): () => void {
           )
             return 'granted';
           const value = Reflect.get(target, prop, target);
-          return typeof value === 'function' ? value.bind(target) : value;
+          return [
+            'addEventListener',
+            'removeEventListener',
+            'dispatchEvent',
+          ].includes(String(prop)) && typeof value === 'function'
+            ? value.bind(target)
+            : value;
         },
       });
     };
