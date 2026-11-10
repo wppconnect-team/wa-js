@@ -30,8 +30,8 @@ function wid(id: string) {
   };
 }
 
-function callModel(peer: string) {
-  return { id: 'CALL-ID', peerJid: wid(peer) };
+function callModel(peer: string, id = 'CALL-ID') {
+  return { id, peerJid: wid(peer), outgoing: true };
 }
 
 function offerApi(store: { activeCall?: any; models?: any[] }) {
@@ -51,6 +51,13 @@ function offerApi(store: { activeCall?: any; models?: any[] }) {
           }),
         };
       }
+      if (id === './requireVoipStack')
+        return { reserveCallStart: () => () => undefined };
+      if (id === '../media/mediaSession')
+        return {
+          currentMediaSession: () => undefined,
+          finishMediaSession: () => undefined,
+        };
       if (id === '../../util') return { WPPError };
       if (id === '../../whatsapp') {
         return {
@@ -96,8 +103,11 @@ function offerApi(store: { activeCall?: any; models?: any[] }) {
 }
 
 test('flags the call as a user gesture so no confirmation popup is shown', async () => {
-  const store: any = { activeCall: callModel('123456789@lid') };
+  const store: any = {};
   const api = offerApi(store);
+  api.onStart.push(() => {
+    store.activeCall = callModel('123456789@lid');
+  });
 
   await api.offer('5511999999999@c.us');
 
@@ -113,8 +123,11 @@ test('flags the call as a user gesture so no confirmation popup is shown', async
 });
 
 test('forwards isVideo to the native call', async () => {
-  const store: any = { activeCall: callModel('123456789@lid') };
+  const store: any = {};
   const api = offerApi(store);
+  api.onStart.push(() => {
+    store.activeCall = callModel('123456789@lid');
+  });
 
   await api.offer('5511999999999@c.us', { isVideo: true });
 
@@ -136,7 +149,11 @@ test('returns the call registered as activeCall after the offer is sent', async 
 
 test('still finds the call among the store models on older versions', async () => {
   const placed = callModel('123456789@lid');
-  const api = offerApi({ models: [placed] });
+  const store: any = { models: [] };
+  const api = offerApi(store);
+  api.onStart.push(() => {
+    store.models = [placed];
+  });
 
   const call = await api.offer('5511999999999@c.us');
 
@@ -144,7 +161,7 @@ test('still finds the call among the store models on older versions', async () =
 });
 
 test('ignores an active call with another peer', async () => {
-  const store: any = { activeCall: callModel('999@lid') };
+  const store: any = { activeCall: callModel('999@lid', 'OTHER-CALL') };
   const api = offerApi(store);
   const placed = callModel('123456789@lid');
   api.onStart.push(() => {
@@ -154,4 +171,33 @@ test('ignores an active call with another peer', async () => {
   const call = await api.offer('5511999999999@c.us');
 
   expect(call).toBe(placed);
+});
+
+test('does not return historical calls for the same peer', async () => {
+  const historical = callModel('123456789@lid', 'OLD');
+  const placed = callModel('123456789@lid', 'NEW');
+  const store: any = { models: [historical] };
+  const api = offerApi(store);
+  api.onStart.push(() => {
+    setTimeout(() => {
+      store.activeCall = placed;
+    }, 50);
+  });
+  expect(await api.offer('5511999999999@c.us')).toBe(placed);
+});
+
+test('does not return an incoming call from the same peer during an offer', async () => {
+  const store: any = {};
+  const api = offerApi(store);
+  const placed = callModel('123456789@lid', 'OUTGOING');
+  api.onStart.push(() => {
+    store.activeCall = {
+      ...callModel('123456789@lid', 'INCOMING'),
+      outgoing: false,
+    };
+    setTimeout(() => {
+      store.activeCall = placed;
+    }, 50);
+  });
+  expect(await api.offer('5511999999999@c.us')).toBe(placed);
 });

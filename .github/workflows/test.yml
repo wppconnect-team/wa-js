@@ -119,6 +119,25 @@ jobs:
       - name: Test call offer
         run: npx playwright test tests/call-offer.unit.spec.ts --project tests
 
+      - name: Test call controls
+        run: >-
+          npx playwright test
+          tests/call-active-call-race.unit.spec.ts
+          tests/call-start-result.unit.spec.ts
+          tests/call-signaling-lazy.unit.spec.ts
+          tests/call-state-tracker.unit.spec.ts
+          tests/call-media-pcm.unit.spec.ts
+          tests/call-media-lifecycle.unit.spec.ts
+          tests/call-compat-options.unit.spec.ts
+          tests/call-tool-lifecycle.unit.spec.ts
+          --project tests
+
+      - name: Install Chromium for local call media tests
+        run: npx playwright install --with-deps chromium
+
+      - name: Test call media with browser audio devices
+        run: npx playwright test tests/call-media-browser.spec.ts tests/call-media-lifecycle.spec.ts --project tests
+
       - name: Test membership request participants
         run: npx playwright test tests/group-membership.unit.spec.ts --project tests
 

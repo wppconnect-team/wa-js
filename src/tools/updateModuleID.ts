@@ -87,6 +87,9 @@ async function start() {
       'WAWebGenerateEventCallLink',
       'WAWebGroupGetCommunityParticipantsJob',
       'WAWebSetPrivacyForOneCategoryAction',
+      'WAWebVoipCreateCallLink',
+      'WAWebVoipCallIdProvider',
+      'WAWebVoipSendSignalingXmpp',
     ]) {
       await window.WPP.loader.ensureLazyModule(moduleId);
     }
@@ -193,6 +196,11 @@ async function start() {
     'functions.joinGroupViaInvite',
     'functions.queryGroupInviteCode',
     'functions.resetGroupInviteCode',
+    // Added to WAWebVoipStackInterface between 2.3000.1045191189 and
+    // 2.3000.1045798079; call.signaling also patches the stack through
+    // getVoipStackInterface, which every version exposes.
+    // TODO: remove when versions older than 2.3000.1045798079 are no longer available in wa-version/html
+    'functions.getCachedVoipStackInterface',
   ];
 
   for (const moduleName of Object.keys(result)) {

@@ -30,6 +30,7 @@
     "docs:build": "npm run docs:clean && typedoc --gitRevision main",
     "docs:clean": "shx rm -rf docs",
     "launch:attach": "ts-node ./src/tools/launchAttach.ts",
+    "launch:call-test": "ts-node ./src/tools/launchCallTest.ts",
     "launch:local": "ts-node ./src/tools/launchLocal.ts",
     "launch:protocol-log": "ts-node ./src/tools/launchProtocolLog.ts",
     "lint": "npx eslint --ext .ts src",

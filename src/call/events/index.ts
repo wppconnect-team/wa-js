@@ -14,4 +14,6 @@
  * limitations under the License.
  */
 
+import './registerCallStateEvents';
 import './registerIncomingCallEvent';
+import './registerSignalingEvent';

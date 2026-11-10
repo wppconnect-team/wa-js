@@ -17,3 +17,4 @@
 import './events';
 
 export * from './functions';
+export * from './media';

@@ -48,6 +48,8 @@ test('compatibility bindings resolve on a cold WhatsApp page', async () => {
       ['WAWebSetPushnameConnAction', 'setPushname'],
       ['WAWebGroupCreateJob', 'createGroup'],
       ['WAWebListsActions', 'persistLabelReorder'],
+      ['WAWebVoipCreateCallLink', 'createVoipCallLink'],
+      ['WAWebVoipSendSignalingXmpp', 'sendWAWebVoipSignalingXmpp'],
     ]) {
       const result = await page.evaluate(
         async ({ moduleId, binding }) => {

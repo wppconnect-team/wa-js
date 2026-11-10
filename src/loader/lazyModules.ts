@@ -140,6 +140,24 @@ export const LAZY_MODULES: {
     components: ['WAWebStatusDrawerFlow.react'],
     pattern: /StatusDrawerFlow/,
   },
+  // WA 2.3000.1049703040-alpha: VoIP modules only ship in lazy bundles.
+  // The stack implementation bundle also defines the outgoing signaling
+  // sender, and the call buttons bundle defines the call starters.
+  WAWebVoipSendSignalingXmpp: {
+    components: ['WAWebVoipStackInterfaceImpl'],
+    pattern: /^WAWebVoipStackInterface/,
+  },
+  WAWebVoipStartCall: {
+    components: ['WAWebCallButtons.react', 'WAWebVoipCallsTabDrawerFlow.react'],
+    pattern: /CallButtons|VoipCallsTab/,
+  },
+  WAWebVoipCreateCallLink: {
+    components: [
+      'WAWebVoipCallsTabResolveCallInfo',
+      'WAWebVoipCreateCallLinksPopup.react',
+    ],
+    pattern: /VoipCreateCallLink|VoipCallsTab/,
+  },
 };
 
 /**

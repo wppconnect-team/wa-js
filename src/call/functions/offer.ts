@@ -22,7 +22,9 @@ import {
   getVoipStackInterface,
   startWAWebVoipCall,
 } from '../../whatsapp/functions';
+import { currentMediaSession, finishMediaSession } from '../media/mediaSession';
 import { enableCallInterface } from './enableCallInterface';
+import { reserveCallStart } from './requireVoipStack';
 
 export interface CallOfferOptions {
   isVideo?: boolean;
@@ -43,68 +45,84 @@ export async function offer(
   to: string | Wid,
   options: CallOfferOptions = {}
 ): Promise<any> {
-  // Garante a ativação das propriedades de ligação (ABProps)
-  await enableCallInterface();
+  const releaseStart = reserveCallStart();
+  const media = currentMediaSession();
+  const cleanupOnFailure = !media?.id;
+  try {
+    // Garante a ativação das propriedades de ligação (ABProps)
+    await enableCallInterface();
 
-  options = Object.assign<CallOfferOptions, CallOfferOptions>(
-    { isVideo: false },
-    options
-  );
-
-  const toWid = assertWid(to);
-
-  if (!toWid.isUser()) {
-    throw new WPPError(
-      'call_is_not_user',
-      `The ${toWid} is not a user to call`,
-      {
-        to,
-      }
+    options = Object.assign<CallOfferOptions, CallOfferOptions>(
+      { isVideo: false },
+      options
     );
-  }
 
-  // Resolve o contato e garante que ele existe, populando o cache de LID/PN
-  const existResult = await queryExists(toWid);
-  if (!existResult) {
-    throw new WPPError(
-      'contact_not_found',
-      `The contact ${toWid} does not exist on WhatsApp`,
-      { to }
-    );
-  }
+    const toWid = assertWid(to);
 
-  const targetWid = existResult.lid || existResult.wid;
-
-  // Garante o carregamento prévio do bundle lazy da stack de VoIP
-  await getVoipStackInterface();
-
-  // Dispara a chamada nativa de alto nível do WhatsApp Web
-  // callFromUi = 8 (CALL_FROM_UI.CONVERSATION)
-  // lobbyEntryPoint = 5 (LOBBY_ENTRY_POINT_TYPE.NOT_OPENED)
-  // Sem entryTrust 'user_gesture' o WhatsApp trata a chamada como deep link
-  // e aguarda um popup de confirmação antes de enviar a oferta
-  await startWAWebVoipCall(targetWid, !!options.isVideo, 8, 5, null, {
-    entryTrust: 'user_gesture',
-  });
-
-  // Busca o modelo de chamada recém-criado na Store nativa do WhatsApp.
-  // Nas versões atuais a chamada não entra nos modelos da CallStore, fica em
-  // activeCall, que é preenchido logo depois que a oferta é enviada
-  const isTarget = (c: CallModel) =>
-    c.peerJid.toString({ legacy: true }) ===
-      targetWid.toString({ legacy: true }) ||
-    c.peerJid.toString({ legacy: true }) === toWid.toString({ legacy: true });
-
-  for (let i = 0; i < 30; i++) {
-    const activeCall: CallModel | undefined = (CallStore as any).activeCall;
-    const call = [activeCall, ...CallStore.getModelsArray()].find(
-      (c) => c && isTarget(c)
-    );
-    if (call) {
-      return call;
+    if (!toWid.isUser()) {
+      throw new WPPError(
+        'call_is_not_user',
+        `The ${toWid} is not a user to call`,
+        {
+          to,
+        }
+      );
     }
-    await new Promise((resolve) => setTimeout(resolve, 100));
-  }
 
-  return undefined;
+    // Resolve o contato e garante que ele existe, populando o cache de LID/PN
+    const existResult = await queryExists(toWid);
+    if (!existResult) {
+      throw new WPPError(
+        'contact_not_found',
+        `The contact ${toWid} does not exist on WhatsApp`,
+        { to }
+      );
+    }
+
+    const targetWid = existResult.lid || existResult.wid;
+
+    // Garante o carregamento prévio do bundle lazy da stack de VoIP
+    await getVoipStackInterface();
+
+    const previousIds = new Set([
+      (CallStore as any)?.activeCall?.id,
+      ...CallStore.getModelsArray().map((c) => c.id),
+    ]);
+
+    // Dispara a chamada nativa de alto nível do WhatsApp Web
+    // callFromUi = 8 (CALL_FROM_UI.CONVERSATION)
+    // lobbyEntryPoint = 5 (LOBBY_ENTRY_POINT_TYPE.NOT_OPENED)
+    // Sem entryTrust 'user_gesture' o WhatsApp trata a chamada como deep link
+    // e aguarda um popup de confirmação antes de enviar a oferta
+    await startWAWebVoipCall(targetWid, !!options.isVideo, 8, 5, null, {
+      entryTrust: 'user_gesture',
+    });
+
+    // Busca o modelo de chamada recém-criado na Store nativa do WhatsApp.
+    // Nas versões atuais a chamada não entra nos modelos da CallStore, fica em
+    // activeCall, que é preenchido logo depois que a oferta é enviada
+    const isTarget = (c: CallModel) =>
+      c.peerJid.toString({ legacy: true }) ===
+        targetWid.toString({ legacy: true }) ||
+      c.peerJid.toString({ legacy: true }) === toWid.toString({ legacy: true });
+
+    for (let i = 0; i < 30; i++) {
+      const activeCall: CallModel | undefined = (CallStore as any).activeCall;
+      const call = [activeCall, ...CallStore.getModelsArray()].find(
+        (c) => c && c.outgoing === true && !previousIds.has(c.id) && isTarget(c)
+      );
+      if (call) {
+        return call;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+
+    if (media && cleanupOnFailure) finishMediaSession(media);
+    return undefined;
+  } catch (error) {
+    if (media && cleanupOnFailure) finishMediaSession(media);
+    throw error;
+  } finally {
+    releaseStart();
+  }
 }
