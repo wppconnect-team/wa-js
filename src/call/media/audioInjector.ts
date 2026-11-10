@@ -16,15 +16,34 @@
 
 import Debug from 'debug';
 
-import { setLocalStream } from './audioCapture';
+import {
+  hasAudioFrameListeners,
+  setLocalStream,
+  uninstallAudioCapture,
+} from './audioCapture';
 import { base64ToBytes, FRAME_SAMPLE_RATE, toFloat32 } from './pcm';
 
 const debug = Debug('WA-JS:call:audioInjector');
 
 export const VIRTUAL_MIC_DEVICE_ID = 'wa-js-virtual-microphone';
 
-let isInstalled = false;
 let isEnabled = false;
+
+/**
+ * The browser functions replaced while the hooks are installed, so they can
+ * be restored
+ */
+let installed: {
+  proto: any;
+  getUserMedia: MediaDevices['getUserMedia'];
+  enumerateDevices: MediaDevices['enumerateDevices'];
+  patchedGetUserMedia: MediaDevices['getUserMedia'];
+  patchedEnumerateDevices: MediaDevices['enumerateDevices'];
+  permissions?: any;
+  query?: any;
+  ownQuery?: boolean;
+  patchedQuery?: any;
+} | null = null;
 
 let context: AudioContext | null = null;
 let output: GainNode | null = null;
@@ -34,6 +53,11 @@ let destination: MediaStreamAudioDestinationNode | null = null;
  * Sources currently playing, so they can be stopped
  */
 const sources = new Set<AudioBufferSourceNode>();
+
+/**
+ * Virtual microphone tracks handed out and not stopped yet
+ */
+const issuedTracks = new Set<MediaStreamTrack>();
 
 /**
  * When the next pushed chunk starts, in context time
@@ -94,7 +118,34 @@ function createInjectedTrack(): MediaStreamTrack {
     autoGainControl: true,
   });
 
+  issuedTracks.add(track);
+  const stop = track.stop.bind(track);
+  track.stop = () => {
+    issuedTracks.delete(track);
+    stop();
+  };
+
   return track;
+}
+
+/**
+ * Stop the virtual microphone: queued audio, the tracks handed out and the
+ * audio context
+ */
+function releaseAudioGraph() {
+  stopAudio();
+  for (const track of [...issuedTracks]) {
+    track.stop();
+  }
+  issuedTracks.clear();
+
+  if (context && context.state !== 'closed') {
+    context.close().catch(() => undefined);
+  }
+  context = null;
+  output = null;
+  destination = null;
+  streamTime = 0;
 }
 
 /**
@@ -102,15 +153,14 @@ function createInjectedTrack(): MediaStreamTrack {
  * the real microphone audio
  */
 export function installAudioInjector() {
-  if (isInstalled || !navigator.mediaDevices) {
+  if (installed || !navigator.mediaDevices) {
     return;
   }
-  isInstalled = true;
 
   const proto = Object.getPrototypeOf(navigator.mediaDevices);
 
   const originalGetUserMedia: MediaDevices['getUserMedia'] = proto.getUserMedia;
-  proto.getUserMedia = async function (
+  const patchedGetUserMedia = async function (
     this: MediaDevices,
     constraints?: MediaStreamConstraints
   ) {
@@ -139,7 +189,7 @@ export function installAudioInjector() {
   // WhatsApp refuses to start the capture without an audio input device
   const originalEnumerateDevices: MediaDevices['enumerateDevices'] =
     proto.enumerateDevices;
-  proto.enumerateDevices = async function (this: MediaDevices) {
+  const patchedEnumerateDevices = async function (this: MediaDevices) {
     const devices = await originalEnumerateDevices.call(this);
     if (
       !isEnabled ||
@@ -161,11 +211,22 @@ export function installAudioInjector() {
     return [...devices, virtual];
   };
 
+  proto.getUserMedia = patchedGetUserMedia;
+  proto.enumerateDevices = patchedEnumerateDevices;
+  installed = {
+    proto,
+    getUserMedia: originalGetUserMedia,
+    enumerateDevices: originalEnumerateDevices,
+    patchedGetUserMedia,
+    patchedEnumerateDevices,
+  };
+
   // WhatsApp fails fast when the microphone permission is denied
   const permissions: any = navigator.permissions;
   if (permissions?.query) {
-    const originalQuery = permissions.query.bind(permissions);
-    permissions.query = async (descriptor: PermissionDescriptor) => {
+    const query = permissions.query;
+    const originalQuery = query.bind(permissions);
+    const patchedQuery = async (descriptor: PermissionDescriptor) => {
       const status = await originalQuery(descriptor);
       if (isEnabled && descriptor?.name === 'microphone') {
         return new Proxy(status, {
@@ -180,7 +241,51 @@ export function installAudioInjector() {
       }
       return status;
     };
+    Object.assign(installed, {
+      permissions,
+      query,
+      ownQuery: Object.prototype.hasOwnProperty.call(permissions, 'query'),
+      patchedQuery,
+    });
+    permissions.query = patchedQuery;
   }
+}
+
+/**
+ * Put back the browser functions, unless something replaced them after us
+ */
+function uninstallAudioInjector() {
+  if (!installed) {
+    return;
+  }
+  const { proto, permissions } = installed;
+
+  if (proto.getUserMedia === installed.patchedGetUserMedia) {
+    proto.getUserMedia = installed.getUserMedia;
+  }
+  if (proto.enumerateDevices === installed.patchedEnumerateDevices) {
+    proto.enumerateDevices = installed.enumerateDevices;
+  }
+  if (permissions && permissions.query === installed.patchedQuery) {
+    if (installed.ownQuery) {
+      permissions.query = installed.query;
+    } else {
+      delete permissions.query;
+    }
+  }
+  installed = null;
+}
+
+/**
+ * Restore every browser API hooked for the call audio once neither the
+ * injection nor the capture or recording uses it
+ */
+export function releaseIdleHooks() {
+  if (isEnabled || hasAudioFrameListeners()) {
+    return;
+  }
+  uninstallAudioInjector();
+  uninstallAudioCapture();
 }
 
 /**
@@ -193,20 +298,32 @@ export function installAudioInjector() {
  * The page must be allowed to play audio without a user gesture, for
  * example by launching Chrome with `--autoplay-policy=no-user-gesture-required`.
  *
+ * Pass `false` to release it: the queued audio and every track handed out are
+ * stopped, so a call still using it loses its audio. The browser APIs are
+ * restored once capture and recording are stopped too.
+ *
  * @example
  * ```javascript
  * WPP.call.enableAudioInjection();
  * await WPP.call.offer('[number]@c.us');
+ *
+ * // After the call
+ * WPP.call.enableAudioInjection(false);
  * ```
  *
  * @category Call
  */
 export function enableAudioInjection(enabled = true): void {
-  installAudioInjector();
-  isEnabled = enabled;
   if (enabled) {
+    installAudioInjector();
+    isEnabled = true;
     getGraph();
+    return;
   }
+
+  isEnabled = false;
+  releaseAudioGraph();
+  releaseIdleHooks();
 }
 
 export function isAudioInjectionEnabled(): boolean {

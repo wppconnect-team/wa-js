@@ -21,7 +21,7 @@ import {
   AudioFrameListener,
   removeAudioFrameListener,
 } from './audioCapture';
-import { installAudioInjector } from './audioInjector';
+import { installAudioInjector, releaseIdleHooks } from './audioInjector';
 import { floatToInt16, FRAME_SAMPLE_RATE, int16ToBase64 } from './pcm';
 
 export interface AudioCaptureOptions {
@@ -45,7 +45,8 @@ let emitter: AudioFrameListener | null = null;
  * Enable it before the call starts: the audio graph of the call is created
  * when the call starts and cannot be tapped afterwards.
  *
- * Pass `false` to stop.
+ * Pass `false` to stop. The browser APIs hooked for it are restored once the
+ * injection and the recording are stopped too.
  *
  * @example
  * ```javascript
@@ -69,6 +70,7 @@ export function enableAudioCapture(
   }
 
   if (options === false) {
+    releaseIdleHooks();
     return;
   }
 

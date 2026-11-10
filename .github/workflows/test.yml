@@ -127,6 +127,7 @@ jobs:
           tests/call-signaling-lazy.unit.spec.ts
           tests/call-state-tracker.unit.spec.ts
           tests/call-media-pcm.unit.spec.ts
+          tests/call-media-lifecycle.spec.ts
           --project tests
 
       - name: Test membership request participants

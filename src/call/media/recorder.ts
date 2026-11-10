@@ -21,7 +21,7 @@ import {
   AudioSource,
   removeAudioFrameListener,
 } from './audioCapture';
-import { installAudioInjector } from './audioInjector';
+import { installAudioInjector, releaseIdleHooks } from './audioInjector';
 import { bytesToBase64, encodeWav, FRAME_SAMPLE_RATE, mixTracks } from './pcm';
 
 export interface RecordingOptions {
@@ -117,6 +117,7 @@ export function stopRecording(
   const { tracks, listener } = recording;
   removeAudioFrameListener(listener);
   recording = null;
+  releaseIdleHooks();
 
   const starts = [...tracks.values()].map((t) => t.start);
   const start = starts.length ? Math.min(...starts) : 0;

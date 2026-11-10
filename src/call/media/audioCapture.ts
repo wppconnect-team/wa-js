@@ -49,13 +49,20 @@ const listeners = new Set<AudioFrameListener>();
 const playbackNodes = new Set<AudioNode>();
 const taps = new WeakMap<AudioNode, Tap>();
 
-let isInstalled = false;
+let workletHook: {
+  original: typeof AudioWorkletNode;
+  patched: typeof AudioWorkletNode;
+} | null = null;
 let localStream: MediaStream | null = null;
 let localContext: AudioContext | null = null;
 let localTap: { source: MediaStreamAudioSourceNode; tap: Tap } | null = null;
 
 function isActive() {
   return listeners.size > 0;
+}
+
+export function hasAudioFrameListeners(): boolean {
+  return isActive();
 }
 
 /**
@@ -135,6 +142,11 @@ function detachTaps() {
     localTap.tap.sink.disconnect();
     localTap = null;
   }
+
+  if (localContext && localContext.state !== 'closed') {
+    localContext.close().catch(() => undefined);
+  }
+  localContext = null;
 }
 
 function attachLocalTap() {
@@ -198,10 +210,9 @@ export function setLocalStream(stream: MediaStream) {
  * capture is enabled.
  */
 export function installAudioCapture() {
-  if (isInstalled || typeof AudioWorkletNode === 'undefined') {
+  if (workletHook || typeof AudioWorkletNode === 'undefined') {
     return;
   }
-  isInstalled = true;
 
   const OriginalAudioWorkletNode = AudioWorkletNode;
 
@@ -213,7 +224,8 @@ export function installAudioCapture() {
         newTarget === PatchedAudioWorkletNode ? target : newTarget
       );
 
-      if (PLAYBACK_PROCESSORS.has(args[1])) {
+      // WhatsApp may keep a reference to this constructor after uninstall
+      if (workletHook && PLAYBACK_PROCESSORS.has(args[1])) {
         debug(`playback node created: ${args[1]}`);
         trackPlaybackNode(node);
       }
@@ -223,6 +235,25 @@ export function installAudioCapture() {
   });
 
   (window as any).AudioWorkletNode = PatchedAudioWorkletNode;
+  workletHook = {
+    original: OriginalAudioWorkletNode,
+    patched: PatchedAudioWorkletNode,
+  };
+}
+
+/**
+ * Remove the taps, forget the tracked nodes and streams, and put back the
+ * original `AudioWorkletNode` unless something replaced it after us
+ */
+export function uninstallAudioCapture() {
+  detachTaps();
+  playbackNodes.clear();
+  localStream = null;
+
+  if (workletHook && (window as any).AudioWorkletNode === workletHook.patched) {
+    (window as any).AudioWorkletNode = workletHook.original;
+  }
+  workletHook = null;
 }
 
 function trackPlaybackNode(node: AudioNode) {
