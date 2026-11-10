@@ -47,6 +47,7 @@ export async function offer(
 ): Promise<any> {
   const releaseStart = reserveCallStart();
   const media = currentMediaSession();
+  const cleanupOnFailure = !media?.id;
   try {
     // Garante a ativação das propriedades de ligação (ABProps)
     await enableCallInterface();
@@ -116,10 +117,10 @@ export async function offer(
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
 
-    if (media) finishMediaSession(media);
+    if (media && cleanupOnFailure) finishMediaSession(media);
     return undefined;
   } catch (error) {
-    if (media) finishMediaSession(media);
+    if (media && cleanupOnFailure) finishMediaSession(media);
     throw error;
   } finally {
     releaseStart();

@@ -58,6 +58,7 @@ export async function offerGroup(
 ): Promise<CallModel | undefined> {
   const releaseStart = reserveCallStart();
   const media = currentMediaSession();
+  const cleanupOnFailure = !media?.id;
   try {
     const isVideo = !!options.isVideo;
 
@@ -76,7 +77,7 @@ export async function offerGroup(
       const call = await waitForActiveCall(
         (c) => c.id === id && c.id !== previousId
       );
-      if (!call && media) finishMediaSession(media);
+      if (!call && media && cleanupOnFailure) finishMediaSession(media);
       return call;
     };
 
@@ -129,7 +130,7 @@ export async function offerGroup(
 
     return await waitForReservedCall(id);
   } catch (error) {
-    if (media) finishMediaSession(media);
+    if (media && cleanupOnFailure) finishMediaSession(media);
     throw error;
   } finally {
     releaseStart();

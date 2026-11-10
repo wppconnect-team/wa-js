@@ -718,3 +718,26 @@ for (const [name, args] of [
     expect(api.proto.getUserMedia).toBe(api.original.getUserMedia);
   });
 }
+
+for (const [name, args] of [
+  ['offer', ['peer']],
+  ['offerGroup', ['group@g.us']],
+  ['joinCallLink', ['AbCdEfGhIjKlMnOpQrStUv']],
+] as const) {
+  test(`${name} failure preserves media owned by an already active call`, async () => {
+    const api = mediaApi();
+    api.enableAudioInjection();
+    api.enableAudioCapture();
+    api.startRecording();
+    const error = new Error('New call failed');
+    api.failCallStart(error);
+    await expect(api.load(`../functions/${name}`)[name](...args)).rejects.toBe(
+      error
+    );
+    expect(api.isAudioInjectionEnabled()).toBe(true);
+    expect(api.isRecording()).toBe(true);
+    api.load('mediaSession').updateMediaSession('A', true);
+    expect(api.isAudioInjectionEnabled()).toBe(false);
+    expect(api.isRecording()).toBe(false);
+  });
+}

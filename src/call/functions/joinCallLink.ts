@@ -52,6 +52,7 @@ export async function joinCallLink(
 ): Promise<CallModel | undefined> {
   const releaseStart = reserveCallStart();
   const media = currentMediaSession();
+  const cleanupOnFailure = !media?.id;
   try {
     const match =
       /^(?:https:\/\/call\.whatsapp\.com\/(voice|video)\/)?([\w-]{22})\/?$/.exec(
@@ -90,10 +91,10 @@ export async function joinCallLink(
         c.callLinkToken === token,
       10_000
     );
-    if (!call && media) finishMediaSession(media);
+    if (!call && media && cleanupOnFailure) finishMediaSession(media);
     return call;
   } catch (error) {
-    if (media) finishMediaSession(media);
+    if (media && cleanupOnFailure) finishMediaSession(media);
     throw error;
   } finally {
     releaseStart();
