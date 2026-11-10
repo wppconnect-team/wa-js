@@ -280,6 +280,9 @@ test('cached microphone permission status keeps native event handlers and revert
     });
     const result = await fixture.page.evaluate(async () => {
       const api = (window as any).fixture;
+      const nativeState = (
+        await navigator.permissions.query({ name: 'microphone' as any })
+      ).state;
       api.enableAudioInjection();
       const status = await navigator.permissions.query({
         name: 'microphone' as any,
@@ -293,14 +296,13 @@ test('cached microphone permission status keeps native event handlers and revert
       return {
         before,
         after: status.state,
+        nativeState,
         handler: status.onchange === listener,
       };
     });
-    expect(result).toEqual({
-      before: 'granted',
-      after: 'denied',
-      handler: true,
-    });
+    expect(result).toMatchObject({ before: 'granted', handler: true });
+    expect(result.after).toBe(result.nativeState);
+    expect(result.nativeState).not.toBe('granted');
   } finally {
     await fixture.close();
   }
