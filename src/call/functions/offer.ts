@@ -108,7 +108,7 @@ export async function offer(
     for (let i = 0; i < 30; i++) {
       const activeCall: CallModel | undefined = (CallStore as any).activeCall;
       const call = [activeCall, ...CallStore.getModelsArray()].find(
-        (c) => c && !previousIds.has(c.id) && isTarget(c)
+        (c) => c && c.outgoing === true && !previousIds.has(c.id) && isTarget(c)
       );
       if (call) {
         return call;

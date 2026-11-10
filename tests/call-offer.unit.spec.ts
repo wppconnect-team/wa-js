@@ -31,7 +31,7 @@ function wid(id: string) {
 }
 
 function callModel(peer: string, id = 'CALL-ID') {
-  return { id, peerJid: wid(peer) };
+  return { id, peerJid: wid(peer), outgoing: true };
 }
 
 function offerApi(store: { activeCall?: any; models?: any[] }) {
@@ -179,6 +179,22 @@ test('does not return historical calls for the same peer', async () => {
   const store: any = { models: [historical] };
   const api = offerApi(store);
   api.onStart.push(() => {
+    setTimeout(() => {
+      store.activeCall = placed;
+    }, 50);
+  });
+  expect(await api.offer('5511999999999@c.us')).toBe(placed);
+});
+
+test('does not return an incoming call from the same peer during an offer', async () => {
+  const store: any = {};
+  const api = offerApi(store);
+  const placed = callModel('123456789@lid', 'OUTGOING');
+  api.onStart.push(() => {
+    store.activeCall = {
+      ...callModel('123456789@lid', 'INCOMING'),
+      outgoing: false,
+    };
     setTimeout(() => {
       store.activeCall = placed;
     }, 50);

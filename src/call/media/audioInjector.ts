@@ -110,6 +110,11 @@ function createInjectedTrack(): MediaStreamTrack {
   });
 
   injectedTracks.add(track);
+  const stop = track.stop.bind(track);
+  track.stop = () => {
+    injectedTracks.delete(track);
+    stop();
+  };
   return track;
 }
 
@@ -128,6 +133,8 @@ export function installAudioInjector(): () => void {
     const originalEnumerateDevices: MediaDevices['enumerateDevices'] =
       proto.enumerateDevices;
     const permissions: Partial<Permissions> | undefined = navigator.permissions;
+    const queryDescriptor =
+      permissions && Object.getOwnPropertyDescriptor(permissions, 'query');
     const originalQuery: Permissions['query'] | undefined = permissions?.query;
 
     const getUserMedia: MediaDevices['getUserMedia'] = async function (
@@ -218,7 +225,11 @@ export function installAudioInjector(): () => void {
         proto.getUserMedia = originalGetUserMedia;
       if (proto.enumerateDevices === enumerateDevices)
         proto.enumerateDevices = originalEnumerateDevices;
-      if (permissions?.query === query) permissions.query = originalQuery!;
+      if (permissions?.query === query) {
+        if (queryDescriptor)
+          Object.defineProperty(permissions, 'query', queryDescriptor);
+        else delete permissions.query;
+      }
     };
   }
   return () => {

@@ -136,7 +136,7 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Test call media with browser audio devices
-        run: npx playwright test tests/call-media-browser.spec.ts --project tests
+        run: npx playwright test tests/call-media-browser.spec.ts tests/call-media-lifecycle.spec.ts --project tests
 
       - name: Test membership request participants
         run: npx playwright test tests/group-membership.unit.spec.ts --project tests
