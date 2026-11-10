@@ -55,6 +55,12 @@ export async function createCallLink(
 
   // TODO: remove when 2.3000.1049703040 is no longer available in wa-version/html
   if (typeof createEventCallLink === 'function') {
+    if (options.requireApproval) {
+      throw new WPPError(
+        'call_link_approval_not_supported',
+        'Participant approval is not supported by this WhatsApp version'
+      );
+    }
     return createEventCallLink(
       Math.floor(Date.now() / 1000),
       options.isVideo ? 'video' : 'voice'

@@ -16,6 +16,7 @@
 
 import Debug from 'debug';
 
+import { currentMediaSession, isMediaSessionCurrent } from './mediaSession';
 import { FRAME_SAMPLE_RATE, FrameAssembler, Resampler } from './pcm';
 
 const debug = Debug('WA-JS:call:audioCapture');
@@ -49,7 +50,9 @@ const listeners = new Set<AudioFrameListener>();
 const playbackNodes = new Set<AudioNode>();
 const taps = new WeakMap<AudioNode, Tap>();
 
-let isInstalled = false;
+let restoreConstructor: (() => void) | undefined;
+const restoreDisconnect = new Map<AudioNode, () => void>();
+const pendingTaps = new Set<ReturnType<typeof setTimeout>>();
 let localStream: MediaStream | null = null;
 let localContext: AudioContext | null = null;
 let localTap: { source: MediaStreamAudioSourceNode; tap: Tap } | null = null;
@@ -66,20 +69,24 @@ function createTap(
   source: AudioSource,
   channels: number
 ): Tap {
+  const owner = currentMediaSession();
   const processor = context.createScriptProcessor(TAP_BUFFER_SIZE, channels, 1);
   const resampler = new Resampler(context.sampleRate, FRAME_SAMPLE_RATE);
   const assembler = new FrameAssembler();
 
   processor.onaudioprocess = (event) => {
-    if (!isActive()) {
+    if (!isActive() || !owner || !isMediaSessionCurrent(owner) || !owner.id) {
       return;
     }
     const input = event.inputBuffer.getChannelData(0);
     const frames = assembler.push(resampler.process(new Float32Array(input)));
     const timestamp = performance.now();
 
+    const recipients = [...listeners];
     for (const frame of frames) {
-      for (const listener of listeners) {
+      for (const listener of recipients) {
+        if (!isMediaSessionCurrent(owner)) return;
+        if (!listeners.has(listener)) continue;
         try {
           listener(source, frame, timestamp);
         } catch (error) {
@@ -100,7 +107,12 @@ function createTap(
 }
 
 function attachPlaybackTap(node: AudioNode) {
-  if (taps.has(node) || node.context.state === 'closed') {
+  if (
+    !isActive() ||
+    !currentMediaSession() ||
+    taps.has(node) ||
+    node.context.state === 'closed'
+  ) {
     return;
   }
 
@@ -114,27 +126,48 @@ function attachPlaybackTap(node: AudioNode) {
   }
 }
 
+function disconnect(node: AudioNode, target?: AudioNode) {
+  try {
+    if (target) node.disconnect(target);
+    else node.disconnect();
+  } catch (_error) {
+    /* The native graph may already be closed or disconnected. */
+  }
+}
+
+function detachLocalTap() {
+  if (localTap) {
+    localTap.tap.processor.onaudioprocess = null;
+    disconnect(localTap.source);
+    disconnect(localTap.tap.processor);
+    disconnect(localTap.tap.sink);
+    localTap = null;
+  }
+}
+
 function detachTaps() {
+  for (const timer of pendingTaps) clearTimeout(timer);
+  pendingTaps.clear();
   for (const node of playbackNodes) {
     const tap = taps.get(node);
     if (tap) {
-      try {
-        node.disconnect(tap.processor);
-        tap.processor.disconnect();
-        tap.sink.disconnect();
-      } catch (_error) {
-        // The context may be closed already
-      }
+      tap.processor.onaudioprocess = null;
+      disconnect(node, tap.processor);
+      disconnect(tap.processor);
+      disconnect(tap.sink);
       taps.delete(node);
     }
+    restoreDisconnect.get(node)?.();
   }
-
-  if (localTap) {
-    localTap.source.disconnect();
-    localTap.tap.processor.disconnect();
-    localTap.tap.sink.disconnect();
-    localTap = null;
-  }
+  restoreDisconnect.clear();
+  playbackNodes.clear();
+  detachLocalTap();
+  localStream = null;
+  if (localContext && localContext.state !== 'closed')
+    localContext.close().catch(() => undefined);
+  localContext = null;
+  restoreConstructor?.();
+  restoreConstructor = undefined;
 }
 
 function attachLocalTap() {
@@ -180,12 +213,7 @@ function attachAll() {
  * Called with every microphone stream handed to WhatsApp, injected or not
  */
 export function setLocalStream(stream: MediaStream) {
-  if (localTap) {
-    localTap.source.disconnect();
-    localTap.tap.processor.disconnect();
-    localTap.tap.sink.disconnect();
-    localTap = null;
-  }
+  detachLocalTap();
   localStream = stream;
   if (isActive()) {
     attachLocalTap();
@@ -198,11 +226,11 @@ export function setLocalStream(stream: MediaStream) {
  * capture is enabled.
  */
 export function installAudioCapture() {
-  if (isInstalled || typeof AudioWorkletNode === 'undefined') {
+  if (restoreConstructor || typeof AudioWorkletNode === 'undefined') {
     return;
   }
-  isInstalled = true;
 
+  let active = true;
   const OriginalAudioWorkletNode = AudioWorkletNode;
 
   const PatchedAudioWorkletNode = new Proxy(OriginalAudioWorkletNode, {
@@ -213,7 +241,7 @@ export function installAudioCapture() {
         newTarget === PatchedAudioWorkletNode ? target : newTarget
       );
 
-      if (PLAYBACK_PROCESSORS.has(args[1])) {
+      if (active && PLAYBACK_PROCESSORS.has(args[1])) {
         debug(`playback node created: ${args[1]}`);
         trackPlaybackNode(node);
       }
@@ -223,15 +251,22 @@ export function installAudioCapture() {
   });
 
   (window as any).AudioWorkletNode = PatchedAudioWorkletNode;
+  restoreConstructor = () => {
+    active = false;
+    if (window.AudioWorkletNode === PatchedAudioWorkletNode)
+      (window as any).AudioWorkletNode = OriginalAudioWorkletNode;
+  };
 }
 
 function trackPlaybackNode(node: AudioNode) {
+  const owner = currentMediaSession();
+  if (!owner || !isActive()) return;
   playbackNodes.add(node);
 
   // When the media element output fails, WhatsApp falls back to the direct
   // route by calling `disconnect()` with no arguments, dropping the tap
   const originalDisconnect = node.disconnect;
-  node.disconnect = function (this: AudioNode, ...args: any[]) {
+  const patchedDisconnect = function (this: AudioNode, ...args: any[]) {
     const result = (originalDisconnect as any).apply(this, args);
     const tap = taps.get(node);
     if (!args.length && tap) {
@@ -239,10 +274,19 @@ function trackPlaybackNode(node: AudioNode) {
     }
     return result;
   } as any;
+  node.disconnect = patchedDisconnect;
+  restoreDisconnect.set(node, () => {
+    if (node.disconnect === patchedDisconnect)
+      node.disconnect = originalDisconnect;
+  });
 
   if (isActive()) {
     // WhatsApp connects the node right after creating it
-    setTimeout(() => attachPlaybackTap(node), 0);
+    const timer = setTimeout(() => {
+      pendingTaps.delete(timer);
+      if (isMediaSessionCurrent(owner)) attachPlaybackTap(node);
+    }, 0);
+    pendingTaps.add(timer);
   }
 }
 

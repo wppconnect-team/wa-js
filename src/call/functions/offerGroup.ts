@@ -20,11 +20,17 @@ import { ensureLazyModule } from '../../loader';
 import { WPPError } from '../../util';
 import { CallModel, CallStore, Wid } from '../../whatsapp';
 import {
+  generateAndStoreNewCallId,
   startWAWebVoipGroupCallFromChat,
   startWAWebVoipGroupCallFromWids,
 } from '../../whatsapp/functions';
+import { currentMediaSession, finishMediaSession } from '../media/mediaSession';
 import { CallOfferOptions } from './offer';
-import { requireVoipStack, waitForActiveCall } from './requireVoipStack';
+import {
+  requireVoipStack,
+  reserveCallStart,
+  waitForActiveCall,
+} from './requireVoipStack';
 
 /**
  * Start a group call, with all members of a group or with a list of contacts
@@ -50,60 +56,82 @@ export async function offerGroup(
   to: string | Wid | (string | Wid)[],
   options: CallOfferOptions = {}
 ): Promise<CallModel | undefined> {
-  const isVideo = !!options.isVideo;
+  const releaseStart = reserveCallStart();
+  const media = currentMediaSession();
+  try {
+    const isVideo = !!options.isVideo;
 
-  await requireVoipStack();
-  await ensureLazyModule('WAWebVoipStartCall');
-
-  // WhatsApp places a 1:1 call when the group has a single other member, so
-  // wait for any new active call instead of only a group one
-  const previousId: string | undefined = (CallStore as any)?.activeCall?.id;
-  const isNewCall = (c: CallModel) => c.id !== previousId;
-
-  if (!Array.isArray(to)) {
-    const groupWid = assertWid(to);
-
-    if (!groupWid.isGroup()) {
+    await requireVoipStack();
+    await ensureLazyModule('WAWebVoipStartCall');
+    if (typeof generateAndStoreNewCallId !== 'function')
       throw new WPPError(
-        'call_is_not_group',
-        `The ${groupWid} is not a group to call`,
+        'group_call_not_supported',
+        'This WhatsApp version cannot reserve a group call id'
+      );
+
+    // WhatsApp places a 1:1 call when the group has a single other member, so
+    // wait for any new active call instead of only a group one
+    const previousId: string | undefined = (CallStore as any)?.activeCall?.id;
+    const waitForReservedCall = async (id: string) => {
+      const call = await waitForActiveCall(
+        (c) => c.id === id && c.id !== previousId
+      );
+      if (!call && media) finishMediaSession(media);
+      return call;
+    };
+
+    if (!Array.isArray(to)) {
+      const groupWid = assertWid(to);
+
+      if (!groupWid.isGroup()) {
+        throw new WPPError(
+          'call_is_not_group',
+          `The ${groupWid} is not a group to call`,
+          { to }
+        );
+      }
+
+      const chat = await assertFindChat(groupWid);
+
+      // callFromUi = 8 (CONVERSATION), lobbyEntryPoint = 5 (NOT_OPENED)
+      const id = generateAndStoreNewCallId();
+      await startWAWebVoipGroupCallFromChat(chat, isVideo, 8, 5);
+
+      return await waitForReservedCall(id);
+    }
+
+    if (to.length < 2) {
+      throw new WPPError(
+        'call_not_enough_participants',
+        'A group call needs at least two participants',
         { to }
       );
     }
 
-    const chat = await assertFindChat(groupWid);
-
-    // callFromUi = 8 (CONVERSATION), lobbyEntryPoint = 5 (NOT_OPENED)
-    await startWAWebVoipGroupCallFromChat(chat, isVideo, 8, 5);
-
-    return waitForActiveCall(isNewCall);
-  }
-
-  if (to.length < 2) {
-    throw new WPPError(
-      'call_not_enough_participants',
-      'A group call needs at least two participants',
-      { to }
-    );
-  }
-
-  const wids: Wid[] = [];
-  for (const id of to) {
-    const wid = assertWid(id);
-    const exists = await queryExists(wid);
-    if (!exists) {
-      throw new WPPError(
-        'contact_not_found',
-        `The contact ${wid} does not exist on WhatsApp`,
-        { to: id }
-      );
+    const wids: Wid[] = [];
+    for (const id of to) {
+      const wid = assertWid(id);
+      const exists = await queryExists(wid);
+      if (!exists) {
+        throw new WPPError(
+          'contact_not_found',
+          `The contact ${wid} does not exist on WhatsApp`,
+          { to: id }
+        );
+      }
+      wids.push(exists.lid || exists.wid);
     }
-    wids.push(exists.lid || exists.wid);
+
+    const id = generateAndStoreNewCallId();
+    await startWAWebVoipGroupCallFromWids(wids, isVideo, 8, 5, {
+      entryTrust: 'user_gesture',
+    });
+
+    return await waitForReservedCall(id);
+  } catch (error) {
+    if (media) finishMediaSession(media);
+    throw error;
+  } finally {
+    releaseStart();
   }
-
-  await startWAWebVoipGroupCallFromWids(wids, isVideo, 8, 5, {
-    entryTrust: 'user_gesture',
-  });
-
-  return waitForActiveCall(isNewCall);
 }

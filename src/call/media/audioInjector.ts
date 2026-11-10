@@ -14,16 +14,29 @@
  * limitations under the License.
  */
 
-import Debug from 'debug';
-
 import { setLocalStream } from './audioCapture';
+import {
+  armMediaSession,
+  currentMediaSession,
+  disposeMediaResource,
+  finishMediaSession,
+  isMediaSessionCurrent,
+  onMediaSessionEnd,
+} from './mediaSession';
 import { base64ToBytes, FRAME_SAMPLE_RATE, toFloat32 } from './pcm';
-
-const debug = Debug('WA-JS:call:audioInjector');
 
 export const VIRTUAL_MIC_DEVICE_ID = 'wa-js-virtual-microphone';
 
-let isInstalled = false;
+const hookClients = new Set<symbol>();
+let restoreHooks: (() => void) | undefined;
+let releaseInjection: (() => void) | undefined;
+let releaseSession: (() => void) | undefined;
+let playbackGeneration = 0;
+let injectionGeneration = 0;
+const injectedTracks = new Set<MediaStreamTrack>();
+const finishSources = new Map<AudioBufferSourceNode, () => void>();
+const cancelPending = new Set<() => void>();
+const warningTimers = new Set<ReturnType<typeof setTimeout>>();
 let isEnabled = false;
 
 let context: AudioContext | null = null;
@@ -63,7 +76,8 @@ let hasWarned = false;
  * the call without audio and reconnecting
  */
 function warnIfSuspended(ctx: AudioContext) {
-  setTimeout(() => {
+  const timer = setTimeout(() => {
+    warningTimers.delete(timer);
     if (ctx.state === 'suspended' && !hasWarned) {
       hasWarned = true;
       console.warn(
@@ -73,6 +87,7 @@ function warnIfSuspended(ctx: AudioContext) {
       );
     }
   }, 1_000);
+  warningTimers.add(timer);
 }
 
 /**
@@ -94,6 +109,7 @@ function createInjectedTrack(): MediaStreamTrack {
     autoGainControl: true,
   });
 
+  injectedTracks.add(track);
   return track;
 }
 
@@ -101,91 +117,125 @@ function createInjectedTrack(): MediaStreamTrack {
  * Install the microphone hooks. Also needed without injection, to capture
  * the real microphone audio
  */
-export function installAudioInjector() {
-  if (isInstalled || !navigator.mediaDevices) {
-    return;
-  }
-  isInstalled = true;
+export function installAudioInjector(): () => void {
+  const client = Symbol();
+  hookClients.add(client);
+  if (!restoreHooks && navigator.mediaDevices) {
+    let active = true;
+    const proto = Object.getPrototypeOf(navigator.mediaDevices);
+    const originalGetUserMedia: MediaDevices['getUserMedia'] =
+      proto.getUserMedia;
+    const originalEnumerateDevices: MediaDevices['enumerateDevices'] =
+      proto.enumerateDevices;
+    const permissions: Partial<Permissions> | undefined = navigator.permissions;
+    const originalQuery: Permissions['query'] | undefined = permissions?.query;
 
-  const proto = Object.getPrototypeOf(navigator.mediaDevices);
-
-  const originalGetUserMedia: MediaDevices['getUserMedia'] = proto.getUserMedia;
-  proto.getUserMedia = async function (
-    this: MediaDevices,
-    constraints?: MediaStreamConstraints
-  ) {
-    if (!constraints?.audio) {
-      return originalGetUserMedia.call(this, constraints);
-    }
-
-    if (isEnabled) {
-      debug('providing the virtual microphone', constraints);
-      const stream = constraints.video
-        ? await originalGetUserMedia.call(this, {
-            ...constraints,
-            audio: false,
-          })
-        : new MediaStream();
-      stream.addTrack(createInjectedTrack());
-      setLocalStream(stream);
-      return stream;
-    }
-
-    const stream = await originalGetUserMedia.call(this, constraints);
-    setLocalStream(stream);
-    return stream;
-  };
-
-  // WhatsApp refuses to start the capture without an audio input device
-  const originalEnumerateDevices: MediaDevices['enumerateDevices'] =
-    proto.enumerateDevices;
-  proto.enumerateDevices = async function (this: MediaDevices) {
-    const devices = await originalEnumerateDevices.call(this);
-    if (
-      !isEnabled ||
-      devices.some((d) => d.kind === 'audioinput' && d.deviceId)
+    const getUserMedia: MediaDevices['getUserMedia'] = async function (
+      this: MediaDevices,
+      constraints
     ) {
-      return devices;
-    }
-
-    const virtual = {
-      deviceId: VIRTUAL_MIC_DEVICE_ID,
-      groupId: VIRTUAL_MIC_DEVICE_ID,
-      kind: 'audioinput',
-      label: 'WA-JS Virtual Microphone',
-      toJSON() {
-        return { ...this };
-      },
-    } as MediaDeviceInfo;
-
-    return [...devices, virtual];
-  };
-
-  // WhatsApp fails fast when the microphone permission is denied
-  const permissions: any = navigator.permissions;
-  if (permissions?.query) {
-    const originalQuery = permissions.query.bind(permissions);
-    permissions.query = async (descriptor: PermissionDescriptor) => {
-      const status = await originalQuery(descriptor);
-      if (isEnabled && descriptor?.name === 'microphone') {
-        return new Proxy(status, {
-          get(target, prop) {
-            if (prop === 'state') {
-              return 'granted';
-            }
-            const value = Reflect.get(target, prop, target);
-            return typeof value === 'function' ? value.bind(target) : value;
-          },
-        });
+      const owner = currentMediaSession();
+      if (!active || !constraints?.audio || !owner)
+        return originalGetUserMedia.call(this, constraints);
+      const injecting = isEnabled;
+      const generation = injectionGeneration;
+      try {
+        const stream =
+          injecting && !constraints.video
+            ? new MediaStream()
+            : await originalGetUserMedia.call(
+                this,
+                injecting ? { ...constraints, audio: false } : constraints
+              );
+        if (
+          !isMediaSessionCurrent(owner) ||
+          (injecting && (!isEnabled || generation !== injectionGeneration))
+        ) {
+          // This request belongs to the ended call; it has no recipient now.
+          stream.getTracks().forEach((track) => track.stop());
+          throw new DOMException('Call audio was disabled', 'AbortError');
+        }
+        if (!active && !injecting) return stream;
+        if (injecting) stream.addTrack(createInjectedTrack());
+        setLocalStream(stream);
+        return stream;
+      } catch (error) {
+        if (active && (!injecting || generation === injectionGeneration))
+          finishMediaSession(owner);
+        throw error;
       }
-      return status;
+    };
+    const enumerateDevices: MediaDevices['enumerateDevices'] = async function (
+      this: MediaDevices
+    ) {
+      const devices = await originalEnumerateDevices.call(this);
+      if (
+        !active ||
+        !isEnabled ||
+        !currentMediaSession() ||
+        devices.some((d) => d.kind === 'audioinput' && d.deviceId)
+      )
+        return devices;
+      const virtual = {
+        deviceId: VIRTUAL_MIC_DEVICE_ID,
+        groupId: VIRTUAL_MIC_DEVICE_ID,
+        kind: 'audioinput',
+        label: 'WA-JS Virtual Microphone',
+        toJSON() {
+          return { ...this };
+        },
+      } as MediaDeviceInfo;
+      return [...devices, virtual];
+    };
+    const query: Permissions['query'] = async function (
+      this: Permissions,
+      descriptor
+    ) {
+      const status = await originalQuery!.call(this, descriptor);
+      const owner = currentMediaSession();
+      if (!active || !isEnabled || !owner || descriptor?.name !== 'microphone')
+        return status;
+      return new Proxy(status, {
+        get(target, prop) {
+          if (
+            prop === 'state' &&
+            active &&
+            isEnabled &&
+            isMediaSessionCurrent(owner)
+          )
+            return 'granted';
+          const value = Reflect.get(target, prop, target);
+          return typeof value === 'function' ? value.bind(target) : value;
+        },
+      });
+    };
+    proto.getUserMedia = getUserMedia;
+    proto.enumerateDevices = enumerateDevices;
+    if (originalQuery) permissions.query = query;
+    restoreHooks = () => {
+      active = false;
+      if (proto.getUserMedia === getUserMedia)
+        proto.getUserMedia = originalGetUserMedia;
+      if (proto.enumerateDevices === enumerateDevices)
+        proto.enumerateDevices = originalEnumerateDevices;
+      if (permissions?.query === query) permissions.query = originalQuery!;
     };
   }
+  return () => {
+    hookClients.delete(client);
+    if (!hookClients.size) {
+      restoreHooks?.();
+      restoreHooks = undefined;
+    }
+  };
 }
 
 /**
  * Replace the microphone with a virtual one fed by `playAudio` and
  * `pushAudio`. While nothing is playing it sends silence.
+ *
+ * Applies to one call; re-enable it for another call. Disabling stops queued
+ * audio and releases owned tracks, hooks and audio contexts.
  *
  * Enable it before the call starts: WhatsApp gets the microphone when the
  * call is placed or accepted.
@@ -202,14 +252,47 @@ export function installAudioInjector() {
  * @category Call
  */
 export function enableAudioInjection(enabled = true): void {
-  installAudioInjector();
-  isEnabled = enabled;
   if (enabled) {
-    getGraph();
+    const owner = armMediaSession();
+    if (!isEnabled) {
+      releaseInjection = installAudioInjector();
+      releaseSession = onMediaSessionEnd(owner, () =>
+        enableAudioInjection(false)
+      );
+    }
+    isEnabled = true;
+    try {
+      getGraph();
+    } catch (error) {
+      enableAudioInjection(false);
+      throw error;
+    }
+  } else {
+    isEnabled = false;
+    injectionGeneration++;
+    stopAudio();
+    releaseSession?.();
+    releaseSession = undefined;
+    releaseInjection?.();
+    releaseInjection = undefined;
+    for (const timer of warningTimers) clearTimeout(timer);
+    warningTimers.clear();
+    injectedTracks.forEach((track) => disposeMediaResource(() => track.stop()));
+    injectedTracks.clear();
+    destination?.stream
+      .getTracks()
+      .forEach((track) => disposeMediaResource(() => track.stop()));
+    disposeMediaResource(() => output?.disconnect());
+    if (context && context.state !== 'closed')
+      context.close().catch(() => undefined);
+    context = null;
+    output = null;
+    destination = null;
   }
 }
 
 export function isAudioInjectionEnabled(): boolean {
+  currentMediaSession();
   return isEnabled;
 }
 
@@ -225,7 +308,8 @@ export interface PlayAudioOptions {
 }
 
 async function readAudio(
-  source: string | Blob | ArrayBuffer | Uint8Array
+  source: string | Blob | ArrayBuffer | Uint8Array,
+  signal?: AbortSignal
 ): Promise<ArrayBuffer> {
   if (source instanceof ArrayBuffer) {
     return source;
@@ -245,7 +329,7 @@ async function readAudio(
       : new TextEncoder().encode(decodeURIComponent(dataUrl[2])).buffer;
   }
 
-  const response = await fetch(source);
+  const response = await fetch(source, { signal });
   if (!response.ok) {
     throw new Error(`Failed to download ${source}: ${response.status}`);
   }
@@ -277,27 +361,60 @@ export async function playAudio(
   enableAudioInjection();
   const { context, output } = getGraph();
 
-  const buffer = await context.decodeAudioData(await readAudio(source));
-
-  const node = context.createBufferSource();
-  node.buffer = buffer;
-  node.loop = !!options.loop;
-
-  const gain = context.createGain();
-  gain.gain.value = options.volume ?? 1;
-  node.connect(gain);
-  gain.connect(output);
-
-  sources.add(node);
-
-  await new Promise<void>((resolve) => {
-    node.onended = () => {
-      sources.delete(node);
-      gain.disconnect();
+  const owner = currentMediaSession()!;
+  const generation = playbackGeneration;
+  const valid = () =>
+    generation === playbackGeneration &&
+    isEnabled &&
+    isMediaSessionCurrent(owner);
+  const controller = new AbortController();
+  let cancel!: () => void;
+  const cancelled = new Promise<void>((resolve) => {
+    cancel = () => {
+      controller.abort();
       resolve();
     };
-    node.start();
   });
+  cancelPending.add(cancel);
+  const playback = (async () => {
+    const bytes = await readAudio(source, controller.signal);
+    if (!valid()) return;
+    const buffer = await context.decodeAudioData(bytes);
+    if (!valid()) return;
+    const node = context.createBufferSource();
+    node.buffer = buffer;
+    node.loop = !!options.loop;
+    const gain = context.createGain();
+    gain.gain.value = options.volume ?? 1;
+    node.connect(gain);
+    gain.connect(output);
+    sources.add(node);
+    await new Promise<void>((resolve, reject) => {
+      const cleanup = () => {
+        sources.delete(node);
+        finishSources.delete(node);
+        disposeMediaResource(() => node.disconnect());
+        disposeMediaResource(() => gain.disconnect());
+      };
+      const finish = () => {
+        cleanup();
+        resolve();
+      };
+      finishSources.set(node, finish);
+      node.onended = finish;
+      try {
+        node.start();
+      } catch (error) {
+        cleanup();
+        reject(error);
+      }
+    });
+  })();
+  try {
+    await Promise.race([playback, cancelled]);
+  } finally {
+    cancelPending.delete(cancel);
+  }
 }
 
 export interface PushAudioOptions {
@@ -346,11 +463,21 @@ export function pushAudio(
 
     // A small lead avoids gaps when the queue is empty
     streamTime = Math.max(streamTime, context.currentTime + 0.05);
-    node.start(streamTime);
-    streamTime += buffer.duration;
-
     sources.add(node);
-    node.onended = () => sources.delete(node);
+    const finish = () => {
+      sources.delete(node);
+      finishSources.delete(node);
+      disposeMediaResource(() => node.disconnect());
+    };
+    finishSources.set(node, finish);
+    node.onended = finish;
+    try {
+      node.start(streamTime);
+    } catch (error) {
+      finish();
+      throw error;
+    }
+    streamTime += buffer.duration;
   }
 
   return Math.max(0, streamTime - context.currentTime);
@@ -362,12 +489,16 @@ export function pushAudio(
  * @category Call
  */
 export function stopAudio(): void {
+  playbackGeneration++;
+  for (const cancel of cancelPending) cancel();
+  cancelPending.clear();
   for (const node of sources) {
     try {
       node.stop();
     } catch (_error) {
       // Not started yet
     }
+    finishSources.get(node)?.();
   }
   sources.clear();
   streamTime = 0;

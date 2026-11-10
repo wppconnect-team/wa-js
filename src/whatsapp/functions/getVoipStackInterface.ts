@@ -33,14 +33,14 @@ export interface VoipStackInterface {
     audioEnabled: boolean,
     videoEnabled: boolean,
     lobbyEntryPoint?: number | null
-  ): Promise<number>;
-  rejectCall(): Promise<number>;
-  endCall(reason: number, isUserInitiated: boolean): Promise<number>;
+  ): Promise<void>;
+  rejectCall(): Promise<void>;
+  endCall(reason: number, isUserInitiated: boolean): Promise<void>;
   setCallMute(muted: boolean): Promise<number>;
   setCallVideoMute(muted: boolean): Promise<number>;
   requestVideoUpgrade(): Promise<number>;
-  sendReaction(emoji: string): Promise<number>;
-  raiseHand(raised: boolean): Promise<number>;
+  sendReaction(emoji: string): Promise<void>;
+  raiseHand(raised: boolean): Promise<void>;
   getCallInfo(): Promise<string>;
   previewAndJoinCallLink(
     token: string,

@@ -88,6 +88,7 @@ async function start() {
       'WAWebGroupGetCommunityParticipantsJob',
       'WAWebSetPrivacyForOneCategoryAction',
       'WAWebVoipCreateCallLink',
+      'WAWebVoipCallIdProvider',
       'WAWebVoipSendSignalingXmpp',
     ]) {
       await window.WPP.loader.ensureLazyModule(moduleId);

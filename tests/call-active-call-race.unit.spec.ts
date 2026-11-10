@@ -93,6 +93,11 @@ function callApi() {
   };
 
   const modules: Record<string, any> = {
+    '../media/mediaSession': {
+      currentMediaSession: () => undefined,
+      finishMediaSession: () => undefined,
+      setMediaSessionProvisionalId: () => undefined,
+    },
     '../../util': { WPPError },
     '../../whatsapp': whatsapp,
     '../../whatsapp/enums': { CALL_STATES: { ReceivedCall: RINGING } },
@@ -265,4 +270,15 @@ test.describe('call operations after the stack promise settles', () => {
       });
     }
   }
+});
+
+test('end requested without an active call never targets a later call', async () => {
+  const ctx = callApi();
+  const outcome = ctx.api.end().catch((error: any) => error);
+  ctx.store.activeCall = callModel('CALL-B');
+  await new Promise((resolve) => setTimeout(resolve, 0));
+  ctx.resolveStack();
+  expect((await outcome).code).toBe('call_not_found');
+  expect(ctx.native).toEqual([]);
+  expect(ctx.store.activeCall.userEndedCall).toBeUndefined();
 });

@@ -15,13 +15,17 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import { CallStore } from '../../whatsapp';
 import {
   addAudioFrameListener,
   AudioFrameListener,
   removeAudioFrameListener,
 } from './audioCapture';
 import { installAudioInjector } from './audioInjector';
+import {
+  armMediaSession,
+  isMediaSessionCurrent,
+  onMediaSessionEnd,
+} from './mediaSession';
 import { floatToInt16, FRAME_SAMPLE_RATE, int16ToBase64 } from './pcm';
 
 export interface AudioCaptureOptions {
@@ -37,6 +41,8 @@ export interface AudioCaptureOptions {
 }
 
 let emitter: AudioFrameListener | null = null;
+let releaseHook: (() => void) | undefined;
+let releaseSession: (() => void) | undefined;
 
 /**
  * Emit the call audio as `call.audio_frame` events: 16 kHz mono frames of
@@ -45,7 +51,8 @@ let emitter: AudioFrameListener | null = null;
  * Enable it before the call starts: the audio graph of the call is created
  * when the call starts and cannot be tapped afterwards.
  *
- * Pass `false` to stop.
+ * Applies to one call and stops when it ends or is replaced. Re-enable for
+ * another call. Pass `false` to stop early.
  *
  * @example
  * ```javascript
@@ -63,25 +70,31 @@ let emitter: AudioFrameListener | null = null;
 export function enableAudioCapture(
   options: AudioCaptureOptions | boolean = {}
 ): void {
-  if (emitter) {
-    removeAudioFrameListener(emitter);
-    emitter = null;
-  }
-
+  const previous = emitter;
+  const previousHook = releaseHook;
+  const previousSession = releaseSession;
   if (options === false) {
+    emitter = null;
+    releaseHook = undefined;
+    releaseSession = undefined;
+    if (previous) removeAudioFrameListener(previous);
+    previousHook?.();
+    previousSession?.();
     return;
   }
 
   const { format = 'float32', source: wanted = 'both' } =
     options === true ? {} : options;
 
+  const owner = armMediaSession();
   emitter = (source, samples, timestamp) => {
+    if (!isMediaSessionCurrent(owner) || !owner.id) return;
     if (wanted !== 'both' && wanted !== source) {
       return;
     }
 
     internalEv.emit('call.audio_frame', {
-      id: (CallStore as any)?.activeCall?.id,
+      id: owner.id,
       source,
       sampleRate: FRAME_SAMPLE_RATE,
       format,
@@ -93,6 +106,10 @@ export function enableAudioCapture(
     });
   };
 
-  installAudioInjector();
+  releaseHook = installAudioInjector();
+  releaseSession = onMediaSessionEnd(owner, () => enableAudioCapture(false));
   addAudioFrameListener(emitter);
+  if (previous) removeAudioFrameListener(previous);
+  previousHook?.();
+  previousSession?.();
 }

@@ -15,8 +15,17 @@
  */
 
 import { WPPError } from '../../util';
-import { CallModel } from '../../whatsapp';
-import { requireVoipStack, waitForActiveCall } from './requireVoipStack';
+import { CallModel, CallStore } from '../../whatsapp';
+import {
+  currentMediaSession,
+  finishMediaSession,
+  setMediaSessionProvisionalId,
+} from '../media/mediaSession';
+import {
+  requireVoipStack,
+  reserveCallStart,
+  waitForActiveCall,
+} from './requireVoipStack';
 
 export interface JoinCallLinkOptions {
   /**
@@ -41,31 +50,52 @@ export async function joinCallLink(
   link: string,
   options: JoinCallLinkOptions = {}
 ): Promise<CallModel | undefined> {
-  const match = /(?:call\.whatsapp\.com\/(voice|video)\/)?([\w-]{22})\/?$/.exec(
-    (link || '').trim()
-  );
+  const releaseStart = reserveCallStart();
+  const media = currentMediaSession();
+  try {
+    const match =
+      /^(?:https:\/\/call\.whatsapp\.com\/(voice|video)\/)?([\w-]{22})\/?$/.exec(
+        (link || '').trim()
+      );
 
-  if (!match) {
-    throw new WPPError('invalid_call_link', `Invalid call link: ${link}`, {
-      link,
-    });
-  }
+    if (!match) {
+      throw new WPPError('invalid_call_link', `Invalid call link: ${link}`, {
+        link,
+      });
+    }
 
-  const [, type, token] = match;
-  const isVideo = options.isVideo ?? type === 'video';
+    const [, type, token] = match;
+    const isVideo = options.isVideo ?? type === 'video';
 
-  const voipStack = await requireVoipStack();
+    const voipStack = await requireVoipStack();
 
-  const status = await voipStack.previewAndJoinCallLink(token, isVideo);
-  if (status) {
-    throw new WPPError(
-      'call_link_join_failed',
-      `Failed to join call link: ${status}`,
-      { link, status }
+    const previousId = (CallStore as any)?.activeCall?.id;
+    setMediaSessionProvisionalId(token);
+    const status = await voipStack.previewAndJoinCallLink(token, isVideo);
+    if (status) {
+      throw new WPPError(
+        'call_link_join_failed',
+        `Failed to join call link: ${status}`,
+        { link, status }
+      );
+    }
+
+    // The call is first registered under the link token, wait for the id the
+    // events and the other call functions use
+    const call = await waitForActiveCall(
+      (c) =>
+        c.id !== token &&
+        c.id !== previousId &&
+        c.isCallLink === true &&
+        c.callLinkToken === token,
+      10_000
     );
+    if (!call && media) finishMediaSession(media);
+    return call;
+  } catch (error) {
+    if (media) finishMediaSession(media);
+    throw error;
+  } finally {
+    releaseStart();
   }
-
-  // The call is first registered under the link token, wait for the id the
-  // events and the other call functions use
-  return waitForActiveCall((c) => c.id !== token, 10_000);
 }

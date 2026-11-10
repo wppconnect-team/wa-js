@@ -199,3 +199,23 @@ test.describe('CallStateTracker', () => {
     expect(new CallStateTracker().handle('trackVoipActivity', {})).toEqual([]);
   });
 });
+
+test('ignores late mute and video notifications after the call ended', () => {
+  const tracker = new CallStateTracker();
+  state(tracker, 3);
+  state(tracker, 13);
+  expect(
+    tracker.handle(
+      'handleMuteStateChange',
+      { callInfo: info({ participants: [{ jid: 'peer', isMuted: true }] }) },
+      'CALL-1'
+    )
+  ).toEqual([]);
+  expect(
+    tracker.handle(
+      'handleVideoStateChange',
+      { videoState: 1, userJid: 'peer' },
+      'CALL-1'
+    )
+  ).toEqual([]);
+});

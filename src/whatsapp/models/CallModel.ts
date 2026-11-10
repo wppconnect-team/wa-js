@@ -32,6 +32,8 @@ interface Props {
   offerTime: number;
   isVideo: boolean;
   isGroup: boolean;
+  isCallLink?: boolean;
+  callLinkToken?: string;
   groupCallParticipants?: any;
   canHandleLocally: boolean;
   outgoing: boolean;

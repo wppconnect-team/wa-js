@@ -244,6 +244,7 @@ export class CallStateTracker {
       peers.length === 1 ? peers[0].isMuted : undefined;
 
     const call = this.getCall(id);
+    if (call.ended) return [];
 
     // WhatsApp repeats the notification without changes, mostly in group
     // calls, so only forward it when some participant changed
@@ -268,6 +269,7 @@ export class CallStateTracker {
 
     // Skips repeated notifications of the same participant state
     const call = this.getCall(activeCallId);
+    if (call.ended) return [];
     const videoStates = (call.videoStates ??= new Map());
     const participant = `${!!data.isSelf}:${jidKey(data.userJid)}`;
     if (videoStates.get(participant) === data.videoState) {

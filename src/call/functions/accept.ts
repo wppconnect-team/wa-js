@@ -17,6 +17,7 @@
 import { WPPError } from '../../util';
 import { CallStore, websocket } from '../../whatsapp';
 import { getVoipStackInterface } from '../../whatsapp/functions';
+import { currentMediaSession, finishMediaSession } from '../media/mediaSession';
 import { getCall, isActiveCall, isIncomingCall } from './getCall';
 
 export interface CallAcceptOptions {
@@ -59,118 +60,133 @@ export async function accept(
   callId?: string,
   options: CallAcceptOptions = {}
 ): Promise<boolean> {
-  const call = getCall(callId);
+  const media = currentMediaSession();
+  try {
+    const call = getCall(callId);
 
-  if (!call) {
-    throw new WPPError(
-      'call_not_found',
-      `Call ${callId || '<empty>'} not found`,
-      {
-        callId,
-      }
-    );
-  }
-
-  if (!isIncomingCall(call) && !call.isGroup) {
-    throw new WPPError(
-      'call_is_not_incoming_ring',
-      `Call ${callId || '<empty>'} is not incoming ring`,
-      {
-        callId,
-        state: call.getState(),
-      }
-    );
-  }
-
-  /**
-   * Native VoIP stack (WhatsApp >= 2.3000): same path used by the accept
-   * button in `useWAWebVoipCallHandlers`. It has no call id argument, so it is
-   * only usable for the active call.
-   */
-  if (isActiveCall(call) && typeof getVoipStackInterface === 'function') {
-    const voipStack = await getVoipStackInterface();
-
-    // The active call can change while the stack loads, and acceptCall has no
-    // call id argument
-    if (!isActiveCall(call)) {
+    if (!call) {
       throw new WPPError(
         'call_not_found',
-        `Call ${call.id} is no longer the active call`,
+        `Call ${callId || '<empty>'} not found`,
         {
-          callId: call.id,
-          activeCallId: (CallStore as any)?.activeCall?.id,
+          callId,
         }
       );
     }
 
-    if (typeof voipStack?.acceptCall === 'function') {
-      // acceptCall(isMicEnabled, isCameraEnabled)
-      await voipStack.acceptCall(
-        options.audio ?? true,
-        options.video ?? call.isVideo === true
+    if (!isIncomingCall(call) && !call.isGroup) {
+      throw new WPPError(
+        'call_is_not_incoming_ring',
+        `Call ${callId || '<empty>'} is not incoming ring`,
+        {
+          callId,
+          state: call.getState(),
+        }
       );
-
-      return true;
     }
-  }
 
-  /**
-   * Legacy path, for WhatsApp versions without the native VoIP stack
-   *
-   * TODO: remove when 2.3000.10xx is no longer available in wa-version/html
-   */
-  if (!call.peerJid.isGroupCall()) {
-    await websocket.ensureE2ESessions([call.peerJid]);
-  }
+    /**
+     * Native VoIP stack (WhatsApp >= 2.3000): same path used by the accept
+     * button in `useWAWebVoipCallHandlers`. It has no call id argument, so it is
+     * only usable for the active call.
+     */
+    if (isActiveCall(call) && typeof getVoipStackInterface === 'function') {
+      const voipStack = await getVoipStackInterface();
 
-  const content = [
-    websocket.smax('audio', { enc: 'opus', rate: '16000' }, null),
-    websocket.smax('audio', { enc: 'opus', rate: '8000' }, null),
-  ];
+      // The active call can change while the stack loads, and acceptCall has no
+      // call id argument
+      if (!isActiveCall(call)) {
+        throw new WPPError(
+          'call_not_found',
+          `Call ${call.id} is no longer the active call`,
+          {
+            callId: call.id,
+            activeCallId: (CallStore as any)?.activeCall?.id,
+          }
+        );
+      }
 
-  if (call.isVideo) {
+      if (typeof voipStack?.acceptCall === 'function') {
+        // acceptCall(isMicEnabled, isCameraEnabled)
+        await voipStack.acceptCall(
+          options.audio ?? true,
+          options.video ?? call.isVideo === true
+        );
+
+        return true;
+      }
+    }
+
+    /**
+     * Legacy path, for WhatsApp versions without the native VoIP stack
+     *
+     * TODO: remove when 2.3000.10xx is no longer available in wa-version/html
+     */
+    if (
+      options.audio === false ||
+      (options.video !== undefined && options.video !== call.isVideo)
+    ) {
+      throw new WPPError(
+        'call_media_options_not_supported',
+        'This WhatsApp version cannot apply microphone or camera overrides while accepting a call'
+      );
+    }
+    if (!call.peerJid.isGroupCall()) {
+      await websocket.ensureE2ESessions([call.peerJid]);
+    }
+
+    const content = [
+      websocket.smax('audio', { enc: 'opus', rate: '16000' }, null),
+      websocket.smax('audio', { enc: 'opus', rate: '8000' }, null),
+    ];
+
+    if (call.isVideo) {
+      content.push(
+        websocket.smax(
+          'video',
+          {
+            orientation: '0',
+            screen_width: '1920',
+            screen_height: '1080',
+            device_orientation: '0',
+            enc: 'vp8',
+            dec: 'vp8',
+          },
+          null
+        )
+      );
+    }
+
     content.push(
-      websocket.smax(
-        'video',
-        {
-          orientation: '0',
-          screen_width: '1920',
-          screen_height: '1080',
-          device_orientation: '0',
-          enc: 'vp8',
-          dec: 'vp8',
-        },
-        null
-      )
+      ...[
+        websocket.smax('net', { medium: '3' }, null),
+        websocket.smax('encopt', { keygen: '2' }, null),
+      ]
     );
+
+    const node = websocket.smax(
+      'call',
+      {
+        to: call.peerJid.toString({ legacy: true }),
+        id: websocket.generateId(),
+      },
+      [
+        websocket.smax(
+          'accept',
+          {
+            'call-id': call.id,
+            'call-creator': call.peerJid.toString({ legacy: true }),
+          },
+          content
+        ),
+      ]
+    );
+
+    await websocket.sendSmaxStanza(node);
+
+    return true;
+  } catch (error) {
+    if (media) finishMediaSession(media);
+    throw error;
   }
-
-  content.push(
-    ...[
-      websocket.smax('net', { medium: '3' }, null),
-      websocket.smax('encopt', { keygen: '2' }, null),
-    ]
-  );
-
-  const node = websocket.smax(
-    'call',
-    {
-      to: call.peerJid.toString({ legacy: true }),
-      id: websocket.generateId(),
-    },
-    [
-      websocket.smax(
-        'accept',
-        {
-          'call-id': call.id,
-          'call-creator': call.peerJid.toString({ legacy: true }),
-        },
-        content
-      ),
-    ]
-  );
-
-  await websocket.sendSmaxStanza(node);
-
-  return true;
 }

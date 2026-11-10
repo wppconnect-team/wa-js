@@ -62,6 +62,7 @@ export * from './forwardMessages';
 export * from './forwardMessagesToChats';
 export * from './frontendFireAndForget';
 export * from './genBotMsgSecretFromMsgSecret';
+export * from './generateAndStoreNewCallId';
 export * from './generateVideoThumbsAndDuration';
 export * from './genLinkDeviceCodeForPhoneNumber';
 export * from './genMinimalLinkPreview';

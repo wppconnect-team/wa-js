@@ -21,6 +21,7 @@ import * as loader from '../../loader';
 import { CallStore } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { frontendFireAndForget } from '../../whatsapp/functions';
+import { updateMediaSession } from '../media/mediaSession';
 import { CallStateTracker } from './callStateTracker';
 
 const debug = Debug('WA-JS:call:registerCallStateEvents');
@@ -64,6 +65,16 @@ function register() {
         const activeCallId = (CallStore as any)?.activeCall?.id;
         const emissions = tracker.handle(name, payload, activeCallId);
 
+        for (const [event, data] of emissions) {
+          if (event === 'call.ended') updateMediaSession(data.id, true);
+          else if (
+            event === 'call.state_changed' &&
+            data.state !== 0 &&
+            data.state !== 7 &&
+            data.state !== 13
+          )
+            updateMediaSession(data.id);
+        }
         if (emissions.length) {
           // Emit after WhatsApp has updated its own call model
           setTimeout(() => {

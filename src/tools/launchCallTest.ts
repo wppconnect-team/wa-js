@@ -35,6 +35,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { runCallTestScenario } from './callTestScenario';
+
 const DEFAULT_AUDIO = path.resolve(__dirname, 'assets/call-test.wav');
 
 const MIME_TYPES: { [ext: string]: string } = {
@@ -88,6 +90,9 @@ async function start() {
   );
   const maxSeconds = Number(process.env['CALL_MAX_SECONDS'] || 60);
 
+  if (!Number.isFinite(maxSeconds) || maxSeconds <= 0)
+    throw new Error('CALL_MAX_SECONDS must be a positive finite number');
+
   if (!fs.existsSync(audioFile)) {
     throw new Error(`Audio file not found: ${audioFile}`);
   }
@@ -99,85 +104,32 @@ async function start() {
     args: ['--autoplay-policy=no-user-gesture-required'],
   });
 
-  await page.exposeFunction('wppCallTestLog', (message: string) =>
-    console.log(message)
-  );
-
-  await waitForLogin(page);
-  console.log(`📞 Calling ${to} and playing ${path.basename(audioFile)}`);
-
-  const wavBase64: string | null = await page.evaluate(
-    ({ to, audio, maxMs }) => {
-      const WPP = (window as any).WPP;
-      const log = (...args: any[]) =>
-        (window as any).wppCallTestLog(args.map(String).join(' '));
-
-      WPP.call.enableAudioInjection();
-      WPP.call.startRecording();
-
-      return new Promise<string | null>((resolve) => {
-        let finished = false;
-        const finish = () => {
-          if (finished) {
-            return;
-          }
-          finished = true;
-          clearTimeout(maxTimer);
-          resolve(WPP.call.stopRecording({ format: 'base64' }));
-        };
-
-        WPP.on('call.state_changed', (call: any) =>
-          log('[call] state', call.stateName)
-        );
-        WPP.on('call.ringing', () => log('[call] ringing'));
-
-        WPP.on('call.accepted', async () => {
-          log('[call] accepted, playing audio');
-          try {
-            await WPP.call.playAudio(audio);
-            log('[call] audio finished');
-            await new Promise((r) => setTimeout(r, 1_500));
-            await WPP.call.end();
-          } catch (error: any) {
-            log('[call] error:', error?.message || error);
-          }
-        });
-
-        WPP.on('call.ended', (call: any) => {
-          log(
-            '[call] ended:',
-            call.resultName,
-            `${((call.activeDuration || 0) / 1000).toFixed(1)}s connected`
-          );
-          setTimeout(finish, 500);
-        });
-
-        const maxTimer = setTimeout(() => {
-          log('[call] max duration reached, hanging up');
-          WPP.call.end().catch(() => undefined);
-          setTimeout(finish, 1_000);
-        }, maxMs);
-
-        WPP.call.offer(to).catch((error: any) => {
-          log('[call] offer failed:', error?.message || error);
-          finish();
-        });
-      });
-    },
-    { to, audio: readAudioAsDataUrl(audioFile), maxMs: maxSeconds * 1000 }
-  );
-
-  if (wavBase64) {
-    const output = path.resolve(
-      __dirname,
-      `../../media/call-${new Date().toISOString().replace(/[:.]/g, '-')}.wav`
+  try {
+    await page.exposeFunction('wppCallTestLog', (message: string) =>
+      console.log(message)
     );
-    fs.mkdirSync(path.dirname(output), { recursive: true });
-    fs.writeFileSync(output, Buffer.from(wavBase64, 'base64'));
-    console.log(`💾 Recording saved to ${output}`);
-  }
 
-  await browser.close();
+    await waitForLogin(page);
+    console.log(`📞 Calling ${to} and playing ${path.basename(audioFile)}`);
+
+    const wavBase64: string | null = await page.evaluate(runCallTestScenario, {
+      to,
+      audio: readAudioAsDataUrl(audioFile),
+      maxMs: maxSeconds * 1000,
+    });
+
+    if (wavBase64) {
+      const output = path.resolve(
+        __dirname,
+        `../../media/call-${new Date().toISOString().replace(/[:.]/g, '-')}.wav`
+      );
+      fs.mkdirSync(path.dirname(output), { recursive: true });
+      fs.writeFileSync(output, Buffer.from(wavBase64, 'base64'));
+      console.log(`💾 Recording saved to ${output}`);
+    }
+  } finally {
+    await browser.close();
+  }
 }
 
 start().catch((error) => {

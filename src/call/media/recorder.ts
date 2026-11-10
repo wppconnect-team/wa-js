@@ -22,6 +22,11 @@ import {
   removeAudioFrameListener,
 } from './audioCapture';
 import { installAudioInjector } from './audioInjector';
+import {
+  armMediaSession,
+  isMediaSessionCurrent,
+  onMediaSessionEnd,
+} from './mediaSession';
 import { bytesToBase64, encodeWav, FRAME_SAMPLE_RATE, mixTracks } from './pcm';
 
 export interface RecordingOptions {
@@ -44,6 +49,8 @@ let recording: {
   start: number;
   tracks: Map<AudioSource, Track>;
   listener: AudioFrameListener;
+  stop: () => void;
+  active: boolean;
 } | null = null;
 
 /**
@@ -65,14 +72,16 @@ let recording: {
  * @category Call
  */
 export function startRecording(options: RecordingOptions = {}): void {
-  if (recording) {
+  if (recording?.active) {
     throw new WPPError('recording_in_progress', 'A recording is in progress');
   }
 
+  const owner = armMediaSession();
   const wanted = options.source || 'both';
   const tracks = new Map<AudioSource, Track>();
 
   const listener: AudioFrameListener = (source, samples, timestamp) => {
+    if (!isMediaSessionCurrent(owner) || !owner.id) return;
     if (wanted !== 'both' && wanted !== source) {
       return;
     }
@@ -83,12 +92,26 @@ export function startRecording(options: RecordingOptions = {}): void {
       track = { start: timestamp - frameMs, frames: [] };
       tracks.set(source, track);
     }
-    track.frames.push(samples);
+    track.frames.push(samples.slice());
   };
 
-  recording = { start: performance.now(), tracks, listener };
-
-  installAudioInjector();
+  const releaseHook = installAudioInjector();
+  let releaseSession: () => void = () => undefined;
+  const current = {
+    start: performance.now(),
+    tracks,
+    listener,
+    active: true,
+    stop: () => {
+      if (!current.active) return;
+      current.active = false;
+      removeAudioFrameListener(listener);
+      releaseHook();
+      releaseSession();
+    },
+  };
+  releaseSession = onMediaSessionEnd(owner, current.stop);
+  recording = current;
   addAudioFrameListener(listener);
 }
 
@@ -101,7 +124,9 @@ export interface StopRecordingOptions {
 }
 
 /**
- * Stop the recording and return it as a 16 kHz mono WAV file
+ * Stop the recording and return it as a 16 kHz mono WAV file. When the call
+ * ends, capture stops automatically and the completed recording remains
+ * available until retrieved here or replaced by a new recording.
  *
  * @category Call
  */
@@ -114,8 +139,8 @@ export function stopRecording(
     throw new WPPError('recording_not_started', 'No recording in progress');
   }
 
-  const { tracks, listener } = recording;
-  removeAudioFrameListener(listener);
+  const { tracks } = recording;
+  recording.stop();
   recording = null;
 
   const starts = [...tracks.values()].map((t) => t.start);
@@ -151,5 +176,5 @@ export function stopRecording(
 }
 
 export function isRecording(): boolean {
-  return !!recording;
+  return !!recording?.active;
 }

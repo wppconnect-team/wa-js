@@ -37,6 +37,7 @@ function wid(id: string) {
  * `onStart` once WhatsApp is asked to start or join the call.
  */
 function callApi(onStart: (store: { activeCall: any }) => void) {
+  let reservedId = 'RESERVED-CALL';
   const store: { activeCall: any } = { activeCall: null };
   const stack = {
     previewAndJoinCallLink: async () => {
@@ -46,6 +47,11 @@ function callApi(onStart: (store: { activeCall: any }) => void) {
   };
 
   const modules: Record<string, any> = {
+    '../media/mediaSession': {
+      currentMediaSession: () => undefined,
+      finishMediaSession: () => undefined,
+      setMediaSessionProvisionalId: () => undefined,
+    },
     '../../assert': {
       assertWid: (id: string) => wid(id),
       assertFindChat: async (groupWid: any) => ({ id: groupWid }),
@@ -63,6 +69,7 @@ function callApi(onStart: (store: { activeCall: any }) => void) {
       },
     },
     '../../whatsapp/functions': {
+      generateAndStoreNewCallId: () => reservedId,
       getVoipStackInterface: async () => stack,
       startWAWebVoipGroupCallFromChat: async () => onStart(store),
       startWAWebVoipGroupCallFromWids: async () => onStart(store),
@@ -95,19 +102,26 @@ function callApi(onStart: (store: { activeCall: any }) => void) {
 
   modules['./requireVoipStack'] = load('requireVoipStack');
 
-  return { ...load('offerGroup'), ...load('joinCallLink'), store };
+  return {
+    ...load('offerGroup'),
+    ...load('joinCallLink'),
+    store,
+    reserve: (id: string) => {
+      reservedId = id;
+    },
+  };
 }
 
 test.describe('offerGroup', () => {
   test('returns the group call', async () => {
-    const call = { id: 'GROUP-CALL', isGroup: true };
+    const call = { id: 'RESERVED-CALL', isGroup: true };
     const api = callApi((store) => (store.activeCall = call));
 
     expect(await api.offerGroup('123@g.us')).toBe(call);
   });
 
   test('returns the 1:1 call placed for a group with a single other member', async () => {
-    const call = { id: 'DIRECT-CALL', isGroup: false };
+    const call = { id: 'RESERVED-CALL', isGroup: false };
     const api = callApi((store) => (store.activeCall = call));
 
     expect(await api.offerGroup('123@g.us')).toBe(call);
@@ -115,7 +129,7 @@ test.describe('offerGroup', () => {
 
   test('does not return the call that was already active', async () => {
     const previous = { id: 'OLD-CALL', isGroup: true };
-    const call = { id: 'NEW-CALL', isGroup: true };
+    const call = { id: 'RESERVED-CALL', isGroup: true };
     const api = callApi((store) =>
       setTimeout(() => (store.activeCall = call), 150)
     );
@@ -127,7 +141,12 @@ test.describe('offerGroup', () => {
 
 test.describe('joinCallLink', () => {
   test('returns the call under its real id, not the link token', async () => {
-    const call = { id: 'REAL-CALL-ID', isGroup: true };
+    const call = {
+      id: 'REAL-CALL-ID',
+      isGroup: true,
+      isCallLink: true,
+      callLinkToken: TOKEN,
+    };
     const api = callApi((store) => {
       // WhatsApp first registers the call under the link token
       store.activeCall = { id: TOKEN, isGroup: true };
@@ -140,4 +159,80 @@ test.describe('joinCallLink', () => {
 
     expect(joined).toBe(call);
   });
+});
+
+test('joinCallLink waits past the previously active unrelated call', async () => {
+  const call = {
+    id: 'JOINED-CALL',
+    isGroup: true,
+    isCallLink: true,
+    callLinkToken: TOKEN,
+  };
+  const api = callApi((store) => {
+    setTimeout(() => {
+      store.activeCall = call;
+    }, 150);
+  });
+  api.store.activeCall = { id: 'UNRELATED-CALL' };
+  expect(await api.joinCallLink(TOKEN)).toBe(call);
+});
+
+for (const invalid of [
+  'https://evil.invalid/AbCdEfGhIjKlMnOpQrStUv',
+  'garbageAbCdEfGhIjKlMnOpQrStUv',
+  'http://call.whatsapp.com/voice/AbCdEfGhIjKlMnOpQrStUv',
+]) {
+  test(`rejects an invalid call link before joining: ${invalid}`, async () => {
+    let invoked = false;
+    const api = callApi(() => {
+      invoked = true;
+    });
+    await expect(
+      Promise.resolve(api.joinCallLink(invalid))
+    ).rejects.toMatchObject({
+      code: 'invalid_call_link',
+    });
+    expect(invoked).toBe(false);
+  });
+}
+
+test('group call waits for the reserved id past an unrelated new call', async () => {
+  const expected = { id: 'RESERVED-CALL' };
+  const api = callApi((store) => {
+    store.activeCall = { id: 'UNRELATED-NEW' };
+    setTimeout(() => {
+      store.activeCall = expected;
+    }, 150);
+  });
+  expect(await api.offerGroup('123@g.us')).toBe(expected);
+});
+
+test('link join waits past a new call from another link', async () => {
+  const expected = { id: 'JOINED', isCallLink: true, callLinkToken: TOKEN };
+  const api = callApi((store) => {
+    store.activeCall = {
+      id: 'UNRELATED-NEW',
+      isCallLink: true,
+      callLinkToken: 'OTHER-TOKEN',
+    };
+    setTimeout(() => {
+      store.activeCall = expected;
+    }, 150);
+  });
+  expect(await api.joinCallLink(TOKEN)).toBe(expected);
+});
+
+test('overlapping starts cannot share the native reservation and completion releases the lock', async () => {
+  let id = 'RESERVED-CALL';
+  const api = callApi((store) => {
+    store.activeCall = { id };
+  });
+  const first = api.offerGroup('123@g.us');
+  await expect(Promise.resolve(api.joinCallLink(TOKEN))).rejects.toMatchObject({
+    code: 'call_start_in_progress',
+  });
+  expect((await first).id).toBe(id);
+  id = 'SECOND';
+  api.reserve(id);
+  expect((await api.offerGroup('123@g.us')).id).toBe(id);
 });

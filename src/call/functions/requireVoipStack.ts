@@ -99,3 +99,18 @@ export async function waitForActiveCall(
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
 }
+
+let startingCall = false;
+
+/** Avoid overlapping public starts that share the native call id reservation. */
+export function reserveCallStart(): () => void {
+  if (startingCall)
+    throw new WPPError(
+      'call_start_in_progress',
+      'Another call is already being started'
+    );
+  startingCall = true;
+  return () => {
+    startingCall = false;
+  };
+}
