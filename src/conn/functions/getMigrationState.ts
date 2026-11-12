@@ -59,10 +59,10 @@ export function getMigrationState(): MigrationState {
 
   try {
     // WA >= 2.3000.1054281195 dropped the check: every account is migrated
-    // TODO: remove when 2.3000.1050509545 is no longer available in wa-version/html
+    // TODO: remove when WA < 2.3000.1054281195 is no longer in wa-version/html
     state.isLidMigrated = Lid1X1MigrationUtils.isLidMigrated?.() ?? true;
   } catch (_) {
-    console.warn('Lid1X1MigrationUtils is not available');
+    console.warn('isLidMigrated function is not available');
   }
 
   try {

@@ -24,6 +24,7 @@ import {
   mediaTypeFromProtobuf,
   typeAttributeFromProtobuf,
 } from '../whatsapp/functions';
+import { Lid1X1MigrationUtils } from '../whatsapp/misc';
 import { forceMediaUploadMainThread } from './functions/forceMediaUploadMainThread';
 
 loader.onFullReady(applyPatch, 1000);
@@ -102,6 +103,24 @@ function applyPatch() {
       }
     }
   });
+
+  // TODO: remove when WA < 2.3000.1054281195 is no longer in wa-version/html
+  try {
+    const nativeIsLidMigrated = Lid1X1MigrationUtils.isLidMigrated;
+
+    if (typeof nativeIsLidMigrated === 'function') {
+      const utils = Lid1X1MigrationUtils as any;
+      utils.isLidMigrated = (...args: any[]) => {
+        try {
+          return nativeIsLidMigrated.apply(utils, args as []);
+        } catch {
+          return false;
+        }
+      };
+    }
+  } catch {
+    // Lid1X1MigrationUtils not available
+  }
 
   /**
    * Keep media encryption/upload on the main thread.
