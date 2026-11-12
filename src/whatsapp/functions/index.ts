@@ -109,7 +109,6 @@ export * from './isAnimatedWebp';
 export * from './isAuthenticated';
 export * from './isFilterExcludedFromSearchTreatmentInInboxFlow';
 export * from './isLabelReorderEnabled';
-export * from './isLidMigrated';
 export * from './isRegistered';
 export * from './isUnreadTypeMsg';
 export * from './isWid';
