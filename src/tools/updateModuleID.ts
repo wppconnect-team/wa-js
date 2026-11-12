@@ -184,7 +184,6 @@ async function start() {
     'StatusStore',
     'functions.getStatus',
     'functions.setMyStatus',
-    'functions.isLidMigrated', // removed around WA 2.3000.1051351692
     'functions.subscribeGroupPresence', // added in WAWebContactPresenceBridge >= ~2.3000.1039447205
     'functions.getUserhash', // removed from WAWebContactGetters in WA ~2.3000.1043126001, reimplemented in src/contact/patch.ts
     'Constants', // WAWebConstantsDeprecated removed from WA ~= 2.3000.1044096409

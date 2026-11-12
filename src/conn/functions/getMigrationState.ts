@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-import { isLidMigrated } from '../../whatsapp/functions';
+import { readLegacyLidMigration } from '../../whatsapp/legacyLidMigration';
 import { Lid1X1MigrationUtils, UserPrefs, Wid } from '../../whatsapp/misc';
 
 /**
  * Migration state information for the current WhatsApp account
  */
 export interface MigrationState {
-  /** Whether the account has been migrated to LID (Linked Identity) system */
+  /**
+   * @deprecated False also represents an unavailable native migration flag in
+   * newer WhatsApp versions; it does not prove the account is unmigrated.
+   */
   isLidMigrated: boolean;
   /** Whether the sync session has been migrated */
   isSyncdSessionMigrated: boolean;
@@ -45,9 +48,8 @@ export interface MigrationState {
  * @example
  * ```typescript
  * const state = WPP.conn.getMigrationState();
- * console.log('Account migrated:', state.isLidMigrated);
  * console.log('Current LID:', state.currentLid);
- * console.log('Should have LID:', state.shouldHaveAccountLid);
+ * console.log('Sync session migrated:', state.isSyncdSessionMigrated);
  * ```
  * @category Connection
  */
@@ -59,10 +61,9 @@ export function getMigrationState(): MigrationState {
   };
 
   try {
-    // Get basic migration flags
-    state.isLidMigrated = isLidMigrated();
+    state.isLidMigrated = readLegacyLidMigration();
   } catch (_) {
-    console.warn('isLidMigrated function is not available');
+    // Preserve the legacy false fallback when the native flag is unavailable.
   }
 
   try {

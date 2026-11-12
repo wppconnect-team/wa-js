@@ -19,11 +19,12 @@ import { exportModule } from '../exportModule';
 /** @whatsapp 15688
  */
 export declare namespace Lid1X1MigrationUtils {
-  // Removed around WA 2.3000.1051351692, where every account is LID migrated
+  /** @deprecated The native getter is absent in newer WhatsApp versions. */
   function isLidMigrated(): boolean;
+  /** @deprecated Native migration setter retained for type compatibility. */
+  function setIsLidMigrated(a?: any): any;
   function isPureLidSyncDSession(): boolean | null | undefined;
   function isSyncdSessionMigrated(): boolean;
-  function setIsLidMigrated(a?: any): any;
   function shouldApplyNonMigratedMessagingRules(): any;
 }
 
@@ -32,5 +33,7 @@ exportModule(
   {
     Lid1X1MigrationUtils: 'Lid1X1MigrationUtils',
   },
-  (m) => m.Lid1X1MigrationUtils?.isPureLidSyncDSession
+  (m) =>
+    typeof m.Lid1X1MigrationUtils?.isLidMigrated === 'function' ||
+    typeof m.Lid1X1MigrationUtils?.isPureLidSyncDSession === 'function'
 );

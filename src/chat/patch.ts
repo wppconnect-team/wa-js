@@ -20,17 +20,19 @@ import { wrapModuleFunction } from '../whatsapp/exportModule';
 import {
   createChatRecord,
   getABPropConfigValue,
-  isLidMigrated,
   isUnreadTypeMsg,
   mediaTypeFromProtobuf,
   typeAttributeFromProtobuf,
 } from '../whatsapp/functions';
+import { guardLegacyLidMigration } from '../whatsapp/legacyLidMigration';
 import { forceMediaUploadMainThread } from './functions/forceMediaUploadMainThread';
 
 loader.onFullReady(applyPatch, 1000);
 loader.onFullReady(applyPatchModel);
 
 function applyPatch() {
+  guardLegacyLidMigration();
+
   wrapModuleFunction(mediaTypeFromProtobuf, (func, ...args) => {
     const [proto] = args;
     if (proto.deviceSentMessage) {
@@ -103,18 +105,6 @@ function applyPatch() {
       }
     }
   });
-
-  // isLidMigrated was removed around WA 2.3000.1051351692
-  // TODO: remove when versions older than 2.3000.1051351692 are no longer available in wa-version/html
-  if (typeof isLidMigrated === 'function') {
-    wrapModuleFunction(isLidMigrated, (func, ...args) => {
-      try {
-        return func(...args);
-      } catch {
-        return false;
-      }
-    });
-  }
 
   /**
    * Keep media encryption/upload on the main thread.
