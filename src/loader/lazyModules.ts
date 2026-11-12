@@ -30,6 +30,12 @@ export interface LazyModuleSource {
    * component names are tried after the explicit ones.
    */
   pattern?: RegExp;
+  /**
+   * `JSResourceForInteraction` names whose bundle defines the module, tried
+   * after the components. Their resources are only known once a bundle that
+   * references them was fetched.
+   */
+  resources?: string[];
 }
 
 /**
@@ -74,6 +80,9 @@ export const LAZY_MODULES: {
       'WAWebViewCommunityMembersModal.react',
     ],
     pattern: /QueryAndUpdateCommunityParticipants|ViewCommunityMembers/,
+    // WA >= 2.3000.1054241206: the action is no longer a component, the
+    // member modal bundle loads it on interaction.
+    resources: ['WAWebQueryAndUpdateCommunityParticipantsAction'],
   },
   WAWebSetPrivacyForOneCategoryAction: {
     components: ['WAWebPrivacyVisibilityEditDrawer.react'],

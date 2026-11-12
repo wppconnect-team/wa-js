@@ -20,17 +20,19 @@ import { wrapModuleFunction } from '../whatsapp/exportModule';
 import {
   createChatRecord,
   getABPropConfigValue,
-  isLidMigrated,
   isUnreadTypeMsg,
   mediaTypeFromProtobuf,
   typeAttributeFromProtobuf,
 } from '../whatsapp/functions';
+import { guardLegacyLidMigration } from '../whatsapp/legacyLidMigration';
 import { forceMediaUploadMainThread } from './functions/forceMediaUploadMainThread';
 
 loader.onFullReady(applyPatch, 1000);
 loader.onFullReady(applyPatchModel);
 
 function applyPatch() {
+  guardLegacyLidMigration();
+
   wrapModuleFunction(mediaTypeFromProtobuf, (func, ...args) => {
     const [proto] = args;
     if (proto.deviceSentMessage) {
@@ -101,14 +103,6 @@ function applyPatch() {
         await new Promise((resolve) => setTimeout(resolve, delay));
         delay *= 2;
       }
-    }
-  });
-
-  wrapModuleFunction(isLidMigrated, (func, ...args) => {
-    try {
-      return func(...args);
-    } catch {
-      return false;
     }
   });
 
