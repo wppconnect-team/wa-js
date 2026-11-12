@@ -20,8 +20,6 @@ import { Lid1X1MigrationUtils, UserPrefs, Wid } from '../../whatsapp/misc';
  * Migration state information for the current WhatsApp account
  */
 export interface MigrationState {
-  /** Whether the account has been migrated to LID (Linked Identity) system */
-  isLidMigrated: boolean;
   /** Whether the sync session has been migrated */
   isSyncdSessionMigrated: boolean;
   /** Whether old messaging rules should still be applied */
@@ -44,7 +42,6 @@ export interface MigrationState {
  * @example
  * ```typescript
  * const state = WPP.conn.getMigrationState();
- * console.log('Account migrated:', state.isLidMigrated);
  * console.log('Current LID:', state.currentLid);
  * console.log('Should have LID:', state.shouldHaveAccountLid);
  * ```
@@ -52,18 +49,9 @@ export interface MigrationState {
  */
 export function getMigrationState(): MigrationState {
   const state: MigrationState = {
-    isLidMigrated: false,
     isSyncdSessionMigrated: false,
     shouldApplyNonMigratedMessagingRules: false,
   };
-
-  try {
-    // WA >= 2.3000.1054281195 dropped the check: every account is migrated
-    // TODO: remove when WA < 2.3000.1054281195 is no longer in wa-version/html
-    state.isLidMigrated = Lid1X1MigrationUtils.isLidMigrated?.() ?? true;
-  } catch (_) {
-    console.warn('isLidMigrated function is not available');
-  }
 
   try {
     state.isSyncdSessionMigrated =

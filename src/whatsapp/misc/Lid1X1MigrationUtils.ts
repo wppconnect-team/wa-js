@@ -19,11 +19,8 @@ import { exportModule } from '../exportModule';
 /** @whatsapp 15688
  */
 export declare namespace Lid1X1MigrationUtils {
-  /** Removed in WA >= 2.3000.1054281195 */
-  const isLidMigrated: (() => boolean) | undefined;
   function isPureLidSyncDSession(): boolean | null | undefined;
   function isSyncdSessionMigrated(): boolean;
-  function setIsLidMigrated(a?: any): any;
   function shouldApplyNonMigratedMessagingRules(): any;
 }
 
@@ -32,8 +29,5 @@ exportModule(
   {
     Lid1X1MigrationUtils: 'Lid1X1MigrationUtils',
   },
-  // isLidMigrated was removed in WA >= 2.3000.1054281195
-  (m) =>
-    m.Lid1X1MigrationUtils?.isLidMigrated ||
-    m.Lid1X1MigrationUtils?.isPureLidSyncDSession
+  (m) => m.Lid1X1MigrationUtils?.isPureLidSyncDSession
 );
