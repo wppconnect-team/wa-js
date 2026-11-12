@@ -34,7 +34,6 @@ exportModule(
   exports,
   {
     getStatusAllowList: ['getStatusAllowList', 'default.getStatusAllowList'],
-    getStatusContacts: ['getStatusContacts', 'default.getStatusContacts'],
     getStatusDenyList: ['getStatusDenyList', 'default.getStatusDenyList'],
     getStatusList: ['getStatusList', 'default.getStatusList'],
     getStatusPrivacySetting: [
@@ -52,4 +51,13 @@ exportModule(
   },
   // TODO: remove the default fallback when 2.3000.1048742918 is no longer available in wa-version/html
   (m) => m.getStatusList || m.default?.getStatusList
+);
+
+// Moved to WAWebStatusContactUtils in WA ~2.3000.1054241206
+exportModule(
+  exports,
+  {
+    getStatusContacts: ['getStatusContacts', 'default.getStatusContacts'],
+  },
+  (m) => m.getStatusContacts || m.default?.getStatusContacts
 );

@@ -29,5 +29,6 @@ exportModule(
   {
     editBusinessProfile: 'editBusinessProfile',
   },
-  (m) => m.editBusinessProfile
+  // WAWebBusinessProfileEdit also exports editBusinessProfile
+  (m) => m.editBusinessProfile && m.updateCartEnabled
 );

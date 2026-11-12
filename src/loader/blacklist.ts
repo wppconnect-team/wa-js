@@ -82,6 +82,14 @@ export const IGNORE_FAIL_MODULES: ReadonlySet<string> = new Set([
   'msgFindMedia',
   'msgFindSearch',
   'msgFindStarred',
+  // The legacy About collection, model and jobs were removed between WA
+  // 2.3000.1053597858 and 2.3000.1054241206; contact.getStatus and
+  // profile.setMyStatus use getTextStatus/setTextStatus there.
+  'StatusCollection',
+  'StatusModel',
+  'StatusStore',
+  'getStatus',
+  'setMyStatus',
   // WAWebCartItemCollection was removed from WA ~= 2.3000.1039092809
   'CartItemCollection',
   // subscribeGroupPresence only exists in WAWebContactPresenceBridge >= ~2.3000.1039447205

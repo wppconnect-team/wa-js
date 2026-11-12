@@ -16,6 +16,7 @@
 
 import { assertWid } from '../../assert';
 import { StatusStore, Wid } from '../../whatsapp';
+import { getTextStatus } from '../../whatsapp/functions';
 import { queryExists } from './queryExists';
 
 /**
@@ -36,6 +37,14 @@ export async function getStatus(contactId: string | Wid) {
 
   if (!exists) {
     return null;
+  }
+
+  // WA >= ~2.3000.1054241206 dropped the legacy About collection
+  // TODO: remove the StatusStore path when 2.3000.1053597858 is no longer available in wa-version/html
+  if (!StatusStore) {
+    const result = await getTextStatus(wid);
+
+    return result.text || null;
   }
 
   const model = await StatusStore.find(wid);

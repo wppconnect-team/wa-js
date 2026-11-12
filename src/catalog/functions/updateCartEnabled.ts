@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { ensureLazyModule } from '../../loader';
 import { updateCartEnabled as UpdateCartEnabled } from '../../whatsapp/functions';
 
 /**
@@ -31,5 +32,6 @@ import { updateCartEnabled as UpdateCartEnabled } from '../../whatsapp/functions
  * @return Return sucess of product visibility set
  */
 export async function updateCartEnabled(enabled: boolean): Promise<any> {
+  await ensureLazyModule('WAWebBusinessProfileJob');
   return await UpdateCartEnabled(enabled);
 }

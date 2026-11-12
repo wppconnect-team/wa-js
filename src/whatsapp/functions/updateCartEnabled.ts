@@ -26,5 +26,6 @@ exportModule(
   {
     updateCartEnabled: 'updateCartEnabled',
   },
-  (m) => m.updateCartEnabled
+  // WAWebBizUpdateCartEnabledAction also exports updateCartEnabled
+  (m) => m.updateCartEnabled && m.editBusinessProfile
 );

@@ -15,6 +15,7 @@
  */
 
 import { assertGetProduct } from '../../assert';
+import { ensureLazyModule } from '../../loader';
 import { convertToFile } from '../../util';
 import { OpaqueData } from '../../whatsapp';
 import {
@@ -44,6 +45,7 @@ export async function addProductImage(
   const opaqueData = await OpaqueData.createFromData(file, file.type);
   const filehash = await calculateFilehashFromBlob(file);
 
+  await ensureLazyModule('WAWebMediaProduct');
   const url = await UploadProductImage(opaqueData, filehash);
 
   const product = await assertGetProduct(productId);

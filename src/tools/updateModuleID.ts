@@ -86,6 +86,8 @@ async function start() {
     for (const moduleId of [
       'WAWebGenerateEventCallLink',
       'WAWebGroupGetCommunityParticipantsJob',
+      'WAWebBusinessProfileJob',
+      'WAWebMediaProduct',
       'WAWebSetPrivacyForOneCategoryAction',
       'WAWebVoipCreateCallLink',
       'WAWebVoipCallIdProvider',
@@ -175,6 +177,13 @@ async function start() {
     'functions.msgFindSearch', // added in WA version 2.3000.1034162388, but not available in older versions
     'functions.msgFindStarred', // added in WA version 2.3000.1034162388, but not available in older versions
     'CartItemCollection', // WAWebCartItemCollection removed from WA ~= 2.3000.1039092809
+    // Legacy About collection/model/jobs removed between WA 2.3000.1053597858
+    // and 2.3000.1054241206; replaced by functions.getTextStatus/setTextStatus.
+    'StatusCollection',
+    'StatusModel',
+    'StatusStore',
+    'functions.getStatus',
+    'functions.setMyStatus',
     'functions.subscribeGroupPresence', // added in WAWebContactPresenceBridge >= ~2.3000.1039447205
     'functions.getUserhash', // removed from WAWebContactGetters in WA ~2.3000.1043126001, reimplemented in src/contact/patch.ts
     'Constants', // WAWebConstantsDeprecated removed from WA ~= 2.3000.1044096409

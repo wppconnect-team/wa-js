@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { ensureLazyModule } from '../../loader';
 import { convertToFile } from '../../util';
 import {
   OpaqueData,
@@ -66,6 +67,7 @@ export async function createProduct(
   const opaqueData = await OpaqueData.createFromData(file, file.type);
   const filehash = await calculateFilehashFromBlob(file);
 
+  await ensureLazyModule('WAWebMediaProduct');
   const url = await uploadProductImage(opaqueData, filehash);
 
   const Product = new ProductModel();

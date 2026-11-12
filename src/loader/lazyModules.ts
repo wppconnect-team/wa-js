@@ -98,6 +98,17 @@ export const LAZY_MODULES: {
     components: ['WAWebNewGroupFlow.react'],
     pattern: /NewGroupFlow/,
   },
+  // Lazy since WA ~2.3000.1049748952; the business profile drawer bundle
+  // registers the job without opening the drawer.
+  WAWebBusinessProfileJob: {
+    components: ['WAWebBizRefreshedProfileDrawer.react'],
+    pattern: /BizRefreshedProfile|BizProfile/,
+  },
+  // Lazy since WA ~2.3000.1052599095, shipped in the same bundle.
+  WAWebMediaProduct: {
+    components: ['WAWebBizRefreshedProfileDrawer.react'],
+    pattern: /BizRefreshedProfile|BizProfile|ProductCatalog/,
+  },
   // Both forward modules ship in the same bundle, so either entry recovers
   // the other. `WAWebMediaForwardMediaMsg` is preferred because it is a plain
   // utility module: requiring it has no UI side effects, unlike the `.react`
