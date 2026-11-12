@@ -42,10 +42,14 @@ const sitemap = resolve(output, 'sitemap.xml');
 const xml = await readFile(sitemap, 'utf8');
 const canonicalXml = xml.replace('<loc>' + base + 'index.html</loc>', '<loc>' + base + '</loc>');
 const locations = Array.from(canonicalXml.matchAll(/<loc>([^<]+)<\/loc>/g), (match) => match[1]);
-if (!locations.includes(base)) throw new Error('Missing API reference home in sitemap');
+if (!locations.some((location) => location === base)) throw new Error('Missing API reference home in sitemap');
 for (const url of locations) {
-  if (!url.startsWith(base)) throw new Error('Unexpected sitemap URL: ' + url);
-  const path = decodeURIComponent(url.slice(base.length)) || 'index.html';
+  const { origin, pathname } = new URL(url);
+  const root = new URL(base);
+  if (origin !== root.origin || !pathname.startsWith(root.pathname)) {
+    throw new Error('Unexpected sitemap URL: ' + url);
+  }
+  const path = pathname.slice(root.pathname.length) || 'index.html';
   const html = await readFile(resolve(output, path), 'utf8');
   const canonicals = html.split('</head>', 1)[0].match(/<link\b[^>]*\brel="canonical"[^>]*>/g) ?? [];
   if (canonicals.length !== 1 || !canonicals[0].includes('href="' + url + '"')) {
