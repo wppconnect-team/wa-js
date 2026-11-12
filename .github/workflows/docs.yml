@@ -41,11 +41,9 @@ jobs:
 
       - name: Build API-Docs
         run: npm run docs:build
-        continue-on-error: true
 
       - name: Deploy API-Docs
         uses: peaceiris/actions-gh-pages@v4
-        continue-on-error: true
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs

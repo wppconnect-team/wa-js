@@ -27,7 +27,7 @@
     "changelog:update": "conventional-changelog -n ./changelog.config.cjs -i CHANGELOG.md -s -r 0",
     "clean": "shx rm -rf dist",
     "commit": "cz",
-    "docs:build": "npm run docs:clean && typedoc --gitRevision main",
+    "docs:build": "npm run docs:clean && typedoc --gitRevision main && node scripts/docs-redirects.mjs",
     "docs:clean": "shx rm -rf docs",
     "launch:attach": "ts-node ./src/tools/launchAttach.ts",
     "launch:call-test": "ts-node ./src/tools/launchCallTest.ts",
