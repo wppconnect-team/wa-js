@@ -19,7 +19,9 @@ import { exportModule } from '../exportModule';
 /** @whatsapp 15688
  */
 export declare namespace Lid1X1MigrationUtils {
+  // Removed around WA 2.3000.1051351692, where every account is LID migrated
   function isLidMigrated(): boolean;
+  function isPureLidSyncDSession(): boolean | null | undefined;
   function isSyncdSessionMigrated(): boolean;
   function setIsLidMigrated(a?: any): any;
   function shouldApplyNonMigratedMessagingRules(): any;
@@ -30,5 +32,5 @@ exportModule(
   {
     Lid1X1MigrationUtils: 'Lid1X1MigrationUtils',
   },
-  (m) => m.Lid1X1MigrationUtils.isLidMigrated
+  (m) => m.Lid1X1MigrationUtils?.isPureLidSyncDSession
 );

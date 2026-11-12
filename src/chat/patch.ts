@@ -104,13 +104,17 @@ function applyPatch() {
     }
   });
 
-  wrapModuleFunction(isLidMigrated, (func, ...args) => {
-    try {
-      return func(...args);
-    } catch {
-      return false;
-    }
-  });
+  // isLidMigrated was removed around WA 2.3000.1051351692
+  // TODO: remove when versions older than 2.3000.1051351692 are no longer available in wa-version/html
+  if (typeof isLidMigrated === 'function') {
+    wrapModuleFunction(isLidMigrated, (func, ...args) => {
+      try {
+        return func(...args);
+      } catch {
+        return false;
+      }
+    });
+  }
 
   /**
    * Keep media encryption/upload on the main thread.
