@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
+import { readLegacyLidMigration } from '../../whatsapp/legacyLidMigration';
 import { Lid1X1MigrationUtils, UserPrefs, Wid } from '../../whatsapp/misc';
 
 /**
  * Migration state information for the current WhatsApp account
  */
 export interface MigrationState {
+  /**
+   * @deprecated False also represents an unavailable native migration flag in
+   * newer WhatsApp versions; it does not prove the account is unmigrated.
+   */
+  isLidMigrated: boolean;
   /** Whether the sync session has been migrated */
   isSyncdSessionMigrated: boolean;
   /** Whether old messaging rules should still be applied */
@@ -43,15 +49,22 @@ export interface MigrationState {
  * ```typescript
  * const state = WPP.conn.getMigrationState();
  * console.log('Current LID:', state.currentLid);
- * console.log('Should have LID:', state.shouldHaveAccountLid);
+ * console.log('Sync session migrated:', state.isSyncdSessionMigrated);
  * ```
  * @category Connection
  */
 export function getMigrationState(): MigrationState {
   const state: MigrationState = {
+    isLidMigrated: false,
     isSyncdSessionMigrated: false,
     shouldApplyNonMigratedMessagingRules: false,
   };
+
+  try {
+    state.isLidMigrated = readLegacyLidMigration();
+  } catch (_) {
+    // Preserve the legacy false fallback when the native flag is unavailable.
+  }
 
   try {
     state.isSyncdSessionMigrated =

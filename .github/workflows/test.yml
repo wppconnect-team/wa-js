@@ -80,6 +80,13 @@ jobs:
       - name: Test lazy bundle retry
         run: npx playwright test tests/loader-lazy-retry.unit.spec.ts --project tests
 
+      - name: Test interaction resource lifecycle and deprecated LID compatibility
+        run: >-
+          npx playwright test
+          tests/loader-js-resource.unit.spec.ts
+          tests/lid-migration-compat.unit.spec.ts
+          --project tests
+
       - name: Test late Stream registration
         run: npx playwright test tests/stream-registration.unit.spec.ts --project tests
 

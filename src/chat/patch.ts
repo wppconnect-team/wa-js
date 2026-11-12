@@ -24,12 +24,15 @@ import {
   mediaTypeFromProtobuf,
   typeAttributeFromProtobuf,
 } from '../whatsapp/functions';
+import { guardLegacyLidMigration } from '../whatsapp/legacyLidMigration';
 import { forceMediaUploadMainThread } from './functions/forceMediaUploadMainThread';
 
 loader.onFullReady(applyPatch, 1000);
 loader.onFullReady(applyPatchModel);
 
 function applyPatch() {
+  guardLegacyLidMigration();
+
   wrapModuleFunction(mediaTypeFromProtobuf, (func, ...args) => {
     const [proto] = args;
     if (proto.deviceSentMessage) {
