@@ -926,6 +926,22 @@ function bootloadComponent(
   });
 }
 
+/** Load a module WhatsApp only fetches on interaction (`JSResource.load()`). */
+function loadJSResource(resource: string, timeout = 30_000): Promise<unknown> {
+  const module = moduleRequire<any>('JSResourceForInteraction');
+  const factory = typeof module === 'function' ? module : module?.default;
+
+  return Promise.race([
+    Promise.resolve(factory(resource).load()),
+    new Promise((_resolve, reject) =>
+      setTimeout(
+        () => reject(new Error(`JSResource timed out loading '${resource}'`)),
+        timeout
+      )
+    ),
+  ]);
+}
+
 /**
  * Make sure a module that ships in a lazily bootloaded bundle is registered.
  *
@@ -992,6 +1008,19 @@ async function resolveLazyModule(moduleId: string): Promise<boolean> {
     if (isModuleRegistered(moduleId)) {
       debug(`'${moduleId}' registered by '${component}'`);
       return true;
+    }
+  }
+
+  for (const resource of LAZY_MODULES[moduleId]?.resources ?? []) {
+    if (isModuleRegistered(moduleId)) {
+      break;
+    }
+    debug(`Loading resource '${resource}' to register '${moduleId}'`);
+
+    try {
+      await loadJSResource(resource);
+    } catch (error) {
+      debug(`Loading resource '${resource}' failed: ${error}`);
     }
   }
 
