@@ -46,10 +46,17 @@ export declare function setTextStatus(
 exportModule(
   exports,
   {
-    getTextStatus: 'getTextStatus',
-    setTextStatus: 'setTextStatus',
+    getTextStatus: ['getTextStatus', 'default.getTextStatus'],
+    setTextStatus: ['setTextStatus', 'default.setTextStatus'],
   },
-  (m) => m.getTextStatus && m.setTextStatus
+  (m, id) => {
+    const bridge = m.getTextStatus ? m : m.default;
+    return (
+      id === 'WAWebContactTextStatusBridge' &&
+      typeof bridge?.getTextStatus === 'function' &&
+      typeof bridge?.setTextStatus === 'function'
+    );
+  }
 );
 
 /**
@@ -67,7 +74,13 @@ export declare function updateTextStatusForContact(params: {
 exportModule(
   exports,
   {
-    updateTextStatusForContact: 'updateTextStatusForContact',
+    updateTextStatusForContact: [
+      'updateTextStatusForContact',
+      'default.updateTextStatusForContact',
+    ],
   },
-  (m) => m.updateTextStatusForContact
+  (m, id) =>
+    id === 'WAWebUpdateTextStatusForContact' &&
+    (typeof m.updateTextStatusForContact === 'function' ||
+      typeof m.default?.updateTextStatusForContact === 'function')
 );

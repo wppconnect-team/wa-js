@@ -63,13 +63,19 @@ type LaunchArguments = Parameters<
   typeof playwright.chromium.launchPersistentContext
 >;
 
+function isWhatsAppEntryDocument(
+  request: Pick<playwright.Request, 'url' | 'resourceType'>
+): boolean {
+  return (
+    request.resourceType() === 'document' &&
+    request.url().split(/[?#]/, 1)[0] === URL
+  );
+}
+
 export async function preparePage(page: playwright.Page) {
   if (WA_VERSION_ENV === 'latest') {
     page.on('response', async (response) => {
-      if (
-        response.url() === URL &&
-        response.request().resourceType() === 'document'
-      ) {
+      if (isWhatsAppEntryDocument(response.request())) {
         try {
           const body = await response.text();
 
@@ -109,7 +115,7 @@ export async function preparePage(page: playwright.Page) {
   page.route(
     /^https:\/\/(web\.whatsapp\.com|static\.whatsapp\.net)\//,
     async (route, request) => {
-      if (request.url() === URL) {
+      if (isWhatsAppEntryDocument(request)) {
         const currentWADir = WA_DIR; // Get current directory
         if (!fs.existsSync(currentWADir)) {
           fs.mkdirSync(currentWADir, { recursive: true });
@@ -268,6 +274,16 @@ export async function preparePage(page: playwright.Page) {
 }
 
 export async function getPage(options?: LaunchArguments[1]) {
+  const expectedVersion =
+    WA_VERSION_ENV === 'latest'
+      ? null
+      : extractVersionFromHtml(waVersion.getPageContent(WA_VERSION));
+  if (WA_VERSION_ENV !== 'latest' && !expectedVersion) {
+    throw new Error(
+      'Cannot determine the selected WhatsApp HTML version; refusing an unpinned browser check'
+    );
+  }
+
   let userDataDir = path.resolve(__dirname, '../../userDataDir');
   if (Array.isArray(options?.args)) {
     const index = options?.args.findIndex((a) =>
@@ -345,5 +361,5 @@ export async function getPage(options?: LaunchArguments[1]) {
     console.log('WhatsApp Version: ', version);
   }, 2000);
 
-  return { browser, page };
+  return { browser, page, expectedVersion };
 }

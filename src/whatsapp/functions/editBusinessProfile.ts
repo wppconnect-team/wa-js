@@ -27,8 +27,14 @@ export declare function editBusinessProfile(
 exportModule(
   exports,
   {
-    editBusinessProfile: 'editBusinessProfile',
+    editBusinessProfile: ['editBusinessProfile', 'default.editBusinessProfile'],
   },
   // WAWebBusinessProfileEdit also exports editBusinessProfile
-  (m) => m.editBusinessProfile && m.updateCartEnabled
+  (m) => {
+    const job = m.editBusinessProfile ? m : m.default;
+    return (
+      typeof job?.editBusinessProfile === 'function' &&
+      typeof job?.updateCartEnabled === 'function'
+    );
+  }
 );

@@ -21,6 +21,8 @@ import { JSDoc, Node, Project } from 'ts-morph';
 
 import * as wpp from '../';
 import { getPage } from './browser';
+import { retryPageInspection } from './retryPageInspection';
+import { inspectTextStatusCompatibility } from './textStatusCompatibility';
 
 declare global {
   interface Window {
@@ -39,7 +41,7 @@ dirs.push(
 );
 
 async function start() {
-  const { browser, page } = await getPage();
+  const { browser, page, expectedVersion } = await getPage();
 
   page.addInitScript(() => {
     setInterval(() => {
@@ -70,67 +72,114 @@ async function start() {
     process.exit(3);
   }
 
-  await page.waitForFunction(() => window.WPP?.isFullReady, null, {
-    timeout: 0,
-  });
-
   page.on('console', (message) => {
     if (message.type() !== 'debug') {
       console.log('browser', message.type(), message.text());
     }
   });
 
-  // Verify lazy bindings after requesting their bundles; they must still
-  // resolve below, so a removed export or broken finder remains a failure.
-  await page.evaluate(async () => {
-    for (const moduleId of [
-      'WAWebGenerateEventCallLink',
-      'WAWebGroupGetCommunityParticipantsJob',
-      'WAWebBusinessProfileJob',
-      'WAWebMediaProduct',
-      'WAWebSetPrivacyForOneCategoryAction',
-      'WAWebVoipCreateCallLink',
-      'WAWebVoipCallIdProvider',
-      'WAWebVoipSendSignalingXmpp',
-    ]) {
-      await window.WPP.loader.ensureLazyModule(moduleId);
-    }
-  });
+  let snapshot;
+  try {
+    snapshot = await retryPageInspection(
+      () =>
+        page.waitForFunction(() => window.WPP?.isFullReady, null, {
+          timeout: 120_000,
+        }),
+      async () => {
+        // Verify lazy bindings after requesting their bundles; they must still
+        // resolve below, so a removed export or broken finder remains a failure.
+        await page.evaluate(async () => {
+          for (const moduleId of [
+            'WAWebGenerateEventCallLink',
+            'WAWebGroupGetCommunityParticipantsJob',
+            'WAWebBusinessProfileJob',
+            'WAWebMediaProduct',
+            'WAWebContactTextStatusBridge',
+            'WAWebSetPrivacyForOneCategoryAction',
+            'WAWebVoipCreateCallLink',
+            'WAWebVoipCallIdProvider',
+            'WAWebVoipSendSignalingXmpp',
+          ]) {
+            await window.WPP.loader.ensureLazyModule(moduleId);
+          }
+        });
 
-  const result = await page.evaluate((dirs: string[]) => {
-    const result: any = {};
+        const textStatus = await page.evaluate(inspectTextStatusCompatibility);
+        console.log(
+          'Native text status capabilities:',
+          JSON.stringify(textStatus)
+        );
+        if (!textStatus.legacy && !textStatus.modern) {
+          throw new Error(
+            'Neither a complete legacy nor a complete modern text status backend is available'
+          );
+        }
 
-    const modules: any = window.WPP.whatsapp as any;
+        const result = await page.evaluate(
+          ({
+            dirs,
+            optionalBindings,
+          }: {
+            dirs: string[];
+            optionalBindings: string[];
+          }) => {
+            const result: any = {};
 
-    for (const dir of dirs) {
-      const submodules = dir ? modules[dir] : modules;
-      if (!submodules) {
-        continue;
+            const modules: any = window.WPP.whatsapp as any;
+
+            for (const dir of dirs) {
+              const submodules = dir ? modules[dir] : modules;
+              if (!submodules) {
+                continue;
+              }
+
+              for (const name of Object.keys(submodules)) {
+                const resultName = dir ? `${dir}.${name}` : name;
+                if (optionalBindings.includes(resultName)) continue;
+                let module: any;
+                try {
+                  module = submodules[name];
+                } catch (_error) {}
+
+                result[resultName] =
+                  window.WPP.whatsapp._moduleIdMap.get(module);
+              }
+            }
+
+            return result;
+          },
+          { dirs, optionalBindings: textStatus.optionalBindings }
+        );
+
+        const version = await page
+          .evaluate(() => (window as any).Debug.VERSION)
+          .catch(() => null);
+
+        return { result, version, textStatus };
       }
-
-      for (const name of Object.keys(submodules)) {
-        let module: any;
-        try {
-          module = submodules[name];
-        } catch (_error) {}
-
-        const resultName = dir ? `${dir}.${name}` : name;
-
-        result[resultName] = window.WPP.whatsapp._moduleIdMap.get(module);
-      }
-    }
-
-    return result;
-  }, dirs);
-
-  const version = await page
-    .evaluate(() => (window as any).Debug.VERSION)
-    .catch(() => null);
+    );
+  } catch (error) {
+    await page.unrouteAll({ behavior: 'ignoreErrors' });
+    await browser.close();
+    throw error;
+  }
+  const { result, version } = snapshot;
+  console.log(
+    'Selected and observed WhatsApp versions:',
+    JSON.stringify({ expectedVersion, version })
+  );
 
   // if any pending request is hanging we unroute them to avoid errors, before browser close
   await page.unrouteAll({ behavior: 'ignoreErrors' });
 
   await browser.close();
+
+  if (expectedVersion && version !== expectedVersion) {
+    console.error(
+      `Pinned WhatsApp version ${expectedVersion} changed to ${version}; refusing to report compatibility for another version`
+    );
+    process.exit(4);
+  }
 
   delete result['_moduleIdMap'];
   for (const dir of dirs) {
@@ -177,13 +226,6 @@ async function start() {
     'functions.msgFindSearch', // added in WA version 2.3000.1034162388, but not available in older versions
     'functions.msgFindStarred', // added in WA version 2.3000.1034162388, but not available in older versions
     'CartItemCollection', // WAWebCartItemCollection removed from WA ~= 2.3000.1039092809
-    // Legacy About collection/model/jobs removed between WA 2.3000.1053597858
-    // and 2.3000.1054241206; replaced by functions.getTextStatus/setTextStatus.
-    'StatusCollection',
-    'StatusModel',
-    'StatusStore',
-    'functions.getStatus',
-    'functions.setMyStatus',
     'functions.subscribeGroupPresence', // added in WAWebContactPresenceBridge >= ~2.3000.1039447205
     'functions.getUserhash', // removed from WAWebContactGetters in WA ~2.3000.1043126001, reimplemented in src/contact/patch.ts
     'Constants', // WAWebConstantsDeprecated removed from WA ~= 2.3000.1044096409

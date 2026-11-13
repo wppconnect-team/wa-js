@@ -229,6 +229,12 @@ export async function editBusinessProfile(params: BusinessProfileModel) {
   }
 
   await ensureLazyModule('WAWebBusinessProfileJob');
+  if (typeof editProfile !== 'function') {
+    throw new WPPError(
+      'business_profile_unavailable',
+      'The native business profile action is not available'
+    );
+  }
   await editProfile(params);
   const user = getMyUserWid();
   const profile = await BusinessProfileStore.fetchBizProfile(user);

@@ -16,7 +16,7 @@
 
 import { assertGetProduct } from '../../assert';
 import { ensureLazyModule } from '../../loader';
-import { convertToFile } from '../../util';
+import { convertToFile, WPPError } from '../../util';
 import { OpaqueData } from '../../whatsapp';
 import {
   calculateFilehashFromBlob,
@@ -46,6 +46,12 @@ export async function addProductImage(
   const filehash = await calculateFilehashFromBlob(file);
 
   await ensureLazyModule('WAWebMediaProduct');
+  if (typeof UploadProductImage !== 'function') {
+    throw new WPPError(
+      'product_image_upload_unavailable',
+      'The native product image uploader is not available'
+    );
+  }
   const url = await UploadProductImage(opaqueData, filehash);
 
   const product = await assertGetProduct(productId);

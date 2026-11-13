@@ -17,9 +17,10 @@
 import { expect, test } from '@playwright/test';
 
 import { getPage } from '../src/tools/browser';
+import { inspectTextStatusCompatibility } from '../src/tools/textStatusCompatibility';
 
 test('compatibility bindings resolve on a cold WhatsApp page', async () => {
-  const { browser, page } = await getPage();
+  const { browser, page, expectedVersion } = await getPage();
   try {
     await page.addInitScript(() => {
       (window as any).wppForceMainLoad = true;
@@ -48,6 +49,7 @@ test('compatibility bindings resolve on a cold WhatsApp page', async () => {
       ['WAWebBusinessProfileJob', 'editBusinessProfile'],
       ['WAWebBusinessProfileJob', 'updateCartEnabled'],
       ['WAWebMediaProduct', 'uploadProductImage'],
+
       ['WAWebSetPushnameConnAction', 'setPushname'],
       ['WAWebGroupCreateJob', 'createGroup'],
       ['WAWebListsActions', 'persistLabelReorder'],
@@ -69,6 +71,20 @@ test('compatibility bindings resolve on a cold WhatsApp page', async () => {
       expect.soft(result.ensured, moduleId).toBe(true);
       expect.soft(result.type, binding).toBe('function');
       expect.soft(result.moduleId, binding).toBe(moduleId);
+    }
+    const textStatus = await page.evaluate(inspectTextStatusCompatibility);
+    expect(
+      textStatus.legacy || textStatus.modern,
+      'complete native About backend'
+    ).toBe(true);
+    if (expectedVersion) {
+      const actualVersion = await page.evaluate(
+        () => (window as any).Debug.VERSION
+      );
+      expect(
+        actualVersion,
+        'the selected HTML version must remain pinned'
+      ).toBe(expectedVersion);
     }
   } finally {
     await page.unrouteAll({ behavior: 'ignoreErrors' });

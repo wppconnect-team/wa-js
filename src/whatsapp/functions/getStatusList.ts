@@ -59,5 +59,13 @@ exportModule(
   {
     getStatusContacts: ['getStatusContacts', 'default.getStatusContacts'],
   },
-  (m) => m.getStatusContacts || m.default?.getStatusContacts
+  (m, id) => {
+    const source = m.getStatusContacts ? m : m.default;
+    return (
+      typeof source?.getStatusContacts === 'function' &&
+      (id === 'WAWebStatusContactUtils' ||
+        id === 'WAWebUserPrefsStatus' ||
+        typeof source.getStatusList === 'function')
+    );
+  }
 );

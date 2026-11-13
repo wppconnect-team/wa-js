@@ -88,6 +88,12 @@ export const LAZY_MODULES: {
     components: ['WAWebPrivacyVisibilityEditDrawer.react'],
     pattern: /PrivacyVisibility/,
   },
+  // WA105424: the profile resource registers the bridge, updater and About
+  // constants without opening the drawer or fetching/changing account data.
+  WAWebContactTextStatusBridge: {
+    components: ['WAWebProfileDrawer.react'],
+    pattern: /^WAWebProfileDrawer/,
+  },
   // The profile drawer registers the setter without changing the profile.
   WAWebSetPushnameConnAction: {
     components: ['WAWebProfileDrawer.react'],

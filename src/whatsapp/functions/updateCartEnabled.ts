@@ -24,8 +24,14 @@ export declare function updateCartEnabled(enabled: boolean): Promise<void>;
 exportModule(
   exports,
   {
-    updateCartEnabled: 'updateCartEnabled',
+    updateCartEnabled: ['updateCartEnabled', 'default.updateCartEnabled'],
   },
   // WAWebBizUpdateCartEnabledAction also exports updateCartEnabled
-  (m) => m.updateCartEnabled && m.editBusinessProfile
+  (m) => {
+    const job = m.updateCartEnabled ? m : m.default;
+    return (
+      typeof job?.updateCartEnabled === 'function' &&
+      typeof job?.editBusinessProfile === 'function'
+    );
+  }
 );
