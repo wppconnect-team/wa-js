@@ -1,5 +1,5 @@
-<!DOCTYPE html><html class="default" lang="en" data-base="../"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>MigrationState | @wppconnect/wa-js - v4.7.2</title><link rel="icon" href="../assets/favicon.ico"/><meta name="description" content="Documentation for @wppconnect/wa-js"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><link rel="stylesheet" href="../assets/custom.css"/><script defer src="../assets/main.js"></script><script async src="../assets/icons.js" id="tsd-icons-script"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script><script async src="../assets/hierarchy.js" id="tsd-hierarchy-script"></script><link rel="canonical" href="https://wppconnect.io/wa-js/interfaces/conn.MigrationState.html"/></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
-<div class="tsd-toolbar-contents container"><a href="../index.html" class="title">@wppconnect/wa-js - v4.7.2</a>
+<!DOCTYPE html><html class="default" lang="en" data-base="../"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>MigrationState | @wppconnect/wa-js - v4.8.0</title><link rel="icon" href="../assets/favicon.ico"/><meta name="description" content="Documentation for @wppconnect/wa-js"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><link rel="stylesheet" href="../assets/custom.css"/><script defer src="../assets/main.js"></script><script async src="../assets/icons.js" id="tsd-icons-script"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script><script async src="../assets/hierarchy.js" id="tsd-hierarchy-script"></script><link rel="canonical" href="https://wppconnect.io/wa-js/interfaces/conn.MigrationState.html"/></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container"><a href="../index.html" class="title">@wppconnect/wa-js - v4.8.0</a>
 <div id="tsd-toolbar-links"><a href="https://wppconnect.io">WPPConnect</a><a href="https://wppconnect.io/docs/">Guides</a><a href="https://github.com/wppconnect-team">GitHub</a></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/>
 <ul role="listbox" id="tsd-search-results"></ul>
 <div id="tsd-search-status" aria-live="polite" aria-atomic="true">
@@ -26,7 +26,7 @@
 <h3 class="tsd-index-heading tsd-anchor-link" id="properties">Properties<a href="#properties" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-index-list"><a href="#currentlid" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>current<wbr/>Lid?</span></a>
 <a href="#currentpn" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>current<wbr/>Pn?</span></a>
-<a href="#islidmigrated" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>is<wbr/>Lid<wbr/>Migrated</span></a>
+<a href="#islidmigrated" class="tsd-index-link deprecated"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>is<wbr/>Lid<wbr/>Migrated</span></a>
 <a href="#issyncdsessionmigrated" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>is<wbr/>Syncd<wbr/>Session<wbr/>Migrated</span></a>
 <a href="#shouldapplynonmigratedmessagingrules" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>should<wbr/>Apply<wbr/>Non<wbr/>Migrated<wbr/>Messaging<wbr/>Rules</span></a>
 </div></section></div></details></section></section>
@@ -39,35 +39,38 @@
 <div class="tsd-comment tsd-typography"><p>The current user's LID, if available</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/conn/functions/getMigrationState.ts#L31">src/conn/functions/getMigrationState.ts:31</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/conn/functions/getMigrationState.ts#L34">src/conn/functions/getMigrationState.ts:34</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="currentpn"><code class="tsd-tag">Optional</code><span>current<wbr/>Pn</span><a href="#currentpn" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">currentPn</span><span class="tsd-signature-symbol">?:</span> <a href="../classes/whatsapp.Wid.html" class="tsd-signature-type tsd-kind-class">Wid</a></div>
 <div class="tsd-comment tsd-typography"><p>The current user's PN, if available</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/conn/functions/getMigrationState.ts#L33">src/conn/functions/getMigrationState.ts:33</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/conn/functions/getMigrationState.ts#L36">src/conn/functions/getMigrationState.ts:36</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
-<h3 class="tsd-anchor-link" id="islidmigrated"><span>is<wbr/>Lid<wbr/>Migrated</span><a href="#islidmigrated" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<h3 class="tsd-anchor-link" id="islidmigrated"><span class="deprecated">is<wbr/>Lid<wbr/>Migrated</span><a href="#islidmigrated" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">isLidMigrated</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-<div class="tsd-comment tsd-typography"><p>Whether the account has been migrated to LID (Linked Identity) system</p>
-</div><aside class="tsd-sources">
+<div class="tsd-comment tsd-typography">
+<div class="tsd-tag-deprecated">
+<h4 class="tsd-anchor-link" id="deprecated">Deprecated<a href="#deprecated" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><p>False also represents an unavailable native migration flag in
+newer WhatsApp versions; it does not prove the account is unmigrated.</p>
+</div></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/conn/functions/getMigrationState.ts#L25">src/conn/functions/getMigrationState.ts:25</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/conn/functions/getMigrationState.ts#L28">src/conn/functions/getMigrationState.ts:28</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="issyncdsessionmigrated"><span>is<wbr/>Syncd<wbr/>Session<wbr/>Migrated</span><a href="#issyncdsessionmigrated" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">isSyncdSessionMigrated</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 <div class="tsd-comment tsd-typography"><p>Whether the sync session has been migrated</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/conn/functions/getMigrationState.ts#L27">src/conn/functions/getMigrationState.ts:27</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/conn/functions/getMigrationState.ts#L30">src/conn/functions/getMigrationState.ts:30</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="shouldapplynonmigratedmessagingrules"><span>should<wbr/>Apply<wbr/>Non<wbr/>Migrated<wbr/>Messaging<wbr/>Rules</span><a href="#shouldapplynonmigratedmessagingrules" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">shouldApplyNonMigratedMessagingRules</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 <div class="tsd-comment tsd-typography"><p>Whether old messaging rules should still be applied</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/conn/functions/getMigrationState.ts#L29">src/conn/functions/getMigrationState.ts:29</a></li></ul></aside></section></section></details></div>
+<li>Defined in <a href="https://github.com/wppconnect-team/wa-js/blob/main/src/conn/functions/getMigrationState.ts#L32">src/conn/functions/getMigrationState.ts:32</a></li></ul></aside></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -86,7 +89,7 @@
 <div><a href="#currentlid"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>current<wbr/>Lid</span></a><a href="#currentpn"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>current<wbr/>Pn</span></a><a href="#islidmigrated"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>is<wbr/>Lid<wbr/>Migrated</span></a><a href="#issyncdsessionmigrated"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>is<wbr/>Syncd<wbr/>Session<wbr/>Migrated</span></a><a href="#shouldapplynonmigratedmessagingrules"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>should<wbr/>Apply<wbr/>Non<wbr/>Migrated<wbr/>Messaging<wbr/>Rules</span></a></div></details></div></details></div>
 <div class="site-menu">
 <nav id="tsd-sidebar-links" class="tsd-navigation"><a href="https://wppconnect.io" class="tsd-nav-link">WPPConnect</a><a href="https://wppconnect.io/docs/" class="tsd-nav-link">Guides</a><a href="https://github.com/wppconnect-team" class="tsd-nav-link">GitHub</a></nav>
-<nav class="tsd-navigation"><a href="../modules.html">@wppconnect/wa-js - v4.7.2</a>
+<nav class="tsd-navigation"><a href="../modules.html">@wppconnect/wa-js - v4.8.0</a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container">
 <li>Loading...</li></ul></nav></div></div></div><footer>
 <p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer>
