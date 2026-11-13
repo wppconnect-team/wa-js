@@ -79,7 +79,8 @@ function historyApi(legacy: boolean) {
           return {
             MsgModel,
             MsgKey: { fromString: (key: string) => ({ key }) },
-            MsgStore: { get: (m: any) => stored.get(m.id || m) },
+            // Like the real collection, resolves ids only, never raw messages
+            MsgStore: { get: (id: any) => stored.get(id) },
           };
         }
         if (id === '../../whatsapp/enums') {
