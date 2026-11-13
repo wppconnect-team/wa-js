@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import * as loader from '../../loader';
 import { exportModule } from '../exportModule';
 import { Wid } from './Wid';
 
@@ -151,3 +152,9 @@ exportModule(
     return true;
   }
 );
+
+// The patch above lives in the lazy module lookup, so it only ran on the first
+// `MsgKey` access; resolve it eagerly or `msg.id._serialized` stays undefined.
+const resolveMsgKey = () => void exports.MsgKey;
+loader.onReady(resolveMsgKey);
+loader.onFullReady(resolveMsgKey);
