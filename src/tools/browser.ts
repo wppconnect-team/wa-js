@@ -34,13 +34,15 @@ let WA_DIR = path.resolve(__dirname, `../../wa-source/${WA_VERSION_DIR}`);
 /**
  * Extract version from HTML content
  */
-function extractVersionFromHtml(html: string): string | null {
-  // Look for script filenames like: 1034485183_main
-  const match = html.match(/(\d{10,})_main/);
-  if (match) {
-    return `2.3000.${match[1]}`;
-  }
-  return null;
+export function extractVersionFromHtml(html: string): string | null {
+  // Most pages expose SiteData.client_revision. Some older snapshots only
+  // include the revision in a main-script filename. Never guess on ambiguity.
+  const client = [...html.matchAll(/"client_revision"\s*:\s*(\d{10,})/g)].map(
+    (match) => match[1]
+  );
+  const main = [...html.matchAll(/(\d{10,})_main/g)].map((match) => match[1]);
+  const revisions = new Set(client.length ? client : main);
+  return revisions.size === 1 ? `2.3000.${[...revisions][0]}` : null;
 }
 
 /**

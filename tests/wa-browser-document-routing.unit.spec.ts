@@ -91,6 +91,7 @@ async function routeDocument(
   return {
     calls,
     html,
+    extract: (html: string) => exports.extractVersionFromHtml(html),
     launches: () => launches,
     start: async () => await exports.getPage(),
   };
@@ -135,4 +136,31 @@ test('explicit latest mode does not require a pinned HTML version', async () => 
   const f = await routeDocument('https://web.whatsapp.com/', 'latest');
   await expect(f.start()).rejects.toThrow('Test browser launch');
   expect(f.launches()).toBe(1);
+});
+
+test('client_revision identifies snapshots without a main-script version suffix', async () => {
+  const f = await routeDocument('https://web.whatsapp.com/');
+  expect(
+    f.extract('{"server_revision":1053000000,"client_revision":1053060988}')
+  ).toBe('2.3000.1053060988');
+});
+
+test('older main-script snapshots retain their exact version extraction', async () => {
+  const f = await routeDocument('https://web.whatsapp.com/');
+  expect(f.extract('src="1054241206_main.js"')).toBe('2.3000.1054241206');
+});
+
+test('repeated equal client revisions are valid but conflicting revisions cannot pass a pin', async () => {
+  const f = await routeDocument('https://web.whatsapp.com/');
+  expect(
+    f.extract('{"client_revision":1053060988}{"client_revision":1053060988}')
+  ).toBe('2.3000.1053060988');
+  expect(
+    f.extract('{"client_revision":1053060988}{"client_revision":1054241206}')
+  ).toBeNull();
+});
+
+test('a server revision alone cannot substitute for the client build', async () => {
+  const f = await routeDocument('https://web.whatsapp.com/');
+  expect(f.extract('{"server_revision":1053060988}')).toBeNull();
 });
