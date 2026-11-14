@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { convertToFile } from '../../util';
+import { ensureLazyModule } from '../../loader';
+import { convertToFile, WPPError } from '../../util';
 import {
   OpaqueData,
   ProductImageModel,
@@ -66,6 +67,13 @@ export async function createProduct(
   const opaqueData = await OpaqueData.createFromData(file, file.type);
   const filehash = await calculateFilehashFromBlob(file);
 
+  await ensureLazyModule('WAWebMediaProduct');
+  if (typeof uploadProductImage !== 'function') {
+    throw new WPPError(
+      'product_image_upload_unavailable',
+      'The native product image uploader is not available'
+    );
+  }
   const url = await uploadProductImage(opaqueData, filehash);
 
   const Product = new ProductModel();

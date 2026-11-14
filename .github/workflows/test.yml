@@ -114,6 +114,17 @@ jobs:
       - name: Test status remove ensures the revoke action module
         run: npx playwright test tests/status-remove-ensure-revoke-action.unit.spec.ts --project tests
 
+      - name: Test About backends and native capability requirements
+        run: >-
+          npx playwright test
+          tests/text-status-compat.unit.spec.ts
+          tests/text-status-capability.unit.spec.ts
+          tests/business-lazy-actions.unit.spec.ts
+          tests/status-business-selectors.unit.spec.ts
+          tests/wa-browser-document-routing.unit.spec.ts
+          tests/wa-page-inspection-retry.unit.spec.ts
+          --project tests
+
       - name: Test cold-page compatibility bindings
         run: npx playwright test tests/compatibility-monitor-lazy-modules.spec.ts --project tests
 

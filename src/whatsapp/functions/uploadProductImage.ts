@@ -29,7 +29,9 @@ export declare function uploadProductImage(
 exportModule(
   exports,
   {
-    uploadProductImage: 'uploadProductImage',
+    uploadProductImage: ['uploadProductImage', 'default.uploadProductImage'],
   },
-  (m) => m.uploadProductImage
+  (m) =>
+    typeof m.uploadProductImage === 'function' ||
+    typeof m.default?.uploadProductImage === 'function'
 );

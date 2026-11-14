@@ -15,6 +15,7 @@
  */
 
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
+import { ensureLazyModule } from '../../loader';
 import { WPPError } from '../../util';
 import {
   BusinessProfileModel,
@@ -227,6 +228,13 @@ export async function editBusinessProfile(params: BusinessProfileModel) {
     params.website = params.website.map((i) => ({ url: i }));
   }
 
+  await ensureLazyModule('WAWebBusinessProfileJob');
+  if (typeof editProfile !== 'function') {
+    throw new WPPError(
+      'business_profile_unavailable',
+      'The native business profile action is not available'
+    );
+  }
   await editProfile(params);
   const user = getMyUserWid();
   const profile = await BusinessProfileStore.fetchBizProfile(user);
