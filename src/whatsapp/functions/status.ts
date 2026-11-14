@@ -38,8 +38,16 @@ export declare function setMyStatus(
 exportModule(
   exports,
   {
-    getStatus: 'getStatus',
-    setMyStatus: 'setMyStatus',
+    getStatus: ['getStatus', 'default.getStatus'],
+    setMyStatus: ['setMyStatus', 'default.setMyStatus'],
   },
-  (m) => m.getStatus && m.setMyStatus && m.queryStatusAll
+  (m, id) => {
+    const jobs = m.getStatus ? m : m.default;
+    return (
+      typeof jobs?.getStatus === 'function' &&
+      typeof jobs?.setMyStatus === 'function' &&
+      (id === 'WAWebContactStatusBridge' ||
+        typeof jobs?.queryStatusAll === 'function')
+    );
+  }
 );

@@ -88,6 +88,12 @@ export const LAZY_MODULES: {
     components: ['WAWebPrivacyVisibilityEditDrawer.react'],
     pattern: /PrivacyVisibility/,
   },
+  // WA105424: the profile resource registers the bridge, updater and About
+  // constants without opening the drawer or fetching/changing account data.
+  WAWebContactTextStatusBridge: {
+    components: ['WAWebProfileDrawer.react'],
+    pattern: /^WAWebProfileDrawer/,
+  },
   // The profile drawer registers the setter without changing the profile.
   WAWebSetPushnameConnAction: {
     components: ['WAWebProfileDrawer.react'],
@@ -97,6 +103,17 @@ export const LAZY_MODULES: {
   WAWebGroupCreateJob: {
     components: ['WAWebNewGroupFlow.react'],
     pattern: /NewGroupFlow/,
+  },
+  // Lazy since WA ~2.3000.1049748952; the business profile drawer bundle
+  // registers the job without opening the drawer.
+  WAWebBusinessProfileJob: {
+    components: ['WAWebBizRefreshedProfileDrawer.react'],
+    pattern: /BizRefreshedProfile|BizProfile/,
+  },
+  // Lazy since WA ~2.3000.1052599095, shipped in the same bundle.
+  WAWebMediaProduct: {
+    components: ['WAWebBizRefreshedProfileDrawer.react'],
+    pattern: /BizRefreshedProfile|BizProfile|ProductCatalog/,
   },
   // Both forward modules ship in the same bundle, so either entry recovers
   // the other. `WAWebMediaForwardMediaMsg` is preferred because it is a plain

@@ -187,6 +187,7 @@ export * from './STATUS_JID';
 export * from './statusEnable';
 export * from './subscribePresence';
 export * from './syncABPropsTask';
+export * from './textStatus';
 export * from './toggleNewsletterAdminActivityMuteStateAction';
 export * from './toUserLid';
 export * from './typeAttributeFromProtobuf';
