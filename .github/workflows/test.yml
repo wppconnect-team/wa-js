@@ -61,6 +61,9 @@ jobs:
       - name: Test loader miss recovery
         run: npx playwright test tests/loader-negative-cache.unit.spec.ts --project tests
 
+      - name: Test eager message key serialization before event delivery
+        run: npx playwright test tests/msg-key-eager-serialized.unit.spec.ts --project tests
+
       - name: Test native attachment UI preload isolation
         run: npx playwright test tests/loader-media-preload.unit.spec.ts --project tests
 
