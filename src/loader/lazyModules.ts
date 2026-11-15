@@ -30,6 +30,12 @@ export interface LazyModuleSource {
    * component names are tried after the explicit ones.
    */
   pattern?: RegExp;
+  /**
+   * `JSResourceForInteraction` names whose bundle defines the module, tried
+   * after the components. Their resources are only known once a bundle that
+   * references them was fetched.
+   */
+  resources?: string[];
 }
 
 /**
@@ -74,10 +80,19 @@ export const LAZY_MODULES: {
       'WAWebViewCommunityMembersModal.react',
     ],
     pattern: /QueryAndUpdateCommunityParticipants|ViewCommunityMembers/,
+    // WA >= 2.3000.1054241206: the action is no longer a component, the
+    // member modal bundle loads it on interaction.
+    resources: ['WAWebQueryAndUpdateCommunityParticipantsAction'],
   },
   WAWebSetPrivacyForOneCategoryAction: {
     components: ['WAWebPrivacyVisibilityEditDrawer.react'],
     pattern: /PrivacyVisibility/,
+  },
+  // WA105424: the profile resource registers the bridge, updater and About
+  // constants without opening the drawer or fetching/changing account data.
+  WAWebContactTextStatusBridge: {
+    components: ['WAWebProfileDrawer.react'],
+    pattern: /^WAWebProfileDrawer/,
   },
   // The profile drawer registers the setter without changing the profile.
   WAWebSetPushnameConnAction: {
@@ -88,6 +103,17 @@ export const LAZY_MODULES: {
   WAWebGroupCreateJob: {
     components: ['WAWebNewGroupFlow.react'],
     pattern: /NewGroupFlow/,
+  },
+  // Lazy since WA ~2.3000.1049748952; the business profile drawer bundle
+  // registers the job without opening the drawer.
+  WAWebBusinessProfileJob: {
+    components: ['WAWebBizRefreshedProfileDrawer.react'],
+    pattern: /BizRefreshedProfile|BizProfile/,
+  },
+  // Lazy since WA ~2.3000.1052599095, shipped in the same bundle.
+  WAWebMediaProduct: {
+    components: ['WAWebBizRefreshedProfileDrawer.react'],
+    pattern: /BizRefreshedProfile|BizProfile|ProductCatalog/,
   },
   // Both forward modules ship in the same bundle, so either entry recovers
   // the other. `WAWebMediaForwardMediaMsg` is preferred because it is a plain

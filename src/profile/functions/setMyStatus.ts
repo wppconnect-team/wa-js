@@ -15,8 +15,7 @@
  */
 
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
-import { StatusStore } from '../../whatsapp';
-import * as wa_functions from '../../whatsapp/functions';
+import { writeTextStatus } from '../../whatsapp/textStatusCompatibility';
 
 /**
  * Update your current text status
@@ -30,12 +29,5 @@ import * as wa_functions from '../../whatsapp/functions';
  */
 
 export async function setMyStatus(statusText: string) {
-  await wa_functions.setMyStatus(statusText);
-  const myStatus = await StatusStore.find(getMyUserWid());
-
-  if (myStatus) {
-    myStatus.status = statusText;
-  }
-
-  return true;
+  return writeTextStatus(getMyUserWid(), statusText);
 }

@@ -266,7 +266,7 @@ export async function getMessages(
       return m;
     }
     // History reads must not replay live-delivery notifications.
-    return MsgStore.get(m) || new MsgModel({ ...m, recvFresh: false });
+    return MsgStore.get(m.id) || new MsgModel({ ...m, recvFresh: false });
   });
 
   // Include call messages if requested
@@ -291,7 +291,7 @@ export async function getMessages(
           if (m instanceof MsgModel) {
             return m;
           }
-          return MsgStore.get(m) || new MsgModel({ ...m, recvFresh: false });
+          return MsgStore.get(m.id) || new MsgModel({ ...m, recvFresh: false });
         });
 
         // Merge call messages with regular messages

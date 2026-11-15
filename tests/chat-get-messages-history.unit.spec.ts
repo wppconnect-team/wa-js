@@ -79,7 +79,8 @@ function historyApi(legacy: boolean) {
           return {
             MsgModel,
             MsgKey: { fromString: (key: string) => ({ key }) },
-            MsgStore: { get: (m: any) => stored.get(m.id || m) },
+            // Like the real collection, resolves ids only, never raw messages
+            MsgStore: { get: (id: any) => stored.get(id) },
           };
         }
         if (id === '../../whatsapp/enums') {
@@ -152,5 +153,29 @@ for (const legacy of [false, true]) {
     expect(message.attributes.recvFresh).toBe(true);
     expect(api.constructed).toHaveLength(1);
     expect(api.alerts).toHaveLength(before);
+  });
+
+  test(`${apiName}: repeated reads reuse stored message and call models without copies`, async () => {
+    const api = historyApi(legacy);
+    const message = new api.MsgModel({ ...api.raw, isNewMsg: false });
+    const call = new api.MsgModel({ ...api.calls[0], isNewMsg: false });
+    api.stored.set(api.raw.id, message);
+    api.stored.set(api.calls[0].id, call);
+    const before = api.constructed.length;
+    for (let i = 0; i < 20; i++) {
+      const messages = await api.getMessages('chat', {
+        id: 'anchor',
+        count: 20,
+        onlyUnread: true,
+        includeCallMessages: true,
+      });
+      expect(messages).toContain(message);
+      expect(messages).toContain(call);
+    }
+    expect(api.constructed).toHaveLength(before);
+    expect(message.attributes.isNewMsg).toBe(false);
+    expect(call.attributes.isNewMsg).toBe(false);
+    expect(message.attributes.recvFresh).toBe(true);
+    expect(call.attributes.recvFresh).toBe(true);
   });
 }

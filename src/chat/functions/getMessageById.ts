@@ -96,7 +96,7 @@ export async function getMessageById(
     if (m instanceof MsgModel) {
       return m;
     }
-    return MsgStore.get(m) || new MsgModel(m);
+    return MsgStore.get(m.id) || new MsgModel(m);
   });
 
   if (isSingle) {

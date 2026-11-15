@@ -25,7 +25,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v7.1.0
         with:
-          node-version: 26.13.0
+          node-version: 26.13.1
 
       - name: Get npm cache directory
         id: npm-cache
@@ -61,6 +61,9 @@ jobs:
       - name: Test loader miss recovery
         run: npx playwright test tests/loader-negative-cache.unit.spec.ts --project tests
 
+      - name: Test eager message key serialization before event delivery
+        run: npx playwright test tests/msg-key-eager-serialized.unit.spec.ts --project tests
+
       - name: Test native attachment UI preload isolation
         run: npx playwright test tests/loader-media-preload.unit.spec.ts --project tests
 
@@ -79,6 +82,13 @@ jobs:
 
       - name: Test lazy bundle retry
         run: npx playwright test tests/loader-lazy-retry.unit.spec.ts --project tests
+
+      - name: Test interaction resource lifecycle and deprecated LID compatibility
+        run: >-
+          npx playwright test
+          tests/loader-js-resource.unit.spec.ts
+          tests/lid-migration-compat.unit.spec.ts
+          --project tests
 
       - name: Test late Stream registration
         run: npx playwright test tests/stream-registration.unit.spec.ts --project tests
@@ -103,6 +113,17 @@ jobs:
 
       - name: Test status remove ensures the revoke action module
         run: npx playwright test tests/status-remove-ensure-revoke-action.unit.spec.ts --project tests
+
+      - name: Test About backends and native capability requirements
+        run: >-
+          npx playwright test
+          tests/text-status-compat.unit.spec.ts
+          tests/text-status-capability.unit.spec.ts
+          tests/business-lazy-actions.unit.spec.ts
+          tests/status-business-selectors.unit.spec.ts
+          tests/wa-browser-document-routing.unit.spec.ts
+          tests/wa-page-inspection-retry.unit.spec.ts
+          --project tests
 
       - name: Test cold-page compatibility bindings
         run: npx playwright test tests/compatibility-monitor-lazy-modules.spec.ts --project tests
@@ -182,7 +203,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v7.1.0
         with:
-          node-version: 26.13.0
+          node-version: 26.13.1
 
       - name: Get npm cache directory
         id: npm-cache

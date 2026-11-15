@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { ensureLazyModule } from '../../loader';
+import { WPPError } from '../../util';
 import { updateCartEnabled as UpdateCartEnabled } from '../../whatsapp/functions';
 
 /**
@@ -31,5 +33,12 @@ import { updateCartEnabled as UpdateCartEnabled } from '../../whatsapp/functions
  * @return Return sucess of product visibility set
  */
 export async function updateCartEnabled(enabled: boolean): Promise<any> {
+  await ensureLazyModule('WAWebBusinessProfileJob');
+  if (typeof UpdateCartEnabled !== 'function') {
+    throw new WPPError(
+      'business_profile_unavailable',
+      'The native business cart action is not available'
+    );
+  }
   return await UpdateCartEnabled(enabled);
 }

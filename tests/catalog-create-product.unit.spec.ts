@@ -34,6 +34,8 @@ function load(addProduct: (...args: any[]) => Promise<any>) {
     exports,
     require: (id: string) => {
       switch (id) {
+        case '../../loader':
+          return { ensureLazyModule: async () => true };
         case '../../util':
           return { convertToFile: async () => ({ type: 'image/png' }) };
         case '../../whatsapp':

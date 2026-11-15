@@ -15,7 +15,7 @@
  */
 
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
-import { StatusStore } from '../../whatsapp';
+import { readTextStatus } from '../../whatsapp/textStatusCompatibility';
 
 /**
  * Get your current text status
@@ -29,6 +29,5 @@ import { StatusStore } from '../../whatsapp';
  */
 
 export async function getMyStatus() {
-  const myStatus = await StatusStore.find(getMyUserWid());
-  return myStatus.status;
+  return readTextStatus(getMyUserWid());
 }
