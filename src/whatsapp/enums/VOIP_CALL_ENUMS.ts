@@ -52,6 +52,17 @@ export declare enum VOIP_VIDEO_STATE {
 }
 
 /**
+ * Reason passed to the VoIP stack when rejecting an incoming call
+ *
+ * @whatsapp WAWebVoipWaCallEnums
+ */
+export declare enum REJECT_END_REASON {
+  Self = 2,
+  MicPermissionDenied = 5,
+  CameraPermissionDenied = 6,
+}
+
+/**
  * Reason passed to the VoIP stack when ending a call
  *
  * @whatsapp WAWebVoipSignalingEnums
@@ -71,6 +82,7 @@ exportModule(
   {
     CALL_LOG_RESULT: 'CallLogResult',
     VOIP_VIDEO_STATE: 'VideoState',
+    REJECT_END_REASON: 'RejectEndReason',
   },
   (m) => m.CallLogResult && m.VideoState && m.CallState
 );

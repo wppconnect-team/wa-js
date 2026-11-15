@@ -34,7 +34,11 @@ export interface VoipStackInterface {
     videoEnabled: boolean,
     lobbyEntryPoint?: number | null
   ): Promise<void>;
-  rejectCall(): Promise<void>;
+  /**
+   * Only on older versions, replaced by `rejectCallWithEndReason`
+   */
+  rejectCall?(): Promise<void>;
+  rejectCallWithEndReason?(endReason: number): Promise<void>;
   endCall(reason: number, isUserInitiated: boolean): Promise<void>;
   setCallMute(muted: boolean): Promise<number>;
   setCallVideoMute(muted: boolean): Promise<number>;
