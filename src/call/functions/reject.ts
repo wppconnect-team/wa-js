@@ -17,12 +17,11 @@
 import { getMyUserWid } from '../../conn/functions/getMyUserWid';
 import { WPPError } from '../../util';
 import { CallStore, websocket } from '../../whatsapp';
-import { REJECT_END_REASON } from '../../whatsapp/enums';
 import { getVoipStackInterface } from '../../whatsapp/functions';
 import { getCall, isActiveCall, isIncomingCall } from './getCall';
 
 /**
- * `WAWebVoipWaCallEnums.RejectEndReason.Self` - rejected by the local user
+ * Self rejection reason used by the native VoIP stack
  */
 const REJECT_END_REASON_SELF = 2;
 
@@ -95,9 +94,7 @@ export async function reject(callId?: string): Promise<boolean> {
       // Marks the call as declined instead of missed on the call log
       (call as any).userEndedCall = true;
 
-      await voipStack.rejectCallWithEndReason(
-        REJECT_END_REASON?.Self ?? REJECT_END_REASON_SELF
-      );
+      await voipStack.rejectCallWithEndReason(REJECT_END_REASON_SELF);
 
       return true;
     }
