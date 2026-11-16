@@ -21,6 +21,11 @@ import { getVoipStackInterface } from '../../whatsapp/functions';
 import { getCall, isActiveCall, isIncomingCall } from './getCall';
 
 /**
+ * Self rejection reason used by the native VoIP stack
+ */
+const REJECT_END_REASON_SELF = 2;
+
+/**
  * Reject a incoming call
  *
  * @example
@@ -72,8 +77,8 @@ export async function reject(callId?: string): Promise<boolean> {
   if (isActiveCall(call) && typeof getVoipStackInterface === 'function') {
     const voipStack = await getVoipStackInterface();
 
-    // The active call can change while the stack loads, and rejectCall has no
-    // call id argument
+    // The active call can change while the stack loads, and the reject methods
+    // have no call id argument
     if (!isActiveCall(call)) {
       throw new WPPError(
         'call_not_found',
@@ -85,8 +90,17 @@ export async function reject(callId?: string): Promise<boolean> {
       );
     }
 
-    if (typeof voipStack?.rejectCall === 'function') {
+    if (typeof voipStack?.rejectCallWithEndReason === 'function') {
       // Marks the call as declined instead of missed on the call log
+      (call as any).userEndedCall = true;
+
+      await voipStack.rejectCallWithEndReason(REJECT_END_REASON_SELF);
+
+      return true;
+    }
+
+    // TODO: remove when 2.3000.10494.x is no longer available in wa-version/html
+    if (typeof voipStack?.rejectCall === 'function') {
       (call as any).userEndedCall = true;
 
       await voipStack.rejectCall();

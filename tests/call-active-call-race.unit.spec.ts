@@ -149,7 +149,7 @@ function callApi() {
     Object.assign(api, load(file));
   }
 
-  return { api, store, native, resolveStack, afterStackReady };
+  return { api, store, native, stack, resolveStack, afterStackReady };
 }
 
 /**
@@ -182,6 +182,58 @@ const replaceWithB = (store: { activeCall: any }) => {
 const endCall = (store: { activeCall: any }) => {
   store.activeCall = null;
 };
+
+test.describe('modern incoming call rejection', () => {
+  for (const legacyAvailable of [true, false]) {
+    test(`uses the self rejection reason with legacy method ${legacyAvailable ? 'present' : 'absent'}`, async () => {
+      const ctx = callApi();
+      ctx.store.activeCall = callModel('CALL-A');
+      const reasons: number[] = [];
+      ctx.stack.rejectCallWithEndReason = async function (reason: number) {
+        expect(this).toBe(ctx.stack);
+        reasons.push(reason);
+      };
+      if (!legacyAvailable) delete ctx.stack.rejectCall;
+      const result = ctx.api.reject('CALL-A');
+      ctx.resolveStack();
+      expect(await result).toBe(true);
+      expect(reasons).toEqual([2]);
+      expect(ctx.native).toEqual([]);
+      expect(ctx.store.activeCall.userEndedCall).toBe(true);
+    });
+  }
+
+  test('does not reject a replacement call through the modern method', async () => {
+    const ctx = callApi();
+    const callA = callModel('CALL-A');
+    ctx.store.activeCall = callA;
+    const reasons: number[] = [];
+    ctx.stack.rejectCallWithEndReason = async (reason: number) => {
+      reasons.push(reason);
+    };
+    const result = ctx.api.reject('CALL-A').catch((error: any) => error);
+    replaceWithB(ctx.store);
+    ctx.resolveStack();
+    expect((await result).code).toBe('call_not_found');
+    expect(reasons).toEqual([]);
+    expect(ctx.native).toEqual([]);
+    expect(callA.userEndedCall).toBeUndefined();
+    expect(ctx.store.activeCall.userEndedCall).toBeUndefined();
+  });
+
+  test('propagates a modern rejection failure without a second legacy rejection', async () => {
+    const ctx = callApi();
+    ctx.store.activeCall = callModel('CALL-A');
+    const failure = new Error('native rejection failed');
+    ctx.stack.rejectCallWithEndReason = async () => {
+      throw failure;
+    };
+    const result = ctx.api.reject('CALL-A').catch((error: any) => error);
+    ctx.resolveStack();
+    expect(await result).toBe(failure);
+    expect(ctx.native).toEqual([]);
+  });
+});
 
 const operations: Array<[string, (api: any) => Promise<any>]> = [
   ['end', (api) => api.end('CALL-A')],
