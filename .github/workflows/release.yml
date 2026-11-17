@@ -29,6 +29,7 @@ on:
 
 permissions:
   contents: write
+  actions: write # dispatch publish.yml
 
 jobs:
   release:
@@ -37,7 +38,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          token: ${{ secrets.PERSONAL_TOKEN }}
           ref: ${{ github.event.inputs.branch }}
           # `changelog:update` runs `conventional-changelog -r 0`, which walks
           # every tag. On the default shallow clone it saw a single commit and
@@ -79,3 +79,9 @@ jobs:
             RELEASE_ARGS="$RELEASE_ARGS --preRelease ${{ github.event.inputs.preRelease }}"
           fi
           npx release-it $RELEASE_ARGS
+
+      # Tags pushed with GITHUB_TOKEN don't fire `push: tags`; dispatch is exempt.
+      - name: Trigger publish
+        run: gh workflow run publish.yml --ref "v$(node -p "require('./package.json').version")"
+        env:
+          GH_TOKEN: ${{ github.token }}
