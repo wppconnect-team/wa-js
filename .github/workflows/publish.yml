@@ -17,9 +17,6 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
 
-    env:
-      PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -73,10 +70,3 @@ jobs:
           files: dist/wppconnect-wa.js
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Update WPPConnect Site
-        if: env.PERSONAL_TOKEN != ''
-        run: gh workflow run update-blog.yml --repo wppconnect-team/wppconnect-team.github.io
-        continue-on-error: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
