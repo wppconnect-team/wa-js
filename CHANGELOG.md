@@ -1,3 +1,30 @@
+## <small>4.8.1 (2026-11-17)</small>
+
+### Bug Fixes
+
+* **call:** support modern rejection without mandatory enum binding (#3785) ([0e13026](https://github.com/wppconnect-team/wa-js/commit/0e13026)), closes [#3785](https://github.com/wppconnect-team/wa-js/issues/3785)
+* install message key serialization before incoming events ([e457f76](https://github.com/wppconnect-team/wa-js/commit/e457f76))
+* resolve About status and modern text status backends lazily ([eca41f6](https://github.com/wppconnect-team/wa-js/commit/eca41f6))
+
+### Build System
+
+* **deps-dev:** align the validated Playwright packages ([87569fa](https://github.com/wppconnect-team/wa-js/commit/87569fa))
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.5212 (#3783) ([d1a11da](https://github.com/wppconnect-team/wa-js/commit/d1a11da)), closes [#3783](https://github.com/wppconnect-team/wa-js/issues/3783)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.5213 (#3784) ([93db471](https://github.com/wppconnect-team/wa-js/commit/93db471)), closes [#3784](https://github.com/wppconnect-team/wa-js/issues/3784)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.5216 (#3786) ([43e4e91](https://github.com/wppconnect-team/wa-js/commit/43e4e91)), closes [#3786](https://github.com/wppconnect-team/wa-js/issues/3786)
+* **deps-dev:** update dependency lint-staged to ^17.6.1 (#3787) ([626a979](https://github.com/wppconnect-team/wa-js/commit/626a979)), closes [#3787](https://github.com/wppconnect-team/wa-js/issues/3787)
+* **deps-dev:** update the validated ESLint development graph ([a71d4d9](https://github.com/wppconnect-team/wa-js/commit/a71d4d9))
+* **deps-dev:** update typescript-eslint monorepo to ^8.73.0 (#3789) ([649713f](https://github.com/wppconnect-team/wa-js/commit/649713f)), closes [#3789](https://github.com/wppconnect-team/wa-js/issues/3789)
+* **deps:** update the validated WhatsApp version catalogue ([2f28882](https://github.com/wppconnect-team/wa-js/commit/2f28882))
+
+### Continuous Integration
+
+* **release:** release without PERSONAL_TOKEN (#3790) ([bbea01d](https://github.com/wppconnect-team/wa-js/commit/bbea01d)), closes [#3790](https://github.com/wppconnect-team/wa-js/issues/3790)
+
+### Chores
+
+* **deps:** refresh development lockfile (#3788) ([6b8a5ef](https://github.com/wppconnect-team/wa-js/commit/6b8a5ef)), closes [#3788](https://github.com/wppconnect-team/wa-js/issues/3788)
+
 ## 4.8.0 (2026-11-13)
 
 ### Features
