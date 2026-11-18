@@ -81,6 +81,7 @@ export * from './getGroupSenderKeyList';
 export * from './getGroupSizeLimit';
 export * from './getHistorySyncProgress';
 export * from './getMediaPropsNew';
+export * from './getMeLidUserOrThrow';
 export * from './getMembershipApprovalRequests';
 export * from './getNewsletterSubscribers';
 export * from './getNextLabelId';

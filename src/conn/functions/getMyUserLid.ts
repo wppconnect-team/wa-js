@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { UserPrefs, Wid } from '../../whatsapp';
+import { Wid } from '../../whatsapp';
+import { getMeLidUserOrThrow } from '../../whatsapp/functions';
 
 /**
  * Return the current logged user LID (Locally Identified) without device id
@@ -26,5 +27,5 @@ import { UserPrefs, Wid } from '../../whatsapp';
  * ```
  */
 export function getMyUserLid(): Wid {
-  return UserPrefs.getMeLidUserOrThrow();
+  return getMeLidUserOrThrow();
 }
