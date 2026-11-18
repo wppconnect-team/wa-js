@@ -1,3 +1,17 @@
+## <small>4.8.2 (2026-11-18)</small>
+
+### Bug Fixes
+
+* **conn:** fall back to nullable account LID getter (#3796) ([69d59d3](https://github.com/wppconnect-team/wa-js/commit/69d59d3)), closes [#3796](https://github.com/wppconnect-team/wa-js/issues/3796)
+
+### Build System
+
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.5218 (#3792) ([d66f3f8](https://github.com/wppconnect-team/wa-js/commit/d66f3f8)), closes [#3792](https://github.com/wppconnect-team/wa-js/issues/3792)
+
+### Continuous Integration
+
+* **publish:** drop the site update dispatch (#3791) ([1d33107](https://github.com/wppconnect-team/wa-js/commit/1d33107)), closes [#3791](https://github.com/wppconnect-team/wa-js/issues/3791)
+
 ## <small>4.8.1 (2026-11-17)</small>
 
 ### Bug Fixes
