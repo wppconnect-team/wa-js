@@ -26,5 +26,17 @@ import { UserPrefs, Wid } from '../../whatsapp';
  * ```
  */
 export function getMyUserLid(): Wid {
-  return UserPrefs.getMeLidUserOrThrow();
+  const userPrefs = UserPrefs;
+  if (typeof userPrefs?.getMeLidUserOrThrow === 'function') {
+    return userPrefs.getMeLidUserOrThrow();
+  }
+
+  if (typeof userPrefs?.getMaybeMeLidUser === 'function') {
+    const lid = userPrefs.getMaybeMeLidUser();
+    if (lid) {
+      return lid;
+    }
+  }
+
+  throw new Error('The account LID is unavailable');
 }
