@@ -87,7 +87,13 @@ async function fetchFromServer(wid: Wid): Promise<QueryWidExistsResult | null> {
       debug('fetchFromServer: no result for %s', wid.toString());
       return null;
     }
-    const lid = ApiContact.getCurrentLid(wid) || undefined;
+    // The server resolves aliases (e.g. a Brazilian number with an extra 9) and may
+    // answer with the LID itself, which the queried wid has no local mapping for.
+    const lid =
+      (native.wid?.isLid() ? native.wid : undefined) ||
+      ApiContact.getCurrentLid(native.wid) ||
+      ApiContact.getCurrentLid(wid) ||
+      undefined;
     const result = {
       wid: native.wid,
       biz: native.biz,
@@ -134,7 +140,11 @@ export async function queryWidExists(
     ? ContactStore.get(counterpartWid)
     : null;
 
-  if (lidOrPnContact1 != null || lidOrPnContact2 != null) {
+  // A phone number with no known LID may be an alias (e.g. an extra 9) that the
+  // server resolves to another account, so the store cannot answer for it.
+  const unmappedPn = wid.server === 'c.us' && !counterpartWid;
+
+  if (!unmappedPn && (lidOrPnContact1 != null || lidOrPnContact2 != null)) {
     const contact = lidOrPnContact1 || lidOrPnContact2!;
 
     debug('contactStore hit for %s', wid.toString());
