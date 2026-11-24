@@ -191,6 +191,7 @@ function mediaApi() {
         if (id === '../../loader')
           return {
             onInjected: (fn: () => void) => ready.push(fn),
+            onLoggedIn: (fn: () => void) => ready.push(fn),
             onFullReady: () => undefined,
             ensureLazyModule: async () => undefined,
           };

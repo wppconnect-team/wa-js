@@ -94,8 +94,12 @@ jobs:
           tests/get-my-user-lid.unit.spec.ts
           --project tests
 
-      - name: Test late Stream registration
-        run: npx playwright test tests/stream-registration.unit.spec.ts --project tests
+      - name: Test late Stream registration and logged-in module gate
+        run: >-
+          npx playwright test
+          tests/stream-registration.unit.spec.ts
+          tests/conn-logged-in-gate.unit.spec.ts
+          --project tests
 
       - name: Test group description signatures
         run: npx playwright test tests/group-description.unit.spec.ts --project tests

@@ -22,11 +22,25 @@ import { isAuthenticated } from '..';
 loader.onInjected(register);
 
 function register() {
-  let isAuth = isAuthenticated();
+  let isAuth: boolean;
+  try {
+    isAuth = isAuthenticated();
+  } catch (error) {
+    // Unknown state: load everything rather than lose the logged-in events
+    loader.setLoggedIn();
+    throw error;
+  }
+
+  // On the QR screen only the basic modules load; the logged-in ones wait
+  // until the QR code is scanned
+  if (isAuth) {
+    loader.setLoggedIn();
+  }
 
   const trigger = async () => {
     if (!isAuth) {
       internalEv.emit('conn.authenticated');
+      loader.setLoggedIn();
       isAuth = false;
     }
   };

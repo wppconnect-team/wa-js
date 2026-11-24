@@ -38,7 +38,7 @@ function statusWrapper(encryptStatus: (...args: any[]) => Promise<void>) {
     require(id: string) {
       if (id === '../../loader') {
         return {
-          onInjected: (callback: () => void) => injected.push(callback),
+          onLoggedIn: (callback: () => void) => injected.push(callback),
           onFullReady: () => {},
         };
       }

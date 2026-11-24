@@ -60,6 +60,31 @@ export function onFullReady(listener: () => void, delay = 0): void {
   });
 }
 
+/**
+ * Is setted true when the session is logged in (already at injection or
+ * after the QR code is scanned)
+ */
+export let isLoggedIn = false;
+
+/**
+ * For code that needs chats, messages or calls: these modules do not exist
+ * on the QR screen, so looking them up there only blocks the page.
+ */
+export function onLoggedIn(listener: () => void, delay = 0): void {
+  internalEv.on('loader.logged_in', () => {
+    setTimeout(listener, delay);
+  });
+}
+
+export function setLoggedIn(): void {
+  if (isLoggedIn) {
+    return;
+  }
+  isLoggedIn = true;
+  debug('logged in');
+  internalEv.emit('loader.logged_in');
+}
+
 export type SearchModuleCondition = (module: any, moduleId: string) => boolean;
 
 export const __debug = () => {
