@@ -1,3 +1,9 @@
+## <small>4.8.4-rc.0 (2026-11-24)</small>
+
+### Continuous Integration
+
+* **publish:** pass a dist-tag for every prerelease (#3814) ([56ae9c3](https://github.com/wppconnect-team/wa-js/commit/56ae9c3)), closes [#3814](https://github.com/wppconnect-team/wa-js/issues/3814)
+
 ## <small>4.8.3-rc.0 (2026-11-24)</small>
 
 ### Bug Fixes
