@@ -1,3 +1,33 @@
+## <small>4.8.3-rc.0 (2026-11-24)</small>
+
+### Bug Fixes
+
+* load logged-in modules only after login to speed up the QR screen (#3813) ([73e64df](https://github.com/wppconnect-team/wa-js/commit/73e64df)), closes [#3813](https://github.com/wppconnect-team/wa-js/issues/3813)
+* resolve numbers with an extra 9 to the LID the server returns ([1cf8864](https://github.com/wppconnect-team/wa-js/commit/1cf8864))
+
+### Build System
+
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.5219 (#3797) ([8af45e1](https://github.com/wppconnect-team/wa-js/commit/8af45e1)), closes [#3797](https://github.com/wppconnect-team/wa-js/issues/3797)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.5226 (#3799) ([73aa335](https://github.com/wppconnect-team/wa-js/commit/73aa335)), closes [#3799](https://github.com/wppconnect-team/wa-js/issues/3799)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.5228 (#3801) ([da57596](https://github.com/wppconnect-team/wa-js/commit/da57596)), closes [#3801](https://github.com/wppconnect-team/wa-js/issues/3801)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.5229 (#3802) ([b9325f0](https://github.com/wppconnect-team/wa-js/commit/b9325f0)), closes [#3802](https://github.com/wppconnect-team/wa-js/issues/3802)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.5232 (#3803) ([be72122](https://github.com/wppconnect-team/wa-js/commit/be72122)), closes [#3803](https://github.com/wppconnect-team/wa-js/issues/3803)
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.5234 ([9f24467](https://github.com/wppconnect-team/wa-js/commit/9f24467))
+* **deps-dev:** update dependency @wppconnect/wa-version to ^1.5.5238 ([f256856](https://github.com/wppconnect-team/wa-js/commit/f256856))
+* **deps-dev:** update dependency lint-staged to ^17.6.2 (#3804) ([b4ac776](https://github.com/wppconnect-team/wa-js/commit/b4ac776)), closes [#3804](https://github.com/wppconnect-team/wa-js/issues/3804)
+* **deps-dev:** update dependency release-it to ^21.1.3 (#3805) ([51335e9](https://github.com/wppconnect-team/wa-js/commit/51335e9)), closes [#3805](https://github.com/wppconnect-team/wa-js/issues/3805)
+* **deps-dev:** update dependency webpack to ^5.113.0 (#3800) ([9447345](https://github.com/wppconnect-team/wa-js/commit/9447345)), closes [#3800](https://github.com/wppconnect-team/wa-js/issues/3800)
+* **deps-dev:** update the WhatsApp Web catalog to 1.5.5222 (#3798) ([6935e8f](https://github.com/wppconnect-team/wa-js/commit/6935e8f)), closes [#3798](https://github.com/wppconnect-team/wa-js/issues/3798)
+* **deps-dev:** update typescript-eslint monorepo to ^8.74.0 (#3811) ([9505f09](https://github.com/wppconnect-team/wa-js/commit/9505f09)), closes [#3811](https://github.com/wppconnect-team/wa-js/issues/3811)
+
+### Continuous Integration
+
+* **publish:** stage npm releases for maintainer approval (#3812) ([d499b09](https://github.com/wppconnect-team/wa-js/commit/d499b09)), closes [#3812](https://github.com/wppconnect-team/wa-js/issues/3812)
+
+### Chores
+
+* **deps:** lock file maintenance (#3808) ([047c1d7](https://github.com/wppconnect-team/wa-js/commit/047c1d7)), closes [#3808](https://github.com/wppconnect-team/wa-js/issues/3808)
+
 ## <small>4.8.2 (2026-11-18)</small>
 
 ### Bug Fixes
