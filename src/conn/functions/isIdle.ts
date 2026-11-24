@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { Socket } from '../../whatsapp';
+import { BackendEventBus } from '../../whatsapp';
 import { SOCKET_STATE } from '../../whatsapp/enums/SOCKET_STATE';
 
 export function isIdle(): boolean {
-  return Socket.state === SOCKET_STATE.UNPAIRED_IDLE;
+  // Socket is not loaded on the QR screen; BackendEventBus holds its state
+  return BackendEventBus.socketState === SOCKET_STATE.UNPAIRED_IDLE;
 }

@@ -126,6 +126,10 @@ export interface ConnEventTypes {
    * ```
    */
   'conn.qrcode_change': QRCode;
+  /**
+   * Triggered when the QR codes run out and WhatsApp shows the button to
+   * reload them. Call `WPP.conn.refreshQR()` to get a new one.
+   */
   'conn.qrcode_idle': undefined;
   'conn.require_auth': undefined;
 

@@ -15,7 +15,7 @@
  */
 
 import { internalEv } from '../../eventEmitter';
-import { Cmd, Socket } from '../../whatsapp';
+import { BackendEventBus, Socket } from '../../whatsapp';
 import { AuthCode } from '..';
 import { isAuthenticated, isMultiDevice } from '.';
 
@@ -36,7 +36,7 @@ export async function refreshQR(): Promise<AuthCode | null> {
   }
 
   if (isMultiDevice()) {
-    Cmd.refreshQR();
+    BackendEventBus.triggerRefreshQR();
   } else {
     Socket.poke();
   }

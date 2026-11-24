@@ -16,18 +16,21 @@
 
 import { internalEv } from '../../eventEmitter';
 import * as loader from '../../loader';
-import { Socket } from '../../whatsapp';
+import { BackendEvent, BackendEventBus } from '../../whatsapp';
 import { isIdle } from '..';
 
 loader.onInjected(registerQRCodeIdleEvent);
 
 function registerQRCodeIdleEvent() {
-  const trigger = async () => {
+  let wasIdle = false;
+  const trigger = () => {
     const idle = isIdle();
-    if (idle) {
+    // Emit once when the QR codes run out, not on every socket state update
+    if (idle && !wasIdle) {
       internalEv.emit('conn.qrcode_idle');
     }
+    wasIdle = idle;
   };
   trigger();
-  Socket.on('change:state', trigger);
+  BackendEventBus.on(BackendEvent.SET_SOCKET_STATE, trigger);
 }

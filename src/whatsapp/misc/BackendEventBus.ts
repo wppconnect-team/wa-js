@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { SOCKET_STATE } from '../enums/SOCKET_STATE';
 import { exportModule } from '../exportModule';
 import { EventEmitter } from './EventEmitter';
 
@@ -53,9 +54,12 @@ export type BackendEventName = (typeof BackendEvent)[keyof typeof BackendEvent];
 export declare class BackendEventBusClass extends EventEmitter {
   isMainStreamReadyMd: boolean;
   isOfflineDeliveryEnd: boolean;
+  socketState: SOCKET_STATE;
 
   onStorageInitializationError(handler: () => void): this;
   triggerStorageInitializationError(error?: any): void;
+  /** What the "reload QR code" button of an expired QR code calls */
+  triggerRefreshQR(): void;
 }
 
 /** @whatsapp WAWebBackendEventBus */
