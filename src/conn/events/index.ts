@@ -24,6 +24,7 @@ import './registerMainLoadedEvent';
 import './registerMainReadyEvent';
 import './registerNeedsUpdateEvent';
 import './registerOnlineEvent';
+import './registerQRCodeChangeEvent';
 import './registerQRCodeIdleEvent';
 import './registerRequireAuthEvent';
 import './registerStreamEvent';

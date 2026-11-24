@@ -16,7 +16,7 @@
 
 import { BackendEventName } from '../../whatsapp';
 import { LogoutReason, StreamInfo, StreamMode } from '../../whatsapp/enums';
-import { AuthCode } from '../types';
+import { AuthCode, QRCode } from '../types';
 
 export interface ConnEventTypes {
   'conn.auth_code_change': AuthCode | null;
@@ -114,6 +114,18 @@ export interface ConnEventTypes {
    * ```
    */
   'conn.online': boolean;
+  /**
+   * Triggered when WhatsApp paints a new QR code, so the image always matches
+   * the code. Unlike `conn.auth_code_change`, it is read from the page.
+   *
+   * @example
+   * ```javascript
+   * WPP.on('conn.qrcode_change', ({ fullCode, base64Image }) => {
+   *   // base64Image: data:image/png;base64,...
+   * });
+   * ```
+   */
+  'conn.qrcode_change': QRCode;
   'conn.qrcode_idle': undefined;
   'conn.require_auth': undefined;
 
