@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wppconnect-team/wa-js"
+    "url": "git+https://github.com/wppconnect-team/wa-js.git"
   },
   "exports": {
     ".": {
