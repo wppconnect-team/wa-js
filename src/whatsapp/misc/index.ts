@@ -29,7 +29,6 @@ export * from './Enviroment';
 export * from './EventEmitter';
 export * from './ImageUtils';
 export * from './IsOfficialClient';
-export * from './JustKnobs';
 export * from './Lid1X1MigrationUtils';
 export * from './LidPnCache';
 export * from './LinkDeviceEvents';

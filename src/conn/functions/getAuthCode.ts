@@ -14,12 +14,8 @@
  * limitations under the License.
  */
 
-import {
-  Base64,
-  CompanionRegClientUtils,
-  Conn,
-  justknobx,
-} from '../../whatsapp';
+import * as loader from '../../loader';
+import { Base64, CompanionRegClientUtils, Conn } from '../../whatsapp';
 import { isNativeCameraQRLinkedDeviceTest } from '../../whatsapp/functions';
 import { adv, waNoiseInfo, waSignalStore } from '../../whatsapp/multidevice';
 import { AuthCode } from '..';
@@ -54,6 +50,8 @@ export async function getAuthCode(): Promise<AuthCode | null> {
     const secretKey = await Promise.resolve(adv.getADVSecretKey());
 
     const platform = CompanionRegClientUtils?.DEVICE_PLATFORM;
+    // A Meta framework module: exportModule only searches WA* module ids
+    const justknobx = loader.loadModule('justknobx')?.default;
 
     // Built like WAWebLinkDeviceQrcode.react, so a QR made from it matches WA's
     let fullCode = [ref, staticKeyPair, identityKeyPair, secretKey, platform]

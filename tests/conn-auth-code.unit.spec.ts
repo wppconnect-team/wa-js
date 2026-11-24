@@ -41,9 +41,15 @@ function authCodeFixture(options: {
           Base64: { encodeB64: (key: string) => `b64(${key})` },
           CompanionRegClientUtils: { DEVICE_PLATFORM: '1' },
           Conn: { ref: '2@ref', connected: false },
-          justknobx: {
-            _: (knob: string) => knob === '770' && !!options.knob770,
-          },
+        };
+      }
+      if (id === '../../loader') {
+        const justknobx = {
+          _: (knob: string) => knob === '770' && !!options.knob770,
+        };
+        return {
+          loadModule: (moduleId: string) =>
+            moduleId === 'justknobx' ? { default: justknobx } : null,
         };
       }
       if (id === '../../whatsapp/functions') {
