@@ -1,3 +1,9 @@
+## <small>4.8.5-rc.0 (2026-11-24)</small>
+
+### Features
+
+* **conn:** QR code from the painted page, and working QR expiry/refresh (#3816) ([89e710e](https://github.com/wppconnect-team/wa-js/commit/89e710e)), closes [#3816](https://github.com/wppconnect-team/wa-js/issues/3816)
+
 ## <small>4.8.4-rc.0 (2026-11-24)</small>
 
 ### Continuous Integration
