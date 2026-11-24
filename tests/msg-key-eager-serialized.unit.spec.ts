@@ -148,6 +148,7 @@ test('patches keys before an injected new-message listener delivers its first mi
     '../functions/': {},
   });
   f.events.emit('loader.injected');
+  f.events.emit('loader.logged_in');
   f.flushTimers();
   // Ready's deferred callbacks have not executed when this message arrives.
   f.events.emit('loader.ready');

@@ -62,6 +62,7 @@ function streamRegistration() {
           if (id === '../../loader') {
             return {
               onInjected: (callback: () => void) => callbacks.push(callback),
+              onLoggedIn: (callback: () => void) => callbacks.push(callback),
             };
           }
           throw new Error(`Unexpected dependency: ${id}`);

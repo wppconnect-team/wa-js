@@ -18,4 +18,5 @@ export interface LoaderEvents {
   'loader.injected': void;
   'loader.ready': void;
   'loader.full_ready': void;
+  'loader.logged_in': void;
 }

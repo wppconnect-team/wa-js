@@ -35,7 +35,7 @@ let isOutgoingWrapped = false;
 let isRegistered = false;
 
 // Retried when fully ready, in case the module was not registered yet
-loader.onInjected(register);
+loader.onLoggedIn(register);
 loader.onFullReady(register);
 
 function hasListeners() {

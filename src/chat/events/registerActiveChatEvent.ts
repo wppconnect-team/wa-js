@@ -18,7 +18,7 @@ import { internalEv } from '../../eventEmitter';
 import * as loader from '../../loader';
 import { ChatModel, ChatStore } from '../../whatsapp';
 
-loader.onInjected(() => register());
+loader.onLoggedIn(() => register());
 let emitTimeout: any = null;
 
 function register() {

@@ -20,7 +20,7 @@ import { ChatStore, MsgModel, MsgStore } from '../../whatsapp';
 import { getQuotedMsgObj } from '../../whatsapp/functions';
 import { getQuotedMsgKey } from '../functions/';
 
-loader.onInjected(() => register());
+loader.onLoggedIn(() => register());
 
 function register() {
   MsgStore.on('add', (msg: MsgModel) => {

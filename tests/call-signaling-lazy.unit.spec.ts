@@ -42,7 +42,7 @@ function signalingApi(bundleLoads: boolean[]) {
       internalEv: { emit: () => undefined },
     },
     '../../loader': {
-      onInjected: (fn: () => void) => onReady.push(fn),
+      onLoggedIn: (fn: () => void) => onReady.push(fn),
       onFullReady: (fn: () => void) => onReady.push(fn),
       ensureLazyModule: async (id: string) => {
         ensured.push(id);

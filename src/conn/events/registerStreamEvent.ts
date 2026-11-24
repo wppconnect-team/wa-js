@@ -19,7 +19,7 @@ import * as loader from '../../loader';
 import { Stream, StreamModel } from '../../whatsapp';
 import { StreamInfo, StreamMode } from '../../whatsapp/enums';
 
-loader.onInjected(register);
+loader.onLoggedIn(register);
 
 let finished = false;
 let startedAt: number | undefined;

@@ -34,7 +34,7 @@ async function incomingCall(pathName: 'native' | 'legacy', call: any) {
     require(id: string) {
       if (id === 'debug') return () => () => undefined;
       if (id === '../../loader') {
-        return { onInjected: (callback: () => void) => (inject = callback) };
+        return { onLoggedIn: (callback: () => void) => (inject = callback) };
       }
       if (id === '../../eventEmitter') {
         return { internalEv: { emit: (...args: any[]) => events.push(args) } };

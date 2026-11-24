@@ -69,7 +69,7 @@ export async function sendRawStatus(
   return result;
 }
 
-loader.onInjected(() => {
+loader.onLoggedIn(() => {
   // allow to send backgroundColor, textColor and font for status
   wrapModuleFunction(createMsgProtobuf, (func, ...args) => {
     const [msg] = args;

@@ -23,7 +23,7 @@ import { CALL_STATES } from '../../whatsapp/enums';
 
 const debug = Debug('WA-JS:call:registerIncomingCallEvent');
 
-loader.onInjected(() => void register());
+loader.onLoggedIn(() => void register());
 
 /**
  * Call ids already emitted, to avoid duplicated events when more than one
