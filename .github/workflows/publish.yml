@@ -44,8 +44,11 @@ jobs:
       # staged version with 2FA (npm stage approve) before it goes public.
       - name: Stage to npm (OIDC)
         run: |
-          if [[ "${{ github.ref }}" == *"-alpha"* ]]; then
-            npm stage publish --access public --provenance --tag alpha
+          version="${GITHUB_REF_NAME#v}"
+          if [[ "$version" == *-* ]]; then
+            # npm requires a dist-tag for prereleases: use the preid (alpha, beta, rc)
+            preid="${version#*-}"
+            npm stage publish --access public --provenance --tag "${preid%%.*}"
           else
             npm stage publish --access public --provenance
           fi
