@@ -15,7 +15,14 @@
  */
 
 import { assertGetChat, assertWid } from '../../assert';
-import { ChatModel, ChatStore, GroupMetadataStore, Wid } from '../../whatsapp';
+import { queryWidExists } from '../../contact/functions/queryWidExists';
+import {
+  ChatModel,
+  ChatStore,
+  GroupMetadataStore,
+  lidPnCache,
+  Wid,
+} from '../../whatsapp';
 import {
   ChatOriginType,
   findOrCreateLatestChat,
@@ -57,10 +64,18 @@ export async function find(
     return assertGetChat(wid);
   }
 
+  // WhatsApp Web throws "No LID for user" for a number known only by an alias
+  // (e.g. an extra 9), so open the chat on the account the server resolves.
+  let target = wid;
+  if (wid.server === 'c.us' && !lidPnCache.getCurrentLid(wid)) {
+    const exists = await queryWidExists(wid);
+    if (exists) target = exists.lid || exists.wid;
+  }
+
   // Use findOrCreateLatestChat to match WhatsApp Web's native behavior
   // This ensures the chat is properly initialized and can be opened/clicked
   // Returns { chat: plain object with id, created: boolean }
-  const result = await findOrCreateLatestChat(wid, originType);
+  const result = await findOrCreateLatestChat(target, originType);
 
   if (!result?.chat?.id) {
     throw new Error(`Failed to find or create chat for ${wid.toString()}`);
