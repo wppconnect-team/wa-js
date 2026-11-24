@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
-import { Base64, Conn } from '../../whatsapp';
+import {
+  Base64,
+  CompanionRegClientUtils,
+  Conn,
+  justknobx,
+} from '../../whatsapp';
+import { isNativeCameraQRLinkedDeviceTest } from '../../whatsapp/functions';
 import { adv, waNoiseInfo, waSignalStore } from '../../whatsapp/multidevice';
 import { AuthCode } from '..';
 import { isAuthenticated, isMultiDevice, isRegistered } from '.';
@@ -25,7 +31,7 @@ import { isAuthenticated, isMultiDevice, isRegistered } from '.';
  * @example
  * ```javascript
  * const authCode = await WPP.conn.getAuthCode();
- * console.log(authCode.fullCode); // Output: a long string to generate a QRCode
+ * console.log(authCode.fullCode); // Output: the same string as WhatsApp's QR code
  * ```
  *
  * @return  {Promise<AuthCode>}[return description]
@@ -47,7 +53,17 @@ export async function getAuthCode(): Promise<AuthCode | null> {
     );
     const secretKey = await Promise.resolve(adv.getADVSecretKey());
 
-    const fullCode = [ref, staticKeyPair, identityKeyPair, secretKey].join(',');
+    const platform = CompanionRegClientUtils?.DEVICE_PLATFORM;
+
+    // Built like WAWebLinkDeviceQrcode.react, so a QR made from it matches WA's
+    let fullCode = [ref, staticKeyPair, identityKeyPair, secretKey, platform]
+      .filter((part) => part != null)
+      .join(',');
+    if (isNativeCameraQRLinkedDeviceTest?.()) {
+      fullCode = `https://wa.me/settings/linked_devices#${fullCode}`;
+    } else if (justknobx?._('770')) {
+      fullCode += ',https://faq.whatsapp.com/r/ld';
+    }
 
     return {
       type: 'multidevice',
@@ -55,6 +71,7 @@ export async function getAuthCode(): Promise<AuthCode | null> {
       staticKeyPair,
       identityKeyPair,
       secretKey,
+      platform,
       fullCode,
     };
   }

@@ -16,7 +16,7 @@
 
 import { internalEv } from '../../eventEmitter';
 import * as loader from '../../loader';
-import { Conn } from '../../whatsapp';
+import { advSecretEventEmitter, Conn } from '../../whatsapp';
 import { getAuthCode } from '..';
 
 loader.onInjected(registerAuthCodeChangeEvent);
@@ -29,4 +29,6 @@ function registerAuthCodeChangeEvent() {
 
   trigger();
   Conn.on('change:ref', trigger);
+  // A companion registration refresh changes the QR code but keeps the ref
+  advSecretEventEmitter?.on('change', trigger);
 }

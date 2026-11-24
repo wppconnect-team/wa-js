@@ -110,6 +110,7 @@ export * from './isAuthenticated';
 export * from './isFilterExcludedFromSearchTreatmentInInboxFlow';
 export * from './isLabelReorderEnabled';
 export * from './isLidMigrated';
+export * from './isNativeCameraQRLinkedDeviceTest';
 export * from './isRegistered';
 export * from './isUnreadTypeMsg';
 export * from './isWid';

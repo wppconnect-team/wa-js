@@ -28,6 +28,12 @@ export interface AuthCodeMultiDevice {
   staticKeyPair: string;
   identityKeyPair: string;
   secretKey: string;
+  /** Browser id WhatsApp appends to the code ('1' is Chrome) */
+  platform?: string;
+  /**
+   * Exactly what WhatsApp encodes in its QR code. Under some WhatsApp
+   * experiments it starts with a wa.me link or ends with a help link.
+   */
   fullCode: string;
 }
 
