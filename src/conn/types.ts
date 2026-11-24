@@ -32,3 +32,11 @@ export interface AuthCodeMultiDevice {
 }
 
 export type AuthCode = AuthCodeSingleDevice | AuthCodeMultiDevice;
+
+/** A QR code read from the page after WhatsApp painted it */
+export interface QRCode {
+  /** The string encoded in the QR code (the `data-ref` WhatsApp renders) */
+  fullCode: string;
+  /** PNG of the QR code canvas, as a data URL */
+  base64Image: string;
+}
