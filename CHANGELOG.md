@@ -1,3 +1,5 @@
+## <small>4.8.5 (2026-11-26)</small>
+
 ## <small>4.8.5-rc.0 (2026-11-24)</small>
 
 ### Features
