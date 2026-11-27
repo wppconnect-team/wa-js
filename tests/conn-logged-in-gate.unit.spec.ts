@@ -34,9 +34,17 @@ function authenticatedEvent(isAuthenticated: () => boolean) {
   const cmd = Object.assign(new EventEmitter2(), { isMainLoaded: false });
   const emitted: string[] = [];
   let loggedIn = 0;
+  let nextTimer = 0;
+  const intervals = new Map<number, () => void>();
   internalEv.onAny((event) => emitted.push(String(event)));
   runInNewContext(transpile('conn/events/registerAuthenticatedEvent.ts'), {
     exports: {},
+    setInterval(callback: () => void) {
+      const id = ++nextTimer;
+      intervals.set(id, callback);
+      return id;
+    },
+    clearInterval: (id: number) => intervals.delete(id),
     require(id: string) {
       if (id === '../../eventEmitter') return { internalEv };
       if (id === '../../whatsapp') return { Cmd: cmd };
@@ -55,6 +63,8 @@ function authenticatedEvent(isAuthenticated: () => boolean) {
     cmd,
     emitted,
     loggedIn: () => loggedIn,
+    tick: () => [...intervals.values()].forEach((callback) => callback()),
+    intervals: () => intervals.size,
   };
 }
 
@@ -82,6 +92,60 @@ test('an unknown session state still loads the logged-in modules', () => {
   });
   expect(() => f.inject()).toThrow('isLoggedIn not found');
   expect(f.loggedIn()).toBe(1);
+});
+
+test('a confirmed login completes even if main_loaded never arrives', () => {
+  let authenticated = false;
+  const f = authenticatedEvent(() => authenticated);
+  f.inject();
+  f.tick();
+  expect(f.loggedIn()).toBe(0);
+
+  authenticated = true;
+  f.tick();
+  expect(f.loggedIn()).toBe(1);
+  f.cmd.emit('main_loaded');
+  expect(f.loggedIn()).toBe(1);
+  expect(f.emitted).toEqual(['conn.authenticated']);
+  expect(f.intervals()).toBe(0);
+});
+
+test('native completion clears the fallback and ignores duplicate events', () => {
+  const f = authenticatedEvent(() => false);
+  f.inject();
+  expect(f.intervals()).toBe(1);
+
+  f.cmd.emit('main_loaded');
+  f.cmd.emit('main_loaded');
+  f.tick();
+  expect(f.loggedIn()).toBe(1);
+  expect(f.emitted).toEqual(['conn.authenticated']);
+  expect(f.intervals()).toBe(0);
+});
+
+test('logout restarts a single fallback and a transient read error can recover', () => {
+  let authenticated = true;
+  let canRead = true;
+  const f = authenticatedEvent(() => {
+    if (!canRead) throw new Error('Native state unavailable');
+    return authenticated;
+  });
+  f.inject();
+  expect(f.intervals()).toBe(0);
+
+  authenticated = false;
+  f.cmd.emit('logout');
+  f.cmd.emit('logout');
+  expect(f.intervals()).toBe(1);
+  canRead = false;
+  f.tick();
+  expect(f.emitted).toEqual([]);
+
+  canRead = true;
+  authenticated = true;
+  f.tick();
+  expect(f.emitted).toEqual(['conn.authenticated']);
+  expect(f.intervals()).toBe(0);
 });
 
 function loaderFixture() {

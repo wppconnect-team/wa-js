@@ -37,21 +37,44 @@ function register() {
     loader.setLoggedIn();
   }
 
-  const trigger = async () => {
-    if (!isAuth) {
-      internalEv.emit('conn.authenticated');
-      loader.setLoggedIn();
-      isAuth = false;
+  let authFallback: ReturnType<typeof setInterval> | undefined;
+
+  const trigger = () => {
+    if (isAuth) return;
+
+    isAuth = true;
+    if (authFallback !== undefined) {
+      clearInterval(authFallback);
+      authFallback = undefined;
     }
+    internalEv.emit('conn.authenticated');
+    loader.setLoggedIn();
   };
+
+  const startFallback = () => {
+    if (isAuth || authFallback !== undefined) return;
+
+    authFallback = setInterval(() => {
+      let authenticated: boolean;
+      try {
+        authenticated = isAuthenticated();
+      } catch {
+        // The native auth binding can be unavailable during the transition.
+        return;
+      }
+      if (authenticated) trigger();
+    }, 1_000);
+  };
+
+  Cmd.on('main_loaded', trigger);
+  Cmd.on('logout', () => {
+    isAuth = false;
+    startFallback();
+  });
 
   if (Cmd.isMainLoaded) {
     trigger();
   } else {
-    Cmd.on('main_loaded', trigger);
+    startFallback();
   }
-
-  Cmd.on('logout', () => {
-    isAuth = false;
-  });
 }
