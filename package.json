@@ -47,9 +47,9 @@
     "test:minimatch": "node --test test/minimatch-compat.test.cjs"
   },
   "devDependencies": {
-    "@commitlint/cli": "^21.2.4",
-    "@commitlint/config-conventional": "^21.2.4",
-    "@commitlint/prompt-cli": "^21.2.4",
+    "@commitlint/cli": "^21.3.0",
+    "@commitlint/config-conventional": "^21.3.0",
+    "@commitlint/prompt-cli": "^21.3.0",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.65.1",
     "@tony.ganchev/eslint-plugin-header": "^3.4.4",
